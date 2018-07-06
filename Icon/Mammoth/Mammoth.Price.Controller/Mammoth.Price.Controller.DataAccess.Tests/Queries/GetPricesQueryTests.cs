@@ -20,13 +20,13 @@
         private GetPriceDataQuery query;
         private GetPriceDataParameters parameters;
         private SqlDbProvider dbProvider;
-        private string region = "FL";
+        private string region = "MA";
 
         [TestInitialize]
         public void Initialize()
         {
             dbProvider = new SqlDbProvider();
-            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
+            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_MA"].ConnectionString);
             dbProvider.Connection.Open();
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction(IsolationLevel.Snapshot);
 

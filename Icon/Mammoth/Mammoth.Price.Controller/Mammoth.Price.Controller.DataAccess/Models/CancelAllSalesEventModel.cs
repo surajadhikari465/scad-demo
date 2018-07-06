@@ -10,6 +10,7 @@ namespace Mammoth.Price.Controller.DataAccess.Models
         public string ScanCode { get; set; }
         public int BusinessUnitId { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime EventCreatedDate { get; set; }
         public string ErrorMessage { get; set; }
         public string ErrorDetails { get; set; }
         public string ErrorSource { get; set; }

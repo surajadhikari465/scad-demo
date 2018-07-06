@@ -199,6 +199,7 @@
     <Compile Include="Queries\GetItemPriceAttributesByStoreAndScanCodeQuery.cs" />
     <Compile Include="Queries\GetPricesByScanCodeAndStoreQuery.cs" />
     <Compile Include="Queries\GetItemPriceAttributesByStoreAndScanCodeQueryHandler.cs" />
+    <Compile Include="Settings\DataAccessSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

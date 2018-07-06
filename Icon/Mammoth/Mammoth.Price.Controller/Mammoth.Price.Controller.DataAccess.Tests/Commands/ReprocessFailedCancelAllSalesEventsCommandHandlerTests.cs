@@ -2,44 +2,58 @@
 using Irma.Framework;
 using Irma.Testing;
 using Irma.Testing.Builders;
-using Mammoth.Common.DataAccess;
+using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.DataAccess.DbProviders;
-using Mammoth.Price.Controller.DataAccess.Queries;
+using Mammoth.Logging;
+using Mammoth.Price.Controller.Common;
+using Mammoth.Price.Controller.DataAccess.Commands;
+using Mammoth.Price.Controller.DataAccess.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
+using static Mammoth.Common.Constants;
 
-namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
+namespace Mammoth.Price.Controller.DataAccess.Tests.Commands
 {
     [TestClass]
-    public class GetCancelAllSalesDataQueryTests
+    public class ReprocessFailedCancelAllSalesEventsCommandHandlerTests
     {
-        private GetCancelAllSalesDataQuery query;
-        private GetCancelAllSalesDataParameters parameters;
-        private SqlDbProvider dbProvider;
+        private ReprocessFailedCancelAllSalesEventsCommandHandler commandHandler;
+        private TransactionScope transaction;
+        private PriceControllerApplicationSettings settings;
+        private Mock<ILogger> logger;
+        private ReprocessFailedCancelAllSalesEventsCommand data;
+        private IDbProvider dbProvider;
 
         [TestInitialize]
         public void Initialize()
         {
-            dbProvider = IrmaTestDbProviderFactory.CreateAndOpen("MA");
-            query = new GetCancelAllSalesDataQuery(dbProvider);
-            parameters = new GetCancelAllSalesDataParameters
+            transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
-                Instance = 454
-            };
+                IsolationLevel = IsolationLevel.Snapshot
+            });
+            dbProvider = IrmaTestDbProviderFactory.CreateAndOpen("MA"); ;
+            settings = new PriceControllerApplicationSettings();
+            logger = new Mock<ILogger>();
+            commandHandler = new ReprocessFailedCancelAllSalesEventsCommandHandler(
+                dbProvider,
+                settings,
+                logger.Object);
+            settings.ReprocessCount = 3;
+            data = new ReprocessFailedCancelAllSalesEventsCommand();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            dbProvider.Transaction.Rollback();
-            dbProvider.Transaction.Dispose();
-            dbProvider.Connection.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
-        public void GetCancelAllSalesData_EventsExist_ShouldReturnEvents()
+        public void ReprocessFailedCancelAllSalesEvents_FailedCancelAllSalesEventsHaveSmallerReprocessCountThanSettings_InsertsEventsBackIntoTheQueue()
         {
             //Given
             var expectedIdentifier = "9988776631";
@@ -48,14 +62,211 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
             var subTeamNo = 1234567;
             var priceBatchDetailStartDate = DateTime.Today.AddDays(10);
             var expectedEventCreatedDate = DateTime.Today;
+            int itemKey, priceBatchDetailId;
+            InsertTestSubTeam(subTeamNo);
+            InsertTestStore(storeNo, expectedBusinessUnitId);
+            InsertTestData(expectedIdentifier, storeNo, subTeamNo, priceBatchDetailStartDate, out itemKey, out priceBatchDetailId);
 
+            data.CancelAllSales = new List<CancelAllSalesEventModel>
+            {
+                new CancelAllSalesEventModel
+                {
+                    QueueId = 1,
+                    ErrorMessage = "Test"
+                }
+            };
+            data.Events = new List<EventQueueModel>
+            {
+                new EventQueueModel
+                {
+                    EventReferenceId = priceBatchDetailId,
+                    EventTypeId = EventTypes.CancelAllSales,
+                    Identifier = expectedIdentifier,
+                    InProcessBy = null,
+                    InsertDate = expectedEventCreatedDate,
+                    ItemKey = itemKey,
+                    ProcessFailedDate = null,
+                    QueueId = 1,
+                    ReprocessCount = null,
+                    StoreNo = storeNo
+                }
+            };
+
+            //When
+            commandHandler.Execute(data);
+
+            //Then
+            var actualEvent = dbProvider.Connection.QuerySingle<EventQueueModel>(
+                @"
+                SELECT QueueID as QueueId,
+                    Item_Key as ItemKey,
+                    Store_No as StoreNo,
+                    Identifier as Identifier,
+                    EventTypeID as EventTypeId,
+                    EventReferenceID as EventReferenceId,
+                    InsertDate,
+                    ProcessFailedDate,
+                    InProcessBy,
+                    ReprocessCount
+                FROM mammoth.PriceChangeQueue WHERE Item_Key = @ItemKey AND Store_No = @StoreNo",
+                new { ItemKey = itemKey, StoreNo = storeNo });
+
+            var expectedEvent = data.Events.First();
+            Assert.AreEqual(expectedEvent.EventReferenceId, actualEvent.EventReferenceId);
+            Assert.AreEqual(expectedEvent.EventTypeId, actualEvent.EventTypeId);
+            Assert.AreEqual(expectedEvent.Identifier, actualEvent.Identifier);
+            Assert.AreEqual(null, actualEvent.InProcessBy);
+            Assert.AreEqual(expectedEvent.InsertDate, actualEvent.InsertDate);
+            Assert.AreEqual(expectedEvent.ItemKey, actualEvent.ItemKey);
+            Assert.AreEqual(null, actualEvent.ProcessFailedDate);
+            Assert.AreEqual(1, actualEvent.ReprocessCount);
+            Assert.AreEqual(expectedEvent.StoreNo, actualEvent.StoreNo);
+        }
+
+
+
+        [TestMethod]
+        public void ReprocessFailedCancelAllSalesEvents_MultipleFailedCancelAllSalesEventsHaveSmallerReprocessCountThanSettings_InsertsEventsBackIntoTheQueue()
+        {
+            //Given
+            var expectedIdentifier = "9988776631";
+            var expectedIdentifier2 = "9988776632";
+            var storeNo = 123421;
+            var expectedBusinessUnitId = 999999;
+            var subTeamNo = 1234567;
+            var priceBatchDetailStartDate = DateTime.Today.AddDays(10);
+            var expectedEventCreatedDate = DateTime.Today;
+            var expectedEventCreatedDate2 = DateTime.Today.AddMinutes(10);
+            int itemKey1 = 0;
+            int itemKey2 = 0;
+            int priceBatchDetailId1 = 0;
+            int priceBatchDetailId2 = 0;
+            InsertTestSubTeam(subTeamNo);
+            InsertTestStore(storeNo, expectedBusinessUnitId);
+            InsertTestData(expectedIdentifier, storeNo, subTeamNo, priceBatchDetailStartDate, out itemKey1, out priceBatchDetailId1);
+            InsertTestData(expectedIdentifier2, storeNo, subTeamNo, priceBatchDetailStartDate, out itemKey2, out priceBatchDetailId2);
+
+            data.CancelAllSales = new List<CancelAllSalesEventModel>
+            {
+                new CancelAllSalesEventModel
+                {
+                    QueueId = 1,
+                    ErrorMessage = "Test"
+                },
+                new CancelAllSalesEventModel
+                {
+                    QueueId = 2,
+                    ErrorMessage = "Test"
+                }
+            };
+            data.Events = new List<EventQueueModel>
+            {
+                new EventQueueModel
+                {
+                    EventReferenceId = priceBatchDetailId1,
+                    EventTypeId = EventTypes.CancelAllSales,
+                    Identifier = expectedIdentifier,
+                    InProcessBy = null,
+                    InsertDate = expectedEventCreatedDate,
+                    ItemKey = itemKey1,
+                    ProcessFailedDate = null,
+                    QueueId = 1,
+                    ReprocessCount = null,
+                    StoreNo = storeNo
+                },
+                new EventQueueModel
+                {
+                    EventReferenceId = priceBatchDetailId2,
+                    EventTypeId = EventTypes.CancelAllSales,
+                    Identifier = expectedIdentifier2,
+                    InProcessBy = null,
+                    InsertDate = expectedEventCreatedDate2,
+                    ItemKey = itemKey2,
+                    ProcessFailedDate = null,
+                    QueueId = 2,
+                    ReprocessCount = 2,
+                    StoreNo = storeNo
+                }
+            };
+
+            //When
+            commandHandler.Execute(data);
+
+            //Then
+            var actualEvents = dbProvider.Connection.Query<EventQueueModel>(
+                @"
+                SELECT QueueID as QueueId,
+                    Item_Key as ItemKey,
+                    Store_No as StoreNo,
+                    Identifier as Identifier,
+                    EventTypeID as EventTypeId,
+                    EventReferenceID as EventReferenceId,
+                    InsertDate,
+                    ProcessFailedDate,
+                    InProcessBy,
+                    ReprocessCount
+                FROM mammoth.PriceChangeQueue 
+                WHERE (Item_Key = @ItemKey1
+                        AND Store_No = @StoreNo)
+                    OR (Item_Key = @ItemKey2
+                        AND Store_No = @StoreNo)",
+                new { ItemKey1 = itemKey1, ItemKey2 = itemKey2, StoreNo = storeNo })
+                .ToList();
+
+            Assert.AreEqual(2, actualEvents.Count);
+            var actualEvent1 = actualEvents[0];
+            var actualEvent2 = actualEvents[1];
+            var expectedEvent1 = data.Events.Single(e => e.Identifier == actualEvent1.Identifier);
+            var expectedEvent2 = data.Events.Single(e => e.Identifier == actualEvent2.Identifier);
+
+            Assert.AreEqual(expectedEvent1.EventReferenceId, actualEvent1.EventReferenceId);
+            Assert.AreEqual(expectedEvent1.EventTypeId, actualEvent1.EventTypeId);
+            Assert.AreEqual(expectedEvent1.Identifier, actualEvent1.Identifier);
+            Assert.AreEqual(null, actualEvent1.InProcessBy);
+            Assert.AreEqual(expectedEvent1.InsertDate, actualEvent1.InsertDate);
+            Assert.AreEqual(expectedEvent1.ItemKey, actualEvent1.ItemKey);
+            Assert.AreEqual(null, actualEvent1.ProcessFailedDate);
+            Assert.AreEqual(1, actualEvent1.ReprocessCount);
+            Assert.AreEqual(expectedEvent1.StoreNo, actualEvent1.StoreNo);
+
+            Assert.AreEqual(expectedEvent2.EventReferenceId, actualEvent2.EventReferenceId);
+            Assert.AreEqual(expectedEvent2.EventTypeId, actualEvent2.EventTypeId);
+            Assert.AreEqual(expectedEvent2.Identifier, actualEvent2.Identifier);
+            Assert.AreEqual(null, actualEvent2.InProcessBy);
+            Assert.AreEqual(expectedEvent2.InsertDate, actualEvent2.InsertDate);
+            Assert.AreEqual(expectedEvent2.ItemKey, actualEvent2.ItemKey);
+            Assert.AreEqual(null, actualEvent2.ProcessFailedDate);
+            Assert.AreEqual(3, actualEvent2.ReprocessCount);
+            Assert.AreEqual(expectedEvent2.StoreNo, actualEvent2.StoreNo);
+        }
+
+        private void InsertTestSubTeam(int subTeamNo)
+        {
             dbProvider.Connection.Execute(
-                "insert into dbo.SubTeam(SubTeam_No) values(@SubTeamNo)", 
+                "insert into dbo.SubTeam(SubTeam_No) values(@SubTeamNo)",
                 new { SubTeamNo = subTeamNo },
                 dbProvider.Transaction);
+        }
 
-            // Insert New Item
-            var itemKey = this.dbProvider.Insert(
+        private void InsertTestStore(int storeNo, int businessUnitId)
+        {
+            // Insert New Store
+            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.BusinessUnit_ID, businessUnitId)
+                .With(x => x.StoreJurisdictionID, 1)
+                .ToObject());
+
+            // Insert New Store Region Mapping
+            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
+                .With(x => x.Store_No, storeNo)
+                .With(x => x.Region_Code, "MA")
+                .ToObject());
+        }
+
+        private void InsertTestData(string expectedIdentifier, int storeNo, int subTeamNo, DateTime priceBatchDetailStartDate, out int itemKey, out int priceBatchDetailId)
+        {
+            itemKey = this.dbProvider.Insert(
                 new IrmaQueryParams<Item, int>(
                     IrmaTestObjectFactory.BuildItem()
                         .With(x => x.Retail_Unit_ID, GetUnitId("EA"))
@@ -77,19 +288,6 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
                   VALUES ({expectedIdentifier}, GETDATE(), -1)",
                 transaction: dbProvider.Transaction);
 
-            // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
-
-            // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, "MA")
-                .ToObject());
-
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -99,204 +297,12 @@ namespace Mammoth.Price.Controller.DataAccess.Tests.Queries
                 .WithStore_No(storeNo)
                 .WithStartDate(priceBatchDetailStartDate)
                 .WithCancelAllSales(true);
-            int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
-
-            InsertIntoEventQueue(new List<TestItemForPriceEvents>
-            {
-                new TestItemForPriceEvents
-                {
-                    Identifier = expectedIdentifier,
-                    Item_Key = itemKey,
-                    Store_No = storeNo,
-                    PriceBatchDetailID = priceBatchDetailId
-                }
-            },
-            DateTime.Today);
-
-            //When
-            var events = query.Search(parameters);
-
-            //Then
-            Assert.AreEqual(1, events.Count);
-            var cancelAllSalesEvent = events.First();
-            AssertEventIsEqualToExpectedData(cancelAllSalesEvent, expectedIdentifier, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-        }
-
-        [TestMethod]
-        public void GetCancelAllSalesData_ItemHasAlternateIdentifiers_ShouldReturnAnEventForEachIdentifier()
-        {
-            //Given
-            var expectedDefaultIdentifier = "9988776630";
-            var expectedAlternateIdentifier1 = "9988776631";
-            var expectedAlternateIdentifier2 = "9988776632";
-            var expectedAlternateIdentifier3 = "9988776633";
-            var expectedAlternateIdentifier4 = "9988776634";
-            var storeNo = 123421;
-            var expectedBusinessUnitId = 999999;
-            var subTeamNo = 1234567;
-            var priceBatchDetailStartDate = DateTime.Today.AddDays(10);
-            var expectedEventCreatedDate = DateTime.Today;
-
-            dbProvider.Connection.Execute(
-                "insert into dbo.SubTeam(SubTeam_No) values(@SubTeamNo)",
-                new { SubTeamNo = subTeamNo },
-                dbProvider.Transaction);
-
-            // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.Retail_Unit_ID, GetUnitId("EA"))
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .ToObject(),
-                x => x.Item_Key));
-
-            // Insert New Item Identifiers
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedDefaultIdentifier)
-                        .With(x => x.Default_Identifier, (byte)1)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedAlternateIdentifier1)
-                        .With(x => x.Default_Identifier, (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedAlternateIdentifier2)
-                        .With(x => x.Default_Identifier, (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedAlternateIdentifier3)
-                        .With(x => x.Default_Identifier, (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedAlternateIdentifier4)
-                        .With(x => x.Default_Identifier, (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Connection.Execute(
-                $@"INSERT INTO dbo.ValidatedScanCode(ScanCode, InsertDate, InforItemId)
-                  VALUES ({expectedDefaultIdentifier}, GETDATE(), -1),
-                         ({expectedAlternateIdentifier1}, GETDATE(), -2),
-                         ({expectedAlternateIdentifier2}, GETDATE(), -3),
-                         ({expectedAlternateIdentifier3}, GETDATE(), -4),
-                         ({expectedAlternateIdentifier4}, GETDATE(), -5)",
-                transaction: dbProvider.Transaction);
-
-            // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
-
-            // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, "MA")
-                .ToObject());
-
-            PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
-                .WithItem_Key(itemKey)
-                .WithIdentifier(expectedDefaultIdentifier)
-                .WithPrice(1)
-                .WithMultiple(1)
-                .WithPriceChgTypeID(1)
-                .WithStore_No(storeNo)
-                .WithStartDate(priceBatchDetailStartDate)
-                .WithCancelAllSales(true);
-            int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
-
-            InsertIntoEventQueue(new List<TestItemForPriceEvents>
-            {
-                new TestItemForPriceEvents
-                {
-                    Identifier = expectedDefaultIdentifier,
-                    Item_Key = itemKey,
-                    Store_No = storeNo,
-                    PriceBatchDetailID = priceBatchDetailId
-                }
-            }, 
-            DateTime.Today);
-
-            //When
-            var events = query.Search(parameters).OrderBy(e => e.ScanCode).ToList();
-
-            //Then
-            Assert.AreEqual(5, events.Count);
-            AssertEventIsEqualToExpectedData(events[0], expectedDefaultIdentifier, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-            AssertEventIsEqualToExpectedData(events[1], expectedAlternateIdentifier1, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-            AssertEventIsEqualToExpectedData(events[2], expectedAlternateIdentifier2, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-            AssertEventIsEqualToExpectedData(events[3], expectedAlternateIdentifier3, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-            AssertEventIsEqualToExpectedData(events[4], expectedAlternateIdentifier4, expectedBusinessUnitId, priceBatchDetailStartDate, expectedEventCreatedDate);
-        }
-
-        private static void AssertEventIsEqualToExpectedData(Models.CancelAllSalesEventModel cancelAllSalesEvent, string expectedIdentifier, int expectedBusinessUnitId, DateTime priceBatchDetailStartDate, DateTime insertDate)
-        {
-            Assert.AreEqual(expectedBusinessUnitId, cancelAllSalesEvent.BusinessUnitId);
-            Assert.AreEqual(IrmaEventTypes.CancelAllSales, cancelAllSalesEvent.EventTypeId);
-            Assert.AreEqual("MA", cancelAllSalesEvent.Region);
-            Assert.AreEqual(expectedIdentifier, cancelAllSalesEvent.ScanCode);
-            Assert.AreEqual(priceBatchDetailStartDate, cancelAllSalesEvent.EndDate);
-            Assert.AreEqual(insertDate, cancelAllSalesEvent.EventCreatedDate);
+            priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
         }
 
         private int GetUnitId(string value)
         {
             return dbProvider.GetLookupId<int>("Unit_ID", "ItemUnit", "Unit_Abbreviation", value);
-        }
-
-        private void InsertIntoEventQueue(List<TestItemForPriceEvents> items, DateTime insertDate)
-        {
-            foreach (var item in items)
-            {
-                dbProvider.Connection.Execute(
-                    @"
-                    insert into mammoth.PriceChangeQueue(Item_Key, Store_No, Identifier, EventTypeID, EventReferenceID, InProcessBy, InsertDate)
-                    values(@Item_Key, @Store_No, @Identifier, @EventTypeID, @EventReferenceID, @Instance, @InsertDate)",
-                    new
-                    {
-                        Item_Key = item.Item_Key,
-                        Store_No = item.Store_No,
-                        Identifier = item.Identifier,
-                        EventTypeID = IrmaEventTypes.CancelAllSales,
-                        EventReferenceID = item.PriceBatchDetailID,
-                        Instance = parameters.Instance,
-                        InsertDate = insertDate
-                    },
-                    transaction: this.dbProvider.Transaction);
-            }
-        }
-
-        private class TestItemForPriceEvents
-        {
-            public int? PriceBatchDetailID { get; set; }
-            public string Identifier { get; set; }
-            public int Item_Key { get; set; }
-            public int Store_No { get; set; }
         }
 
         private int AddPriceBatchDetail(PriceBatchDetail newPriceBatchDetail)

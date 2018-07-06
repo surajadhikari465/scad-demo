@@ -62,7 +62,7 @@
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.ControllerApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.5.1.4\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.7.3.2\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
@@ -127,6 +127,10 @@
     <Compile Include="TestInfrastructure\TestQueueModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mammoth.Price.Controller.Common\Mammoth.Price.Controller.Common.csproj">
+      <Project>{3f3bfd24-6609-41dc-b8dc-f71bc2ffca8e}</Project>
+      <Name>Mammoth.Price.Controller.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mammoth.Price.Controller.DataAccess\Mammoth.Price.Controller.DataAccess.csproj">
       <Project>{4917bc52-8b44-4911-94df-7277a89bdcf3}</Project>
       <Name>Mammoth.Price.Controller.DataAccess</Name>

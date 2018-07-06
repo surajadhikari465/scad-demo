@@ -13,8 +13,10 @@ using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using Mammoth.PrimeAffinity.Library.Processors;
 using MammothWebApi.BackgroundJobs;
 using MammothWebApi.Common;
+using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
+using MammothWebApi.DataAccess.Settings;
 using MammothWebApi.Email;
 using MammothWebApi.Service.Decorators;
 using MammothWebApi.Service.Services;
@@ -62,6 +64,8 @@ namespace MammothWebApi
             var primeAffinityLibraryAssembly = Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler));
             container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly, primeAffinityLibraryAssembly }, Lifestyle.Scoped);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Scoped);
+            container.RegisterDecorator<ICommandHandler<CancelAllSalesCommand>, RetryCommandHandlerDecorator<CancelAllSalesCommand>>(Lifestyle.Scoped);
+            container.Register(() => DataAccessSettings.Load(), Lifestyle.Scoped);
 
             //PrimeAffinity
             container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();

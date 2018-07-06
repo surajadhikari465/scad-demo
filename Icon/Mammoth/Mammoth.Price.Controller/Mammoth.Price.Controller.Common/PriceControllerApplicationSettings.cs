@@ -3,7 +3,7 @@ using Mammoth.Common.ControllerApplication;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mammoth.Price.Controller
+namespace Mammoth.Price.Controller.Common
 {
     public class PriceControllerApplicationSettings : IControllerApplicationSettings, IRegionalControllerApplicationSettings
     {
@@ -13,6 +13,8 @@ namespace Mammoth.Price.Controller
         public string CurrentRegion { get; set; }
         public string ControllerName { get; set; }
         public List<string> NonAlertErrors { get; set; }
+        public int ReprocessCount { get; set; }
+
         public static PriceControllerApplicationSettings CreateFromConfig()
         {
             return new PriceControllerApplicationSettings
@@ -21,7 +23,8 @@ namespace Mammoth.Price.Controller
                 Instance = AppSettingsAccessor.GetIntSetting("InstanceID"),
                 MaxNumberOfRowsToMark = AppSettingsAccessor.GetIntSetting("MaxNumberOfRowsToMark"),
                 Regions = AppSettingsAccessor.GetStringSetting("RegionsToProcess").Split(',').ToList(),
-                NonAlertErrors = AppSettingsAccessor.GetStringSetting(nameof(NonAlertErrors)).Split(',').ToList()
+                NonAlertErrors = AppSettingsAccessor.GetStringSetting(nameof(NonAlertErrors)).Split(',').ToList(),
+                ReprocessCount = AppSettingsAccessor.GetIntSetting(nameof(ReprocessCount), 3)
             };
         }
     }

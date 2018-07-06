@@ -168,7 +168,6 @@
     <Compile Include="Queries\GetAllBusinessUnitsQueryHandlerTests.cs" />
     <Compile Include="Queries\BuildItemLocaleJsonFileTest.cs" />
     <Compile Include="Queries\GetPricesByScanCodeAndBusinessUnitIDQueryHandlerTests.cs" />
-    <Compile Include="DatabaseInitialization.cs" />
     <Compile Include="Queries\GetItemPriceAttributesByStoreAndItemQueryHandlerTests.cs" />
     <Compile Include="Queries\GetPrimePsgItemDataQueryHandlerTests.cs" />
   </ItemGroup>

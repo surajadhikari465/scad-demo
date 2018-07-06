@@ -87,7 +87,8 @@ namespace Mammoth.Price.Controller
                 BusinessUnitId = m.BusinessUnitId,
                 Region = m.Region,
                 ScanCode = m.ScanCode,
-                EndDate = m.EndDate
+                EndDate = m.EndDate,
+                EventCreatedDate = m.EventCreatedDate
             });
         }
     }

@@ -7,5 +7,6 @@ namespace MammothWebApi.DataAccess.Models
         public string ScanCode { get; set; }
         public int BusinessUnitID { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime EventCreatedDate { get; set; }
     }
 }

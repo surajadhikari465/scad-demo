@@ -33,7 +33,7 @@ namespace Mammoth.Price.Controller.Tests.Specs
 
         private void DeleteEvents()
         {
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_MA"].ConnectionString))
             {
                 connection.Execute("delete mammoth.PriceChangeQueue where InsertDate = @now", new { now = this.now });
             }
@@ -70,7 +70,7 @@ namespace Mammoth.Price.Controller.Tests.Specs
                     try
                     {
                         //Then
-                        using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString))
+                        using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_MA"].ConnectionString))
                         {
                             var remainingEvents = connection
                                 .Query("select * from mammoth.PriceChangeQueue where insertdate > @now",
@@ -104,7 +104,7 @@ namespace Mammoth.Price.Controller.Tests.Specs
 
         private void InsertIntoChangeQueue(int numberOfRows, int instance)
         {
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_MA"].ConnectionString))
             {
                 var items = connection.Query<dynamic>(
                     @"select top (@NumberOfRows) pbd.Item_Key, ii.Identifier, pbd.Store_No, pbd.PriceBatchDetailID

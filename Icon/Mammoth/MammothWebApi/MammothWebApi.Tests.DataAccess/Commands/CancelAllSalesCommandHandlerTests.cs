@@ -57,12 +57,14 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
         [TestMethod]
         public void CancelAllSalesCommand_ReceivedCancelAllSalesRequest_ShouldUpdateEndDateAndCreateQueuePriceRecord()
-        {   // Given
+        {   
+            // Given
             DateTime existingStartDate = new DateTime(2015, 10, 1);
-            DateTime endate = new DateTime(2079, 10, 1);
-            List<Prices> existingPrices = BuildExistingPrices(this.items, this.insertedBusinessUnitID, 2.99M, "TPR", existingStartDate, endate);
+            DateTime endDate = new DateTime(2079, 10, 1);
+            DateTime addedDate = DateTime.Today;
+            List<Prices> existingPrices = BuildExistingPrices(this.items, this.insertedBusinessUnitID, 2.99M, "TPR", addedDate, existingStartDate, endDate);
             AddPriceToPriceTable(existingPrices);
-            buildCommand(cancelAllSalesModelList);
+            BuildCommand(cancelAllSalesModelList);
 
             // When
             this.commandHandler.Execute(cancelAllSalesCommand);
@@ -83,8 +85,78 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < cancelAllSalesModelList.Count; i++)
             {
-                Assert.AreEqual(actualPrices[i].EndDate, DateTime.Now.Date);
+                Assert.AreEqual(DateTime.Today, actualPrices[i].EndDate);
                 Assert.AreEqual(messageQueuePrices.Where(msq=>msq.ItemId == actualPrices[i].ItemID).Count(),1);
+            }
+        }
+
+        [TestMethod]
+        public void CancelAllSalesCommand_PriceAddedDateIsLessThanEventCreatedDate_ShouldSetPriceEndDateToEndDate()
+        {
+            // Given
+            DateTime existingStartDate = new DateTime(2015, 10, 1);
+            DateTime endDate = new DateTime(2079, 10, 1);
+            DateTime addedDate = DateTime.Now.AddDays(-1);
+            List<Prices> existingPrices = BuildExistingPrices(this.items, this.insertedBusinessUnitID, 2.99M, "TPR", addedDate, existingStartDate, endDate);
+            AddPriceToPriceTable(existingPrices);
+            BuildCommand(cancelAllSalesModelList);
+
+            // When
+            this.commandHandler.Execute(cancelAllSalesCommand);
+
+            //Then
+            List<int> itemIds = items.Select(i => i.ItemID).OrderBy(i => i).ToList();
+            string getActualSql = @"SELECT * FROM Price_{0} WHERE ItemID IN @ItemIDs AND BusinessUnitID = @BusinessUnitID AND StartDate = @StartDate ORDER BY ItemID";
+            List<Prices> actualPrices = this.db.Connection
+                .Query<Prices>(String.Format(getActualSql, this.region),
+                    new { ItemIDs = itemIds, BusinessUnitID = this.insertedBusinessUnitID, StartDate = existingStartDate },
+                    transaction: this.db.Transaction).ToList();
+
+            string getMessageQueuePriceInfo = @"SELECT * FROM esb.MessageQueuePrice WHERE ItemID IN @ItemIDs AND BusinessUnitID = @BusinessUnitID ORDER BY ItemID";
+            List<MessageQueuePrice> messageQueuePrices = this.db.Connection
+               .Query<MessageQueuePrice>(String.Format(getMessageQueuePriceInfo, this.region),
+                   new { ItemIDs = itemIds, BusinessUnitID = this.insertedBusinessUnitID },
+                   transaction: this.db.Transaction).ToList();
+
+            for (int i = 0; i < cancelAllSalesModelList.Count; i++)
+            {
+                Assert.AreEqual(DateTime.Today, actualPrices[i].EndDate);
+                Assert.AreEqual(messageQueuePrices.Where(msq => msq.ItemId == actualPrices[i].ItemID).Count(), 1);
+            }
+        }
+
+        [TestMethod]
+        public void CancelAllSalesCommand_PriceAddedDateIsGreaterThanEventCreatedDate_ShouldNotUpdatePriceEndDate()
+        {
+            // Given
+            DateTime existingStartDate = new DateTime(2015, 10, 1);
+            DateTime endDate = new DateTime(2079, 10, 1);
+            DateTime addedDate = DateTime.Now.AddDays(1);
+            List<Prices> existingPrices = BuildExistingPrices(this.items, this.insertedBusinessUnitID, 2.99M, "TPR", addedDate, existingStartDate, endDate);
+            AddPriceToPriceTable(existingPrices);
+            BuildCommand(cancelAllSalesModelList);
+
+            // When
+            this.commandHandler.Execute(cancelAllSalesCommand);
+
+            //Then
+            List<int> itemIds = items.Select(i => i.ItemID).OrderBy(i => i).ToList();
+            string getActualSql = @"SELECT * FROM Price_{0} WHERE ItemID IN @ItemIDs AND BusinessUnitID = @BusinessUnitID AND StartDate = @StartDate ORDER BY ItemID";
+            List<Prices> actualPrices = this.db.Connection
+                .Query<Prices>(String.Format(getActualSql, this.region),
+                    new { ItemIDs = itemIds, BusinessUnitID = this.insertedBusinessUnitID, StartDate = existingStartDate },
+                    transaction: this.db.Transaction).ToList();
+
+            string getMessageQueuePriceInfo = @"SELECT * FROM esb.MessageQueuePrice WHERE ItemID IN @ItemIDs AND BusinessUnitID = @BusinessUnitID ORDER BY ItemID";
+            List<MessageQueuePrice> messageQueuePrices = this.db.Connection
+               .Query<MessageQueuePrice>(String.Format(getMessageQueuePriceInfo, this.region),
+                   new { ItemIDs = itemIds, BusinessUnitID = this.insertedBusinessUnitID },
+                   transaction: this.db.Transaction).ToList();
+
+            for (int i = 0; i < cancelAllSalesModelList.Count; i++)
+            {
+                Assert.AreEqual(endDate, actualPrices[i].EndDate);
+                Assert.AreEqual(0, messageQueuePrices.Where(msq => msq.ItemId == actualPrices[i].ItemID).Count());
             }
         }
 
@@ -96,12 +168,12 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             for (int i = 1; i < numberOfItems - 1; i++)
             {
                 newItems.Add(new TestItemBuilder().WithScanCode($"11111177{i.ToString()}").WithItemId((maxItemId ?? default(int)) + (i)).Build());
-                cancelAllSalesModelList.Add(new CancelAllSalesModel { BusinessUnitID = insertedBusinessUnitID, ScanCode = $"11111177{i.ToString()}", EndDate = DateTime.Today });
+                cancelAllSalesModelList.Add(new CancelAllSalesModel { BusinessUnitID = insertedBusinessUnitID, ScanCode = $"11111177{i.ToString()}", EndDate = DateTime.Today, EventCreatedDate = DateTime.Now });
             }           
             return newItems;
         }
 
-        private CancelAllSalesCommand buildCommand(List<CancelAllSalesModel> cancelAllSalesModelList)
+        private CancelAllSalesCommand BuildCommand(List<CancelAllSalesModel> cancelAllSalesModelList)
         {
             cancelAllSalesCommand.Region = region;
             cancelAllSalesCommand.MessageActionId = MessageActions.AddOrUpdate;
@@ -164,7 +236,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             }
         }
 
-        private List<Prices> BuildExistingPrices(IEnumerable<Item> items, int businessUnit, decimal price, string priceType, DateTime startDate, DateTime? endDate = null)
+        private List<Prices> BuildExistingPrices(IEnumerable<Item> items, int businessUnit, decimal price, string priceType, DateTime addedDate, DateTime startDate, DateTime? endDate = null)
         {
             // new prices for staging
             List<Prices> existingPrices = new List<Prices>();
@@ -180,7 +252,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     PriceUOM = "EA",
                     StartDate = startDate,
                     EndDate = endDate,
-                    AddedDate = DateTime.Now,
+                    AddedDate = addedDate,
                     CurrencyID = 1,
                     Multiple = 1,
                     ModifiedDate = null,
