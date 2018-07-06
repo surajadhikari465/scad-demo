@@ -11,28 +11,11 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ItemFullExtract-FromIrma"
   DTS:PackageType="5"
-  DTS:VersionBuild="118"
-  DTS:VersionGUID="{C32859C8-CB9B-4DF6-9727-935248FE8127}">
+  DTS:VersionBuild="133"
+  DTS:VersionGUID="{E8514336-DE32-4927-ABE9-C3D58E96F3A5}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Completed IRMA Region Trigger File]"
-      DTS:CreationName="FILE"
-      DTS:DTSID="{35cea2e4-997b-432c-8c3e-1bd3641e2834}"
-      DTS:ObjectName="Completed IRMA Region Trigger File">
-      <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::FileRootPath]  + "\\"  + "completed_IRMA_FullExtract_" +  @[User::CurrentRegion]   +  "_"  + 
-(DT_WSTR, 4) YEAR(@[User::Today] )  + 
- RIGHT("0"+ (DT_WSTR, 2)  MONTH( @[User::Today]) ,2) +
-RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
-".txt"</DTS:PropertyExpression>
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:FileUsageType="1"
-          DTS:ConnectionString="C:\Data\IRMA\completed_IRMA_FullExtract__20180531.txt" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[IRMA DB Connection Manager]"
       DTS:CreationName="OLEDB"
@@ -56,7 +39,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:FileUsageType="2"
-          DTS:ConnectionString="C:\Data\IRMA" />
+          DTS:ConnectionString="C:\Data\IRMA\Full" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -81,7 +64,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today] ),2 )  +
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Data\IRMA\item_subscription__0_20180531.csv">
+          DTS:ConnectionString="C:\Data\IRMA\Full\item_subscription__0_20180626.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -154,7 +137,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Data\IRMA\item_vendor_lane__0_20180531.csv">
+          DTS:ConnectionString="C:\Data\IRMA\Full\item_vendor_lane__0_20180626.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -249,19 +232,6 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Parent Files Folder]"
-      DTS:CreationName="FILE"
-      DTS:DTSID="{b3d62f9e-0eec-4418-9cd8-3ad5ae6d8c54}"
-      DTS:ObjectName="Parent Files Folder">
-      <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::ParentRootPath]</DTS:PropertyExpression>
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:FileUsageType="2"
-          DTS:ConnectionString="C:\Data" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[SMTP Connection Manager]"
       DTS:CreationName="SMTP"
       DTS:Description="SMTP Connection Manager"
@@ -270,19 +240,6 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       <DTS:ObjectData>
         <SmtpConnectionManager
           ConnectionString="SmtpServer=smtp.wholefoods.com;UseWindowsAuthentication=False;EnableSsl=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Source Completed IRMA Trigger File]"
-      DTS:CreationName="FILE"
-      DTS:DTSID="{7552722C-EFB1-4E62-8AAA-A67015FB0481}"
-      DTS:ObjectName="Source Completed IRMA Trigger File">
-      <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::ParentRootPath]   + "\\"  + "completed.txt"</DTS:PropertyExpression>
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:FileUsageType="1"
-          DTS:ConnectionString="C:\Data\completed.txt" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -350,16 +307,6 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
     <DTS:PackageParameter
       DTS:CreationName=""
       DTS:DataType="8"
-      DTS:DTSID="{53A52444-E5C5-4733-AD35-3B3225E519BA}"
-      DTS:ObjectName="esbQueueName"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Queue.V2</DTS:Property>
-    </DTS:PackageParameter>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
       DTS:DTSID="{EAA5513C-B248-4D3F-98BE-7A75DE48932F}"
       DTS:ObjectName="esbSecurityCredentials"
       DTS:Required="True">
@@ -410,6 +357,16 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
     <DTS:PackageParameter
       DTS:CreationName=""
       DTS:DataType="8"
+      DTS:DTSID="{53A52444-E5C5-4733-AD35-3B3225E519BA}"
+      DTS:ObjectName="esbTopicName"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Topic.V2</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
       DTS:DTSID="{35C79A39-F3EC-4776-8C66-2B8AB810717C}"
       DTS:ObjectName="ExtractSource"
       DTS:Required="True">
@@ -425,17 +382,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       DTS:Required="True">
       <DTS:Property
         DTS:DataType="8"
-        DTS:Name="ParameterValue">C:\Data\IRMA</DTS:Property>
-    </DTS:PackageParameter>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:DTSID="{9FB75B70-B9F3-4DAF-BE5A-64C51ABB15FD}"
-      DTS:ObjectName="ParentRootPath"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">C:\Data</DTS:Property>
+        DTS:Name="ParameterValue">C:\Data\IRMA\Full</DTS:Property>
     </DTS:PackageParameter>
   </DTS:PackageParameters>
   <DTS:Variables>
@@ -506,7 +453,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       DTS:Namespace="User"
       DTS:ObjectName="RunAsDateString">
       <DTS:VariableValue
-        DTS:DataType="8">20180531</DTS:VariableValue>
+        DTS:DataType="8">20180626</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -535,7 +482,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       DTS:Namespace="User"
       DTS:ObjectName="Today">
       <DTS:VariableValue
-        DTS:DataType="7">5/31/2018</DTS:VariableValue>
+        DTS:DataType="7">6/26/2018</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -611,35 +558,14 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -949,14 +875,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
                         Name="ST_7813af57dfbd426fad8d2c2840f54cbc.csproj"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920c281-9105-49bc-9ea9-a9fc9d47d4a7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_7813af57dfbd426fad8d2c2840f54cbc</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" /><Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -1170,7 +1117,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <DTS:ObjectData>
             <ExecuteProcessData
               Executable="c:\Data\ZipFiles.bat"
-              Arguments="C:\Data\IRMA\" />
+              Arguments="C:\Data\IRMA\Full\" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -1226,35 +1173,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -1648,14 +1574,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -1869,7 +1816,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <DTS:ObjectData>
             <ExecuteProcessData
               Executable="c:\Data\DeleteFiles.bat"
-              Arguments="C:\Data\IRMA\" />
+              Arguments="C:\Data\IRMA\Full\" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -1921,35 +1868,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2259,14 +2185,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -2552,35 +2499,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           Language="CSharp"
                           ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                           <ProjectItem
-                            Name="Properties\AssemblyInfo.cs"
-                            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                            Name="Properties\Settings.settings"
+                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                           <ProjectItem
                             Name="Properties\Resources.resx"
                             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2890,14 +2816,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                           <ProjectItem
-                            Name="Properties\Settings.settings"
-                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                            Name="Properties\AssemblyInfo.cs"
+                            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                           <ProjectItem
                             Name="Properties\Resources.Designer.cs"
                             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -3514,35 +3461,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           Language="CSharp"
                           ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                           <ProjectItem
-                            Name="Properties\AssemblyInfo.cs"
-                            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                            Name="Properties\Settings.settings"
+                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                           <ProjectItem
                             Name="Properties\Resources.resx"
                             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -3852,14 +3778,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                           <ProjectItem
-                            Name="Properties\Settings.settings"
-                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                            Name="Properties\AssemblyInfo.cs"
+                            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                           <ProjectItem
                             Name="Properties\Resources.Designer.cs"
                             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -4653,35 +4600,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -4991,14 +4917,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -5236,7 +5183,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               VSTAMajorVersion="3"
               VSTAMinorVersion="0"
               Language="CSharp"
-              ReadOnlyVariables="User::RunAsDateString,$Package::esbCertificateName,$Package::esbJmsPassword,$Package::esbJmsUsername,$Package::esbMessageType,$Package::esbQueueName,$Package::esbSecurityCredentials,$Package::esbSecurityPrincipal,$Package::esbServerUrl,$Package::esbSslPassword,$Package::esbTargetHostName,$Package::ExtractSource,$Package::FileRootPath">
+              ReadOnlyVariables="User::RunAsDateString,$Package::esbCertificateName,$Package::esbJmsPassword,$Package::esbJmsUsername,$Package::esbMessageType,$Package::esbSecurityCredentials,$Package::esbSecurityPrincipal,$Package::esbServerUrl,$Package::esbSslPassword,$Package::esbTargetHostName,$Package::esbTopicName,$Package::ExtractSource,$Package::FileRootPath">
               <ProjectItem
                 Name="ST_cd0cacdccfef43c28dcfc57139615002.csproj"
                 Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -5449,40 +5396,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </resheader>
 </root>]]></ProjectItem>
               <ProjectItem
-                Name="packages.config"
-                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<packages>
-  <package id="TIBCO.EMS" version="2016.10.21.1" targetFramework="net40" />
-</packages>]]></ProjectItem>
-              <ProjectItem
-                Name="Properties\Settings.Designer.cs"
-                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_cd0cacdccfef43c28dcfc57139615002.Properties.Settings.get_Default():ST_cd0cacdccfef43c28dcfc57139615002.Properties.Sett" +
-    "ings")]
-
-namespace ST_cd0cacdccfef43c28dcfc57139615002.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
               <ProjectItem
                 Name="ScriptMain.cs"
                 Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -5581,6 +5502,7 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
         private const string TransactionId = "TransactionID";
         private const string Source = "Source";
         private const string MessageType = "MessageType";
+        private const string FileName = "FileName";
 
         private ConnectionFactory factory;
         private Connection connection = null;
@@ -5610,12 +5532,12 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
         private void OpenConnection()
         {
             LookupContext lookupContext = CreateLookupContext();
-            factory = (ConnectionFactory)lookupContext.Lookup("OrderQueueConnectionFactory");
+            factory = (ConnectionFactory)lookupContext.Lookup("OrderTopicConnectionFactory");
             factory.SetTargetHostName(Dts.Variables["esbTargetHostName"].Value.ToString());
 
             connection = factory.CreateConnection(Dts.Variables["esbJmsUsername"].Value.ToString(), Dts.Variables["esbJmsPassword"].Value.ToString());
             session = connection.CreateSession(false, SessionMode.ClientAcknowledge);
-            CreateDestination(Dts.Variables["esbQueueName"].Value.ToString());
+            CreateDestination(Dts.Variables["esbTopicName"].Value.ToString());
             producer = session.CreateProducer(destination);
             producer.DeliveryMode = DeliveryMode.PERSISTENT;
         }
@@ -5649,27 +5571,30 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
 
             return lc;
         }
-        protected virtual void CreateDestination(string queueName)
+        protected virtual void CreateDestination(string topicName)
         {
-            destination = session.CreateQueue(queueName);
+            destination = session.CreateTopic(topicName);
         }
 
         public void Send(Dictionary<string, string> messageProperties = null)
         {
             foreach (string filePath in Directory.EnumerateFiles(Dts.Variables["FileRootPath"].Value.ToString()))
             {
-
                 byte[] bytes = File.ReadAllBytes(filePath);
                 BytesMessage bytesMessage = session.CreateBytesMessage();
                 bytesMessage.WriteBytes(bytes);
 
                 char[] delim = { '_' };
+                string[] strArr = filePath.Split(delim);
                 string businessUnit = "";
                 StringBuilder transactionId = new StringBuilder();
 
+                char[] delimFileName = { '\\' };
+                string[] strArrFileName = filePath.Split(delimFileName);
+                string fileName = strArrFileName[strArrFileName.GetLength(0) - 1];
+
                 if (filePath.Contains(FileNames.item_subscription.ToString()))
                 {
-                    string[] strArr = filePath.Split(delim);
                     businessUnit = strArr[3];
                     transactionId.Append(businessUnit).Append('_').Append(Dts.Variables["RunAsDateString"].Value.ToString())
                                   .Append(".F").Append(((int)FileNames.item_subscription).ToString());
@@ -5677,13 +5602,13 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
                     {
                         { TransactionTypeKey, ItemSubscriptionTransactionTypeValue },
                         { TransactionId, transactionId.ToString() },
+                        { FileName, fileName },
                         { Source, Dts.Variables["ExtractSource"].Value.ToString() },
                         { MessageType, Dts.Variables["esbMessageType"].Value.ToString() }
                     };
                 }
                 else if (filePath.Contains(FileNames.item_vendor_lane.ToString()))
                 {
-                    string[] strArr = filePath.Split(delim);
                     businessUnit = strArr[4];
                     transactionId.Append(businessUnit).Append('_').Append(Dts.Variables["RunAsDateString"].Value.ToString())
                                   .Append(".F").Append(((int)FileNames.item_vendor_lane).ToString());
@@ -5692,6 +5617,7 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
                     {
                         { TransactionTypeKey, ItemVendorTransactionTypeValue },
                         { TransactionId, transactionId.ToString() },
+                        { FileName, fileName },
                         { Source, Dts.Variables["ExtractSource"].Value.ToString() },
                         { MessageType, Dts.Variables["esbMessageType"].Value.ToString() }
                     };
@@ -5753,19 +5679,43 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
 		<msb:File Include="packages.config"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
 		<msb:File Include="ScriptMain.cs"/>
-		<msb:Breakpoint Include="6e5feb35aef84b2399614eb32c76d04b">
-			<msb:FileName>ScriptMain.cs</msb:FileName>
-			<msb:LineNumber>172</msb:LineNumber>
-			<msb:ColumnNumber>13</msb:ColumnNumber>
-			<msb:Enabled>True</msb:Enabled>
-			<msb:ConditionType>1</msb:ConditionType>
-			<msb:Condition></msb:Condition>
-			<msb:Language>C#</msb:Language>
-			<msb:HitCountType>1</msb:HitCountType>
-			<msb:HitCountTarget>1</msb:HitCountTarget>
-		</msb:Breakpoint>
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
+              <ProjectItem
+                Name="packages.config"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="TIBCO.EMS" version="2016.10.21.1" targetFramework="net40" />
+</packages>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Settings.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_cd0cacdccfef43c28dcfc57139615002.Properties.Settings.get_Default():ST_cd0cacdccfef43c28dcfc57139615002.Properties.Sett" +
+    "ings")]
+
+namespace ST_cd0cacdccfef43c28dcfc57139615002.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
               <ProjectItem
                 Name="Properties\AssemblyInfo.cs"
                 Encoding="UTF8"><![CDATA[using System.Reflection;
@@ -5796,15 +5746,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-              <ProjectItem
-                Name="Properties\Settings.settings"
-                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
               <ProjectItem
                 Name="Properties\Resources.Designer.cs"
                 Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -5876,176 +5817,176 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002.Properties {
               <BinaryItem
                 Name="ST_cd0cacdccfef43c28dcfc57139615002.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAAQtEFsAAAAAAAAAAOAAIiALATAAACIAAAAIAAAAAAAA9kAA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAE4oLVsAAAAAAAAAAOAAIiALATAAACIAAAAIAAAAAAAAjkEA
 AAAgAAAAYAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACgAAAAAgAAAAAAAAMAQIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAKRAAABPAAAAAGAAAHgEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAADxBAABPAAAAAGAAAHgEAAAAAAAAAAAAAAAAAAAA
 AAAAAIAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAA/CAAAAAgAAAAIgAAAAIA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAlCEAAAAgAAAAIgAAAAIA
 AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAYAAAAAYAAAAkAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAIAAAAACAAAAKgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAADY
-QAAAAAAAAEgAAAACAAUAgCYAAGwZAAABAAAAAAAAAOw/AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+LnJlbG9jAAAMAAAAAIAAAAACAAAAKgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABw
+QQAAAAAAAEgAAAACAAUAvCYAAMgZAAABAAAAAAAAAIRAAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoCKAIAAAYCFCgGAAAGAigQAAAKFm8RAAAKKgATMAUA8gAA
-AAEAABECKAQAAAYKAgZyAQAAcG8SAAAKdA8AAAF9BwAABAJ7BwAABAIoEAAACm8TAAAKcjkAAHBv
-FAAACm8VAAAKbxYAAApvFwAACgICewcAAAQCKBAAAApvEwAACnJdAABwbxQAAApvFQAACm8WAAAK
-AigQAAAKbxMAAApyewAAcG8UAAAKbxUAAApvFgAACm8YAAAKfQgAAAQCAnsIAAAEFhhvGQAACn0J
-AAAEAgIoEAAACm8TAAAKcpkAAHBvFAAACm8VAAAKbxYAAApvBQAABgICewkAAAQCewoAAARvGgAA
-Cn0LAAAEAnsLAAAEGG8bAAAKKgAAEzAEAEgAAAACAAARHBhzHAAACgoGFm8dAAAKBm8eAAAKGAIo
+AAEAABECKAQAAAYKAgZyAQAAcG8SAAAKdA8AAAF9CAAABAJ7CAAABAIoEAAACm8TAAAKcjkAAHBv
+FAAACm8VAAAKbxYAAApvFwAACgICewgAAAQCKBAAAApvEwAACnJdAABwbxQAAApvFQAACm8WAAAK
+AigQAAAKbxMAAApyewAAcG8UAAAKbxUAAApvFgAACm8YAAAKfQkAAAQCAnsJAAAEFhhvGQAACn0K
+AAAEAgIoEAAACm8TAAAKcpkAAHBvFAAACm8VAAAKbxYAAApvBQAABgICewoAAAQCewsAAARvGgAA
+Cn0MAAAEAnsMAAAEGG8bAAAKKgAAEzAEAEgAAAACAAARHBhzHAAACgoGFm8dAAAKBm8eAAAKGAIo
 EAAACm8TAAAKcrMAAHBvFAAACm8VAAAKbxYAAAoXbx8AAAoWbyAAAAoGbyEAAAoqEzAFAC0BAAAD
 AAARcyIAAAoKBgIoEAAACm8TAAAKctkAAHBvFAAACm8VAAAKbxYAAApvIwAACm8kAAAKBgIoAwAA
 Bm8lAAAKcyYAAAolcvcAAHACKBAAAApvEwAACnIlAQBwbxQAAApvFQAACm8WAAAKbycAAAolcj8B
 AHACKBAAAApvEwAACnJ5AQBwbxQAAApvFQAACm8WAAAKbycAAAolcqMBAHACKBAAAApvEwAACnLh
 AQBwbxQAAApvFQAACm8WAAAKbycAAAolcg8CAHAGbycAAAolck8CAHAWjDMAAAFvJwAACiVyjwIA
 cAIoEAAACm8TAAAKcjkAAHBvFAAACm8VAAAKbxYAAApvJwAACiVy2wIAcHIhAwBwbycAAAolcikD
-AHAWjDQAAAFvJwAACnMoAAAKKk4CAnsJAAAEA28pAAAKfQoAAAQqAAAAGzAFAHQCAAAEAAARAigQ
-AAAKbxMAAApyXwMAcG8UAAAKbxUAAApvFgAACigqAAAKbysAAAoKOC0CAAAGbywAAAoLBygtAAAK
-DAJ7CQAABG8uAAAKDQkIby8AAAoXjTkAAAElFh9fnRMEcnkDAHATBXMwAAAKEwYHFxMHEgf+FgUA
-AAJvFgAACm8xAAAKOdwAAAAHEQRvMgAAChmaEwURBhEFbzMAAAofX280AAAKAigQAAAKbxMAAApy
-ewMAcG8UAAAKbxUAAApvFgAACm8zAAAKcpsDAHBvMwAAChcTCBIIKDUAAApvMwAACiZzNgAACiVy
-oQMAcHLBAwBwbzcAAAolcuMDAHARBm8WAAAKbzcAAAolcv8DAHACKBAAAApvEwAACnINBABwbxQA
-AApvFQAACm8WAAAKbzcAAAolcikEAHACKBAAAApvEwAACnJBBABwbxQAAApvFQAACm8WAAAKbzcA
-AAoQATjyAAAABxgTBxIH/hYFAAACbxYAAApvMQAACjnXAAAABxEEbzIAAAoamhMFEQYRBW8zAAAK
-H19vNAAACgIoEAAACm8TAAAKcnsDAHBvFAAACm8VAAAKbxYAAApvMwAACnKbAwBwbzMAAAoYEwgS
-CCg1AAAKbzMAAAomczYAAAolcqEDAHByXwQAcG83AAAKJXLjAwBwEQZvFgAACm83AAAKJXL/AwBw
-AigQAAAKbxMAAApyDQQAcG8UAAAKbxUAAApvFgAACm83AAAKJXIpBABwAigQAAAKbxMAAApyQQQA
-cG8UAAAKbxUAAApvFgAACm83AAAKEAECCQMoBwAABgZvOAAACjrI/f//3goGLAYGbzkAAArcKkEc
-AAACAAAAKgAAAD8CAABpAgAACgAAAAAAAAAbMAMATgAAAAUAABEELD4EbzoAAAoKKxwSACg7AAAK
-CwMSASg8AAAKEgEoPQAACm8+AAAKEgAoPwAACi3b3g4SAP4WBAAAG285AAAK3AJ7CwAABANvQAAA
-CioAAAEQAAACAAoAKTMADgAAAAAeAihBAAAKKh4CKEIAAAoqrn4MAAAELR5yfQQAcNADAAACKEMA
-AApvRAAACnNFAAAKgAwAAAR+DAAABCoafg0AAAQqHgKADQAABCoafg4AAAQqHgIoRgAACioucw4A
-AAaADgAABCoAAEJTSkIBAAEAAAAAAAwAAAB2NC4wLjMwMzE5AAAAAAUAbAAAAMgGAAAjfgAANAcA
-ALQJAAAjU3RyaW5ncwAAAADoEAAA8AQAACNVUwDYFQAAEAAAACNHVUlEAAAA6BUAAIQDAAAjQmxv
-YgAAAAAAAAACAAABVx2iCQkDAAAA+gEzABYAAAEAAABAAAAABgAAABQAAAAPAAAABQAAAEYAAAAM
-AAAAEAAAAAUAAAACAAAAAwAAAAQAAAAFAAAAAQAAAAUAAAABAAAAAgAAAAAAVgUBAAAAAAAGALYD
-PQcGAEUEPQcGAAIDKgcPALEHAAAGAC8DIwYGAJkDIwYGAHoDIwYGACwEIwYGANYDIwYGAO8DIwYG
-AEYDIwYGAGEDwwQKAAoEBQUKAGMCBQUOAGgJhwAOAGUGhwAOAL0FhwAOAOEFhwAOALkGhwAOACYJ
-hwAGAKUCKAgSACkCKAgOAI0GhwAGAFYAwQAGAA8AwQAOAEgBhwAGAOEGFAljABIHAAAGAEcAwQAG
-AI4FhwUGAOUCKgcGAMwIhwUGAPMGXQcGAKEGDgYSALUCQAUSABYDQAUSAH8C+QUGAMoCPQcKAC4F
-BQUWAAUIzwEWAGEBzwEOACUBhwASAKkBKAgSAM0FKAgSAH8IKAgSADUGKAgSAAACKAgSAGMAKAgG
-AN8EhwUGAHYBmwgOABkChwAGAJ8FhwUOAGkEhwAGAIIJfQAGAAEAwQAGAKQBfQAGALQGhwUGAEEA
-hwUGAAMHmwgGAGoBhwUOAFkBhwAGACQChwUGAIABhwUGAF8JIwYAAAAAdAAAAAAAAQABAAEAEACs
-BR0AOQABAAEAAAAQAGQHwAeBAAwACQAAARAAiQjAB5UADgANAAMBAAAeCAAAeQAPABAAAwEAAL4I
-AAB5ABIAEABRgEgJSAJRgHkESAJRgJ4ESAJRgNwASAJRgB4BSAJRgA0CSAIBAHoJSwIBAHAGTwIB
-AMUFUwIBAO0FVwIBANgGWwIRAJMFXwIRAFMCZAIRAA4BaQIGBrAAbQJWgHsGcAJWgO8BcAIGBrAA
-bQJWgK4IdAJWgDMCdAJQIAAAAACGALIFBgABAGwgAAAAAIEAYQYGAAEAbCEAAAAAgQAACXgCAQDA
-IQAAAACBACAJfQIBAPkiAAAAAMQB2wUQAAEAECMAAAAAhgDuAIICAgCsJQAAAACBAO4AjAIDABgm
-AAAAAIYYHQcGAAUAICYAAAAAgxgdBwYABQAoJgAAAACTCO8GmAIFAFQmAAAAAJMIOwKeAgUAWyYA
-AAAAkwhHAqQCBQBjJgAAAACWCNkIqwIGAGomAAAAAIYYHQcGAAYAciYAAAAAkRgjB7ACBgAAAAEA
-swEQEAEA7wcAAAEAVQEQEAIA7wcAAAEAvQQJAB0HAQARAB0HBgAZAB0HCgApAB0HEAAxAB0HEAA5
-AB0HEABBAB0HEABJAB0HEABRAB0HEABZAB0HEABhAB0HEABpAB0HBgD5AB0HBgAhAR0HFQAxAR0H
-BgBxALYIHAA5AeUIAQChAK0GJwA5AQEILABBAX4FMgBJAW8EOQABAd0EPQB5AL0BEAB5AFAGQQCB
-ALcFSACJAMkGUQCZADEBAQCxAB0HXQCxAKcFZwCxAFYIbgBxAfoAdABxAX4FfwCxAJcCBgC5AB0H
-BgCJATQJiwC5AP8AkAC5AIwJlgCRAR0HBgCRAeoAnAChAB0HogCJAGMEqQCxAQ8IxQAMAA8H1gAU
-APQI5QDBAXII6gCJAEIB8ADRAGcI9QDZAB0HBgCJAZII+wCJAdMIAAHZAPMABwHZAPMADQHRAd0E
-PQAcAB0HBgAcAOoAGgHZAQsJIgHhAZ0CBgAcAA8HNQEkAPQIRwEsAEAJ5QAsAG8EWQHpAaEJXgEk
-AAsJIgGZAO4AZAFxAB0HBgABAR0HBgDxAZIBawHxAVsJdAEJAR0HegEpAR0HBgAOAAQAnQEOAAgA
-vAESAAkAQwIOAAwA3QEOABAA+gESABEAQwIOABQAFQIOABgAIgIIAEAAOQIIAEQAPgIIAEwAQwII
-AFAAOQIpAHMA7QIuAAsAxQIuABMAzgIuABsA7QIuACMA9gIuACsAHwMuADMAHwMuADsAHwMuAEMA
-9gIuAEsAJQMuAFMAHwMuAFsAPANDAGMAOQJJAHMA7QJjAGsAOQLBAXsAOQIiAFgAhgCwACYBAwAB
-AAQAAwAAAPMGtAIAAFsCugIAAN0IwAICAAoAAwACAAsABQABAAwABQACAA0ABwDPAN8AEwFAAVIB
-BIAAAAEAAABFGtpVAAAAAAAAHQAAAAQAAAAAAAAAAAAAAIIBuAAAAAAADAAAAAAAAAAAAAAAiwHm
-BAAAAAABAAAAIAMJAAAAAACUAYcAAAAAAAQAAAAAAAAAAAAAAIIBhwUAAAAADAAAAAAAAAAAAAAA
-iwGRAAAAAAAAAAAAAQAAAG4HAAAFAAIABgACAAAAAElFbnVtZXJhYmxlYDEASUVudW1lcmF0b3Jg
-MQBTVF9jZDBjYWNkY2NmZWY0M2MyOGRjZmM1NzEzOTYxNTAwMgBJbnQzMgBLZXlWYWx1ZVBhaXJg
-MgBEaWN0aW9uYXJ5YDIAWDUwOUNlcnRpZmljYXRlMgA8TW9kdWxlPgBTeXN0ZW0uSU8AVElCQ08u
-RU1TAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuTWFuYWdlZERUUwB2YWx1ZV9fAG1zY29ybGliAFN5c3Rl
-bS5Db2xsZWN0aW9ucy5HZW5lcmljAFRyYW5zYWN0aW9uSWQAQWRkAFNlbmQAQXBwZW5kAEZpbmQA
-U2V0U1NMUGFzc3dvcmQAZGVmYXVsdEluc3RhbmNlAFNvdXJjZQBTZXNzaW9uTW9kZQBzZXRfRGVs
-aXZlcnlNb2RlAENyZWF0ZUJ5dGVzTWVzc2FnZQB0ZXh0TWVzc2FnZQBWYXJpYWJsZQBJRGlzcG9z
-YWJsZQBIYXNodGFibGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUARmlsZQBT
-dG9yZU5hbWUAcXVldWVOYW1lAFNldFRhcmdldEhvc3ROYW1lAE1pY3Jvc29mdC5TcWxTZXJ2ZXIu
-RHRzLlJ1bnRpbWUAaXRlbV92ZW5kb3JfbGFuZQBYNTA5RmluZFR5cGUATWVzc2FnZVR5cGUARU1T
-U1NMU3RvcmVUeXBlAFg1MDlTdG9yZQBGYWlsdXJlAGdldF9DdWx0dXJlAHNldF9DdWx0dXJlAHJl
-c291cmNlQ3VsdHVyZQBWU1RBUlRTY3JpcHRPYmplY3RNb2RlbEJhc2UAQXBwbGljYXRpb25TZXR0
-aW5nc0Jhc2UAQ2xvc2UARGlzcG9zZQBYNTA5Q2VydGlmaWNhdGUARWRpdG9yQnJvd3NhYmxlU3Rh
-dGUAQ29tcGlsZXJHZW5lcmF0ZWRBdHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0
-ZQBEZWJ1Z2dhYmxlQXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRp
-dGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZyYW1ld29ya0F0
-dHJpYnV0ZQBBc3NlbWJseUNvbmZpZ3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlv
-bkF0dHJpYnV0ZQBDb21waWxhdGlvblJlbGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJvZHVj
-dEF0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0VGFza0VudHJ5
-UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21wYXRpYmls
-aXR5QXR0cmlidXRlAENyZWF0ZVF1ZXVlAGdldF9WYWx1ZQBJdGVtU3Vic2NyaXB0aW9uVHJhbnNh
-Y3Rpb25UeXBlVmFsdWUASXRlbVZlbmRvclRyYW5zYWN0aW9uVHlwZVZhbHVlAHZhbHVlAFN5c3Rl
-bS5SdW50aW1lLlZlcnNpb25pbmcAVG9TdHJpbmcATWljcm9zb2Z0LlNxbFNlcnZlci5TY3JpcHRU
-YXNrAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlRhc2tzLlNjcmlwdFRhc2sAU2NyaXB0T2JqZWN0
-TW9kZWwAU3lzdGVtLkNvbXBvbmVudE1vZGVsAFNUX2NkMGNhY2RjY2ZlZjQzYzI4ZGNmYzU3MTM5
-NjE1MDAyLmRsbABnZXRfSXRlbQBTeXN0ZW0ARW51bQByZXNvdXJjZU1hbgBCb29sZWFuAE9wZW4A
-U2NyaXB0TWFpbgBDcmVhdGVTZXNzaW9uAHNlc3Npb24AU3RvcmVMb2NhdGlvbgBDcmVhdGVEZXN0
-aW5hdGlvbgBkZXN0aW5hdGlvbgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXph
-dGlvbgBTeXN0ZW0uUmVmbGVjdGlvbgBYNTA5Q2VydGlmaWNhdGUyQ29sbGVjdGlvbgBDcmVhdGVD
-b25uZWN0aW9uAE9wZW5Db25uZWN0aW9uAGNvbm5lY3Rpb24AaXRlbV9zdWJzY3JpcHRpb24ARU1T
-U1NMRmlsZVN0b3JlSW5mbwBDdWx0dXJlSW5mbwBMb29rdXAAQ2hhcgBNZXNzYWdlUHJvZHVjZXIA
-Q3JlYXRlUHJvZHVjZXIAcHJvZHVjZXIAU3RyaW5nQnVpbGRlcgBnZXRfUmVzb3VyY2VNYW5hZ2Vy
-AElFbnVtZXJhdG9yAEdldEVudW1lcmF0b3IALmN0b3IALmNjdG9yAFN5c3RlbS5EaWFnbm9zdGlj
-cwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJjZXMAU1RfY2Qw
-Y2FjZGNjZmVmNDNjMjhkY2ZjNTcxMzk2MTUwMDIuUHJvcGVydGllcy5SZXNvdXJjZXMucmVzb3Vy
-Y2VzAERlYnVnZ2luZ01vZGVzAFNUX2NkMGNhY2RjY2ZlZjQzYzI4ZGNmYzU3MTM5NjE1MDAyLlBy
-b3BlcnRpZXMAbWVzc2FnZVByb3BlcnRpZXMAZ2V0X1ZhcmlhYmxlcwBFbnVtZXJhdGVGaWxlcwBG
-aWxlTmFtZXMAU3lzdGVtLlNlY3VyaXR5LkNyeXB0b2dyYXBoeS5YNTA5Q2VydGlmaWNhdGVzAGdl
-dF9DZXJ0aWZpY2F0ZXMAV3JpdGVCeXRlcwBSZWFkQWxsQnl0ZXMAT3BlbkZsYWdzAFNldHRpbmdz
-AENvbnRhaW5zAFN5c3RlbS5Db2xsZWN0aW9ucwBTdWNjZXNzAGdldF9EdHMAU2NyaXB0UmVzdWx0
-cwBPYmplY3QAU3BsaXQAZ2V0X0RlZmF1bHQAc2V0X1Rhc2tSZXN1bHQAZ2V0X0N1cnJlbnQAR2V0
-RXNiQ2VydABNb3ZlTmV4dABTeXN0ZW0uVGV4dABDcmVhdGVMb29rdXBDb250ZXh0AFRvQ2hhckFy
-cmF5AGdldF9LZXkAVHJhbnNhY3Rpb25UeXBlS2V5AGdldF9Bc3NlbWJseQBDb25uZWN0aW9uRmFj
-dG9yeQBmYWN0b3J5AERpcmVjdG9yeQBTZXRTU0xDbGllbnRJZGVudGl0eQBTZXRTdHJpbmdQcm9w
-ZXJ0eQAAADdPAHIAZABlAHIAUQB1AGUAdQBlAEMAbwBuAG4AZQBjAHQAaQBvAG4ARgBhAGMAdABv
-AHIAeQAAI2UAcwBiAFQAYQByAGcAZQB0AEgAbwBzAHQATgBhAG0AZQAAHWUAcwBiAEoAbQBzAFUA
-cwBlAHIAbgBhAG0AZQAAHWUAcwBiAEoAbQBzAFAAYQBzAHMAdwBvAHIAZAAAGWUAcwBiAFEAdQBl
-AHUAZQBOAGEAbQBlAAAlZQBzAGIAQwBlAHIAdABpAGYAaQBjAGEAdABlAE4AYQBtAGUAAB1lAHMA
-YgBTAHMAbABQAGEAcwBzAHcAbwByAGQAAC1UAEkAQgBDAE8ALgBFAE0AUwAuAHAAcgBvAHYAaQBk
-AGUAcgAuAHUAcgBsAAAZZQBzAGIAUwBlAHIAdgBlAHIAVQByAGwAADlUAEkAQgBDAE8ALgBFAE0A
-UwAuAHMAZQBjAHUAcgBpAHQAeQAuAHAAcgBpAG4AYwBpAHAAYQBsAAApZQBzAGIAUwBlAGMAdQBy
-AGkAdAB5AFAAcgBpAG4AYwBpAHAAYQBsAAA9VABJAEIAQwBPAC4ARQBNAFMALgBzAGUAYwB1AHIA
-aQB0AHkALgBjAHIAZQBkAGUAbgB0AGkAYQBsAHMAAC1lAHMAYgBTAGUAYwB1AHIAaQB0AHkAQwBy
-AGUAZABlAG4AdABpAGEAbABzAAA/VABJAEIAQwBPAC4ARQBNAFMALgBuAGEAbQBpAG4AZwAuAHMA
-cwBsAF8AcwB0AG8AcgBlAF8AaQBuAGYAbwAAP1QASQBCAEMATwAuAEUATQBTAC4AbgBhAG0AaQBu
-AGcALgBzAHMAbABfAHMAdABvAHIAZQBfAHQAeQBwAGUAAEtUAEkAQgBDAE8ALgBFAE0AUwAuAG4A
-YQBtAGkAbgBnAC4AcwBzAGwAXwB0AGEAcgBnAGUAdABfAGgAbwBzAHQAXwBuAGEAbQBlAABFVABJ
-AEIAQwBPAC4ARQBNAFMALgBuAGEAbQBpAG4AZwAuAHMAZQBjAHUAcgBpAHQAeQBfAHAAcgBvAHQA
-bwBjAG8AbAAAB3MAcwBsAAA1VABJAEIAQwBPAC4ARQBNAFMALgBuAGEAbQBpAG4AZwAuAHMAcwBs
-AF8AdAByAGEAYwBlAAAZRgBpAGwAZQBSAG8AbwB0AFAAYQB0AGgAAAEAH1IAdQBuAEEAcwBEAGEA
-dABlAFMAdAByAGkAbgBnAAAFLgBGAAAfVAByAGEAbgBzAGEAYwB0AGkAbwBuAFQAeQBwAGUAACFJ
-AHQAZQBtAFMAdQBiAHMAYwByAGkAcAB0AGkAbwBuAAAbVAByAGEAbgBzAGEAYwB0AGkAbwBuAEkA
-RAAADVMAbwB1AHIAYwBlAAAbRQB4AHQAcgBhAGMAdABTAG8AdQByAGMAZQAAF00AZQBzAHMAYQBn
-AGUAVAB5AHAAZQAAHWUAcwBiAE0AZQBzAHMAYQBnAGUAVAB5AHAAZQAAHUkAdABlAG0AVgBlAG4A
-ZABvAHIATABhAG4AZQAAcVMAVABfAGMAZAAwAGMAYQBjAGQAYwBjAGYAZQBmADQAMwBjADIAOABk
-AGMAZgBjADUANwAxADMAOQA2ADEANQAwADAAMgAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUA
-cwBvAHUAcgBjAGUAcwAAAF6w6xFvyC5NmZjMs1af2w8ABCABAQgDIAABBSABARERBCABAQ4GIAEB
-EYCNBSAAEoCdBAcBElEEIAEcDgUgABKAoQYgARKApRwDIAAcAyAADgYgAhJBDg4IIAISRQIRgKkG
-IAESTRJJBAcBElkJIAIBEYCtEYCxBiABARGAtQUgABKAuQogAxKAuRGAvRwCBiABEoDBCAQHARJd
-BCAAHQMFIAEBHQMFIAEBElUFIAIBHBwGIAEBEoDJBiABEoDVDhQHCRUSZQEODh0FEmkdAw4SbREU
-CAkAARUSgN0BDg4GFRKA3QEOCCAAFRJlARMABRUSZQEOBCAAEwAFAAEdBQ4EIAASaQUgAQEdBQQg
-AQIOBiABHQ4dAwUgARJtDgUgARJtAwYVEmECDg4HIAIBEwATAQMgAAIOBwIVEXECDg4VEXUCDg4K
-IAAVEXECEwATAQYVEXECDg4KIAAVEXUCEwATAQYVEXUCDg4EIAATAQUgAgEODgYgAQESgPUIAAES
-gPkRgP0FIAASgQEHIAIBDhKBAQi3elxWGTTgiQiJhF3NgIDMkQhbg9uP8Fxkuh5UAHIAYQBuAHMA
-YQBjAHQAaQBvAG4AVAB5AHAAZQAgSQB0AGUAbQBTAHUAYgBzAGMAcgBpAHAAdABpAG8AbgAcSQB0
-AGUAbQBWAGUAbgBkAG8AcgBMAGEAbgBlABpUAHIAYQBuAHMAYQBjAHQAaQBvAG4ASQBEAAxTAG8A
-dQByAGMAZQAWTQBlAHMAcwBhAGcAZQBUAHkAcABlAAQBAAAABAIAAAAEAAAAAAIGDgMGEj0DBhJB
-AwYSRQMGEkkDBhJNBAYSgIUEBhKAiQMGEhACBggDBhEUAwYRGAQgABJVBCAAElEJIAEBFRJhAg4O
-CyACARJpFRJhAg4OBQAAEoCFBQAAEoCJBgABARKAiQQAABIQAwAAAQUIABKAhQUIABKAiQQIABIQ
-CAEACAAAAAAAHgEAAQBUAhZXcmFwTm9uRXhjZXB0aW9uVGhyb3dzAQgBAAIAAAAAACgBACNTVF9j
-ZDBjYWNkY2NmZWY0M2MyOGRjZmM1NzEzOTYxNTAwMgAABQEAAAAAFgEAEUNvcHlyaWdodCBAICAy
-MDE4AABHAQAaLk5FVEZyYW1ld29yayxWZXJzaW9uPXY0LjABAFQOFEZyYW1ld29ya0Rpc3BsYXlO
-YW1lEC5ORVQgRnJhbWV3b3JrIDS0AAAAzsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVz
-b3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwg
-UHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVS
-ZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAAzEAAAAAAAAAAAAAA5kAAAAAgAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAANhAAAAAAAAAAAAAAAAAX0NvckRsbE1haW4AbXNjb3JlZS5kbGwAAAAA
-AP8lACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AHAWjDQAAAFvJwAACnMoAAAKKk4CAnsKAAAEA28pAAAKfQsAAAQqAAAAGzAFAK0CAAAEAAARAigQ
+AAAKbxMAAApyXwMAcG8UAAAKbxUAAApvFgAACigqAAAKbysAAAoKOGYCAAAGbywAAAoLBygtAAAK
+DAJ7CgAABG8uAAAKDQkIby8AAAoXjTkAAAElFh9fnRMEBxEEbzAAAAoTBXJ5AwBwEwZzMQAAChMH
+F405AAABJRYfXJ0TCAcRCG8wAAAKJRZvMgAAChdZmhMJBxcTChIK/hYFAAACbxYAAApvMwAACjnj
+AAAAEQUZmhMGEQcRBm80AAAKH19vNQAACgIoEAAACm8TAAAKcnsDAHBvFAAACm8VAAAKbxYAAApv
+NAAACnKbAwBwbzQAAAoXEwsSCyg2AAAKbzQAAAomczcAAAolcqEDAHBywQMAcG84AAAKJXLjAwBw
+EQdvFgAACm84AAAKJXL/AwBwEQlvOAAACiVyEQQAcAIoEAAACm8TAAAKch8EAHBvFAAACm8VAAAK
+bxYAAApvOAAACiVyOwQAcAIoEAAACm8TAAAKclMEAHBvFAAACm8VAAAKbxYAAApvOAAAChABOPkA
+AAAHGBMKEgr+FgUAAAJvFgAACm8zAAAKOd4AAAARBRqaEwYRBxEGbzQAAAofX281AAAKAigQAAAK
+bxMAAApyewMAcG8UAAAKbxUAAApvFgAACm80AAAKcpsDAHBvNAAAChgTCxILKDYAAApvNAAACiZz
+NwAACiVyoQMAcHJxBABwbzgAAAolcuMDAHARB28WAAAKbzgAAAolcv8DAHARCW84AAAKJXIRBABw
+AigQAAAKbxMAAApyHwQAcG8UAAAKbxUAAApvFgAACm84AAAKJXI7BABwAigQAAAKbxMAAApyUwQA
+cG8UAAAKbxUAAApvFgAACm84AAAKEAECCQMoBwAABgZvOQAACjqP/f//3goGLAYGbzoAAArcKgAA
+AEEcAAACAAAAKgAAAHgCAACiAgAACgAAAAAAAAAbMAMATgAAAAUAABEELD4EbzsAAAoKKxwSACg8
+AAAKCwMSASg9AAAKEgEoPgAACm8/AAAKEgAoQAAACi3b3g4SAP4WBAAAG286AAAK3AJ7DAAABANv
+QQAACioAAAEQAAACAAoAKTMADgAAAAAeAihCAAAKKh4CKEMAAAoqrn4NAAAELR5yjwQAcNADAAAC
+KEQAAApvRQAACnNGAAAKgA0AAAR+DQAABCoafg4AAAQqHgKADgAABCoafg8AAAQqHgIoRwAACiou
+cw4AAAaADwAABCoAAEJTSkIBAAEAAAAAAAwAAAB2NC4wLjMwMzE5AAAAAAUAbAAAAOAGAAAjfgAA
+TAcAAMgJAAAjU3RyaW5ncwAAAAAUEQAABAUAACNVUwAYFgAAEAAAACNHVUlEAAAAKBYAAKADAAAj
+QmxvYgAAAAAAAAACAAABVx2iCQkDAAAA+gEzABYAAAEAAABBAAAABgAAABUAAAAPAAAABQAAAEcA
+AAANAAAAEAAAAAUAAAACAAAAAwAAAAQAAAAFAAAAAQAAAAUAAAABAAAAAgAAAAAAaQUBAAAAAAAG
+AMsDUAcGAFoEUAcGABcDPQcPAMQHAAAGAEQDNgYGAK4DNgYGAI8DNgYGAEEENgYGAOsDNgYGAAQE
+NgYGAFsDNgYGAHYDzAQKAB8EGAUKAHgCGAUOAHsJhwAOAHgGhwAOANAFhwAOAPQFhwAOAMwGhwAO
+ADkJhwAGALoCOwgSAD4COwgOAKAGhwAGAFYAzQAGAA8AzQAOAFQBhwAGAPQGJwljACUHAAAGAEcA
+zQAGAKEFmgUGAPoCPQcGAN8ImgUGAAYHcAcGALQGIQYSAMoCUwUSACsDUwUSAJQCDAYGAN8CUAcK
+AEEFGAUWABgI5AEWAG0B5AEOADEBhwASAMgBOwgSAOAFOwgSAJIIOwgSAEgGOwgSABUCOwgSAGMA
+OwgGAOgEmgUGAIIBrggOAC4ChwAGALIFmgUOAMcAhwAGAJUJfQAGAAEAzQAGALABfQAGAMcGmgUG
+AE0JmgUGAEEAmgUGABYHrggGAHYBmgUOAGUBhwAGADkCmgUGAIwBmgUGAHIJNgYAAAAAdAAAAAAA
+AQABAAEAEAC/BR0AOQABAAEAAAAQAHcH0weBAA0ACQAAARAAnAjTB5UADwANAAMBAAAxCAAAeQAQ
+ABAAAwEAANEIAAB5ABMAEABRgFsJYwJRgIIEYwJRgKcEYwJRgOgAYwJRgCoBYwJRgCICYwJRgL8B
+YwIBAI0JZgIBAIMGagIBANgFbgIBAAAGcgIBAOsGdgIRAKYFegIRAGgCfwIRABoBhAIGBrAAiAJW
+gI4GiwJWgAQCiwIGBrAAiAJWgMEIjwJWgEgCjwJQIAAAAACGAMUFBgABAGwgAAAAAIEAdAYGAAEA
+bCEAAAAAgQATCZMCAQDAIQAAAACBADMJmAIBAPkiAAAAAMQB7gUQAAEAECMAAAAAhgD6AJ0CAgDo
+JQAAAACBAPoApwIDAFQmAAAAAIYYMAcGAAUAXCYAAAAAgxgwBwYABQBkJgAAAACTCAIHswIFAJAm
+AAAAAJMIUAK5AgUAlyYAAAAAkwhcAr8CBQCfJgAAAACWCOwIxgIGAKYmAAAAAIYYMAcGAAYAriYA
+AAAAkRg2B8sCBgAAAAEAtQEQEAEAAggAAAEAYQEQEAIAAggAAAEAxgQJADAHAQARADAHBgAZADAH
+CgApADAHEAAxADAHEAA5ADAHEABBADAHEABJADAHEABRADAHEABZADAHEABhADAHEABpADAHBgD5
+ADAHBgAhATAHFQAxATAHBgBxAMkIHAA5AfgIAQChAMAGJwA5ARQILABBAZEFMgBJAXgEOQABAeYE
+PQB5ANIBEAB5AGMGQQCBAMoFSACJANwGUQCZAD0BAQCxADAHXQCxALoFZwCxAGkIbgBxAQYBdABx
+AZEFfwCxAKwCBgC5ADAHBgCJAUcJiwC5AAsBkAC5AJ8JlgCRATAHBgCRAfYAnAChADAHogCJAMEA
+qQCxASIIygAMACIH2wAUAAcJ6gDBAYUI7wCJAE4B9QDRAHoI+gCJAeYIAAHZADAHBgDRAe8EBwGJ
+AaUIDAHZAP8AEQHZAP8AFwHZAeYEPQAcADAHBgAcAPYAJAHhAR4JLAHpAbICBgAcACIHPwEkAAcJ
+UQEsAFMJ6gAsAHgEYwHxAbQJaAEkAB4JLAGZAPoAbgFxADAHBgABATAHBgD5AZ4BdQH5AW4JfgEJ
+ATAHhAEpATAHBgAOAAQApwEOAAgAxgESAAkAXgIOAAwA5wEOABAABAISABEAXgIOABQAHwIOABgA
+LAIOABwAQwIIAEQAVAIIAEgAWQIIAFAAXgIIAFQAVAIpAHMACAMuAAsA4AIuABMA6QIuABsACAMu
+ACMAEQMuACsAOgMuADMAOgMuADsAOgMuAEMAEQMuAEsAQAMuAFMAOgMuAFsAVwNDAGMAVAJJAHMA
+CANjAGsAVALhAXsAVAIiAFgAhgCwADABAwABAAQAAwAAAAYHzwIAAHAC1QIAAPAI2wICAAoAAwAC
+AAsABQABAAwABQACAA0ABwDUAOQAHQFKAVwBBIAAAAEAAABbGv9SAAAAAAAAHQAAAAQAAAAAAAAA
+AAAAAIwBuAAAAAAADAAAAAAAAAAAAAAAlQH5BAAAAAABAAAAIAMJAAAAAACeAYcAAAAAAAQAAAAA
+AAAAAAAAAIwBmgUAAAAADAAAAAAAAAAAAAAAlQGRAAAAAAAAAAAAAQAAAIEHAAAFAAIABgACAAAA
+AElFbnVtZXJhYmxlYDEASUVudW1lcmF0b3JgMQBTVF9jZDBjYWNkY2NmZWY0M2MyOGRjZmM1NzEz
+OTYxNTAwMgBJbnQzMgBLZXlWYWx1ZVBhaXJgMgBEaWN0aW9uYXJ5YDIAWDUwOUNlcnRpZmljYXRl
+MgA8TW9kdWxlPgBTeXN0ZW0uSU8AVElCQ08uRU1TAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuTWFuYWdl
+ZERUUwB2YWx1ZV9fAG1zY29ybGliAENyZWF0ZVRvcGljAFN5c3RlbS5Db2xsZWN0aW9ucy5HZW5l
+cmljAFRyYW5zYWN0aW9uSWQAQWRkAFNlbmQAQXBwZW5kAEZpbmQAU2V0U1NMUGFzc3dvcmQAZGVm
+YXVsdEluc3RhbmNlAFNvdXJjZQBTZXNzaW9uTW9kZQBzZXRfRGVsaXZlcnlNb2RlAENyZWF0ZUJ5
+dGVzTWVzc2FnZQB0ZXh0TWVzc2FnZQBWYXJpYWJsZQBJRGlzcG9zYWJsZQBIYXNodGFibGUAUnVu
+dGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUARmlsZQB0b3BpY05hbWUARmlsZU5hbWUA
+U3RvcmVOYW1lAFNldFRhcmdldEhvc3ROYW1lAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlJ1bnRp
+bWUAaXRlbV92ZW5kb3JfbGFuZQBYNTA5RmluZFR5cGUATWVzc2FnZVR5cGUARU1TU1NMU3RvcmVU
+eXBlAFg1MDlTdG9yZQBGYWlsdXJlAGdldF9DdWx0dXJlAHNldF9DdWx0dXJlAHJlc291cmNlQ3Vs
+dHVyZQBWU1RBUlRTY3JpcHRPYmplY3RNb2RlbEJhc2UAQXBwbGljYXRpb25TZXR0aW5nc0Jhc2UA
+Q2xvc2UARGlzcG9zZQBYNTA5Q2VydGlmaWNhdGUARWRpdG9yQnJvd3NhYmxlU3RhdGUAQ29tcGls
+ZXJHZW5lcmF0ZWRBdHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0ZQBEZWJ1Z2dh
+YmxlQXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmli
+dXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZyYW1ld29ya0F0dHJpYnV0ZQBB
+c3NlbWJseUNvbmZpZ3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlvbkF0dHJpYnV0
+ZQBDb21waWxhdGlvblJlbGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJvZHVjdEF0dHJpYnV0
+ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0VGFza0VudHJ5UG9pbnRBdHRy
+aWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmli
+dXRlAGdldF9WYWx1ZQBJdGVtU3Vic2NyaXB0aW9uVHJhbnNhY3Rpb25UeXBlVmFsdWUASXRlbVZl
+bmRvclRyYW5zYWN0aW9uVHlwZVZhbHVlAHZhbHVlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcA
+VG9TdHJpbmcAR2V0TGVuZ3RoAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuU2NyaXB0VGFzawBNaWNyb3Nv
+ZnQuU3FsU2VydmVyLkR0cy5UYXNrcy5TY3JpcHRUYXNrAFNjcmlwdE9iamVjdE1vZGVsAFN5c3Rl
+bS5Db21wb25lbnRNb2RlbABTVF9jZDBjYWNkY2NmZWY0M2MyOGRjZmM1NzEzOTYxNTAwMi5kbGwA
+Z2V0X0l0ZW0AU3lzdGVtAEVudW0AcmVzb3VyY2VNYW4AQm9vbGVhbgBPcGVuAFNjcmlwdE1haW4A
+Q3JlYXRlU2Vzc2lvbgBzZXNzaW9uAFN0b3JlTG9jYXRpb24AQ3JlYXRlRGVzdGluYXRpb24AZGVz
+dGluYXRpb24AU3lzdGVtLkNvbmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVt
+LlJlZmxlY3Rpb24AWDUwOUNlcnRpZmljYXRlMkNvbGxlY3Rpb24AQ3JlYXRlQ29ubmVjdGlvbgBP
+cGVuQ29ubmVjdGlvbgBjb25uZWN0aW9uAGl0ZW1fc3Vic2NyaXB0aW9uAEVNU1NTTEZpbGVTdG9y
+ZUluZm8AQ3VsdHVyZUluZm8ATG9va3VwAENoYXIATWVzc2FnZVByb2R1Y2VyAENyZWF0ZVByb2R1
+Y2VyAHByb2R1Y2VyAFN0cmluZ0J1aWxkZXIAZ2V0X1Jlc291cmNlTWFuYWdlcgBJRW51bWVyYXRv
+cgBHZXRFbnVtZXJhdG9yAC5jdG9yAC5jY3RvcgBTeXN0ZW0uRGlhZ25vc3RpY3MAU3lzdGVtLlJ1
+bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBTeXN0ZW0uUmVzb3VyY2VzAFNUX2NkMGNhY2RjY2ZlZjQz
+YzI4ZGNmYzU3MTM5NjE1MDAyLlByb3BlcnRpZXMuUmVzb3VyY2VzLnJlc291cmNlcwBEZWJ1Z2dp
+bmdNb2RlcwBTVF9jZDBjYWNkY2NmZWY0M2MyOGRjZmM1NzEzOTYxNTAwMi5Qcm9wZXJ0aWVzAG1l
+c3NhZ2VQcm9wZXJ0aWVzAGdldF9WYXJpYWJsZXMARW51bWVyYXRlRmlsZXMARmlsZU5hbWVzAFN5
+c3RlbS5TZWN1cml0eS5DcnlwdG9ncmFwaHkuWDUwOUNlcnRpZmljYXRlcwBnZXRfQ2VydGlmaWNh
+dGVzAFdyaXRlQnl0ZXMAUmVhZEFsbEJ5dGVzAE9wZW5GbGFncwBTZXR0aW5ncwBDb250YWlucwBT
+eXN0ZW0uQ29sbGVjdGlvbnMAU3VjY2VzcwBnZXRfRHRzAFNjcmlwdFJlc3VsdHMAT2JqZWN0AFNw
+bGl0AGdldF9EZWZhdWx0AHNldF9UYXNrUmVzdWx0AGdldF9DdXJyZW50AEdldEVzYkNlcnQATW92
+ZU5leHQAU3lzdGVtLlRleHQAQ3JlYXRlTG9va3VwQ29udGV4dABUb0NoYXJBcnJheQBnZXRfS2V5
+AFRyYW5zYWN0aW9uVHlwZUtleQBnZXRfQXNzZW1ibHkAQ29ubmVjdGlvbkZhY3RvcnkAZmFjdG9y
+eQBEaXJlY3RvcnkAU2V0U1NMQ2xpZW50SWRlbnRpdHkAU2V0U3RyaW5nUHJvcGVydHkAAAAAN08A
+cgBkAGUAcgBUAG8AcABpAGMAQwBvAG4AbgBlAGMAdABpAG8AbgBGAGEAYwB0AG8AcgB5AAAjZQBz
+AGIAVABhAHIAZwBlAHQASABvAHMAdABOAGEAbQBlAAAdZQBzAGIASgBtAHMAVQBzAGUAcgBuAGEA
+bQBlAAAdZQBzAGIASgBtAHMAUABhAHMAcwB3AG8AcgBkAAAZZQBzAGIAVABvAHAAaQBjAE4AYQBt
+AGUAACVlAHMAYgBDAGUAcgB0AGkAZgBpAGMAYQB0AGUATgBhAG0AZQAAHWUAcwBiAFMAcwBsAFAA
+YQBzAHMAdwBvAHIAZAAALVQASQBCAEMATwAuAEUATQBTAC4AcAByAG8AdgBpAGQAZQByAC4AdQBy
+AGwAABllAHMAYgBTAGUAcgB2AGUAcgBVAHIAbAAAOVQASQBCAEMATwAuAEUATQBTAC4AcwBlAGMA
+dQByAGkAdAB5AC4AcAByAGkAbgBjAGkAcABhAGwAACllAHMAYgBTAGUAYwB1AHIAaQB0AHkAUABy
+AGkAbgBjAGkAcABhAGwAAD1UAEkAQgBDAE8ALgBFAE0AUwAuAHMAZQBjAHUAcgBpAHQAeQAuAGMA
+cgBlAGQAZQBuAHQAaQBhAGwAcwAALWUAcwBiAFMAZQBjAHUAcgBpAHQAeQBDAHIAZQBkAGUAbgB0
+AGkAYQBsAHMAAD9UAEkAQgBDAE8ALgBFAE0AUwAuAG4AYQBtAGkAbgBnAC4AcwBzAGwAXwBzAHQA
+bwByAGUAXwBpAG4AZgBvAAA/VABJAEIAQwBPAC4ARQBNAFMALgBuAGEAbQBpAG4AZwAuAHMAcwBs
+AF8AcwB0AG8AcgBlAF8AdAB5AHAAZQAAS1QASQBCAEMATwAuAEUATQBTAC4AbgBhAG0AaQBuAGcA
+LgBzAHMAbABfAHQAYQByAGcAZQB0AF8AaABvAHMAdABfAG4AYQBtAGUAAEVUAEkAQgBDAE8ALgBF
+AE0AUwAuAG4AYQBtAGkAbgBnAC4AcwBlAGMAdQByAGkAdAB5AF8AcAByAG8AdABvAGMAbwBsAAAH
+cwBzAGwAADVUAEkAQgBDAE8ALgBFAE0AUwAuAG4AYQBtAGkAbgBnAC4AcwBzAGwAXwB0AHIAYQBj
+AGUAABlGAGkAbABlAFIAbwBvAHQAUABhAHQAaAAAAQAfUgB1AG4AQQBzAEQAYQB0AGUAUwB0AHIA
+aQBuAGcAAAUuAEYAAB9UAHIAYQBuAHMAYQBjAHQAaQBvAG4AVAB5AHAAZQAAIUkAdABlAG0AUwB1
+AGIAcwBjAHIAaQBwAHQAaQBvAG4AABtUAHIAYQBuAHMAYQBjAHQAaQBvAG4ASQBEAAARRgBpAGwA
+ZQBOAGEAbQBlAAANUwBvAHUAcgBjAGUAABtFAHgAdAByAGEAYwB0AFMAbwB1AHIAYwBlAAAXTQBl
+AHMAcwBhAGcAZQBUAHkAcABlAAAdZQBzAGIATQBlAHMAcwBhAGcAZQBUAHkAcABlAAAdSQB0AGUA
+bQBWAGUAbgBkAG8AcgBMAGEAbgBlAABxUwBUAF8AYwBkADAAYwBhAGMAZABjAGMAZgBlAGYANAAz
+AGMAMgA4AGQAYwBmAGMANQA3ADEAMwA5ADYAMQA1ADAAMAAyAC4AUAByAG8AcABlAHIAdABpAGUA
+cwAuAFIAZQBzAG8AdQByAGMAZQBzAAAAAACzUW6Ec9hVRYmbijHt1gyRAAQgAQEIAyAAAQUgAQER
+EQQgAQEOBiABARGAjQUgABKAnQQHARJRBCABHA4FIAASgKEGIAESgKUcAyAAHAMgAA4GIAISQQ4O
+CCACEkUCEYCpBiABEk0SSQQHARJZCSACARGArRGAsQYgAQERgLUFIAASgLkKIAMSgLkRgL0cAgYg
+ARKAwQgEBwESXQQgAB0DBSABAR0DBSABARJVBSACARwcBiABARKAyQYgARKA1Q4ZBwwVEmUBDg4d
+BRJpHQMdDg4SbR0DDhEUCAkAARUSgN0BDg4GFRKA3QEOCCAAFRJlARMABRUSZQEOBCAAEwAFAAEd
+BQ4EIAASaQUgAQEdBQYgAR0OHQMEIAEICAQgAQIOBSABEm0OBSABEm0DBhUSYQIODgcgAgETABMB
+AyAAAg4HAhURcQIODhURdQIODgogABURcQITABMBBhURcQIODgogABURdQITABMBBhURdQIODgQg
+ABMBBSACAQ4OBiABARKA+QgAARKA/RGBAQUgABKBBQcgAgEOEoEFCLd6XFYZNOCJCImEXc2AgMyR
+CFuD24/wXGS6HlQAcgBhAG4AcwBhAGMAdABpAG8AbgBUAHkAcABlACBJAHQAZQBtAFMAdQBiAHMA
+YwByAGkAcAB0AGkAbwBuABxJAHQAZQBtAFYAZQBuAGQAbwByAEwAYQBuAGUAGlQAcgBhAG4AcwBh
+AGMAdABpAG8AbgBJAEQADFMAbwB1AHIAYwBlABZNAGUAcwBzAGEAZwBlAFQAeQBwAGUAEEYAaQBs
+AGUATgBhAG0AZQAEAQAAAAQCAAAABAAAAAACBg4DBhI9AwYSQQMGEkUDBhJJAwYSTQQGEoCFBAYS
+gIkDBhIQAgYIAwYRFAMGERgEIAASVQQgABJRCSABARUSYQIODgsgAgESaRUSYQIODgUAABKAhQUA
+ABKAiQYAAQESgIkEAAASEAMAAAEFCAASgIUFCAASgIkECAASEAgBAAgAAAAAAB4BAAEAVAIWV3Jh
+cE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU1RfY2QwY2FjZGNjZmVmNDNjMjhkY2Zj
+NTcxMzk2MTUwMDIAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAxOAAARwEAGi5ORVRGcmFtZXdv
+cmssVmVyc2lvbj12NC4wAQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0
+ALQAAADOyu++AQAAAJEAAABsU3lzdGVtLlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3Js
+aWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdh
+NWM1NjE5MzRlMDg5I1N5c3RlbS5SZXNvdXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAA
+AAAAUEFEUEFEULQAAABkQQAAAAAAAAAAAAB+QQAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcEEA
+AAAAAAAAAAAAAABfQ29yRGxsTWFpbgBtc2NvcmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAA
 AAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAAWGAA
 ABoEAAAAAAAAAAAAABoENAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9BO/+
-AAABAAAAAQDaVUUaAAABANpVRRo/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBh
+AAABAAAAAQD/UlsaAAABAP9SWxo/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBh
 AHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAAAAAA
 sAR6AwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAABWAwAAAQAwADAAMAAwADAANABi
 ADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABhAG4AeQBOAGEA
 bQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAVABf
 AGMAZAAwAGMAYQBjAGQAYwBjAGYAZQBmADQAMwBjADIAOABkAGMAZgBjADUANwAxADMAOQA2ADEA
-NQAwADAAMgAAAD4ADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA2ADcAMgA1
-AC4AMgAxADkANwA4AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAVABfAGMA
+NQAwADAAMgAAAD4ADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA2ADcANAA3
+AC4AMgAxADIANAA3AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAVABfAGMA
 ZAAwAGMAYQBjAGQAYwBjAGYAZQBmADQAMwBjADIAOABkAGMAZgBjADUANwAxADMAOQA2ADEANQAw
 ADAAMgAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAA
 eQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA4AAAAKgABAAEATABlAGcAYQBsAFQAcgBhAGQAZQBt
@@ -6054,15 +5995,15 @@ UwBUAF8AYwBkADAAYwBhAGMAZABjAGMAZgBlAGYANAAzAGMAMgA4AGQAYwBmAGMANQA3ADEAMwA5
 ADYAMQA1ADAAMAAyAC4AZABsAGwAAABoACQAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUAAAAAAFMA
 VABfAGMAZAAwAGMAYQBjAGQAYwBjAGYAZQBmADQAMwBjADIAOABkAGMAZgBjADUANwAxADMAOQA2
 ADEANQAwADAAMgAAAEIADwABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4A
-NgA3ADIANQAuADIAMQA5ADcAOAAAAAAARgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBp
-AG8AbgAAADEALgAwAC4ANgA3ADIANQAuADIAMQA5ADcAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+NgA3ADQANwAuADIAMQAyADQANwAAAAAARgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBp
+AG8AbgAAADEALgAwAC4ANgA3ADQANwAuADIAMQAyADQANwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAwAAAD4MAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAwAAACQMQAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -6072,11 +6013,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
-              <Breakpoint
-                Enabled="True"
-                File="ScriptMain.cs"
-                Line="172"
-                Column="13" />
             </ScriptProject>
           </DTS:ObjectData>
         </DTS:Executable>
@@ -6128,35 +6064,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="$Project::Environment">
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -6465,14 +6380,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -6692,35 +6628,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               ReadOnlyVariables="User::CurrentDataSource"
               ReadWriteVariables="User::CurrentRegion">
               <ProjectItem
-                Name="Properties\AssemblyInfo.cs"
-                Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
               <ProjectItem
                 Name="Properties\Resources.resx"
                 Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -7007,14 +6922,35 @@ namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
     }
 }]]></ProjectItem>
               <ProjectItem
-                Name="Properties\Settings.settings"
-                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                Name="Properties\AssemblyInfo.cs"
+                Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
               <ProjectItem
                 Name="Properties\Resources.Designer.cs"
                 Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -7336,6 +7272,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                   Language="CSharp"
                   ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                   <ProjectItem
+                    Name="Properties\AssemblyInfo.cs"
+                    Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                  <ProjectItem
                     Name="Properties\Resources.resx"
                     Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -7457,35 +7423,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                   <ProjectItem
                     Name="ST_5cf4623d9e194f15af984f48d4e1ca3f.csproj"
                     Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_5cf4623d9e194f15af984f48d4e1ca3f</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-                  <ProjectItem
-                    Name="Properties\Settings.Designer.cs"
-                    Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                   <ProjectItem
                     Name="ScriptMain.cs"
                     Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -7644,35 +7581,34 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                   <ProjectItem
-                    Name="Properties\AssemblyInfo.cs"
-                    Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+                    Name="Properties\Settings.Designer.cs"
+                    Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Settings.settings"
                     Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -7946,35 +7882,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   Language="CSharp"
                   ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                   <ProjectItem
-                    Name="Properties\AssemblyInfo.cs"
-                    Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                    Name="ST_83c3870754c34df981c7e2a945aefc2f.csproj"
+                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_83c3870754c34df981c7e2a945aefc2f</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Resources.resx"
                     Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -8095,28 +8004,14 @@ using System.Runtime.CompilerServices;
   </resheader>
 </root>]]></ProjectItem>
                   <ProjectItem
-                    Name="ST_83c3870754c34df981c7e2a945aefc2f.csproj"
-                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_83c3870754c34df981c7e2a945aefc2f</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-                  <ProjectItem
-                    Name="Project"
-                    Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
-	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
-		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
-		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
-		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
-	</msb:PropertyGroup>
-	<msb:ItemGroup>
-		<msb:Project Include="ST_83c3870754c34df981c7e2a945aefc2f.csproj"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
-		<msb:File Include="Properties\Settings.settings"/>
-		<msb:File Include="Properties\Resources.resx"/>
-		<msb:File Include="Properties\Resources.Designer.cs"/>
-		<msb:File Include="Properties\Settings.Designer.cs"/>
-		<msb:File Include="ScriptMain.cs"/>
-	</msb:ItemGroup>
-</c:Project>]]></ProjectItem>
+                    Name="Properties\Settings.settings"
+                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                   <ProjectItem
                     Name="ScriptMain.cs"
                     Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -8254,6 +8149,26 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	}
 }]]></ProjectItem>
                   <ProjectItem
+                    Name="Project"
+                    Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
+		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
+		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ST_83c3870754c34df981c7e2a945aefc2f.csproj"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="ScriptMain.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+                  <ProjectItem
                     Name="Properties\Settings.Designer.cs"
                     Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
@@ -8283,14 +8198,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                   <ProjectItem
-                    Name="Properties\Settings.settings"
-                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                    Name="Properties\AssemblyInfo.cs"
+                    Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Resources.Designer.cs"
                     Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -8510,35 +8446,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           ReadOnlyVariables="$Project::Environment,$Project::RegionCode"
           ReadWriteVariables="User::DataSourceList">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -8923,14 +8838,35 @@ namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="ST_980c9bcc41774031961e3e9f27434625.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{7E2B8755-E8CA-4805-A5B8-3A07A2B12C67}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_d025ad6bda6548e1be602890035a2bf1</RootNamespace><AssemblyName>ST_980c9bcc41774031961e3e9f27434625</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
@@ -9096,23 +9032,23 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="168.8,41.6"
+          Size="169,42"
           Id="Package\Foreach IRMA DB Loop\Compress Data File"
           TopLeft="43.0857152783142,236.65882765628" />
         <NodeLayout
-          Size="198.4,41.6"
+          Size="198,42"
           Id="Package\Foreach IRMA DB Loop\Delete All IRMA CSV Files"
           TopLeft="251.657147401693,241.788239515364" />
         <NodeLayout
-          Size="182.4,41.6"
+          Size="182,42"
           Id="Package\Foreach IRMA DB Loop\Delete ALL IRMA Files"
           TopLeft="40.9142873102304,308.329416526478" />
         <NodeLayout
-          Size="214.4,41.6"
+          Size="214,42"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create Item Subscription File"
           TopLeft="383.000000136239,15.9294115673711" />
         <NodeLayout
-          Size="209.6,41.6"
+          Size="210,42"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File"
           TopLeft="32.5714285130403,17.211764568606" />
         <EdgeLayout
@@ -9140,20 +9076,20 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="648,76.8"
+          PanelSize="648,77"
           Size="648,120"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop"
           TopLeft="39.1428571623199,89.5117648603182" />
         <NodeLayout
-          Size="148.8,41.6"
+          Size="149,42"
           Id="Package\Foreach IRMA DB Loop\Load Store List"
           TopLeft="364.228577890202,20.5647068776062" />
         <NodeLayout
-          Size="196.8,41.6"
+          Size="197,42"
           Id="Package\Foreach IRMA DB Loop\Send Files To ESB Queue"
           TopLeft="491.428578026441,239.388237765091" />
         <NodeLayout
-          Size="168,41.6"
+          Size="168,42"
           Id="Package\Foreach IRMA DB Loop\Set Current Region"
           TopLeft="60.2285727131123,17.3176481656137" />
         <EdgeLayout
@@ -9270,18 +9206,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Foreach IRMA DB Loop.PrecedenceConstraints[Constraint 4]"
-          TopLeft="450.057147401693,261.388238640228">
+          TopLeft="449.657147401693,261.588238640227">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="41.3714306247482,0"
+              EndConnector="41.7714306247481,0"
               Start="0,0"
-              End="33.8714306247482,0">
+              End="34.2714306247481,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="33.8714306247482,0" />
+                    End="34.2714306247481,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9292,30 +9228,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Foreach IRMA DB Loop.PrecedenceConstraints[Constraint 5]"
-          TopLeft="589.828578026441,280.988237765091">
+          TopLeft="589.928578026441,281.388237765091">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-457.714290716211,27.3411787613867"
+              EndConnector="-458.014290716211,26.941178761387"
               Start="0,0"
-              End="-457.714290716211,19.8411787613867">
+              End="-458.014290716211,19.441178761387">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,9.67058938069337" />
+                    End="0,9.4705893806935" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,9.67058938069337"
-                    Point2="0,13.6705893806934"
-                    Point3="-4,13.6705893806934" />
+                    Point1="0,9.4705893806935"
+                    Point2="0,13.4705893806935"
+                    Point3="-4,13.4705893806935" />
                   <mssgle:LineSegment
-                    End="-453.714290716211,13.6705893806934" />
+                    End="-454.014290716211,13.4705893806935" />
                   <mssgle:CubicBezierSegment
-                    Point1="-453.714290716211,13.6705893806934"
-                    Point2="-457.714290716211,13.6705893806934"
-                    Point3="-457.714290716211,17.6705893806934" />
+                    Point1="-454.014290716211,13.4705893806935"
+                    Point2="-458.014290716211,13.4705893806935"
+                    Point3="-458.014290716211,17.4705893806935" />
                   <mssgle:LineSegment
-                    End="-457.714290716211,19.8411787613867" />
+                    End="-458.014290716211,19.441178761387" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9327,16 +9263,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="921.6,404.8"
-          Size="921.6,448"
+          PanelSize="922,405"
+          Size="922,448"
           Id="Package\Foreach IRMA DB Loop"
           TopLeft="58.5714299435518,98.8294124425079" />
         <NodeLayout
-          Size="182.4,41.6"
+          Size="182,42"
           Id="Package\Housekeeping - Delete ALL IRMA Files"
           TopLeft="147,25" />
         <NodeLayout
-          Size="155.2,41.6"
+          Size="155,42"
           Id="Package\Load RegionList"
           TopLeft="496.152963162354,23.1305415234001" />
         <EdgeLayout
@@ -9438,7 +9374,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     design-time-name="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create Item Subscription File">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="152,41.6"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create Item Subscription File\OLE DB Source"
@@ -9478,7 +9414,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

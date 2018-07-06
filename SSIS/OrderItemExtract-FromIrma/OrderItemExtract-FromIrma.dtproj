@@ -26,7 +26,7 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">CECEN-H8KBHM2</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmtlsuVsokU+ha/lZjSZGXQAAAAACAAAAAAADZgAAwAAAABAAAACmb9WNENaVwMvCn8G6bLHTAAAAAASAAACgAAAAEAAAAPOQotbHC+1h0D9/ambs/iyIAAAADotKVnCaY2sL6fEoMBI9/oc9Gg6wwFkH01AjTWNHfBBlLmbwu8TktBkNiy5eVijWq8kX3R2uvLNqefmmUQFoUyu4zppDHE+1rioTwzd+R3a0eMvug2VYE8pr0/RqpkwQl84FOidzU1XvtfyCwR0hA+RwahyCPEpIj8l1RWlNp/C+lZJDPeNSwRQAAABoKqMhuhci8DuSIGvkT2xze703rA==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmtlsuVsokU+ha/lZjSZGXQAAAAACAAAAAAADZgAAwAAAABAAAAB5APCxCrS+m63lFTfkBCJwAAAAAASAAACgAAAAEAAAAO1GltOoXkfJoDws0dZ7/veIAAAAkoWuwRDgIunexdlDZwi4V/UbkFPOWU6coVSMr6b3k1e75Od0gualURturNd1CTim7opUmxzlrAYaxNDdpeM3bwNAqEjfJUzkJ2JKQDrWYmiFzt6z3PU8ZfPPYohqjyJdB15aGinxtG43ia1y9XzOHsAAelbUPi/GHBWMvs5INzIWMfZVc4b20RQAAACdLiqSCg2IVucYBRLXF4p0J+FSdw==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
@@ -43,10 +43,10 @@
                 <SSIS:Property SSIS:Name="Name">ItemFullExtract-FromIrma</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">118</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">133</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{C32859C8-CB9B-4DF6-9727-935248FE8127}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{E8514336-DE32-4927-ABE9-C3D58E96F3A5}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -137,20 +137,6 @@
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
-                <SSIS:Parameter SSIS:Name="esbQueueName">
-                  <SSIS:Properties>
-                    <SSIS:Property SSIS:Name="ID">{53A52444-E5C5-4733-AD35-3B3225E519BA}</SSIS:Property>
-                    <SSIS:Property SSIS:Name="CreationName">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="Description">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Queue.V2</SSIS:Property>
-                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-                  </SSIS:Properties>
-                </SSIS:Parameter>
                 <SSIS:Parameter SSIS:Name="esbSecurityCredentials">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">{EAA5513C-B248-4D3F-98BE-7A75DE48932F}</SSIS:Property>
@@ -221,6 +207,20 @@
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="esbTopicName">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{53A52444-E5C5-4733-AD35-3B3225E519BA}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Topic.V2</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
                 <SSIS:Parameter SSIS:Name="ExtractSource">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">{35C79A39-F3EC-4776-8C66-2B8AB810717C}</SSIS:Property>
@@ -245,21 +245,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">C:\Data\IRMA</SSIS:Property>
-                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-                  </SSIS:Properties>
-                </SSIS:Parameter>
-                <SSIS:Parameter SSIS:Name="ParentRootPath">
-                  <SSIS:Properties>
-                    <SSIS:Property SSIS:Name="ID">{9FB75B70-B9F3-4DAF-BE5A-64C51ABB15FD}</SSIS:Property>
-                    <SSIS:Property SSIS:Name="CreationName">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="Description">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">C:\Data</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">C:\Data\IRMA\Full</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -754,10 +740,10 @@
                 <SSIS:Property SSIS:Name="Name">OrderDeltaExtract-FromIrma</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">147</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">172</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{54CF74C6-B5B2-44A3-A0A7-5353029062DE}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{73FF7A2F-008D-4F67-9EB2-7EB2729FBA0C}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -848,20 +834,6 @@
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
-                <SSIS:Parameter SSIS:Name="esbQueueName">
-                  <SSIS:Properties>
-                    <SSIS:Property SSIS:Name="ID">{E34EB21F-0711-49A3-985E-ADF8ED9C8D9C}</SSIS:Property>
-                    <SSIS:Property SSIS:Name="CreationName">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="Description">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Queue.V2</SSIS:Property>
-                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-                  </SSIS:Properties>
-                </SSIS:Parameter>
                 <SSIS:Parameter SSIS:Name="esbSecurityCredentials">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">{7187D15D-6EA0-4759-B22E-57C97E5925F9}</SSIS:Property>
@@ -932,6 +904,20 @@
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="esbTopicName">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{E34EB21F-0711-49A3-985E-ADF8ED9C8D9C}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Topic.V2</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
                 <SSIS:Parameter SSIS:Name="ExtractSource">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">{748225F4-F354-42CA-8D54-9BFF6358AA91}</SSIS:Property>
@@ -956,21 +942,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">C:\Data\IRMA</SSIS:Property>
-                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-                  </SSIS:Properties>
-                </SSIS:Parameter>
-                <SSIS:Parameter SSIS:Name="ParentRootPath">
-                  <SSIS:Properties>
-                    <SSIS:Property SSIS:Name="ID">{59495666-42C9-40F2-8A1D-3DA0E173A019}</SSIS:Property>
-                    <SSIS:Property SSIS:Name="CreationName">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="Description">
-                    </SSIS:Property>
-                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">C:\Data</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">C:\Data\IRMA\Delta</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
