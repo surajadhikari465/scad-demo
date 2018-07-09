@@ -29,7 +29,7 @@
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
             <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
         </config>
         <pd:inputBindings/>
     </pd:starter>
