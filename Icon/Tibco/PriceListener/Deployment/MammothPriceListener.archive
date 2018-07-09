@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\MammothPriceListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\Repos\Icon\Icon\Tibco\DeploymentFiles\MammothPriceListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
