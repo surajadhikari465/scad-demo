@@ -25,7 +25,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/JMS Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
             <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
