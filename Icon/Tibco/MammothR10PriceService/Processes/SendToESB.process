@@ -238,7 +238,7 @@
                                             </ns4:code>
                                         </ns33:scanCode>
                                         <xsl:choose>
-                                            <xsl:when test="(current()/pfx:PriceType !='RWD') or ( current()/pfx:PriceType = 'RWD' and not(exists(pfx:PercentOff)))">
+                                            <xsl:when test="(current()/pfx:PriceType !='RWD') or ( current()/pfx:PriceType = 'RWD' and current()/pfx:Price > 0)">
                                                 <ns33:prices>
                                                     <ns42:price>
                                                         <ns42:type>
