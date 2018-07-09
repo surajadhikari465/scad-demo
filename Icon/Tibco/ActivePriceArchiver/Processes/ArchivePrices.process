@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
@@ -262,10 +262,10 @@ exponentialDelayInSeconds = maxDelayInSeconds &lt; delayInSeconds ? Integer.valu
                             <pfx4:CurrencyCode>
                                 <xsl:value-of select="pfx4:CurrencyCode"/>
                             </pfx4:CurrencyCode>
-                            <xsl:if test="pfx4:NewTagExpiration">
-                                <pfx4:NewTagExpiration>
-                                    <xsl:value-of select="pfx4:NewTagExpiration"/>
-                                </pfx4:NewTagExpiration>
+                            <xsl:if test="pfx4:TagExpirationDate">
+                                <pfx4:TagExpirationDate>
+                                    <xsl:value-of select="pfx4:TagExpirationDate"/>
+                                </pfx4:TagExpirationDate>
                             </xsl:if>
                             <pfx4:Action>
                                 <xsl:value-of select="pfx4:Action"/>
