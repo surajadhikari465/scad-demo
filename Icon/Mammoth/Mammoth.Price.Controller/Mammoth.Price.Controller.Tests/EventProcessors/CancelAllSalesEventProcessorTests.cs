@@ -4,6 +4,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
 using Mammoth.Price.Controller.ApplicationModules;
+using Mammoth.Price.Controller.Common;
 using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.DataAccess.Queries;
@@ -22,6 +23,7 @@ namespace Mammoth.Price.Controller.Tests.EventProcessors
         private Mock<IQueryHandler<GetCancelAllSalesDataParameters, List<CancelAllSalesEventModel>>> mockGetCancelAllSalesDataQuery;
         private Mock<IService<CancelAllSalesEventModel>> mockService;
         private Mock<ICommandHandler<ArchiveEventsCommand>> mockArchiveEventsCommandHandler;
+        private Mock<ICommandHandler<ReprocessFailedCancelAllSalesEventsCommand>> mockReprocessFailedCancelAllSalesEventsCommandHandler;
         private Mock<IErrorAlerter> mockErrorAlerter;
         private Mock<ILogger> mockLogger;
         private List<EventQueueModel> events;
@@ -33,6 +35,7 @@ namespace Mammoth.Price.Controller.Tests.EventProcessors
             mockGetCancelAllSalesDataQuery = new Mock<IQueryHandler<GetCancelAllSalesDataParameters, List<CancelAllSalesEventModel>>>();
             mockService = new Mock<IService<CancelAllSalesEventModel>>();
             mockArchiveEventsCommandHandler = new Mock<ICommandHandler<ArchiveEventsCommand>>();
+            mockReprocessFailedCancelAllSalesEventsCommandHandler = new Mock<ICommandHandler<ReprocessFailedCancelAllSalesEventsCommand>>();
             mockErrorAlerter = new Mock<IErrorAlerter>();
             mockLogger = new Mock<ILogger>();
 
@@ -41,6 +44,7 @@ namespace Mammoth.Price.Controller.Tests.EventProcessors
                 mockGetCancelAllSalesDataQuery.Object,                
                 mockService.Object,
                 mockArchiveEventsCommandHandler.Object,
+                mockReprocessFailedCancelAllSalesEventsCommandHandler.Object,
                 mockErrorAlerter.Object,
                 mockLogger.Object);
         }

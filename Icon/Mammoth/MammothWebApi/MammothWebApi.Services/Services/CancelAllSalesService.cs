@@ -27,10 +27,12 @@ namespace MammothWebApi.Service.Services
         {
             DateTime now = DateTime.Now;
 
-            string region = data.CancelAllSalesData.Select(p => p.Region).FirstOrDefault();
+            string region = data.CancelAllSalesData
+                .Select(p => p.Region)
+                .FirstOrDefault();
 
             var cancelAllSalesCommandParameters = new CancelAllSalesCommand();
-            cancelAllSalesCommandParameters.Region = region;        
+            cancelAllSalesCommandParameters.Region = region;
             cancelAllSalesCommandParameters.Timestamp = now;
             cancelAllSalesCommandParameters.CancelAllSalesModelList = MapData(data.CancelAllSalesData);
             cancelAllSalesCommandParameters.MessageActionId = MessageActions.AddOrUpdate;
@@ -42,12 +44,13 @@ namespace MammothWebApi.Service.Services
         {
             List<CancelAllSalesModel> cancelAllSalesModelList = new List<CancelAllSalesModel>();
 
-            foreach(CancelAllSalesServiceModel cancelAllSalesServiceModel in cancelAllSalesData)
+            foreach (CancelAllSalesServiceModel cancelAllSalesServiceModel in cancelAllSalesData)
             {
                 CancelAllSalesModel cancelAllSalesModel = new CancelAllSalesModel();
                 cancelAllSalesModel.BusinessUnitID = cancelAllSalesServiceModel.BusinessUnitId;
                 cancelAllSalesModel.ScanCode = cancelAllSalesServiceModel.ScanCode;
                 cancelAllSalesModel.EndDate = cancelAllSalesServiceModel.EndDate;
+                cancelAllSalesModel.EventCreatedDate = cancelAllSalesServiceModel.EventCreatedDate;
 
                 cancelAllSalesModelList.Add(cancelAllSalesModel);
             }

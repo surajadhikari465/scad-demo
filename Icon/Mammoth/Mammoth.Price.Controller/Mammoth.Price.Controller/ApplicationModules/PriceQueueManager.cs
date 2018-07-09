@@ -1,6 +1,7 @@
 ﻿using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
+using Mammoth.Price.Controller.Common;
 using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.DataAccess.Queries;
 using System;
@@ -36,7 +37,7 @@ namespace Mammoth.Price.Controller.ApplicationModules
                     MaxNumberOfRowsToMark = settings.MaxNumberOfRowsToMark
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(new { Region = settings.CurrentRegion, Message = "Error occurred when getting events." }.ToJson(), ex);
                 return new List<EventQueueModel>();
@@ -46,13 +47,13 @@ namespace Mammoth.Price.Controller.ApplicationModules
         public void DeleteInProcessEvents()
         {
             try
-           {
+            {
                 deleteEventQueueCommandHandler.Execute(new DeleteEventQueueCommand
                 {
                     Instance = settings.Instance
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(new { Region = settings.CurrentRegion, Message = "Error occurred when deleting events." }.ToJson(), ex);
             }

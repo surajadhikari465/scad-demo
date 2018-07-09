@@ -69,12 +69,13 @@ namespace MammothWebApi.Extensions
             List<CancelAllSalesServiceModel> cancelAllSalesServiceModelList = new List<CancelAllSalesServiceModel>();
             foreach (var cancelAllSale in cancelAllSales)
             {
-                var cancelAllSalesServiceModel = new CancelAllSalesServiceModel 
+                var cancelAllSalesServiceModel = new CancelAllSalesServiceModel
                 {
                     Region = cancelAllSale.Region,
                     BusinessUnitId = cancelAllSale.BusinessUnitId,
                     ScanCode = cancelAllSale.ScanCode,
-                    EndDate = cancelAllSale.EndDate
+                    EndDate = cancelAllSale.EndDate,
+                    EventCreatedDate = cancelAllSale.EventCreatedDate
                 };
 
                 cancelAllSalesServiceModelList.Add(cancelAllSalesServiceModel);

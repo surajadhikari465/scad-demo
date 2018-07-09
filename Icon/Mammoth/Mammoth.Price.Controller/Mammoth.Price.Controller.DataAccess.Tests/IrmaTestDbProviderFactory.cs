@@ -1,6 +1,6 @@
 ﻿namespace Mammoth.Price.Controller.DataAccess.Tests
 {
-    using Common.DataAccess.DbProviders;
+    using Mammoth.Common.DataAccess.DbProviders;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;

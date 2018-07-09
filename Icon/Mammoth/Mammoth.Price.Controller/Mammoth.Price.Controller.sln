@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.Tests.Specs", "Mammoth.Price.Controller.Tests.Specs\Mammoth.Price.Controller.Tests.Specs.csproj", "{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Price.Controller.Common", "Mammoth.Price.Controller.Common\Mammoth.Price.Controller.Common.csproj", "{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{EB9E26AD-9AF2-4AFF-8E3F-F103BBAEBD02}.Test|Any CPU.Build.0 = Test|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.QA|Any CPU.Build.0 = Release|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3BFD24-6609-41DC-B8DC-F71BC2FFCA8E}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

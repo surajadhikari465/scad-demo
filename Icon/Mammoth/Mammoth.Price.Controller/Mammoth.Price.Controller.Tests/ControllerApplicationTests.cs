@@ -2,6 +2,7 @@
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
 using Mammoth.Price.Controller.ApplicationModules;
+using Mammoth.Price.Controller.Common;
 using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.EventProcessors;

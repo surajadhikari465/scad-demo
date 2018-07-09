@@ -6,6 +6,7 @@ using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.Models;
 using Mammoth.Logging;
 using Mammoth.Price.Controller.ApplicationModules;
+using Mammoth.Price.Controller.Common;
 using Mammoth.Price.Controller.DataAccess.Commands;
 using Mammoth.Price.Controller.DataAccess.Models;
 using Mammoth.Price.Controller.DataAccess.Queries;
@@ -22,6 +23,7 @@ namespace Mammoth.Price.Controller.EventProcessors
         private IQueryHandler<GetCancelAllSalesDataParameters, List<CancelAllSalesEventModel>> getCancelAllSalesDataQuery;
         private IService<CancelAllSalesEventModel> service;
         private ICommandHandler<ArchiveEventsCommand> archiveEventsCommandHandler;
+        private ICommandHandler<ReprocessFailedCancelAllSalesEventsCommand> reprocessFailedCancelAllSalesEventsCommandHandler;
         private IErrorAlerter errorAlerter;
         private ILogger logger;
 
@@ -30,6 +32,7 @@ namespace Mammoth.Price.Controller.EventProcessors
             IQueryHandler<GetCancelAllSalesDataParameters, List<CancelAllSalesEventModel>> getCancelAllSalesDataQuery,
             IService<CancelAllSalesEventModel> service,
             ICommandHandler<ArchiveEventsCommand> archiveEventsCommandHandler,
+            ICommandHandler<ReprocessFailedCancelAllSalesEventsCommand> reprocessFailedCancelAllSalesEventsCommandHandler,
             IErrorAlerter errorAlerter,
             ILogger logger)
         {
@@ -37,6 +40,7 @@ namespace Mammoth.Price.Controller.EventProcessors
             this.getCancelAllSalesDataQuery = getCancelAllSalesDataQuery;
             this.service = service;
             this.archiveEventsCommandHandler = archiveEventsCommandHandler;
+            this.reprocessFailedCancelAllSalesEventsCommandHandler = reprocessFailedCancelAllSalesEventsCommandHandler;
             this.errorAlerter = errorAlerter;
             this.logger = logger;
         }
@@ -57,10 +61,18 @@ namespace Mammoth.Price.Controller.EventProcessors
                     ArchiveEvents(cancelAllSales, cancelAllSalesEvents);
                     if (cancelAllSales.Any(p => !string.IsNullOrWhiteSpace(p.ErrorMessage)))
                     {
-                        errorAlerter.AlertErrors(cancelAllSales.Where(p => !string.IsNullOrWhiteSpace(p.ErrorMessage)).ToList());
+                        var errorCancelAllSales = cancelAllSales.Where(p => !string.IsNullOrWhiteSpace(p.ErrorMessage)).ToList();
+                        errorAlerter.AlertErrors(errorCancelAllSales);
+                        reprocessFailedCancelAllSalesEventsCommandHandler.Execute(
+                            new ReprocessFailedCancelAllSalesEventsCommand
+                            {
+                                Region = settings.CurrentRegion,
+                                CancelAllSales = errorCancelAllSales,
+                                Events = cancelAllSalesEvents
+                            });
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.Error(new { Region = settings.CurrentRegion, Message = "Error occurred while processing Cancel All Sales Events." }.ToJson(), ex);
                 }

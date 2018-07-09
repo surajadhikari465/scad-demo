@@ -52,6 +52,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.3.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
     </Reference>
@@ -78,7 +81,7 @@
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.ControllerApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.5.1.4\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.ControllerApplication.2018.7.3.2\lib\net46\Mammoth.Common.ControllerApplication.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.DataAccess.2018.5.1.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
@@ -87,6 +90,9 @@
       <HintPath>..\packages\Mammoth.Logging.2018.3.13.2\lib\net46\Mammoth.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.8.3\lib\net45\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -110,7 +116,13 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -131,6 +143,7 @@
   <ItemGroup>
     <Compile Include="Commands\ArchiveEventsCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteEventQueueCommandHandlerTests.cs" />
+    <Compile Include="Commands\ReprocessFailedCancelAllSalesEventsCommandHandlerTests.cs" />
     <Compile Include="Queries\GetCancelAllSalesDataQueryTests.cs" />
     <Compile Include="Queries\UpdateAndGetEventQueueInProcessQueryHandlerTests.cs" />
     <Compile Include="IrmaInsertHelpers.cs" />
@@ -154,6 +167,10 @@
     <Compile Include="StoreRegionMapping.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mammoth.Price.Controller.Common\Mammoth.Price.Controller.Common.csproj">
+      <Project>{3f3bfd24-6609-41dc-b8dc-f71bc2ffca8e}</Project>
+      <Name>Mammoth.Price.Controller.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mammoth.Price.Controller.DataAccess\Mammoth.Price.Controller.DataAccess.csproj">
       <Project>{4917bc52-8b44-4911-94df-7277a89bdcf3}</Project>
       <Name>Mammoth.Price.Controller.DataAccess</Name>

@@ -21,16 +21,19 @@ namespace MammothWebApi.DataAccess.Commands
                     (  
                         ScanCode VARCHAR(13),
 	                    BusinessUnitId INT,
-                        EndDate DATETIME2(7)
+                        EndDate DATETIME2(7),
+                        EventCreatedDate DATETIME2(7)
                     )
                     INSERT INTO #CancelAllSales(
                         BusinessUnitId, 
                         ScanCode,
-                        EndDate)
+                        EndDate,
+                        EventCreatedDate)
                     SELECT 
                         BusinessUnitId, 
                         ScanCode,
-                        EndDate
+                        EndDate,
+                        EventCreatedDate
                     FROM @CancelAllSales
 
                     SELECT     
@@ -66,11 +69,12 @@ namespace MammothWebApi.DataAccess.Commands
 	                    p.EndDate IS NOT NULL 
                         AND p.EndDate > CONVERT(DATE,GetDate())
                         AND p.PriceType <> 'REG'
-	                    AND p.Region = @Region;
+	                    AND p.Region = @Region
+                        AND p.AddedDate < tmp.EventCreatedDate;
 
                     UPDATE P
                     SET EndDate = CONVERT(DATE, tmp.EndDate)
-                    FROM Price_{data.Region} p
+                    FROM Price_{data.Region} p WITH (UPDLOCK, ROWLOCK)
                     INNER JOIN #Tmp tmp ON tmp.PriceID = p.PriceID             
                     
                     INSERT INTO esb.MessageQueuePrice

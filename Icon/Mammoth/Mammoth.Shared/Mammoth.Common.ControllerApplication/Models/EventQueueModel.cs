@@ -17,5 +17,6 @@ namespace Mammoth.Common.ControllerApplication.Models
         public DateTime InsertDate { get; set; }
         public DateTime? ProcessFailedDate { get; set; }
         public int? InProcessBy { get; set; }
+        public int? ReprocessCount { get; set; }
     }
 }

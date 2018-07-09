@@ -28,7 +28,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                                 srm.Region_Code			as Region,
 	                            ii.Identifier			as ScanCode,
 	                            s.BusinessUnit_ID		as BusinessUnitId,
-                                pbd.StartDate           as EndDate
+                                pbd.StartDate           as EndDate,
+                                q.InsertDate            as EventCreatedDate
                             FROM 
 	                            mammoth.PriceChangeQueue	        q
 	                            JOIN Store					        s	    on	q.Store_No = s.Store_No

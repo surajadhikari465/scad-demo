@@ -87,12 +87,14 @@ namespace MammothWebApi.Tests.Service.Decorators
         {
             //Given
             var region = "FL";
+            var today = DateTime.Today;
+
             data.Prices = new List<PriceServiceModel>
             {
-                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = DateTime.Today  },
-                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = DateTime.Today  },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = DateTime.Today  },
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = today, EndDate =  today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = today, EndDate =  today.AddDays(1)  },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
@@ -168,10 +170,10 @@ namespace MammothWebApi.Tests.Service.Decorators
             var region = "FL";
             data.Prices = new List<PriceServiceModel>
             {
-                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = DateTime.Today },
-                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = DateTime.Today, EndDate =  DateTime.Today },
             };
             var primePsgItemStoreDataModels = data.Prices
                 .Select(p => new PrimePsgItemStoreDataModel
@@ -230,6 +232,92 @@ namespace MammothWebApi.Tests.Service.Decorators
                 p => p.MessageAction == ActionEnum.Delete)), Times.Never);
         }
 
+        [TestMethod]
+        public void Handle_PricesArePrimeEligibleAndStartDateInPastWithEndDateInFuture_ShouldSendAddOrUpdatePsgs()
+        {
+            //Given
+            var region = "FL";
+            var today = DateTime.Today;
+         
+            data.Prices = new List<PriceServiceModel>
+            {
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "ISS", StartDate = today.AddDays(-2), EndDate = today.AddDays(2) },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "FRZ", StartDate = today.AddDays(-3), EndDate = today.AddDays(3) },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "SAL", StartDate = DateTime.Today, EndDate = today.AddDays(1)  },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "SAL", StartDate = today.AddDays(-4), EndDate = today },
+            };
+            var primePsgItemStoreDataModels = data.Prices
+                .Select(p => new PrimePsgItemStoreDataModel
+                {
+                    BusinessUnitId = p.BusinessUnitId,
+                    ItemId = int.Parse(p.ScanCode),
+                    ItemTypeCode = "RTL",
+                    PsSubTeamNumber = p.BusinessUnitId + int.Parse(p.ScanCode),
+                    Region = region,
+                    StoreName = "Test" + p.BusinessUnitId,
+                    ScanCode = p.ScanCode
+                });
+            mockQueryHandler.Setup(m => m.Search(It.IsAny<GetPrimePsgItemDataByScanCodeQuery>()))
+                .Returns(primePsgItemStoreDataModels);
+
+            //When
+            decorator.Handle(data);
+
+            //Then
+            mockPriceService.Verify(m => m.Handle(It.IsAny<AddUpdatePrice>()), Times.Once);
+            mockQueryHandler.Verify(m => m.Search(It.IsAny<GetPrimePsgItemDataByScanCodeQuery>()), Times.Once);
+            mockPrimeAffinityPsgProcessor.Verify(m => m.SendPsgs(It.Is<PrimeAffinityPsgProcessorParameters>(
+                p => p.MessageAction == ActionEnum.AddOrUpdate
+                    && p.Region == region
+                    && p.PrimeAffinityMessageModels.Count() == 4
+                    && AssertDataModelsAreEqualToMessageModels(primePsgItemStoreDataModels, p.PrimeAffinityMessageModels, ActionEnum.AddOrUpdate))), Times.Once);
+            mockPrimeAffinityPsgProcessor.Verify(m => m.SendPsgs(It.Is<PrimeAffinityPsgProcessorParameters>(
+                p => p.MessageAction == ActionEnum.Delete)), Times.Never);
+        }
+
+        [TestMethod]
+        public void Handle_PricesAreNotPrimeEligibleSalesAndStartDateInPastWithEndDateInFuture_ShouldSendDeletePsgs()
+        {
+            //Given
+            var region = "FL";
+            var today = DateTime.Today;
+
+            data.Prices = new List<PriceServiceModel>
+            {
+                new PriceServiceModel{ BusinessUnitId = 123, ScanCode = "111", Region = region, PriceType = "TST", StartDate = today.AddDays(-2), EndDate = today.AddDays(2) },
+                new PriceServiceModel{ BusinessUnitId = 456, ScanCode = "222", Region = region, PriceType = "TST", StartDate = today.AddDays(-3), EndDate = today.AddDays(3) },
+                new PriceServiceModel{ BusinessUnitId = 789, ScanCode = "333", Region = region, PriceType = "TST", StartDate = today, EndDate = today.AddDays(1) },
+                new PriceServiceModel{ BusinessUnitId = 147, ScanCode = "444", Region = region, PriceType = "TST", StartDate = today.AddDays(-4), EndDate = today },
+            };
+            var primePsgItemStoreDataModels = data.Prices
+                .Select(p => new PrimePsgItemStoreDataModel
+                {
+                    BusinessUnitId = p.BusinessUnitId,
+                    ItemId = int.Parse(p.ScanCode),
+                    ItemTypeCode = "RTL",
+                    PsSubTeamNumber = p.BusinessUnitId + int.Parse(p.ScanCode),
+                    Region = region,
+                    StoreName = "Test" + p.BusinessUnitId,
+                    ScanCode = p.ScanCode
+                });
+            mockQueryHandler.Setup(m => m.Search(It.IsAny<GetPrimePsgItemDataByScanCodeQuery>()))
+                .Returns(primePsgItemStoreDataModels);
+
+            //When
+            decorator.Handle(data);
+
+            //Then
+            mockPriceService.Verify(m => m.Handle(It.IsAny<AddUpdatePrice>()), Times.Once);
+            mockQueryHandler.Verify(m => m.Search(It.IsAny<GetPrimePsgItemDataByScanCodeQuery>()), Times.Once);
+            mockPrimeAffinityPsgProcessor.Verify(m => m.SendPsgs(It.Is<PrimeAffinityPsgProcessorParameters>(
+                p => p.MessageAction == ActionEnum.AddOrUpdate)), Times.Never);
+            mockPrimeAffinityPsgProcessor.Verify(m => m.SendPsgs(It.Is<PrimeAffinityPsgProcessorParameters>(
+                p => p.MessageAction == ActionEnum.Delete
+                    && p.Region == region
+                    && p.PrimeAffinityMessageModels.Count() == 4
+                    && AssertDataModelsAreEqualToMessageModels(primePsgItemStoreDataModels, p.PrimeAffinityMessageModels, ActionEnum.Delete))), Times.Once);
+        }
+
         private bool AssertDataModelsAreEqualToMessageModels(
             IEnumerable<PrimePsgItemStoreDataModel> primePsgItemStoreDataModels, 
             IEnumerable<PrimeAffinityMessageModel> primeAffinityMessageModels,
@@ -250,7 +338,7 @@ namespace MammothWebApi.Tests.Service.Decorators
                 Assert.IsNull(messageModel.ErrorDetails);
             }
             return true;
-        }
+        }  
 
         private IEnumerable<PrimePsgItemStoreDataModel> ConvertToDataModels(IEnumerable<PriceServiceModel> prices, string region)
         {

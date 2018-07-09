@@ -168,6 +168,7 @@
     <Compile Include="Decorators\PrimeAffinityPsgCancelAllSalesPriceServiceDecorator.cs" />
     <Compile Include="Decorators\PrimeAffinityPsgDeletePriceServiceDecorator.cs" />
     <Compile Include="Decorators\PrimeAffinityPsgAddPriceServiceDecorator.cs" />
+    <Compile Include="Decorators\RetryCommandHandlerDecorator.cs" />
     <Compile Include="Models\CancelAllSalesServiceModel.cs" />
     <Compile Include="Models\ItemLocaleServiceModel.cs" />
     <Compile Include="Models\ItemStorePriceServiceModel.cs" />

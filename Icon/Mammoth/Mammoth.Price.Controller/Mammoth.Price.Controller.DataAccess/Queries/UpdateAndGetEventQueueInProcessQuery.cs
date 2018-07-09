@@ -34,7 +34,8 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 		                            EventReferenceID,
 		                            InsertDate,
 		                            ProcessFailedDate,
-		                            InProcessBy
+		                            InProcessBy,
+                                    ReprocessCount
 	                            FROM
 		                            [mammoth].[PriceChangeQueue] WITH (ROWLOCK, READPAST, UPDLOCK)
 	                            WHERE
