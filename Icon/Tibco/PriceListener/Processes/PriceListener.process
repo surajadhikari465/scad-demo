@@ -29,7 +29,7 @@
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
             <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
-            <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
         </config>
         <pd:inputBindings/>
     </pd:starter>
@@ -79,7 +79,7 @@
     <pd:activity name="Parse Message">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>230</pd:x>
+        <pd:x>234</pd:x>
         <pd:y>44</pd:y>
         <config>
             <processName>/Processes/ParsePriceMessage.process</processName>
@@ -377,7 +377,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>210</pd:x>
-        <pd:y>686</pd:y>
+        <pd:y>689</pd:y>
         <config>
             <processName>/SharedResources/Processes/Confirm BOD.process</processName>
         </config>
