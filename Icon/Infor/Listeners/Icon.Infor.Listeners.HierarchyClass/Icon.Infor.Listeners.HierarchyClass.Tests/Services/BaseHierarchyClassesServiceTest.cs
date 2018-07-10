@@ -218,6 +218,42 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
                     , times);
         }
 
+        protected void VerifyMockGenerateMessagesCall(
+            Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> mockCommandHandler,
+            string hierarchyName,
+            ActionEnum action,
+            Times times,
+            int hierarchyClassId = 0)
+        {
+            VerifyMockGenerateMessagesCall(mockCommandHandler,
+                hierarchyName,
+                GetDefaultHierarchyLevelNameForTest(hierarchyName),
+                action,
+                GetDefaultHierarchyClassNameForTest(hierarchyName),
+                times,
+                hierarchyClassId);
+        }
+
+        protected void VerifyMockGenerateMessagesCall(
+            Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> mockCommandHandler,
+            string hierarchyName,
+            string hierarchyLevelName,
+            ActionEnum action,
+            string hierarchyClassName,
+            Times times,
+            int hierarchyClassId = 0)
+        {
+            mockCommandHandler.Verify(
+                m => m.Execute(It.Is<GenerateHierarchyClassMessagesCommand>(
+                    c => c.HierarchyClasses.All(
+                        hc => hc.HierarchyClassId == hierarchyClassId
+                            && hc.HierarchyName == hierarchyName
+                            && hc.HierarchyLevelName == hierarchyLevelName
+                            && hc.Action == action
+                            && hc.HierarchyClassName == hierarchyClassName)))
+                    , times);
+        }
+
         protected static string GetDefaultHierarchyLevelNameForTest(string hierarchyName)
         {
             var hierarchyLevelName = String.Empty;

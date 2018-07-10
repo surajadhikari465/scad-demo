@@ -127,6 +127,8 @@
     <Compile Include="Commands\AddOrUpdateHierarchyClassesCommand.cs" />
     <Compile Include="Commands\AddOrUpdateMerchandiseHierarchyLineageCommand.cs" />
     <Compile Include="Commands\AddOrUpdateMerchandiseHierarchyLineageCommandHandler.cs" />
+    <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommand.cs" />
+    <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommandHandler.cs" />
     <Compile Include="Commands\DeleteBrandsParameter.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesParameter.cs" />
     <Compile Include="Commands\DeleteMerchandiseClassParameter.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="MessageParsers\HierarchyClassMessageParser.cs" />
     <Compile Include="Models\HierarchyClassModel.cs" />
     <Compile Include="Models\MerchandiseHierarchyModel.cs" />
+    <Compile Include="Models\NationalHierarchyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetItemsByMerchandiseHierarchyIdParameter.cs" />
     <Compile Include="Queries\GetItemsByBrandIdParameter.cs" />

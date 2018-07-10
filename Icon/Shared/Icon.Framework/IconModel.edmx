@@ -500,6 +500,11 @@
           <Property Name="Refrigerated" Type="nvarchar" MaxLength="255" />
           <Property Name="SmithsonianBirdFriendly" Type="bit" />
           <Property Name="WicEligible" Type="bit" />
+          <Property Name="NationalClassId" Type="int" />
+          <Property Name="NationalClassName" Type="nvarchar" MaxLength="255" />
+          <Property Name="NationalLevel" Type="int" />
+          <Property Name="NationalParentId" Type="int" />
+          <Property Name="Hidden" Type="bit" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -1876,6 +1881,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_MessageQueuePrice_CurrencyCode" />-->
         <Association Name="FK_MessageQueuePrice_IRMAPushID">
           <End Role="IRMAPush" Type="Self.IRMAPush" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4940,6 +4948,11 @@
           <Property Name="Refrigerated" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SmithsonianBirdFriendly" Type="Boolean" />
           <Property Name="WicEligible" Type="Boolean" />
+          <Property Name="NationalClassId" Type="Int32" />
+          <Property Name="NationalClassName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NationalLevel" Type="Int32" />
+          <Property Name="NationalParentId" Type="Int32" />
+          <Property Name="Hidden" Type="Boolean" />
          </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6794,6 +6807,11 @@
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="Hidden" ColumnName="Hidden" />
+                <ScalarProperty Name="NationalParentId" ColumnName="NationalParentId" />
+                <ScalarProperty Name="NationalLevel" ColumnName="NationalLevel" />
+                <ScalarProperty Name="NationalClassName" ColumnName="NationalClassName" />
+                <ScalarProperty Name="NationalClassId" ColumnName="NationalClassId" />
                 <ScalarProperty Name="WicEligible" ColumnName="WicEligible" />
                 <ScalarProperty Name="SmithsonianBirdFriendly" ColumnName="SmithsonianBirdFriendly" />
                 <ScalarProperty Name="Refrigerated" ColumnName="Refrigerated" />

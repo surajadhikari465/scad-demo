@@ -22,12 +22,13 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         {
             mockAddOrUpdateCommandHandler = new Mock<ICommandHandler<AddOrUpdateHierarchyClassesCommand>>();
 
-            MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassEventGeneration).Returns(true);
+            MockHierarchyClassListenerSettings.Setup(s => s.EnableNationalClassMessageGeneration).Returns(true);
 
             service = new AddOrUpdateHierarchyClassesService(
                 MockHierarchyClassListenerSettings.Object,
                 mockAddOrUpdateCommandHandler.Object,
-                MockGenerateEventsCommandHandler.Object);
+                MockGenerateEventsCommandHandler.Object,
+                MockGenerateMessagesCommandHandler.Object);
         }
 
         [TestMethod]
@@ -152,12 +153,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
 
         #region National Class AddOrUpdate
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndEventGenOn_AddsNationalClass()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndMessageGenOn_AddsNationalClass()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
@@ -168,12 +169,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndEventGenOn_GeneratesEvent()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndMessageGenOn_GeneratesEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
@@ -184,28 +185,28 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndEventGenOff_DoesNotGenerateEvent()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndMessageGenOff_GeneratesEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
             VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
-                hierarchyName, ActionEnum.AddOrUpdate, Times.Never());
+                hierarchyName, ActionEnum.AddOrUpdate, Times.Once());
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndEventGenOff_AddsNationalClass()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndEventMessageOff_AddsNationalClass()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
             //When
@@ -216,12 +217,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndEventGenOn_UpdatesNationalClass()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndMessageGenOn_UpdatesNationalClass()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
                 hierarchyClassIdForUpdate, hierarchyName);
@@ -233,12 +234,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndEventGenOn_GeneratesEvent()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndMessageGenOn_GeneratesEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
                 hierarchyClassIdForUpdate, hierarchyName);
@@ -250,12 +251,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndEventGenOff_DoesNotGenerateEvent()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndMessageGenOff_GenerateEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
                 hierarchyClassIdForUpdate, hierarchyName);
@@ -263,16 +264,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
             VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
-                hierarchyName, ActionEnum.AddOrUpdate, Times.Never(), hierarchyClassIdForUpdate);
+                hierarchyName, ActionEnum.AddOrUpdate, Times.Once(), hierarchyClassIdForUpdate);
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndEventGenOff_UpdatesNationalClass()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndMessageGenOff_UpdatesNationalClass()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(false);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
                 hierarchyClassIdForUpdate, hierarchyName);
@@ -284,12 +285,12 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenErrorAddingAndEventGenOn_DoesNotGenerateEvent()
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenErrorAddingAndMessageGenOn_DoesNotGenerateEvent()
         {
             //Given
             var hierarchyName = HierarchyNames.National;
             MockHierarchyClassListenerSettings
-                .Setup(m => m.EnableNationalClassEventGeneration)
+                .Setup(m => m.EnableNationalClassMessageGeneration)
                 .Returns(true);
             var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
                 hierarchyClassIdForUpdate, hierarchyName);
@@ -305,6 +306,48 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
             //Then
             VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
                 hierarchyName, ActionEnum.AddOrUpdate, Times.Never(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenNewAndMessageGenOff_DoesNotGenerateMessage()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyLevelName = GetDefaultHierarchyLevelNameForTest(hierarchyName);
+            MockHierarchyClassListenerSettings
+                .Setup(m => m.EnableNationalClassMessageGeneration)
+                .Returns(false);
+            var hierarchyClasses = CreateInforHierarchyClassesForAdd(hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateMessagesCall(
+                MockGenerateMessagesCommandHandler,
+                hierarchyName,
+                ActionEnum.AddOrUpdate,
+                Times.Never(),
+                hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalAddOrUpdate_WhenExistsAndMessageGenOn_GeneratesMessage()
+        {
+            //Given
+            var hierarchyName = HierarchyNames.National;
+            MockHierarchyClassListenerSettings
+                .Setup(m => m.EnableNationalClassMessageGeneration)
+                .Returns(true);
+            var hierarchyClasses = CreateInforHierarchyClassesForUpdate(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateMessagesCall(
+                MockGenerateMessagesCommandHandler,
+                hierarchyName,
+                ActionEnum.AddOrUpdate,
+                Times.Once(),
+                hierarchyClassIdForUpdate);
         }
         #endregion
     }

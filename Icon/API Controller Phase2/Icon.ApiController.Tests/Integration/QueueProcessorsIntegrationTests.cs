@@ -1,5 +1,4 @@
 ﻿using Icon.ApiController.Common;
-using Icon.ApiController.Controller.CollectionProcessors;
 using Icon.ApiController.Controller.Mappers;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueProcessors;
@@ -99,7 +98,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockGetMessageQueueQuery.Object,
                 new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
                 mockProductSelectionGroupsMapper.Object,
-                mockUomMapper.Object);
+                mockUomMapper.Object,
+                settings);
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
             var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProduct>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
             var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>(mockSetProcessedDateLogger.Object, iconContextFactory);
@@ -210,7 +210,6 @@ namespace Icon.ApiController.Tests.Integration
             var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, iconContextFactory);
             var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
             var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
-            var mockProductMessageProcessor = new Mock<ICollectionProcessor<List<int>>>();
             var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
             var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
@@ -220,7 +219,6 @@ namespace Icon.ApiController.Tests.Integration
                 mockQueueProcessorLogger.Object,
                 queueReader,
                 serializer,
-                mockProductMessageProcessor.Object,
                 saveToMessageHistoryCommandHandler,
                 associateMessageToQueueCommandHandler,
                 updateProcessedDateCommandHandler,
@@ -326,7 +324,6 @@ namespace Icon.ApiController.Tests.Integration
             var updateProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueItemLocale>(mockUpdateProcessedDateLogger.Object, iconContextFactory);
             var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
             var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
-            var mockProductMessageProcessor = new Mock<ICollectionProcessor<List<int>>>();
             var updateInProcessBusinessUnitCommandHandler = new UpdateInProcessBusinessUnitCommandHandler(iconContextFactory);
             var clearBusinessUnitInProcessCommandHandler = new ClearBusinessUnitInProcessCommandHandler(iconContextFactory);
             
@@ -335,7 +332,6 @@ namespace Icon.ApiController.Tests.Integration
                 mockQueueProcessorLogger.Object,
                 queueReader,
                 serializer,
-                mockProductMessageProcessor.Object,
                 saveToMessageHistoryCommandHandler,
                 associateMessageToMessageQueueCommandHandler,
                 updateProcessedDateCommandHandler,

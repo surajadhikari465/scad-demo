@@ -11,8 +11,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
@@ -132,7 +130,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
         }
 
         [TestMethod]
-        public void HandleMessage_NationalHierarchy_ShouldAddOrUpdateMerchandiseHierarchyClass()
+        public void HandleMessage_NationalHierarchy_ShouldAddOrUpdateNationalHierarchyClass()
         {
             //Given
             using (IconContext context = new IconContext())
@@ -250,8 +248,23 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
 
                 if (!isfinancialHierarchy)
                 {
-                    var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == expectedHierarchyClassId);
+                    var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == hierarchyClass.hierarchyClassID);
                     Assert.IsNotNull(messageHierarchyArchive);
+                }
+
+                if(hierarchyClass.hierarchyID == Hierarchies.Brands
+                    || hierarchyClass.hierarchyID == Hierarchies.National
+                    || hierarchyClass.hierarchyID == Hierarchies.Merchandise)
+                {
+                    var messageQueueHierarchy = context.MessageQueueHierarchy.SingleOrDefault(hc => hc.HierarchyClassId == hierarchyClass.hierarchyClassID.ToString());
+                    Assert.IsNotNull(messageQueueHierarchy);
+                }
+
+                if (hierarchyClass.hierarchyID == Hierarchies.Brands
+                    || hierarchyClass.hierarchyID == Hierarchies.National)
+                {
+                    var events = context.EventQueue.Where(q => q.EventReferenceId == hierarchyClass.hierarchyClassID);
+                    Assert.AreNotEqual(0, events.Count());
                 }
             }
         }
@@ -316,7 +329,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                         .Returns(messageText);
                     mockMessage.Setup(m => m.GetProperty("IconMessageID")).Returns(Guid.NewGuid().ToString());
 
-
                     //When
                     var listener = container.GetInstance<IListenerApplication>() as HierarchyClassListener;
                     listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
@@ -333,6 +345,21 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Integration
                     {
                         var messageHierarchyArchive = context.MessageArchiveHierarchy.FirstOrDefault(hc => hc.HierarchyClassId == passedHierarchyClassId);
                         Assert.IsNotNull(messageHierarchyArchive);
+                    }
+
+                    if (hierarchyClass.hierarchyID == Hierarchies.Brands
+                        || hierarchyClass.hierarchyID == Hierarchies.National
+                        || hierarchyClass.hierarchyID == Hierarchies.Merchandise)
+                    {
+                        var messageQueueHierarchy = context.MessageQueueHierarchy.SingleOrDefault(hc => hc.HierarchyClassId == hierarchyClass.hierarchyClassID.ToString());
+                        Assert.IsNotNull(messageQueueHierarchy);
+                    }
+
+                    if (hierarchyClass.hierarchyID == Hierarchies.Brands
+                        || hierarchyClass.hierarchyID == Hierarchies.National)
+                    {
+                        var events = context.EventQueue.Where(q => q.EventReferenceId == hierarchyClass.hierarchyClassID);
+                        Assert.AreNotEqual(0, events.Count());
                     }
                 }
             }

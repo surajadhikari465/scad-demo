@@ -2,7 +2,6 @@
 using Mammoth.Common.DataAccess;
 using Mammoth.Esb.HierarchyClassListener.Commands;
 using Mammoth.Esb.HierarchyClassListener.Models;
-using Mammoth.Esb.HierarchyClassListener.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -16,6 +15,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
         private Mock<ICommandHandler<AddOrUpdateHierarchyClassesCommand>> mockAddOrUpdateHierarchyClassesCommandHandler;
         private Mock<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>> mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler;
         private Mock<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>> mockAddOrUpdateFinancialHierarchyClassCommandHandler;
+        private Mock<ICommandHandler<AddOrUpdateNationalHierarchyLineageCommand>> mockAddOrUpdateNationalHierarchyLineageCommandHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -23,11 +23,13 @@ namespace Mammoth.Esb.HierarchyClassListener.Services.Tests
             mockAddOrUpdateHierarchyClassesCommandHandler = new Mock<ICommandHandler<AddOrUpdateHierarchyClassesCommand>>();
             mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler = new Mock<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>>();
             mockAddOrUpdateFinancialHierarchyClassCommandHandler = new Mock<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>>();
+            mockAddOrUpdateNationalHierarchyLineageCommandHandler = new Mock<ICommandHandler<AddOrUpdateNationalHierarchyLineageCommand>>();
 
             service = new AddOrUpdateHierarchyClassService(
                 mockAddOrUpdateHierarchyClassesCommandHandler.Object,
                 mockAddOrUpdateMerchandiseHierarchyLineageCommandHandler.Object,
-                mockAddOrUpdateFinancialHierarchyClassCommandHandler.Object);
+                mockAddOrUpdateFinancialHierarchyClassCommandHandler.Object,
+                mockAddOrUpdateNationalHierarchyLineageCommandHandler.Object);
         }
 
         [TestMethod]

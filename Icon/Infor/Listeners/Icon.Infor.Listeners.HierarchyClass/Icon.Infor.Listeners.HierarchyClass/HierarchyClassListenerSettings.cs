@@ -4,7 +4,7 @@ namespace Icon.Infor.Listeners.HierarchyClass
 {
     public class HierarchyClassListenerSettings : IHierarchyClassListenerSettings
     {
-        public bool EnableNationalClassEventGeneration { get; set; }
+        public bool EnableNationalClassMessageGeneration { get; set; }
         public bool ValidateSequenceId { get; set; }
         public bool EnableConfirmBods { get; set; }
         public int MaxNumberOfRetries { get; set; }
@@ -14,8 +14,8 @@ namespace Icon.Infor.Listeners.HierarchyClass
         {
             return new HierarchyClassListenerSettings
             {
-                EnableNationalClassEventGeneration = AppSettingsAccessor
-                    .GetBoolSetting(nameof(EnableNationalClassEventGeneration)),
+                EnableNationalClassMessageGeneration = AppSettingsAccessor
+                    .GetBoolSetting(nameof(EnableNationalClassMessageGeneration)),
                 ValidateSequenceId = AppSettingsAccessor
                     .GetBoolSetting(nameof(ValidateSequenceId)),
                 EnableConfirmBods = AppSettingsAccessor

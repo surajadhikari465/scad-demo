@@ -20,7 +20,7 @@ namespace Icon.ApiController.Tests.SerializerTests
     [TestClass]
     public class SerializerTests
     {
-        [TestMethod]
+[TestMethod]
         public void Serializer_SerializeProductXmlToFile_XmlShouldBeSavedToDisk()
         {
             // Given.
@@ -31,14 +31,16 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
-            
+            var settings = new ApiControllerSettings();
+
             var productQueueReader = new ProductQueueReader(
                 mockLoggerQueueReader.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockUpdateMessageQueueStatusCommandHandler.Object,
                 mockProductSelectionGroupsMapper.Object,
-                mockUomMapper.Object);
+                mockUomMapper.Object,
+                settings);
 
             var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
 
@@ -64,6 +66,7 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
 
             var productQueueReader = new ProductQueueReader(
                 mockLoggerQueueReader.Object,
@@ -71,7 +74,8 @@ namespace Icon.ApiController.Tests.SerializerTests
                 mockGetMessageQueueQuery.Object,
                 mockUpdateMessageQueueStatusCommandHandler.Object,
                 mockProductSelectionGroupsMapper.Object,
-                mockUomMapper.Object);
+                mockUomMapper.Object,
+                settings);
 
             var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 123, "1", ItemTypeCodes.RetailSale) };
 

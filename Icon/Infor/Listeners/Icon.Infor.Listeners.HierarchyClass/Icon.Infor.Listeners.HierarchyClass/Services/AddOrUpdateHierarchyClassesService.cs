@@ -13,15 +13,18 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
         private IHierarchyClassListenerSettings settings;
         private ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler;
         private ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler;
+        private ICommandHandler<GenerateHierarchyClassMessagesCommand> generateHierarchyClassMessagesCommandHandler;
 
         public AddOrUpdateHierarchyClassesService(
             IHierarchyClassListenerSettings settings,
             ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler,
-            ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler)
+            ICommandHandler<GenerateHierarchyClassEventsCommand> generateHierarchyClassEventsCommandHandler,
+            ICommandHandler<GenerateHierarchyClassMessagesCommand> generateHierarchyClassMessagesCommandHandler)
         {
             this.settings = settings;
             this.addOrUpdateHierarchyClassesCommandHandler = addOrUpdateHierarchyClassesCommandHandler;
             this.generateHierarchyClassEventsCommandHandler = generateHierarchyClassEventsCommandHandler;
+            this.generateHierarchyClassMessagesCommandHandler = generateHierarchyClassMessagesCommandHandler;
         }
 
         public void ProcessHierarchyClassMessages(IEnumerable<InforHierarchyClassModel> hierarchyClasses)
@@ -45,6 +48,16 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
                             HierarchyClasses = addUpdateMessages.Where(hc => hc.ErrorCode == null)
                         });
                 }
+
+                if (ShouldGenerateMessages(addUpdateMessages.First().HierarchyName)
+                    && addUpdateMessages.Any(hc => hc.ErrorCode == null))
+                {
+                    generateHierarchyClassMessagesCommandHandler.Execute(
+                        new GenerateHierarchyClassMessagesCommand
+                        {
+                            HierarchyClasses = addUpdateMessages.Where(hc => hc.ErrorCode == null)
+                        });
+                }
             }
         }
 
@@ -53,16 +66,29 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
             return hierarchyClasses.Where(hc => hc.Action == ActionEnum.AddOrUpdate && hc.ErrorCode == null);
         }
 
-        internal bool ShouldGenerateEvents(string hierarchyName, IHierarchyClassListenerSettings settings)
+        private bool ShouldGenerateEvents(string hierarchyName, IHierarchyClassListenerSettings settings)
         {
             switch (hierarchyName)
             {
                 case HierarchyNames.National:
-                    //generate an event for a national add/update only if enabled by settings
-                    return settings.EnableNationalClassEventGeneration;
                 case HierarchyNames.Brands:
-                    //always generate event for a brand add/update
+                    //always generate event for a brand and national add/update
                     return true;
+                default:
+                    return false;
+            }
+        }
+
+        private bool ShouldGenerateMessages(string hierarchyName)
+        {
+            switch (hierarchyName)
+            {
+                //always generate messages for a Merchandise or Brand class delete
+                case HierarchyNames.Merchandise:
+                case HierarchyNames.Brands:
+                    return true;
+                case HierarchyNames.National:
+                    return settings.EnableNationalClassMessageGeneration;
                 default:
                     return false;
             }

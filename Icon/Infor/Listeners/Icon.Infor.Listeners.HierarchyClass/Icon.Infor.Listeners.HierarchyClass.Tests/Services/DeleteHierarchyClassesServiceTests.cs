@@ -16,21 +16,19 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
     public class DeleteHierarchyClassesServiceTests : BaseHierarchyClassesServiceTest
     {
         private Mock<ICommandHandler<DeleteHierarchyClassesCommand>> mockDeleteCommandHandler;
-        private Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>> mockGenerateHierarchyClassEventsCommandHandler;
         private HierarchyClassListenerSettings settings;
 
         [TestInitialize]
         public void Initialize()
         {
             mockDeleteCommandHandler = new Mock<ICommandHandler<DeleteHierarchyClassesCommand>>();
-            mockGenerateHierarchyClassEventsCommandHandler = new Mock<ICommandHandler<GenerateHierarchyClassMessagesCommand>>();
-            settings = new HierarchyClassListenerSettings { EnableNationalClassEventGeneration = true };
+            settings = new HierarchyClassListenerSettings { EnableNationalClassMessageGeneration = true };
 
             service = new DeleteHierarchyClassesService(
                 settings,
                 mockDeleteCommandHandler.Object,
                 MockGenerateEventsCommandHandler.Object,
-                mockGenerateHierarchyClassEventsCommandHandler.Object);
+                MockGenerateMessagesCommandHandler.Object);
         }
 
         [TestMethod]
@@ -203,17 +201,31 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Services
         }
 
         [TestMethod]
-        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_SettingIsTurnedOff_DoesNotGeneratesEvent()
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_SettingIsTurnedOff_DoesNotGeneratesMessage()
         {
-            settings.EnableNationalClassEventGeneration = false;
+            settings.EnableNationalClassMessageGeneration = false;
             var hierarchyName = HierarchyNames.National;
             var hierarchyClasses = CreateInforHierarchyClassesForDelete(
                 hierarchyClassIdForUpdate, hierarchyName);
             //When
             service.ProcessHierarchyClassMessages(hierarchyClasses);
             //Then
-            VerifyMockGenerateEventsCall(MockGenerateEventsCommandHandler,
+            VerifyMockGenerateMessagesCall(MockGenerateMessagesCommandHandler,
                 hierarchyName, ActionEnum.Delete, Times.Never(), hierarchyClassIdForUpdate);
+        }
+
+        [TestMethod]
+        public void ProcessHierarchyClassMessages_NationalDelete_WhenExists_SettingIsTurnedOn_GeneratesMessage()
+        {
+            settings.EnableNationalClassMessageGeneration = true;
+            var hierarchyName = HierarchyNames.National;
+            var hierarchyClasses = CreateInforHierarchyClassesForDelete(
+                hierarchyClassIdForUpdate, hierarchyName);
+            //When
+            service.ProcessHierarchyClassMessages(hierarchyClasses);
+            //Then
+            VerifyMockGenerateMessagesCall(MockGenerateMessagesCommandHandler,
+                hierarchyName, ActionEnum.Delete, Times.Once(), hierarchyClassIdForUpdate);
         }
 
         #endregion

@@ -25,6 +25,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         private HierarchyClass merch;
         private HierarchyClass tax;
         private HierarchyClass financial;
+        private HierarchyClass national;
 
         [TestInitialize]
         public void Initialize()
@@ -119,6 +120,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(traits.First(it => it.traitID == Traits.SelfCheckoutItemTareGroup).traitValue, messageQueueProduct.SelfCheckoutItemTareGroup);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.GlobalPricingProgram).traitValue, messageQueueProduct.GlobalPricingProgram);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.ProductDescription).traitValue, messageQueueProduct.ProductDescription);
+            Assert.AreEqual(traits.First(it => it.traitID == Traits.HiddenItem).traitValue.ParseBoolString(), messageQueueProduct.Hidden);
 
             Assert.AreEqual(brand.hierarchyClassID, messageQueueProduct.BrandId);
             Assert.AreEqual(brand.hierarchyLevel, messageQueueProduct.BrandLevel);
@@ -139,6 +141,11 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(financial.hierarchyLevel, messageQueueProduct.FinancialLevel);
             Assert.AreEqual(financial.hierarchyClassName, messageQueueProduct.FinancialClassName);
             Assert.AreEqual(financial.hierarchyParentClassID, messageQueueProduct.FinancialParentId);
+
+            Assert.AreEqual(national.hierarchyClassID, messageQueueProduct.NationalClassId);
+            Assert.AreEqual(national.hierarchyLevel, messageQueueProduct.NationalLevel);
+            Assert.AreEqual(national.hierarchyClassName, messageQueueProduct.NationalClassName);
+            Assert.AreEqual(national.hierarchyParentClassID, messageQueueProduct.NationalParentId);
         }
 
         private List<IRMAItemSubscription> AddIrmaItemSubscription(string scanCode, List<string> regions)
@@ -162,6 +169,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             merch = BuildAndSaveHierarchyClass(Hierarchies.Merchandise, HierarchyLevels.SubBrick, "Infor Test Merch");
             tax = BuildAndSaveHierarchyClass(Hierarchies.Tax, HierarchyLevels.Tax, "Infor Test Tax");
             financial = BuildAndSaveHierarchyClass(Hierarchies.Financial, HierarchyLevels.Financial, $"Infor Test Fin ({ExpectedFinancialHierarchyClassId})");
+            national = BuildAndSaveHierarchyClass(Hierarchies.National, HierarchyLevels.NationalClass, "Infor Test National");
 
             Framework.Item item = new Framework.Item
             {
@@ -172,7 +180,8 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     new ItemHierarchyClass { hierarchyClassID = brand.hierarchyClassID, localeID = Locales.WholeFoods },
                     new ItemHierarchyClass { hierarchyClassID = merch.hierarchyClassID, localeID = Locales.WholeFoods },
                     new ItemHierarchyClass { hierarchyClassID = tax.hierarchyClassID, localeID = Locales.WholeFoods },
-                    new ItemHierarchyClass { hierarchyClassID = financial.hierarchyClassID, localeID = Locales.WholeFoods }
+                    new ItemHierarchyClass { hierarchyClassID = financial.hierarchyClassID, localeID = Locales.WholeFoods },
+                    new ItemHierarchyClass { hierarchyClassID = national.hierarchyClassID, localeID = Locales.WholeFoods }
                 },
                 ItemTrait = new List<ItemTrait>
                 {
@@ -199,7 +208,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     new ItemTrait { traitID = Traits.InsertDate, traitValue = "Test InsertDate", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ModifiedDate, traitValue = "Test ModifiedDate", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ModifiedUser, traitValue = "Test ModifiedUser", localeID = Locales.WholeFoods },
-                    new ItemTrait { traitID = Traits.HiddenItem, traitValue = "Test HiddenItem", localeID = Locales.WholeFoods },
+                    new ItemTrait { traitID = Traits.HiddenItem, traitValue = "1", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.Notes, traitValue = "Test Notes", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.DeliverySystem, traitValue = "Test DeliverySystem", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.FlexibleText, traitValue = "Test FlexibleText", localeID = Locales.WholeFoods },

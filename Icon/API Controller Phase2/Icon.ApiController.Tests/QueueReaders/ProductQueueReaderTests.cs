@@ -1,7 +1,7 @@
-﻿using Icon.ApiController.Controller.Mappers;
+﻿using Icon.ApiController.Common;
+using Icon.ApiController.Controller.Mappers;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.DataAccess.Commands;
-
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
@@ -28,6 +28,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         private Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>> mockGetMessageQueueQuery;
         private Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>> mockUpdateMessageQueueStatusCommandHandler;
         private Mock<IProductSelectionGroupsMapper> mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+        private ApiControllerSettings settings;
         private Mock<IUomMapper> mockUomMapper = new Mock<IUomMapper>();
 
         [TestInitialize]
@@ -38,6 +39,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
             mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            settings = new ApiControllerSettings();
 
             queueReader = new ProductQueueReader(
                 mockLogger.Object,
@@ -45,7 +47,8 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 mockGetMessageQueueQuery.Object,
                 mockUpdateMessageQueueStatusCommandHandler.Object,
                 mockProductSelectionGroupsMapper.Object,
-                mockUomMapper.Object);
+                mockUomMapper.Object,
+                settings);
         }
 
         private TraitValueType AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
@@ -70,7 +73,6 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsNotNull(traitValue.value);
             Assert.AreEqual(expectedTraitVal, traitValue.value);
         }
-
 
         private void AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
             string expectedTraitCode, string expectedTraitDesc, int expectedTraitVal)
@@ -200,7 +202,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_InvalidArguments_ExceptionShouldBeThrown()
+        public void BuildMiniBulk_InvalidArguments_ExceptionShouldBeThrown()
         {
             // Given.
             var messages = new List<MessageQueueProduct>();
@@ -221,7 +223,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ThreeProductMessages_ShouldReturnMiniBulkWithThreeItemEntries()
+        public void BuildMiniBulk_ThreeProductMessages_ShouldReturnMiniBulkWithThreeItemEntries()
         {
             // Given.
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
@@ -239,7 +241,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessage_StandardItemTraitsShouldBePresent()
+        public void BuildMiniBulk_ProductMessage_StandardItemTraitsShouldBePresent()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -263,7 +265,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_PackageUnitExistsButNotRetailSizeOrUom_NoneShouldBePresentInTheMiniBulk()
+        public void BuildMiniBulk_PackageUnitExistsButNotRetailSizeOrUom_NoneShouldBePresentInTheMiniBulk()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -292,7 +294,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_PackageUnitAndRetailSizeExistButNotRetailUom_NoneShouldBePresentInTheMiniBulk()
+        public void BuildMiniBulk_PackageUnitAndRetailSizeExistButNotRetailUom_NoneShouldBePresentInTheMiniBulk()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -321,7 +323,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_PackageUnitAndRetailUomExistButNotRetailSize_NoneShouldBePresentInTheMiniBulk()
+        public void BuildMiniBulk_PackageUnitAndRetailUomExistButNotRetailSize_NoneShouldBePresentInTheMiniBulk()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -350,7 +352,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_RetailUomAndRetailSizeExistButNotPackageUnit_NoneShouldBePresentInTheMiniBulk()
+        public void BuildMiniBulk_RetailUomAndRetailSizeExistButNotPackageUnit_NoneShouldBePresentInTheMiniBulk()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -379,7 +381,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_PackageUnitAndRetailUomAndRetailSizeExist_AllThreeShouldBePresentInTheMiniBulk()
+        public void BuildMiniBulk_PackageUnitAndRetailUomAndRetailSizeExist_AllThreeShouldBePresentInTheMiniBulk()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -412,7 +414,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessage_ShouldNotContainPosScaleTareElement()
+        public void BuildMiniBulk_ProductMessage_ShouldNotContainPosScaleTareElement()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -431,7 +433,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ThreeDepartmentSaleMessages_ShouldReturnMiniBulkWithThreeItemEntries()
+        public void BuildMiniBulk_ThreeDepartmentSaleMessages_ShouldReturnMiniBulkWithThreeItemEntries()
         {
             // Given.
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
@@ -451,7 +453,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_DepartmentSaleMiniBulk_MessageShouldOnlyContainDepartmentSaleItemTrait()
+        public void BuildMiniBulk_DepartmentSaleMiniBulk_MessageShouldOnlyContainDepartmentSaleItemTrait()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "1", ItemTypeCodes.RetailSale);
@@ -474,7 +476,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_DepartmentSaleMiniBulk_MessageShouldContainTaxHierarchy()
+        public void BuildMiniBulk_DepartmentSaleMiniBulk_MessageShouldContainTaxHierarchy()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "1", ItemTypeCodes.RetailSale);
@@ -497,7 +499,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_DepartmentSaleMiniBulk_MiniBulkShouldNotContainGroupsElement()
+        public void BuildMiniBulk_DepartmentSaleMiniBulk_MiniBulkShouldNotContainGroupsElement()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "1", ItemTypeCodes.RetailSale);
@@ -518,7 +520,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageTaxClassId_ShouldBeTheSevenDigitTaxCode()
+        public void BuildMiniBulk_ProductMessageTaxClassId_ShouldBeTheSevenDigitTaxCode()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -537,7 +539,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageFinancialHierarchyInformation_ShouldBeSetCorrectlyForNullSubteam()
+        public void BuildMiniBulk_ProductMessageFinancialHierarchyInformation_ShouldBeSetCorrectlyForNullSubteam()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
@@ -560,7 +562,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessage_ShouldHaveSelectionGroups()
+        public void BuildMiniBulk_ProductMessage_ShouldHaveSelectionGroups()
         {
             // Given.
             mockProductSelectionGroupsMapper.Setup(m => m.GetProductSelectionGroups(It.IsAny<MessageQueueProduct>()))
@@ -589,7 +591,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithRetailUomTrait_TraitValueShouldBeSentAsEnum()
+        public void BuildMiniBulk_ProductMessageWithRetailUomTrait_TraitValueShouldBeSentAsEnum()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EXP);
@@ -610,7 +612,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithUnknownRetailUomTrait_RetailUomShouldBeEach()
+        public void BuildMiniBulk_ProductMessageWithUnknownRetailUomTrait_RetailUomShouldBeEach()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
@@ -637,7 +639,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithRetailUomTraitContainingSpaces_RetailUomShouldBeMatchedToEnum()
+        public void BuildMiniBulk_ProductMessageWithRetailUomTraitContainingSpaces_RetailUomShouldBeMatchedToEnum()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.CT);
@@ -665,7 +667,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
 
         [TestMethod]
-        public void GetProductMiniBulk_ThreeNonRetailProductMessages_ShouldReturnMiniBulkWithThreeItemEntries()
+        public void BuildMiniBulk_ThreeNonRetailProductMessages_ShouldReturnMiniBulkWithThreeItemEntries()
         {
             // Given.
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
@@ -739,7 +741,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_NonRetailDepartmentSaleMiniBulk_MiniBulkShouldNotContainGroupsElement()
+        public void BuildMiniBulk_NonRetailDepartmentSaleMiniBulk_MiniBulkShouldNotContainGroupsElement()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "1", ItemTypeCodes.NonRetail);
@@ -760,7 +762,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_NonRetailWithOutNutritionMiniBulk_MiniBulkShouldNotContainConsumerInformation()
+        public void BuildMiniBulk_NonRetailWithOutNutritionMiniBulk_MiniBulkShouldNotContainConsumerInformation()
         {
             // Given.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.NonRetail);
@@ -781,7 +783,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_NonRetailWithNutritionMiniBulk_MiniBulkShouldContainConsumerInformation()
+        public void BuildMiniBulk_NonRetailWithNutritionMiniBulk_MiniBulkShouldContainConsumerInformation()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
@@ -806,7 +808,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_NonRetailWithNutritionMiniBulk_ConsumerInformationContainsBlankHazardousMaterialTypeCode()
+        public void BuildMiniBulk_NonRetailWithNutritionMiniBulk_ConsumerInformationContainsBlankHazardousMaterialTypeCode()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
@@ -832,7 +834,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitGPPvalueEverydayLowPrice_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitGPPvalueEverydayLowPrice_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "GPP";
@@ -856,7 +858,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitFTCvalueOn_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitFTCvalueOn_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "FTC";
@@ -880,7 +882,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitFXTvalue300Chars_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitFXTvalue300Chars_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "FXT";
@@ -904,7 +906,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitMOGvalueAgencyName_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitMOGvalueAgencyName_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "MOG";
@@ -928,7 +930,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitPRBvalueOn_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitPRBvalueOn_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "PRB";
@@ -952,7 +954,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitRFAvalueOn_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitRFAvalueOn_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "RFA";
@@ -976,7 +978,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitRFDvalueRefrigerated_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitRFDvalueRefrigerated_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "RFD";
@@ -1000,7 +1002,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitRFDvalueShelfStable_ShouldBeParsed2()
+        public void BuildMiniBulk_ProductMessageWithTraitRFDvalueShelfStable_ShouldBeParsed2()
         {
             // Given.
             const string expectedTraitCode = "RFD";
@@ -1024,7 +1026,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitSMFvalueOn_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitSMFvalueOn_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "SMF";
@@ -1048,7 +1050,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitWICvalueOn_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitWICvalueOn_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "WIC";
@@ -1072,7 +1074,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitSLFvalue100_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitSLFvalue100_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "SLF";
@@ -1096,12 +1098,88 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void GetProductMiniBulk_ProductMessageWithTraitITGvalue60chars_ShouldBeParsed()
+        public void BuildMiniBulk_ProductMessageWithTraitITGvalue60chars_ShouldBeParsed()
         {
             // Given.
             const string expectedTraitCode = "ITG";
             const string expectedTraitDesc = "Self Checkout Item Tare Group";
             const string expectedTraitVal = "CONTAINER group A�z 0123456789 `=<[\\;',./~@#$%^*(_+{|:\">?";
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            fakeMessage.SelfCheckoutItemTareGroup = expectedTraitVal;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            AssertItemHasExpectedTrait(miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType,
+                expectedTraitCode, expectedTraitDesc, expectedTraitVal);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_NationalClassGenerationTurnedOn_AddsNationalClass()
+        {
+            //Given
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+            settings.EnableNationalHierarchy = true;
+
+            // When
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then
+            var nationalClass = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType)
+                .hierarchies
+                .Single(h => h.name == HierarchyNames.National)
+                .@class
+                .Single();
+
+            Assert.AreEqual(fakeMessage.NationalClassId.ToString(), nationalClass.id);
+            Assert.AreEqual(fakeMessage.NationalClassName, nationalClass.name);
+            Assert.AreEqual(fakeMessage.NationalLevel, nationalClass.level);
+            Assert.AreEqual(fakeMessage.NationalParentId, nationalClass.parentId.Value);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_NationalClassGenerationTurnedOff_DoesNotAddNationalClass()
+        {
+            //Given
+            MessageQueueProduct fakeMessage = TestHelpers
+                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+            settings.EnableNationalHierarchy = false;
+
+            // When
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then
+            var nationalClass = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType)
+                .hierarchies
+                .SingleOrDefault(h => h.name == HierarchyNames.National);
+
+            Assert.IsNull(nationalClass);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_HiddenTraitIsPresent_MessageHasHidden()
+        {
+
+            // Given.
+            const string expectedTraitCode = TraitCodes.HiddenItem;
+            const string expectedTraitDesc = TraitDescriptions.HiddenItem;
+            const string expectedTraitVal = "1";
             MessageQueueProduct fakeMessage = TestHelpers
                 .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
             fakeMessage.SelfCheckoutItemTareGroup = expectedTraitVal;

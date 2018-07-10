@@ -1,13 +1,9 @@
 ﻿using Icon.Esb.MessageParsers;
-using Mammoth.Esb.HierarchyClassListener.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Mammoth.Common.DataAccess;
+using Mammoth.Esb.HierarchyClassListener.Models;
+using System.Collections.Generic;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Mammoth.Esb.HierarchyClassListener.MessageParsers
 {

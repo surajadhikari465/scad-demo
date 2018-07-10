@@ -1,5 +1,4 @@
 ﻿using Icon.ApiController.Common;
-using Icon.ApiController.Controller.CollectionProcessors;
 using Icon.ApiController.Controller.Mappers;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueProcessors;
@@ -50,14 +49,6 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueItemLocale>>(instance), 
                     iconContextFactory),
                 new ProductSelectionGroupsMapper(new GetProductSelectionGroupsQuery(iconContextFactory)));
-            var productCollectionProcessor = new ProductCollectionProcessor(
-                new NLogLoggerInstance<ProductCollectionProcessor>(instance),
-                new Serializer<Contracts.items>(new NLogLoggerInstance<Serializer<Contracts.items>>(instance), emailClient),
-                new GetItemsByIdQuery(iconContextFactory),
-                new GetFinancialClassByMerchandiseClassQuery(iconContextFactory),
-                new SaveToMessageHistoryCommandHandler(new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance), iconContextFactory),
-                new UpdateMessageHistoryStatusCommandHandler(new NLogLoggerInstance<UpdateMessageHistoryStatusCommandHandler>(instance), iconContextFactory),
-                producer);
             var saveToMessageHistoryCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
                 iconContextFactory);
@@ -84,7 +75,6 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 queueProcessorLogger,
                 queueReader,
                 serializer,
-                productCollectionProcessor,
                 saveToMessageHistoryCommandHandler,
                 associateMessageToQueueCommandHandler,
                 setProcessedDateCommandHandler,

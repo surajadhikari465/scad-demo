@@ -2,7 +2,7 @@
 {
     public interface IHierarchyClassListenerSettings
     {
-        bool EnableNationalClassEventGeneration { get; set; }
+        bool EnableNationalClassMessageGeneration { get; set; }
         bool ValidateSequenceId { get; set; }
         bool EnableConfirmBods { get; set; }
         int MaxNumberOfRetries { get; set; }

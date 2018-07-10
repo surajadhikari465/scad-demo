@@ -48,7 +48,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>>(instance), 
                     iconContextFactory),
                 new ProductSelectionGroupsMapper(new GetProductSelectionGroupsQuery(iconContextFactory)),
-                new UomMapper(new NLogLoggerInstance<UomMapper>(instance)));
+                new UomMapper(new NLogLoggerInstance<UomMapper>(instance)),
+                settings);
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
                 iconContextFactory);

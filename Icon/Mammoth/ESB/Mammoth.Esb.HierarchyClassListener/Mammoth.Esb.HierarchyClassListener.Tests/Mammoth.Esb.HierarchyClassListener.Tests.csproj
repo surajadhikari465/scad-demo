@@ -131,6 +131,7 @@
     <Compile Include="Commands\AddOrUpdateFinancialHierarchyClassCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateMerchandiseHierarchyLineageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteMerchandiseClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteBrandsCommandHandlerTests.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />

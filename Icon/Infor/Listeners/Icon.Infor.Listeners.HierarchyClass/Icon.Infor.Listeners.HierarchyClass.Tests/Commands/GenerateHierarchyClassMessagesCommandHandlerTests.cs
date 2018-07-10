@@ -1,13 +1,9 @@
-﻿using Icon.Infor.Listeners.HierarchyClass.Commands;
+﻿using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Framework;
+using Icon.Infor.Listeners.HierarchyClass.Commands;
+using Icon.Infor.Listeners.HierarchyClass.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Infor.Listeners.HierarchyClass.Models;
-using Icon.Framework;
-using Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -110,7 +106,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         }
 
         [TestMethod]
-        public void GenerateHierarchyClassMessages_NationalAddOrUpdate_DoesNothing()
+        public void GenerateHierarchyClassMessages_NationalAddOrUpdate_GeneratesMessage()
         {
             //Given
             var testModel = CreateInforHierarchyClassModel(id1234, "Test National 1",
@@ -122,7 +118,7 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 
             //Then
             var queuedMessages = GetQueuedMessages(context, id1234);
-            Assert.IsFalse(queuedMessages.Any());
+            AssertMessagesAreEqualToTestModel(testModel, queuedMessages);
         }
     }
 }

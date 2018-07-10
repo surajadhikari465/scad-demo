@@ -1,21 +1,20 @@
 ﻿using Icon.ApiController.Common;
+using Icon.ApiController.Controller.ControllerConstants;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
-using Icon.ApiController.Controller.ControllerConstants;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
-using System.Configuration;
 
 namespace Icon.ApiController.Controller.QueueProcessors
 {

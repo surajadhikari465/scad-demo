@@ -76,7 +76,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
             {
                 //always generate events for a National or Brand class delete
                 case HierarchyNames.National:
-                    return settings.EnableNationalClassEventGeneration;
                 case HierarchyNames.Brands:
                     return true;
                 default:
@@ -92,6 +91,8 @@ namespace Icon.Infor.Listeners.HierarchyClass.Services
                 case HierarchyNames.Merchandise:
                 case HierarchyNames.Brands:
                     return true;
+                case HierarchyNames.National:
+                    return settings.EnableNationalClassMessageGeneration;
                 default:
                     return false;
             }

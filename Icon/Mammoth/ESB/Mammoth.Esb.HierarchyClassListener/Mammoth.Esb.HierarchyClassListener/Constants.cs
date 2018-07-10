@@ -26,5 +26,15 @@ namespace Mammoth.Esb.HierarchyClassListener
                 public const string SubBrick = "Sub Brick";
             }
         }
+        public static class National
+        {
+            public static class HierarchyLevels
+            {
+                public const string Family = "Family";
+                public const string Category = "Category";
+                public const string SubCategory = "SubCategory";
+                public const string Class = "Class";
+            }
+        }
     }
 }

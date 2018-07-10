@@ -24,6 +24,7 @@ namespace Icon.ApiController.Controller.QueueReaders
         private ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>> updateMessageQueueStatusCommandHandler;
         private IProductSelectionGroupsMapper productSelectionGroupMapper;
         private IUomMapper uomMapper;
+        private ApiControllerSettings settings;
 
         public ProductQueueReader(
             ILogger<ProductQueueReader> logger,
@@ -31,7 +32,8 @@ namespace Icon.ApiController.Controller.QueueReaders
             IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>> getMessageQueueQuery,
             ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>> updateMessageQueueStatusCommandHandler,
             IProductSelectionGroupsMapper productSelectionGroupMapper,
-            IUomMapper uomMapper)
+            IUomMapper uomMapper,
+            ApiControllerSettings settings)
         {
             this.logger = logger;
             this.emailClient = emailClient;
@@ -40,6 +42,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             this.productSelectionGroupMapper = productSelectionGroupMapper;
             this.uomMapper = uomMapper;
             this.productSelectionGroupMapper.LoadProductSelectionGroups();
+            this.settings = settings;
         }
 
         public List<MessageQueueProduct> GetQueuedMessages()
@@ -245,13 +248,22 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     {
                                         BuildScanCodeType(message)
                                     },
-                                    hierarchies = new Contracts.HierarchyType[]
-                                    {
-                                        BuildMerchandiseHierarchy(message),
-                                        BuildBrandHierarchy(message),
-                                        BuildTaxHierarchy(message),
-                                        BuildFinancialHierarchy(message),
-                                    },
+                                    hierarchies = settings.EnableNationalHierarchy ? 
+                                        new Contracts.HierarchyType[]
+                                        {
+                                            BuildMerchandiseHierarchy(message),
+                                            BuildBrandHierarchy(message),
+                                            BuildTaxHierarchy(message),
+                                            BuildFinancialHierarchy(message),
+                                            BuildNationalHierarchy(message)
+                                        } :
+                                        new Contracts.HierarchyType[]
+                                        {
+                                            BuildMerchandiseHierarchy(message),
+                                            BuildBrandHierarchy(message),
+                                            BuildTaxHierarchy(message),
+                                            BuildFinancialHierarchy(message)
+                                        },
                                     traits = BuildItemTraits(message),
                                     selectionGroups = productSelectionGroupMapper.GetProductSelectionGroups(message)
                                 }
@@ -292,6 +304,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.WicEligible, TraitDescriptions.WicEligible, message.WicEligible),
                 BuildTrait(TraitCodes.ShelfLife, TraitDescriptions.ShelfLife, message.ShelfLife),
                 BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, message.SelfCheckoutItemTareGroup),
+                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, message.Hidden)
             };
 
             if (ShouldSendPhysicalCharacteristicTraits(message))
@@ -370,7 +383,8 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.ServingSizeDesc, TraitDescriptions.ServingSizeDesc, message.ServingSizeDesc),
                 BuildTrait(TraitCodes.ServingsPerPortion, TraitDescriptions.ServingsPerPortion, message.ServingsPerPortion),
                 BuildTrait(TraitCodes.ServingUnits, TraitDescriptions.ServingUnits, message.ServingUnits),
-                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),            
+                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),      
+                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),           
             };
 
             return nutritionTraits;
@@ -626,6 +640,28 @@ namespace Icon.ApiController.Controller.QueueReaders
                     }
                 },
                 name = HierarchyNames.Financial
+            };
+        }
+
+        private Contracts.HierarchyType BuildNationalHierarchy(MessageQueueProduct message)
+        {
+            return new Contracts.HierarchyType
+            {
+                id = Hierarchies.National,
+                @class = new Contracts.HierarchyClassType[]
+                {
+                    new Contracts.HierarchyClassType
+                    {
+                        id = message.NationalClassId.ToString(),
+                        name = message.NationalClassName,
+                        level = message.NationalLevel.Value,
+                        parentId = new Contracts.hierarchyParentClassType
+                        {
+                            Value = message.NationalParentId.HasValue ? message.NationalParentId.Value : default(int)
+                        }
+                    }
+                },
+                name = HierarchyNames.National
             };
         }
 

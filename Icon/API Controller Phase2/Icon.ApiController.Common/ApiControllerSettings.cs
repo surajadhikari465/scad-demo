@@ -16,7 +16,7 @@ namespace Icon.ApiController.Common
         public string NonReceivingSystemsAll { get; set; }
         public string NonReceivingSystemsItemLocale { get; set; }
         public string NonReceivingSystemsPrice { get; set; }
-        public bool ProcessLinkedItems { get; set; }
+        public bool EnableNationalHierarchy { get; set; }
 
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
         {
@@ -31,7 +31,7 @@ namespace Icon.ApiController.Common
                 NonReceivingSystemsAll = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsAll", false),
                 NonReceivingSystemsItemLocale = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsItemLocale", false),
                 NonReceivingSystemsPrice = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsPrice", false),
-                ProcessLinkedItems = AppSettingsAccessor.GetBoolSetting("ProcessLinkedItems", false)
+                EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy))
             };
         }
     }

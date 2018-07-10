@@ -256,22 +256,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                     .First();
                 Assert.AreEqual(sequenceId, testModel.SequenceId.Value);
             }
-
-            //Assert Messages are generated
-            string expectedMessageHierarchyClassId = testModel.HierarchyName == Hierarchies.Names.Financial
-                ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
-                : testModel.HierarchyClassId.ToString();
-            var messages = context.MessageQueueHierarchy.Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId).ToList();
-            Assert.AreEqual(expectedNumberOfMessages, messages.Count);
-
-            messages.ForEach(m =>
-            {
-                Assert.AreEqual(testModel.HierarchyClassName, m.HierarchyClassName);
-                Assert.AreEqual(Hierarchies.Ids[testModel.HierarchyName], m.HierarchyId);
-                Assert.AreEqual(testModel.ParentHierarchyClassId.ToHierarchyParentClassId(), m.HierarchyParentClassId);
-                Assert.AreEqual(testModel.HierarchyLevelName, m.HierarchyLevelName);
-                Assert.AreEqual(hierarchyLevel, m.HierarchyLevel);
-            });
         }
 
         protected void AssertExistingHierarchyClassWasUpdated(
@@ -315,21 +299,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                     .First();
                 Assert.AreEqual(sequenceId, testModel.SequenceId.Value);
             }
-
-            AssertExpectedMessagesWereGenerated(testModel, expectedNumberOfEvents, expectedNumberOfMessages);
-
-            if (expectedNumberOfMessages > 0)
-            {
-                string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
-                var message = context.MessageQueueHierarchy
-                    .Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId)
-                    .OrderByDescending(m => m.MessageQueueId).FirstOrDefault();
-                Assert.AreEqual(testModel.HierarchyClassName, message.HierarchyClassName);
-                Assert.AreEqual(Hierarchies.Ids[testModel.HierarchyName], message.HierarchyId);
-                Assert.AreEqual(testModel.ParentHierarchyClassId.ToHierarchyParentClassId(), message.HierarchyParentClassId);
-                Assert.AreEqual(testModel.HierarchyLevelName, message.HierarchyLevelName);
-                Assert.AreEqual(hierarchyLevel, message.HierarchyLevel);
-            }
         }
 
         protected static string GetExpectedMessageHierarchyClassId(InforHierarchyClassModel testModel)
@@ -338,16 +307,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
                 ? testModel.HierarchyClassName.Split('(')[1].TrimEnd(')')
                 : testModel.HierarchyClassId.ToString();
             return expectedMessageHierarchyClassId;
-        }
-
-        protected void AssertExpectedMessagesWereGenerated(InforHierarchyClassModel testModel,
-            int expectedNumberOfEvents, int expectedNumberOfMessages)
-        {
-            //Assert Messages are generated
-            string expectedMessageHierarchyClassId = GetExpectedMessageHierarchyClassId(testModel);
-            var messageCount = context.MessageQueueHierarchy
-                .Where(m => m.HierarchyClassId == expectedMessageHierarchyClassId).Count();
-            Assert.AreEqual(expectedNumberOfMessages, messageCount);
         }
     }
 }

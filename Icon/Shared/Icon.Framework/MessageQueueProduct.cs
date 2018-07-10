@@ -98,6 +98,11 @@ namespace Icon.Framework
         public string Refrigerated { get; set; }
         public Nullable<bool> SmithsonianBirdFriendly { get; set; }
         public Nullable<bool> WicEligible { get; set; }
+        public Nullable<int> NationalClassId { get; set; }
+        public string NationalClassName { get; set; }
+        public Nullable<int> NationalLevel { get; set; }
+        public Nullable<int> NationalParentId { get; set; }
+        public Nullable<bool> Hidden { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }

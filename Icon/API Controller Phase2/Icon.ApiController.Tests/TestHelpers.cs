@@ -51,7 +51,12 @@ namespace Icon.ApiController.Tests
                 DepartmentSale = departmentSale,
                 InsertDate = DateTime.Now,
                 InProcessBy = null,
-                ProcessedDate = null
+                ProcessedDate = null,
+                Hidden = true,
+                NationalClassId = 2,
+                NationalClassName = "Test National",
+                NationalLevel = HierarchyLevels.NationalClass,
+                NationalParentId = 3
             };
         }
 

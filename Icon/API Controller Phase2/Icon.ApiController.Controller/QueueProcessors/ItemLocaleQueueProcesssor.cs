@@ -1,5 +1,4 @@
 ﻿using Icon.ApiController.Common;
-using Icon.ApiController.Controller.CollectionProcessors;
 using Icon.ApiController.Controller.ControllerConstants;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueReaders;
@@ -26,7 +25,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private ILogger<ItemLocaleQueueProcessor> logger;
         private IQueueReader<MessageQueueItemLocale, Contracts.items> queueReader;
         private ISerializer<Contracts.items> serializer;
-        private ICollectionProcessor<List<int>> productCollectionProcessor;
         private ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler;
         private ICommandHandler<AssociateMessageToQueueCommand<MessageQueueItemLocale, MessageHistory>> associateMessageToQueueCommandHandler;
         private ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>> setProcessedDateCommandHandler;
@@ -46,7 +44,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
             ILogger<ItemLocaleQueueProcessor> logger,
             IQueueReader<MessageQueueItemLocale, Contracts.items> queueReader,
             ISerializer<Contracts.items> serializer,
-            ICollectionProcessor<List<int>> productCollectionProcessor,
             ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>> saveToMessageHistoryCommandHandler,
             ICommandHandler<AssociateMessageToQueueCommand<MessageQueueItemLocale, MessageHistory>> associateMessageToQueueCommandHandler,
             ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>> setProcessedDateCommandHandler,
@@ -63,7 +60,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
             this.logger = logger;
             this.queueReader = queueReader;
             this.serializer = serializer;
-            this.productCollectionProcessor = productCollectionProcessor;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
             this.associateMessageToQueueCommandHandler = associateMessageToQueueCommandHandler;
             this.setProcessedDateCommandHandler = setProcessedDateCommandHandler;
@@ -119,11 +115,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
                     {
                         var itemsInMiniBulk = miniBulk.item.Select(i => i.id).ToList();
                         var messagesReadyToSerialize = messagesReadyForMiniBulk.Where(m => itemsInMiniBulk.Contains(m.ItemId)).ToList();
-
-                        if (settings.ProcessLinkedItems)
-                        {
-                            ProcessLinkedItems(miniBulk);
-                        }
 
                         string xml = SerializeMiniBulk(miniBulk);
 
@@ -335,28 +326,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private string SerializeMiniBulk(Contracts.items miniBulk)
         {
             return serializer.Serialize(miniBulk, new Utf8StringWriter());
-        }
-
-        private void ProcessLinkedItems(Contracts.items miniBulk)
-        {
-            var itemLinks = miniBulk.item.Select(i =>
-            {
-                if (i != null)
-                {
-                    return (i.locale[0].Item as Contracts.StoreItemAttributesType).links;
-                }
-                else
-                {
-                    return null;
-                }
-            })
-            .Where(il => il != null)
-            .Select(il => il[0]);
-
-            if (itemLinks.Any())
-            {
-                productCollectionProcessor.GenerateMessages(itemLinks.Select(il => il.parentId).ToList());
-            }
         }
 
         private Contracts.items PrepareMiniBulk(List<MessageQueueItemLocale> messagesToBundle)

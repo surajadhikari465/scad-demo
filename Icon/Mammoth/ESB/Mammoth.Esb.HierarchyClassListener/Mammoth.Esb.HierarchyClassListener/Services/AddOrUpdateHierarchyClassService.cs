@@ -10,14 +10,17 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
         private ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler;
         private ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand> addOrUpdateFinancialHierarchyClassesCommandHandler;
         private ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand> addOrUpdateMerchandiseHierarchyLineageCommandHandler;
+        private ICommandHandler<AddOrUpdateNationalHierarchyLineageCommand> addOrUpdateNationalHierarchyLineageCommandHandler;
 
         public AddOrUpdateHierarchyClassService(ICommandHandler<AddOrUpdateHierarchyClassesCommand> addOrUpdateHierarchyClassesCommandHandler,
             ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand> addOrUpdateMerchandiseHierarchyLineageCommandHandler,
-            ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand> addOrUpdateFinancialHierarchyClassesCommandHandler)
+            ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand> addOrUpdateFinancialHierarchyClassesCommandHandler,
+            ICommandHandler<AddOrUpdateNationalHierarchyLineageCommand> addOrUpdateNationalHierarchyLineageCommandHandler)
         {
             this.addOrUpdateHierarchyClassesCommandHandler = addOrUpdateHierarchyClassesCommandHandler;
             this.addOrUpdateMerchandiseHierarchyLineageCommandHandler = addOrUpdateMerchandiseHierarchyLineageCommandHandler;
             this.addOrUpdateFinancialHierarchyClassesCommandHandler = addOrUpdateFinancialHierarchyClassesCommandHandler;
+            this.addOrUpdateNationalHierarchyLineageCommandHandler = addOrUpdateNationalHierarchyLineageCommandHandler;
         }
 
         public void ProcessHierarchyClasses(AddOrUpdateHierarchyClassRequest request)
@@ -38,6 +41,15 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
                     addOrUpdateMerchandiseHierarchyLineageCommandHandler.Execute(new AddOrUpdateMerchandiseHierarchyLineageCommand
                     {
                         HierarchyClasses = merchandiseHierarchyClasses.ToList()
+                    });
+                }
+
+                var nationalHierarchyClasses = request.HierarchyClasses.Where(hc => hc.HierarchyId == Hierarchies.National);
+                if (nationalHierarchyClasses.Any())
+                {
+                    addOrUpdateNationalHierarchyLineageCommandHandler.Execute(new AddOrUpdateNationalHierarchyLineageCommand
+                    {
+                        HierarchyClasses = nationalHierarchyClasses.ToList()
                     });
                 }
             }

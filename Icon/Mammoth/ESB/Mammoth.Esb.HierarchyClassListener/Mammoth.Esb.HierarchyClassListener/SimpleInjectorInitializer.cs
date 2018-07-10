@@ -39,6 +39,7 @@ namespace Mammoth.Esb.HierarchyClassListener
 
             container.Register<ICommandHandler<AddOrUpdateHierarchyClassesCommand>, AddOrUpdateHierarchyClassesCommandHandler>();
             container.Register<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>, AddOrUpdateMerchandiseHierarchyLineageCommandHandler>();
+            container.Register<ICommandHandler<AddOrUpdateNationalHierarchyLineageCommand>, AddOrUpdateNationalHierarchyLineageCommandHandler>();
             container.Register<ICommandHandler<AddOrUpdateFinancialHierarchyClassCommand>, AddOrUpdateFinancialHierarchyClassCommandHandler>();
             container.Register<ICommandHandler<DeleteBrandsParameter>, DeleteBrandsCommandHandler>();
             container.Register<ICommandHandler<DeleteMerchandiseClassParameter>, DeleteMerchandiseClassCommandHandler>();

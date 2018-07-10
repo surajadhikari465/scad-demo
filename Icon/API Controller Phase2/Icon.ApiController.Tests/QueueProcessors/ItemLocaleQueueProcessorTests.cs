@@ -1,19 +1,16 @@
 ﻿using Icon.ApiController.Common;
-using Icon.ApiController.Controller.CollectionProcessors;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -28,7 +25,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private Mock<ILogger<ItemLocaleQueueProcessor>> mockLogger;
         private Mock<ISerializer<Contracts.items>> mockSerializer;
         private Mock<IQueueReader<MessageQueueItemLocale, Contracts.items>> mockQueueReader;
-        private Mock<ICollectionProcessor<List<int>>> mockProductMessageProcessor;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>> mockSaveToMessageHistoryCommandHandler;
         private Mock<ICommandHandler<AssociateMessageToQueueCommand<MessageQueueItemLocale, MessageHistory>>> mockAssociateMessageToQueueCommandHandler;
         private Mock<ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>>> mockUpdateProcessedDateCommandHandler;
@@ -49,7 +45,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockLogger = new Mock<ILogger<ItemLocaleQueueProcessor>>();
             mockQueueReader = new Mock<IQueueReader<MessageQueueItemLocale, Contracts.items>>();
             mockSerializer = new Mock<ISerializer<Contracts.items>>();
-            mockProductMessageProcessor = new Mock<ICollectionProcessor<List<int>>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
             mockAssociateMessageToQueueCommandHandler = new Mock<ICommandHandler<AssociateMessageToQueueCommand<MessageQueueItemLocale, MessageHistory>>>();
             mockUpdateProcessedDateCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueueItemLocale>>>();
@@ -60,7 +55,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
             mockMarkQueuedEntriesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueItemLocale>>>();
             mockProducer = new Mock<IEsbProducer>();
-            settings = new ApiControllerSettings() { ProcessLinkedItems = true };
+            settings = new ApiControllerSettings();
             mockMonitor = new Mock<IMessageProcessorMonitor>();
             actualMonitorLogEntry = new APIMessageProcessorLogEntry();
             //set up the mock's RecordResults() method with a callback so that we can examine the data passed to it
@@ -72,7 +67,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 mockLogger.Object,
                 mockQueueReader.Object,
                 mockSerializer.Object,
-                mockProductMessageProcessor.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
                 mockAssociateMessageToQueueCommandHandler.Object,
                 mockUpdateProcessedDateCommandHandler.Object,
@@ -144,118 +138,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
 
             // Then.
             mockSerializer.Verify(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void ProcessQueuedItemLocaleEvents_MiniBulkContainsNoLinkedItems_GenerateMessagesShouldNotBeCalled()
-        {
-            // Given.
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> { TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale) };
-            var fakeMessageQueueItemLocalesEmpty = new List<MessageQueueItemLocale>();
-
-            var queuedMessages = new Queue<List<MessageQueueItemLocale>>();
-            queuedMessages.Enqueue(fakeMessageQueueItemLocales);
-            queuedMessages.Enqueue(fakeMessageQueueItemLocalesEmpty);
-
-            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
-            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(fakeMessageQueueItemLocales);
-            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(false, ItemTypeCodes.RetailSale));
-
-            // When.
-            queueProcessor.ProcessMessageQueue();
-
-            // Then.
-            mockProductMessageProcessor.Verify(mg => mg.GenerateMessages(It.IsAny<List<int>>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void ProcessQueuedItemLocaleEvents_MiniBulkContainsLinkedItems_GenerateMessagesShouldBeCalledOnce()
-        {
-            // Given.
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> { TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale) };
-            var fakeMessageQueueItemLocalesEmpty = new List<MessageQueueItemLocale>();
-
-            var queuedMessages = new Queue<List<MessageQueueItemLocale>>();
-            queuedMessages.Enqueue(fakeMessageQueueItemLocales);
-            queuedMessages.Enqueue(fakeMessageQueueItemLocalesEmpty);
-
-            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
-            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(fakeMessageQueueItemLocales);
-            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(true, ItemTypeCodes.RetailSale));
-
-            // When.
-            queueProcessor.ProcessMessageQueue();
-
-            // Then.
-            mockProductMessageProcessor.Verify(mg => mg.GenerateMessages(It.IsAny<List<int>>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void ProcessQueuedItemLocaleEvents_MiniBulkContainsLinkedItemsButLinkedItemProcessingIsDisabled_GenerateMessagesShouldBeCalledOnce()
-        {
-            // Given.
-            settings.ProcessLinkedItems = false;
-
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> { TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale) };
-            var fakeMessageQueueItemLocalesEmpty = new List<MessageQueueItemLocale>();
-
-            var queuedMessages = new Queue<List<MessageQueueItemLocale>>();
-            queuedMessages.Enqueue(fakeMessageQueueItemLocales);
-            queuedMessages.Enqueue(fakeMessageQueueItemLocalesEmpty);
-
-            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
-            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(fakeMessageQueueItemLocales);
-            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(true, ItemTypeCodes.RetailSale));
-
-            // When.
-            queueProcessor.ProcessMessageQueue();
-
-            // Then.
-            mockProductMessageProcessor.Verify(mg => mg.GenerateMessages(It.IsAny<List<int>>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void ProcessQueuedItemLocaleEvents_MiniBulkContainsNoBottleReturns_GenerateMessagesShouldNotBeCalled()
-        {
-            // Given.
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> { TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale) };
-            var fakeMessageQueueItemLocalesEmpty = new List<MessageQueueItemLocale>();
-
-            var queuedMessages = new Queue<List<MessageQueueItemLocale>>();
-            queuedMessages.Enqueue(fakeMessageQueueItemLocales);
-            queuedMessages.Enqueue(fakeMessageQueueItemLocalesEmpty);
-
-            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
-            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(fakeMessageQueueItemLocales);
-            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(false, ItemTypeCodes.RetailSale));
-
-            // When.
-            queueProcessor.ProcessMessageQueue();
-
-            // Then.
-            mockProductMessageProcessor.Verify(mg => mg.GenerateMessages(It.IsAny<List<int>>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void ProcessQueuedItemLocaleEvents_MiniBulkContainsBottleReturns_GenerateMessagesShouldBeCalledOnce()
-        {
-            // Given.
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> { TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.Return) };
-            var fakeMessageQueueItemLocalesEmpty = new List<MessageQueueItemLocale>();
-
-            var queuedMessages = new Queue<List<MessageQueueItemLocale>>();
-            queuedMessages.Enqueue(fakeMessageQueueItemLocales);
-            queuedMessages.Enqueue(fakeMessageQueueItemLocalesEmpty);
-
-            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
-            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(fakeMessageQueueItemLocales);
-            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(true, ItemTypeCodes.Return));
-            
-            // When.
-            queueProcessor.ProcessMessageQueue();
-
-            // Then.
-            mockProductMessageProcessor.Verify(mg => mg.GenerateMessages(It.IsAny<List<int>>()), Times.Once);
         }
 
         [TestMethod]
