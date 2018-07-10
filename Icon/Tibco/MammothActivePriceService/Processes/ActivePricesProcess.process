@@ -307,7 +307,7 @@ WHERE p.Region = ?
                 <QueryOutputCachedSchemaColumns>CurrencyCode</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>Multiple</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
@@ -477,9 +477,13 @@ WHERE p.Region = ?
                                 <pfx3:SellableUom>
                                     <xsl:value-of select="SellableUOM"/>
                                 </pfx3:SellableUom>
-                                <pfx3:CurrencyCode>
-                                    <xsl:value-of select="CurrencyCode"/>
-                                </pfx3:CurrencyCode>
+                                <xsl:if test="exists(CurrencyCode)">
+                                    <xsl:if test="CurrencyCode">
+                                        <pfx3:CurrencyCode>
+                                            <xsl:value-of select="CurrencyCode"/>
+                                        </pfx3:CurrencyCode>
+                                    </xsl:if>
+                                </xsl:if>
                                 <xsl:if test="exists(TagExpirationDate)">
                                     <xsl:if test="TagExpirationDate">
                                         <pfx3:TagExpirationDate>

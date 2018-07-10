@@ -191,10 +191,9 @@
                                 </pfx2:ScanCode>
                             </pfx2:MammothPrice>
                         </xsl:for-each>
-                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:rewards/ns15:reward[(ns15:rewardAmount/ns1:amount >0) or( ns15:rewardPercentage >0)]">
+                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:rewards/ns15:reward[ ns15:rewardPercentage >0]">
                             <xsl:variable name="RewardStartDate" select="current()/ns15:rewardStartDate"/>
                             <xsl:variable name="var" select="current()/ns15:type/ns16:id"/>
-                            <xsl:variable name="price" select="../../pfx4:prices/pfx3:price[pfx3:priceStartDate = $RewardStartDate&#xA;and pfx3:type/ns2:id = $var and  pfx3:priceAmount/ns1:amount = 0] &#xA;"/>
                             <pfx2:MammothPrice>
                                 <pfx2:Region>
                                     <xsl:value-of select="$Get-RegionCode/Locale/Region"/>
@@ -207,10 +206,10 @@
                                 </pfx2:ItemId>
                                 <xsl:variable name="var2" select="current()/ns15:rewardStartDate"/>
                                 <xsl:choose>
-                                    <xsl:when test="exists($price/@ns:Id)">
-                                        <xsl:if test="$price/@ns:Id">
+                                    <xsl:when test="exists(current()/@ns:Id)">
+                                        <xsl:if test="current()/@ns:Id">
                                             <pfx2:GpmId>
-                                                <xsl:value-of select="$price/@ns:Id"/>
+                                                <xsl:value-of select="current()/@ns:Id"/>
                                             </pfx2:GpmId>
                                         </xsl:if>
                                     </xsl:when>
@@ -219,18 +218,9 @@
                                 <pfx2:Multiple>
                                     <xsl:value-of select="ns15:rewardMultiple"/>
                                 </pfx2:Multiple>
-                                <xsl:choose>
-                                    <xsl:when test="exists(ns15:rewardAmount/ns1:amount)">
-                                        <pfx2:Price>
-                                            <xsl:value-of select="ns15:rewardAmount/ns1:amount"/>
-                                        </pfx2:Price>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <pfx2:Price>
-                                            <xsl:value-of select="0"/>
-                                        </pfx2:Price>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                                <pfx2:Price>
+                                    <xsl:value-of select="0"/>
+                                </pfx2:Price>
                                 <pfx2:StartDate>
                                     <xsl:value-of select="ns15:rewardStartDate"/>
                                 </pfx2:StartDate>
@@ -248,9 +238,6 @@
                                 <pfx2:SellableUom>
                                     <xsl:value-of select="ns15:uom/ns3:code"/>
                                 </pfx2:SellableUom>
-                                <pfx2:CurrencyCode>
-                                    <xsl:value-of select="$price/pfx3:currencyTypeCode"/>
-                                </pfx2:CurrencyCode>
                                 <pfx2:Action>
                                     <xsl:value-of select="@ns:Action"/>
                                 </pfx2:Action>
@@ -263,12 +250,10 @@
                                 <pfx2:ScanCode>
                                     <xsl:value-of select="../../pfx4:scanCode[1]/ns14:code"/>
                                 </pfx2:ScanCode>
-                                <xsl:if test="exists(ns15:rewardPercentage)">
-                                    <xsl:if test="ns15:rewardPercentage">
-                                        <pfx2:PercentOff>
-                                            <xsl:value-of select="ns15:rewardPercentage"/>
-                                        </pfx2:PercentOff>
-                                    </xsl:if>
+                                <xsl:if test="ns15:rewardPercentage">
+                                    <pfx2:PercentOff>
+                                        <xsl:value-of select="ns15:rewardPercentage"/>
+                                    </pfx2:PercentOff>
                                 </xsl:if>
                             </pfx2:MammothPrice>
                         </xsl:for-each>

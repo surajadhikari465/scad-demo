@@ -237,62 +237,66 @@
                                                 <xsl:value-of select="pfx:ScanCode"/>
                                             </ns4:code>
                                         </ns33:scanCode>
-                                        <ns33:prices>
-                                            <ns42:price>
-                                                <ns42:type>
-                                                    <ns5:id>
-                                                        <xsl:value-of select="pfx:PriceType"/>
-                                                    </ns5:id>
-                                                    <xsl:choose>
-                                                        <xsl:when test="pfx:PriceType = &quot;TPR&quot;">
-                                                            <ns5:description>
-                                                                <xsl:value-of select="&quot;Temporary Price Reduction&quot;"/>
-                                                            </ns5:description>
-                                                        </xsl:when>
-                                                        <xsl:otherwise>
-                                                            <ns5:description>
-                                                                <xsl:value-of select="&quot;Regular Price&quot;"/>
-                                                            </ns5:description>
-                                                        </xsl:otherwise>
-                                                    </xsl:choose>
-                                                </ns42:type>
-                                                <ns42:uom>
-                                                    <ns52:code>
-                                                        <xsl:value-of select="pfx:SellableUom"/>
-                                                    </ns52:code>
-                                                </ns42:uom>
-                                                <ns42:currencyTypeCode>
-                                                    <xsl:value-of select="pfx:CurrencyCode"/>
-                                                </ns42:currencyTypeCode>
-                                                <ns42:priceAmount>
-                                                    <ns53:amount>
-                                                        <xsl:value-of select="pfx:Price"/>
-                                                    </ns53:amount>
-                                                </ns42:priceAmount>
-                                                <ns42:priceMultiple>
-                                                    <xsl:value-of select="pfx:Multiple"/>
-                                                </ns42:priceMultiple>
-                                                <xsl:choose>
-                                                    <xsl:when test="pfx:PriceType = 'REG'">
-                                                        <ns42:priceStartDate>
-                                                            <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/Application/RegStartDate"/>
-                                                        </ns42:priceStartDate>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <ns42:priceStartDate>
-                                                            <xsl:value-of select="pfx:StartDate"/>
-                                                        </ns42:priceStartDate>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:if test="pfx:EndDate">
-                                                    <ns42:priceEndDate>
-                                                        <xsl:value-of select="pfx:EndDate"/>
-                                                    </ns42:priceEndDate>
-                                                </xsl:if>
-                                            </ns42:price>
-                                        </ns33:prices>
                                         <xsl:choose>
-                                            <xsl:when test="current()/pfx:PriceType = 'REW'">
+                                            <xsl:when test="(current()/pfx:PriceType !='RWD') or ( current()/pfx:PriceType = 'RWD' and current()/pfx:Price > 0)">
+                                                <ns33:prices>
+                                                    <ns42:price>
+                                                        <ns42:type>
+                                                            <ns5:id>
+                                                                <xsl:value-of select="pfx:PriceType"/>
+                                                            </ns5:id>
+                                                            <xsl:choose>
+                                                                <xsl:when test="pfx:PriceType = &quot;TPR&quot;">
+                                                                    <ns5:description>
+                                                                        <xsl:value-of select="&quot;Temporary Price Reduction&quot;"/>
+                                                                    </ns5:description>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <ns5:description>
+                                                                        <xsl:value-of select="&quot;Regular Price&quot;"/>
+                                                                    </ns5:description>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+                                                        </ns42:type>
+                                                        <ns42:uom>
+                                                            <ns52:code>
+                                                                <xsl:value-of select="pfx:SellableUom"/>
+                                                            </ns52:code>
+                                                        </ns42:uom>
+                                                        <ns42:currencyTypeCode>
+                                                            <xsl:value-of select="pfx:CurrencyCode"/>
+                                                        </ns42:currencyTypeCode>
+                                                        <ns42:priceAmount>
+                                                            <ns53:amount>
+                                                                <xsl:value-of select="pfx:Price"/>
+                                                            </ns53:amount>
+                                                        </ns42:priceAmount>
+                                                        <ns42:priceMultiple>
+                                                            <xsl:value-of select="pfx:Multiple"/>
+                                                        </ns42:priceMultiple>
+                                                        <xsl:choose>
+                                                            <xsl:when test="pfx:PriceType = 'REG'">
+                                                                <ns42:priceStartDate>
+                                                                    <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/Application/RegStartDate"/>
+                                                                </ns42:priceStartDate>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <ns42:priceStartDate>
+                                                                    <xsl:value-of select="pfx:StartDate"/>
+                                                                </ns42:priceStartDate>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                        <xsl:if test="pfx:EndDate">
+                                                            <ns42:priceEndDate>
+                                                                <xsl:value-of select="pfx:EndDate"/>
+                                                            </ns42:priceEndDate>
+                                                        </xsl:if>
+                                                    </ns42:price>
+                                                </ns33:prices>
+                                            </xsl:when>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="(current()/pfx:PriceType = 'RWD' and exists(pfx:PercentOff))">
                                                 <ns33:rewards>
                                                     <ns8:reward>
                                                         <ns8:type>

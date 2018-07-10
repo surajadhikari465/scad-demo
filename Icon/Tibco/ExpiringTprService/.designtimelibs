@@ -1,9 +1,9 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Tue Jun 12 12:36:04 CDT 2018
-5=WfmUtilities_v2.2.projlib1\=
-4=SharedErrorPublisher.projlib1\=
-3=SharedLogPublisher.projlib1\=
-2=SharedJdbcConnections.projlib1\=
-1=SharedJmsConnections.projlib1\=
-0=SharedSchemas.projlib1\=
+#Thu Jul 05 12:16:42 CDT 2018
+5=SharedErrorPublisher.projlib\=
+4=SharedJdbcConnections.projlib\=
+3=SharedJmsConnections.projlib\=
+2=SharedLogPublisher.projlib\=
+1=SharedSchemas.projlib\=
+0=WfmUtilities_v2.2.projlib\=

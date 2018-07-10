@@ -650,9 +650,16 @@ result=Math.pow(2,retryCount)*100L;
                         <SellableUOM>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
                         </SellableUOM>
-                        <CurrencyCode>
-                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
-                        </CurrencyCode>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode)">
+                                <CurrencyCode>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
+                                </CurrencyCode>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <CurrencyCode xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <Multiple>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
                         </Multiple>

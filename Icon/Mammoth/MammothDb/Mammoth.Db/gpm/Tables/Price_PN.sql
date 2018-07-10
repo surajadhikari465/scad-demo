@@ -11,7 +11,7 @@
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
        [SellableUOM] [nvarchar](3) NOT NULL,
-       [CurrencyCode] [nvarchar](3) NOT NULL,
+       [CurrencyCode] [nvarchar](3) NULL,
        [Multiple] [tinyint] NOT NULL,
        [TagExpirationDate] [datetime2](0) NULL,
        [InsertDateUtc] [datetime2](7) NOT NULL CONSTRAINT [DF_Gpm_Price_PN_InsertDateUtc] DEFAULT (SYSUTCDATETIME()),
