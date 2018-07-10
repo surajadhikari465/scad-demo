@@ -42,6 +42,14 @@
 			<modTime>1518725789182</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>NonReceivingSysNameOverwrite</name>
+			<value>Slaw,Mammoth,Spice,Infor,Icon</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1530910715634</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>PrimeAffinityPsg</name>
 			<value>PrimeAffinity</value>
 			<deploymentSettable>true</deploymentSettable>

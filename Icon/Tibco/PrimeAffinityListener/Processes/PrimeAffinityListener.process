@@ -187,7 +187,46 @@
         </config>
         <pd:inputBindings>
             <ns3:ActivityInput>
-                <xsl:copy-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties"/>
+                <OtherProperties>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID">
+                        <TransactionID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID"/>
+                        </TransactionID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/CorrelationID">
+                        <CorrelationID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/CorrelationID"/>
+                        </CorrelationID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/SequenceID">
+                        <SequenceID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/SequenceID"/>
+                        </SequenceID>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag">
+                        <ResetFlag>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ResetFlag>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionType">
+                        <TransactionType>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionType"/>
+                        </TransactionType>
+                    </xsl:if>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/Source">
+                        <Source>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/Source"/>
+                        </Source>
+                    </xsl:if>
+                    <nonReceivingSysName>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/NonReceivingSysNameOverwrite"/>
+                    </nonReceivingSysName>
+                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/RegionCode">
+                        <RegionCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/RegionCode"/>
+                        </RegionCode>
+                    </xsl:if>
+                </OtherProperties>
                 <Body>
                     <xsl:value-of select="$Render-XML/xmlString"/>
                 </Body>
@@ -540,11 +579,9 @@
                             <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/Source"/>
                         </ns9:Source>
                     </xsl:if>
-                    <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/nonReceivingSysName">
-                        <ns9:nonReceivingSysName>
-                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/nonReceivingSysName"/>
-                        </ns9:nonReceivingSysName>
-                    </xsl:if>
+                    <ns9:nonReceivingSysName>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/NonReceivingSysNameOverwrite"/>
+                    </ns9:nonReceivingSysName>
                     <xsl:if test="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag">
                         <ns9:ResetFlag>
                             <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/ResetFlag"/>

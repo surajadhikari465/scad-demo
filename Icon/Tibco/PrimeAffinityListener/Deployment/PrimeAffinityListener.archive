@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/PrimeAffinityListener.process</processProperty>
         </processArchive>
-        <versionProperty>18</versionProperty>
+        <versionProperty>20</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PrimeAffinityListener</name>
