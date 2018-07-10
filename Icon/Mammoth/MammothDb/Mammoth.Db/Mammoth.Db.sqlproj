@@ -175,6 +175,8 @@
     <Folder Include="Scripts\PostDeploymentScripts\Archive" />
     <Folder Include="app\User Defined Types" />
     <Folder Include="eplum\Tables" />
+    <Folder Include="Scripts\Projects" />
+    <Folder Include="Scripts\Projects\GPM" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -791,6 +793,7 @@
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEmergencyPriceServiceToAppTable.sql" />
+    <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
