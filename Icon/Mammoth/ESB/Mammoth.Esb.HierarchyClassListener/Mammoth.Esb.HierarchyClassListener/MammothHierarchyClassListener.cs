@@ -19,6 +19,7 @@ namespace Mammoth.Esb.HierarchyClassListener
         private IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService;
         private IHierarchyClassService<DeleteBrandRequest> deleteBrandsService;
         private IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService;
+        private IHierarchyClassService<DeleteNationalClassRequest> deleteNationalService;
 
         public MammothHierarchyClassListener(ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -28,7 +29,8 @@ namespace Mammoth.Esb.HierarchyClassListener
             IMessageParser<List<HierarchyClassModel>> messageParser,
             IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService,
             IHierarchyClassService<DeleteBrandRequest> deleteBrandsService,
-            IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService)
+            IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService,
+            IHierarchyClassService<DeleteNationalClassRequest> deleteNationalService)
             : base(listenerApplicationSettings,
                   esbConnectionSettings,
                   subscriber,
@@ -39,6 +41,7 @@ namespace Mammoth.Esb.HierarchyClassListener
             this.hierarchyClassService = hierarchyClassService;
             this.deleteBrandsService = deleteBrandsService;
             this.deleteMerchandiseService = deleteMerchandiseService;
+            this.deleteNationalService = deleteNationalService;
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -78,7 +81,8 @@ namespace Mammoth.Esb.HierarchyClassListener
                                 case Hierarchies.Financial:
                                     throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.Financial} Hierarchy.");
                                 case Hierarchies.National:
-                                    throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.National} Hierarchy.");
+                                    deleteNationalService.ProcessHierarchyClasses(new DeleteNationalClassRequest { HierarchyClasses = hierarchyClasses });
+                                    break;
                                 case Hierarchies.CertificationAgencyManagement:
                                     throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.CertificationAgencyManagement} Hierarchy.");
                                 default:

@@ -135,6 +135,8 @@
     <Compile Include="Commands\DeleteMerchandiseClassCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\DeleteBrandsCommandHandler.cs" />
+    <Compile Include="Commands\DeleteNationalClassCommandHandler.cs" />
+    <Compile Include="Commands\DeleteNationalClassParameter.cs" />
     <Compile Include="Commands\IHierarchyClassesParameter.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="MammothHierarchyClassListener.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Queries\GetItemsByBrandIdQueryHandler.cs" />
     <Compile Include="Queries\IGetAssociatedItemsParameter.cs" />
     <Compile Include="Services\AddOrUpdateHierarchyClassService.cs" />
+    <Compile Include="Services\DeleteNationalClassService.cs" />
     <Compile Include="Services\ValidateItemAssociationForDeleteMerchandiseHierarchyDecorator.cs" />
     <Compile Include="Services\DeleteHierarchyClassValidationDecoratorBase.cs" />
     <Compile Include="Services\DeleteHierarchyClassRequest.cs" />

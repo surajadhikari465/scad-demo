@@ -8,23 +8,23 @@ using System.Linq;
 
 namespace Mammoth.Esb.HierarchyClassListener.Commands
 {
-    public class DeleteMerchandiseClassCommandHandler
+    public class DeleteNationalClassCommandHandler
         : DeleteHierarchyClassesGenericCommandHandler<DeleteHierarchyClassesParameter>,
-        ICommandHandler<DeleteMerchandiseClassParameter>
+        ICommandHandler<DeleteNationalClassParameter>
     {
-        private const int brandHierarchyId = Hierarchies.Merchandise;
+        private const int brandHierarchyId = Hierarchies.National;
         protected override int HierarchyId
         {
             get { return brandHierarchyId; }
         }
 
-        public DeleteMerchandiseClassCommandHandler(IDbProvider dbProvider)
+        public DeleteNationalClassCommandHandler(IDbProvider dbProvider)
             : base(dbProvider) { }
 
 
-        public void Execute(DeleteMerchandiseClassParameter data)
+        public void Execute(DeleteNationalClassParameter data)
         {
-            const string tempTable = "#tempDeleteMerchandiseClass";
+            const string tempTable = "#tempDeleteNationalClass";
             string sqlToExecute = String.Empty;
 
             sqlToExecute = $"CREATE TABLE {tempTable} (HierarchyClassID int);";
@@ -38,40 +38,32 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
                 sql: sqlToExecute, param: tempInsertParams, transaction: DbProvider.Transaction);
 
             sqlToExecute = $@"
-                DELETE HM FROM dbo.Hierarchy_Merchandise HM
-                    INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.SegmentHCID;";
+                DELETE HM FROM dbo.Hierarchy_NationalClass HM
+                    INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.FamilyHCID;";
             var deleteSegmentResult = DbProvider.Connection.Execute(
                 sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
 
             sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET FamilyHCID = NULL, ClassHCID = NULL, BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.FamilyHCID;";
+                UPDATE dbo.Hierarchy_NationalClass
+                SET CategoryHCID = NULL, SubcategoryHCID = NULL, ClassHCID = NULL, ModifiedDate = GETDATE()
+                FROM dbo.Hierarchy_NationalClass HM
+                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.CategoryHCID;";
             var deleteFamilyResult = DbProvider.Connection.Execute(
                 sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
 
             sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET ClassHCID = NULL, BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.ClassHCID;";
+                UPDATE dbo.Hierarchy_NationalClass
+                SET SubcategoryHCID = NULL, ClassHCID = NULL, ModifiedDate = GETDATE()
+                FROM dbo.Hierarchy_NationalClass HM
+                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.SubcategoryHCID;";
             var deleteClassResult = DbProvider.Connection.Execute(
                 sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
 
             sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                       INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.BrickHCID;";
-            var deleteBrickResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.SubBrickHCID;";
+                UPDATE dbo.Hierarchy_NationalClass
+                SET ClassHCID = NULL, ModifiedDate = GETDATE()
+                FROM dbo.Hierarchy_NationalClass HM
+                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.ClassHCID;";
             var deleteSubBrickResult = DbProvider.Connection.Execute(
                 sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
 

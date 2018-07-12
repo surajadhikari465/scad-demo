@@ -134,6 +134,7 @@
     <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteMerchandiseClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteBrandsCommandHandlerTests.cs" />
+    <Compile Include="Commands\DeleteNationalClassCommandHandlerTests.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />
     <Compile Include="Models\HierarchyClass.cs" />
     <Compile Include="QueryTests\GetItemsByBrandIdQueryHandlerTests.cs" />
