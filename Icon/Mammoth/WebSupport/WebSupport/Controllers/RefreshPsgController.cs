@@ -86,13 +86,13 @@ namespace WebSupport.Controllers
                     .Select(sc => sc.ScanCode)
                     .ToList();
 
-                bool isRegionOnRpm = isRegionOnGpmQuery.Search(new IsRegionOnGpmParameters { Region = region });
+                bool isRegionOnGpm = isRegionOnGpmQuery.Search(new IsRegionOnGpmParameters { Region = region });
 
                 if (existingScanCodes.Any())
                 {
                     IEnumerable<ItemPsgModel> itemPsgModels;
 
-                    if (!isRegionOnRpm)
+                    if (!isRegionOnGpm)
                     {
                         itemPsgModels = getItemPsgDataQueryHandler.Search(new GetItemPsgDataParameters
                         {
