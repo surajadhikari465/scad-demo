@@ -25,6 +25,8 @@ namespace WebSupport.Controllers
         private IQueryHandler<GetScanCodeExistsParameters, List<ScanCodeExistsModel>> getScanCodeExistsQueryHandler;
         private IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters> primeAffinityPsgProcessor;
         private PrimeAffinitySettings settings;
+        private IQueryHandler<IsRegionOnGpmParameters, bool> isRegionOnGpmQuery;
+        private IQueryHandler<GetItemPsgDataForGpmRegionParameters, IEnumerable<ItemPsgModel>> getItemPsgDataForRegionOnGpmQueryHandler;
 
         public RefreshPsgController(
             ILogger logger,
@@ -32,7 +34,9 @@ namespace WebSupport.Controllers
             IQueryHandler<GetItemPsgDataParameters, IEnumerable<ItemPsgModel>> getItemPsgDataQueryHandler,
             IQueryHandler<GetScanCodeExistsParameters, List<ScanCodeExistsModel>> getScanCodeExistsQueryHandler,
             IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters> primeAffinityPsgProcessor,
-            PrimeAffinitySettings settings)
+            PrimeAffinitySettings settings,
+            IQueryHandler<IsRegionOnGpmParameters, bool> isRegionOnGpmQuery,
+            IQueryHandler<GetItemPsgDataForGpmRegionParameters, IEnumerable<ItemPsgModel>> getItemPsgDataForRegionOnGpmQueryHandler)
         {
             this.logger = logger;
             this.queryForStores = queryForStores;
@@ -40,6 +44,8 @@ namespace WebSupport.Controllers
             this.getScanCodeExistsQueryHandler = getScanCodeExistsQueryHandler;
             this.primeAffinityPsgProcessor = primeAffinityPsgProcessor;
             this.settings = settings;
+            this.isRegionOnGpmQuery = isRegionOnGpmQuery;
+            this.getItemPsgDataForRegionOnGpmQueryHandler = getItemPsgDataForRegionOnGpmQueryHandler;
         }
 
         [HttpGet]
@@ -55,7 +61,7 @@ namespace WebSupport.Controllers
             {
                 viewModel.Success = TempData["Success"] as bool?;
             }
-            if(TempData["NonExistingScanCodesMessage"] != null)
+            if (TempData["NonExistingScanCodesMessage"] != null)
             {
                 viewModel.NonExistingScanCodesMessage = TempData["NonExistingScanCodesMessage"] as string;
             }
@@ -74,24 +80,42 @@ namespace WebSupport.Controllers
                     .Split()
                     .Where(s => !String.IsNullOrWhiteSpace(s))
                     .ToList();
-                var scanCodeExistsModels = getScanCodeExistsQueryHandler.Search(new GetScanCodeExistsParameters { ScanCodes = scanCodes});
+                var scanCodeExistsModels = getScanCodeExistsQueryHandler.Search(new GetScanCodeExistsParameters { ScanCodes = scanCodes });
                 var existingScanCodes = scanCodeExistsModels
                     .Where(sc => sc.Exists)
                     .Select(sc => sc.ScanCode)
                     .ToList();
 
+                bool isRegionOnGpm = isRegionOnGpmQuery.Search(new IsRegionOnGpmParameters { Region = region });
+
                 if (existingScanCodes.Any())
                 {
-                    var psgData = getItemPsgDataQueryHandler.Search(new GetItemPsgDataParameters
-                    {
-                        Region = region,
-                        ScanCodes = existingScanCodes,
-                        BusinessUnitIds = businessUnitIds,
-                        ExcludedPsNumbers = settings.ExcludedPSNumbers,
-                        PriceTypes = settings.PriceTypes
-                    });
+                    IEnumerable<ItemPsgModel> itemPsgModels;
 
-                    var primeAffinityModels = ConvertToPsgModels(psgData);
+                    if (!isRegionOnGpm)
+                    {
+                        itemPsgModels = getItemPsgDataQueryHandler.Search(new GetItemPsgDataParameters
+                        {
+                            Region = region,
+                            ScanCodes = existingScanCodes,
+                            BusinessUnitIds = businessUnitIds,
+                            ExcludedPsNumbers = settings.ExcludedPSNumbers,
+                            PriceTypes = settings.PriceTypes
+                        });
+                    }
+                    else
+                    {
+                        itemPsgModels = getItemPsgDataForRegionOnGpmQueryHandler.Search(new GetItemPsgDataForGpmRegionParameters
+                        {
+                            Region = region,
+                            ScanCodes = existingScanCodes,
+                            BusinessUnitIds = businessUnitIds,
+                            ExcludedPsNumbers = settings.ExcludedPSNumbers
+                        });
+
+                    }
+
+                    var primeAffinityModels = ConvertToPsgModels(itemPsgModels);
 
                     foreach (var primeAffinityModelGroup in primeAffinityModels.GroupBy(m => m.MessageAction))
                     {
@@ -109,7 +133,7 @@ namespace WebSupport.Controllers
                 var nonExistingScanCodes = scanCodeExistsModels
                     .Where(sc => !sc.Exists)
                     .ToList();
-                if(nonExistingScanCodes.Any())
+                if (nonExistingScanCodes.Any())
                 {
                     StringBuilder stringBuilder = new StringBuilder();
                     foreach (var nonExistingScanCode in nonExistingScanCodes)

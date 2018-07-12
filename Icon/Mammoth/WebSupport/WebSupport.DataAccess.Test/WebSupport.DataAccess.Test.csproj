@@ -140,11 +140,13 @@
     <Compile Include="Queries\GetExistingScanCodesQueryTests.cs" />
     <Compile Include="Queries\GetGpmStatusQueryTests.cs" />
     <Compile Include="Queries\GetGpmPricesQueryTests.cs" />
+    <Compile Include="Queries\GetItemPsgDataQueryForGpmRegionsTests.cs" />
     <Compile Include="Queries\GetItemPsgDataQueryTests.cs" />
     <Compile Include="Queries\GetPriceResetPricesQueryTests.cs" />
     <Compile Include="Queries\GetStoresForRegionQueryTests.cs" />
     <Compile Include="Queries\DoesScanCodeExistQueryTests.cs" />
     <Compile Include="Queries\DoesStoreExistQueryTests.cs" />
+    <Compile Include="Queries\IsRegionOnGpmQueryTest.cs" />
     <Compile Include="TestData\RegionGpmStatusTestData.cs" />
   </ItemGroup>
   <ItemGroup>
