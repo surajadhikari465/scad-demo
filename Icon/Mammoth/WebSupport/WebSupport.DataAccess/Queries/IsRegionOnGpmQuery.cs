@@ -17,10 +17,10 @@ namespace WebSupport.DataAccess.Queries
         public bool Search(IsRegionOnGpmParameters parameters)
         {
             return connection.Query<bool>(@"
-                    SELECT ISNULL((SELECT ISNULL(IsGpmEnabled, 'False') as IsGpmEnabled
+                      SELECT IsGpmEnabled as IsGpmEnabled
                       FROM [dbo].[RegionGpmStatus]
-                      WHERE Region = @Region), 'False')",
-                     new { Region = parameters.Region }).First();
+                      WHERE Region = @Region",
+                     new { Region = parameters.Region }).FirstOrDefault();
         }
 
     }
