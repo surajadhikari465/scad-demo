@@ -12,7 +12,7 @@
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
         <pd:x>47</pd:x>
-        <pd:y>47</pd:y>
+        <pd:y>52</pd:y>
         <config>
             <StartTime>%%Application/StartTime%%</StartTime>
             <Frequency>false</Frequency>
@@ -22,8 +22,8 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1128</pd:endX>
-    <pd:endY>450</pd:endY>
+    <pd:endX>1132</pd:endX>
+    <pd:endY>548</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables>
         <EmergencyPrices>
@@ -37,8 +37,8 @@
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>232</pd:x>
-        <pd:y>454</pd:y>
+        <pd:x>236</pd:x>
+        <pd:y>544</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -75,8 +75,8 @@
     <pd:activity name="CatchAll">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>53</pd:x>
-        <pd:y>451</pd:y>
+        <pd:x>49</pd:x>
+        <pd:y>545</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -86,8 +86,8 @@
     <pd:activity name="Log Start">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>134</pd:x>
-        <pd:y>51</pd:y>
+        <pd:x>146</pd:x>
+        <pd:y>52</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -116,7 +116,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>1127</pd:x>
-        <pd:y>218</pd:y>
+        <pd:y>302</pd:y>
         <config>
             <spawn>true</spawn>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -147,7 +147,7 @@
         <pd:x>352</pd:x>
         <pd:y>67</pd:y>
         <pd:width>708</pd:width>
-        <pd:height>318</pd:height>
+        <pd:height>456</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -187,7 +187,7 @@
             <pd:to>Send Emergency Prices</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>Send Emergency Prices</pd:from>
@@ -254,11 +254,19 @@
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
+        <pd:transition>
+            <pd:from>Get Emergency Prices</pd:from>
+            <pd:to>Clear out Send Error Count</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>not(exists($Get-Emergency-Prices/pfx3:MammothPrices/pfx3:MammothPrice))</pd:xpath>
+        </pd:transition>
         <pd:activity name="Assign Emergency Prices Exist 2">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>947</pd:x>
-            <pd:y>158</pd:y>
+            <pd:x>948</pd:x>
+            <pd:y>313</pd:y>
             <config>
                 <variableName>EmergencyPrices</variableName>
             </config>
@@ -271,8 +279,8 @@
         <pd:activity name="Get Emergency Prices">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>449</pd:x>
-            <pd:y>152</pd:y>
+            <pd:x>439</pd:x>
+            <pd:y>153</pd:y>
             <config>
                 <processName>/Processes/GetEmergencyPrices.process</processName>
             </config>
@@ -281,8 +289,8 @@
         <pd:activity name="Send Emergency Prices">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>569</pd:x>
-            <pd:y>151</pd:y>
+            <pd:x>442</pd:x>
+            <pd:y>311</pd:y>
             <config>
                 <processName>/Processes/SendEmergencyPrices.process</processName>
             </config>
@@ -293,8 +301,8 @@
         <pd:activity name="Check If Emergency Prices Exist In Loop">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>807</pd:x>
-            <pd:y>163</pd:y>
+            <pd:x>812</pd:x>
+            <pd:y>322</pd:y>
             <config>
                 <processName>/Processes/CheckIfEmergencyPricesExist.process</processName>
             </config>
@@ -303,8 +311,8 @@
         <pd:activity name="Insert Prices into Emergency Queue">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>696</pd:x>
-            <pd:y>298</pd:y>
+            <pd:x>675</pd:x>
+            <pd:y>440</pd:y>
             <config>
                 <processName>/Processes/InsertPricesIntoEmergencyQueue.process</processName>
             </config>
@@ -315,8 +323,8 @@
         <pd:activity name="Increment Send Error Count">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>456</pd:x>
-            <pd:y>300</pd:y>
+            <pd:x>431</pd:x>
+            <pd:y>436</pd:y>
             <config>
                 <variableName>SendErrorCount</variableName>
             </config>
@@ -338,8 +346,8 @@
         <pd:activity name="Clear out Send Error Count">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>675</pd:x>
-            <pd:y>154</pd:y>
+            <pd:x>664</pd:x>
+            <pd:y>311</pd:y>
             <config>
                 <variableName>SendErrorCount</variableName>
             </config>
@@ -352,8 +360,8 @@
         <pd:activity name="Log Send Emergency Price Error">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>571</pd:x>
-            <pd:y>300</pd:y>
+            <pd:x>548</pd:x>
+            <pd:y>437</pd:y>
             <config>
                 <spawn>true</spawn>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -389,8 +397,8 @@
         <pd:activity name="Log Send Emergency Prices Exceeded Max Retry">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>827</pd:x>
-            <pd:y>307</pd:y>
+            <pd:x>822</pd:x>
+            <pd:y>446</pd:y>
             <config>
                 <spawn>true</spawn>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -418,8 +426,8 @@
         <pd:activity name="Assign Emergency Price Exist as False">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>967</pd:x>
-            <pd:y>306</pd:y>
+            <pd:x>958</pd:x>
+            <pd:y>447</pd:y>
             <config>
                 <variableName>EmergencyPrices</variableName>
             </config>
@@ -433,8 +441,8 @@
     <pd:activity name="Assign Emergency Prices Exist">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>257</pd:x>
-        <pd:y>224</pd:y>
+        <pd:x>265</pd:x>
+        <pd:y>313</pd:y>
         <config>
             <variableName>EmergencyPrices</variableName>
         </config>
