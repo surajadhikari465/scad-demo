@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/ActivePriceArchiverListener.process</processProperty>
         </processArchive>
-        <versionProperty>23</versionProperty>
+        <versionProperty>25</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ActivePriceArchiver</name>
