@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [esl].[GetEslAttributes]
+﻿CREATE PROCEDURE esl.GetEslAttributes
 	@BusinessUnitID INT,
 	@StartDateTimeUtc DATETIME2(7),
 	@EndDateTimeUtc DATETIME2(7)
@@ -161,16 +161,20 @@ CREATE TABLE #itemExtended
 	Manganese smallint NULL,
 	Molybdenum smallint NULL,
 	Selenium smallint NULL,
-	TransFatWeight decimal(10, 1) NULL
+	TransFatWeight decimal(10, 1) NULL,
+	OriginalStageInsertDate datetime2(7) NULL
 )
 
+BEGIN TRY
+
 -- Pull ItemStore Keys from the staging table while also deleting at the same time
-DELETE FROM [stage].[ItemStoreKeysEsl]
+DELETE FROM stage.ItemStoreKeysEsl
 	OUTPUT 
 		@Region					as Region,
 		deleted.ItemID			as ItemID,
-		deleted.BusinessUnitID	as BusinessUnitID
-	INTO #itemExtended (Region, ItemID, BusinessUnitID)
+		deleted.BusinessUnitID	as BusinessUnitID,
+		deleted.InsertDateUtc	as OriginalStageInsertDate
+	INTO #itemExtended (Region, ItemID, BusinessUnitID, OriginalStageInsertDate)
 WHERE BusinessUnitID = @BusinessUnitID
 	AND InsertDateUtc BETWEEN @StartDateTimeUtc AND @EndDateTimeUtc
 
@@ -1117,6 +1121,19 @@ WHERE l.Region = @Region
 	AND il.Region = @Region
 	AND v.Region = @Region
 OPTION (RECOMPILE)
+
+END TRY
+BEGIN CATCH
+
+	--re-insert data back to the staging table
+	INSERT INTO stage.ItemStoreKeysEsl
+		(BusinessUnitID, ItemID, InsertDateUtc)
+	SELECT
+		BusinessUnitID, ItemID, OriginalStageInsertDate
+	FROM #itemExtended
+
+	THROW
+END CATCH
 
 DROP TABLE #regularPriceKeys
 DROP TABLE #salePriceKeys

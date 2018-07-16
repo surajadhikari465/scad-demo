@@ -125,16 +125,20 @@ CREATE TABLE #itemExtended
 	Manganese smallint NULL,
 	Molybdenum smallint NULL,
 	Selenium smallint NULL,
-	TransFatWeight decimal(10, 1) NULL
+	TransFatWeight decimal(10, 1) NULL,
+	OriginalStageInsertDate datetime2(7) NULL
 )
 
+BEGIN TRY
+
 -- Pull ItemStore Keys from the staging table while also deleting at the same time
-DELETE FROM [stage].[ItemStoreKeysEPlum]
+DELETE FROM stage.ItemStoreKeysEPlum
 	OUTPUT 
 		@Region					as Region,
 		deleted.ItemID			as ItemID,
-		deleted.BusinessUnitID	as BusinessUnitID
-	INTO #itemExtended (Region, ItemID, BusinessUnitID)
+		deleted.BusinessUnitID	as BusinessUnitID,
+		deleted.InsertDateUtc	as OriginalStageInsertDate
+	INTO #itemExtended (Region, ItemID, BusinessUnitID, OriginalStageInsertDate)
 WHERE BusinessUnitID = @BusinessUnitID
 	AND InsertDateUtc BETWEEN @StartDateTimeUtc AND @EndDateTimeUtc
 
@@ -735,6 +739,19 @@ INNER JOIN StoreAddress sa on il.BusinessUnitID = sa.BusinessUnitID
 WHERE (il.ScaleItem = 1 OR ist.CfsSendToScale = 1)
 	AND il.Region = @Region
 OPTION (RECOMPILE)
+
+END TRY
+BEGIN CATCH
+
+	--re-insert data back to the staging table
+	INSERT INTO stage.ItemStoreKeysEPlum
+		(BusinessUnitID, ItemID, InsertDateUtc)
+	SELECT
+		BusinessUnitID, ItemID, OriginalStageInsertDate
+	FROM #itemExtended
+
+	THROW
+END CATCH
 
 DROP TABLE #regularPriceKeys
 DROP TABLE #itemExtended
