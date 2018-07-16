@@ -10,10 +10,16 @@ Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2
 
 Connections/JMS/ESB/JndiContextUrl=ssl://cerd1630.wfm.pvt:27293,ssl://cerd1631.wfm.pvt:27293
 Connections/JMS/ESB/JndiUsername=jndiMammothUser
-Connections/JMS/ESB/JndiPassword=#!HBiGAaA2XYfpWsOaZ+T23oHxuE5DEVow+a4+0pTPnNN5e+SZEYU3NA==
+Connections/JMS/ESB/JndiPassword=#!WkzL8+kd/Eos1lw3A22jrOG6txcKfFioE5kN0j0+8qIevjFJughy/w==
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
 Connections/JMS/ESB/Username=mammothUser
 Connections/JMS/ESB/Password=#!pWFvsBxKY/2i0LTTlUvVkpLPqTtkS5eir6faHZZYHMY=
+
+ConfirmBODSettings/Connections/JMS/ESB/JndiContextUrl=ssl://cerd1619.wfm.pvt:27293,ssl://cerd1622.wfm.pvt:27293
+ConfirmBODSettings/Connections/JMS/ESB/JndiUsername=jndiMammothUser
+ConfirmBODSettings/Connections/JMS/ESB/JndiPassword=#!WkzL8+kd/Eos1lw3A22jrOG6txcKfFioE5kN0j0+8qIevjFJughy/w==
+ConfirmBODSettings/Connections/JMS/ESB/JmsUsername=mammothUser
+ConfirmBODSettings/Connections/JMS/ESB/JmsPassword=#!pWFvsBxKY/2i0LTTlUvVkpLPqTtkS5eir6faHZZYHMY=
 
 Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
 Connections/JMS/SB1/Username=sb1_mammothPriceUser
