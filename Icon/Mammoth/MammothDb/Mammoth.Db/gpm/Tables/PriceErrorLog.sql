@@ -7,7 +7,7 @@
 	[StartDate] [datetime2](0) NOT NULL,
 	[EndDate] [datetime2](0) NULL,
 	[Price] [smallmoney] NOT NULL,
-	[PercentOff] DECIMAL(3,2) NULL,
+	[PercentOff] DECIMAL(5,2) NULL,
 	[PriceType] [nvarchar](3) NOT NULL,
 	[PriceTypeAttribute] [nvarchar](10) NOT NULL,
 	[SellableUOM] [nvarchar](3) NOT NULL,

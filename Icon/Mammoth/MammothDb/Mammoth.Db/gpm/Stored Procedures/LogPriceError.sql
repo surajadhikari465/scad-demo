@@ -12,7 +12,7 @@
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
 	@TagExpirationDate datetime2 = NULL,
-	@PercentOff DECIMAL(3,2)  = NULL,
+	@PercentOff DECIMAL(5,2)  = NULL,
 	@ErrorMessage nvarchar(500) ,
 	@ErrorCode nvarchar(100)
 AS

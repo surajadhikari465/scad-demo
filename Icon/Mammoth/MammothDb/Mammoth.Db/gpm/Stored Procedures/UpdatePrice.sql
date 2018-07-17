@@ -12,7 +12,7 @@
 	@CurrencyCode nvarchar(3),
 	@Multiple int,
 	@TagExpirationDate datetime2 = NULL,
-	@PercentOff DECIMAL(3,2)  = NULL,
+	@PercentOff DECIMAL(5,2)  = NULL,
 	@NumberOfRowsUpdated INT OUTPUT
 
 AS
@@ -55,7 +55,7 @@ BEGIN
 		@CurrencyCode nvarchar(3),
 		@Multiple int,
 		@TagExpirationDate datetime2,
-		@PercentOff DECIMAL(3,2) ';
+		@PercentOff DECIMAL(5,2) ';
 
 	EXEC sp_executesql
 		@sql,
