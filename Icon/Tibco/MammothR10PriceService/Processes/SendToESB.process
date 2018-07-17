@@ -315,14 +315,16 @@
                                                         <ns8:rewardMultiple>
                                                             <xsl:value-of select="pfx:Multiple"/>
                                                         </ns8:rewardMultiple>
-                                                        <ns8:rewardAmount>
-                                                            <ns53:amount>
-                                                                <xsl:value-of select="pfx:Price"/>
-                                                            </ns53:amount>
-                                                            <ns53:currency>
-                                                                <xsl:value-of select="pfx:CurrencyCode"/>
-                                                            </ns53:currency>
-                                                        </ns8:rewardAmount>
+                                                        <xsl:if test="pfx:Price > 0">
+                                                            <ns8:rewardAmount>
+                                                                <ns53:amount>
+                                                                    <xsl:value-of select="pfx:Price"/>
+                                                                </ns53:amount>
+                                                                <ns53:currency>
+                                                                    <xsl:value-of select="pfx:CurrencyCode"/>
+                                                                </ns53:currency>
+                                                            </ns8:rewardAmount>
+                                                        </xsl:if>
                                                         <xsl:if test="exists(pfx:PercentOff)">
                                                             <xsl:if test="pfx:PercentOff">
                                                                 <ns8:rewardPercentage>
