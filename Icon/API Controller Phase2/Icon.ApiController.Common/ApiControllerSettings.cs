@@ -31,7 +31,7 @@ namespace Icon.ApiController.Common
                 NonReceivingSystemsAll = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsAll", false),
                 NonReceivingSystemsItemLocale = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsItemLocale", false),
                 NonReceivingSystemsPrice = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsPrice", false),
-                EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy))
+                EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy), false)
             };
         }
     }

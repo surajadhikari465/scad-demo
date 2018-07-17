@@ -6,6 +6,7 @@ BEGIN
 	DECLARE @brandHierarchyId INT			= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
 			@merchHierarchyId INT			= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise'),
 			@financialHierarchyId INT		= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
+			@nationalHierarchyId INT			= (SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'National'),
 			@readyMessageStatusId INT		= (SELECT MessageStatusId FROM app.MessageStatus WHERE MessageStatusName = 'Ready'),
 			@hierarchyMessageTypeId INT		= (SELECT MessageTypeId FROM app.MessageType WHERE MessageTypeName = 'Hierarchy'),
 			@deleteMessageActionId INT		= (SELECT MessageActionId FROM app.MessageAction WHERE MessageActionName = 'Delete')
@@ -36,6 +37,6 @@ BEGIN
 		JOIN dbo.Hierarchy h on hc.HierarchyId = h.hierarchyID
 		JOIN dbo.HierarchyPrototype hp on hp.hierarchyID = hc.HierarchyId
 			and hp.hierarchyLevelName = hc.hierarchyLevelName
-	WHERE h.HierarchyId in (@brandHierarchyId, @merchHierarchyId, @financialHierarchyId)
+	WHERE h.HierarchyId in (@brandHierarchyId, @merchHierarchyId, @financialHierarchyId, @nationalHierarchyId)
 END
 GO
