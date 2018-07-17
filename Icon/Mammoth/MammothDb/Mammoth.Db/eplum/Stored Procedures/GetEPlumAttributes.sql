@@ -753,10 +753,14 @@ BEGIN CATCH
 	THROW
 END CATCH
 
-DROP TABLE #regularPriceKeys
-DROP TABLE #itemExtended
-DROP TABLE #prices
-DROP TABLE #linkedScanCodePriceKeys
+IF OBJECT_ID('tempdb..#regularPriceKeys') IS NOT NULL
+	DROP TABLE #regularPriceKeys
+IF OBJECT_ID('tempdb..#itemExtended') IS NOT NULL
+	DROP TABLE #itemExtended
+IF OBJECT_ID('tempdb..#prices') IS NOT NULL
+	DROP TABLE #prices
+IF OBJECT_ID('tempdb..#linkedScanCodePriceKeys') IS NOT NULL
+	DROP TABLE #linkedScanCodePriceKeys
 
 END
 GO
