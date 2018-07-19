@@ -1,9 +1,12 @@
 CREATE PROCEDURE infor.PriceExtractQuery
+	@StartDate datetime2(0) = NULL
 AS
 BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 	DECLARE @today DATETIME2(0) = CONVERT(DATE, getdate())
+	IF @StartDate IS NULL
+		SET @StartDate = @today
 
 	IF EXISTS (
 			SELECT COUNT(1)
@@ -36,10 +39,10 @@ BEGIN
 			)
 		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
-		AND pbd.StartDate <= @today
+		AND pbd.StartDate <= @StartDate
 		AND (
 			pbd.Sale_End_Date IS NULL
-			OR pbd.Sale_End_Date >= @today
+			OR pbd.Sale_End_Date >= @StartDate
 			)
 	GROUP BY pbd.Item_Key
 		,pbd.Store_No
@@ -84,8 +87,8 @@ BEGIN
 				)
 			OR pbd.InsertApplication <> 'Sale Off'
 			)
-		AND pbd.StartDate > @today
-		AND pbd.StartDate < DATEADD(day, 15, @today)
+		AND pbd.StartDate > @StartDate
+		AND pbd.StartDate < DATEADD(day, 15, @StartDate)
 
 	--Current REGs
 	SELECT 
@@ -102,9 +105,9 @@ BEGIN
 		,'REG' AS 'PRICE_TYPE_CODE'
 		,'REG' AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'TAG_EXPIRATION_DATE'
-		,@today AS 'START_DATE'
+		,@StartDate AS 'START_DATE'
 		,NULL AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
 		,ii.Identifier as 'SCAN_CODE'
@@ -144,7 +147,7 @@ BEGIN
 				,'EDV'
 				,'NEW'
 				)
-			AND @today BETWEEN p.Sale_Start_Date
+			AND @StartDate BETWEEN p.Sale_Start_Date
 				AND p.Sale_End_Date
 			)
 	
@@ -175,9 +178,9 @@ BEGIN
 				THEN CONVERT(DateTime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1)))
 			ELSE NULL
 		 END AS 'TAG_EXPIRATION_DATE'
-		,@today AS 'START_DATE'
+		,@StartDate AS 'START_DATE'
 		,NULL AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
 		,ii.Identifier as 'SCAN_CODE'
@@ -208,7 +211,7 @@ BEGIN
 		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND p.POSSale_Price IS NOT NULL
-		AND @today BETWEEN p.Sale_Start_Date
+		AND @StartDate BETWEEN p.Sale_Start_Date
 			AND p.Sale_End_Date
 		AND pct.PriceChgTypeDesc IN (
 			'DIS'
@@ -241,9 +244,9 @@ BEGIN
 			ELSE pct.PriceChgTypeDesc
 			END AS 'PRICE_ATTRIBUTE_CODE'
 		,NULL AS 'TAG_EXPIRATION_DATE'
-		,@today AS 'START_DATE'
+		,@StartDate AS 'START_DATE'
 		,CONVERT(DateTime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, p.Sale_End_Date), 1))) AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code AS 'REGION_CODE'
 		,c.CurrencyCode AS 'CURRENCY_CODE'
 		,ii.Identifier as 'SCAN_CODE'
@@ -274,7 +277,7 @@ BEGIN
 		AND s.StoreJurisdictionID = 1
 		AND si.Authorized = 1
 		AND p.POSSale_Price IS NOT NULL
-		AND @today BETWEEN p.Sale_Start_Date
+		AND @StartDate BETWEEN p.Sale_Start_Date
 			AND p.Sale_End_Date
 		AND pct.PriceChgTypeDesc NOT IN (
 			'DIS'
@@ -305,7 +308,7 @@ BEGIN
 		,NULL AS 'TAG_EXPIRATION_DATE'
 		,CONVERT(DateTime2(0),pbd.StartDate) AS 'START_DATE'
 		,NULL AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
 		,ii.Identifier as 'SCAN_CODE'
@@ -369,7 +372,7 @@ BEGIN
 		 END AS 'TAG_EXPIRATION_DATE'
 		,Convert(Datetime2(0),pbd.StartDate) AS 'START_DATE'
 		,NULL AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
 	    ,ii.Identifier as 'SCAN_CODE'
@@ -423,7 +426,7 @@ BEGIN
 		,NULL AS 'TAG_EXPIRATION_DATE'
 		,Convert(Datetime2(0),pbd.StartDate) AS 'START_DATE'
 		,Convert(Datetime2(0),DATEADD(s, -1, DATEADD(day, DATEDIFF(DAY, 0, pbd.Sale_End_Date), 1))) AS 'END_DATE'
-		,@today AS 'CREATED_DATE'
+		,@StartDate AS 'CREATED_DATE'
 		,srm.Region_Code
 		,c.CurrencyCode
 		,ii.Identifier as 'SCAN_CODE'
