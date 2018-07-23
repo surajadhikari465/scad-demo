@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[UpdatePriceBatchPackage]
+﻿CREATE PROCEDURE [dbo].[UpdatePriceBatchPackage]
     @PriceBatchHeaderID int
 
 AS
@@ -156,6 +155,7 @@ BEGIN
 					Brand_Name				= ItemBrand.Brand_Name, 
 					Retail_Unit_Abbr		= RU.Unit_Abbreviation, 
 					Retail_Unit_Full		= RU.Unit_Name, 
+					Retail_Unit_ID			= RU.Unit_ID,
 					Package_Unit			= PU.Unit_Abbreviation, 
 					Package_Desc1			= ISNULL(ItemOverride.Package_Desc1, Item.Package_Desc1), 
 					Package_Desc2			= ISNULL(ItemOverride.Package_Desc2, Item.Package_Desc2), 
@@ -214,7 +214,6 @@ BEGIN
 					Print_Condiment_On_Receipt		= Price.Print_Condiment_On_Receipt,
 					KitchenRoute_ID			= Price.KitchenRoute_ID,
 					ItemSurcharge			= Price.ItemSurcharge
-				
 				FROM 
 					PriceBatchDetail PBD				(NOLOCK)
 					INNER JOIN	Price					(NOLOCK)	ON	Price.Item_Key			= PBD.Item_Key 
