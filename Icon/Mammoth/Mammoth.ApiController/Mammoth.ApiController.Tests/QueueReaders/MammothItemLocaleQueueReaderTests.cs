@@ -199,6 +199,34 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             Assert.IsFalse(actualMessages.Contains(messages[4]));
         }
 
+        [TestMethod]
+        public void GroupMessagesForMiniBulk_MessagesHaveDuplicateItemAndStore_ShouldReturnDistinctMessagesbyItemAndStore()
+        {
+            //Given
+            settings.MiniBulkLimitItemLocale = 5;
+            List<MessageQueueItemLocale> messages = new List<MessageQueueItemLocale>
+            {
+                new TestMessageQueueItemLocaleBuilder().WithItemId(1).WithBusinessUnitId(55).WithAuthorized(true),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(2).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(1).WithBusinessUnitId(55).WithAuthorized(false),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(4).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(5).WithBusinessUnitId(55),
+            };
+
+            //When
+            var actualMessages = queueReader.GroupMessagesForMiniBulk(messages);
+
+            //Then
+            Assert.AreEqual(4, actualMessages.Count);
+            Assert.IsTrue(actualMessages.Contains(messages[0]));
+            Assert.IsTrue(actualMessages.Contains(messages[1]));
+            Assert.IsFalse(actualMessages.Contains(messages[2]));
+            Assert.IsTrue(actualMessages.Contains(messages[3]));
+            Assert.IsTrue(actualMessages.Contains(messages[4]));
+
+            Assert.IsTrue(actualMessages.Single(m => m.ItemId == 1).Authorized);
+        }
+
         private void AssertMessageQueueIsEqualToContractItem(MessageQueueItemLocale messageQueue, Contracts.ItemType item)
         {
             var itemBase = item.@base;

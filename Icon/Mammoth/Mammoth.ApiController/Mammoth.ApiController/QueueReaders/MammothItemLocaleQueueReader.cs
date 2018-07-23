@@ -53,6 +53,7 @@ namespace Mammoth.ApiController.QueueReaders
         public List<MessageQueueItemLocale> GroupMessagesForMiniBulk(List<MessageQueueItemLocale> messagesReadyForMiniBulk)
         {
             return messagesReadyForMiniBulk
+                .DistinctBy(m => new { m.ItemId, m.BusinessUnitId })
                 .Take(settings.MiniBulkLimitItemLocale)
                 .ToList();
         }

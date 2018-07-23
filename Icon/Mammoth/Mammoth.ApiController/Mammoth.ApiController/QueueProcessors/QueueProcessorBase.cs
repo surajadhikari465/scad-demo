@@ -3,7 +3,6 @@ using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Logging;
