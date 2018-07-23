@@ -10,7 +10,7 @@ Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2
 
 Connections/JMS/ESB/JndiContextUrl=ssl://cerd1630.wfm.pvt:27293,ssl://cerd1631.wfm.pvt:27293
 Connections/JMS/ESB/JndiUsername=jndiMammothUser
-Connections/JMS/ESB/JndiPassword=#!HBiGAaA2XYfpWsOaZ+T23oHxuE5DEVow+a4+0pTPnNN5e+SZEYU3NA==
+Connections/JMS/ESB/JndiPassword=#!WkzL8+kd/Eos1lw3A22jrOG6txcKfFioE5kN0j0+8qIevjFJughy/w==
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
 Connections/JMS/ESB/Username=mammothUser
 Connections/JMS/ESB/Password=#!pWFvsBxKY/2i0LTTlUvVkpLPqTtkS5eir6faHZZYHMY=
