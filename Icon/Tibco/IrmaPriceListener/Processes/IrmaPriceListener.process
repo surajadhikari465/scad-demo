@@ -168,6 +168,11 @@
                                 <xsl:value-of select="pfx10:StartDate"/>
                             </StartDate>
                             <xsl:choose>
+                                <xsl:when test="upper-case(pfx10:Action) = &quot;DELETE&quot;">
+                                    <EndDate>
+                                        <xsl:value-of select="tib:create-dateTime(tib:get-year-from-dateTime(current-dateTime()), tib:get-month-from-dateTime(current-dateTime()), tib:get-day-from-dateTime(current-dateTime()), 0 , 0, 0)"/>
+                                    </EndDate>
+                                </xsl:when>
                                 <xsl:when test="(exists(pfx10:EndDate) and string-length(pfx10:EndDate) > 0)">
                                     <EndDate>
                                         <xsl:value-of select="tib:add-to-dateTime(pfx10:EndDate, 0, 0, 0, -23, -59, -59)"/>
@@ -330,6 +335,11 @@
                         <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:StartDate"/>
                     </StartDate>
                     <xsl:choose>
+                        <xsl:when test="upper-case($SinglePriceLoad/pfx10:MammothPrice/pfx10:Action) = &quot;DELETE&quot;">
+                            <EndDate>
+                                <xsl:value-of select="tib:create-dateTime(tib:get-year-from-dateTime(current-dateTime()), tib:get-month-from-dateTime(current-dateTime()), tib:get-day-from-dateTime(current-dateTime()), 0 , 0, 0)"/>
+                            </EndDate>
+                        </xsl:when>
                         <xsl:when test="(exists($SinglePriceLoad/pfx10:MammothPrice/pfx10:EndDate) and string-length($SinglePriceLoad/pfx10:MammothPrice/pfx10:EndDate) > 0)">
                             <EndDate>
                                 <xsl:value-of select="tib:add-to-dateTime($SinglePriceLoad/pfx10:MammothPrice/pfx10:EndDate, 0, 0, 0, -23, -59, -59)"/>

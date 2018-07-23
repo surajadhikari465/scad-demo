@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/ActivePricesProcess.process</processProperty>
         </processArchive>
-        <versionProperty>27</versionProperty>
+        <versionProperty>29</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>MammothActivePriceService</name>

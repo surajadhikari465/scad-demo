@@ -244,7 +244,7 @@ WHERE p.Region = ?
 		WHERE a.Region = ?
 			AND a.PriceID = p.PriceID
 	)
-	ORDER BY BusinessUnitID
+	ORDER BY BusinessUnitID, p.ItemID, PriceType
 	</statement>
                 <wizardData/>
                 <processInSubsets>true</processInSubsets>

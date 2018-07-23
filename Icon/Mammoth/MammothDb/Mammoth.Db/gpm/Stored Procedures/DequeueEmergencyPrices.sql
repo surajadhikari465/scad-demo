@@ -2,12 +2,18 @@
 	@emergencyPriceCount INT
 AS
 BEGIN
-	DECLARE @businessUnitId INT = (SELECT TOP 1 BusinessUnitId FROM gpm.MessageQueueEmergencyPrice)
+	DECLARE @businessUnitId INT = (SELECT TOP 1 BusinessUnitId FROM gpm.MessageQueueEmergencyPrice);
 
-	DELETE TOP (@emergencyPriceCount)
-	FROM gpm.MessageQueueEmergencyPrice
-		OUTPUT deleted.ItemId, deleted.BusinessUnitId, deleted.MammothPriceXml
-	WHERE BusinessUnitId = @businessUnitId
+	WITH EmergencyPriceTable
+     AS
+	 (  SELECT TOP (@emergencyPriceCount) Itemid, BusinessUnitId, PriceType,MammothPriceXml,InsertDateUtc 
+	    FROM gpm.MessageQueueEmergencyPrice
+		WHERE BusinessUnitId = @businessUnitId
+		ORDER BY BusinessUnitId, ItemId, PriceType
+	  )
+
+	DELETE FROM EmergencyPriceTable
+	OUTPUT deleted.ItemId, deleted.BusinessUnitId, deleted.MammothPriceXml
 END
 GO
 
