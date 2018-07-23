@@ -60,8 +60,9 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                                 NULL    				as NewSaleMultiple,
 	                            'REG'					as NewPriceType,
 	                            CASE
-		                            WHEN ovu.Weight_Unit IS NOT NULL AND ovu.Weight_Unit = 1 THEN 'KG'
-		                            WHEN iu.Weight_Unit = 1 THEN 'LB'
+		                            WHEN sj.StoreJurisdictionDesc <> 'US' 
+                                         AND COALESCE(uou.Weight_Unit, ovu.Weight_Unit, iu.Weight_Unit) = 1 THEN 'KG'
+		                            WHEN COALESCE(uou.Weight_Unit, iu.Weight_Unit) = 1 THEN 'LB'
 		                            ELSE 'EA'
 	                            END						as PriceUom,
 	                            c.CurrencyCode			as CurrencyCode,
@@ -76,7 +77,7 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                             FROM 
 	                            QueueTable              	q
 	                            JOIN Price					p	on	q.Item_Key = p.Item_Key
-										                            AND q.Store_No = p.Store_No
+										                                AND q.Store_No = p.Store_No
                                 JOIN PriceChgType           pt  on  p.PriceChgTypeID = pt.PriceChgTypeID
 	                            JOIN Store					s	on	q.Store_No = s.Store_No
 	                            JOIN StoreRegionMapping     srm on  s.Store_No = srm.Store_No
@@ -86,8 +87,11 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            JOIN Item					i	on	q.Item_Key = i.Item_Key
 	                            LEFT JOIN ItemUnit			iu	on	i.Retail_Unit_ID = iu.Unit_ID
 	                            LEFT JOIN ItemOverride		ov	on	i.Item_Key = ov.Item_Key
-										                            AND sj.StoreJurisdictionID = ov.StoreJurisdictionID
+										                                AND sj.StoreJurisdictionID = ov.StoreJurisdictionID
 	                            LEFT JOIN ItemUnit			ovu	on	ov.Retail_Unit_ID = ovu.Unit_ID
+                                LEFT JOIN ItemUomOverride   iuo on  q.Item_Key = iuo.Item_Key
+                                                                        AND q.Store_No = iuo.Store_No
+                                LEFT JOIN ItemUnit          uou on  iuo.Retail_Unit_ID = uou.Unit_ID
                             UNION
                             -- Promos
                             SELECT	
@@ -104,8 +108,9 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                                 p.Sale_Multiple			as NewSaleMultiple,
 	                            pct.PriceChgTypeDesc	as NewPriceType,
 	                            CASE
-		                            WHEN ovu.Weight_Unit IS NOT NULL AND ovu.Weight_Unit = 1 THEN 'KG'
-		                            WHEN iu.Weight_Unit = 1 THEN 'LB'
+		                            WHEN sj.StoreJurisdictionDesc <> 'US' 
+                                         AND COALESCE(uou.Weight_Unit, ovu.Weight_Unit, iu.Weight_Unit) = 1 THEN 'KG'
+		                            WHEN COALESCE(uou.Weight_Unit, iu.Weight_Unit) = 1 THEN 'LB'
 		                            ELSE 'EA'
 	                            END						as PriceUom,
 	                            c.CurrencyCode			as CurrencyCode,
@@ -132,6 +137,9 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            LEFT JOIN ItemOverride		ov	on	i.Item_Key = ov.Item_Key
 										                            AND sj.StoreJurisdictionID = ov.StoreJurisdictionID
 	                            LEFT JOIN ItemUnit			ovu	on	ov.Retail_Unit_ID = ovu.Unit_ID
+                                LEFT JOIN ItemUomOverride   iuo on  q.Item_Key = iuo.Item_Key
+                                                                        AND q.Store_No = iuo.Store_No
+                                LEFT JOIN ItemUnit          uou on  iuo.Retail_Unit_ID = uou.Unit_ID
                             WHERE
 	                            p.Sale_End_Date >= @Today;";
 

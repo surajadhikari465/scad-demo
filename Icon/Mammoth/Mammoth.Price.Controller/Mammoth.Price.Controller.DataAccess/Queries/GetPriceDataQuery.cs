@@ -40,7 +40,7 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                                 pbd.Sale_Multiple       as NewSaleMultiple,
 	                            pct.PriceChgTypeDesc	as NewPriceType,
 	                            CASE
-		                            WHEN ovu.Weight_Unit IS NOT NULL AND ovu.Weight_Unit = 1 THEN 'KG'
+		                            WHEN sj.StoreJurisdictionDesc <> 'US' AND iu.Weight_Unit = 1 THEN 'KG'
 		                            WHEN iu.Weight_Unit = 1 THEN 'LB'
 		                            ELSE 'EA'
 	                            END						as PriceUom,
@@ -69,9 +69,6 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 										                            AND ii.Deleted_Identifier = 0
 										                            AND ii.Remove_Identifier = 0
 	                            LEFT JOIN ItemUnit			iu	on	pbd.Retail_Unit_ID = iu.Unit_ID
-	                            LEFT JOIN ItemOverride		ov	on	pbd.Item_Key = ov.Item_Key
-										                            AND sj.StoreJurisdictionID = ov.StoreJurisdictionID
-	                            LEFT JOIN ItemUnit			ovu	on	ov.Retail_Unit_ID = ovu.Unit_ID
                             WHERE
 	                            q.InProcessBy = @Instance
 	                            AND q.EventReferenceID IS NOT NULL

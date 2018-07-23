@@ -44,7 +44,7 @@
         }
 
         [TestMethod]
-        public void GetExisitingPriceEventsQuery_OneEventExistsNotOnPromotion_ShouldReturnOnePriceEvent()
+        public void GetExistingPriceDataQuery_OneEventExistsNotOnPromotion_ShouldReturnOnePriceEvent()
         {
             // Given
             var expectedBusinessUnitId = 723;
@@ -144,7 +144,7 @@
         }
 
         [TestMethod]
-        public void GetPriceEventsQuery_EventsExistForItemWithAlternateIdentifiers_ReturnsOnlyOneRowForIdentifierInEvent()
+        public void GetExistingPriceDataQuery_EventsExistForItemWithAlternateIdentifiers_ReturnsOnlyOneRowForIdentifierInEvent()
         {
             // Given
             var expectedPrice = 4.00m;
@@ -254,7 +254,7 @@
         }
 
         [TestMethod]
-        public void GetPriceEventsQuery_EventIsForAnAlternateIdentifier_ReturnsRowForIdentifierWithExistingPrices()
+        public void GetExistingPriceDataQuery_EventIsForAnAlternateIdentifier_ReturnsRowForIdentifierWithExistingPrices()
         {
             // Given
             var expectedBusinessUnitId = 723;
@@ -372,7 +372,7 @@
         }
 
         [TestMethod]
-        public void GetExistingPriceEventsQuery_EventRowsHavePromotion_ReturnOneRowForRegularPriceAndOneRowForPromoPrice()
+        public void GetExistingPriceDataQuery_EventRowsHavePromotion_ReturnOneRowForRegularPriceAndOneRowForPromoPrice()
         {
             // Given
             var expectedPrice = 4.00m;
@@ -513,7 +513,7 @@
         }
 
         [TestMethod]
-        public void GetExistingPriceEventsQuery_EventRowsHaveBothPromotionAndOnlyRegularPrices_ReturnOneRowForEachRegularPriceAndTwoRowsForEachPromo()
+        public void GetExistingPriceDataQuery_EventRowsHaveBothPromotionAndOnlyRegularPrices_ReturnOneRowForEachRegularPriceAndTwoRowsForEachPromo()
         {
             // Given
             var expectedMultiple = (byte)1;
@@ -966,7 +966,7 @@
             Assert.IsNull(results[1].ErrorMessage);
             Assert.AreEqual("TS", results[1].Region);
         }
-
+        
         #region Private Methods
 
         private void InsertIntoEventQueue(List<TestItemsForPriceEvents> items)
