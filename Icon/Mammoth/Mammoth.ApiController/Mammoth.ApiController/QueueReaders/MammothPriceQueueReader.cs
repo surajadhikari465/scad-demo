@@ -199,6 +199,8 @@ namespace Mammoth.ApiController.QueueReaders
                     return Contracts.WfmUomCodeEnumType.EA;
                 case UomCodes.Pound:
                     return Contracts.WfmUomCodeEnumType.LB;
+                case UomCodes.Kilogram:
+                    return Contracts.WfmUomCodeEnumType.KG;
                 default:
                     return Contracts.WfmUomCodeEnumType.EA;
             }
@@ -212,6 +214,8 @@ namespace Mammoth.ApiController.QueueReaders
                     return Contracts.WfmUomDescEnumType.EACH;
                 case UomCodes.Pound:
                     return Contracts.WfmUomDescEnumType.POUND;
+                case UomCodes.Kilogram:
+                    return Contracts.WfmUomDescEnumType.KILOGRAM;
                 default:
                     logger.Warn(String.Format("The UOM {0} is not recognized for scan code {1}.  EACH will be sent as the UOM.", uomCode, scanCode));
                     return Contracts.WfmUomDescEnumType.EACH;
