@@ -12,8 +12,5 @@ Post-Deployment Script Template
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-:r AddDefaultValueToEplumSessionTable.sql --2018.06.11 PBI 27424
-:r AddEmergencyPriceServiceToAppTable.sql --2018.06.12 PBI 27201
-
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql

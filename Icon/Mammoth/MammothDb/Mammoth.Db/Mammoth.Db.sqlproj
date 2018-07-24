@@ -780,8 +780,9 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\RemovePercentageTareWeightFromAttributesTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateFairTradeCertifiedAttribute.sql" />
     <Build Include="eplum\Tables\Session.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddDefaultValueToEplumSessionTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddCurrencyCodeAttribute.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddDefaultValueToEplumSessionTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddEmergencyPriceServiceToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -792,7 +793,6 @@
     <None Include="Jobs\MAMMOTH . Delete Expired Prices and Sales.sql" />
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEmergencyPriceServiceToAppTable.sql" />
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
