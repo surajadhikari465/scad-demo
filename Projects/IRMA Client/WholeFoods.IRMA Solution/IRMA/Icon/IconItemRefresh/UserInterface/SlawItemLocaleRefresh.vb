@@ -28,7 +28,7 @@ Public Class SlawItemLocaleRefresh
                 Dim response As ItemIdentifierRefreshResponse = slawItemLocaleRefreshService.RefreshSlawItemLocale(request)
 
                 If response.ItemRefreshResults.Any(Function(r) r.RefreshFailed) Then
-                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList())
+                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList(), "Slaw")
                     errorsWindow.ShowDialog()
                 Else
                     MessageBox.Show("Refreshed all items successfully.", "Slaw Item Locale Refresh")

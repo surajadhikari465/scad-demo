@@ -28,7 +28,7 @@ Public Class SlawPriceRefresh
                 Dim response As ItemIdentifierRefreshResponse = slawPriceRefreshService.RefreshSlawPrice(request)
 
                 If response.ItemRefreshResults.Any(Function(r) r.RefreshFailed) Then
-                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList())
+                    Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList(), "Slaw")
                     errorsWindow.ShowDialog()
                 Else
                     MessageBox.Show("Refreshed all items successfully.", "Slaw Price Refresh")
