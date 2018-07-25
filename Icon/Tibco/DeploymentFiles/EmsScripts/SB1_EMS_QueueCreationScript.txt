@@ -1,0 +1,332 @@
+################################################################################
+####################DATA - TCP/SSL##############################################      
+################################################################################
+## Note that passwords are for lower environments and should be different/changed in PRD
+## Login to appropriate EMS server
+## Switch user to tibco using su - tibco
+## Navigate to EMS folder using cd /opt/tibco/product/ems/8.0/bin/
+## Launch EMS Admin Console using ./tibemsadmin
+## Connect to the DATA EMS server using appropriate active ems url
+## <<UserName>> 
+## <<Password>>
+## Execute the following commands 
+
+echo on START TIME:
+time
+echo on ################################################################################
+echo on ### PRE VERIFICATION                                                         ###
+echo on ################################################################################
+
+show group sb1_mammothPriceGroup
+show group sb1_mammothPriceIrmaGroup
+##show group sb1_irmaPriceGroup
+show group sb1_mammothPriceR10Group
+##show group sb1_r10PriceGroup
+show group sb1_mammothPriceArchiveGroup
+
+show user sb1_mammothPriceUser
+show user sb1_mammothPriceIrmaUser
+##show user sb1_irmaPriceUser
+show user sb1_mammothPriceR10User
+##show user sb1_r10PriceUser
+show user sb1_mammothPriceArchiveUser
+
+showacl topic WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1
+
+showacl queue WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.Errors.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeR10.R10Price.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1
+
+echo on ################################################################################
+echo on ### USERS AND GROUPS                                                         ###
+echo on ################################################################################
+##Group1
+create group sb1_mammothPriceGroup
+create user sb1_mammothPriceUser password=sb1_mammothPriceUser
+add member sb1_mammothPriceGroup sb1_mammothPriceUser
+
+##Group2
+create group sb1_mammothPriceIrmaGroup
+create user sb1_mammothPriceIrmaUser password=sb1_mammothPriceIrmaUser
+add member sb1_mammothPriceIrmaGroup sb1_mammothPriceIrmaUser
+
+
+##Group3
+create group sb1_mammothPriceR10Group
+create user sb1_mammothPriceR10User password=sb1_mammothPriceR10User
+add member sb1_mammothPriceR10Group sb1_mammothPriceR10User
+
+##Group4
+create group sb1_mammothPriceArchiveGroup
+create user sb1_mammothPriceArchiveUser password=sb1_mammothPriceArchiveUser
+add member sb1_mammothPriceArchiveGroup sb1_mammothPriceArchiveUser
+
+##Group5
+create group sb1_cleGroup
+create user sb1_cleUser password=sb1_cleUser
+add member sb1_cleGroup sb1_cleUser
+
+
+
+echo on #######################################################################
+echo on ### QUEUES AND TOPICS                                               ###
+echo on #######################################################################
+
+## Starter Queue
+
+create queue WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1 group=sb1_mammothPriceGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+## Topic1 - Price topic for real-time :: Mammoth to multiple downstreams 
+
+create topic WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 secure,expiration=8hour,store=$sys.failsafe
+grant topic WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 group=sb1_mammothPriceGroup publish
+
+
+## Queue1 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - FL
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue2 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - MA
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue3 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - MW
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue4 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - NA
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue5 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - NC
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue6 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - PN
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue7 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - RM
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue8 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - SO
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue9 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - SP
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue10 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - SW
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue11 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender - NE
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1 group=sb1_mammothPriceIrmaGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue12 - Price queue for Just-in time Price messages :: Mammoth to R10, Mammoth as sender
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1 group=sb1_mammothPriceR10Group receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue13 - Price queue for Just-in time Price messages :: Mammoth to R10 Complete, Mammoth as sender
+
+##create queue WFMSB1.Mammoth.Retail.JustInTimeR10.R10Price.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+##grant queue WFMSB1.Mammoth.Retail.JustInTimeR10.R10Price.Queue.V1 group=sb1_r10PriceGroup receive,send,browse
+##addprop queue WFMSB1.Mammoth.Retail.JustInTimeR10.R10Price.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue14 - Price queue for Just-in time Price messages :: Mammoth to Archive, Mammoth as sender
+
+create queue WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1 group=sb1_mammothPriceArchiveGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue15 - Price queue for Real time Price messages :: Mammoth to Archive, Mammoth as sender
+
+create queue WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1 group=sb1_mammothPriceArchiveGroup receive,send,browse
+
+
+## Queue16 - Error Queue
+
+create queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 group=sb1_mammothPriceGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue17 - CLE Queue to handle Logs
+
+create queue WFMSB1.GIS.EMS1.CLE.Log.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.GIS.EMS1.CLE.Log.Queue.V1 group=sb1_cleGroup receive,send,browse
+
+
+## Queue18 - Log Queue to handle Logs which replaces the CLE Queue
+
+create queue WFMSB1.Mammoth.Retail.Logs.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.Logs.Queue.V1 group=sb1_mammothPriceGroup receive,send,browse
+
+
+## Queue19 - Price queue for Just-in time PSG Price messages :: Mammoth to IRMA, Mammoth as sender
+
+create queue WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1 group=sb1_mammothPriceR10Group receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+## Queue20 - Price queue for Just-in time Price messages :: Mammoth to IRMA, Mammoth as sender
+
+create queue WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1 group=sb1_mammothPriceGroup receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.JustInTime.InactiveTprPriceStarter.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+
+echo on #######################################################################
+echo on ### BRIDGES                                                         ###
+echo on #######################################################################
+##Bridge between SB1_ Topic and All All IRMA Price Queues
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1 selector="RegionCode='FL'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1 selector="RegionCode='MA'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1 selector="RegionCode='MW'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1 selector="RegionCode='NA'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1 selector="RegionCode='NC'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1 selector="RegionCode='PN'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1 selector="RegionCode in ('RM','TS')"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1 selector="RegionCode='SO'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1 selector="RegionCode='SP'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1 selector="RegionCode='SW'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1 selector="RegionCode='NE'"
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1
+
+
+
+###Bridge between SB1_ Topic and All R10Price and R10PriceComplete Queues
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1
+
+
+###Bridge between SB1_ Topic and All Archive Queues
+
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1
+
+
+
+echo on ################################################################################
+echo on ### POST-SHOW                                                                ###
+echo on ################################################################################
+
+show group sb1_mammothPriceGroup
+show group sb1_mammothPriceIrmaGroup
+##show group sb1_irmaPriceGroup
+show group sb1_mammothPriceR10Group
+##show group sb1_r10PriceGroup
+show group sb1_mammothPriceArchiveGroup
+
+
+
+show user sb1_mammothPriceUser
+show user sb1_mammothPriceIrmaUser
+##show user sb1_irmaPriceUser
+show user sb1_mammothPriceR10User
+##show user sb1_r10PriceUser
+show user sb1_mammothPriceArchiveUser
+
+showacl queue WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1
+
+showacl topic WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1
+
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MA.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.MW.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NA.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NC.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.NE.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.RM.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SO.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SP.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.SW.Queue.V1
+
+
+
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeR10.R10Price.Queue.V1
+
+showacl queue WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1
+
+showacl queue WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1
+
+
+showacl queue WFMSB1.Mammoth.Retail.Errors.Queue.V1
+
+commit
+
+
+##addprop queue queue WFMESB.ProductDev.ItemGateway.Price.Queue.V2 maxRedelivery=3, redeliveryDelay=30
