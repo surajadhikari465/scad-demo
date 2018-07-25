@@ -161,7 +161,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                 for (int storeIndex = 0; storeIndex < region.DescendantLocales[metroIndex].DescendantLocales.Count; storeIndex++)
                 {
-                    regionMiniBulk.locales[metroIndex].locales[storeIndex] = new Contracts.LocaleType
+                    var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
+                    var storeLocaleType = new Contracts.LocaleType
                     {
                         Action = Contracts.ActionEnum.AddOrUpdate,
                         ActionSpecified = true,
@@ -172,12 +173,23 @@ namespace Icon.ApiController.Controller.QueueReaders
                             code = Contracts.LocaleCodeType.STR,
                             description = Contracts.LocaleDescType.Store
                         },
-                        addresses = new Contracts.AddressType[] 
-                        { 
-                            CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]) 
+                        addresses = new Contracts.AddressType[]
+                        {
+                            CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
                         },
-                        traits = CreateLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
+                        traits = CreateLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]),
                     };
+                    if(storeLocaleLineage.LocaleOpenDate.HasValue)
+                    {
+                        storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
+                        storeLocaleType.openDateSpecified = true;
+                    }
+                    if(storeLocaleLineage.LocaleCloseDate.HasValue)
+                    {
+                        storeLocaleType.closeDate = storeLocaleLineage.LocaleCloseDate.Value;
+                        storeLocaleType.closeDateSpecified = true;
+                    }
+                    regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
                 }
             }
         }

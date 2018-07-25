@@ -45,6 +45,8 @@ namespace Mammoth.Esb.LocaleListener.Tests.MessageParsers
             Assert.AreEqual("Florida", models[0].Territory);
             Assert.AreEqual("FL", models[0].TerritoryAbbrev);
             Assert.AreEqual("Eastern Standard Time", models[0].Timezone);
+            Assert.AreEqual(new DateTime(2001, 4, 25), models[0].LocaleOpenDate.Value);
+            Assert.IsFalse(models[0].LocaleCloseDate.HasValue);
         }
     }
 }

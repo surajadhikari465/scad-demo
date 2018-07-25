@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Icon.ApiController.Common
 {
@@ -21,6 +22,8 @@ namespace Icon.ApiController.Common
         public string CountryName { get; set; }
         public string PostalCode { get; set; }
         public string TimezoneName { get; set; }
+        public DateTime? LocaleOpenDate { get; set; }
+        public DateTime? LocaleCloseDate { get; set; }
         public LocaleLineageModel AncestorLocale { get; set; }
         public List<LocaleLineageModel> DescendantLocales { get; set; }
     }

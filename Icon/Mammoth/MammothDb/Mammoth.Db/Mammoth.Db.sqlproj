@@ -781,6 +781,8 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateFairTradeCertifiedAttribute.sql" />
     <Build Include="eplum\Tables\Session.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddCurrencyCodeAttribute.sql" />
+    <Build Include="dbo\Stored Procedures\DeletePricesForClosedStores.sql" />
+    <None Include="Jobs\MAMMOTH.PurgePricesForClosedStores.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddDefaultValueToEplumSessionTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEmergencyPriceServiceToAppTable.sql" />
   </ItemGroup>

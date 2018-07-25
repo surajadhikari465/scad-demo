@@ -293,7 +293,9 @@ namespace Icon.ApiController.DataAccess.Queries
                 CountryCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country.countryCode,
                 CountryName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country.countryName,
                 PostalCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.PostalCode.postalCode,
-                TimezoneName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Timezone.timezoneName
+                TimezoneName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Timezone.timezoneName,
+                LocaleOpenDate = store.localeOpenDate,
+                LocaleCloseDate = store.localeCloseDate
             };
         }
     }

@@ -20,17 +20,21 @@ namespace Mammoth.Esb.LocaleListener.Commands
                             @BusinessUnitID AS BusinessUnitID,
 		                    @StoreName AS StoreName,
 		                    @StoreAbbrev AS StoreAbbrev,
-                            @PhoneNumber AS PhoneNumber
+                            @PhoneNumber AS PhoneNumber,
+                            @LocaleOpenDate AS LocaleOpenDate,
+                            @LocaleCloseDate AS LocaleCloseDate
                     ) AS s
                     ON l.BusinessUnitID = s.BusinessUnitId
                     WHEN MATCHED THEN
 	                    UPDATE SET StoreName = s.StoreName,
                                     StoreAbbrev = s.StoreAbbrev,
                                     PhoneNumber = s.PhoneNumber,
+                                    LocaleOpenDate = s.LocaleOpenDate,
+                                    LocaleCloseDate = s.LocaleCloseDate,
                                     ModifiedDate = GETDATE()
                     WHEN NOT MATCHED THEN
-	                    INSERT (BusinessUnitID, StoreName, StoreAbbrev, PhoneNumber)
-                        VALUES (s.BusinessUnitID, s.StoreName, s.StoreAbbrev, s.PhoneNumber);
+	                    INSERT (BusinessUnitID, StoreName, StoreAbbrev, PhoneNumber, LocaleOpenDate, LocaleCloseDate)
+                        VALUES (s.BusinessUnitID, s.StoreName, s.StoreAbbrev, s.PhoneNumber, s.LocaleOpenDate, s.LocaleCloseDate);
 
                     MERGE dbo.StoreAddress AS sa
                     USING

@@ -2,6 +2,7 @@
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Mammoth.Esb.LocaleListener.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,7 +98,9 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
                 PostalCode = address.postalCode,
                 Territory = address.territoryType.name,
                 TerritoryAbbrev = address.territoryType.code,
-                Timezone = address.timezone.code
+                Timezone = address.timezone.code,
+                LocaleOpenDate = store.openDateSpecified ? store.openDate : (DateTime?)null,
+                LocaleCloseDate = store.closeDateSpecified ? store.closeDate : (DateTime?)null
             };
         }
 

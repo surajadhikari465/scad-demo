@@ -3,6 +3,7 @@ using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Mammoth.Esb.LocaleListener.Commands;
 using Mammoth.Esb.LocaleListener.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -59,7 +60,8 @@ namespace Mammoth.Esb.LocaleListener.Tests.Commands
                     PostalCode = "Test PostalCode",
                     Territory = "Test Territory",
                     TerritoryAbbrev = "TAbb",
-                    Timezone = "Test Timezone"
+                    Timezone = "Test Timezone",
+                    LocaleOpenDate = DateTime.Today
                 }
             };
 
@@ -77,6 +79,8 @@ namespace Mammoth.Esb.LocaleListener.Tests.Commands
             Assert.AreEqual(command.Locales[0].StoreName, locale.StoreName);
             Assert.AreEqual(command.Locales[0].Region, locale.Region);
             Assert.AreEqual(command.Locales[0].PhoneNumber, locale.PhoneNumber);
+            Assert.AreEqual(command.Locales[0].LocaleOpenDate.Value, locale.LocaleOpenDate);
+            Assert.IsNull(locale.LocaleCloseDate);
             Assert.IsNotNull(locale.AddedDate);
             Assert.IsNull(locale.ModifiedDate);
 
@@ -175,7 +179,9 @@ namespace Mammoth.Esb.LocaleListener.Tests.Commands
                     PostalCode = "Test PostalCode Up",
                     Territory = "Test Territory Updated",
                     TerritoryAbbrev = "TAbbU",
-                    Timezone = "Test Timezone Updated"
+                    Timezone = "Test Timezone Updated",
+                    LocaleOpenDate = DateTime.Today,
+                    LocaleCloseDate = DateTime.Today.AddDays(5)
                 }
             };
 
@@ -193,6 +199,8 @@ namespace Mammoth.Esb.LocaleListener.Tests.Commands
             Assert.AreEqual(command.Locales[0].StoreAbbrev, locale.StoreAbbrev);
             Assert.AreEqual(command.Locales[0].StoreName, locale.StoreName);
             Assert.AreEqual(command.Locales[0].Region, locale.Region);
+            Assert.AreEqual(command.Locales[0].LocaleOpenDate.Value, locale.LocaleOpenDate);
+            Assert.AreEqual(command.Locales[0].LocaleCloseDate.Value, locale.LocaleCloseDate);
             Assert.IsNotNull(locale.AddedDate);
             Assert.IsNotNull(locale.ModifiedDate);
 

@@ -33,6 +33,7 @@
                 <lrf:locale p13:Action="AddOrUpdate">
                   <lcl:id>10130</lcl:id>
                   <lcl:name>Boca Raton</lcl:name>
+                  <lcl:openDate>2001-04-25</lcl:openDate>
                   <lcl:addresses>
                     <lrf:address>
                       <adr:id>1</adr:id>

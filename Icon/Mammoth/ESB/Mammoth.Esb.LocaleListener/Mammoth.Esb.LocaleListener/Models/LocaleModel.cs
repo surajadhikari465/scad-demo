@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.Esb.LocaleListener.Models
 {
@@ -23,5 +19,7 @@ namespace Mammoth.Esb.LocaleListener.Models
         public string Country { get; set; }
         public string CountryAbbrev { get; set; }
         public string Timezone { get; set; }
+        public DateTime? LocaleOpenDate { get; set; }
+        public DateTime? LocaleCloseDate { get; set; }
     }
 }
