@@ -7,13 +7,13 @@
   DTS:CreatorName="WFM\Ben.Sims"
   DTS:DTSID="{2EB9C62B-6E85-4E6D-8512-B7BF65096E3F}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.4451.0"
+  DTS:LastModifiedProductVersion="14.0.0800.98"
   DTS:LocaleID="1033"
   DTS:ObjectName="InforDataConversionManualQuery"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="296"
-  DTS:VersionGUID="{743723DC-E0CB-4496-A951-7BFCA70F6397}">
+  DTS:VersionBuild="297"
+  DTS:VersionGUID="{EB193735-8968-4CCD-8C4F-2C07E2A13978}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -22,8 +22,6 @@
       DTS:CreationName="OLEDB"
       DTS:DTSID="{5AEFE9B1-3BBD-4AC1-9ED0-CCA04EFD1496}"
       DTS:ObjectName="Icon.Db">
-      <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::IconDb_ConnectionString]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectionString="Data Source=CEWD1815\SQLSHARED2012D;Initial Catalog=IconDev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
@@ -34,38 +32,12 @@
       DTS:CreationName="OLEDB"
       DTS:DTSID="{7820925C-6F89-49B7-BF02-DD923CFEEB6E}"
       DTS:ObjectName="IRMA.Db">
-      <DTS:PropertyExpression
-        DTS:Name="ConnectionString">@[$Package::IRMADb_ConnectionString]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectionString="Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
-  <DTS:PackageParameters>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:Description="Mammoth Connection String"
-      DTS:DTSID="{901434E8-A508-4529-81B6-A431D9314DB4}"
-      DTS:ObjectName="IconDb_ConnectionString"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">Data Source=CEWD1815\SQLSHARED2012D;Initial Catalog=IconDev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
-    </DTS:PackageParameter>
-    <DTS:PackageParameter
-      DTS:CreationName=""
-      DTS:DataType="8"
-      DTS:Description="IRMA ItemCatalog Connection String"
-      DTS:DTSID="{38089983-DDD0-4B50-86AB-6D26F3199CA0}"
-      DTS:ObjectName="IRMADb_ConnectionString"
-      DTS:Required="True">
-      <DTS:Property
-        DTS:DataType="8"
-        DTS:Name="ParameterValue">Data Source=IDD-FL\FLD;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
-    </DTS:PackageParameter>
-  </DTS:PackageParameters>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
@@ -87,7 +59,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="NowDateTimeUtc">
       <DTS:VariableValue
-        DTS:DataType="7">6/21/2018 7:05:02 PM</DTS:VariableValue>
+        DTS:DataType="7">7/26/2018 6:16:08 PM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -158,7 +130,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -283,7 +255,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select item.itemID,itemtype.itemTypeCode from Item
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select item.itemID,itemtype.itemTypeCode from Item
 inner join itemtype on item.itemTypeID = ItemType.itemTypeID</property>
                 <property
                   dataType="System.String"
@@ -445,13 +417,17 @@ inner join itemtype on item.itemTypeID = ItemType.itemTypeID</property>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="220,41.6"
+          Size="177,42"
+          Id="Package\Create Staging Table"
+          TopLeft="90.2857158232709,20.18823557725" />
+        <NodeLayout
+          Size="220,42"
           Id="Package\Insert Data into Staging Table"
           TopLeft="107.428573258069,128.470590037046" />
         <NodeLayout
-          Size="176.8,41.6"
-          Id="Package\Create Staging Table"
-          TopLeft="90.2857158232709,20.18823557725" />
+          Size="162,42"
+          Id="Package\Update VSC"
+          TopLeft="125.714287855187,237.364709211303" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="178.685715823271,61.78823557725">
@@ -486,10 +462,6 @@ inner join itemtype on item.itemTypeID = ItemType.itemTypeID</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="162.4,41.6"
-          Id="Package\Update VSC"
-          TopLeft="125.714287855187,237.364709211303" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="217.428573258069,170.070590037046">
@@ -566,14 +538,6 @@ inner join itemtype on item.itemTypeID = ItemType.itemTypeID</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Insert Data into Staging Table\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\Insert Data into Staging Table\OLE DB Destination">
     <Properties>
       <Property>
@@ -583,6 +547,14 @@ inner join itemtype on item.itemTypeID = ItemType.itemTypeID</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert Data into Staging Table\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
