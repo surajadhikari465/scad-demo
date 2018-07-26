@@ -9,6 +9,7 @@
 	[PriceType] [nvarchar](3) NOT NULL,
 	[PriceTypeAttribute] [nvarchar](10) NOT NULL,
 	[SellableUOM] [nvarchar](3) NOT NULL,
+	[Action] [nvarchar] (30) NOT NULL,
 	[ProcessedDateTime] [datetime] NULL,
  CONSTRAINT [PK__StagingMammothPrice] PRIMARY KEY CLUSTERED 
 (
