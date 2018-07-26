@@ -101,9 +101,10 @@
            ,[PriceType]
            ,[PriceTypeAttribute]
            ,[SellableUOM]
+	   ,[Action]
 	  , [TransactionId])
      VALUES
-           (?, ?, ?, ?, ?, ?, ?, ?, ?,?)</statement>
+           (?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)</statement>
                 <batchUpdate>true</batchUpdate>
                 <Prepared_Param_DataType>
                     <parameter>
@@ -140,6 +141,10 @@
                     </parameter>
                     <parameter>
                         <parameterName>SellableUOM</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Action</parameterName>
                         <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
@@ -191,6 +196,9 @@
                             <SellableUOM>
                                 <xsl:value-of select="pfx10:SellableUom"/>
                             </SellableUOM>
+                            <Action>
+                                <xsl:value-of select="pfx10:Action"/>
+                            </Action>
                             <TransactionId>
                                 <xsl:value-of select="$transactionId/UID"/>
                             </TransactionId>

@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/IrmaPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>37</versionProperty>
+        <versionProperty>40</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>IrmaQueueListener</name>

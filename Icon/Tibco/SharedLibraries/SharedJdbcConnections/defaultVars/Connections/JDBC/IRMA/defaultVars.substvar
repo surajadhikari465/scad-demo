@@ -3,15 +3,15 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://idd-fl\fld;DatabaseName=ItemCatalog_Test;</value>
+			<value>jdbc:sqlserver://idd-ma\mad;DatabaseName=ItemCatalog_Test;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510606655013</modTime>
+			<modTime>1532624979585</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!4FbLciDqzvpIZQEuEMj/C6UXKAQH/Ufo3mKA8gfI0y4DY0l/c6QwWA==</value>
+			<value>#!SiNsH2ccDFfFsgubovVkxlIVLq6fvT63cbOLHFsfb6t6/QJTrXYenA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
