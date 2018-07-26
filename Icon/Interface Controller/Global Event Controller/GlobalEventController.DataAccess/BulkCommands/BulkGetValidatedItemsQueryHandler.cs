@@ -34,7 +34,7 @@ namespace GlobalEventController.DataAccess.BulkCommands
             scanCodes.Value = dataTable;
             scanCodes.TypeName = "app.ScanCodeListType";
 
-            string sql = GetSql(this.settings.EnableInforUpdates);
+            string sql = @"EXEC infor.GetValidatedItemModel @ScanCodes";
 
             using (var context = contextFactory.CreateContext())
             {
@@ -47,18 +47,6 @@ namespace GlobalEventController.DataAccess.BulkCommands
                 }
 
                 return validatedItems;
-            }
-        }
-
-        private string GetSql(bool enableInforUpdates)
-        {
-            if(enableInforUpdates)
-            {
-                return @"EXEC infor.GetValidatedItemModel @ScanCodes";
-            }
-            else
-            {
-                return @"EXEC app.GetValidatedItemModel @ScanCodes";
             }
         }
     }

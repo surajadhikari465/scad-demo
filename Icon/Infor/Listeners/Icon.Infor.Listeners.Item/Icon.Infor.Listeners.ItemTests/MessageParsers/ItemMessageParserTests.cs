@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
 {
@@ -107,6 +109,69 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
             //Then
             Assert.AreEqual(3, items.Count());
             AssertItemsAreEqualToXml(items, 1234);
+        }
+
+        private void SetXmlTraitValue(XDocument xmlDoc, string traitCode, string traitValue)
+        {
+             // sample expected xml structure:
+             //  <crf:trait>
+             //    <tra:code>PAS</tra:code>
+             //      <tra:type>
+             //        <trt:description>Pasture Raised</trt:description>
+             //        <trt:value> 
+             //          <trv:value>1</trv:value>      
+             //        </trt:value>       
+             //     </tra:type>
+             //  </crf:trait>
+             xmlDoc.Root.Descendants().Where(trait => trait.Value.ToString() == traitCode).First()
+                .ElementsAfterSelf().First().Descendants().Last().Value = traitValue;
+        }
+
+        [TestMethod]
+        public void ParseMessage_ProductMessageWithKosherYes_ShouldReturnItemModelWithExpectedValue()
+        {
+            //Given
+            var expectedAttributeVal = "Yes";
+            var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageWithNullItemSignAttributes.xml");
+            SetXmlTraitValue(xmlTestData, "KSH", expectedAttributeVal);
+            mockEsbMessage.SetupGet(m => m.MessageText).Returns(xmlTestData.ToString());
+
+            //When
+            var item = itemMessageParser.ParseMessage(mockEsbMessage.Object).FirstOrDefault();
+
+            //Then
+            Assert.AreEqual(expectedAttributeVal, item.Kosher);
+        }
+
+        [TestMethod]
+        public void ParseMessage_ProductMessageWithKosherNo_ShouldReturnItemModelExpectedValue()
+        {
+            //Given
+            var expectedAttributeVal = "No";
+            var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageWithNullItemSignAttributes.xml");
+            SetXmlTraitValue(xmlTestData, "KSH", expectedAttributeVal);
+            mockEsbMessage.SetupGet(m => m.MessageText).Returns(xmlTestData.ToString());
+
+            //When
+            var item = itemMessageParser.ParseMessage(mockEsbMessage.Object).FirstOrDefault();
+
+            //Then
+            Assert.AreEqual(expectedAttributeVal, item.Kosher);
+        }
+        [TestMethod]
+        public void ParseMessage_ProductMessageWithKosherEmpty_ShouldReturnItemModelWithExpectedValue()
+        { 
+            //Given
+            var expectedAttributeVal = "";
+            var xmlTestData = XDocument.Load(@"TestMessages/ProductMessageWithNullItemSignAttributes.xml");
+            SetXmlTraitValue(xmlTestData, "KSH", expectedAttributeVal);
+            mockEsbMessage.SetupGet(m => m.MessageText).Returns(xmlTestData.ToString());
+
+            //When
+            var item = itemMessageParser.ParseMessage(mockEsbMessage.Object).FirstOrDefault();
+
+            //Then
+            Assert.AreEqual(expectedAttributeVal, item.Kosher);
         }
 
         private void AssertItemsAreEqualToXml(IEnumerable<ItemModel> items, decimal? sequenceId = null)

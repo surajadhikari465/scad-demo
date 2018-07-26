@@ -292,7 +292,6 @@
     <Build Include="app\User Defined Types\MessageQueueType.sql" />
     <Build Include="app\Stored Procedures\UpdateMessageQueueProcessedDate.sql" />
     <Build Include="app\Stored Procedures\UpdateEventQueueInProcess.sql" />
-    <Build Include="app\Stored Procedures\GetValidatedItemModel.sql" />
     <Build Include="app\Stored Procedures\DeleteEventQueue.sql" />
     <Build Include="app\User Defined Types\EventNameType.sql" />
     <Build Include="app\User Defined Types\EventQueueIdType.sql" />

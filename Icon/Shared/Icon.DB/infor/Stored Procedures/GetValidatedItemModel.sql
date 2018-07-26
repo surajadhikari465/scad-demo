@@ -148,20 +148,24 @@ BEGIN
 			  esr.Description					as EcoScaleRating,
 			  CASE
 					WHEN isa.GlutenFreeAgencyName IS NULL OR ltrim(rtrim(isa.GlutenFreeAgencyName))='' THEN NULL
+					WHEN ltrim(rtrim(isa.GlutenFreeAgencyName))='No' THEN @falseBit
 					ELSE @trueBit
 			  END								as GlutenFree,
 			  CASE 
 					WHEN isa.KosherAgencyName IS NULL OR ltrim(rtrim(isa.KosherAgencyName))='' THEN NULL
+					WHEN ltrim(rtrim(isa.KosherAgencyName))='No' THEN @falseBit
 					ELSE @trueBit
 			  END								as Kosher,
 			  her.Description as HealthyEatingRating,
 			  isa.Msc							as Msc,
 			  CASE 
 					WHEN isa.OrganicAgencyName IS NULL OR ltrim(rtrim(isa.OrganicAgencyName))='' THEN NULL
+					WHEN ltrim(rtrim(isa.OrganicAgencyName))='No' THEN @falseBit
 					ELSE @trueBit
 			  END								as Organic,
 			  CASE 
 					WHEN isa.NonGmoAgencyName IS NULL OR ltrim(rtrim(isa.NonGmoAgencyName))='' THEN NULL
+					WHEN ltrim(rtrim(isa.NonGmoAgencyName))='No' THEN @falseBit
 					ELSE @trueBit
 			  END								as NonGmo,
 			  isa.PremiumBodyCare				as PremiumBodyCare,
@@ -169,6 +173,7 @@ BEGIN
 			  sfct.Description					as SeafoodCatchType,
 			  CASE 
 					WHEN isa.VeganAgencyName IS NULL OR ltrim(rtrim(isa.VeganAgencyName))='' THEN NULL
+					WHEN ltrim(rtrim(isa.VeganAgencyName))='No' THEN @falseBit
 					ELSE @trueBit
 			  END								as Vegan,
 			  isa.Vegetarian					as Vegetarian,

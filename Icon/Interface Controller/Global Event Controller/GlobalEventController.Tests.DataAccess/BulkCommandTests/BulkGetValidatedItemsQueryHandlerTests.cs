@@ -46,26 +46,26 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             IQueryable<Item> items = this.context.Item.Where(i => i.ItemTrait.Any(it => it.traitID == Traits.ValidationDate && it.traitValue != null && it.localeID == Locales.WholeFoods));
 
             var expectedItems = (from ihc in this.context.ItemHierarchyClass
-                                                      join b in brands on ihc.itemID equals b.itemID
-                                                      join t in taxes on ihc.itemID equals t.itemID
-                                                      join vi in items on ihc.itemID equals vi.itemID
-                                                      select new 
-                                                      {
-                                                          ItemId = vi.itemID,
-                                                          ScanCode = vi.ScanCode.FirstOrDefault().scanCode,
-                                                          ScanCodeType = vi.ScanCode.FirstOrDefault().ScanCodeType.scanCodeTypeDesc,
-                                                          ProductDescription = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ProductDescription).traitValue,
-                                                          PosDescription = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PosDescription).traitValue,
-                                                          PackageUnit = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PackageUnit).traitValue,
-                                                          FoodStampEligible = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.FoodStampEligible).traitValue,
-                                                          Tare = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PosScaleTare).traitValue,
-                                                          BrandId = b.hierarchyClassID,
-                                                          BrandName = b.HierarchyClass.hierarchyClassName,
-                                                          TaxClassName = t.HierarchyClass.HierarchyClassTrait.FirstOrDefault(hct => hct.traitID == Traits.TaxAbbreviation).traitValue,
-                                                          ValidationDate = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ValidationDate).traitValue,
-                                                          RetailSize = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailSize).traitValue,
-                                                          RetailUom = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailUom).traitValue,
-                                                      }).Take(3).ToList();
+                                 join b in brands on ihc.itemID equals b.itemID
+                                 join t in taxes on ihc.itemID equals t.itemID
+                                 join vi in items on ihc.itemID equals vi.itemID
+                                 select new
+                                 {
+                                     ItemId = vi.itemID,
+                                     ScanCode = vi.ScanCode.FirstOrDefault().scanCode,
+                                     ScanCodeType = vi.ScanCode.FirstOrDefault().ScanCodeType.scanCodeTypeDesc,
+                                     ProductDescription = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ProductDescription).traitValue,
+                                     PosDescription = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PosDescription).traitValue,
+                                     PackageUnit = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PackageUnit).traitValue,
+                                     FoodStampEligible = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.FoodStampEligible).traitValue,
+                                     Tare = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.PosScaleTare).traitValue,
+                                     BrandId = b.hierarchyClassID,
+                                     BrandName = b.HierarchyClass.hierarchyClassName,
+                                     TaxClassName = t.HierarchyClass.HierarchyClassTrait.FirstOrDefault(hct => hct.traitID == Traits.TaxAbbreviation).traitValue,
+                                     ValidationDate = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ValidationDate).traitValue,
+                                     RetailSize = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailSize).traitValue,
+                                     RetailUom = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailUom).traitValue,
+                                 }).Take(3).ToList();
 
             this.query.Events = expectedItems.Select(i => new EventQueue { EventMessage = i.ScanCode }).ToList();
             this.query.Events[0].EventId = EventTypes.ItemUpdate;
@@ -106,10 +106,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", true),
-                SetupValidatedItemInDb("123498764", true),
-                SetupValidatedItemInDb("123498765", true)
-
+                SetupValidatedItemInDb("123498763", TestDataValueFlag.On),
+                SetupValidatedItemInDb("123498764", TestDataValueFlag.On),
+                SetupValidatedItemInDb("123498765", TestDataValueFlag.On)
             };
 
             query.Events = expectedItems
@@ -121,35 +120,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             //Then
             Assert.AreEqual(3, actualItems.Count);
-            for(int i = 0; i < actualItems.Count; i++)
+            for (int i = 0; i < actualItems.Count; i++)
             {
-                var signAttributes = expectedItems[i].Item.ItemSignAttribute.First();
-                Assert.IsTrue(actualItems[i].HasItemSignAttributes);
-                Assert.AreEqual(expectedItems[i].itemID, actualItems[i].ItemId);
-                Assert.AreEqual(expectedItems[i].scanCode, actualItems[i].ScanCode);
-                Assert.AreEqual(AnimalWelfareRatings.Descriptions.Step1, actualItems[i].AnimalWelfareRating);
-                Assert.AreEqual(HealthyEatingRatings.Descriptions.Good, actualItems[i].HealthyEatingRating);
-                Assert.IsTrue(actualItems[i].Biodynamic.Value);
-                Assert.AreEqual(MilkTypes.Descriptions.CowGoatSheepMilk, actualItems[i].CheeseMilkType);
-                Assert.IsTrue(actualItems[i].CheeseRaw.Value);
-                Assert.AreEqual(EcoScaleRatings.Descriptions.PremiumYellow, actualItems[i].EcoScaleRating);
-                Assert.IsTrue(actualItems[i].GlutenFree.Value);
-                Assert.IsTrue(actualItems[i].Kosher.Value);
-                Assert.IsTrue(actualItems[i].Msc.Value);
-                Assert.IsTrue(actualItems[i].NonGmo.Value);
-                Assert.IsTrue(actualItems[i].Organic.Value);
-                Assert.IsTrue(actualItems[i].PremiumBodyCare.Value);
-                Assert.AreEqual(SeafoodFreshOrFrozenTypes.Descriptions.Frozen, actualItems[i].FreshOrFrozen);
-                Assert.AreEqual(SeafoodCatchTypes.Descriptions.Wild, actualItems[i].SeafoodCatchType);
-                Assert.IsTrue(actualItems[i].Vegan.Value);
-                Assert.IsTrue(actualItems[i].Vegetarian.Value);
-                Assert.IsTrue(actualItems[i].WholeTrade.Value);
-                Assert.IsTrue(actualItems[i].GrassFed.Value);
-                Assert.IsTrue(actualItems[i].PastureRaised.Value);
-                Assert.IsTrue(actualItems[i].FreeRange.Value);
-                Assert.IsTrue(actualItems[i].DryAged.Value);
-                Assert.IsTrue(actualItems[i].AirChilled.Value);
-                Assert.IsTrue(actualItems[i].MadeInHouse.Value);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.On);
             }
         }
 
@@ -159,9 +132,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", false),
-                SetupValidatedItemInDb("123498764", false),
-                SetupValidatedItemInDb("123498765", false)
+                SetupValidatedItemInDb("123498763", TestDataValueFlag.Null),
+                SetupValidatedItemInDb("123498764", TestDataValueFlag.Null),
+                SetupValidatedItemInDb("123498765", TestDataValueFlag.Null)
             };
 
             query.Events = expectedItems
@@ -175,31 +148,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(3, actualItems.Count);
             for (int i = 0; i < actualItems.Count; i++)
             {
-                Assert.AreEqual(expectedItems[i].itemID, actualItems[i].ItemId);
-                Assert.AreEqual(expectedItems[i].scanCode, actualItems[i].ScanCode);
-                Assert.IsFalse(actualItems[i].HasItemSignAttributes);
-                Assert.IsNull(actualItems[i].AnimalWelfareRating);
-                Assert.IsNull(actualItems[i].Biodynamic);
-                Assert.IsNull(actualItems[i].CheeseMilkType);
-                Assert.IsNull(actualItems[i].CheeseRaw);
-                Assert.IsNull(actualItems[i].EcoScaleRating);
-                Assert.IsNull(actualItems[i].GlutenFree);
-                Assert.IsNull(actualItems[i].Kosher);
-                Assert.IsNull(actualItems[i].Msc);
-                Assert.IsNull(actualItems[i].NonGmo);
-                Assert.IsNull(actualItems[i].Organic);
-                Assert.IsNull(actualItems[i].PremiumBodyCare);
-                Assert.IsNull(actualItems[i].FreshOrFrozen);
-                Assert.IsNull(actualItems[i].SeafoodCatchType);
-                Assert.IsNull(actualItems[i].Vegan);
-                Assert.IsNull(actualItems[i].Vegetarian);
-                Assert.IsNull(actualItems[i].WholeTrade);
-                Assert.IsNull(actualItems[i].GrassFed);
-                Assert.IsNull(actualItems[i].PastureRaised);
-                Assert.IsNull(actualItems[i].FreeRange);
-                Assert.IsNull(actualItems[i].DryAged);
-                Assert.IsNull(actualItems[i].AirChilled);
-                Assert.IsNull(actualItems[i].MadeInHouse);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.Null);
             }
         }
 
@@ -209,15 +158,10 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", false),
-                SetupValidatedItemInDb("123498764", false),
-                SetupValidatedItemInDb("123498765", false)
+                SetupValidatedItemInDb("123498763", TestDataValueFlag.Off),
+                SetupValidatedItemInDb("123498764", TestDataValueFlag.Off),
+                SetupValidatedItemInDb("123498765", TestDataValueFlag.Off)
             };
-
-            foreach (var item in expectedItems)
-            {
-                item.Item.ItemSignAttribute.Add(CreateFalseSignAttributes());
-            }
             context.SaveChanges();
 
             query.Events = expectedItems
@@ -231,95 +175,217 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(3, actualItems.Count);
             for (int i = 0; i < actualItems.Count; i++)
             {
-                var signAttributes = expectedItems[i].Item.ItemSignAttribute.First();
-                Assert.AreEqual(expectedItems[i].itemID, actualItems[i].ItemId);
-                Assert.AreEqual(expectedItems[i].scanCode, actualItems[i].ScanCode);
-                Assert.IsTrue(actualItems[i].HasItemSignAttributes);
-                Assert.IsNull(actualItems[i].AnimalWelfareRating);
-                Assert.IsFalse(actualItems[i].Biodynamic.Value);
-                Assert.IsNull(actualItems[i].CheeseMilkType);
-                Assert.IsFalse(actualItems[i].CheeseRaw.Value);
-                Assert.IsNull(actualItems[i].EcoScaleRating);
-                Assert.IsNull(actualItems[i].GlutenFree);
-                Assert.IsNull(actualItems[i].Kosher);
-                Assert.IsFalse(actualItems[i].Msc.Value);
-                Assert.IsNull(actualItems[i].NonGmo);
-                Assert.IsNull(actualItems[i].Organic);
-                Assert.IsFalse(actualItems[i].PremiumBodyCare.Value);
-                Assert.IsNull(actualItems[i].FreshOrFrozen);
-                Assert.IsNull(actualItems[i].SeafoodCatchType);
-                Assert.IsNull(actualItems[i].Vegan);
-                Assert.IsFalse(actualItems[i].Vegetarian.Value);
-                Assert.IsFalse(actualItems[i].WholeTrade.Value);
-                Assert.IsFalse(actualItems[i].GrassFed.Value);
-                Assert.IsFalse(actualItems[i].PastureRaised.Value);
-                Assert.IsFalse(actualItems[i].FreeRange.Value);
-                Assert.IsFalse(actualItems[i].DryAged.Value);
-                Assert.IsFalse(actualItems[i].AirChilled.Value);
-                Assert.IsFalse(actualItems[i].MadeInHouse.Value);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.Off);
             }
         }
 
-        private ScanCode SetupValidatedItemInDb(string testScanCode, bool addItemSignAttributes)
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemsHaveDefaultItemSignAttributes_ExceptAgencyNamesBlank_ShouldReturnNull()
         {
-            string validationDate = DateTime.Now.ToString() + testScanCode;
-            string productDescription = "Test Product Description" + testScanCode;
-            string posDescription = "Test POS Description" + testScanCode;
-            string packageUnit = "Test Package Unit" + testScanCode;
-            string foodStampEligible = "Test FSE" + testScanCode;
-            string posScaleTare = "Test Tare";
-            string taxAbbreviation = "Test Tax Abbr" + testScanCode;
-            string subTeamName = "Test SubTeam" + testScanCode;
-            string retailSize = "123";
-            string retailUom = "Test Retail Uom" + testScanCode;
+            //Given
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.GlutenFreeAgencyName), "", nameof(ValidatedItemModel.GlutenFree), (bool?)null),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.KosherAgencyName), "", nameof(ValidatedItemModel.Kosher), (bool?)null),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.NonGmoAgencyName), "", nameof(ValidatedItemModel.NonGmo), (bool?)null),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "", nameof(ValidatedItemModel.Organic), (bool?)null),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "", nameof(ValidatedItemModel.Vegan), (bool?)null)
+            };
+            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.On, customSignAttrValues);
+            context.SaveChanges();
 
-            HierarchyClass brand = new HierarchyClass { hierarchyID = Hierarchies.Brands, hierarchyClassName = "Test Brand" + testScanCode };
+            query.Events = new List<EventQueue> {
+                new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = expectedItem.scanCode }
+            };
+
+            //When
+            var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
+
+            //Then
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.On, customSignAttrValues);
+        }
+
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemsHaveDefaultItemSignAttributes_ExceptAgencyNamesNo_ShouldReturnFalse()
+        {
+            //Given
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.GlutenFreeAgencyName), "No", nameof(ValidatedItemModel.GlutenFree), false),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.KosherAgencyName), "No", nameof(ValidatedItemModel.Kosher), false),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.NonGmoAgencyName), "No", nameof(ValidatedItemModel.NonGmo), false),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "No", nameof(ValidatedItemModel.Organic), false),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "No", nameof(ValidatedItemModel.Vegan), false)
+            };
+            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.On, customSignAttrValues);
+            context.SaveChanges();
+
+            query.Events = new List<EventQueue> {
+                new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = expectedItem.scanCode }
+            };
+
+            //When
+            var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
+
+            //Then
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.On, customSignAttrValues);
+        }
+
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemsHaveFalseItemSignAttributes_ExceptAgencyNamesHaveValues_ShouldReturnTrue()
+        {
+            //Given
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.GlutenFreeAgencyName), "Acme Gluten Free Agency", nameof(ValidatedItemModel.GlutenFree), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.KosherAgencyName), "Acme KosherAgency", nameof(ValidatedItemModel.Kosher), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.NonGmoAgencyName), "Acme GMO Agency", nameof(ValidatedItemModel.NonGmo), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "Acme Organic Agency", nameof(ValidatedItemModel.Organic), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "Acme Vegan Agency", nameof(ValidatedItemModel.Vegan), true)
+            };
+            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.Off, customSignAttrValues);
+            context.SaveChanges();
+
+            query.Events = new List<EventQueue> {
+                new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = expectedItem.scanCode }
+            };
+
+            //When
+            var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
+
+            //Then
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.Off, customSignAttrValues);
+        }
+
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemsHaveFalseItemSignAttributes_ExceptAgencyNamesYes_ShouldReturnTrue()
+        {
+            //Given
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.GlutenFreeAgencyName), "Yes", nameof(ValidatedItemModel.GlutenFree), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.KosherAgencyName), "Yes", nameof(ValidatedItemModel.Kosher), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.NonGmoAgencyName), "Yes", nameof(ValidatedItemModel.NonGmo), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "Yes", nameof(ValidatedItemModel.Organic), true),
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "Yes", nameof(ValidatedItemModel.Vegan), true)
+            };
+            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.Off, customSignAttrValues);
+            context.SaveChanges();
+
+            query.Events = new List<EventQueue> {
+                new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = expectedItem.scanCode }
+            };
+
+            //When
+            var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
+
+            //Then
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.Off, customSignAttrValues);
+        }
+
+        /// <summary>
+        /// Creates a ScanCode object and saves it to the Icon database context for use in subsequent testing.
+        ///   The ScanCode will have values populated for standard ItemTraits,
+        ///   required HierarchyClasses (brand/tax/merch), and ItemSignAttribute data as specified
+        /// </summary>
+        /// <param name="identifier">scanCode/identifier for the item</param>
+        /// <param name="signAttrDataFlag">flag indicating the values to use for ScanCode.Item.ItemSignAttribute
+        ///   members: On/Populated, Off/Fale, Null/No Sign Attribute data</param>
+        /// <param name="customSignAttributeValues">Optional list of property name/value pairs to use for 
+        ///    ScanCode.Item.ItemSignAttribute members. When left null, the standard values appropriate to the 
+        ///    data flag parameter will be used for all properties. Any properties not listed in the custom values
+        ///    will default to the standard value for the sign attribute data flag.</param>
+        /// <returns>ScanCode object which has been saved to the test context</returns>
+        private ScanCode SetupValidatedItemInDb(string identifier, TestDataValueFlag signAttrDataFlag,
+            List<SignAttributeValidatedItemPair> customSignAttributeValues = null)
+        {
+            var standardItemTraits = CreateDefaultItemTraits(identifier);
+            var hierarchiesForBrandTaxMerch = CreateBrandTaxMerchHierarchyClassesForTestItem(identifier);
+
+            context.HierarchyClass.AddRange(hierarchiesForBrandTaxMerch);
+            context.SaveChanges();
+
+            var scanCode = CreateScanCodeModelForValidatedItem(identifier, standardItemTraits, hierarchiesForBrandTaxMerch);
+            if (signAttrDataFlag != TestDataValueFlag.Null)
+            {
+                var signAttributes = CreateItemSignAttributes(signAttrDataFlag, customSignAttributeValues);
+                scanCode.Item.ItemSignAttribute.Add(signAttributes);
+            }
+
+            context.ScanCode.Add(scanCode);
+            context.SaveChanges();
+
+            return scanCode;
+        }
+
+        /// <summary>
+        /// Creates a list of 3 HierarchyClass objects with sample data for the brand, tax, and merchandise
+        ///   HierarchyClasses associated with a test data item
+        /// </summary>
+        /// <param name="scanCode">identifier/scanCode for the test item</param>
+        /// <param name="customTaxAbbr">custom value to use for the tax hierarchy class name
+        ///   (when left null, defaults to "Test Tax Abbr" + scanCode</param>
+        /// <param name="customSubTeamName">custom value to use for the merch hierarchy class 
+        ///    HierarchyTrait traitValue (when left null, defaults to "Test SubTeam" + scanCode</param>
+        /// <returns>List of 3 HierarchyClass objects with populated values for 
+        ///   hierarchyID, hierarchyClassName, and HierarchyClassTrait (for tax & merch only):
+        ///   one each for brand, tax, merch</returns>
+        private List<HierarchyClass> CreateBrandTaxMerchHierarchyClassesForTestItem(string scanCode,
+            string customTaxAbbr = null, string customSubTeamName = null)
+        {
+            string brandClassName = "Test Brand" + scanCode;
+            string taxClassName = "Test Tax" + scanCode;
+            string merchClassName = "Test Merchandise" + scanCode;
+            string taxAbbrVal = customTaxAbbr ?? "Test Tax Abbr" + scanCode;
+            string merchSubTeamNameVal = customSubTeamName ?? "Test SubTeam" + scanCode;
+
+            HierarchyClass brand = new HierarchyClass
+            {
+                hierarchyID = Hierarchies.Brands,
+                hierarchyClassName = brandClassName
+            };
             HierarchyClass tax = new HierarchyClass
             {
                 hierarchyID = Hierarchies.Tax,
-                hierarchyClassName = "Test Tax" + testScanCode,
+                hierarchyClassName = taxClassName,
                 HierarchyClassTrait = new List<HierarchyClassTrait>
                 {
-                    new HierarchyClassTrait { traitID = Traits.TaxAbbreviation, traitValue = taxAbbreviation }
+                    new HierarchyClassTrait { traitID = Traits.TaxAbbreviation, traitValue = taxAbbrVal }
                 }
             };
             HierarchyClass merchandise = new HierarchyClass
             {
                 hierarchyID = Hierarchies.Merchandise,
-                hierarchyClassName = "Test Merchandise" + testScanCode,
+                hierarchyClassName = merchClassName,
                 HierarchyClassTrait = new List<HierarchyClassTrait>
                 {
-                    new HierarchyClassTrait { traitID = Traits.MerchFinMapping, traitValue = subTeamName }
+                    new HierarchyClassTrait { traitID = Traits.MerchFinMapping, traitValue = merchSubTeamNameVal}
                 }
             };
 
-            HierarchyClass glutenAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Test Gluten" + testScanCode };
-            HierarchyClass kosherAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Kosher Agency" + testScanCode };
-            HierarchyClass nonGmoAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "NonGmo Agency" + testScanCode };
-            HierarchyClass organicAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Organic Agency" + testScanCode };
-            HierarchyClass veganAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Vegan Agency" + testScanCode };
+            return new List<HierarchyClass> { brand, tax, merchandise };
+        }
 
-            context.HierarchyClass.AddRange(new List<HierarchyClass> { brand, tax, merchandise, glutenAgency, kosherAgency, nonGmoAgency, organicAgency, veganAgency });
-            context.SaveChanges();
+        /// <summary>
+        /// Creates a ScanCode object containing populated values for scanCode, ScanCodeType, and Item
+        ///   including Item.ItemTrait and Item.ItemHierarchyClass
+        /// </summary>
+        /// <param name="identifier">identifier/scan code for the test data item</param>
+        /// <param name="itemTraits">list of ItemTraits to use for ScanCode.Item.ItemTrait property</param>
+        /// <param name="brandTaxAndMerchHierarchies">list of brand, tax, merch HierarchyClass objects
+        ///    to use for the ScanCode.Item.ItemHierarchyClass property</param>
+        /// <returns>ScanCode object</returns>
+        private ScanCode CreateScanCodeModelForValidatedItem(string identifier,
+            List<ItemTrait> itemTraits, List<HierarchyClass> brandTaxAndMerchHierarchies)
+        {
+            HierarchyClass brand = brandTaxAndMerchHierarchies.Single(hc => hc.hierarchyID == Hierarchies.Brands);
+            HierarchyClass tax = brandTaxAndMerchHierarchies.Single(hc => hc.hierarchyID == Hierarchies.Tax);
+            HierarchyClass merchandise = brandTaxAndMerchHierarchies.Single(hc => hc.hierarchyID == Hierarchies.Merchandise);
 
             ScanCode scanCode = new ScanCode
             {
-                scanCode = testScanCode,
-                ScanCodeType = new ScanCodeType { scanCodeTypeDesc = "Test ScanCode Type Description" + testScanCode },
+                scanCode = identifier,
+                ScanCodeType = new ScanCodeType { scanCodeTypeDesc = "Test ScanCode Type Description" + identifier },
                 Item = new Item
                 {
                     itemTypeID = ItemTypes.RetailSale,
-                    ItemTrait = new List<ItemTrait>
-                    {
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.ValidationDate, traitValue = validationDate },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.ProductDescription, traitValue = productDescription },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PosDescription, traitValue = posDescription },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PackageUnit, traitValue = packageUnit },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.FoodStampEligible, traitValue = foodStampEligible },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PosScaleTare, traitValue = posScaleTare },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailSize, traitValue = retailSize },
-                        new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailUom, traitValue = retailUom },
-                    },
+                    ItemTrait = itemTraits,
                     ItemHierarchyClass = new List<ItemHierarchyClass>
                     {
                         new ItemHierarchyClass { hierarchyClassID = brand.hierarchyClassID },
@@ -329,70 +395,367 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 }
             };
 
-            if (addItemSignAttributes)
-            {
-                ItemSignAttribute signAttributes = new ItemSignAttribute
-                {
-                    AnimalWelfareRatingId = AnimalWelfareRatings.Step1,
-                    HealthyEatingRatingId = HealthyEatingRatings.Good,
-                    Biodynamic = true,
-                    CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
-                    CheeseRaw = true,
-                    EcoScaleRatingId = EcoScaleRatings.PremiumYellow,
-                    Msc = true,
-                    PremiumBodyCare = true,
-                    SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Frozen,
-                    SeafoodCatchTypeId = SeafoodCatchTypes.Wild,
-                    Vegetarian = true,
-                    WholeTrade = true,
-                    GrassFed = true,
-                    PastureRaised = true,
-                    FreeRange = true,
-                    DryAged = true,
-                    AirChilled = true,
-                    MadeInHouse = true,
-                    GlutenFreeAgencyName = glutenAgency.hierarchyClassName,
-                    KosherAgencyName = kosherAgency.hierarchyClassName,
-                    OrganicAgencyName = organicAgency.hierarchyClassName,
-                    VeganAgencyName = veganAgency.hierarchyClassName,
-                    NonGmoAgencyName = nonGmoAgency.hierarchyClassName
-                };
-                scanCode.Item.ItemSignAttribute.Add(signAttributes);
-            }
-            context.ScanCode.Add(scanCode);
-            context.SaveChanges();
-
             return scanCode;
         }
 
-        private ItemSignAttribute CreateFalseSignAttributes()
+        /// <summary>
+        /// Creates a list of ItemTrait objects with sample data for the following traits:
+        ///   ValidationDate, ProductDescription, PosDescription, PackageUnit, FoodStampEligible, PosScaleTare, RetailSize, RetailUom
+        /// </summary>
+        /// <param name="scanCode">ScanCode/Identifer for the test data item (will be prepended to test trait values)</param>
+        /// <param name="validationDate">Value to use for the ValidationDate trait (defaults to Now if not specified)</param>
+        /// <returns>List of ItemTrait objects with sample values</returns>
+        private List<ItemTrait> CreateDefaultItemTraits(string scanCode, DateTime? validationDate = null)
         {
-            return new ItemSignAttribute
+            if (!validationDate.HasValue) validationDate = DateTime.Now;
+
+            var itemTraits = new List<ItemTrait>
             {
-                AnimalWelfareRatingId = null,
-                HealthyEatingRatingId = null,
-                Biodynamic = false,
-                CheeseMilkTypeId = null,
-                CheeseRaw = false,
-                EcoScaleRatingId = null,
-                Msc = false,
-                PremiumBodyCare = false,
-                SeafoodFreshOrFrozenId = null,
-                SeafoodCatchTypeId = null,
-                Vegetarian = false,
-                WholeTrade = false,
-                GrassFed = false,
-                PastureRaised = false,
-                FreeRange = false,
-                DryAged = false,
-                AirChilled = false,
-                MadeInHouse = false,
-                GlutenFreeAgencyName = null,
-                KosherAgencyName = null,
-                OrganicAgencyName = null,
-                VeganAgencyName = null,
-                NonGmoAgencyName = null
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.ValidationDate, traitValue = validationDate + scanCode },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.ProductDescription, traitValue = "Test Product Description" + scanCode },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PosDescription, traitValue = "Test POS Description" + scanCode},
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PackageUnit, traitValue = "Test Package Unit" + scanCode },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.FoodStampEligible, traitValue = "Test FSE" + scanCode },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PosScaleTare, traitValue = "Test Tare" },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailSize, traitValue = "123" },
+                new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailUom, traitValue = "Test Retail Uom" + scanCode},
             };
+            return itemTraits;
+        }
+
+        /// <summary>
+        /// Returns an ItemSignAttribute object with property values as specified by the test data value flag,
+        ///   or with the values provided in the custom property name/value list
+        /// </summary>
+        /// <param name="signAttrDataFlag">TestDataValueFlag: set the value for the properies 
+        /// in the ItemSignAttribute object to either :
+        ///    On (true/string value/"Yes"), 
+        ///    Off (false/empty string/null),
+        ///    Null (null for all nullables or false/0) </param>
+        /// <param name="customValidatedItemSignAttrData">List of property/name pairs indicating that the
+        ///    specified property names should have the matching value, overriding the test data flag</param>
+        /// <returns>ItemSignAttribute object with property values specified as indicated by the parameters</returns>
+        private ItemSignAttribute CreateItemSignAttributes(TestDataValueFlag signAttrDataFlag,
+            List<SignAttributeValidatedItemPair> customValidatedItemSignAttrData = null)
+        {
+            ItemSignAttribute signAttributes = null;
+
+            switch (signAttrDataFlag)
+            {
+                case TestDataValueFlag.On:
+                    // assign default (on/true/yes/string value) values
+                    signAttributes = new ItemSignAttribute
+                    {
+                        HealthyEatingRatingId = HealthyEatingRatings.Good,
+                        AnimalWelfareRatingId = AnimalWelfareRatings.Step1,
+                        CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
+                        EcoScaleRatingId = EcoScaleRatings.PremiumYellow,
+                        SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Frozen,
+                        SeafoodCatchTypeId = SeafoodCatchTypes.Wild,
+                        Biodynamic = true,
+                        CheeseRaw = true,
+                        Msc = true,
+                        PremiumBodyCare = true,
+                        Vegetarian = true,
+                        WholeTrade = true,
+                        GrassFed = true,
+                        PastureRaised = true,
+                        FreeRange = true,
+                        DryAged = true,
+                        AirChilled = true,
+                        MadeInHouse = true,
+                        GlutenFreeAgencyName = "Yes",
+                        KosherAgencyName = "Yes",
+                        OrganicAgencyName = "Yes",
+                        VeganAgencyName = "Yes",
+                        NonGmoAgencyName = "Yes"
+                    };
+                    break;
+                case TestDataValueFlag.Off: 
+                    // assign false/off/no values to all appropriate properties
+                    signAttributes = new ItemSignAttribute
+                    {
+                        AnimalWelfareRatingId = null,
+                        HealthyEatingRatingId = null,
+                        CheeseMilkTypeId = null,
+                        EcoScaleRatingId = null,
+                        SeafoodFreshOrFrozenId = null,
+                        SeafoodCatchTypeId = null,
+                        Biodynamic = false,
+                        CheeseRaw = false,
+                        Msc = false,
+                        PremiumBodyCare = false,
+                        Vegetarian = false,
+                        WholeTrade = false,
+                        GrassFed = false,
+                        PastureRaised = false,
+                        FreeRange = false,
+                        DryAged = false,
+                        AirChilled = false,
+                        MadeInHouse = false,
+                        GlutenFreeAgencyName = "No",
+                        KosherAgencyName = "No",
+                        OrganicAgencyName = "No",
+                        VeganAgencyName = "No",
+                        NonGmoAgencyName = "No"
+                    };
+                    break;
+                case TestDataValueFlag.Null:
+                default:
+                    // leave all nullable properties null, all others to false
+                    signAttributes = new ItemSignAttribute
+                    {
+                        AnimalWelfareRatingId = null,
+                        HealthyEatingRatingId = null,
+                        CheeseMilkTypeId = null,
+                        EcoScaleRatingId = null,
+                        SeafoodFreshOrFrozenId = null,
+                        SeafoodCatchTypeId = null,
+                        Biodynamic = false,
+                        CheeseRaw = false,
+                        Msc = false,
+                        PremiumBodyCare = false,
+                        Vegetarian = false,
+                        WholeTrade = false,
+                        GrassFed = false,
+                        PastureRaised = false,
+                        FreeRange = false,
+                        DryAged = false,
+                        AirChilled = false,
+                        MadeInHouse = false,
+                        GlutenFreeAgencyName = null,
+                        KosherAgencyName = null,
+                        OrganicAgencyName = null,
+                        VeganAgencyName = null,
+                        NonGmoAgencyName = null
+                    };
+                    break;
+            }
+
+            // were any custom properties specified?
+            if (customValidatedItemSignAttrData!=null && customValidatedItemSignAttrData.Any())
+            {
+                // use reflection to get a collection of all available properties
+                var props = typeof(ItemSignAttribute).GetProperties();
+
+                // iterate the provided custom property-values
+                foreach (var customSignAttribute in customValidatedItemSignAttrData)
+                {
+                    // find the property matching the name in the custom list
+                    var prop = props.FirstOrDefault(p => p.Name == customSignAttribute.ItemSignAttributePropertyName);
+                    if (prop != null)
+                    {
+                        // set the value of the property on the object to the specified custom value
+                        prop.SetValue(signAttributes, customSignAttribute.ItemSignAttributePropertyValue);
+                    }
+                }
+            }
+
+            return signAttributes;
+        }
+
+        /// <summary>
+        /// Returns a value of the provided type which the automated test expects in the ValidatedItemModel
+        /// </summary>
+        /// <typeparam name="T">data type (string, bool?, int)</typeparam>
+        /// <param name="defaultExpectedValue">the value expected (unless something is listed for this property in the custom data)</param>
+        /// <param name="customExpectedData">a list of ValidatedItemModel property names and values. If the selected property
+        ///   is included, the specified value will be set as the expected value instead of the defaultExpectedValue</param>
+        /// <param name="validatedItemPropertyName">the property name in the ValidatedItemModel</param>
+        /// <returns></returns>
+        private T SetExpectedPropertyValue<T>(T defaultExpectedValue,
+            IList<SignAttributeValidatedItemPair> customExpectedData, string validatedItemPropertyName)
+        {
+            if (customExpectedData != null)
+            {
+                // check the custom data to see if there is a value for the specified property
+                var customDataEntry = customExpectedData
+                    .FirstOrDefault(d => d.ValidatedItemPropertyName == validatedItemPropertyName);
+                // if a custom entry was found, use that value, otherwise leave the value as provided
+                if (customDataEntry != default(SignAttributeValidatedItemPair))
+                {
+                    return (T)(customDataEntry.ValidatedItemPropertyValue ?? default(T));
+                }
+            }
+            return defaultExpectedValue;
+        }
+
+        public void AssertSignAttributesMatchExpected(ScanCode expected,
+            ValidatedItemModel actual,
+            TestDataValueFlag defaultPropertyValue,
+            List<SignAttributeValidatedItemPair> customExpectedData = null)
+        {
+            Assert.AreEqual(expected.itemID, actual.ItemId);
+            Assert.AreEqual(expected.scanCode, actual.ScanCode);
+
+            bool expectedHasItemSignAttributes;
+            string expectedAWR;
+            string expectedHER;
+            bool? expectedBIO;
+            string expectedCMT;
+            bool? expectedCR;
+            string expectedECO;
+            bool? expectedGF;
+            bool? expectedKSH;
+            bool? expectedMSC;
+            bool? expectedNGM;
+            bool? expectedOG;
+            bool? expectedPBC;
+            string expectedSFF;
+            string expectedSFT;
+            bool? expectedVEG;
+            bool? expectedVGN;
+            bool? expectedWT;
+            bool? expectedGRF;
+            bool? expectedPAS;
+            bool? expectedFRR;
+            bool? expectedDAG;
+            bool? expectedACH;
+            bool? expectedMIH;
+
+            switch (defaultPropertyValue)
+            {
+                case TestDataValueFlag.On:
+                    // set expected values for when sign attributes data is is expected to exist and have populated values
+                    expectedHasItemSignAttributes = true;
+                    expectedAWR = SetExpectedPropertyValue(AnimalWelfareRatings.Descriptions.Step1, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
+                    expectedHER = SetExpectedPropertyValue(HealthyEatingRatings.Descriptions.Good, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
+                    expectedBIO = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
+                    expectedCMT = SetExpectedPropertyValue(MilkTypes.Descriptions.CowGoatSheepMilk, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCR = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
+                    expectedECO = SetExpectedPropertyValue(EcoScaleRatings.Descriptions.PremiumYellow, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
+                    expectedGF = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
+                    expectedKSH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Kosher));
+                    expectedMSC = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Msc));
+                    expectedNGM = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.NonGmo));
+                    expectedOG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Organic));
+                    expectedPBC = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.PremiumBodyCare));
+                    expectedSFF = SetExpectedPropertyValue(SeafoodFreshOrFrozenTypes.Descriptions.Frozen, customExpectedData, nameof(ValidatedItemModel.FreshOrFrozen));
+                    expectedSFT = SetExpectedPropertyValue(SeafoodCatchTypes.Descriptions.Wild, customExpectedData, nameof(ValidatedItemModel.SeafoodCatchType));
+                    expectedVEG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Vegetarian));
+                    expectedVGN = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Vegan));
+                    expectedWT = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.WholeTrade));
+                    expectedGRF = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.GrassFed));
+                    expectedPAS = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.PastureRaised));
+                    expectedFRR = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.FreeRange));
+                    expectedDAG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.DryAged));
+                    expectedACH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.AirChilled));
+                    expectedMIH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
+                    break;
+                case TestDataValueFlag.Off:
+                    // set expected  values for when sign attribute data is expected to exist but be false/empty
+                    expectedHasItemSignAttributes = true;
+                    expectedAWR = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
+                    expectedHER = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
+                    expectedBIO = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
+                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCR  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
+                    expectedECO = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
+                    expectedGF  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
+                    expectedKSH = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Kosher));
+                    expectedMSC = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Msc));
+                    expectedNGM = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.NonGmo));
+                    expectedOG  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Organic));
+                    expectedPBC = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.PremiumBodyCare));
+                    expectedSFF = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.FreshOrFrozen));
+                    expectedSFT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.SeafoodCatchType));
+                    expectedVEG = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Vegetarian));
+                    expectedVGN = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Vegan));
+                    expectedWT  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.WholeTrade));
+                    expectedGRF = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.GrassFed));
+                    expectedPAS = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.PastureRaised));
+                    expectedFRR = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.FreeRange));
+                    expectedDAG = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.DryAged));
+                    expectedACH = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.AirChilled));
+                    expectedMIH = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
+                    break;
+                case TestDataValueFlag.Null:
+                default:
+                    //set expected values for when sign attribute data is expected to be null
+                    expectedHasItemSignAttributes = false;
+                    expectedAWR = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
+                    expectedHER = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
+                    expectedBIO = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
+                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCR = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
+                    expectedECO = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
+                    expectedGF = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
+                    expectedKSH = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Kosher));
+                    expectedMSC = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Msc));
+                    expectedNGM = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.NonGmo));
+                    expectedOG = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Organic));
+                    expectedPBC = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.PremiumBodyCare));
+                    expectedSFF = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.FreshOrFrozen));
+                    expectedSFT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.SeafoodCatchType));
+                    expectedVEG = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Vegetarian));
+                    expectedVGN = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Vegan));
+                    expectedWT = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.WholeTrade));
+                    expectedGRF = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.GrassFed));
+                    expectedPAS = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.PastureRaised));
+                    expectedFRR = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.FreeRange));
+                    expectedDAG = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.DryAged));
+                    expectedACH = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.AirChilled));
+                    expectedMIH = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
+
+                    break;
+            }
+
+            // assert that the expected values match the actual values in the ValidatedItemModel
+            Assert.AreEqual(expectedHasItemSignAttributes, actual.HasItemSignAttributes, "Property: " + nameof(actual.HasItemSignAttributes));
+            Assert.AreEqual(expectedAWR, actual.AnimalWelfareRating, "Property: " + nameof(actual.AnimalWelfareRating));
+            Assert.AreEqual(expectedHER, actual.HealthyEatingRating, "Property: " + nameof(actual.HealthyEatingRating));
+            Assert.AreEqual(expectedBIO, actual.Biodynamic, "Property: " + nameof(actual.Biodynamic));
+            Assert.AreEqual(expectedCMT, actual.CheeseMilkType, "Property: " + nameof(actual.CheeseMilkType));
+            Assert.AreEqual(expectedCR, actual.CheeseRaw, "Property: " + nameof(actual.CheeseRaw));
+            Assert.AreEqual(expectedECO, actual.EcoScaleRating, "Property: " + nameof(actual.EcoScaleRating));
+            Assert.AreEqual(expectedGF, actual.GlutenFree, "Property: " + nameof(actual.GlutenFree));
+            Assert.AreEqual(expectedKSH, actual.Kosher, "Property: " + nameof(actual.Kosher));
+            Assert.AreEqual(expectedMSC, actual.Msc, "Property: " + nameof(actual.Msc));
+            Assert.AreEqual(expectedNGM, actual.NonGmo, "Property: " + nameof(actual.NonGmo));
+            Assert.AreEqual(expectedOG, actual.Organic, "Property: " + nameof(actual.Organic));
+            Assert.AreEqual(expectedPBC, actual.PremiumBodyCare, "Property: " + nameof(actual.PremiumBodyCare));
+            Assert.AreEqual(expectedSFF, actual.FreshOrFrozen, "Property: " + nameof(actual.FreshOrFrozen));
+            Assert.AreEqual(expectedSFT, actual.SeafoodCatchType, "Property: " + nameof(actual.SeafoodCatchType));
+            Assert.AreEqual(expectedVGN, actual.Vegan, "Property: " + nameof(actual.Vegan));
+            Assert.AreEqual(expectedVEG, actual.Vegetarian, "Property: " + nameof(actual.Vegetarian));
+            Assert.AreEqual(expectedWT, actual.WholeTrade, "Property: " + nameof(actual.WholeTrade));
+            Assert.AreEqual(expectedGRF, actual.GrassFed, "Property: " + nameof(actual.GrassFed));
+            Assert.AreEqual(expectedPAS, actual.PastureRaised, "Property: " + nameof(actual.PastureRaised));
+            Assert.AreEqual(expectedFRR, actual.FreeRange, "Property: " + nameof(actual.FreeRange));
+            Assert.AreEqual(expectedDAG, actual.DryAged, "Property: " + nameof(actual.DryAged));
+            Assert.AreEqual(expectedACH, actual.AirChilled, "Property: " + nameof(actual.AirChilled));
+            Assert.AreEqual(expectedMIH, actual.MadeInHouse, "Property: " + nameof(actual.MadeInHouse));
+        }
+
+        /// <summary>
+        /// Flag for what values to set/expect for the properties in a test data object
+        /// </summary>
+        public enum TestDataValueFlag
+        {
+            Off = 0,
+            On = 1,
+            Null = 2
+        }
+
+        /// <summary>
+        /// Represents a pair of string/object values to set/expect
+        ///  for a ItemSignAttribute property and a ValidatedItem property
+        /// </summary>
+        public class SignAttributeValidatedItemPair
+        {
+            public SignAttributeValidatedItemPair(string itemSignAttributePropertyName, object itemSignAttributePropertyValue,
+                string validatedItemPropertyName, object validatedItemPropertyValue)
+            {
+                ItemSignAttributePropertyName = itemSignAttributePropertyName;
+                ItemSignAttributePropertyValue = itemSignAttributePropertyValue;
+                ValidatedItemPropertyName = validatedItemPropertyName;
+                ValidatedItemPropertyValue = validatedItemPropertyValue;
+            }
+
+            public string ItemSignAttributePropertyName { get; set; }
+            public object ItemSignAttributePropertyValue { get; set; }
+            public string ValidatedItemPropertyName { get; set; }
+            public object ValidatedItemPropertyValue { get; set; }
         }
     }
 }
