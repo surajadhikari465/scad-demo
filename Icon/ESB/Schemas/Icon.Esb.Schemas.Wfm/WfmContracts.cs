@@ -9238,8 +9238,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         private string idField;
 
-        private string gpmIdField;
-
         private PriceTypeType typeField;
 
         private UomType uomField;
@@ -9289,19 +9287,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.idField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string gpmId
-        {
-            get
-            {
-                return this.gpmIdField;
-            }
-            set
-            {
-                this.gpmIdField = value;
             }
         }
 

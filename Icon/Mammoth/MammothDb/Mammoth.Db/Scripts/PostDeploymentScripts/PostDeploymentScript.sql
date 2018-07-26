@@ -14,3 +14,4 @@ Post-Deployment Script Template
 
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
+:r PopulateItemPriceTypeWithGsp.sql

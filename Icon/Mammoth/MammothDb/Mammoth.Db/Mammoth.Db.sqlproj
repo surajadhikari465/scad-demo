@@ -785,6 +785,7 @@
     <None Include="Jobs\MAMMOTH.PurgePricesForClosedStores.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddDefaultValueToEplumSessionTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEmergencyPriceServiceToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateItemPriceTypeWithGsp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

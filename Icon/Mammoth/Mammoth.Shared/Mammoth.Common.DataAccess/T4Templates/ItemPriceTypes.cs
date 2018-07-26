@@ -21,6 +21,7 @@ namespace Mammoth.Common.DataAccess
 		public const int MarketSale = 7;
 		public const int SpecialSale = 8;
 		public const int InStoreSpecial = 9;
+		public const int GloballySetPrice = 10;
 		
 		public class Descriptions
 		{
@@ -33,6 +34,7 @@ namespace Mammoth.Common.DataAccess
 			public const string MarketSale = "Market Sale";
 			public const string SpecialSale = "Special Sale";
 			public const string InStoreSpecial = "In Store Special";
+			public const string GloballySetPrice = "Globally Set Price";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -44,7 +46,8 @@ namespace Mammoth.Common.DataAccess
 				{ "DIS", "Discontinued" },
 				{ "MSAL", "Market Sale" },
 				{ "SSAL", "Special Sale" },
-				{ "ISS", "In Store Special" }
+				{ "ISS", "In Store Special" },
+				{ "GSP", "Globally Set Price" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -60,6 +63,7 @@ namespace Mammoth.Common.DataAccess
 			public const string MarketSale = "MSAL";
 			public const string SpecialSale = "SSAL";
 			public const string InStoreSpecial = "ISS";
+			public const string GloballySetPrice = "GSP";
 		}
 	}
 }

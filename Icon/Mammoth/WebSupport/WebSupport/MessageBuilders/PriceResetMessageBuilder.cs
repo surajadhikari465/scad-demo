@@ -82,7 +82,7 @@ namespace WebSupport.MessageBuilders
             {
                 Action = ActionEnum.Add,
                 ActionSpecified = true,
-                gpmId = price.GpmId?.ToString(),
+                Id = price.GpmId?.ToString(),
                 type = new Contracts.PriceTypeType
                 {
                     description = ItemPriceTypes.Descriptions.ByCode[price.PriceType],
