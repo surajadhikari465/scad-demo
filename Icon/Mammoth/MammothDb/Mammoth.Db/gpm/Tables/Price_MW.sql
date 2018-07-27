@@ -15,8 +15,8 @@
        [Multiple] [tinyint] NOT NULL,
        [TagExpirationDate] [datetime2](0) NULL,
        [InsertDateUtc] [datetime2](7) NOT NULL CONSTRAINT [DF_Gpm_Price_MW_InsertDateUtc] DEFAULT (SYSUTCDATETIME()),
-	   [ModifiedDateUtc] [datetime2](7) NULL
-	   CONSTRAINT [PK_GpmPrice_MW] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MW]
+	   [ModifiedDateUtc] [datetime2](7) NULL,
+	   CONSTRAINT [PK_GpmPrice_MW] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_MW],
 	   CONSTRAINT [CK_Gpm_Price_MW_Region] CHECK (Region = 'MW')
 ) ON [FG_MW]
 GO

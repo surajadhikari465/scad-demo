@@ -133,137 +133,18 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="icon\" />
-    <Folder Include="icon\Tables\" />
-    <Folder Include="irma\" />
-    <Folder Include="irma\Tables\" />
-    <Folder Include="etl\" />
-    <Folder Include="etl\Tables\" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="Security\" />
-    <Folder Include="esb" />
-    <Folder Include="esb\Tables" />
-    <Folder Include="irma\Stored Procedures\" />
     <Folder Include="Scripts" />
     <Folder Include="Server Objects\" />
-    <Folder Include="Scripts\ETL" />
     <Folder Include="Scripts\PopulateScripts" />
     <Folder Include="Scripts\PostDeployment" />
+    <Folder Include="gpm" />
+    <Folder Include="gpm\Tables" />
+    <Folder Include="Schemas" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="icon\Tables\HierarchyClass.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\HierarchyClassTrait.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ItemTrait.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\StoreItemVendor.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ItemHierarchyClass.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\Price.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\Locale.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\StoreJurisdiction.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ScanCode.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\StoreItem.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\Trait.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="etl\Tables\Traits.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ItemType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\PriceChgType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\LocaleTrait.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\Item.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\NatItemCat.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\NatItemClass.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\NatItemFamily.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="etl\Tables\Regions.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\Hierarchy.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\PriceBatchDetail.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemOrigin.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\PriceBatchHeader.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemUnit.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemIdentifier.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\Item.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\Store.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <None Include="Security\WFM_Ben.Sims.sql" />
     <None Include="Security\WFM_IRMA.Developers.sql" />
     <None Include="Security\WFM_IRMA_1.Developers.sql" />
@@ -276,189 +157,15 @@
     <Build Include="Security\icon.sql" />
     <Build Include="Security\irma.sql" />
     <None Include="Security\Permissions.sql" />
-    <Build Include="icon\Tables\TraitGroup.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="dbo\Tables\ItemLocale.sql" />
-    <Build Include="dbo\Tables\Price.sql" />
-    <Build Include="dbo\Tables\ItemLocaleExtended.sql" />
     <Build Include="Security\esb.sql" />
-    <Build Include="irma\Tables\ValidatedScanCode.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\Scale_ExtraText.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\LabelType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemSignAttribute.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemScaleOverride.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemScale.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemOverride.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\ItemAttribute.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Tables\Currency.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\SeafoodFreshOrFrozen.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\SeafoodCatchType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\MilkType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ItemSignAttribute.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\ItemNutrition.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\HealthyEatingRating.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\EcoScaleRating.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="icon\Tables\AnimalWelfareRating.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="etl\Tables\DataSources.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ValidatedScanCode.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_StoreJurisdiction.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_Store.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_PriceChgType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_PriceBatchDetail.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_Price.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_LabelType.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemUnit.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemOverride.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemIdentifier.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_Item.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <None Include="Server Objects\LinkedServers.sql" />
-    <Build Include="irma\Stored Procedures\ETL_Populate_StoreItemVendor.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_StoreItem.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ScaleExtraText.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_PriceBatchHeader.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_NatItemFamily.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_NatItemClass.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_NatItemCat.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemSignAttribute.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemScaleOverride.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemScale.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemOrigin.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="irma\Stored Procedures\ETL_Populate_ItemAttribute.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <None Include="Scripts\ETL\MAMMOTH . QA . 02A . ETL . Extract - Icon.sql" />
-    <None Include="Scripts\ETL\MAMMOTH . QA . 02B . ETL . Extract - IRMA.sql" />
-    <None Include="Scripts\ETL\MAMMOTH . TEST . 02A . ETL . Extract - Icon.sql" />
-    <None Include="Scripts\ETL\MAMMOTH . TEST . 02B . ETL . Extract - IRMA.sql" />
-    <None Include="Scripts\PopulateScripts\PopulateEtlTables.sql" />
     <None Include="Security\SecurityGrants.QA.sql" />
     <None Include="Security\SecurityGrants.TEST.sql" />
-    <None Include="Scripts\PostDeployment\Script.PostDeployment_DEV.sql" />
-    <None Include="Scripts\PostDeployment\Script.PostDeployment_QA.sql" />
-    <PostDeploy Include="Scripts\PostDeployment\Script.PostDeployment_TEST.sql" />
+    <Build Include="gpm\Tables\Price_FL_Audit.sql" />
+    <Build Include="dbo\Tables\ItemAttributes_Locale_FL_Audit.sql" />
+    <Build Include="dbo\Tables\Locales_FL_Audit.sql" />
+    <Build Include="dbo\Tables\ItemTypes_Audit.sql" />
+    <Build Include="Schemas\gpm.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MammothStaging.Db.TEST.publish.xml" />
@@ -466,6 +173,7 @@
     <None Include="MammothStaging.Db.publish.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Build Include="dbo\Tables\Items_Audit.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
