@@ -14,3 +14,5 @@ EXAMPLE (showing Icon-DB scripts path):
 */
 
 :r .\Scripts\PopulateData\Release\DeleteR10MessageResponseTable.sql -- 2018.06.25
+:r .\Scripts\PopulateData\Release\AddVenueLocaleType.sql -- 2018.07.24
+:r .\Scripts\PopulateData\Release\AddVenueCodeOccupantLocaleTrait.sql -- 2018.07.26
