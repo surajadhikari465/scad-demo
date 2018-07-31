@@ -25,8 +25,12 @@
             <value>2100,2200,2220</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Application/NonReceivingSysNameOverwrite</name>
+            <value>Slaw,Mammoth,Spice,Infor,Icon</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Application/PrimeAffinityPsg</name>
-            <value>PrimeAffinity</value>
+            <value>PrimeAffinityPSG</value>
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
@@ -701,7 +705,7 @@
             <failureCount>0</failureCount>
             <failureInterval>0</failureInterval>
             <bwprocesses>
-                <bwprocess name="Processes/PriceAffinityListener.process">
+                <bwprocess name="Processes/PrimeAffinityListener.process">
                     <starter>JMS Queue Receiver</starter>
                     <enabled>true</enabled>
                     <maxJob>0</maxJob>
@@ -715,6 +719,7 @@
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
                 <tablePrefix>Process_Ar_15464932</tablePrefix>
             </checkpoints>
+            <isFt>false</isFt>
         </bw>
     </services>
 </application>

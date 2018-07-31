@@ -1,0 +1,48 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-PRD\MAMMOTH;DatabaseName=Mammoth;
+Connections/JDBC/Mammoth/Username=Mammoth.tibco.prd
+Connections/JDBC/Mammoth/Password=#!b3EuEXTsqEzl6ESJkG6JPdkty7B0j1HwwBDpsgPcnywbB4+SAlJrig==
+
+Connections/JMS/ESB/JndiContextUrl=ssl://cerp1617.wfm.pvt:37293,ssl://cerp1616.wfm.pvt:37293,ssl://odrp1609.wfm.pvt:37293,ssl://odrp1610.wfm.pvt:37293
+Connections/JMS/ESB/JndiUsername=jndiMammothUser
+Connections/JMS/ESB/JndiPassword=#!PKLOrfsYCOv/BiBcxUmcUaHKskAwvDrd/XvwkobzioCLn9zXOZ+zDw==
+Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
+Connections/JMS/ESB/Username=mammothUser
+Connections/JMS/ESB/Password=#!denAyqq/MC40pxM7afowc4760snwqM6Uuss6uYptfJ0=
+
+Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+Connections/JMS/SB1/Username=sb1_mammothPriceR10User
+Connections/JMS/SB1/Password=#!c3fzRWrjopOs49WFOcHIgoGYaB9lboNL3u5puhzoX2mgXVj/EUp/QA==
+
+ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
+ErrorMessageSettings/Connections/JMS/SB1/Password=#!pxUTqjbG2a9GG+4QlgdEv2sxEm4i1KLx00tfV3qH7K773rwHC8WOKQ==
+
+LoggerSettings/Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+LoggerSettings/Connections/JMS/SB1/Username=sb1_cleUser
+LoggerSettings/Connections/JMS/SB1/Password=#!eX4qFjzKXKQcKtxm7VB/KzIJZ0mUXsEMsfGBEJolctv73PPVmgVY9w==
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- R10PriceServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,R10PriceServiceProcessArchive,R10PriceServiceProcessArchive-1,machine=cerp1643
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- R10PriceServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,R10PriceServiceProcessArchive,R10PriceServiceProcessArchive-2,machine=cerp1644
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- R10PriceServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,R10PriceServiceProcessArchive,R10PriceServiceProcessArchive-3,machine=odrp1634
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- R10PriceServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,R10PriceServiceProcessArchive,R10PriceServiceProcessArchive-4,machine=odrp1635
