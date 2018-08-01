@@ -323,7 +323,7 @@ AND l.Region = @Region
 OPTION (RECOMPILE)
 
 UPDATE ist
-SET CfsSendToScale = ISNULL(ia.AttributeValue, 'False')
+SET CfsSendToScale = ia.AttributeValue
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
@@ -692,7 +692,7 @@ SELECT
 	NULL AS PercentageTareWeight, -- We are returning NULL for PercentageTareWeight because Informatica which consumes this SPROC needs a column for it. Even though there is no value we can provide.
 	ist.ShelfLife,
 	ist.UnwrappedTareWeight,
-	ist.CfsSendToScale,
+	ISNULL(ist.CfsSendToScale, 'False'),
 	ist.WrappedTareWeight,
 	ist.ScaleExtraText				AS ExtraText,
 	il.DefaultScanCode,
