@@ -11,6 +11,8 @@ BEGIN
 
 	SET IDENTITY_INSERT [dbo].[LocaleType] OFF 
 	
+	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@scriptKey, GETDATE())
+
 END
 ELSE
 BEGIN

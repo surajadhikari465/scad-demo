@@ -13,6 +13,8 @@ BEGIN
 
 	INSERT INTO Trait ( traitCode, traitPattern, traitDesc, traitGroupID )
 	VALUES ('VNO', '^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,255}$', 'Venue Occupant', @TraitGroupID)
+
+	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@scriptKey, GETDATE())
 	
 END
 ELSE
