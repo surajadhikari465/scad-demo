@@ -323,7 +323,7 @@ AND l.Region = @Region
 OPTION (RECOMPILE)
 
 UPDATE ist
-SET CfsSendToScale = ia.AttributeValue
+SET CfsSendToScale = ISNULL(ia.AttributeValue, 'False')
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
@@ -736,7 +736,7 @@ INNER JOIN #prices p on ist.Region = p.Region
 	AND ist.ItemID = p.ItemID
 	AND ist.BusinessUnitID = p.BusinessUnitID
 INNER JOIN StoreAddress sa on il.BusinessUnitID = sa.BusinessUnitID
-WHERE (il.ScaleItem = 1 OR ist.CfsSendToScale = 1)
+WHERE (il.ScaleItem = 1 OR ist.CfsSendToScale = 'True')
 	AND il.Region = @Region
 OPTION (RECOMPILE)
 
