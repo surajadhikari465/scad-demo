@@ -7,7 +7,7 @@
             get
             {
                 return @"
-                    select
+                    select {top query}
 		                h.hierarchyID as HierarchyId,
 		                h.hierarchyName as HierarchyName,
 		                hp.hierarchyLevelName as HierarchyLevelName,
@@ -34,7 +34,7 @@
             get
             {
                 return @"
-                    declare
+                    DECLARE
 		                    @localeID int,
 		                    @productDescriptionTraitID int,
 		                    @posTraitID int,
@@ -111,7 +111,7 @@
                         SET @itgTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ITG')
 	                    SET @hidTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HID')
 
-	                    select top 1
+	                    SELECT {top query}
 		                    i.itemID							as ItemId,
 		                    @localeID							as LocaleId,
 		                    it.itemTypeCode						as ItemTypeCode,
@@ -276,7 +276,7 @@
 		                    ,[TransfatWeight] AS [TransfatWeight]
 		                    ,0 AS [HazardousMaterialFlag]
 		                    ,NULL AS [HazardousMaterialTypeCode]
-	                    from 
+	                    FROM 
 		                    Item    						i
 		                    JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
 		                    JOIN ScanCode					sc			ON	i.itemID					= sc.itemID
@@ -352,7 +352,10 @@
 		                    LEFT JOIN ItemTrait				slf			ON slf.traitID					= @shelfLife  AND slf.itemID = i.itemID AND slf.localeID = @localeID
 		                    LEFT JOIN ItemTrait				itg			ON itg.traitID					= @itgTraitId AND itg.itemID = i.itemID AND itg.localeID = @localeID	
 		                    LEFT JOIN ItemTrait				hid			ON	hid.traitID					= @hidTraitId AND hid.itemID = i.itemID AND hid.localeID = @localeID	
-                            LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu";
+                            LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu	
+	                    WHERE
+		                    it.itemTypeID <> @couponItemTypeId
+                        ORDER BY it.itemTypeID";
             }
         }
 
@@ -381,7 +384,7 @@ select @FaxTraitId = TraitId from Trait where traitDesc = 'Fax'
 select @LastUserTraitId = TraitId from Trait where traitDesc = 'Modified User'
 select @TimeStampTraitId = TraitId from Trait where traitDesc = 'Modified Date'
 
-select 
+select {top query}
 	chain.localeID 'ChainId', 
 	chain.localeName 'ChainName',
 	region.localeID 'RegionId', 
@@ -449,7 +452,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                         declare @LinkedScanCodeId int = (select AttributeID from Attributes where AttributeDesc like 'Linked Scan Code')
                         declare @ScaleExtraTextId int = (select AttributeID from Attributes where AttributeDesc like 'Scale Extra Text')
 
-                        select
+                        select {top query}
 	                        s.Region,
 	                        s.BusinessUnitId,
 	                        i.ItemID as ItemId,
@@ -535,7 +538,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
         {
             get
             {
-                return @"SELECT top 2
+                return @"SELECT {top query}
 	                            i.ItemID			as ItemId,
 	                            t.ItemTypeCode		as ItemTypeCode,
 	                            t.ItemTypeDesc		as ItemTypeDesc,

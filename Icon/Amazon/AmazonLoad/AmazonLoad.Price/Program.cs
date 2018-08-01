@@ -19,22 +19,39 @@ namespace AmazonLoad.Price
     class Program
     {
         public static Serializer<Contracts.items> serializer = new Serializer<Contracts.items>();
+        public static string saveMessagesDirectory = "Messages";
+
         static void Main(string[] args)
         {
-            if (!Directory.Exists("PriceMessages"))
+            var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+            var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            if(saveMessages)
             {
-                Directory.CreateDirectory("PriceMessages");
+                if(!Directory.Exists(saveMessagesDirectory))
+                {
+                    Directory.CreateDirectory(saveMessagesDirectory);
+                }
             }
+
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
 
-            string formattedPriceSql = SqlQueries.PriceSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
-            var models = sqlConnection.Query<PriceModel>(formattedPriceSql, buffered: false);
-
+            string formattedSql = SqlQueries.PriceSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
+            if(maxNumberOfRows != 0)
+            {
+                formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
+            }
+            else
+            {
+                formattedSql = formattedSql.Replace("{top query}", "");
+            }
+            var models = sqlConnection.Query<PriceModel>(formattedSql, buffered: false, commandTimeout: 60);
             var producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
 
+            int numberOfRecordsSent = 0;
+            int numberOfMessagesSent = 0;
             foreach (var modelBatch in models.Batch(100))
             {
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
@@ -51,11 +68,19 @@ namespace AmazonLoad.Price
                             { "Source", "Icon" },
                             { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                         });
-                    File.WriteAllText($"PriceMessages/{messageId}.xml", message);
+                    numberOfRecordsSent += modelGroup.Count();
+                    numberOfMessagesSent += 1;
+                    if (saveMessages)
+                    {
+                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    }
                 }
             }
+            Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
+            Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+            Console.WriteLine("Press enter to exit.");
+            Console.ReadLine();
         }
-
 
         public static string BuildMessage(List<PriceModel> messages)
         {
@@ -183,6 +208,8 @@ namespace AmazonLoad.Price
                     return Contracts.WfmUomCodeEnumType.EA;
                 case UomCodes.Pound:
                     return Contracts.WfmUomCodeEnumType.LB;
+                case UomCodes.Kilogram:
+                    return Contracts.WfmUomCodeEnumType.KG;
                 default:
                     return Contracts.WfmUomCodeEnumType.EA;
             }
@@ -196,6 +223,8 @@ namespace AmazonLoad.Price
                     return Contracts.WfmUomDescEnumType.EACH;
                 case UomCodes.Pound:
                     return Contracts.WfmUomDescEnumType.POUND;
+                case UomCodes.Kilogram:
+                    return Contracts.WfmUomDescEnumType.KILOGRAM;
                 default:
                     return Contracts.WfmUomDescEnumType.EACH;
             }

@@ -18,25 +18,42 @@ namespace AmazonLoad.Hierarchy
     class Program
     {
         private static Serializer<Contracts.HierarchyType> serializer = new Serializer<Contracts.HierarchyType>();
+        public static string saveMessagesDirectory = "Messages";
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists("HierarchyMessages"))
+            var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+            var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            if (saveMessages)
             {
-                Directory.CreateDirectory("HierarchyMessages");
+                if (!Directory.Exists(saveMessagesDirectory))
+                {
+                    Directory.CreateDirectory(saveMessagesDirectory);
+                }
             }
-
             var producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            var formattedSql = SqlQueries.HierarchySql;
+            if (maxNumberOfRows != 0)
+            {
+                formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
+            }
+            else
+            {
+                formattedSql = formattedSql.Replace("{top query}", "");
+            }
             var models = sqlConnection.Query<HierarchyClassModel>(
-                SqlQueries.HierarchySql, 
+                formattedSql, 
                 new { HierarchyName = AppSettingsAccessor.GetStringSetting("HierarchyName") }, 
-                buffered: false);
+                buffered: false, 
+                commandTimeout: 60);
 
+            int numberOfRecordsSent = 0;
+            int numberOfMessagesSent = 0;
             foreach (var modelBatch in models.Batch(100))
             {
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.HierarchyLevel))
@@ -53,9 +70,18 @@ namespace AmazonLoad.Hierarchy
                             { "Source", "Icon" },
                             { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                         });
-                    File.WriteAllText($"HierarchyMessages/{messageId}.xml", message);
+                    numberOfRecordsSent += modelGroup.Count();
+                    numberOfMessagesSent += 1;
+                    if (saveMessages)
+                    {
+                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    }
                 }
             }
+            Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
+            Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+            Console.WriteLine("Press enter to exit.");
+            Console.ReadLine();
         }
 
         private static string BuildMessage(IEnumerable<HierarchyClassModel> modelBatch)

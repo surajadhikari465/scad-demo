@@ -23,22 +23,39 @@ namespace AmazonLoad.Locale
         public static Serializer<Contracts.LocaleType> serializer = new Serializer<Contracts.LocaleType>();
         public static Dictionary<string, string> timeZoneDictionary = TimeZoneInfo.GetSystemTimeZones()
             .ToDictionary(tz => tz.DisplayName, tz => tz.StandardName);
+        public static string saveMessagesDirectory = "Messages";
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists("LocaleMessages"))
+            var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+            var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            if (saveMessages)
             {
-                Directory.CreateDirectory("LocaleMessages");
+                if (!Directory.Exists(saveMessagesDirectory))
+                {
+                    Directory.CreateDirectory(saveMessagesDirectory);
+                }
             }
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            string formattedSql = SqlQueries.LocaleSql;
+            if (maxNumberOfRows != 0)
+            {
+                formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
+            }
+            else
+            {
+                formattedSql = formattedSql.Replace("{top query}", "");
+            }
 
-            var models = sqlConnection.Query<LocaleModel>(SqlQueries.LocaleSql, buffered: false);
+            var models = sqlConnection.Query<LocaleModel>(formattedSql, buffered: false, commandTimeout: 60);
 
             var producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
 
+            int numberOfRecordsSent = 0;
+            int numberOfMessagesSent = 0;
             foreach (var model in models)
             {
                 string message = BuildMessage(model);
@@ -53,8 +70,17 @@ namespace AmazonLoad.Locale
                         { "Source", "Icon"},
                         { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                     });
-                File.WriteAllText($"LocaleMessages/{messageId}.xml", message);
+                numberOfRecordsSent += 1;
+                numberOfMessagesSent += 1;
+                if (saveMessages)
+                {
+                    File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                }
             }
+            Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
+            Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+            Console.WriteLine("Press enter to exit.");
+            Console.ReadLine();
         }
 
         private static string BuildMessage(LocaleModel model)

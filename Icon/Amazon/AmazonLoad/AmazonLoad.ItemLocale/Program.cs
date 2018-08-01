@@ -24,34 +24,50 @@ namespace AmazonLoad.ItemLocale
     {
         public static IUomMapper uomMapper;
         public static Serializer<Contracts.items> serializer = new Serializer<Contracts.items>();
+        public static string saveMessagesDirectory = "Messages";
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists("ItemLocaleMessages"))
+            var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+            var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            if (saveMessages)
             {
-                Directory.CreateDirectory("ItemLocaleMessages");
+                if (!Directory.Exists(saveMessagesDirectory))
+                {
+                    Directory.CreateDirectory(saveMessagesDirectory);
+                }
             }
             uomMapper = new UomMapper();
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
 
-            string formattedItemLocaleSql = SqlQueries.ItemLocaleSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
-            var models = sqlConnection.Query<ItemLocaleModel>(formattedItemLocaleSql, buffered: false);
+            string formattedSql = SqlQueries.ItemLocaleSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
+            if (maxNumberOfRows != 0)
+            {
+                formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
+            }
+            else
+            {
+                formattedSql = formattedSql.Replace("{top query}", "");
+            }
+            var models = sqlConnection.Query<ItemLocaleModel>(formattedSql, buffered: false, commandTimeout: 60);
 
             var producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
 
+            int numberOfRecordsSent = 0;
+            int numberOfMessagesSent = 0;
             foreach (var modelBatch in models.Batch(100))
             {
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
                 {
-                    string itemMessage = BuildMessage(modelGroup.ToList());
+                    string message = BuildMessage(modelGroup.ToList());
                     string messageId = Guid.NewGuid().ToString();
 
                     producer.Send(
-                        itemMessage,
+                        message,
                         messageId,
                         new Dictionary<string, string>
                         {
@@ -59,9 +75,18 @@ namespace AmazonLoad.ItemLocale
                             { "Source", "Mammoth"},
                             { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                         });
-                    File.WriteAllText($"ItemLocaleMessages/{messageId}.xml", itemMessage);
+                    numberOfRecordsSent += modelGroup.Count();
+                    numberOfMessagesSent += 1;
+                    if (saveMessages)
+                    {
+                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    }
                 }
             }
+            Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
+            Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+            Console.WriteLine("Press enter to exit.");
+            Console.ReadLine();
         }
 
         public static string BuildMessage(List<ItemLocaleModel> itemLocaleModels)

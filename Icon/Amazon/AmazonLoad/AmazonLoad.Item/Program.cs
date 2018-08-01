@@ -22,12 +22,18 @@ namespace AmazonLoad.Item
         public static IUomMapper uomMapper;
         public static Serializer<Contracts.items> serializer = new Serializer<Contracts.items>();
         public static ProductSelectionGroupsMapper productSelectionGroupsMapper;
+        public static string saveMessagesDirectory = "Messages";
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists("ProductMessages"))
+            var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+            var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            if (saveMessages)
             {
-                Directory.CreateDirectory("ProductMessages");
+                if (!Directory.Exists(saveMessagesDirectory))
+                {
+                    Directory.CreateDirectory(saveMessagesDirectory);
+                }
             }
             uomMapper = new UomMapper();
             productSelectionGroupsMapper = new ProductSelectionGroupsMapper();
@@ -35,32 +41,55 @@ namespace AmazonLoad.Item
 
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString))
             {
-                var models = sqlConnection.Query<ItemModel>(SqlQueries.ItemSql, buffered: false);
+                var formattedSql = SqlQueries.ItemSql;
+                if (maxNumberOfRows != 0)
+                {
+                    formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
+                }
+                else
+                {
+                    formattedSql = formattedSql.Replace("{top query}", "");
+                }
+                var models = sqlConnection.Query<ItemModel>(formattedSql, buffered: false, commandTimeout: 60);
 
                 var producer = new EsbConnectionFactory
                 {
                     Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
                 }.CreateProducer();
 
-                foreach (var modelBatch in models.Batch(100))
+                int numberOfRecordsSent = 0;
+                int numberOfMessagesSent = 0;
+                foreach (var modelSubSet in models.Batch(10000))
                 {
-                    foreach (var modelGroup in modelBatch.GroupBy(i => i.ItemTypeCode))
+                    foreach (var modelBatch in modelSubSet.Batch(100))
                     {
-                        string itemMessage = BuildMessage(modelGroup);
-                        string messageId = Guid.NewGuid().ToString();
+                        foreach (var modelGroup in modelBatch.GroupBy(i => i.ItemTypeCode))
+                        {
+                            string message = BuildMessage(modelGroup);
+                            string messageId = Guid.NewGuid().ToString();
 
-                        producer.Send(
-                            itemMessage,
-                            messageId,
-                            new Dictionary<string, string>
-                            {
+                            producer.Send(
+                                message,
+                                messageId,
+                                new Dictionary<string, string>
+                                {
                                 { "IconMessageID", messageId },
                                 { "Source", "Icon"},
                                 { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
-                            });
-                        File.WriteAllText($"ProductMessages/{messageId}.xml", itemMessage);
+                                });
+                            numberOfRecordsSent += modelGroup.Count();
+                            numberOfMessagesSent += 1;
+                            if (saveMessages)
+                            {
+                                File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                            }
+                        }
                     }
                 }
+                Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
+                Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+                Console.WriteLine("Press enter to exit.");
+                Console.ReadLine();
             }
         }
 
