@@ -12,19 +12,13 @@ namespace Icon.Framework
     using System;
     using System.Collections.Generic;
     
-    public partial class LocaleType
+    public partial class LocaleSubType
     {
-        public LocaleType()
-        {
-            this.Locale = new HashSet<Locale>();
-            this.LocaleSubTypes = new HashSet<LocaleSubType>();
-        }
-    
+        public int localeSubTypeID { get; set; }
         public int localeTypeID { get; set; }
-        public string localeTypeCode { get; set; }
-        public string localeTypeDesc { get; set; }
+        public string localSubTypeCode { get; set; }
+        public string localeSubTypeDesc { get; set; }
     
-        public virtual ICollection<Locale> Locale { get; set; }
-        public virtual ICollection<LocaleSubType> LocaleSubTypes { get; set; }
+        public virtual LocaleType LocaleType { get; set; }
     }
 }

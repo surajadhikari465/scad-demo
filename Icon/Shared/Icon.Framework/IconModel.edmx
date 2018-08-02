@@ -937,6 +937,15 @@
           <Property Name="addressID" Type="int" Nullable="false" />
           <Property Name="addressUsageID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="LocaleSubType">
+          <Key>
+            <PropertyRef Name="localeSubTypeID" />
+          </Key>
+          <Property Name="localeSubTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="localeTypeID" Type="int" Nullable="false" />
+          <Property Name="localSubTypeCode" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="localeSubTypeDesc" Type="nvarchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="LocaleTrait">
           <Key>
             <PropertyRef Name="traitID" />
@@ -2390,6 +2399,18 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="LocaleType_LocaleSubType_FK1">
+          <End Role="LocaleType" Type="Self.LocaleType" Multiplicity="1" />
+          <End Role="LocaleSubType" Type="Self.LocaleSubType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocaleType">
+              <PropertyRef Name="localeTypeID" />
+            </Principal>
+            <Dependent Role="LocaleSubType">
+              <PropertyRef Name="localeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="PostalCode_PhysicalAddress_FK1">
           <End Role="PostalCode" Type="Self.PostalCode" Multiplicity="0..1" />
           <End Role="PhysicalAddress" Type="Self.PhysicalAddress" Multiplicity="*" />
@@ -2667,6 +2688,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="ItemType" EntityType="Self.ItemType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Locale" EntityType="Self.Locale" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleAddress" EntityType="Self.LocaleAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocaleSubType" EntityType="Self.LocaleSubType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleTrait" EntityType="Self.LocaleTrait" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleType" EntityType="Self.LocaleType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MilkType" EntityType="Self.MilkType" Schema="dbo" store:Type="Tables" />
@@ -3057,6 +3079,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="LocaleType_Locale_FK1" Association="Self.LocaleType_Locale_FK1">
             <End Role="LocaleType" EntitySet="LocaleType" />
             <End Role="Locale" EntitySet="Locale" />
+          </AssociationSet>
+          <AssociationSet Name="LocaleType_LocaleSubType_FK1" Association="Self.LocaleType_LocaleSubType_FK1">
+            <End Role="LocaleType" EntitySet="LocaleType" />
+            <End Role="LocaleSubType" EntitySet="LocaleSubType" />
           </AssociationSet>
           <AssociationSet Name="PostalCode_PhysicalAddress_FK1" Association="Self.PostalCode_PhysicalAddress_FK1">
             <End Role="PostalCode" EntitySet="PostalCode" />
@@ -3655,6 +3681,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="CurrencyType" EntitySet="Currencies" />
             <End Role="ItemPrice" EntitySet="ItemPrice" />
           </AssociationSet>
+          <EntitySet Name="LocaleSubTypes" EntityType="Icon.Framework.Model.LocaleSubType" />
+          <AssociationSet Name="LocaleType_LocaleSubType_FK1" Association="Icon.Framework.Model.LocaleType_LocaleSubType_FK1">
+            <End Role="LocaleType" EntitySet="LocaleType" />
+            <End Role="LocaleSubType" EntitySet="LocaleSubTypes" />
+          </AssociationSet>
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="TraitDescription" a:ExternalTypeName="Icon.Framework.Enums.TraitDescription" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -3830,6 +3861,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="localeTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="localeTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.LocaleType_Locale_FK1" FromRole="LocaleType" ToRole="Locale" />
+          <NavigationProperty Name="LocaleSubTypes" Relationship="Icon.Framework.Model.LocaleType_LocaleSubType_FK1" FromRole="LocaleType" ToRole="LocaleSubType" />
         </EntityType>
         <EntityType Name="TraitGroup">
           <Key>
@@ -6353,6 +6385,28 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LocaleSubType">
+          <Key>
+            <PropertyRef Name="localeSubTypeID" />
+          </Key>
+          <Property Name="localeSubTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="localeTypeID" Type="Int32" Nullable="false" />
+          <Property Name="localSubTypeCode" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="localeSubTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LocaleType" Relationship="Icon.Framework.Model.LocaleType_LocaleSubType_FK1" FromRole="LocaleSubType" ToRole="LocaleType" />
+        </EntityType>
+        <Association Name="LocaleType_LocaleSubType_FK1">
+          <End Type="Icon.Framework.Model.LocaleType" Role="LocaleType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.LocaleSubType" Role="LocaleSubType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocaleType">
+              <PropertyRef Name="localeTypeID" />
+            </Principal>
+            <Dependent Role="LocaleSubType">
+              <PropertyRef Name="localeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7713,6 +7767,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="currencyTypeDesc" ColumnName="currencyTypeDesc" />
                 <ScalarProperty Name="currencyTypeCode" ColumnName="currencyTypeCode" />
                 <ScalarProperty Name="currencyTypeID" ColumnName="currencyTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocaleSubTypes">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.LocaleSubType">
+              <MappingFragment StoreEntitySet="LocaleSubType">
+                <ScalarProperty Name="localeSubTypeDesc" ColumnName="localeSubTypeDesc" />
+                <ScalarProperty Name="localSubTypeCode" ColumnName="localSubTypeCode" />
+                <ScalarProperty Name="localeTypeID" ColumnName="localeTypeID" />
+                <ScalarProperty Name="localeSubTypeID" ColumnName="localeSubTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

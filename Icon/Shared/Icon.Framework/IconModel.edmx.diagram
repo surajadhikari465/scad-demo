@@ -192,6 +192,8 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.IRMAItem" Width="1.5" PointX="7.375" PointY="29.375" />
         <EntityTypeShape EntityType="Icon.Framework.Model.Currency" Width="1.5" PointX="3.5" PointY="19.875" />
         <AssociationConnector Association="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.LocaleSubType" Width="1.5" PointX="5.375" PointY="52.5" />
+        <AssociationConnector Association="Icon.Framework.Model.LocaleType_LocaleSubType_FK1" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

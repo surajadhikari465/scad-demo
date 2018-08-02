@@ -243,6 +243,9 @@
     <Compile Include="LocaleAddress.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LocaleSubType.cs">
+      <DependentUpon>IconModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="LocaleTrait.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
