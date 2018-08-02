@@ -123,7 +123,7 @@
                 </config>
                 <pd:inputBindings>
                     <pfx2:MammothPrices>
-                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:prices/pfx3:price[pfx3:priceAmount/ns1:amount > 0]">
+                        <xsl:for-each select="$currentLocale/pfx:locale/pfx5:storeItemAttributes/pfx4:prices/pfx3:price">
                             <pfx2:MammothPrice>
                                 <pfx2:Region>
                                     <xsl:value-of select="$Get-RegionCode/Locale/Region"/>
