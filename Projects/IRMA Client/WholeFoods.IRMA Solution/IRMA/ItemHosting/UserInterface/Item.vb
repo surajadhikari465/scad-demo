@@ -1992,6 +1992,12 @@ me_err:
                 SetActive(cmbField(iItemNatClassID), False)
             End If
 
+            'Lock down the Sign Caption field if we are using the Icon
+            '  validated CustomerFriendlyDescription as the Sign_Description
+            If InstanceDataDAO.IsFlagActive("EnableIconSignCaptionUpdates") Then
+                SetActive(_txtField_SignCaption, False)
+            End If
+
             'If the identifier falls into the specified range, it's a non-retail ingredient item
             If _itemData.HasIngredientIdentifier() Then
                 SetActive(chkField(iItemRetail_Sale), False)

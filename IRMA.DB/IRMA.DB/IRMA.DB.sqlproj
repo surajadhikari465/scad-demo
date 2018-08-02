@@ -3325,6 +3325,7 @@
     <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI27183-AddItemDeauthorization Event to ItemChangeEventType.sql" />
+    <None Include="Scripts\PostDeploy\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

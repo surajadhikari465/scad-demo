@@ -47,7 +47,7 @@
     Public WithEvents _chkField_4 As System.Windows.Forms.CheckBox
     Public WithEvents _txtField_11 As System.Windows.Forms.TextBox
     Public WithEvents cmdBrandAdd As System.Windows.Forms.Button
-    Public WithEvents _txtField_10 As System.Windows.Forms.TextBox
+    Public WithEvents _txtField_SignCaption As System.Windows.Forms.TextBox
     Public WithEvents cmdIdentifier As System.Windows.Forms.Button
     Public WithEvents cmdDelete As System.Windows.Forms.Button
     Public WithEvents cmdInventory As System.Windows.Forms.Button
@@ -153,7 +153,7 @@
         Me._chkField_4 = New System.Windows.Forms.CheckBox()
         Me._txtField_11 = New System.Windows.Forms.TextBox()
         Me.cmdBrandAdd = New System.Windows.Forms.Button()
-        Me._txtField_10 = New System.Windows.Forms.TextBox()
+        Me._txtField_SignCaption = New System.Windows.Forms.TextBox()
         Me._chkField_14 = New System.Windows.Forms.CheckBox()
         Me._chkField_12 = New System.Windows.Forms.CheckBox()
         Me._chkField_7 = New System.Windows.Forms.CheckBox()
@@ -746,16 +746,16 @@
         Me.cmdBrandAdd.Name = "cmdBrandAdd"
         Me.cmdBrandAdd.UseVisualStyleBackColor = False
         '
-        '_txtField_10
+        '_txtField_SignCaption
         '
-        Me._txtField_10.AcceptsReturn = True
-        Me._txtField_10.BackColor = System.Drawing.SystemColors.Window
-        Me._txtField_10.Cursor = System.Windows.Forms.Cursors.IBeam
-        resources.ApplyResources(Me._txtField_10, "_txtField_10")
-        Me._txtField_10.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtField.SetIndex(Me._txtField_10, CType(10, Short))
-        Me._txtField_10.Name = "_txtField_10"
-        Me._txtField_10.Tag = "String"
+        Me._txtField_SignCaption.AcceptsReturn = True
+        Me._txtField_SignCaption.BackColor = System.Drawing.SystemColors.Window
+        Me._txtField_SignCaption.Cursor = System.Windows.Forms.Cursors.IBeam
+        resources.ApplyResources(Me._txtField_SignCaption, "_txtField_SignCaption")
+        Me._txtField_SignCaption.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.txtField.SetIndex(Me._txtField_SignCaption, CType(10, Short))
+        Me._txtField_SignCaption.Name = "_txtField_SignCaption"
+        Me._txtField_SignCaption.Tag = "String"
         '
         '_chkField_14
         '
@@ -1500,7 +1500,7 @@
         Me.Controls.Add(Me._chkField_4)
         Me.Controls.Add(Me._txtField_11)
         Me.Controls.Add(Me.cmdBrandAdd)
-        Me.Controls.Add(Me._txtField_10)
+        Me.Controls.Add(Me._txtField_SignCaption)
         Me.Controls.Add(Me.cmdIdentifier)
         Me.Controls.Add(Me.cmdDelete)
         Me.Controls.Add(Me.cmdInventory)

@@ -19,6 +19,8 @@ CM		2016-02-08					Added logic to include InstanceDataFlag to check whether or
 JA      2016-06-22	19897 (16243)   Update StoredProc to remove the retail restictions for subteam update
 EM		2017-11-22  24309			No longer update Retail Unit when UOM changes 
 									from EA to LB or vice versa when region is on GPM
+EM		2018-07-31  28448			Pass CustomerFriendlyDescription (CFD) to existing IRMA
+                                    sign caption field
 ***********************************************************************************************/
 
 	-- =====================================================
@@ -33,6 +35,7 @@ EM		2017-11-22  24309			No longer update Retail Unit when UOM changes
 	DECLARE @uomIdEa INT;
 	DECLARE @updateRetailUomSize BIT;
     DECLARE @regionIsOnGpm BIT;
+    DECLARE @updateIconSignCaption BIT;
 	
 	SET @userId = (SELECT u.User_ID FROM Users u WHERE u.UserName = @UserName);
 	SET @now = (SELECT GETDATE());
@@ -43,6 +46,7 @@ EM		2017-11-22  24309			No longer update Retail Unit when UOM changes
 	SET @uomIdEa = (SELECT uom.Unit_ID FROM ItemUnit uom WHERE uom.Unit_Abbreviation = 'EA');
 	SET @updateRetailUomSize = (SELECT FlagValue FROM InstanceDataFlags WHERE FlagKey = 'EnableIconRetailUomSizeUpdates');
 	SET @regionIsOnGpm = (SELECT FlagValue FROM InstanceDataFlags WHERE FlagKey = 'GlobalPriceManagement');
+	SET @updateIconSignCaption = (SELECT FlagValue FROM InstanceDataFlags WHERE FlagKey = 'EnableIconSignCaptionUpdates');
 
 	INSERT INTO @distinctList
 	SELECT DISTINCT *
@@ -136,7 +140,11 @@ EM		2017-11-22  24309			No longer update Retail Unit when UOM changes
 													END) 
 										ELSE
 											i.Retail_Unit_ID 
-									END
+									END,
+			i.Sign_Description	= CASE 
+				WHEN @updateIconSignCaption = 1 AND vi.CustomerFriendlyDescription IS NOT NULL THEN vi.CustomerFriendlyDescription 
+				ELSE i.Sign_Description 
+			END
 		FROM
 			Item i
 			JOIN ItemIdentifier		ii ON i.Item_Key = ii.Item_Key

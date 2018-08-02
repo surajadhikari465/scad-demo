@@ -44,6 +44,7 @@
     [RetailSize]            DECIMAL (9, 4) NULL,
     [RetailUom]             VARCHAR (5)    NULL,
 	[ItemTypeCode]          VARCHAR (3)    NULL,
+	[CustomerFriendlyDescription] NVARCHAR (60) NULL,
     PRIMARY KEY CLUSTERED ([ItemId] ASC));
 
 
