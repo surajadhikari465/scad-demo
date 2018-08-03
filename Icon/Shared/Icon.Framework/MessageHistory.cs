@@ -17,13 +17,13 @@ namespace Icon.Framework
         public MessageHistory()
         {
             this.MessageQueueHierarchy = new HashSet<MessageQueueHierarchy>();
-            this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
             this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
             this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
             this.MessageQueuePrice = new HashSet<MessageQueuePrice>();
             this.MessageQueueProductSelectionGroup = new HashSet<MessageQueueProductSelectionGroup>();
             this.R10MessageResponse = new HashSet<R10MessageResponse>();
             this.MessageResendStatus = new HashSet<MessageResendStatus>();
+            this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
         }
     
         public int MessageHistoryId { get; set; }
@@ -37,12 +37,12 @@ namespace Icon.Framework
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
         public virtual ICollection<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
-        public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual ICollection<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual ICollection<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
         public virtual ICollection<R10MessageResponse> R10MessageResponse { get; set; }
         public virtual ICollection<MessageResendStatus> MessageResendStatus { get; set; }
+        public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
     }
 }

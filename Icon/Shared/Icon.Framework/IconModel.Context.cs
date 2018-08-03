@@ -65,7 +65,6 @@ namespace Icon.Framework
         public virtual DbSet<MessageHistory> MessageHistory { get; set; }
         public virtual DbSet<EventQueue> EventQueue { get; set; }
         public virtual DbSet<Locale> Locale { get; set; }
-        public virtual DbSet<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual DbSet<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual DbSet<MessageQueuePrice> MessageQueuePrice { get; set; }
@@ -112,6 +111,7 @@ namespace Icon.Framework
         public virtual DbSet<IRMAItem> IRMAItem { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<LocaleSubType> LocaleSubTypes { get; set; }
+        public virtual DbSet<MessageQueueLocale> MessageQueueLocale { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {

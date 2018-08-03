@@ -18,13 +18,13 @@ namespace Icon.Framework
         {
             this.MessageQueueHierarchy = new HashSet<MessageQueueHierarchy>();
             this.MessageHistory = new HashSet<MessageHistory>();
-            this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
             this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
             this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
             this.MessageQueuePrice = new HashSet<MessageQueuePrice>();
             this.MessageQueueProductSelectionGroup = new HashSet<MessageQueueProductSelectionGroup>();
             this.MessageQueueBusinessUnitInProcess = new HashSet<MessageQueueBusinessUnitInProcess>();
             this.APIMessageMonitorLog = new HashSet<APIMessageProcessorLogEntry>();
+            this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
         }
     
         public int MessageTypeId { get; set; }
@@ -32,12 +32,12 @@ namespace Icon.Framework
     
         public virtual ICollection<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
         public virtual ICollection<MessageHistory> MessageHistory { get; set; }
-        public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual ICollection<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual ICollection<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
         public virtual ICollection<MessageQueueBusinessUnitInProcess> MessageQueueBusinessUnitInProcess { get; set; }
         public virtual ICollection<APIMessageProcessorLogEntry> APIMessageMonitorLog { get; set; }
+        public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
     }
 }
