@@ -692,7 +692,7 @@ SELECT
 	NULL AS PercentageTareWeight, -- We are returning NULL for PercentageTareWeight because Informatica which consumes this SPROC needs a column for it. Even though there is no value we can provide.
 	ist.ShelfLife,
 	ist.UnwrappedTareWeight,
-	ISNULL(ist.CfsSendToScale, 'False'),
+	ISNULL(ist.CfsSendToScale, 'False') AS CfsSendToScale,
 	ist.WrappedTareWeight,
 	ist.ScaleExtraText				AS ExtraText,
 	il.DefaultScanCode,
