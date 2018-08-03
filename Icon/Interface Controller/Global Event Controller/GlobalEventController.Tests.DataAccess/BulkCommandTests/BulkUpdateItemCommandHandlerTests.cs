@@ -826,6 +826,52 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(expectedItemUnitId, item.Retail_Unit_ID);
         }
 
+
+        [TestMethod]
+        public void BulkUpdateItem_ValidatedItemWithCustomerFriendlyDescription_ItemUpdatedInIrmaWithValidatedItemData()
+        {
+            // Given
+            string identifierOne = this.context.ItemIdentifier
+                .First(ii => ii.Default_Identifier == 1 && ii.Deleted_Identifier == 0 && ii.Item.Retail_Sale == true)
+                .Identifier;
+            string testCFD = "Test CFD for " + identifierOne;
+            ValidatedBrand brand = this.context.ValidatedBrand.First();
+            NatItemClass natClass = this.context.NatItemClass.First();
+            TaxClass taxClass = this.context.TaxClass.First(tc => !tc.TaxClassDesc.ToLower().Contains("do not use"));
+
+            this.validatedItems.Add(new TestValidatedItemModelBuilder()
+                .WithScanCode(identifierOne)
+                .WithBrandId(brand.IconBrandId)
+                .WithTaxClass(taxClass.TaxClassDesc)
+                .WithNationalClassCode(natClass.ClassID.ToString())
+                .WithItemId(1)
+                .WithCustomerFriendlyDescription(testCFD)
+                .Build());
+            this.command.ValidatedItems = this.validatedItems;
+
+            ValidatedItemModel expectedItemOne = this.validatedItems[0];
+            DateTime now = DateTime.Today;
+
+            // When
+            this.handler.Handle(this.command);
+
+            // Then
+            Item actualItemOne = this.context.Item.First(i => i.ItemIdentifier.Any(ii => ii.Identifier == identifierOne));
+            context.Entry<Item>(actualItemOne).Reload();
+
+            // first item
+            Assert.AreEqual(expectedItemOne.ProductDescription, actualItemOne.Item_Description, "The Item_Description does not match the expected value.");
+            Assert.AreEqual(expectedItemOne.PosDescription.ToUpper(), actualItemOne.POS_Description, "The POS_Description does not match the expected value.");
+            Assert.AreEqual(expectedItemOne.FoodStampEligible == "1", actualItemOne.Food_Stamps, "The Food_Stamps does not match the expected value.");
+            Assert.AreEqual(Convert.ToDecimal(expectedItemOne.PackageUnit), actualItemOne.Package_Desc1, "The Package_Desc1 does not match the expected value.");
+            Assert.AreEqual(taxClass.TaxClassID, actualItemOne.TaxClassID, "The TaxClassID does not match the expected value.");
+            Assert.AreEqual(natClass.ClassID, actualItemOne.ClassID, "The National Class code does not match the expected value.");
+            Assert.AreEqual(brand.IrmaBrandId, actualItemOne.Brand_ID, "The Brand_ID does not match the expected value.");
+            Assert.AreEqual(null, actualItemOne.LastModifiedUser_ID, "The LastModifiedUser_ID was not null. The Item Update trigger reverts it back to null if user is 'iconcontrolleruser'.");
+            Assert.IsTrue(actualItemOne.LastModifiedDate > now);
+            Assert.AreEqual(testCFD, actualItemOne.Sign_Description, nameof(Item.Sign_Description) + " did not match expected " + nameof(ValidatedItemModel.CustomerFriendlyDescription));
+        }
+
         private ItemUnit CreateItemUnit(string unitName, string unitAbbreviation)
         {
             ItemUnit itemUnit = this.context.ItemUnit.First(iu => iu.Unit_Abbreviation == unitAbbreviation);

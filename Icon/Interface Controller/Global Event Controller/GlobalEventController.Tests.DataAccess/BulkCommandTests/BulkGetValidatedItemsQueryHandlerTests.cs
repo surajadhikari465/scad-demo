@@ -65,7 +65,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                                      ValidationDate = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ValidationDate).traitValue,
                                      RetailSize = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailSize).traitValue,
                                      RetailUom = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.RetailUom).traitValue,
-                                 }).Take(3).ToList();
+                                     }).Take(3).ToList();
 
             this.query.Events = expectedItems.Select(i => new EventQueue { EventMessage = i.ScanCode }).ToList();
             this.query.Events[0].EventId = EventTypes.ItemUpdate;
@@ -94,7 +94,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 Assert.AreEqual(expectedItems[i].ValidationDate, actual.ValidationDate, "The ValidationDate does not match the expected value.");
                 Assert.AreEqual(Convert.ToDecimal(expectedItems[i].RetailSize), actual.RetailSize, "The RetailSize does not match the expected value.");
                 Assert.AreEqual(expectedItems[i].RetailUom, actual.RetailUom, "The RetailUom does not match the expected value.");
-
+                
                 var eventTypeId = this.query.Events.First(e => e.EventMessage == expectedItems[i].ScanCode).EventId;
                 Assert.AreEqual(eventTypeId, actual.EventTypeId);
             }
@@ -106,9 +106,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", TestDataValueFlag.On),
-                SetupValidatedItemInDb("123498764", TestDataValueFlag.On),
-                SetupValidatedItemInDb("123498765", TestDataValueFlag.On)
+                SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.On),
+                SetupValidatedItemInDb("123498764", SignAttributeTestDataFlag.On),
+                SetupValidatedItemInDb("123498765", SignAttributeTestDataFlag.On)
             };
 
             query.Events = expectedItems
@@ -122,7 +122,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(3, actualItems.Count);
             for (int i = 0; i < actualItems.Count; i++)
             {
-                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.On);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], SignAttributeTestDataFlag.On);
             }
         }
 
@@ -132,9 +132,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", TestDataValueFlag.Null),
-                SetupValidatedItemInDb("123498764", TestDataValueFlag.Null),
-                SetupValidatedItemInDb("123498765", TestDataValueFlag.Null)
+                SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.Null),
+                SetupValidatedItemInDb("123498764", SignAttributeTestDataFlag.Null),
+                SetupValidatedItemInDb("123498765", SignAttributeTestDataFlag.Null)
             };
 
             query.Events = expectedItems
@@ -148,7 +148,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(3, actualItems.Count);
             for (int i = 0; i < actualItems.Count; i++)
             {
-                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.Null);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], SignAttributeTestDataFlag.Null);
             }
         }
 
@@ -158,9 +158,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             //Given
             var expectedItems = new List<ScanCode>
             {
-                SetupValidatedItemInDb("123498763", TestDataValueFlag.Off),
-                SetupValidatedItemInDb("123498764", TestDataValueFlag.Off),
-                SetupValidatedItemInDb("123498765", TestDataValueFlag.Off)
+                SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.Off),
+                SetupValidatedItemInDb("123498764", SignAttributeTestDataFlag.Off),
+                SetupValidatedItemInDb("123498765", SignAttributeTestDataFlag.Off)
             };
             context.SaveChanges();
 
@@ -175,7 +175,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(3, actualItems.Count);
             for (int i = 0; i < actualItems.Count; i++)
             {
-                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], TestDataValueFlag.Off);
+                AssertSignAttributesMatchExpected(expectedItems[i], actualItems[i], SignAttributeTestDataFlag.Off);
             }
         }
 
@@ -190,7 +190,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "", nameof(ValidatedItemModel.Organic), (bool?)null),
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "", nameof(ValidatedItemModel.Vegan), (bool?)null)
             };
-            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.On, customSignAttrValues);
+            var expectedItem = SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.On, null, customSignAttrValues);
             context.SaveChanges();
 
             query.Events = new List<EventQueue> {
@@ -201,7 +201,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
 
             //Then
-            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.On, customSignAttrValues);
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, SignAttributeTestDataFlag.On, customSignAttrValues);
         }
 
         [TestMethod]
@@ -215,7 +215,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "No", nameof(ValidatedItemModel.Organic), false),
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "No", nameof(ValidatedItemModel.Vegan), false)
             };
-            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.On, customSignAttrValues);
+            var expectedItem = SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.On, null, customSignAttrValues);
             context.SaveChanges();
 
             query.Events = new List<EventQueue> {
@@ -226,7 +226,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
 
             //Then
-            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.On, customSignAttrValues);
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, SignAttributeTestDataFlag.On, customSignAttrValues);
         }
 
         [TestMethod]
@@ -240,7 +240,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "Acme Organic Agency", nameof(ValidatedItemModel.Organic), true),
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "Acme Vegan Agency", nameof(ValidatedItemModel.Vegan), true)
             };
-            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.Off, customSignAttrValues);
+            var expectedItem = SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.Off, null, customSignAttrValues);
             context.SaveChanges();
 
             query.Events = new List<EventQueue> {
@@ -251,7 +251,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
 
             //Then
-            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.Off, customSignAttrValues);
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, SignAttributeTestDataFlag.Off, customSignAttrValues);
         }
 
         [TestMethod]
@@ -265,7 +265,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.OrganicAgencyName), "Yes", nameof(ValidatedItemModel.Organic), true),
                 new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.VeganAgencyName), "Yes", nameof(ValidatedItemModel.Vegan), true)
             };
-            var expectedItem = SetupValidatedItemInDb("123498763", TestDataValueFlag.Off, customSignAttrValues);
+            var expectedItem = SetupValidatedItemInDb("123498763", SignAttributeTestDataFlag.Off, null, customSignAttrValues);
             context.SaveChanges();
 
             query.Events = new List<EventQueue> {
@@ -276,7 +276,56 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             var actualItem = this.handler.Handle(query).OrderBy(i => i.ScanCode).FirstOrDefault();
 
             //Then
-            AssertSignAttributesMatchExpected(expectedItem, actualItem, TestDataValueFlag.Off, customSignAttrValues);
+            AssertSignAttributesMatchExpected(expectedItem, actualItem, SignAttributeTestDataFlag.Off, customSignAttrValues);
+        }
+
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemHasCustomerFriendlyDescriptionTrait_ReturnsValidatedItemWithExpectedSignAttributeValue()
+        {
+            //Given
+            const string sampleIdentifier = "123498763";
+            var expectedCfdValue = "Test CFD for " + sampleIdentifier;
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.CustomerFriendlyDescription), expectedCfdValue, nameof(ValidatedItemModel.CustomerFriendlyDescription), expectedCfdValue),
+                };
+            var expectedItems = new List<ScanCode>
+            {
+                SetupValidatedItemInDb(sampleIdentifier, SignAttributeTestDataFlag.On, null, customSignAttrValues)
+            };
+
+            query.Events = expectedItems
+                .Select(i => new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = i.scanCode })
+                .ToList();
+
+            //When
+            List<ValidatedItemModel> actualItems = this.handler.Handle(query).OrderBy(i => i.ScanCode).ToList();
+
+            //Then 
+            Assert.AreEqual(expectedCfdValue, actualItems[0].CustomerFriendlyDescription, nameof(ValidatedItemModel.CustomerFriendlyDescription));
+        }
+
+        [TestMethod]
+        public void BulkGetValidatedItems_ItemLacksCustomerFriendlyDescriptionTrait_ReturnsValidatedItemWithNullTraitValue()
+        {
+            //Given
+            const string sampleIdentifier = "123498763";
+            var customSignAttrValues = new List<SignAttributeValidatedItemPair> {
+                new SignAttributeValidatedItemPair(nameof(ItemSignAttribute.CustomerFriendlyDescription), (string)null, nameof(ValidatedItemModel.CustomerFriendlyDescription), (string)null),
+                };
+            var expectedItems = new List<ScanCode>
+            {
+                SetupValidatedItemInDb(sampleIdentifier, SignAttributeTestDataFlag.On, null, customSignAttrValues)
+            };
+
+            query.Events = expectedItems
+                .Select(i => new EventQueue { EventId = EventTypes.ItemUpdate, EventMessage = i.scanCode })
+                .ToList();
+
+            //When
+            List<ValidatedItemModel> actualItems = this.handler.Handle(query).OrderBy(i => i.ScanCode).ToList();
+
+            //Then 
+            Assert.IsNull(actualItems[0].CustomerFriendlyDescription, nameof(ValidatedItemModel.CustomerFriendlyDescription));
         }
 
         /// <summary>
@@ -284,25 +333,32 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         ///   The ScanCode will have values populated for standard ItemTraits,
         ///   required HierarchyClasses (brand/tax/merch), and ItemSignAttribute data as specified
         /// </summary>
-        /// <param name="identifier">scanCode/identifier for the item</param>
+        /// <param name="identifier">scanCode/identifier for the item</param> 
         /// <param name="signAttrDataFlag">flag indicating the values to use for ScanCode.Item.ItemSignAttribute
-        ///   members: On/Populated, Off/Fale, Null/No Sign Attribute data</param>
+        ///   members: On/Populated, Off/False, Null/No Sign Attribute data</param>
+        /// <param name="additionalTraitsToInclude">Any additional trait ids/values to include in 
+        ///    the created validated item, other than the default traits of ValidationDate, ProductDescription,
+        ///    PosDescription, PackageUnit, FoodStampEligible, PosScaleTare, RetailSize, RetailUom which 
+        ///    will be added by default with sample values</param>
         /// <param name="customSignAttributeValues">Optional list of property name/value pairs to use for 
         ///    ScanCode.Item.ItemSignAttribute members. When left null, the standard values appropriate to the 
         ///    data flag parameter will be used for all properties. Any properties not listed in the custom values
         ///    will default to the standard value for the sign attribute data flag.</param>
         /// <returns>ScanCode object which has been saved to the test context</returns>
-        private ScanCode SetupValidatedItemInDb(string identifier, TestDataValueFlag signAttrDataFlag,
+        private ScanCode SetupValidatedItemInDb(string identifier,
+            SignAttributeTestDataFlag signAttrDataFlag,
+            List<Tuple<int, string>> additionalTraitsToInclude = null,
             List<SignAttributeValidatedItemPair> customSignAttributeValues = null)
         {
-            var standardItemTraits = CreateDefaultItemTraits(identifier);
-            var hierarchiesForBrandTaxMerch = CreateBrandTaxMerchHierarchyClassesForTestItem(identifier);
+            var itemTraits = CreateSampleItemTraits(identifier, additionalTraitsToInclude);
 
+            var hierarchiesForBrandTaxMerch = CreateBrandTaxMerchHierarchyClassesForTestItem(identifier);
             context.HierarchyClass.AddRange(hierarchiesForBrandTaxMerch);
+
             context.SaveChanges();
 
-            var scanCode = CreateScanCodeModelForValidatedItem(identifier, standardItemTraits, hierarchiesForBrandTaxMerch);
-            if (signAttrDataFlag != TestDataValueFlag.Null)
+            var scanCode = CreateScanCodeModelForValidatedItem(identifier, itemTraits, hierarchiesForBrandTaxMerch);
+            if (signAttrDataFlag != SignAttributeTestDataFlag.Null)
             {
                 var signAttributes = CreateItemSignAttributes(signAttrDataFlag, customSignAttributeValues);
                 scanCode.Item.ItemSignAttribute.Add(signAttributes);
@@ -385,6 +441,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 Item = new Item
                 {
                     itemTypeID = ItemTypes.RetailSale,
+                    //ItemType = new ItemType
+                    //{
+                    //    itemTypeID = ItemTypes.RetailSale,
+                    //    itemTypeCode = ItemTypes.Codes.RetailSale,
+                    //    itemTypeDesc = ItemTypes.Descriptions.RetailSale
+                    //},
                     ItemTrait = itemTraits,
                     ItemHierarchyClass = new List<ItemHierarchyClass>
                     {
@@ -403,9 +465,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         ///   ValidationDate, ProductDescription, PosDescription, PackageUnit, FoodStampEligible, PosScaleTare, RetailSize, RetailUom
         /// </summary>
         /// <param name="scanCode">ScanCode/Identifer for the test data item (will be prepended to test trait values)</param>
+        /// <param name="additionalTraitsToInclude">Any additional trait ids/values which the tester wished to include</param>
         /// <param name="validationDate">Value to use for the ValidationDate trait (defaults to Now if not specified)</param>
         /// <returns>List of ItemTrait objects with sample values</returns>
-        private List<ItemTrait> CreateDefaultItemTraits(string scanCode, DateTime? validationDate = null)
+        private List<ItemTrait> CreateSampleItemTraits(string scanCode,
+            List<Tuple<int,string>> additionalTraitsToInclude = null,
+            DateTime? validationDate = null)
         {
             if (!validationDate.HasValue) validationDate = DateTime.Now;
 
@@ -420,6 +485,14 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailSize, traitValue = "123" },
                 new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailUom, traitValue = "Test Retail Uom" + scanCode},
             };
+            if (additionalTraitsToInclude != null)
+            {
+                foreach (var additionalTrait in additionalTraitsToInclude)
+                {
+                    itemTraits.Add(
+                        new ItemTrait { localeID = Locales.WholeFoods, traitID = additionalTrait.Item1, traitValue = additionalTrait.Item2 });
+                }
+            }
             return itemTraits;
         }
 
@@ -435,14 +508,14 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         /// <param name="customValidatedItemSignAttrData">List of property/name pairs indicating that the
         ///    specified property names should have the matching value, overriding the test data flag</param>
         /// <returns>ItemSignAttribute object with property values specified as indicated by the parameters</returns>
-        private ItemSignAttribute CreateItemSignAttributes(TestDataValueFlag signAttrDataFlag,
+        private ItemSignAttribute CreateItemSignAttributes(SignAttributeTestDataFlag signAttrDataFlag,
             List<SignAttributeValidatedItemPair> customValidatedItemSignAttrData = null)
         {
             ItemSignAttribute signAttributes = null;
 
             switch (signAttrDataFlag)
             {
-                case TestDataValueFlag.On:
+                case SignAttributeTestDataFlag.On:
                     // assign default (on/true/yes/string value) values
                     signAttributes = new ItemSignAttribute
                     {
@@ -468,10 +541,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                         KosherAgencyName = "Yes",
                         OrganicAgencyName = "Yes",
                         VeganAgencyName = "Yes",
-                        NonGmoAgencyName = "Yes"
+                        NonGmoAgencyName = "Yes",
+                        CustomerFriendlyDescription = "Test Friendly Customer Description!"
                     };
                     break;
-                case TestDataValueFlag.Off: 
+                case SignAttributeTestDataFlag.Off: 
                     // assign false/off/no values to all appropriate properties
                     signAttributes = new ItemSignAttribute
                     {
@@ -497,10 +571,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                         KosherAgencyName = "No",
                         OrganicAgencyName = "No",
                         VeganAgencyName = "No",
-                        NonGmoAgencyName = "No"
+                        NonGmoAgencyName = "No",
+                        CustomerFriendlyDescription = null
                     };
                     break;
-                case TestDataValueFlag.Null:
+                case SignAttributeTestDataFlag.Null:
                 default:
                     // leave all nullable properties null, all others to false
                     signAttributes = new ItemSignAttribute
@@ -527,7 +602,8 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                         KosherAgencyName = null,
                         OrganicAgencyName = null,
                         VeganAgencyName = null,
-                        NonGmoAgencyName = null
+                        NonGmoAgencyName = null,
+                        CustomerFriendlyDescription = null
                     };
                     break;
             }
@@ -582,7 +658,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
         public void AssertSignAttributesMatchExpected(ScanCode expected,
             ValidatedItemModel actual,
-            TestDataValueFlag defaultPropertyValue,
+            SignAttributeTestDataFlag defaultPropertyValue,
             List<SignAttributeValidatedItemPair> customExpectedData = null)
         {
             Assert.AreEqual(expected.itemID, actual.ItemId);
@@ -612,10 +688,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             bool? expectedDAG;
             bool? expectedACH;
             bool? expectedMIH;
+            string expectedCFD;
 
             switch (defaultPropertyValue)
             {
-                case TestDataValueFlag.On:
+                case SignAttributeTestDataFlag.On:
                     // set expected values for when sign attributes data is is expected to exist and have populated values
                     expectedHasItemSignAttributes = true;
                     expectedAWR = SetExpectedPropertyValue(AnimalWelfareRatings.Descriptions.Step1, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
@@ -641,8 +718,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     expectedDAG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.DryAged));
                     expectedACH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.AirChilled));
                     expectedMIH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
+                    expectedCFD = SetExpectedPropertyValue("Test Friendly Customer Description!", customExpectedData, nameof(ValidatedItemModel.CustomerFriendlyDescription));
                     break;
-                case TestDataValueFlag.Off:
+                case SignAttributeTestDataFlag.Off:
                     // set expected  values for when sign attribute data is expected to exist but be false/empty
                     expectedHasItemSignAttributes = true;
                     expectedAWR = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
@@ -668,8 +746,9 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     expectedDAG = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.DryAged));
                     expectedACH = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.AirChilled));
                     expectedMIH = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
+                    expectedCFD = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CustomerFriendlyDescription));
                     break;
-                case TestDataValueFlag.Null:
+                case SignAttributeTestDataFlag.Null:
                 default:
                     //set expected values for when sign attribute data is expected to be null
                     expectedHasItemSignAttributes = false;
@@ -696,7 +775,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     expectedDAG = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.DryAged));
                     expectedACH = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.AirChilled));
                     expectedMIH = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.MadeInHouse));
-
+                    expectedCFD = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CustomerFriendlyDescription));
                     break;
             }
 
@@ -725,12 +804,13 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(expectedDAG, actual.DryAged, "Property: " + nameof(actual.DryAged));
             Assert.AreEqual(expectedACH, actual.AirChilled, "Property: " + nameof(actual.AirChilled));
             Assert.AreEqual(expectedMIH, actual.MadeInHouse, "Property: " + nameof(actual.MadeInHouse));
+            Assert.AreEqual(expectedCFD, actual.CustomerFriendlyDescription, "Property: " + nameof(actual.CustomerFriendlyDescription));
         }
 
         /// <summary>
         /// Flag for what values to set/expect for the properties in a test data object
         /// </summary>
-        public enum TestDataValueFlag
+        public enum SignAttributeTestDataFlag
         {
             Off = 0,
             On = 1,

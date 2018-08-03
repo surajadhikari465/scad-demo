@@ -54,6 +54,7 @@ namespace GlobalEventController.Common
         public decimal RetailSize { get; set; }
         public string RetailUom { get; set; }
         public string ItemTypeCode { get; set; }
+        public string CustomerFriendlyDescription { get; set; }
 
         public ValidatedItemModel() { }
 
@@ -173,6 +174,7 @@ namespace GlobalEventController.Common
                 DryAged = itemSignAttributes.DryAged;
                 AirChilled = itemSignAttributes.AirChilled;
                 MadeInHouse = itemSignAttributes.MadeInHouse;
+                CustomerFriendlyDescription = itemSignAttributes.CustomerFriendlyDescription;
             }
         }
     }

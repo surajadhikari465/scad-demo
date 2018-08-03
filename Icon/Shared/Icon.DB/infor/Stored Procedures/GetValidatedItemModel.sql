@@ -114,9 +114,6 @@ BEGIN
                      hc.hierarchyID = @natId
        )
 
-
-
-
        --=======================================================
        -- Main
        --=======================================================
@@ -191,7 +188,8 @@ BEGIN
 			  CAST(rsz.TraitValue as decimal(9,4)) as RetailSize,
 			  rum.TraitValue					as RetailUom,
 			  0									as EventTypeId,
-			  it.itemTypeCode                   as ItemTypeCode
+			  it.itemTypeCode                   as ItemTypeCode,
+			  isa.CustomerFriendlyDescription   as CustomerFriendlyDescription
        FROM
               @ScanCodes			codes
               JOIN ScanCode			sc          on  codes.ScanCode = sc.scanCode

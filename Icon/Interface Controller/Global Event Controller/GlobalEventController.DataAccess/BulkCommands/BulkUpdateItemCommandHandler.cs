@@ -30,9 +30,14 @@ namespace GlobalEventController.DataAccess.BulkCommands
                     .ToList();
 
                 SqlParameter itemList = new SqlParameter("ValidatedItemList", SqlDbType.Structured);
-                SqlParameter userName = new SqlParameter("UserName", SqlDbType.VarChar);
                 itemList.TypeName = "dbo.IconUpdateItemType";
-                itemList.Value = command.ValidatedItems.Where(vi => defaultIdentifiers.Contains(vi.ScanCode)).DistinctBy(vi => new { vi.ScanCode }).ToList().ToDataTable();
+                itemList.Value = command.ValidatedItems
+                    .Where(vi => defaultIdentifiers.Contains(vi.ScanCode))
+                    .DistinctBy(vi => new { vi.ScanCode })
+                    .ToList()
+                    .ToDataTable();
+
+                SqlParameter userName = new SqlParameter("UserName", SqlDbType.VarChar);
                 userName.Value = "iconcontrolleruser";
 
                 string sql = "EXEC dbo.IconItemUpdateItem @ValidatedItemList, @UserName";

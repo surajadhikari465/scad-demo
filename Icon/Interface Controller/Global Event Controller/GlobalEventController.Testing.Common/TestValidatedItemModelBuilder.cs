@@ -52,6 +52,7 @@ namespace GlobalEventController.Testing.Common
         private decimal retailSize;
         private string retailUom;
         private string itemTypeCode;
+        private string customerFriendlyDescription;
 
         public TestValidatedItemModelBuilder()
         {
@@ -327,6 +328,12 @@ namespace GlobalEventController.Testing.Common
             return this;
         }
 
+        public TestValidatedItemModelBuilder WithCustomerFriendlyDescription(string customerFriendlyDescription)
+        {
+            this.customerFriendlyDescription = customerFriendlyDescription;
+            return this;
+        }
+
         public ValidatedItemModel Build()
         {
             ValidatedItemModel validatedItem = new ValidatedItemModel
@@ -371,7 +378,8 @@ namespace GlobalEventController.Testing.Common
                 Vegetarian = this.vegetarian,
                 WholeTrade = this.wholeTrade,
                 RetailSize = this.retailSize,
-                RetailUom = this.retailUom
+                RetailUom = this.retailUom,
+                CustomerFriendlyDescription = this.customerFriendlyDescription
             };
 
             return validatedItem;

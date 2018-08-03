@@ -31,11 +31,12 @@ namespace GlobalEventController.Tests.Common
         private HierarchyClass tax;
         private HierarchyClass merchandise;
         private HierarchyClass national;
-        private HierarchyClass glutenAgency;
-        private HierarchyClass kosherAgency;
-        private HierarchyClass nonGmoAgency;
-        private HierarchyClass organicAgency;
-        private HierarchyClass veganAgency;
+        private string glutenAgencyName;
+        private string kosherAgencyName;
+        private string nonGmoAgencyName;
+        private string organicAgencyName;
+        private string veganAgencyName;
+        private string customerFriendlyDescription;
         private ItemSignAttribute signAttributes;
 
         [TestInitialize]
@@ -54,10 +55,16 @@ namespace GlobalEventController.Tests.Common
         }
 
         [TestMethod]
-        public void Constructor_GivenAScanCodeWithAllItemAttributes_ShouldPopulateAllModelProperties()
+        public void ValidatedItemModelConstructor_GivenAScanCodeWithAllItemAttributes_ShouldPopulateAllModelProperties()
         {
             //Given
             SetupScanCode(true);
+            scanCode.Item.ItemType = new ItemType
+            {
+                itemTypeID = ItemTypes.RetailSale,
+                itemTypeCode = ItemTypes.Codes.RetailSale,
+                itemTypeDesc = ItemTypes.Descriptions.RetailSale
+            };
 
             //When
             model = new ValidatedItemModel(scanCode);
@@ -102,13 +109,20 @@ namespace GlobalEventController.Tests.Common
             Assert.IsTrue(model.MadeInHouse.Value);
             Assert.AreEqual(Convert.ToDecimal(retailSize), model.RetailSize);
             Assert.AreEqual(retailUom, model.RetailUom);
+            Assert.AreEqual(customerFriendlyDescription, model.CustomerFriendlyDescription);
         }
 
         [TestMethod]
-        public void Constructor_GivenAScanCodeWithNoSignAttributes_SignAttributesShouldBeNull()
+        public void ValidatedItemModelConstructor_GivenAScanCodeWithNoSignAttributes_SignAttributesShouldBeNull()
         {
             //Given
             SetupScanCode(false);
+            scanCode.Item.ItemType = new ItemType
+            {
+                itemTypeID = ItemTypes.RetailSale,
+                itemTypeCode = ItemTypes.Codes.RetailSale,
+                itemTypeDesc = ItemTypes.Descriptions.RetailSale
+            };
 
             //When
             model = new ValidatedItemModel(scanCode);
@@ -154,7 +168,7 @@ namespace GlobalEventController.Tests.Common
         }
 
         [TestMethod]
-        public void Constructor_GivenAScanCodeWithFalseSignAttributes_SignAttributesShouldHaveFalseValues()
+        public void ValidatedItemModelConstructor_GivenAScanCodeWithFalseSignAttributes_SignAttributesShouldHaveFalseValues()
         {
             //Given
             SetupScanCode(false);
@@ -187,6 +201,13 @@ namespace GlobalEventController.Tests.Common
             scanCode.Item.ItemSignAttribute.Add(signAttributes);
 
             context.SaveChanges();
+
+            scanCode.Item.ItemType = new ItemType
+            {
+                itemTypeID = ItemTypes.RetailSale,
+                itemTypeCode = ItemTypes.Codes.RetailSale,
+                itemTypeDesc = ItemTypes.Descriptions.RetailSale
+            };
 
             //When
             model = new ValidatedItemModel(scanCode);
@@ -231,7 +252,26 @@ namespace GlobalEventController.Tests.Common
             Assert.IsFalse(model.MadeInHouse.Value);
         }
 
-        private void SetupScanCode(bool addItemSignAttributes)
+        [TestMethod]
+        public void ValidatedItemModelConstructor_GivenAScanCodeWithCFDttributes_ShouldPopulateCFDProperties()
+        {
+            //Given
+            SetupScanCode(true, true);
+            scanCode.Item.ItemType = new ItemType
+            {
+                itemTypeID = ItemTypes.RetailSale,
+                itemTypeCode = ItemTypes.Codes.RetailSale,
+                itemTypeDesc = ItemTypes.Descriptions.RetailSale
+            };
+
+            //When
+            model = new ValidatedItemModel(scanCode);
+
+            //Then
+            Assert.AreEqual(customerFriendlyDescription, model.CustomerFriendlyDescription);
+        }
+
+        private void SetupScanCode(bool addItemSignAttributes, bool addCFD = false)
         {
             validationDate = DateTime.Now.ToString();
             productDescription = "Test Product Description";
@@ -244,6 +284,11 @@ namespace GlobalEventController.Tests.Common
             nationalClassCode = "5";
             retailSize = "1";
             retailUom = "EA";
+            glutenAgencyName = "Test Gluten";
+            kosherAgencyName = "Kosher Agency";
+            nonGmoAgencyName = "NonGmo Agency";
+            organicAgencyName = "Organic Agency";
+            veganAgencyName = "Vegan Agency";
 
             brand = new HierarchyClass { hierarchyID = Hierarchies.Brands, hierarchyClassName = "Test Brand" };
             tax = new HierarchyClass
@@ -274,13 +319,7 @@ namespace GlobalEventController.Tests.Common
                 }
             };
 
-            glutenAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Test Gluten" };
-            kosherAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Kosher Agency" };
-            nonGmoAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "NonGmo Agency" };
-            organicAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Organic Agency" };
-            veganAgency = new HierarchyClass { hierarchyID = Hierarchies.CertificationAgencyManagement, hierarchyClassName = "Vegan Agency" };
-
-            context.HierarchyClass.AddRange(new List<HierarchyClass> { brand, tax, merchandise, national, glutenAgency, kosherAgency, nonGmoAgency, organicAgency, veganAgency });
+            context.HierarchyClass.AddRange(new List<HierarchyClass> { brand, tax, merchandise, national });
             context.SaveChanges();
 
             scanCode = new ScanCode
@@ -300,7 +339,7 @@ namespace GlobalEventController.Tests.Common
                         new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.PosScaleTare, traitValue = posScaleTare },
                         new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailSize, traitValue = retailSize },
                         new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.RetailUom, traitValue = retailUom },
-                    },
+                        },
                     ItemHierarchyClass = new List<ItemHierarchyClass>
                     {
                         new ItemHierarchyClass { hierarchyClassID = brand.hierarchyClassID },
@@ -308,8 +347,20 @@ namespace GlobalEventController.Tests.Common
                         new ItemHierarchyClass { hierarchyClassID = merchandise.hierarchyClassID },
                         new ItemHierarchyClass { hierarchyClassID = national.hierarchyClassID }
                     }
-                }
+                },                
             };
+
+            if (addCFD)
+            {
+                customerFriendlyDescription = "Test Customer Friendly Description";
+                scanCode.Item.ItemTrait.Add(
+                    new ItemTrait
+                    {
+                        localeID = Locales.WholeFoods,
+                        traitID = Traits.CustomerFriendlyDescription,
+                        traitValue = customerFriendlyDescription
+                    });
+            }
 
             if (addItemSignAttributes)
             {
@@ -331,7 +382,12 @@ namespace GlobalEventController.Tests.Common
                     FreeRange = true,
                     DryAged = true,
                     AirChilled = true,
-                    MadeInHouse = true
+                    MadeInHouse = true,
+                    GlutenFreeAgencyName = glutenAgencyName,
+                    KosherAgencyName = kosherAgencyName,
+                    NonGmoAgencyName = nonGmoAgencyName,
+                    OrganicAgencyName = organicAgencyName,
+                    VeganAgencyName = veganAgencyName
                 };
                 scanCode.Item.ItemSignAttribute.Add(signAttributes);
             }
