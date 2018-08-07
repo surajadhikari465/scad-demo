@@ -56,8 +56,36 @@ namespace Mammoth.Esb.ProductListener.Queries
 	                AND activePrice.BusinessUnitID = p.BusinessUnitID
 	                AND activePrice.StartDate = p.StartDate
                 JOIN dbo.Locale l ON ila.BusinessUnitID = l.BusinessUnitID
+                LEFT JOIN dbo.RegionGpmStatus rgs ON rgs.Region = l.Region
                 WHERE ila.Authorized = 1
 	                AND p.PriceType IN @EligiblePriceTypes
+                    AND ISNULL(rgs.IsGpmEnabled, 0) = 0
+                UNION
+                SELECT l.Region
+	                ,i.ItemID
+	                ,l.BusinessUnitID
+	                ,i.ScanCode
+	                ,it.itemTypeCode AS ItemTypeCode
+	                ,l.StoreName
+					,p.PriceType
+                    ,p.Price
+					,p.StartDate
+					,p.EndDate
+                FROM #ItemIDs ids
+                JOIN dbo.Items i ON ids.ItemId = i.ItemID
+                JOIN dbo.ItemTypes it ON i.ItemTypeID = it.itemTypeID
+                JOIN dbo.ItemLocaleAttributes ila ON ids.ItemID = ila.ItemID
+                JOIN gpm.Prices p ON ila.ItemID = p.ItemID
+	                AND ila.BusinessUnitID = p.BusinessUnitID
+                    AND ila.Region = p.Region
+                JOIN dbo.Locale l ON ila.BusinessUnitID = l.BusinessUnitID
+                JOIN dbo.RegionGpmStatus rgs ON rgs.Region = l.Region
+                WHERE rgs.IsGpmEnabled = 1
+                    AND ila.Authorized = 1
+                    AND rgs.IsGpmEnabled = 1 
+                    AND PriceType = 'TPR'
+		            AND StartDate <= @Today
+		            AND EndDate >= @Today
                 ORDER BY l.BusinessUnitID",
                 new
                 {
@@ -69,7 +97,6 @@ namespace Mammoth.Esb.ProductListener.Queries
                     parameters.EligiblePriceTypes
                 },
                 dbProvider.Transaction).ToList();
-
         }
     }
 }

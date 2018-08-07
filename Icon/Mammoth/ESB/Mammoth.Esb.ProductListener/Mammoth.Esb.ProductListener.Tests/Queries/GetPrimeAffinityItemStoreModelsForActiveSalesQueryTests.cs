@@ -51,14 +51,14 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
         }
 
         [TestMethod]
-        public void GetPrimeAffinityItemStoreModelsByItemIdAndBusinessUnitId_SomeItemsAreAuthorizedAndSomeAreNotAndSomeHaveActiveSales_ReturnsAuthorizedItems()
+        public void GetPrimeAffinityItemStoreModelsForActiveSales_SomeItemsAreAuthorizedAndSomeAreNotAndSomeHaveActiveSalesAndRegionIsNotOnGpm_ReturnsAuthorizedItems()
         {
             //Given
-            var itemLocaleAttribute1 = InsertItemLocaleAttribute(testItemIds[0], testBusinessUnitIds[0], true);
-            var itemLocaleAttribute2 = InsertItemLocaleAttribute(testItemIds[0], testBusinessUnitIds[1], true);
-            var itemLocaleAttribute3 = InsertItemLocaleAttribute(testItemIds[1], testBusinessUnitIds[0], true);
-            var itemLocaleAttribute4 = InsertItemLocaleAttribute(testItemIds[2], testBusinessUnitIds[0], false);
-            var itemLocaleAttribute5 = InsertItemLocaleAttribute(testItemIds[2], testBusinessUnitIds[1], true);
+            var itemLocaleAttribute1 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute2 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[1], true);
+            var itemLocaleAttribute3 = InsertItemLocaleAttribute(testRegion, testItemIds[1], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute4 = InsertItemLocaleAttribute(testRegion, testItemIds[2], testBusinessUnitIds[0], false);
+            var itemLocaleAttribute5 = InsertItemLocaleAttribute(testRegion, testItemIds[2], testBusinessUnitIds[1], true);
 
             var itemLocaleAttributesAuthorized = new List<dynamic>
             {
@@ -68,15 +68,15 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                 itemLocaleAttribute5
             };
 
-            var price1 = InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price2 = InsertTestPrices(testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-1), DateTime.Today.AddDays(11), "TST");
-            var price3 = InsertTestPrices(testItemIds[0], testBusinessUnitIds[1], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price4 = InsertTestPrices(testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(10), "TST");
-            var price5 = InsertTestPrices(testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price6 = InsertTestPrices(testItemIds[2], testBusinessUnitIds[1], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price7 = InsertTestPrices(testItemIds[2], testBusinessUnitIds[1], DateTime.Today.AddDays(-1), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price8 = InsertTestPrices(testItemIds[2], testBusinessUnitIds[2], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
-            var price9 = InsertTestPrices(testItemIds[2], testBusinessUnitIds[2], DateTime.Today.AddDays(1), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price1 = InsertTestNonGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price2 = InsertTestNonGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[0], DateTime.Today.AddDays(-1), DateTime.Today.AddDays(11), "TST");
+            var price3 = InsertTestNonGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[1], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price4 = InsertTestNonGpmPrices(testRegion, testItemIds[1], testBusinessUnitIds[0], DateTime.Today.AddDays(-5), DateTime.Today.AddDays(10), "TST");
+            var price5 = InsertTestNonGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price6 = InsertTestNonGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[1], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price7 = InsertTestNonGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[1], DateTime.Today.AddDays(-1), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price8 = InsertTestNonGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[2], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price9 = InsertTestNonGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[2], DateTime.Today.AddDays(1), DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
 
             var activeEligiblePrices = new List<dynamic>
             {
@@ -106,20 +106,225 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
             }
         }
 
+        [TestMethod]
+        public void GetPrimeAffinityItemStoreModelsForActiveSales_RegionIsOnGpmAndPricesAreTprs_ShouldReturnOnlyGpmPrices()
+        {
+            //Given
+            sqlDbProvider.Connection.Execute(
+                @"
+                IF (SELECT IsGpmEnabled FROM dbo.RegionGpmStatus WHERE Region = @TestRegion) IS NULL
+                BEGIN
+                    INSERT INTO dbo.RegionGpmStatus(Region, IsGpmEnabled)
+                    VALUES (@TestRegion, 1)
+                END
+                ELSE
+                BEGIN
+                    UPDATE dbo.RegionGpmStatus
+                    SET IsGpmEnabled = 1
+                    WHERE Region = @TestRegion
+                END",
+                new { TestRegion = testRegion });
+
+            var itemLocaleAttribute1 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute2 = InsertItemLocaleAttribute(testRegion, testItemIds[1], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute3 = InsertItemLocaleAttribute(testRegion, testItemIds[2], testBusinessUnitIds[0], true);
+
+            var itemLocaleAttributesAuthorized = new List<dynamic>
+            {
+                itemLocaleAttribute1,
+                itemLocaleAttribute2,
+                itemLocaleAttribute3,
+            };
+
+            var price1 = InsertTestGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+            var price2 = InsertTestGpmPrices(testRegion, testItemIds[1], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+            var price3 = InsertTestGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+
+            var activeEligiblePrices = new List<dynamic>
+            {
+                price1,
+                price2,
+                price3
+            };
+            parameters.Items = new List<ItemDataAccessModel>
+            {
+                new ItemDataAccessModel { ItemID = testItemIds[0] },
+                new ItemDataAccessModel { ItemID = testItemIds[1] },
+                new ItemDataAccessModel { ItemID = testItemIds[2] },
+            };
+
+            //When
+            var result = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(3, result.Count());
+            foreach (var itemLocaleAttributes in itemLocaleAttributesAuthorized)
+            {
+                foreach (var price in activeEligiblePrices.Where(p => p.ItemID == itemLocaleAttributes.ItemID && p.BusinessUnitID == itemLocaleAttributes.BusinessUnitID))
+                {
+                    var primeAffinityModel = result.Single(pa => pa.ItemId == itemLocaleAttributes.ItemID && pa.BusinessUnitId == itemLocaleAttributes.BusinessUnitID);
+                    AssertModelIsEqualToLocaleAttributes(primeAffinityModel, itemLocaleAttributes);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityItemStoreModelsForActiveSales_RegionIsOnGpmButPricesAreReg_ShouldReturnNothingBecauseOnlyTprsResultInPsgs()
+        {
+            //Given
+            sqlDbProvider.Connection.Execute(
+                @"
+                IF (SELECT IsGpmEnabled FROM dbo.RegionGpmStatus WHERE Region = @TestRegion) IS NULL
+                BEGIN
+                    INSERT INTO dbo.RegionGpmStatus(Region, IsGpmEnabled)
+                    VALUES (@TestRegion, 1)
+                END
+                ELSE
+                BEGIN
+                    UPDATE dbo.RegionGpmStatus
+                    SET IsGpmEnabled = 1
+                    WHERE Region = @TestRegion
+                END",
+                new { TestRegion = testRegion });
+
+            var itemLocaleAttribute1 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute2 = InsertItemLocaleAttribute(testRegion, testItemIds[1], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute3 = InsertItemLocaleAttribute(testRegion, testItemIds[2], testBusinessUnitIds[0], true);
+
+            var itemLocaleAttributesAuthorized = new List<dynamic>
+            {
+                itemLocaleAttribute1,
+                itemLocaleAttribute2,
+                itemLocaleAttribute3,
+            };
+
+            var price1 = InsertTestGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "REG");
+            var price2 = InsertTestGpmPrices(testRegion, testItemIds[1], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "REG");
+            var price3 = InsertTestGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "REG");
+
+            var activeEligiblePrices = new List<dynamic>
+            {
+                price1,
+                price2,
+                price3
+            };
+            parameters.Items = new List<ItemDataAccessModel>
+            {
+                new ItemDataAccessModel { ItemID = testItemIds[0] },
+                new ItemDataAccessModel { ItemID = testItemIds[1] },
+                new ItemDataAccessModel { ItemID = testItemIds[2] },
+            };
+
+            //When
+            var result = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
+        public void GetPrimeAffinityItemStoreModelsForActiveSales_OneRegionIsOnGpmAndOneIsNot_ShouldReturnOnlyGpmPricesForGpmRegionAndNonGpmPricesForNonGpmRegion()
+        {
+            //Given
+            var testRegion2 = "MA";
+            var testBusinessUnitIds2 = new List<int> { 77777773, 77777774, 77777775 };
+            var enableGpmRegionSql =
+                @"
+                IF (SELECT IsGpmEnabled FROM dbo.RegionGpmStatus WHERE Region = @TestRegion) IS NULL
+                BEGIN
+                    INSERT INTO dbo.RegionGpmStatus(Region, IsGpmEnabled)
+                    VALUES (@TestRegion, @IsGpmEnabled)
+                END
+                ELSE
+                BEGIN
+                    UPDATE dbo.RegionGpmStatus
+                    SET IsGpmEnabled = @IsGpmEnabled
+                    WHERE Region = @TestRegion
+                END";
+            //Set up 2 regions, 1 GPM enabled and the other not
+            sqlDbProvider.Connection.Execute(enableGpmRegionSql, new { TestRegion = testRegion, IsGpmEnabled = true });
+            sqlDbProvider.Connection.Execute(enableGpmRegionSql, new { TestRegion = testRegion2, IsGpmEnabled = false });
+
+            //Insert stores for new test region
+            InsertTestLocales(testRegion2, testBusinessUnitIds2);
+
+            //Set up auths and prices for GPM region
+            var itemLocaleAttribute1 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute2 = InsertItemLocaleAttribute(testRegion, testItemIds[1], testBusinessUnitIds[0], true);
+            var itemLocaleAttribute3 = InsertItemLocaleAttribute(testRegion, testItemIds[2], testBusinessUnitIds[0], true);
+
+            var itemLocaleAttributesAuthorized = new List<dynamic>
+            {
+                itemLocaleAttribute1,
+                itemLocaleAttribute2,
+                itemLocaleAttribute3,
+            };
+
+            var price1 = InsertTestGpmPrices(testRegion, testItemIds[0], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+            var price2 = InsertTestGpmPrices(testRegion, testItemIds[1], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+            var price3 = InsertTestGpmPrices(testRegion, testItemIds[2], testBusinessUnitIds[0], DateTime.Today, DateTime.Today.AddDays(10), "TPR");
+
+            //Set up auths and prices for non GPM region
+            var itemLocaleAttribute4 = InsertItemLocaleAttribute(testRegion2, testItemIds[0], testBusinessUnitIds2[0], true);
+            var itemLocaleAttribute5 = InsertItemLocaleAttribute(testRegion2, testItemIds[1], testBusinessUnitIds2[0], true);
+            var itemLocaleAttribute6 = InsertItemLocaleAttribute(testRegion2, testItemIds[2], testBusinessUnitIds2[0], true);
+
+            itemLocaleAttributesAuthorized.AddRange(new List<dynamic>
+            {
+                itemLocaleAttribute4,
+                itemLocaleAttribute5,
+                itemLocaleAttribute6
+            });
+
+            var price4 = InsertTestNonGpmPrices(testRegion2, testItemIds[0], testBusinessUnitIds2[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price5 = InsertTestNonGpmPrices(testRegion2, testItemIds[1], testBusinessUnitIds2[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+            var price6 = InsertTestNonGpmPrices(testRegion2, testItemIds[2], testBusinessUnitIds2[0], DateTime.Today, DateTime.Today.AddDays(10), parameters.EligiblePriceTypes[1]);
+
+            var activeEligiblePrices = new List<dynamic>
+            {
+                price1,
+                price2,
+                price3,
+                price4,
+                price5,
+                price6
+            };
+            parameters.Items = new List<ItemDataAccessModel>
+            {
+                new ItemDataAccessModel { ItemID = testItemIds[0] },
+                new ItemDataAccessModel { ItemID = testItemIds[1] },
+                new ItemDataAccessModel { ItemID = testItemIds[2] },
+            };
+
+            //When
+            var result = query.Search(parameters);
+
+            //Then
+            Assert.AreEqual(6, result.Count());
+            foreach (var itemLocaleAttributes in itemLocaleAttributesAuthorized)
+            {
+                foreach (var price in activeEligiblePrices.Where(p => p.ItemID == itemLocaleAttributes.ItemID && p.BusinessUnitID == itemLocaleAttributes.BusinessUnitID))
+                {
+                    var primeAffinityModel = result.Single(pa => pa.ItemId == itemLocaleAttributes.ItemID && pa.BusinessUnitId == itemLocaleAttributes.BusinessUnitID);
+                    AssertModelIsEqualToLocaleAttributes(primeAffinityModel, itemLocaleAttributes);
+                }
+            }
+        }
+
         private void AssertModelIsEqualToLocaleAttributes(PrimeAffinityItemStoreModel primeAffinityModel, dynamic itemLocaleAttributes)
         {
             Assert.AreEqual(itemLocaleAttributes.BusinessUnitID, primeAffinityModel.BusinessUnitId);
             Assert.AreEqual(itemLocaleAttributes.ItemID, primeAffinityModel.ItemId);
             Assert.AreEqual(TestItemTypeCode, primeAffinityModel.ItemTypeCode);
-            Assert.AreEqual(testRegion, primeAffinityModel.Region);
+            Assert.AreEqual(itemLocaleAttributes.Region, primeAffinityModel.Region);
             Assert.AreEqual("sc" + primeAffinityModel.ItemId, primeAffinityModel.ScanCode);
             Assert.AreEqual(TestStoreName, primeAffinityModel.StoreName);
         }
 
-        private dynamic InsertItemLocaleAttribute(int itemId, int businessUnitId, bool authorized)
+        private dynamic InsertItemLocaleAttribute(string region, int itemId, int businessUnitId, bool authorized)
         {
             return sqlDbProvider.Connection.QueryFirst<dynamic>(
-                @"INSERT INTO dbo.ItemAttributes_Locale_FL
+                $@"INSERT INTO dbo.ItemAttributes_Locale_{region}
                              (ItemID
                              ,BusinessUnitID
                              ,Discount_Case
@@ -167,7 +372,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                              ,0)
                     
                     SELECT *
-                    FROM dbo.ItemAttributes_Locale_FL
+                    FROM dbo.ItemAttributes_Locale_{region}
                     WHERE ItemID = @ItemId
                         AND BusinessUnitID = @BusinessUnitId",
                 new
@@ -185,7 +390,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
             {
                 InsertTestItem(itemId);
             }
-            InsertTestLocale();
+            InsertTestLocales(testRegion, testBusinessUnitIds);
         }
 
         private void InsertTestItemType()
@@ -211,12 +416,12 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                 new { ItemId = itemId, ScanCode = "sc" + itemId, ItemTypeCode = TestItemTypeCode });
         }
 
-        private void InsertTestLocale()
+        private void InsertTestLocales(string region, List<int> businessUnitIds)
         {
-            foreach (var businessUnitId in testBusinessUnitIds)
+            foreach (var businessUnitId in businessUnitIds)
             {
                 sqlDbProvider.Connection.Execute(
-                $@" INSERT INTO [dbo].[Locales_{testRegion}](
+                $@" INSERT INTO [dbo].[Locales_{region}](
 	                    [Region],
 	                    [BusinessUnitID],
 	                    [StoreName],
@@ -225,14 +430,14 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                             @BusinessUnitId, 
                             @StoreName, 
                             'TST')",
-                new { Region = testRegion, BusinessUnitId = businessUnitId, StoreName = TestStoreName });
+                new { Region = region, BusinessUnitId = businessUnitId, StoreName = TestStoreName });
             }
         }
 
-        private dynamic InsertTestPrices(int itemId, int businessUnitId, DateTime startDate, DateTime? endDate, string priceType)
+        private dynamic InsertTestNonGpmPrices(string region, int itemId, int businessUnitId, DateTime startDate, DateTime? endDate, string priceType)
         {
             var priceId = sqlDbProvider.Connection.QueryFirst<int>(
-                $@" INSERT INTO [dbo].[Price_{testRegion}]
+                $@" INSERT INTO [dbo].[Price_{region}]
                             ([Region]
                             ,[ItemID]
                             ,[BusinessUnitID]
@@ -260,7 +465,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                         SELECT SCOPE_IDENTITY()",
                 new
                 {
-                    Region = testRegion,
+                    Region = region,
                     ItemId = itemId,
                     BusinessUnitId = businessUnitId,
                     StartDate = startDate,
@@ -270,7 +475,55 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
 
             return sqlDbProvider.Connection.QueryFirst(
                 $@" SELECT * 
-                    FROM dbo.Price_{testRegion} 
+                    FROM dbo.Price_{region} 
+                    WHERE PriceID = @PriceId",
+                new { PriceId = priceId });
+        }
+
+        private dynamic InsertTestGpmPrices(string region, int itemId, int businessUnitId, DateTime startDate, DateTime? endDate, string priceType)
+        {
+            var priceId = sqlDbProvider.Connection.QueryFirst<int>(
+                $@" INSERT INTO [gpm].[Price_{region}]
+                            ([Region]
+                            ,[GpmID]
+                            ,[ItemID]
+                            ,[BusinessUnitID]
+                            ,[StartDate]
+                            ,[EndDate]
+                            ,[Price]
+                            ,[PriceType]
+                            ,[PriceTypeAttribute]
+                            ,[SellableUOM]
+                            ,[CurrencyCode]
+                            ,[Multiple])
+                        VALUES
+                            (@Region
+                            ,NEWID()
+                            ,@ItemId
+                            ,@BusinessUnitId
+                            ,@StartDate
+                            ,@EndDate
+                            ,1.99
+                            ,@PriceType
+                            ,@PriceType
+                            ,'EA'
+                            ,'USD'
+                            ,1)
+
+                        SELECT SCOPE_IDENTITY()",
+                new
+                {
+                    Region = region,
+                    ItemId = itemId,
+                    BusinessUnitId = businessUnitId,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    PriceType = priceType
+                });
+
+            return sqlDbProvider.Connection.QueryFirst(
+                $@" SELECT * 
+                    FROM gpm.Price_{region} 
                     WHERE PriceID = @PriceId",
                 new { PriceId = priceId });
         }
