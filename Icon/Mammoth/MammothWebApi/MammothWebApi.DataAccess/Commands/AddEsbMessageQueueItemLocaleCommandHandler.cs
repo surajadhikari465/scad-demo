@@ -81,7 +81,7 @@ namespace MammothWebApi.DataAccess.Commands
 	                                join dbo.ItemTypes it on i.ItemTypeID = it.ItemTypeID
 	                                join dbo.Locales_{0} l on s.BusinessUnitID = l.BusinessUnitID
 
-	                                join stage.ItemLocaleSupplier ils  on ils.BusinessUnitID = l.BusinessUnitID
+	                                left join stage.ItemLocaleSupplier ils  on ils.BusinessUnitID = l.BusinessUnitID
                                                                           AND ils.ScanCode = i.ScanCode
                                                                           AND ils.TransactionId = @TransactionId
 

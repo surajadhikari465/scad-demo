@@ -73,7 +73,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleSupplierCommand_NewItemLocaleDataInStaging_AddsRowsInRegionalItemLocaleTable()
+        public void AddOrUpdateItemLocaleSupplierCommand_NewItemLocaleDataInStaging_AddsRowsInRegionalItemLocaleSupplierTable()
         {
             // Given
             List<Item> existingItems = this.db.Connection
@@ -84,10 +84,10 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             DateTime now = DateTime.Now;
             Guid transactionId = Guid.NewGuid();
-            var expectedItems = new List<StagingItemLocaleSupplierModel>();
+            var expectedItemLocaleSuppliers = new List<StagingItemLocaleSupplierModel>();
             for (int i = 0; i < existingItems.Count; i++)
             {
-                expectedItems.Add(new TestStagingItemLocaleSupplierModelBuilder()
+                expectedItemLocaleSuppliers.Add(new TestStagingItemLocaleSupplierModelBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
                     .WithScanCode(existingItems[i].ScanCode)
@@ -96,27 +96,27 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     .Build());
             }
 
-            AddItemsToStaging(expectedItems);
+            AddItemsToStaging(expectedItemLocaleSuppliers);
 
             // When
             AddOrUpdateItemLocaleSupplierCommand command = new AddOrUpdateItemLocaleSupplierCommand { Region = region, Timestamp = now, TransactionId = transactionId };
             this.commandHandler.Execute(command);
 
             // Then
-            var actual = this.db.Connection
+            var actualItemLocaleSuppliers = this.db.Connection
                 .Query<ItemLocale_Supplier>("SELECT * FROM ItemLocale_Supplier_SW WHERE ItemID IN @ItemIDs",
                     new { ItemIDs = existingItems.Select(i => i.ItemID) },
                     transaction: this.db.Transaction)
                 .ToList();
 
-            for (int i = 0; i < expectedItems.Count; i++)
+            for (int i = 0; i < expectedItemLocaleSuppliers.Count; i++)
             {
-                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItemLocaleSuppliers[i], actualItemLocaleSuppliers[i]);
             }
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleSupplierCommand_ExistingItemLocaleDataInStaging_UpdatesRowsInRespectiveRegionalItemLocaleTable()
+        public void AddOrUpdateItemLocaleSupplierCommand_ExistingItemLocaleDataInStaging_UpdatesRowsInRegionalItemLocaleSupplierTable()
         {
             // Given
             DateTime addedDate = DateTime.Now;
@@ -127,10 +127,10 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     transaction: this.db.Transaction)
                 .ToList();
 
-            var itemLocales = new List<ItemLocale_Supplier>();
+            var existingItemLocaleSuppliers = new List<ItemLocale_Supplier>();
             for (int i = 0; i < existingItems.Count; i++)
             {
-                itemLocales.Add(new TestItemLocale_SupplierBuilder()
+                existingItemLocaleSuppliers.Add(new TestItemLocale_SupplierBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
                     .WithItemId(existingItems[i].ItemID)
@@ -138,48 +138,48 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     .Build());
             }
 
-            AddItemLocalesToDatabase(itemLocales, this.region);
+            AddItemLocalesToDatabase(existingItemLocaleSuppliers, this.region);
 
             DateTime now = DateTime.Now;
             Guid transactionId = Guid.NewGuid();
-            var expectedItems = new List<StagingItemLocaleSupplierModel>();
+            var expectedItemLocaleSuppliers = new List<StagingItemLocaleSupplierModel>();
             for (int i = 0; i < existingItems.Count; i++)
             {
-                expectedItems.Add(new TestStagingItemLocaleSupplierModelBuilder()
+                expectedItemLocaleSuppliers.Add(new TestStagingItemLocaleSupplierModelBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
                     .WithScanCode(existingItems[i].ScanCode)
                     .WithTimestamp(now)
                     .WithTransactionId(transactionId)
-                    .WithIrmaVendorKey(i + itemLocales[i].IrmaVendorKey)
-                    .WithSupplierCaseSize(i + itemLocales[i].SupplierCaseSize)
-                    .WithSupplierItemId(i + itemLocales[i].SupplierItemID)
-                    .WithSupplierName(i + itemLocales[i].SupplierName)
+                    .WithIrmaVendorKey(i + existingItemLocaleSuppliers[i].IrmaVendorKey)
+                    .WithSupplierCaseSize(i + existingItemLocaleSuppliers[i].SupplierCaseSize)
+                    .WithSupplierItemId(i + existingItemLocaleSuppliers[i].SupplierItemID)
+                    .WithSupplierName(i + existingItemLocaleSuppliers[i].SupplierName)
                     .Build());
             }
 
-            AddItemsToStaging(expectedItems);
+            AddItemsToStaging(expectedItemLocaleSuppliers);
 
             // When
             AddOrUpdateItemLocaleSupplierCommand command = new AddOrUpdateItemLocaleSupplierCommand { Region = this.region, Timestamp = now, TransactionId = transactionId };
             this.commandHandler.Execute(command);
 
             // Then
-            var actual = this.db.Connection
+            var actualItemLocaleSuppliers = this.db.Connection
                 .Query<ItemLocale_Supplier>(String.Format("SELECT * FROM ItemLocale_Supplier_{0} WHERE ItemID IN @ItemIDs", this.region),
                     new { ItemIDs = existingItems.Select(i => i.ItemID) },
                     transaction: this.db.Transaction)
                 .ToList();
 
-            for (int i = 0; i < expectedItems.Count; i++)
+            for (int i = 0; i < expectedItemLocaleSuppliers.Count; i++)
             {
-                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
-                Assert.AreEqual(addedDate.ToShortTimeString(), actual[i].AddedDateUtc.ToShortTimeString(), "The AddedDate does not equal the expected added date.");
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItemLocaleSuppliers[i], actualItemLocaleSuppliers[i]);
+                Assert.AreEqual(addedDate.ToShortTimeString(), actualItemLocaleSuppliers[i].AddedDateUtc.ToShortTimeString(), "The AddedDate does not equal the expected added date.");
             }
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleSupplierCommand_NewItemLocaleDataInStagingTimestampNotMatching_DoesNotUpdatesRowsInRegionalItemLocaleTable()
+        public void AddOrUpdateItemLocaleSupplierCommand_NewItemLocaleDataInStagingTimestampNotMatching_DoesAddRowsInRegionalItemLocaleSupplierTable()
         {
             // Given
             List<Item> existingItems = this.db.Connection
@@ -189,10 +189,10 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 .ToList();
 
             DateTime now = DateTime.Now;
-            var expectedItems = new List<StagingItemLocaleSupplierModel>();
+            var expectedItemLocaleSuppliers = new List<StagingItemLocaleSupplierModel>();
             for (int i = 0; i < existingItems.Count; i++)
             {
-                expectedItems.Add(new TestStagingItemLocaleSupplierModelBuilder()
+                expectedItemLocaleSuppliers.Add(new TestStagingItemLocaleSupplierModelBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
                     .WithScanCode(existingItems[i].ScanCode)
@@ -200,24 +200,24 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     .Build());
             }
 
-            AddItemsToStaging(expectedItems);
+            AddItemsToStaging(expectedItemLocaleSuppliers);
 
             // When
             AddOrUpdateItemLocaleSupplierCommand command = new AddOrUpdateItemLocaleSupplierCommand { Region = region, Timestamp = DateTime.UtcNow };
             this.commandHandler.Execute(command);
 
             // Then
-            var actual = this.db.Connection
+            var actualItemLocaleSuppliers = this.db.Connection
                 .Query<ItemLocale_Supplier>("SELECT * FROM ItemLocale_Supplier_SW WHERE ItemID IN @ItemIDs",
                     new { ItemIDs = existingItems.Select(i => i.ItemID) },
                     transaction: this.db.Transaction)
                 .ToList();
 
-            Assert.IsTrue(actual.Count == 0, "The ItemLocale rows were added when they should not have been.");
+            Assert.IsTrue(actualItemLocaleSuppliers.Count == 0, "The ItemLocale_Supplier rows were added when they should not have been.");
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleSupplierCommand_ExistingItemLocaleDataInStagingTimestampNotMatching_DoesNotUpdateRowsInRespectiveRegionalItemLocaleTable()
+        public void AddOrUpdateItemLocaleSupplierCommand_ExistingItemLocaleDataInStagingTimestampNotMatching_DoesNotUpdateRowsInRegionalItemLocaleSupplierTable()
         {
             // Given
             var existingTimestamp = DateTime.Now;
@@ -228,10 +228,10 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     transaction: this.db.Transaction)
                 .ToList();
 
-            var expected = new List<ItemLocale_Supplier>();
+            var expectedItemLocaleSuppliers = new List<ItemLocale_Supplier>();
             for (int i = 0; i < existingItems.Count; i++)
             {
-                expected.Add(new TestItemLocale_SupplierBuilder()
+                expectedItemLocaleSuppliers.Add(new TestItemLocale_SupplierBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
                     .WithItemId(existingItems[1].ItemID)
@@ -239,10 +239,10 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     .Build());
             }
 
-            AddItemLocalesToDatabase(expected, this.region);
+            AddItemLocalesToDatabase(expectedItemLocaleSuppliers, this.region);
 
             DateTime now = DateTime.Now;
-            var stagedItems = new List<StagingItemLocaleSupplierModel>();
+            var stagedItemLocaleSuppliers = new List<StagingItemLocaleSupplierModel>();
             for (int i = 0; i < existingItems.Count; i++)
             {
                 var stagedModel = new TestStagingItemLocaleSupplierModelBuilder()
@@ -252,31 +252,31 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                     .WithSupplierName("Updated")
                     .WithTimestamp(now)
                     .Build();
-                stagedItems.Add(stagedModel);
+                stagedItemLocaleSuppliers.Add(stagedModel);
             }
 
-            AddItemsToStaging(stagedItems);
+            AddItemsToStaging(stagedItemLocaleSuppliers);
 
             // When
             AddOrUpdateItemLocaleSupplierCommand command = new AddOrUpdateItemLocaleSupplierCommand { Region = this.region, Timestamp = nonmatchingTimestamp };
             this.commandHandler.Execute(command);
 
             // Then
-            var actual = this.db.Connection
+            var actualItemLocaleSuppliers = this.db.Connection
                 .Query<ItemLocale_Supplier>(String.Format("SELECT * FROM ItemLocale_Supplier_{0} WHERE ItemID IN @ItemIDs", this.region),
                     new { ItemIDs = existingItems.Select(i => i.ItemID) },
                     transaction: this.db.Transaction)
                 .ToList();
 
-            for (int i = 0; i < stagedItems.Count; i++)
+            for (int i = 0; i < stagedItemLocaleSuppliers.Count; i++)
             {
-                AssertPropertiesMatch(this.bizUnitID, expected[i], actual[i]);
-                Assert.IsTrue(actual[i].AddedDateUtc < DateTime.Now, "The AddedDate was not greater than the timestamp.");
+                AssertPropertiesMatch(this.bizUnitID, expectedItemLocaleSuppliers[i], actualItemLocaleSuppliers[i]);
+                Assert.IsTrue(actualItemLocaleSuppliers[i].AddedDateUtc < DateTime.Now, "The AddedDate was not greater than the timestamp.");
             }
         }
 
         [TestMethod]
-        public void AddOrUpdateItemLocaleSupplierCommand_MixedDataInStaging_ModifiesExpectedRowsInRegionalItemLocaleTable()
+        public void AddOrUpdateItemLocaleSupplierCommand_MixedDataInStaging_ModifiesExpectedRowsInRegionalItemLocaleSupplierTable()
         {
             // Given
             DateTime now = DateTime.Now;
@@ -332,7 +332,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             this.commandHandler.Execute(command);
 
             // Then
-            var actualItemLocales = this.db.Connection
+            var actualItemLocaleSuppliers = this.db.Connection
                 .Query<ItemLocale_Supplier>("SELECT * FROM ItemLocale_Supplier_SW WHERE ItemID IN @ItemIDs",
                     new { ItemIDs = existingItems.Select(i => i.ItemID) },
                     transaction: this.db.Transaction)
@@ -341,21 +341,47 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < stagedItemLocales.Count; i++)
             {
-                AssertPropertiesMatchStaged(this.bizUnitID, stagedItemLocales[i], actualItemLocales[i]);
+                AssertPropertiesMatchStaged(this.bizUnitID, stagedItemLocales[i], actualItemLocaleSuppliers[i]);
                 if (i % 2 == 1)
                 {
                     //should have been updated
-                    Assert.AreEqual(new SqlDateTime(lastWeek).Value, actualItemLocales[i].AddedDateUtc, "The AddedDate should not have changed.");
-                    Assert.IsNotNull(actualItemLocales[i].ModifiedDateUtc, "The ModifiedDate should not have been NULL.");
-                    Assert.AreEqual(new SqlDateTime(now).Value, actualItemLocales[i].ModifiedDateUtc, "The ModifiedDate should match the Timestamp.");
+                    Assert.AreEqual(new SqlDateTime(lastWeek).Value, actualItemLocaleSuppliers[i].AddedDateUtc, "The AddedDate should not have changed.");
+                    Assert.IsNotNull(actualItemLocaleSuppliers[i].ModifiedDateUtc, "The ModifiedDate should not have been NULL.");
+                    Assert.AreEqual(new SqlDateTime(now).Value, actualItemLocaleSuppliers[i].ModifiedDateUtc, "The ModifiedDate should match the Timestamp.");
                 }
                 else
                 {
                     //should have been inserted
-                    Assert.AreEqual(new SqlDateTime(now).Value, actualItemLocales[i].AddedDateUtc, "The AddedDate should match the Timestamp.");
-                    Assert.IsNull(actualItemLocales[i].ModifiedDateUtc, "The ModifiedDate should have been NULL.");
+                    Assert.AreEqual(new SqlDateTime(now).Value, actualItemLocaleSuppliers[i].AddedDateUtc, "The AddedDate should match the Timestamp.");
+                    Assert.IsNull(actualItemLocaleSuppliers[i].ModifiedDateUtc, "The ModifiedDate should have been NULL.");
                 }
             }
+        }
+
+        [TestMethod]
+        public void AddOrUpdateItemLocaleSupplierCommand_SupplierNonExistent_DoesNotAddRowsInRegionalItemLocaleSupplierTable()
+        {
+            // Given
+            List<Item> existingItems = this.db.Connection
+                .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = this.items.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            Guid transactionId = Guid.NewGuid();
+
+            // When
+            AddOrUpdateItemLocaleSupplierCommand command = new AddOrUpdateItemLocaleSupplierCommand { Region = region, Timestamp = now, TransactionId = transactionId };
+            this.commandHandler.Execute(command);
+
+            // Then
+            var actual = this.db.Connection
+                .Query<ItemLocale_Supplier>("SELECT * FROM ItemLocale_Supplier_SW WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = existingItems.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+            Assert.AreEqual(0, actual.Count, "No ItemLocaleSupplier records should have been written");
         }
 
         private void AddToItemsTable(List<Item> items)

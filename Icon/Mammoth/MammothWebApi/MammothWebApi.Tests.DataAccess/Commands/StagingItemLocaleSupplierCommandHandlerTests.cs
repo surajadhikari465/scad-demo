@@ -81,6 +81,22 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             }
         }
 
+        [TestMethod]
+        public void StagingItemLocaleSupplierCommand_ValidItemsWithNoSupplier_ItemLocaleRowsNotAddedToStagingTable()
+        {
+            // Given
+            var command = new StagingItemLocaleSupplierCommand();
+            command.ItemLocaleSuppliers = new List<StagingItemLocaleSupplierModel>();
+
+            // When
+            this.handler.Execute(command);
+
+            // Then
+            string sql = @"SELECT * FROM stage.ItemLocaleSupplier il WHERE il.TransactionId = @TransactionId ORDER BY il.ScanCode";
+            var actual = this.db.Connection.Query<StagingItemLocaleSupplierModel>(sql, new { TransactionId = this.transactionId }, transaction: this.db.Transaction).ToList();
+            Assert.AreEqual(0, actual.Count, "No ItemLocaleSupplier records should have been written");
+        }
+
         private List<StagingItemLocaleSupplierModel> BuildNewStagingItemLocaleSuppliersModelList(int numberOfItems, DateTime date)
         {
             var items = new List<StagingItemLocaleSupplierModel>();

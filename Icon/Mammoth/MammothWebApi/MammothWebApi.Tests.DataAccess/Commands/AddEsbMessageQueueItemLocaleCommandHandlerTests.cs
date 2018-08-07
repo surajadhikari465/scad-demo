@@ -205,7 +205,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             db.Connection.Execute(sql, testStagingItemLocaleSupplierModel, transaction: db.Transaction);
         }
 
-        private void StageCoreItemLocaleData()
+        private void StageCoreItemLocaleData(Dictionary<string,object> customItemLocaleProperties = null)
         {
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
@@ -216,6 +216,17 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
                     .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
             };
+
+            if (customItemLocaleProperties != null)
+            {
+                foreach (var customPropertyNameValuePair in customItemLocaleProperties)
+                {
+                    foreach (var testDataItem in testStagingItemLocaleData)
+                    {
+                        AssignCustomPropertyValue(customPropertyNameValuePair, testDataItem);
+                    }
+                }
+            }
 
             string sql = @"INSERT INTO stage.ItemLocale
                             (
@@ -275,6 +286,90 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
         }
 
+        private void AssignCustomPropertyValue(KeyValuePair<string,object> customPropertyNameValuePair, StagingItemLocaleModel testDataItem)
+        {
+            switch (customPropertyNameValuePair.Key)
+            {
+                case nameof(StagingItemLocaleModel.Region):
+                    testDataItem.Region = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.BusinessUnitID):
+                    testDataItem.BusinessUnitID = (int)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.ScanCode):
+                    testDataItem.ScanCode = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Discount_Case):
+                    testDataItem.Discount_Case = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Discount_TM):
+                    testDataItem.Discount_TM = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Restriction_Age):
+                    testDataItem.Restriction_Age = (int?)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Restriction_Hours):
+                    testDataItem.Restriction_Hours = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Authorized):
+                    testDataItem.Authorized = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Discontinued):
+                    testDataItem.Discontinued = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.LabelTypeDesc):
+                    testDataItem.LabelTypeDesc = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.LocalItem):
+                    testDataItem.LocalItem = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Product_Code):
+                    testDataItem.Product_Code = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.RetailUnit):
+                    testDataItem.RetailUnit = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Sign_Desc):
+                    testDataItem.Sign_Desc = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Locality):
+                    testDataItem.Locality = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Sign_RomanceText_Long):
+                    testDataItem.Sign_RomanceText_Long = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Sign_RomanceText_Short):
+                    testDataItem.Sign_RomanceText_Short = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Msrp):
+                    testDataItem.Msrp = (decimal)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.OrderedByInfor):
+                    testDataItem.OrderedByInfor = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.AltRetailSize):
+                    testDataItem.AltRetailSize = (decimal?)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.AltRetailUOM):
+                    testDataItem.AltRetailUOM = (string)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.DefaultScanCode):
+                    testDataItem.DefaultScanCode = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.ScaleItem):
+                    testDataItem.ScaleItem = (bool)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.Timestamp):
+                    testDataItem.Timestamp = (DateTime)customPropertyNameValuePair.Value;
+                    break;
+                case nameof(StagingItemLocaleModel.TransactionId):
+                    testDataItem.TransactionId = (Guid)customPropertyNameValuePair.Value;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void StageExtendedItemLocaleData()
         {
             testStagingExtendedItemLocaleData = new List<List<StagingItemLocaleExtendedModel>>
@@ -312,70 +407,6 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
                 db.Connection.Execute(sql, extendedItemSet, transaction: db.Transaction);
             }
-        }
-
-        private void StageDataWithSignRomanceLong(string romanceLong)
-        {
-            testStagingItemLocaleData = new List<StagingItemLocaleModel>
-            {
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0])
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1])
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithTransactionId(this.transactionId).Build(),
-                new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2])
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithTransactionId(this.transactionId).WithRomanceLong(romanceLong).Build()
-            };
-
-            string sql = @"INSERT INTO stage.ItemLocale
-                            (
-	                            Region,
-	                            BusinessUnitID,
-	                            ScanCode,
-	                            Discount_Case,
-	                            Discount_TM,
-	                            Restriction_Age,
-	                            Restriction_Hours,
-	                            Authorized,
-	                            Discontinued,
-	                            LabelTypeDesc,
-	                            LocalItem,
-                                ScaleItem,
-	                            Product_Code,
-	                            RetailUnit,
-	                            Sign_Desc,
-	                            Locality,
-	                            Sign_RomanceText_Long,
-	                            Sign_RomanceText_Short,
-                                Msrp,
-	                            Timestamp,
-                                TransactionId
-                            )
-                            VALUES
-                            (
-	                            @Region,
-	                            @BusinessUnitID,
-	                            @ScanCode,
-	                            @Discount_Case,
-	                            @Discount_TM,
-	                            @Restriction_Age,
-	                            @Restriction_Hours,
-	                            @Authorized,
-	                            @Discontinued,
-	                            @LabelTypeDesc,
-	                            @LocalItem,
-                                @ScaleItem,
-	                            @Product_Code,
-	                            @RetailUnit,
-	                            @Sign_Desc,
-	                            @Locality,
-	                            @Sign_RomanceText_Long,
-	                            @Sign_RomanceText_Short,
-                                @Msrp,
-	                            @Timestamp,
-                                @TransactionId
-                            )";
-
-            db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
         }
 
         [TestMethod]
@@ -437,7 +468,7 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             Assert.AreEqual(0, queuedMessages.Count);
         }
-
+        
         [TestMethod]
         public void AddToMessageQueueItemLocale_CoreItemLocaleDataIsStaged_CoreItemLocaleDataShouldBeQueued()
         {
@@ -463,53 +494,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < queuedMessages.Count; i++)
             {
-                Assert.AreEqual(MessageTypes.ItemLocale, queuedMessages[i].MessageTypeId);
-                Assert.AreEqual(MessageStatusTypes.Ready, queuedMessages[i].MessageStatusId);
-                Assert.IsNull(queuedMessages[i].MessageHistoryId);
-                Assert.AreEqual(MessageActions.AddOrUpdate, queuedMessages[i].MessageActionId);
-                Assert.AreEqual(now.Date, queuedMessages[i].InsertDate.Date);
-                Assert.AreEqual(testRegion, queuedMessages[i].RegionCode);
-                Assert.AreEqual(testBusinessUnitId, queuedMessages[i].BusinessUnitId);
-                Assert.AreEqual(testItems[i].ItemID, queuedMessages[i].ItemId);
-                Assert.AreEqual(ItemTypes.Codes.RetailSale, queuedMessages[i].ItemTypeCode);
-                Assert.AreEqual(ItemTypes.Descriptions.RetailSale, queuedMessages[i].ItemTypeDesc);
-                Assert.AreEqual(testLocale.StoreName, queuedMessages[i].LocaleName);
-                Assert.AreEqual(testScanCodes[i], queuedMessages[i].ScanCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].AltRetailUOM, queuedMessages[i].AltRetailUOM);
-                Assert.AreEqual(testStagingItemLocaleData[i].AltRetailSize, queuedMessages[i].AltRetailSize);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_Case, queuedMessages[i].CaseDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_TM, queuedMessages[i].TmDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Age, queuedMessages[i].AgeRestriction);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Hours, queuedMessages[i].RestrictedHours);
-                Assert.AreEqual(testStagingItemLocaleData[i].Authorized, queuedMessages[i].Authorized);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].LabelTypeDesc, queuedMessages[i].LabelTypeDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].LocalItem, queuedMessages[i].LocalItem);
-                Assert.AreEqual(testStagingItemLocaleData[i].Product_Code, queuedMessages[i].ProductCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].RetailUnit, queuedMessages[i].RetailUnit);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_Desc, queuedMessages[i].SignDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].Locality, queuedMessages[i].Locality);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
-                Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
-                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierCaseSize, queuedMessages[i].SupplierCaseSize);
-                Assert.IsNull(queuedMessages[i].ColorAdded);
-                Assert.IsNull(queuedMessages[i].CountryOfProcessing);
-                Assert.IsNull(queuedMessages[i].Origin);
-                Assert.IsNull(queuedMessages[i].ElectronicShelfTag);
-                Assert.IsNull(queuedMessages[i].Exclusive);
-                Assert.IsNull(queuedMessages[i].NumberOfDigitsSentToScale);
-                Assert.IsNull(queuedMessages[i].ChicagoBaby);
-                Assert.IsNull(queuedMessages[i].TagUom);
-                Assert.IsNull(queuedMessages[i].LinkedItem);
-                Assert.IsNull(queuedMessages[i].ScaleExtraText);
-                Assert.IsNull(queuedMessages[i].InProcessBy);
-                Assert.IsNull(queuedMessages[i].ProcessedDate);
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i]);
+                AssertQueuedMessageMatchesStagingItemSupplierModel(queuedMessages[i], testStagingItemLocaleSupplierModel[i]);
             }
         }
 
@@ -539,60 +526,24 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < queuedMessages.Count; i++)
             {
-                Assert.AreEqual(MessageTypes.ItemLocale, queuedMessages[i].MessageTypeId);
-                Assert.AreEqual(MessageStatusTypes.Ready, queuedMessages[i].MessageStatusId);
-                Assert.IsNull(queuedMessages[i].MessageHistoryId);
-                Assert.AreEqual(MessageActions.AddOrUpdate, queuedMessages[i].MessageActionId);
-                Assert.AreEqual(now.Date, queuedMessages[i].InsertDate.Date);
-                Assert.AreEqual(testRegion, queuedMessages[i].RegionCode);
-                Assert.AreEqual(testBusinessUnitId, queuedMessages[i].BusinessUnitId);
-                Assert.AreEqual(testItems[i].ItemID, queuedMessages[i].ItemId);
-                Assert.AreEqual(ItemTypes.Codes.RetailSale, queuedMessages[i].ItemTypeCode);
-                Assert.AreEqual(ItemTypes.Descriptions.RetailSale, queuedMessages[i].ItemTypeDesc);
-                Assert.AreEqual(testLocale.StoreName, queuedMessages[i].LocaleName);
-                Assert.AreEqual(testScanCodes[i], queuedMessages[i].ScanCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_Case, queuedMessages[i].CaseDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_TM, queuedMessages[i].TmDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Age, queuedMessages[i].AgeRestriction);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Hours, queuedMessages[i].RestrictedHours);
-                Assert.AreEqual(testStagingItemLocaleData[i].Authorized, queuedMessages[i].Authorized);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].LabelTypeDesc, queuedMessages[i].LabelTypeDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].LocalItem, queuedMessages[i].LocalItem);
-                Assert.AreEqual(testStagingItemLocaleData[i].Product_Code, queuedMessages[i].ProductCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].RetailUnit, queuedMessages[i].RetailUnit);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_Desc, queuedMessages[i].SignDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].Locality, queuedMessages[i].Locality);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
-                Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
-                Assert.AreEqual(testStagingItemLocaleData[i].OrderedByInfor, queuedMessages[i].OrderedByInfor);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierName, queuedMessages[i].SupplierName);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierItemId, queuedMessages[i].SupplierItemID);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].IrmaVendorKey, queuedMessages[i].IrmaVendorKey);
-                Assert.AreEqual(testStagingItemLocaleSupplierModel[i].SupplierCaseSize, queuedMessages[i].SupplierCaseSize);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ColorAdded).AttributeValue.Equals("0"), queuedMessages[i].ColorAdded);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.CountryOfProcessing).AttributeValue, queuedMessages[i].CountryOfProcessing);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Origin).AttributeValue, queuedMessages[i].Origin);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ElectronicShelfTag).AttributeValue.Equals("0"), queuedMessages[i].ElectronicShelfTag);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Exclusive).AttributeValue, queuedMessages[i].Exclusive.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.NumberOfDigitsSentToScale).AttributeValue, queuedMessages[i].NumberOfDigitsSentToScale.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ChicagoBaby).AttributeValue, queuedMessages[i].ChicagoBaby);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.TagUom).AttributeValue, queuedMessages[i].TagUom);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.LinkedScanCode).AttributeValue, queuedMessages[i].LinkedItem);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ScaleExtraText).AttributeValue, queuedMessages[i].ScaleExtraText);
-                Assert.IsNull(queuedMessages[i].InProcessBy);
-                Assert.IsNull(queuedMessages[i].ProcessedDate);
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i]);
+                AssertQueuedMessageMatchesStagingItemLocaleExtendedModel(queuedMessages[i], testStagingExtendedItemLocaleData[i]);
+                AssertQueuedMessageMatchesStagingItemSupplierModel(queuedMessages[i], testStagingItemLocaleSupplierModel[i]);
             }
         }
 
         [TestMethod]
         [ExpectedException(typeof(SqlException))]
-        public void AddToMessageQueueItemLocale_SignRomanceTextLong305Lenght_ExtendedItemLocaleDataShouldNotBeQueued()
+        public void AddToMessageQueueItemLocale_SignRomanceTextLong305Length_ExtendedItemLocaleDataShouldNotBeQueued()
         {
             // Given.
-            StageDataWithSignRomanceLong("ERROR123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+            string longSignRomanceText = "ERROR123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var customItemLocaleData = new Dictionary<string, object>()
+            {
+                {nameof(StagingItemLocaleModel.Sign_RomanceText_Long),longSignRomanceText }
+            };
+            StageCoreItemLocaleData(customItemLocaleData);
             StageExtendedItemLocaleData();
 
             var command = new AddEsbMessageQueueItemLocaleCommand
@@ -613,46 +564,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < queuedMessages.Count; i++)
             {
-                Assert.AreEqual(MessageTypes.ItemLocale, queuedMessages[i].MessageTypeId);
-                Assert.AreEqual(MessageStatusTypes.Ready, queuedMessages[i].MessageStatusId);
-                Assert.IsNull(queuedMessages[i].MessageHistoryId);
-                Assert.AreEqual(MessageActions.AddOrUpdate, queuedMessages[i].MessageActionId);
-                Assert.AreEqual(now.Date, queuedMessages[i].InsertDate.Date);
-                Assert.AreEqual(testRegion, queuedMessages[i].RegionCode);
-                Assert.AreEqual(testBusinessUnitId, queuedMessages[i].BusinessUnitId);
-                Assert.AreEqual(testItems[i].ItemID, queuedMessages[i].ItemId);
-                Assert.AreEqual(ItemTypes.Codes.RetailSale, queuedMessages[i].ItemTypeCode);
-                Assert.AreEqual(ItemTypes.Descriptions.RetailSale, queuedMessages[i].ItemTypeDesc);
-                Assert.AreEqual(testLocale.StoreName, queuedMessages[i].LocaleName);
-                Assert.AreEqual(testScanCodes[i], queuedMessages[i].ScanCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_Case, queuedMessages[i].CaseDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_TM, queuedMessages[i].TmDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Age, queuedMessages[i].AgeRestriction);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Hours, queuedMessages[i].RestrictedHours);
-                Assert.AreEqual(testStagingItemLocaleData[i].Authorized, queuedMessages[i].Authorized);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].LabelTypeDesc, queuedMessages[i].LabelTypeDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].LocalItem, queuedMessages[i].LocalItem);
-                Assert.AreEqual(testStagingItemLocaleData[i].Product_Code, queuedMessages[i].ProductCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].RetailUnit, queuedMessages[i].RetailUnit);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_Desc, queuedMessages[i].SignDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].Locality, queuedMessages[i].Locality);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
-                Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ColorAdded).AttributeValue.Equals("0"), queuedMessages[i].ColorAdded);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.CountryOfProcessing).AttributeValue, queuedMessages[i].CountryOfProcessing);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Origin).AttributeValue, queuedMessages[i].Origin);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ElectronicShelfTag).AttributeValue.Equals("0"), queuedMessages[i].ElectronicShelfTag);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Exclusive).AttributeValue, queuedMessages[i].Exclusive.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.NumberOfDigitsSentToScale).AttributeValue, queuedMessages[i].NumberOfDigitsSentToScale.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ChicagoBaby).AttributeValue, queuedMessages[i].ChicagoBaby);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.TagUom).AttributeValue, queuedMessages[i].TagUom);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.LinkedScanCode).AttributeValue, queuedMessages[i].LinkedItem);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ScaleExtraText).AttributeValue, queuedMessages[i].ScaleExtraText);
-                Assert.IsNull(queuedMessages[i].InProcessBy);
-                Assert.IsNull(queuedMessages[i].ProcessedDate);
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i]);
+                AssertQueuedMessageMatchesStagingItemLocaleExtendedModel(queuedMessages[i], testStagingExtendedItemLocaleData[i]);
             }
         }
 
@@ -660,7 +574,12 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         public void AddToMessageQueueItemLocale_SignRomanceTextLong300Length_ExtendedItemLocaleDataShouldBeQueued()
         {
             // Given.
-            StageDataWithSignRomanceLong("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+            string longSignRomanceText = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var customItemLocaleData = new Dictionary<string, object>()
+            {
+                {nameof(StagingItemLocaleModel.Sign_RomanceText_Long),longSignRomanceText }
+            };
+            StageCoreItemLocaleData(customItemLocaleData);
             StageExtendedItemLocaleData();
             StageItemLocaleSupplierData();
 
@@ -682,47 +601,115 @@ namespace MammothWebApi.Tests.DataAccess.Commands
 
             for (int i = 0; i < queuedMessages.Count; i++)
             {
-                Assert.AreEqual(MessageTypes.ItemLocale, queuedMessages[i].MessageTypeId);
-                Assert.AreEqual(MessageStatusTypes.Ready, queuedMessages[i].MessageStatusId);
-                Assert.IsNull(queuedMessages[i].MessageHistoryId);
-                Assert.AreEqual(MessageActions.AddOrUpdate, queuedMessages[i].MessageActionId);
-                Assert.AreEqual(now.Date, queuedMessages[i].InsertDate.Date);
-                Assert.AreEqual(testRegion, queuedMessages[i].RegionCode);
-                Assert.AreEqual(testBusinessUnitId, queuedMessages[i].BusinessUnitId);
-                Assert.AreEqual(testItems[i].ItemID, queuedMessages[i].ItemId);
-                Assert.AreEqual(ItemTypes.Codes.RetailSale, queuedMessages[i].ItemTypeCode);
-                Assert.AreEqual(ItemTypes.Descriptions.RetailSale, queuedMessages[i].ItemTypeDesc);
-                Assert.AreEqual(testLocale.StoreName, queuedMessages[i].LocaleName);
-                Assert.AreEqual(testScanCodes[i], queuedMessages[i].ScanCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_Case, queuedMessages[i].CaseDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discount_TM, queuedMessages[i].TmDiscount);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Age, queuedMessages[i].AgeRestriction);
-                Assert.AreEqual(testStagingItemLocaleData[i].Restriction_Hours, queuedMessages[i].RestrictedHours);
-                Assert.AreEqual(testStagingItemLocaleData[i].Authorized, queuedMessages[i].Authorized);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].LabelTypeDesc, queuedMessages[i].LabelTypeDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].LocalItem, queuedMessages[i].LocalItem);
-                Assert.AreEqual(testStagingItemLocaleData[i].Product_Code, queuedMessages[i].ProductCode);
-                Assert.AreEqual(testStagingItemLocaleData[i].RetailUnit, queuedMessages[i].RetailUnit);
-                Assert.AreEqual(testStagingItemLocaleData[i].Discontinued, queuedMessages[i].Discontinued);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_Desc, queuedMessages[i].SignDescription);
-                Assert.AreEqual(testStagingItemLocaleData[i].Locality, queuedMessages[i].Locality);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Long, queuedMessages[i].SignRomanceLong);
-                Assert.AreEqual(testStagingItemLocaleData[i].Sign_RomanceText_Short, queuedMessages[i].SignRomanceShort);
-                Assert.AreEqual(testStagingItemLocaleData[i].Msrp, queuedMessages[i].Msrp);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ColorAdded).AttributeValue.Equals("0"), queuedMessages[i].ColorAdded);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.CountryOfProcessing).AttributeValue, queuedMessages[i].CountryOfProcessing);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Origin).AttributeValue, queuedMessages[i].Origin);
-                Assert.AreEqual(!testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ElectronicShelfTag).AttributeValue.Equals("0"), queuedMessages[i].ElectronicShelfTag);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.Exclusive).AttributeValue, queuedMessages[i].Exclusive.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.NumberOfDigitsSentToScale).AttributeValue, queuedMessages[i].NumberOfDigitsSentToScale.ToString());
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ChicagoBaby).AttributeValue, queuedMessages[i].ChicagoBaby);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.TagUom).AttributeValue, queuedMessages[i].TagUom);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.LinkedScanCode).AttributeValue, queuedMessages[i].LinkedItem);
-                Assert.AreEqual(testStagingExtendedItemLocaleData[i].Single(il => il.AttributeId == Attributes.ScaleExtraText).AttributeValue, queuedMessages[i].ScaleExtraText);
-                Assert.IsNull(queuedMessages[i].InProcessBy);
-                Assert.IsNull(queuedMessages[i].ProcessedDate);
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i]);
+                AssertQueuedMessageMatchesStagingItemLocaleExtendedModel(queuedMessages[i], testStagingExtendedItemLocaleData[i]);
             }
+        }
+
+        [TestMethod]
+        public void AddToMessageQueueItemLocale_NoSupplierDataStaged_MessagesShouldStillBeQueued()
+        {
+            // Given.
+            StageCoreItemLocaleData();
+            // do NOT stage any item locale supplier data
+            StageExtendedItemLocaleData();
+
+            var command = new AddEsbMessageQueueItemLocaleCommand
+            {
+                Region = testRegion,
+                Timestamp = now,
+                TransactionId = this.transactionId
+            };
+
+            // When.
+            commandHandler.Execute(command);
+
+            // Then.
+            dynamic queuedMessages = db.Connection.Query<dynamic>("select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
+                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction).ToList();
+            // even with no supplier data, the messages should still have been queued
+            Assert.AreEqual(testStagingItemLocaleData.Count, queuedMessages.Count);
+
+            for (int i = 0; i < queuedMessages.Count; i++)
+            {
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i]);
+                AssertQueuedMessageMatchesStagingItemLocaleExtendedModel(queuedMessages[i], testStagingExtendedItemLocaleData[i]);
+            }
+        }
+
+        private void AssertQueuedMessageMatchesStagingItemLocaleModel(dynamic queuedMessage,
+            StagingItemLocaleModel stagingItemLocaleModel,
+            DateTime expectedDate,
+            string expectedRegion,
+            int expectedBusinessUnit,
+            string expectedStoreName,
+            int expectedItemID,
+            string expectedScanCode,
+            int expectedMessageType = MessageTypes.ItemLocale,
+            int messageStatusType = MessageStatusTypes.Ready,
+            int expectedMessageAction = MessageActions.AddOrUpdate,
+            string expectedItemTypeCode = ItemTypes.Codes.RetailSale,
+            string expectedItemTypeDescription = ItemTypes.Descriptions.RetailSale,
+            int? expectedMessageHistoryId = null)
+        {
+            Assert.AreEqual(expectedDate, queuedMessage.InsertDate.Date);
+            Assert.AreEqual(expectedRegion, queuedMessage.RegionCode);
+            Assert.AreEqual(expectedBusinessUnit, queuedMessage.BusinessUnitId);
+            Assert.AreEqual(expectedStoreName, queuedMessage.LocaleName);
+            Assert.AreEqual(expectedItemID, queuedMessage.ItemId);
+            Assert.AreEqual(expectedScanCode, queuedMessage.ScanCode);
+            Assert.AreEqual(expectedMessageType, queuedMessage.MessageTypeId);
+            Assert.AreEqual(messageStatusType, queuedMessage.MessageStatusId);
+            Assert.AreEqual(expectedMessageAction, queuedMessage.MessageActionId);
+            Assert.AreEqual(expectedItemTypeCode, queuedMessage.ItemTypeCode);
+            Assert.AreEqual(expectedItemTypeDescription, queuedMessage.ItemTypeDesc);
+            Assert.AreEqual(expectedMessageHistoryId, queuedMessage.MessageHistoryId);
+
+            Assert.AreEqual(stagingItemLocaleModel.Discount_Case, queuedMessage.CaseDiscount);
+            Assert.AreEqual(stagingItemLocaleModel.Discount_TM, queuedMessage.TmDiscount);
+            Assert.AreEqual(stagingItemLocaleModel.Restriction_Age, queuedMessage.AgeRestriction);
+            Assert.AreEqual(stagingItemLocaleModel.Restriction_Hours, queuedMessage.RestrictedHours);
+            Assert.AreEqual(stagingItemLocaleModel.Authorized, queuedMessage.Authorized);
+            Assert.AreEqual(stagingItemLocaleModel.Discontinued, queuedMessage.Discontinued);
+            Assert.AreEqual(stagingItemLocaleModel.LabelTypeDesc, queuedMessage.LabelTypeDescription);
+            Assert.AreEqual(stagingItemLocaleModel.LocalItem, queuedMessage.LocalItem);
+            Assert.AreEqual(stagingItemLocaleModel.Product_Code, queuedMessage.ProductCode);
+            Assert.AreEqual(stagingItemLocaleModel.RetailUnit, queuedMessage.RetailUnit);
+            Assert.AreEqual(stagingItemLocaleModel.Sign_Desc, queuedMessage.SignDescription);
+            Assert.AreEqual(stagingItemLocaleModel.Locality, queuedMessage.Locality);
+            Assert.AreEqual(stagingItemLocaleModel.Sign_RomanceText_Long, queuedMessage.SignRomanceLong);
+            Assert.AreEqual(stagingItemLocaleModel.Sign_RomanceText_Short, queuedMessage.SignRomanceShort);
+            Assert.AreEqual(stagingItemLocaleModel.Msrp, queuedMessage.Msrp);
+            Assert.AreEqual(stagingItemLocaleModel.OrderedByInfor, queuedMessage.OrderedByInfor);
+
+            Assert.IsNull(queuedMessage.InProcessBy);
+            Assert.IsNull(queuedMessage.ProcessedDate);
+        }
+
+        private void AssertQueuedMessageMatchesStagingItemLocaleExtendedModel(dynamic queuedMessage,
+            IList<StagingItemLocaleExtendedModel> extendedStagingItemLocaleData)
+        {
+            Assert.AreEqual(!extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.ColorAdded).AttributeValue.Equals("0"), queuedMessage.ColorAdded);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.CountryOfProcessing).AttributeValue, queuedMessage.CountryOfProcessing);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.Origin).AttributeValue, queuedMessage.Origin);
+            Assert.AreEqual(!extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.ElectronicShelfTag).AttributeValue.Equals("0"), queuedMessage.ElectronicShelfTag);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.Exclusive).AttributeValue, queuedMessage.Exclusive.ToString());
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.NumberOfDigitsSentToScale).AttributeValue, queuedMessage.NumberOfDigitsSentToScale.ToString());
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.ChicagoBaby).AttributeValue, queuedMessage.ChicagoBaby);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.TagUom).AttributeValue, queuedMessage.TagUom);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.LinkedScanCode).AttributeValue, queuedMessage.LinkedItem);
+            Assert.AreEqual(extendedStagingItemLocaleData.Single(il => il.AttributeId == Attributes.ScaleExtraText).AttributeValue, queuedMessage.ScaleExtraText);
+        }
+
+        private void AssertQueuedMessageMatchesStagingItemSupplierModel(dynamic queuedMessage,
+            StagingItemLocaleSupplierModel stagingItemLocaleSupplierModel)
+        {
+            Assert.AreEqual(stagingItemLocaleSupplierModel.SupplierName, queuedMessage.SupplierName);
+            Assert.AreEqual(stagingItemLocaleSupplierModel.SupplierItemId, queuedMessage.SupplierItemID);
+            Assert.AreEqual(stagingItemLocaleSupplierModel.IrmaVendorKey, queuedMessage.IrmaVendorKey);
+            Assert.AreEqual(stagingItemLocaleSupplierModel.SupplierCaseSize, queuedMessage.SupplierCaseSize);
         }
     }
 }
