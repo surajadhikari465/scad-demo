@@ -137,6 +137,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             Assert.AreEqual(expectedRetailUom, price.RetailUom);
             Assert.AreEqual("EA", price.SellableUom);
             Assert.AreEqual(expectedSubTeamName, price.SubTeam);
+            Assert.IsNull(price.PercentOff);
         }
 
         [TestMethod]
@@ -193,7 +194,6 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             // expect to only get one REG price with the newer StartDate
             var price = prices.Single(p => p.ScanCode == expectedItemScanCode && p.BusinessUnitID == expectedStoreBuId);
             Assert.AreEqual(DateTime.UtcNow.Date.AddDays(-3), price.StartDate);
-
         }
 
         [TestMethod]
@@ -217,7 +217,8 @@ namespace MammothWebApi.Tests.DataAccess.Queries
                     .With(p => p.GpmID, Guid.NewGuid())
                     .With(p => p.SellableUOM, "EA")
                     .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
+                    .With(p => p.PriceTypeAttribute, "REG")
+                    .CreatedObject,
                 this.db.Transaction);
 
             this.db.Connection.Execute(
@@ -374,6 +375,74 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             Assert.AreEqual(expectedTprEndDate, prices.First(p => p.PriceType == "TPR").EndDate);
             Assert.AreEqual(expectedRewardStartDate, prices.First(p => p.PriceType == "RWD").StartDate);
             Assert.AreEqual(expectedRewardEndDate, prices.First(p => p.PriceType == "RWD").EndDate);
+        }
+
+        [TestMethod]
+        public void GetPricesGpmQuery_RewardsPriceHasPercentOffPopulated_ReturnsPercentOffAsPartOfRewardsPrices()
+        {
+
+            // Given
+            decimal expectedPercentOff = 5.55m;
+            DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-2);
+            DateTime expectedRewardStartDate = DateTime.UtcNow.Date.AddDays(-2);
+            DateTime expectedRewardEndDate = DateTime.UtcNow.Date.AddDays(15);
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 3.50m)
+                    .With(p => p.PriceType, "REG")
+                    .With(p => p.StartDate, expectedRegularStartDate)
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
+                this.db.Transaction);
+
+            this.db.Connection.Execute(
+                insertPriceSql,
+                objectFactory.Build<PricesGpm>()
+                    .With(p => p.Region, expectedRegion)
+                    .With(p => p.ItemID, expectedItemId)
+                    .With(p => p.BusinessUnitID, expectedStoreBuId)
+                    .With(p => p.Price, 2.50m)
+                    .With(p => p.PriceType, "RWD")
+                    .With(p => p.StartDate, expectedRewardStartDate)
+                    .With(p => p.EndDate, expectedRewardEndDate)
+                    .With(p => p.CurrencyCode, "USD")
+                    .With(p => p.GpmID, Guid.NewGuid())
+                    .With(p => p.SellableUOM, "EA")
+                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
+                    .With(p => p.PriceTypeAttribute, "PRM")
+                    .With(p => p.PercentOff, expectedPercentOff)
+                    .CreatedObject,
+                this.db.Transaction);
+
+            this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
+            {
+                Region = expectedRegion,
+                EffectiveDate = expectedEffectiveDate,
+                StoreScanCodeCollection = new List<StoreScanCode>
+                {
+                    new StoreScanCode { ScanCode = expectedItemScanCode, BusinessUnitID = expectedStoreBuId }
+                }
+            };
+
+            // When
+            var prices = this.queryHandler.Search(this.query);
+
+            // Then
+            // Expect only one REG and one RWD price
+            Assert.AreEqual(2, prices.Count());
+            var rewardPrice = prices.Single(p => p.PriceType == "RWD");
+            Assert.AreEqual("RWD", rewardPrice.PriceType);
+            Assert.AreEqual(expectedRewardStartDate, rewardPrice.StartDate);
+            Assert.AreEqual(expectedRewardEndDate, rewardPrice.EndDate);
+            Assert.AreEqual(expectedPercentOff, rewardPrice.PercentOff);
         }
 
         [TestMethod]

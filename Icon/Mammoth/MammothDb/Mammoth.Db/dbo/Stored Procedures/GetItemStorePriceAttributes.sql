@@ -29,7 +29,8 @@ SELECT
 	p.EndDate		as EndDate,
 	p.CurrencyCode	as Currency,
 	p.SellableUOM	as SellableUOM,
-	p.PriceTypeAttribute as PriceAttribute
+	p.PriceTypeAttribute as PriceAttribute,
+	p.PercentOff	as PercentOff
 FROM 
 	#ItemStores							k
 	INNER JOIN dbo.Items				i	on k.ScanCode = i.ScanCode

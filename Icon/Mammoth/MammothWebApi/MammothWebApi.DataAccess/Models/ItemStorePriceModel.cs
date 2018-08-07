@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MammothWebApi.DataAccess.Models
 {
@@ -28,6 +24,6 @@ namespace MammothWebApi.DataAccess.Models
         public DateTime? EndDate { get; set; }
         public string Currency { get; set; }
         public string PriceAttribute { get; set; }
-
+        public decimal? PercentOff { get; set; } 
     }
 }

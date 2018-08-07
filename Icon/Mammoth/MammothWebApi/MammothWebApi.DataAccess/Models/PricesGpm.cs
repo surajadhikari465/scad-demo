@@ -11,7 +11,7 @@ namespace MammothWebApi.DataAccess.Models
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public decimal Price { get; set; }
-        public decimal PercentOff { get; set; }
+        public decimal? PercentOff { get; set; }
         public string PriceType { get; set; }
         public string PriceTypeAttribute { get; set; }
         public string SellableUOM { get; set; }
