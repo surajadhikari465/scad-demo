@@ -51,7 +51,8 @@ namespace Icon.ApiController.Controller.QueueReaders
                 MessageQueueStatusId = MessageStatusTypes.Ready
             };
 
-            return getMessageQueueQuery.Search(parameters);
+            // adding this filter --will remove it when esb is ready to accept venue types)
+            return getMessageQueueQuery.Search(parameters).Where(m => m.LocaleTypeId != LocaleTypes.Venue).ToList();
         }
 
         public List<MessageQueueLocale> GroupMessagesForMiniBulk(List<MessageQueueLocale> messages)

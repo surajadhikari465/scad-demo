@@ -26,6 +26,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetLocalesByChainParameters, List<Locale>>> mockGetLocalesByChainQuery;
         private Mock<IGenericQuery> mockGenericQuery;
         private Mock<IManagerHandler<UpdateLocaleManager>> mockUpdateLocaleManager;
+        private Mock<IManagerHandler<UpdateVenueManager>> mockUpdatVenueManager;
         private Mock<IManagerHandler<AddLocaleManager>> mockAddLocaleManager;
         private Mock<ControllerContext> mockContext;
 
@@ -37,6 +38,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetLocalesByChainQuery = new Mock<IQueryHandler<GetLocalesByChainParameters, List<Locale>>>();
             mockGenericQuery = new Mock<IGenericQuery>();
             mockUpdateLocaleManager = new Mock<IManagerHandler<UpdateLocaleManager>>();
+            mockUpdatVenueManager = new Mock<IManagerHandler<UpdateVenueManager>>();
             mockAddLocaleManager = new Mock<IManagerHandler<AddLocaleManager>>();
             mockContext = new Mock<ControllerContext>();
 
@@ -45,7 +47,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGenericQuery.Setup(q => q.GetAll<Timezone>()).Returns(new List<Timezone> { new Timezone { timezoneID = 1, timezoneCode = "TZ", timezoneName = "Time Zone" } });
             mockGenericQuery.Setup(q => q.GetAll<Agency>()).Returns(new List<Agency>());
 
-            controller = new StoreController(mockLogger.Object, mockGetLocalesQuery.Object, mockGetLocalesByChainQuery.Object, mockGenericQuery.Object, mockUpdateLocaleManager.Object, mockAddLocaleManager.Object);
+            controller = new StoreController(mockLogger.Object, mockGetLocalesQuery.Object, mockGetLocalesByChainQuery.Object, mockGenericQuery.Object, mockUpdateLocaleManager.Object, mockUpdatVenueManager.Object, mockAddLocaleManager.Object);
             controller.ControllerContext = mockContext.Object;
             mockContext.SetupGet(m => m.HttpContext.User.Identity.Name)
                 .Returns("Test User");

@@ -1,9 +1,44 @@
-﻿using System;
+﻿using Icon.Web.DataAccess.Models;
+using System;
 
 namespace Icon.Web.DataAccess.Managers
 {
     public class UpdateLocaleManager
     {
+        public UpdateLocaleManager()
+        {
+        }
+        public UpdateLocaleManager(StoreModel storeModel)
+        {
+            LocaleId = storeModel.LocaleId;
+            LocaleName = storeModel.LocaleName;
+            ParentLocaleId = storeModel.ParentLocaleId;
+            OpenDate = storeModel.OpenDate;
+            CloseDate = storeModel.CloseDate;
+            OwnerOrgPartyId = storeModel.OwnerOrgPartyId;
+            LocaleTypeId = storeModel.LocaleTypeId;
+            StoreAbbreviation = storeModel.StoreAbbreviation;
+            BusinessUnitId = storeModel.BusinessUnitId;
+            PhoneNumber = storeModel.PhoneNumber;
+            Fax = storeModel.Fax;
+            ContactPerson = storeModel.ContactPerson;
+            AddressId = storeModel.AddressID;
+            AddressLine1 = storeModel.AddressLine1;
+            AddressLine2 = storeModel.AddressLine2;
+            AddressLine3 = storeModel.AddressLine3;
+            CityName = storeModel.City;
+            PostalCode = storeModel.PostalCode;
+            CountyName = storeModel.County;
+            CountryId = storeModel.CountryId.Value;
+            TerritoryId = storeModel.TerritoryId.Value;
+            TimezoneId = storeModel.TimeZoneId.Value;
+            Latitude = storeModel.Latitude;
+            Longitude = storeModel.Longitude;
+            EwicAgencyId = storeModel.EwicAgencyId;
+            IrmaStoreId = storeModel.IrmaStoreId;
+            StorePosType = storeModel.StorePosType;
+            UserName = storeModel.UserName;
+        }
         public int LocaleId { get; set; }
         public string LocaleName { get; set; }
         public int? ParentLocaleId { get; set; }
@@ -34,5 +69,8 @@ namespace Icon.Web.DataAccess.Managers
 
         public string UserName { get; set; }
         public string CurrencyCode { get; set; }
+        public string VenueCode { get; set; }
+        public string VenueOccupant { get; set; }
+        public int LocaleSubTypeId { get; set; }
     }
 }

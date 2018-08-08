@@ -90,7 +90,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.8.3.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -258,6 +258,7 @@
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverter.cs" />
     <Compile Include="Controllers\BulkScanCodeController.cs" />
     <Compile Include="Controllers\EwicController.cs" />
+    <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\PluRequestController.cs" />
     <Compile Include="Controllers\MerchTaxMappingController.cs" />
@@ -386,6 +387,8 @@
     <Compile Include="Models\ConfigurationSearchViewModel.cs" />
     <Compile Include="Models\ConfigurationViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\LocaleSubTypeViewModel.cs" />
     <Compile Include="Models\EwicMappingDetailViewModel.cs" />
     <Compile Include="Models\EwicMappingSearchViewModel.cs" />
     <Compile Include="Models\EwicExclusionViewModel.cs" />
@@ -449,6 +452,7 @@
     <Compile Include="Models\TraitGroupSearchViewModel.cs" />
     <Compile Include="Models\TraitViewModel.cs" />
     <Compile Include="Models\TraitGridViewModel.cs" />
+    <Compile Include="Models\VenueViewModel.cs" />
     <Compile Include="RegionalItemCatalogs\IRegionalItemCatalogFactory.cs" />
     <Compile Include="RegionalItemCatalogs\RegionalItemCatalog.cs" />
     <Compile Include="RegionalItemCatalogs\RegionalItemCatalogFactory.cs" />
@@ -853,6 +857,7 @@
     <Content Include="Views\Support\ChooseHierarchyClass.cshtml" />
     <Content Include="Views\Support\Index.cshtml" />
     <Content Include="Views\Support\DeleteHierarchyClass.cshtml" />
+    <Content Include="Views\Venue\CreateVenue.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -102,6 +102,25 @@ namespace Icon.Web.Mvc.Models
             return contactPersonTrait == null ? String.Empty : contactPersonTrait.traitValue;
         }
 
+        public static string GetLocaleSubType(Locale locale)
+        {
+            LocaleTrait localeSubtypeTrait = locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.LocaleSubtype);
+            return localeSubtypeTrait == null ? String.Empty : localeSubtypeTrait.traitValue;
+        }
+
+        public static string GetVenueCode(Locale locale)
+        {
+            LocaleTrait venueCodeTrait = locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueCode);
+            return venueCodeTrait == null ? String.Empty : venueCodeTrait.traitValue;
+        }
+
+        public static string GetVenueOccupant(Locale locale)
+        {
+            LocaleTrait venueOccupantTrait = locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueOccupant);
+            return venueOccupantTrait == null ? String.Empty : venueOccupantTrait.traitValue;
+          
+        }
+
         public static string GetTerritoryCode(Locale locale)
         {
             LocaleAddress localeAddress = locale.LocaleAddress.FirstOrDefault();

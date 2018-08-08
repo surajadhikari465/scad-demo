@@ -12,5 +12,7 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<Agency> EwicAgencies { get; set; }
         public IEnumerable<string> StorePosTypes { get; set; }
         public IEnumerable<CurrencyViewModel> Currencies { get; set; }
+
+        public IEnumerable<LocaleSubTypeViewModel> LocaleSubTypes { get; set; }
     }
 }

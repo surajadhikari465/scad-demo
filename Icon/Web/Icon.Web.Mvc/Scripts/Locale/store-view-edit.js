@@ -1,8 +1,9 @@
 ﻿var alreadyRunCountryCodeLookup = false;
 var alreadyRunTimeZoneCodeLookup = false;
 var alreadyRunTerritoryCodeLookup = false;
+var alreadyRunSubTypeLookup = false;
 
-var countryCodeLookup = {}, timeZoneCodeLookup = {}, territoryCodeLookup = {};
+var countryCodeLookup = {}, timeZoneCodeLookup = {}, territoryCodeLookup = {}, subTypeLookup={};
 
 $(function () {
     $("#saveButton").bind({
@@ -40,7 +41,13 @@ function onSuccess(data) {
 }
 
 function onError(data) {
-    var message = "Unable to apply updates.  Please refresh the grid and check for duplicate store names or business unit IDs.";
+    var message;
+    if (typeof data.responseJSON =="undefined")
+        message = "Unable to apply updates.  Please refresh the grid and check for duplicate store names or business unit IDs.";
+    else
+        message = data.responseJSON.Error;
+   
+   
     var isError = true;
 
     if (data.status === 403)
@@ -93,6 +100,17 @@ function fillLookup(lookup, columnKey) {
             }
         }
     }
+}
+function lookupSubtype(localeSubTypeId) {
+    if (!alreadyRunSubTypeLookup) {
+        fillLookup(subTypeLookup, "LocaleSubTypeId");
+        alreadyRunSubTypeLookup = true;
+    }
+
+    if (localeSubTypeId === null) {
+        return "";
+    }
+    return subTypeLookup[localeSubTypeId];
 }
 
 function lookupCountryCode(countryId) {

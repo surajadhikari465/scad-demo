@@ -1,0 +1,112 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.VenueViewModel
+
+@{
+    ViewBag.Title = "New Store";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/themes/base/all.css")
+
+@{Html.RenderPartial("_HeaderPartial", "Locale Management");}
+
+<div class="page-section">
+    @using (Html.BeginForm("CreateVenue", "Venue", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.ParentLocaleId)
+        @Html.HiddenFor(model => model.ParentLocaleName)
+        @Html.HiddenFor(model => model.LocaleTypeId)
+        @Html.HiddenFor(model => model.OwnerOrgPartyId)
+
+        <fieldset>
+            <legend>Create Venue</legend>
+
+            <div class="row page-subsection">
+                <h4 class="col-md-2 form-label">Attributes</h4>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.ParentLocaleName, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.ParentLocaleName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+                </div>
+            </div>
+            <div class="row">
+                @Html.LabelFor(model => model.LocaleName, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.LocaleName, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.LocaleName, null, new { @class = "col-md-6 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.LocaleSubTypes, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.DropDownListFor(model => model.LocaleSubTypeId, Model.LocaleSubTypes, "--Select Sub Type--", new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.LocaleSubTypeId, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.VenueOccupant, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.VenueOccupant, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.VenueOccupant, null, new { @class = "col-md-6 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.VenueCode, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.VenueCode, new { @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.VenueCode, null, new { @class = "col-md-6 form-property-val" })
+                </div>
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(model => model.OpenDate, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.OpenDate, new { @id = "datepicker", @class = "col-md-6 form-input" })
+                    @Html.ValidationMessageFor(model => model.OpenDate, null, new { @class = "col-md-6 form-property-val" })
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-1">
+                <input type="submit" id="create-button" value="Create" class="btn btn-default form-submit" />
+            </div>
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@TempData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+        <div class="validation-section page-subsection">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    <strong>@TempData["SuccessMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+
+    }
+</div>
+
+<div class="form-footer">
+    @Html.ActionLink("Back to Locale Management", "Index","Store")
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/apply-datepicker.js")
+}

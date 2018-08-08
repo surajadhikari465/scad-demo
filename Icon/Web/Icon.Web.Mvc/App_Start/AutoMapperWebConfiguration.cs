@@ -48,6 +48,7 @@ namespace Icon.Web.Mvc.App_Start
             Mapper.CreateMap<UpdateHierarchyClassCommand, AddHierarchyClassMessageCommand>()
                 .ForMember(destination => destination.HierarchyClass, option => option.MapFrom(source => source.UpdatedHierarchyClass))
                 .ForMember(destination => destination.ClassNameChange, option => option.MapFrom(source => source.ClassNameChanged));
+          
         }
     }
 
@@ -60,6 +61,8 @@ namespace Icon.Web.Mvc.App_Start
             Mapper.CreateMap<Locale, MessageQueueLocale>()
                 .ConvertUsing<LocaleToMessageQueueLocaleConverter>();
             Mapper.CreateMap<AddLocaleManager, AddAddressCommand>();
+            Mapper.CreateMap<UpdateVenueManager, UpdateVenueCommand>();
+            Mapper.CreateMap<AddVenueManager, AddVenueCommand>();
         }
     }
 

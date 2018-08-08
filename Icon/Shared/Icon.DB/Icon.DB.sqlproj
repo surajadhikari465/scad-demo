@@ -675,6 +675,7 @@
     <Build Include="app\Tables\MessageResponseR10.sql" />
     <None Include="Scripts\PopulateData\Archive\AddCurrencyCodeTrait.sql" />
     <Build Include="dbo\Tables\LocaleSubType.sql" />
+    <None Include="Scripts\PopulateData\Release\AddLocaleSubtypeTrait.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

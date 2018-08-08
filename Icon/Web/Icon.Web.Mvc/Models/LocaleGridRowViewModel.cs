@@ -1,7 +1,9 @@
 ﻿using Icon.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -19,6 +21,8 @@ namespace Icon.Web.Mvc.Models
         public string BusinessUnitId { get; set; }
         public DateTime? OpenDate { get; set; }
         public DateTime? CloseDate { get; set; }
+
+        [AllowHtml]
         public string LocaleAddLink { get; set; }
         public string ParentLocaleName { get; set; }
         public int? ChildLocaleTypeCode { get; set; }
@@ -56,6 +60,16 @@ namespace Icon.Web.Mvc.Models
         public string Fax { get; set; }
         public string CurrencyCode { get; set; }
 
+        // Venue Properties
+        public string LocaleSubType { get; set; }
+
+        [StringLength(255, ErrorMessage = "The Venue Code value cannot exceed 255 characters. ")]
+        public string VenueCode { get; set; }
+
+        [StringLength(255, ErrorMessage = "The Venue Occupant value cannot exceed 255 characters. ")]
+        public string VenueOccupant { get; set; }
+        public int LocaleSubTypeId { get; set; }
+
         public LocaleGridRowViewModel() { }
 
         public LocaleGridRowViewModel(Locale locale)
@@ -68,7 +82,6 @@ namespace Icon.Web.Mvc.Models
             LocaleTypeDesc = locale.LocaleType.localeTypeDesc;
             OpenDate = locale.localeOpenDate;
             CloseDate = locale.localeCloseDate;
-
             RegionAbbreviation = LocaleAccessor.GetRegionAbbreviation(locale);
             BusinessUnitId = LocaleAccessor.GetBusinessUnit(locale);
 
@@ -95,7 +108,9 @@ namespace Icon.Web.Mvc.Models
             StorePosType = LocaleAccessor.GetStorePosType(locale);
             Fax = LocaleAccessor.GetFax(locale);
             CurrencyCode = LocaleAccessor.GetCurrencyCode(locale);
-
+            LocaleSubType = LocaleAccessor.GetLocaleSubType(locale);
+            VenueCode = LocaleAccessor.GetVenueCode(locale);
+            VenueOccupant = LocaleAccessor.GetVenueOccupant(locale);
             Locales = new List<LocaleGridRowViewModel>();
         }
     }

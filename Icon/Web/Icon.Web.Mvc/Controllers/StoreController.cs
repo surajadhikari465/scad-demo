@@ -4,6 +4,7 @@ using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
@@ -26,12 +27,14 @@ namespace Icon.Web.Controllers
         private IQueryHandler<GetLocalesByChainParameters, List<Locale>> getLocalesByChainQuery;
         private IGenericQuery genericQuery;
         private IManagerHandler<UpdateLocaleManager> updateLocaleManager;
+        private IManagerHandler<UpdateVenueManager> updateVenueManager;
         private IManagerHandler<AddLocaleManager> addLocaleManager;
         private List<Territory> territories;
         private List<Country> countries;
         private List<Timezone> timeZones;
         private List<Agency> eWicAgencies;
         private List<Currency> currencies;
+        private List<LocaleSubType> localeSubTypes;
 
         public StoreController(
             ILogger logger,
@@ -39,6 +42,7 @@ namespace Icon.Web.Controllers
             IQueryHandler<GetLocalesByChainParameters, List<Locale>> getLocalesByChainQuery,
             IGenericQuery genericQuery,
             IManagerHandler<UpdateLocaleManager> updateLocaleCommand,
+            IManagerHandler<UpdateVenueManager> updateVenueManager,
             IManagerHandler<AddLocaleManager> addLocaleCommand)
         {
             this.logger = logger;
@@ -46,6 +50,7 @@ namespace Icon.Web.Controllers
             this.getLocalesByChainQuery = getLocalesByChainQuery;
             this.genericQuery = genericQuery;
             this.updateLocaleManager = updateLocaleCommand;
+            this.updateVenueManager = updateVenueManager;
             this.addLocaleManager = addLocaleCommand;
 
             this.territories = genericQuery.GetAll<Territory>();
@@ -53,6 +58,7 @@ namespace Icon.Web.Controllers
             this.timeZones = genericQuery.GetAll<Timezone>();
             this.eWicAgencies = genericQuery.GetAll<Agency>();
             this.currencies = genericQuery.GetAll<Currency>();
+            this.localeSubTypes = genericQuery.GetAll<LocaleSubType>();
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -95,8 +101,8 @@ namespace Icon.Web.Controllers
             model.TimeZones = this.timeZones.Select(t => new TimeZoneViewModel { TimeZoneId = t.timezoneID, TimeZoneCode = t.timezoneCode, TimeZoneName = t.timezoneName });
             model.EwicAgencies = this.eWicAgencies;
             model.StorePosTypes = StorePosTypes.AsDictionary.Values.ToList();
-            model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID  = c.currencyTypeID, CurrencyTypeCode  = c.currencyTypeCode,  CurrencyTypeDesc  = c.currencyTypeDesc, IssuingEntity  = c.issuingEntity, NumericCode  = c.numericCode, MinorUnit  = c.minorUnit, Symbol  = c.symbol});
-
+            model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID = c.currencyTypeID, CurrencyTypeCode = c.currencyTypeCode, CurrencyTypeDesc = c.currencyTypeDesc, IssuingEntity = c.issuingEntity, NumericCode = c.numericCode, MinorUnit = c.minorUnit, Symbol = c.symbol });
+            model.LocaleSubTypes = this.localeSubTypes.Select(l => new LocaleSubTypeViewModel { LocaleSubTypeID = l.localeSubTypeID, LocaleTypeID = l.localeTypeID, LocaleSubTypeCode = l.localSubTypeCode, LocaleSubTypeDescription = l.localeSubTypeDesc });
             return model;
         }
 
@@ -154,7 +160,11 @@ namespace Icon.Web.Controllers
                     Fax = locale.Fax,
                     IrmaStoreId = locale.IrmaStoreId,
                     StorePosType = locale.StorePosType,
-                    CurrencyCode = locale.CurrencyCode
+                    CurrencyCode = locale.CurrencyCode,
+                    VenueCode = locale.VenueCode,
+                    VenueOccupant = locale.VenueOccupant,
+                    LocaleSubType = locale.LocaleSubType,
+                    LocaleSubTypeId = localeSubTypes.Where(l => l.localeSubTypeDesc == locale.LocaleSubType).Select(ls => ls.localeSubTypeID).FirstOrDefault()
                 };
 
                 storeHierarchy.Add(gridViewModel);
@@ -173,6 +183,11 @@ namespace Icon.Web.Controllers
             if (storeModel.LocaleTypeId == LocaleTypes.Metro)
             {
                 storeModel.LocaleAddLink = String.Format("<a href=/Store/CreateStore?parentLocaleId={0}&parentLocaleName={1}>Add Store</a>", storeModel.LocaleId.ToString(), storeModel.LocaleName);
+            }
+
+            if (storeModel.LocaleTypeId == LocaleTypes.Store)
+            {
+                storeModel.LocaleAddLink = String.Format("<a href=/Venue/CreateVenue?parentLocaleId={0}&parentLocaleName={1}>Add Venue</a>", storeModel.LocaleId.ToString(), storeModel.LocaleName.Replace(" ", "&nbsp;"));
             }
 
             foreach (var locale in storeModel.Locales)
@@ -269,13 +284,15 @@ namespace Icon.Web.Controllers
         }
 
         [WriteAccessAuthorize(IsJsonResult = true, SetStatusCode = true, GlobalDataTeamException = true)]
+        [ValidateInput(false)]
         public ActionResult SaveChanges()
         {
             ViewData["GenerateCompactJSONResponse"] = false;
+            Boolean updatingVenue = false;
 
             GridModel gridModel = new GridModel();
 
-            List<Transaction<LocaleGridRowViewModel>> localeTransactions = gridModel.LoadTransactions<LocaleGridRowViewModel>(HttpContext.Request.Form["ig_transactions"]);
+            List<Transaction<LocaleGridRowViewModel>> localeTransactions = gridModel.LoadTransactions<LocaleGridRowViewModel>(HttpContext.Request.Unvalidated.Form["ig_transactions"]);
 
             JsonResult result = new JsonResult();
             Dictionary<string, bool> response = new Dictionary<string, bool>();
@@ -288,41 +305,22 @@ namespace Icon.Web.Controllers
                     {
                         LocaleGridRowViewModel localeRow = (LocaleGridRowViewModel)t.row;
 
-                        UpdateLocaleManager command = new UpdateLocaleManager
-                        {
-                            LocaleId = localeRow.LocaleId,
-                            LocaleName = localeRow.LocaleName,
-                            ParentLocaleId = localeRow.ParentLocaleId,
-                            OpenDate = localeRow.OpenDate != null ? localeRow.OpenDate : (DateTime?)null,
-                            CloseDate = localeRow.CloseDate != null ? localeRow.CloseDate : (DateTime?)null,
-                            OwnerOrgPartyId = localeRow.OwnerOrgPartyId,
-                            LocaleTypeId = localeRow.LocaleTypeId,
-                            StoreAbbreviation = localeRow.StoreAbbreviation,
-                            BusinessUnitId = localeRow.BusinessUnitId,
-                            PhoneNumber = localeRow.PhoneNumber,
-                            Fax = localeRow.Fax,
-                            ContactPerson = localeRow.ContactPerson,
-                            AddressId = localeRow.AddressID,
-                            AddressLine1 = localeRow.AddressLine1,
-                            AddressLine2 = localeRow.AddressLine2,
-                            AddressLine3 = localeRow.AddressLine3,
-                            CityName = localeRow.City,
-                            PostalCode = localeRow.PostalCode,
-                            CountyName = localeRow.County,
-                            CountryId = localeRow.CountryId.Value,
-                            TerritoryId = localeRow.TerritoryId.Value,
-                            TimezoneId = localeRow.TimeZoneId.Value,
-                            Latitude = String.IsNullOrWhiteSpace(localeRow.Latitude) ? null : (decimal?)Decimal.Parse(localeRow.Latitude),
-                            Longitude = String.IsNullOrWhiteSpace(localeRow.Latitude) ? null : (decimal?)Decimal.Parse(localeRow.Longitude),
-                            EwicAgencyId = localeRow.EwicAgencyId,
-                            IrmaStoreId = localeRow.IrmaStoreId,
-                            StorePosType = localeRow.StorePosType,
-                            UserName = User.Identity.Name
-                        };
-
                         try
                         {
-                            updateLocaleManager.Execute(command);
+                            if (localeRow.LocaleTypeId == LocaleTypes.Store)
+                            {
+                                StoreModel storeModel = ConvertToStoreModel(localeRow);
+                                UpdateLocaleManager command = new UpdateLocaleManager(storeModel);
+                                updateLocaleManager.Execute(command);
+
+                            }
+                            else
+                            {
+                                updatingVenue = true;
+                                VenueModel venueModel = ConvertToVenueModel(localeRow);
+                                UpdateVenueManager command = new UpdateVenueManager(venueModel);
+                                updateVenueManager.Execute(command);
+                            }
                         }
                         catch (CommandException ex)
                         {
@@ -330,15 +328,80 @@ namespace Icon.Web.Controllers
                             exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
 
                             Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                            if (updatingVenue)
+                            {
+                                ErrorModel errorModel = new ErrorModel();
+                                errorModel.Error = ex.Message;
+                                errorModel.IsUpdatingVenue = true;
+                                return Json(errorModel, JsonRequestBehavior.AllowGet);
+
+                            }
                             return result;
                         }
                     }
+
                 }
             }
 
             response.Add("Success", true);
             result.Data = response;
             return result;
+        }
+
+        private VenueModel ConvertToVenueModel(LocaleGridRowViewModel localeRow)
+        {
+            VenueModel venueModel = new VenueModel
+            {
+                LocaleId = localeRow.LocaleId,
+                LocaleName = localeRow.LocaleName,
+                ParentLocaleId = localeRow.ParentLocaleId,
+                OpenDate = localeRow.OpenDate != null ? localeRow.OpenDate : (DateTime?)null,
+                CloseDate = localeRow.CloseDate != null ? localeRow.CloseDate : (DateTime?)null,
+                LocaleTypeId = localeRow.LocaleTypeId,
+                LocaleSubType = localeSubTypes.Where(ls => ls.localeSubTypeID == localeRow.LocaleSubTypeId).Select(s => s.localeSubTypeDesc).First(),
+                VenueCode = localeRow.VenueCode,
+                VenueOccupant = localeRow.VenueOccupant,
+                LocaleSubTypeId = localeRow.LocaleSubTypeId,
+                UserName = User.Identity.Name
+            };
+
+            return venueModel;
+        }
+
+        private StoreModel ConvertToStoreModel(LocaleGridRowViewModel localeRow)
+        {
+            StoreModel storeModel = new StoreModel
+            {
+                LocaleId = localeRow.LocaleId,
+                LocaleName = localeRow.LocaleName,
+                ParentLocaleId = localeRow.ParentLocaleId,
+                OpenDate = localeRow.OpenDate != null ? localeRow.OpenDate : (DateTime?)null,
+                CloseDate = localeRow.CloseDate != null ? localeRow.CloseDate : (DateTime?)null,
+                OwnerOrgPartyId = localeRow.OwnerOrgPartyId,
+                LocaleTypeId = localeRow.LocaleTypeId,
+                StoreAbbreviation = localeRow.StoreAbbreviation,
+                BusinessUnitId = localeRow.BusinessUnitId,
+                PhoneNumber = localeRow.PhoneNumber,
+                Fax = localeRow.Fax,
+                ContactPerson = localeRow.ContactPerson,
+                AddressID = localeRow.AddressID,
+                AddressLine1 = localeRow.AddressLine1,
+                AddressLine2 = localeRow.AddressLine2,
+                AddressLine3 = localeRow.AddressLine3,
+                City = localeRow.City,
+                PostalCode = localeRow.PostalCode,
+                County = localeRow.County,
+                CountryId = localeRow.CountryId.Value,
+                TerritoryId = localeRow.TerritoryId.Value,
+                TimeZoneId = localeRow.TimeZoneId.Value,
+                Latitude = String.IsNullOrWhiteSpace(localeRow.Latitude) ? null : (decimal?)Decimal.Parse(localeRow.Latitude),
+                Longitude = String.IsNullOrWhiteSpace(localeRow.Latitude) ? null : (decimal?)Decimal.Parse(localeRow.Longitude),
+                EwicAgencyId = localeRow.EwicAgencyId,
+                IrmaStoreId = localeRow.IrmaStoreId,
+                StorePosType = localeRow.StorePosType,
+                UserName = User.Identity.Name
+            };
+            return storeModel;
         }
 
         private LocaleManagementViewModel PopulateViewModelDropDowns(LocaleManagementViewModel viewModel)

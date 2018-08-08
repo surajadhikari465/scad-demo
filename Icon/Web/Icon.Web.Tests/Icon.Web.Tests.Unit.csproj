@@ -99,7 +99,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.8.3.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -253,6 +253,7 @@
     <Compile Include="Controllers\HierarchyClassControllerTests.cs" />
     <Compile Include="Importers\BrandSpreadsheetImporterTests.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddLocaleManagerHandlerTests.cs" />
     <Compile Include="Managers\RemoveEwicMappingManagerHandlerTests.cs" />
     <Compile Include="Managers\RemoveEwicExclusionManagerHandlerTests.cs" />
     <Compile Include="Managers\AddEwicMappingManagerHandlerTests.cs" />
@@ -261,11 +262,12 @@
     <Compile Include="Controllers\ItemControllerTests.cs" />
     <Compile Include="Controllers\ExcelControllerTests.cs" />
     <Compile Include="Managers\AddMerchTaxAssociationManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateVenueManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateBrandManagerHandlerTests.cs" />
     <Compile Include="Managers\AddHierarchyClassManagerHandlerTests.cs" />
     <Compile Include="Managers\AddItemManagerHandlerTests.cs" />
-    <Compile Include="Managers\AddLocaleManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddVenueManagerHandlerTests.cs" />
     <Compile Include="Managers\DeleteHierarchyClassManagerHandlerTests.cs" />
     <Compile Include="Managers\AddProductSelectionGroupManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdatePluCategoryManagerHandlerTests.cs" />

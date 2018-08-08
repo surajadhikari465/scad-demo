@@ -141,5 +141,20 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Currency")]
         [Editable(false)]
         public IEnumerable<SelectListItem> CurrencyTypes { get; set; }
+
+        [Required]
+        public int LocaleSubTypeId { get; set; }
+
+        [Display(Name = "LocaleSubType")]
+        [Editable(false)]
+        public IEnumerable<SelectListItem> LocaleSubTypes { get; set; }
+
+        [Display(Name = "Venue Code")]
+        public string VenueCode { get; set; }
+        [Display(Name = "Venue Occupant")]
+        public string VenueOccupant { get; set; }
+        [Display(Name = "LocaleS ubType")]
+        public string LocaleSubType { get; set; }
+
     }
 }
