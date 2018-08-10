@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns02="www.tibco.com/plugin/Sleep">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="www.tibco.com/plugin/Sleep" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <pd:name>Processes/AddOrUpdateMessageSequenceCommand.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -46,50 +46,17 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>UpdateMessageSequence</pd:to>
-            <pd:xpathDescription>PatchNumber &gt; 1</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-13382656</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/root/PatchFamilySequenceID !=1</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>InsertMessageSequence</pd:to>
-            <pd:xpathDescription>PatchNumber = 1</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16750849</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/root/PatchFamilySequenceID = 1</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>InsertMessageSequence</pd:from>
-            <pd:to>end</pd:to>
+            <pd:to>AddOrUpdateMessageSequence</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>UpdateMessageSequence</pd:from>
+            <pd:from>AddOrUpdateMessageSequence</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>UpdateMessageSequence</pd:from>
-            <pd:to>Sleep</pd:to>
-            <pd:xpathDescription>Error</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-3407872</pd:lineColor>
-            <pd:conditionType>error</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>InsertMessageSequence</pd:from>
-            <pd:to>Sleep</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-3407872</pd:lineColor>
-            <pd:conditionType>error</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>Sleep</pd:from>
@@ -98,152 +65,13 @@
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
-        <pd:activity name="UpdateMessageSequence">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>413</pd:x>
-            <pd:y>94</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>true</emptyStrAsNil>
-                <statement>UPDATE [gpm].[MessageSequence]
-SET 
-	PatchFamilySequenceID = ?,
-	MessageID = ?,
-	ModifiedDateUtc = SYSUTCDATETIME()
-WHERE PatchFamilyID = ?</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>PatchFamilySequenceID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>MessageID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>PatchFamilyID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <PatchFamilySequenceID>
-                        <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
-                    </PatchFamilySequenceID>
-                    <xsl:choose>
-                        <xsl:when test="exists($Start/root/MessageID)">
-                            <MessageID>
-                                <xsl:choose>
-                                    <xsl:when test="exists($Start/root/MessageID)">
-                                        <xsl:value-of select="$Start/root/MessageID"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </MessageID>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <MessageID>
-                                <xsl:choose>
-                                    <xsl:when test="exists(&quot;&quot;)">
-                                        <xsl:value-of select="&quot;&quot;"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </MessageID>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <PatchFamilyID>
-                        <xsl:value-of select="$Start/root/PatchFamilyID"/>
-                    </PatchFamilyID>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="InsertMessageSequence">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>429</pd:x>
-            <pd:y>254</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>true</emptyStrAsNil>
-                <statement>INSERT INTO [gpm].[MessageSequence] (ItemID, BusinessUnitID, PatchFamilyID, PatchFamilySequenceID, MessageID)
-VALUES (?, ?, ?, ?, ?)</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>ItemID</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>BusinessUnitID</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>PatchFamilyID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>SequenceID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>MessageID</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <ItemID>
-                        <xsl:value-of select="$Start/root/ItemID"/>
-                    </ItemID>
-                    <BusinessUnitID>
-                        <xsl:value-of select="$Start/root/BusinessUnitID"/>
-                    </BusinessUnitID>
-                    <PatchFamilyID>
-                        <xsl:value-of select="$Start/root/PatchFamilyID"/>
-                    </PatchFamilyID>
-                    <SequenceID>
-                        <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
-                    </SequenceID>
-                    <xsl:choose>
-                        <xsl:when test="exists($Start/root/MessageID)">
-                            <MessageID>
-                                <xsl:choose>
-                                    <xsl:when test="exists($Start/root/MessageID)">
-                                        <xsl:value-of select="$Start/root/MessageID"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </MessageID>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <MessageID>
-                                <xsl:choose>
-                                    <xsl:when test="exists(&quot;&quot;)">
-                                        <xsl:value-of select="&quot;&quot;"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </MessageID>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
+        <pd:transition>
+            <pd:from>AddOrUpdateMessageSequence</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
@@ -262,7 +90,7 @@ VALUES (?, ?, ?, ?, ?)</statement>
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
             <pd:x>439</pd:x>
-            <pd:y>349</pd:y>
+            <pd:y>343</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -277,6 +105,87 @@ VALUES (?, ?, ?, ?, ?)</statement>
                         </messageCode>
                     </xsl:if>
                 </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AddOrUpdateMessageSequence">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>428</pd:x>
+            <pd:y>150</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <schema>gpm</schema>
+                <catalog/>
+                <ProcedureName>AddOrUpdateMessageSequence</ProcedureName>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ItemID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@BusinessUnitID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@PatchFamilyID</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@PatchFamilySequenceID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@MessageID</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <ItemID>
+                            <xsl:value-of select="$Start/root/ItemID"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$Start/root/BusinessUnitID"/>
+                        </BusinessUnitID>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$Start/root/PatchFamilyID"/>
+                        </PatchFamilyID>
+                        <PatchFamilySequenceID>
+                            <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
+                        </PatchFamilySequenceID>
+                        <MessageID>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/root/MessageID)">
+                                    <xsl:value-of select="$Start/root/MessageID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </MessageID>
+                    </inputSet>
+                </inputs>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

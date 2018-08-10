@@ -12,6 +12,7 @@
                     <xsd:element name="MessageID" type="xsd:string"/>
                     <xsd:element name="PatchFamilyID" type="xsd:string"/>
                     <xsd:element name="SequenceID" type="xsd:int"/>
+                    <xsd:element name="ResetFlag" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -131,7 +132,7 @@
                     <xsl:value-of select="if (empty($GetLastSequenceQuery/resultSet/Record)) then 0 else $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID"/>
                 </LastProcessedGpmSequenceID>
                 <IsInSequence>
-                    <xsl:value-of select="($Start/root/SequenceID = ($GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID + 1))&#xA;or ($Start/root/SequenceID = 1 and count($GetLastSequenceQuery/resultSet/Record) = 0)"/>
+                    <xsl:value-of select="($Start/root/SequenceID = ($GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID + 1))&#xA;or ($Start/root/SequenceID = 1 and count($GetLastSequenceQuery/resultSet/Record) = 0)&#xA;or ($Start/root/ResetFlag = $_globalVariables/ns:GlobalVariables/Application/ResetFlagTrueValue)"/>
                 </IsInSequence>
                 <IsAlreadyProcessed>
                     <xsl:value-of select="$Start/root/SequenceID&lt;= $GetLastSequenceQuery/resultSet/Record[1]/LastProcessedGpmSequenceID"/>

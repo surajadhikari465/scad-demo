@@ -126,7 +126,7 @@
     <pd:activity name="Call Message Sequence Validation">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>232</pd:x>
+        <pd:x>233</pd:x>
         <pd:y>190</pd:y>
         <config>
             <processName>/Processes/GetLastMessageSequenceQuery.process</processName>
@@ -167,6 +167,18 @@
                         <SequenceID>
                             <xsl:value-of select="0"/>
                         </SequenceID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag)">
+                        <ResetFlag>
+                            <xsl:value-of select="$PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag"/>
+                        </ResetFlag>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ResetFlag>
+                            <xsl:value-of select="&quot;0&quot;"/>
+                        </ResetFlag>
                     </xsl:otherwise>
                 </xsl:choose>
             </root>
@@ -977,27 +989,25 @@
     <pd:transition>
         <pd:from>Call Message Sequence Validation</pd:from>
         <pd:to>Parse Message</pd:to>
-        <pd:xpathDescription>In Sequence or Already Processed</pd:xpathDescription>
+        <pd:xpathDescription>In Sequence</pd:xpathDescription>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true" or $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = $_globalVariables/ns1:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true" or $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Call Message Sequence Validation</pd:from>
         <pd:to>Log Redelivery Info</pd:to>
-        <pd:xpathDescription>Redelivery</pd:xpathDescription>
+        <pd:xpathDescription>OutOfSequence Redelivery</pd:xpathDescription>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false"
+        <pd:xpath>($Call-Message-Sequence-Validation/root/IsInSequence="false" and $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false")
 and
 ((not(exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount))
-and ($Call-Message-Sequence-Validation/root/IsInSequence="false")
 or
 (exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
-and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt;= $_globalVariables/ns1:GlobalVariables/Application/MaxRedeliveryCount)
-and $Call-Message-Sequence-Validation/root/IsInSequence="false")))</pd:xpath>
+and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount &lt; $_globalVariables/ns1:GlobalVariables/Application/MaxRedeliveryCount))))</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
@@ -1015,9 +1025,9 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false")))</pd:xpath>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
-and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount = $_globalVariables/ns1:GlobalVariables/Application/MaxRedeliveryCount)
-and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
+        <pd:xpath>($Call-Message-Sequence-Validation/root/IsInSequence="false" and $Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false")
+and exists($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount)
+and ($PriceMessageReceiver/ns:ActivityOutput/JMSProperties/ns:JMSXDeliveryCount = $_globalVariables/ns1:GlobalVariables/Application/MaxRedeliveryCount)</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Map Prices</pd:from>
@@ -1026,7 +1036,7 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="false" and ($Call-Message-Sequence-Validation/root/IsInSequence="true" or $PriceMessageReceiver/ns:ActivityOutput/OtherProperties/ResetFlag = $_globalVariables/ns1:GlobalVariables/Application/ResetFlagTrueValue)</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsInSequence="true"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>HandleEmergencyPrices</pd:from>
@@ -1098,7 +1108,8 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"
+and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Publish Error Message</pd:from>
@@ -1114,7 +1125,8 @@ and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"</pd:xpath>
+        <pd:xpath>$Call-Message-Sequence-Validation/root/IsAlreadyProcessed="true"
+and $Call-Message-Sequence-Validation/root/IsInSequence="false"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>ProcessBODRequestION</pd:from>

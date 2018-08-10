@@ -788,6 +788,7 @@
     <None Include="Scripts\PostDeploymentScripts\PopulateItemPriceTypeWithGsp.sql" />
     <None Include="Jobs\MAMMOTH.CopyGpmDataForAudit.sql" />
     <Build Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
+    <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
