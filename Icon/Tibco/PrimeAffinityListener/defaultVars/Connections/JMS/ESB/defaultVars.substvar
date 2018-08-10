@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>#!4GUKvuJ2dlL7WNOnEpYoER9vinkrXgD+Glx7x5s3kxH0oK77SbFCLA==</value>
+			<value>#!kludzu/V3BDgreYlcfJmqM322z6baQtN+Zr1yFHe5bv9z3CF94A8DA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!/hI5gFYc2JeaUf6f1FdxTwZMA58aPQksu32VTLB5aA5WO+qUBLjdVw==</value>
+			<value>#!oqxmIYCRPqndI2xoqtYI/ZkqIeogKr43lwUwUrCiyJSsgqnpmtU26A==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

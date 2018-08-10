@@ -51,11 +51,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PrimeAffinityPsg</name>
-			<value>PrimeAffinity</value>
+			<value>PrimeAffinityPSG</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1516054848809</modTime>
+			<modTime>1533666036145</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
