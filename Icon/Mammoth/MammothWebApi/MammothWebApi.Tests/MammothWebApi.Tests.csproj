@@ -129,6 +129,7 @@
     <Compile Include="Helpers\PriceTestData.cs" />
     <Compile Include="Helpers\ViewModelValidationHelper.cs" />
     <Compile Include="Models\PriceRequestModelUnitTests.cs" />
+    <Compile Include="Services\GetItemStorePriceAttributesServiceTests.cs" />
     <Compile Include="Services\CancelsAllSalesServiceTest.cs" />
     <Compile Include="Services\DeauthorizeItemLocaleServiceTests.cs" />
     <Compile Include="Services\ExtensionsTests.cs" />

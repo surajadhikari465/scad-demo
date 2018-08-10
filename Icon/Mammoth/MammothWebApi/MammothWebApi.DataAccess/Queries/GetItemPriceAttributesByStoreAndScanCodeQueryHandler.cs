@@ -51,17 +51,40 @@ namespace MammothWebApi.DataAccess.Queries
                         else
                             return p;
                     });
-                    var activeTprs = priceGroup.Where(p => p.PriceType != "REG" 
+                    var activeTprs = priceGroup.Where(p => p.PriceType != "REG"
                                                         && p.StartDate <= parameters.EffectiveDate
                                                         && p.EndDate >= parameters.EffectiveDate);
-                    allPrices.Add(currentRegularPrice);
-                    allPrices.AddRange(activeTprs);
+
+                    if (String.IsNullOrWhiteSpace(parameters.PriceType))
+                    {
+                        allPrices.Add(currentRegularPrice);
+                        allPrices.AddRange(activeTprs);
+                    }
+                    else
+                    {
+                        if (parameters.PriceType == "REG")
+                        {
+                            allPrices.Add(currentRegularPrice);
+                        }
+                        else
+                        {
+                            allPrices.AddRange(activeTprs.Where(p => p.PriceType == parameters.PriceType));
+                        }
+                    }
 
                     // Include
                     if (parameters.IncludeFuturePrices)
                     {
                         var futurePrices = priceGroup.Where(p => p.StartDate > DateTime.Today);
-                        allPrices.AddRange(futurePrices);
+
+                        if (String.IsNullOrWhiteSpace(parameters.PriceType))
+                        {
+                            allPrices.AddRange(futurePrices);
+                        }
+                        else
+                        {
+                            allPrices.AddRange(futurePrices.Where(p => p.PriceType == parameters.PriceType));
+                        }
                     }
                 }
             }

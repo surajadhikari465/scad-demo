@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Testing.Core;
@@ -81,26 +82,12 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_ValidStoreAndItem_ReturnsPrices()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_ValidStoreAndItem_ReturnsPrices()
         {
             // Given
             DateTime expectedStartDate = DateTime.UtcNow.Date.AddDays(-3);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedStartDate, null);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -141,40 +128,14 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_ExpiredRegularPriceExists_ReturnsOnlyActiveRegularPrice()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_ExpiredRegularPriceExists_ReturnsOnlyActiveRegularPrice()
         {
             // Given
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-3))
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-20)) // another REG starting earlier than the first price
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", DateTime.UtcNow.Date.AddDays(-3), null);
+            // another REG starting earlier than the first price
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", DateTime.UtcNow.Date.AddDays(-20), null);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -194,66 +155,24 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             // expect to only get one REG price with the newer StartDate
             var price = prices.Single(p => p.ScanCode == expectedItemScanCode && p.BusinessUnitID == expectedStoreBuId);
             Assert.AreEqual(DateTime.UtcNow.Date.AddDays(-3), price.StartDate);
+
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_ExpiredSalePriceExists_ReturnsOnlyActiveSalePrice()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_ExpiredSalePriceExists_ReturnsOnlyActiveSalePrice()
         {
             // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
             DateTime expectedTprStartDate = DateTime.UtcNow.Date.AddDays(-2);
             DateTime expectedTprEndDate = DateTime.UtcNow.Date.AddDays(15);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG")
-                    .CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 1.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedTprStartDate)
-                    .With(p => p.EndDate, expectedTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-8))
-                    .With(p => p.EndDate, DateTime.UtcNow.Date.AddDays(-4)) // EndDate is before today
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegularStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+            // EndDate is before today
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", DateTime.UtcNow.Date.AddDays(-8), DateTime.UtcNow.Date.AddDays(-4));
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -277,7 +196,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_SaleAndRewardPriceActive_ReturnsRegularAndSaleAndRewardPrice()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_SaleAndRewardPriceActive_ReturnsRegularAndSaleAndRewardPrice()
         {
             // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
@@ -286,72 +205,15 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             DateTime expectedRewardStartDate = DateTime.UtcNow.Date.AddDays(-2);
             DateTime expectedRewardEndDate = DateTime.UtcNow.Date.AddDays(15);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 1.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedTprStartDate)
-                    .With(p => p.EndDate, expectedTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-8))
-                    .With(p => p.EndDate, DateTime.UtcNow.Date.AddDays(-4)) // EndDate is before today
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "RWD")
-                    .With(p => p.StartDate, expectedRewardStartDate)
-                    .With(p => p.EndDate, expectedRewardEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "PRM").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegularStartDate);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+            // EndDate is before today
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", DateTime.UtcNow.Date.AddDays(-8), DateTime.UtcNow.Date.AddDays(-4));
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "RWD", "PRM", expectedRewardStartDate, expectedRewardEndDate);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -378,49 +240,18 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_RewardsPriceHasPercentOffPopulated_ReturnsPercentOffAsPartOfRewardsPrices()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_RewardsPriceHasPercentOffPopulated_ReturnsPercentOffAsPartOfRewardsPrices()
         {
-
             // Given
             decimal expectedPercentOff = 5.55m;
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-2);
             DateTime expectedRewardStartDate = DateTime.UtcNow.Date.AddDays(-2);
             DateTime expectedRewardEndDate = DateTime.UtcNow.Date.AddDays(15);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "RWD")
-                    .With(p => p.StartDate, expectedRewardStartDate)
-                    .With(p => p.EndDate, expectedRewardEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "PRM")
-                    .With(p => p.PercentOff, expectedPercentOff)
-                    .CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegularStartDate);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "RWD", "PRM", expectedRewardStartDate, expectedRewardEndDate, expectedPercentOff);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -446,7 +277,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_FuturePricesExistsAndIncludeFuturePricesIsTrue_ReturnsCurrentAndFuturePrice()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_FuturePricesExistsAndIncludeFuturePricesIsTrue_ReturnsCurrentAndFuturePrice()
         {
             // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
@@ -456,88 +287,19 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             DateTime expectedFutureTprStartDate = DateTime.UtcNow.Date.AddDays(20);
             DateTime expectedFutureTprEndDate = DateTime.UtcNow.Date.AddDays(40);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 1.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedTprStartDate)
-                    .With(p => p.EndDate, expectedTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-8))
-                    .With(p => p.EndDate, DateTime.UtcNow.Date.AddDays(-4)) // EndDate is before today
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 4.49m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedFutureRegStartDate) // future REG
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 4.49m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedFutureTprStartDate) // future TPR
-                    .With(p => p.EndDate, expectedFutureTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "SSAL").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegularStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+            // EndDate is before today
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", DateTime.UtcNow.Date.AddDays(-8), DateTime.UtcNow.Date.AddDays(-4));
+            // future REG
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "REG", "REG", expectedFutureRegStartDate, null);
+            // future TPR
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "TPR", "SSAL", expectedFutureTprStartDate, expectedFutureTprEndDate);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -559,7 +321,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_FuturePricesExistsAndIncludeFuturePricesIsFalse_ReturnsOnlyCurrentPrices()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_FuturePricesExistsAndIncludeFuturePricesIsFalse_ReturnsOnlyCurrentPrices()
         {
             // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
@@ -569,88 +331,19 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             DateTime expectedFutureTprStartDate = DateTime.UtcNow.Date.AddDays(20);
             DateTime expectedFutureTprEndDate = DateTime.UtcNow.Date.AddDays(40);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 1.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedTprStartDate)
-                    .With(p => p.EndDate, expectedTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, DateTime.UtcNow.Date.AddDays(-8))
-                    .With(p => p.EndDate, DateTime.UtcNow.Date.AddDays(-4)) // EndDate is before today
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 4.49m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedFutureRegStartDate) // future REG
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 4.49m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, expectedFutureTprStartDate) // future TPR
-                    .With(p => p.EndDate, expectedFutureTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "SSAL").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.50m, "REG", "REG", expectedRegularStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+            // EndDate is before today
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", DateTime.UtcNow.Date.AddDays(-8), DateTime.UtcNow.Date.AddDays(-4));
+            // future REG
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "REG", "REG", expectedFutureRegStartDate, null);
+            // future TPR
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "TPR", "SSAL", expectedFutureTprStartDate, expectedFutureTprEndDate);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -675,7 +368,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_NoPricesExists_ReturnsEmptyCollection()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_NoPricesExists_ReturnsEmptyCollection()
         {
             // Given
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
@@ -698,7 +391,7 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_EffectiveDateIsInTheFuture_ReturnsPricesActiveDuringEffectiveDate()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_EffectiveDateIsInTheFuture_ReturnsPricesActiveDuringEffectiveDate()
         {
             // Given
             DateTime effectiveDate = DateTime.Today.AddDays(10);
@@ -709,71 +402,16 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             DateTime effectiveDateTprStartDate = effectiveDate.AddDays(-2); // active according to effective date
             DateTime effectiveDateTprEndDate = effectiveDate.AddDays(5); // active according to effective date
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, activeRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 1.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, nonActiveTprStartDate) // non active tpr according to effective date - is not expected to be returned
-                    .With(p => p.EndDate, nonActiveTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "SSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.50m)
-                    .With(p => p.PriceType, "TPR")
-                    .With(p => p.StartDate, effectiveDateTprStartDate) // effective date tpr
-                    .With(p => p.EndDate, effectiveDateTprEndDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "MSAL").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 4.49m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expiredRegStartDate) // expired REG
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50M, "REG", "REG", activeRegularStartDate);
+            // non active tpr according to effective date - is not expected to be returned
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50M, "TPR", "SSAL", nonActiveTprStartDate, nonActiveTprEndDate);
+            // effective date tpr
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50M, "TPR", "MSAL", effectiveDateTprStartDate, effectiveDateTprEndDate);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "REG", "REG", expiredRegStartDate, null);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -798,43 +436,16 @@ namespace MammothWebApi.Tests.DataAccess.Queries
         }
 
         [TestMethod]
-        public void GetPricesGpmQuery_EffectiveDateInTheFuture_ReturnsFutureRegularPriceInsteadOfCurrentRegularPrice()
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_EffectiveDateInTheFuture_ReturnsFutureRegularPriceInsteadOfCurrentRegularPrice()
         {
             // Given
             DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-3);
             DateTime expectedFutureRegStartDate = DateTime.UtcNow.Date.AddDays(5);
 
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 3.50m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedRegularStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
-
-            this.db.Connection.Execute(
-                insertPriceSql,
-                objectFactory.Build<PricesGpm>()
-                    .With(p => p.Region, expectedRegion)
-                    .With(p => p.ItemID, expectedItemId)
-                    .With(p => p.BusinessUnitID, expectedStoreBuId)
-                    .With(p => p.Price, 2.99m)
-                    .With(p => p.PriceType, "REG")
-                    .With(p => p.StartDate, expectedFutureRegStartDate)
-                    .With(p => p.CurrencyCode, "USD")
-                    .With(p => p.GpmID, Guid.NewGuid())
-                    .With(p => p.SellableUOM, "EA")
-                    .With(p => p.InsertDateUtc, DateTime.UtcNow)
-                    .With(p => p.PriceTypeAttribute, "REG").CreatedObject,
-                this.db.Transaction);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegularStartDate);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.99m, "REG", "REG", expectedFutureRegStartDate);
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
@@ -854,6 +465,80 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             // Expect current and future prices
             Assert.AreEqual(1, prices.Count());
             Assert.AreEqual(expectedFutureRegStartDate, prices.Single().StartDate);
+        }
+
+        [TestMethod]
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_PriceTypeParameterReg_OnlyReturnsRegPrice()
+        {
+            // Given 
+            DateTime expectedTprStartDate = DateTime.UtcNow.Date.AddDays(-2);
+            DateTime expectedTprEndDate = DateTime.UtcNow.Date.AddDays(15);
+            DateTime expectedRegStartDate = DateTime.UtcNow.Date.AddDays(-3);
+
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+
+            this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
+            {
+                Region = expectedRegion,
+                EffectiveDate = expectedEffectiveDate,
+                StoreScanCodeCollection = new List<StoreScanCode>
+                {
+                    new StoreScanCode
+                    {
+                        ScanCode = expectedItemScanCode,
+                        BusinessUnitID = expectedStoreBuId
+                    }
+                },
+                PriceType = "REG"
+            };
+
+            // When
+            var prices = this.queryHandler.Search(this.query);
+
+            // Then
+            var price = prices.Single(p => p.ScanCode == expectedItemScanCode && p.BusinessUnitID == expectedStoreBuId);
+            Assert.AreEqual("REG", price.PriceType);
+            Assert.AreEqual(true, price.Authorized);
+        }
+
+        [TestMethod]
+        public void GetItemPriceAttributesByStoreAndScanCodeQuery_PriceTypeParameterTpr_OnlyReturnsTprPrice()
+        {
+            // Given 
+            DateTime expectedTprStartDate = DateTime.UtcNow.Date.AddDays(-2);
+            DateTime expectedTprEndDate = DateTime.UtcNow.Date.AddDays(15);
+            DateTime expectedRegStartDate = DateTime.UtcNow.Date.AddDays(-3);
+
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                3.50m, "REG", "REG", expectedRegStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                1.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+
+            this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
+            {
+                Region = expectedRegion,
+                EffectiveDate = expectedEffectiveDate,
+                StoreScanCodeCollection = new List<StoreScanCode>
+                {
+                    new StoreScanCode
+                    {
+                        ScanCode = expectedItemScanCode,
+                        BusinessUnitID = expectedStoreBuId
+                    }
+                },
+                PriceType = "TPR"
+            };
+
+            // When
+            var prices = this.queryHandler.Search(this.query);
+
+            // Then
+            var price = prices.Single(p => p.ScanCode == expectedItemScanCode && p.BusinessUnitID == expectedStoreBuId);
+            Assert.AreEqual("TPR", price.PriceType);
+            Assert.AreEqual(true, price.Authorized);
         }
 
         private void SetupInsertSqlStatements()
@@ -967,6 +652,51 @@ namespace MammothWebApi.Tests.DataAccess.Queries
                     .With(il => il.Sign_Desc, expectedSignDescription)
                     .CreatedObject,
                 this.db.Transaction);
+        }
+
+        private void InsertGpmPriceObject(IDbConnection dbConnection, string insertSql, IDbTransaction transaction,
+            string region, int itemID, int businessUnit,
+            decimal price, string priceType, string priceTypeAttribute, DateTime startDate, DateTime? endDate = null,
+            decimal? percentOff = null, string currencyCode = "USD", string sellableUOM = "EA")
+        {
+            dbConnection.Execute(
+                insertSql,
+                BuildGpmPriceObject(region, itemID, businessUnit, price, priceType, priceTypeAttribute,
+                    startDate, endDate, percentOff, currencyCode, sellableUOM),
+                transaction);
+        }
+
+        private void InsertGpmPriceObject(string region, int itemID, int businessUnit,
+            decimal price, string priceType, string priceTypeAttribute, DateTime startDate, DateTime? endDate = null,
+            decimal? percentOff = null, string currencyCode = "USD", string sellableUOM = "EA")
+        {
+            InsertGpmPriceObject(this.db.Connection, this.insertPriceSql, this.db.Transaction,
+                region, itemID, businessUnit, price, priceType, priceTypeAttribute, startDate, endDate,
+                percentOff, currencyCode, sellableUOM);
+        }
+
+        private PricesGpm BuildGpmPriceObject(string region, int itemID, int businessUnit,
+            decimal price, string priceType, string priceTypeAttributem, DateTime startDate, DateTime? endDate = null,
+            decimal? percentOff = null, string currencyCode = "USD", string sellableUOM = "EA")
+        {
+            var gpmID = Guid.NewGuid();
+            var insertDateUtc = DateTime.UtcNow;
+
+            return objectFactory.Build<PricesGpm>()
+                     .With(p => p.Region, region)
+                     .With(p => p.ItemID, itemID)
+                     .With(p => p.BusinessUnitID, businessUnit)
+                     .With(p => p.Price, price)
+                     .With(p => p.PriceType, priceType)
+                     .With(p => p.StartDate, startDate)
+                     .With(p => p.EndDate, endDate)
+                     .With(p => p.CurrencyCode, currencyCode)
+                     .With(p => p.GpmID, gpmID)
+                     .With(p => p.SellableUOM, sellableUOM)
+                     .With(p => p.InsertDateUtc, insertDateUtc)
+                     .With(p => p.PriceTypeAttribute, priceTypeAttributem)
+                     .With(p => p.PercentOff, percentOff)
+                .CreatedObject;
         }
     }
 }

@@ -49,7 +49,8 @@ namespace MammothWebApi.Service.Services
                     Region = row.Key,
                     EffectiveDate = data.EffectiveDate,
                     IncludeFuturePrices = data.IncludeFuturePrices,
-                    StoreScanCodeCollection = row.Value.Select(v => new StoreScanCode { BusinessUnitID = v.BusinessUnitId, ScanCode = v.ScanCode })
+                    StoreScanCodeCollection = row.Value.Select(v => new StoreScanCode { BusinessUnitID = v.BusinessUnitId, ScanCode = v.ScanCode }),
+                    PriceType = data.PriceType
                 };
 
                 var currentPrices = this.getItemPriceQueryHandler.Search(param);

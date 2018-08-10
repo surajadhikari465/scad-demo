@@ -11,5 +11,6 @@ namespace MammothWebApi.DataAccess.Queries
         public DateTime EffectiveDate { get; set; }
         public IEnumerable<StoreScanCode> StoreScanCodeCollection { get; set; }
         public bool IncludeFuturePrices { get; set; }
+        public string PriceType { get; set; }
     }
 }

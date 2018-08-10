@@ -5,6 +5,7 @@ using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Models;
 using MammothWebApi.Service.Services;
+using MammothWebApi.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -318,6 +319,338 @@ namespace MammothWebApi.Tests.Controllers
 
             // Then
             Assert.IsNotNull(result, "An Ok (Http 200) response was not returned as expected.");
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_SinglePriceRequestWithInvalidModel_ReturnsBadRequestErrorMessageResult()
+        {
+            // Given
+            var priceRequestModel = new PriceRequestModel()
+            {
+                BusinessUnitId = 11111,
+                ScanCode = "1234567890123456",
+                EffectiveDate = DateTime.Now.Date
+            };
+            //manually add an error to the controller's model state to simulate an invalid model
+            this.controller.ModelState.AddModelError("ScanCode", "ScanCode max length 13");
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(BadRequestErrorMessageResult),
+                "A BadRequestErrorMessageResult response was not returned as expected.");
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_PriceCollectionRequestWithInvalidModel_ReturnsBadRequestErrorMessageResult()
+        {
+            // Given
+            int numItems = 3;
+            var testStoreItems = new List<StoreItem>(numItems);
+            for (int i = 1; i < numItems + 1; i++)
+            {
+                int testBizUnit = 11111 * i;
+                string testScanCode = $"777777777{i}";
+                testStoreItems.Add(new StoreItem { BusinessUnitId = testBizUnit, ScanCode = testScanCode });
+            }
+            var priceRequestModel = new PriceCollectionRequestModel()
+            {
+                StoreItems = testStoreItems,
+                IncludeFuturePrices = false
+            };
+            //manually add an error to the controller's model state to simulate an invalid model
+            this.controller.ModelState.AddModelError("StoreItems", "StoreItems is required");
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(BadRequestErrorMessageResult),
+                "A BadRequestErrorMessageResult response was not returned as expected.");
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_SinglePriceRequest_ReturnsJsonContentResponse()
+        {
+            // Given
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, "7777777770", 11111, 5.67M, DateTime.Now.AddDays(-7))
+            };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var priceRequestModel = new PriceRequestModel()
+            {
+                BusinessUnitId = 11111,
+                ScanCode = "7777777770",
+                EffectiveDate = DateTime.Now.Date
+            };
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(JsonResult<IEnumerable<ItemStorePriceModel>>),
+                "A JsonResult response was not returned as expected.");
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_SinglePriceRequest_ReturnsContentWithItemStorePriceModel()
+        {
+            // Given
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, "7777777770", 22222, 4.44M, DateTime.Now.AddDays(-4))
+            };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var priceRequestModel = new PriceRequestModel()
+            {
+                BusinessUnitId = 22222,
+                ScanCode = "7777777770",
+                EffectiveDate = DateTime.Now.Date
+            };
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(JsonResult<IEnumerable<ItemStorePriceModel>>));
+            var returnedPrices = (response as JsonResult<IEnumerable<ItemStorePriceModel>>).Content.ToList();
+            Assert.IsNotNull(returnedPrices);
+            Assert.AreEqual(1, returnedPrices.Count);
+            Assert.AreEqual(22222, returnedPrices[0].BusinessUnitID);
+            Assert.AreEqual("7777777770", returnedPrices[0].ScanCode);
+            Assert.AreEqual(50001, returnedPrices[0].ItemId);
+            Assert.AreEqual(4.44M, returnedPrices[0].Price);
+            Assert.AreEqual(DateTime.Now.AddDays(-4).Date, returnedPrices[0].StartDate);
+            Assert.AreEqual(true, returnedPrices[0].Authorized);
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_SinglePriceRequest_WithPriceTypeREG_CallsServiceWithREGParameter()
+        {
+            // Given
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, "7777777777", 33333, 0.98M, DateTime.Now.AddDays(-5))
+            };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var priceRequestModel = new PriceRequestModel()
+            {
+                BusinessUnitId = 33333,
+                ScanCode = "7777777777",
+                EffectiveDate = DateTime.Now.Date
+            };
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel, "REG");
+
+            // Then
+            this.mockGetItemStorePriceService
+                .Verify(s => s.Get(It.Is<GetItemStorePriceAttributes>(q => q.PriceType == "REG")), Times.Once);
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_SinglePriceRequest_WithPriceTypeTPR_CallsServiceWithTPRParameter()
+        {
+            // Given
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelTpr(50001, "7777777774", 11111, 14.04M, DateTime.Now.AddDays(-2), DateTime.Now.AddDays(4))
+            };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var priceRequestModel = new PriceRequestModel()
+            {
+                BusinessUnitId = 11111,
+                ScanCode = "7777777774",
+                EffectiveDate = DateTime.Now.Date
+            };
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel, "TPR");
+
+            // Then
+            this.mockGetItemStorePriceService
+                .Verify(s => s.Get(It.Is<GetItemStorePriceAttributes>(q => q.PriceType == "TPR")), Times.Once);
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_PriceCollectionRequest_ReturnsJsonContentResponse()
+        {
+            // Given
+            //int numItems = 3;
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, $"7777777771", 11111, 4.44M, DateTime.Now.AddDays(-2)),
+                BuildItemStorePriceModelReg(50002, $"7777777772", 22222, 5.55M, DateTime.Now.AddDays(-3)),
+                BuildItemStorePriceModelReg(50003, $"7777777773", 33333, 6.66M, DateTime.Now.AddDays(-1)),
+             };
+            //var testItemStorePriceModels = new List<ItemStorePriceModel>(numItems);
+
+            //testItemStorePriceModels.Add(
+            //    BuildItemStorePriceModelReg(50001, $"7777777771", 11111, 4.44M, DateTime.Now.AddDays(-2)));
+            //testItemStorePriceModels.Add(
+            //    BuildItemStorePriceModelReg(50002, $"7777777772", 22222, 5.55M, DateTime.Now.AddDays(-3)));
+            //testItemStorePriceModels.Add(
+            //    BuildItemStorePriceModelReg(50003, $"7777777773", 33333, 6.66M, DateTime.Now.AddDays(-1)));
+
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var testStoreItems = ItemStorePriceModelToStoreItem(testItemStorePriceModels);
+            var priceRequestModel = new PriceCollectionRequestModel()
+            {
+                StoreItems = testStoreItems,
+                IncludeFuturePrices = false
+            };
+            //this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+            //    .Returns(testItemStorePriceModels);
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            var returnedPrices = (response as JsonResult<IEnumerable<ItemStorePriceModel>>).Content.ToList();
+            Assert.IsInstanceOfType(response, typeof(JsonResult<IEnumerable<ItemStorePriceModel>>),
+                "A JsonResult response was not returned as expected.");
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_PriceCollectionRequest_ReturnsContentWithItemStorePriceModels()
+        {
+            // Given
+            int numItems = 3;
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, $"7777777771", 11111, 4.44M, DateTime.Now.AddDays(-2)),
+                BuildItemStorePriceModelReg(50002, $"7777777772", 22222, 5.55M, DateTime.Now.AddDays(-3)),
+                BuildItemStorePriceModelTpr(50001, $"7777777771", 11111, 3.33M, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3)),
+             };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var testStoreItems = ItemStorePriceModelToStoreItem(testItemStorePriceModels);
+
+            var priceRequestModel = new PriceCollectionRequestModel()
+            {
+                StoreItems = testStoreItems,
+                IncludeFuturePrices = false
+            };
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(JsonResult<IEnumerable<ItemStorePriceModel>>));
+            var returnedPrices = (response as JsonResult<IEnumerable<ItemStorePriceModel>>).Content.ToList();
+            Assert.IsNotNull(returnedPrices);
+            Assert.AreEqual(numItems, returnedPrices.Count);
+            for (int i = 0; i< numItems; i++)
+            {
+                Assert.AreEqual(testItemStorePriceModels[i].BusinessUnitID, returnedPrices[i].BusinessUnitID);
+                Assert.AreEqual(testItemStorePriceModels[i].ScanCode, returnedPrices[i].ScanCode);
+                Assert.AreEqual(testItemStorePriceModels[i].ItemId, returnedPrices[i].ItemId);
+                Assert.AreEqual(testItemStorePriceModels[i].Price, returnedPrices[i].Price);
+                Assert.AreEqual(testItemStorePriceModels[i].StartDate, returnedPrices[i].StartDate);
+                Assert.AreEqual(testItemStorePriceModels[i].PriceType, returnedPrices[i].PriceType);
+                Assert.AreEqual(testItemStorePriceModels[i].Authorized, returnedPrices[i].Authorized);
+            }
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_PriceCollectionRequest_WithPriceTypeREG_CallsServiceWithREGParameter()
+        {
+            // Given
+            //int numItems = 3;
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelReg(50001, $"7777777771", 11111, 4.44M, DateTime.Now.AddDays(-2)),
+                BuildItemStorePriceModelReg(50002, $"7777777772", 22222, 5.55M, DateTime.Now.AddDays(-3)),
+                BuildItemStorePriceModelTpr(50001, $"7777777771", 22222, 3.33M, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3)),
+             };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var testStoreItems = ItemStorePriceModelToStoreItem(testItemStorePriceModels);
+            var priceRequestModel = new PriceCollectionRequestModel()
+            {
+                StoreItems = testStoreItems,
+                IncludeFuturePrices = false
+            };
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel, "REG");
+
+            // Then
+            this.mockGetItemStorePriceService
+                .Verify(s => s.Get(It.Is<GetItemStorePriceAttributes>(q => q.PriceType == "REG")), Times.Once);
+        }
+
+        [TestMethod]
+        public void PriceControllerGetPrices_PriceCollectionRequest_WithPriceTypeTPR_CallsServiceWithTPRParameter()
+        {
+            // Given
+            var testItemStorePriceModels = new List<ItemStorePriceModel>
+            {
+                BuildItemStorePriceModelTpr(50001, $"7777777771", 11111, 2.98M, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3)),
+                BuildItemStorePriceModelTpr(50001, $"7777777772", 22222, 2.98M, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3)),
+                BuildItemStorePriceModelTpr(50001, $"7777777773", 33333, 2.98M, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(3))
+            };
+            this.mockGetItemStorePriceService.Setup(s => s.Get(It.IsAny<GetItemStorePriceAttributes>()))
+                .Returns(testItemStorePriceModels);
+
+            var testStoreItems = ItemStorePriceModelToStoreItem(testItemStorePriceModels);
+            var priceRequestModel = new PriceCollectionRequestModel()
+            {
+                StoreItems = testStoreItems,
+                IncludeFuturePrices = false
+            };
+
+            // When
+            var response = this.controller.GetPrices(priceRequestModel, "TPR");
+
+            // Then
+            this.mockGetItemStorePriceService
+                .Verify(s => s.Get(It.Is<GetItemStorePriceAttributes>( q=> q.PriceType == "TPR")), Times.Once);
+        }
+
+        private ItemStorePriceModel BuildItemStorePriceModelReg(int itemID, string scanCode, int businessUnit,
+            decimal price, DateTime startDate)
+        {
+            return BuildItemStorePriceModel(itemID, scanCode, businessUnit, price, startDate);
+        }
+
+        private ItemStorePriceModel BuildItemStorePriceModelTpr(int itemID, string scanCode, int businessUnit,
+            decimal price, DateTime startDate, DateTime endDate)
+        {
+            return BuildItemStorePriceModel(itemID, scanCode, businessUnit, price, startDate, endDate,
+                "TPR", "MSAL");
+        }
+
+        private ItemStorePriceModel BuildItemStorePriceModel(int itemID, string scanCode, int businessUnit,
+            decimal price, DateTime startDate, DateTime? endDate = null,
+            string priceType = "REG", string priceTypeAttributem = "REG")
+        {
+            return PriceTestData.CreateItemStorePriceModel(itemID, scanCode, businessUnit,
+                price, priceType, priceTypeAttributem, startDate, endDate);           
+        }
+
+        private List<StoreItem> ItemStorePriceModelToStoreItem(IList<ItemStorePriceModel> storePriceModels)
+        {
+            var storeItems = new List<StoreItem>(storePriceModels.Count);
+            if (storePriceModels.Any())
+            {
+                return storePriceModels
+                    .Select(p=> new StoreItem { BusinessUnitId = p.BusinessUnitID , ScanCode = p.ScanCode })
+                    .ToList();
+            }
+            return storeItems;
         }
 
         private List<MammothWebApi.Models.CancelAllSalesModel> BuildCancelAllSalesModel()

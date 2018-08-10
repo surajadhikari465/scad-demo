@@ -12,5 +12,6 @@ namespace MammothWebApi.Service.Services
         public DateTime EffectiveDate { get; set; }
         public IEnumerable<StoreScanCodeServiceModel> ItemStores { get; set; }
         public bool IncludeFuturePrices { get; set; }
+        public string PriceType { get; set; }
     }
 }
