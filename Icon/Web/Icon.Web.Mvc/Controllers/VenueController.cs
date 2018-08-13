@@ -85,7 +85,7 @@ namespace Icon.Web.Controllers
                 ParentLocaleId = viewModel.ParentLocaleId,
                 OpenDate = viewModel.OpenDate,
                 VenueCode = viewModel.VenueCode,
-                VenueOccupant = viewModel.VenueCode,
+                VenueOccupant = viewModel.VenueOccupant,
                 LocaleSubTypeId = viewModel.LocaleSubTypeId,
                 LocaleSubType = localeSubTypes.Where(ls => ls.localeSubTypeID == viewModel.LocaleSubTypeId).Select(s => s.localeSubTypeDesc).First(),
                 UserName = User.Identity.Name,
