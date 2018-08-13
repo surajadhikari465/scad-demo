@@ -163,12 +163,12 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 nutritionAttributes.Magnesium = GetIntTraitValue(TraitCodes.Magnesium, traits);
                 nutritionAttributes.Zinc = GetIntTraitValue(TraitCodes.Zinc, traits);
                 nutritionAttributes.Copper = GetIntTraitValue(TraitCodes.Copper, traits);
-                nutritionAttributes.TransFat = (int)GetFloatTraitValue(TraitCodes.Transfat, traits);
-                nutritionAttributes.TransFatWeight = (int)GetFloatTraitValue(TraitCodes.TransfatWeight, traits);
+                nutritionAttributes.TransFat = (decimal?)GetFloatTraitValue(TraitCodes.Transfat, traits);
+                nutritionAttributes.TransFatWeight = (decimal?)GetFloatTraitValue(TraitCodes.TransfatWeight, traits);
                 nutritionAttributes.CaloriesFromTransFat = GetIntTraitValue(TraitCodes.CaloriesFromTransFat, traits);
-                nutritionAttributes.Om3Fatty = (int)GetFloatTraitValue(TraitCodes.Om3Fatty, traits);
-                nutritionAttributes.Om6Fatty = (int)GetFloatTraitValue(TraitCodes.Om6Fatty, traits);
-                nutritionAttributes.Starch = (int)GetFloatTraitValue(TraitCodes.Starch, traits);
+                nutritionAttributes.Om3Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om3Fatty, traits);
+                nutritionAttributes.Om6Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om6Fatty, traits);
+                nutritionAttributes.Starch = (decimal?)GetFloatTraitValue(TraitCodes.Starch, traits);
                 nutritionAttributes.Chloride = GetIntTraitValue(TraitCodes.Chloride, traits);
                 nutritionAttributes.Chromium = GetIntTraitValue(TraitCodes.Chromium, traits);
                 nutritionAttributes.VitaminK = GetIntTraitValue(TraitCodes.VitaminK, traits);
