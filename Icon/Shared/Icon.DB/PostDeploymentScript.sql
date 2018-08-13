@@ -17,3 +17,4 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\AddVenueLocaleType.sql -- 2018.07.24
 :r .\Scripts\PopulateData\Release\AddVenueCodeOccupantLocaleTrait.sql -- 2018.07.26
 :r .\Scripts\PopulateData\Release\AddLocaleSubtypeTrait.sql -- 2018.08.01
+:r .\Scripts\PopulateData\Release\AddHospitalityToLocaleSubType.sql -- 2018.08.03
