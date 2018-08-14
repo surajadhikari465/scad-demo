@@ -1320,6 +1320,9 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                 GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_DESC2_ATTR_KEY)
                                 GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_UNIT_ID_ATTR_KEY)
                             End If
+                            If isDefaultJurisdiction Then
+                                GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SIGN_DESCRIPTION_ATTR_KEY)
+                            End If
                         End If
 
                         Dim enforceSubteamLocking As Boolean = InstanceDataDAO.IsFlagActive("UKIPS")
