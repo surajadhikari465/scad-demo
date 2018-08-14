@@ -595,9 +595,10 @@ Public Class TransferScan
             Try
                 ' Attempt a service call to search for an item.
                 serviceCallSuccess = True
+                Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
 
                 'check for scale item
-                Me.txtUpc.Text = ScaleItemCheck(Me.txtUpc.Text)
+                Me.txtUpc.Text = ScaleItemCheck(currentScannedUpc)
                 result = Me.mySession.WebProxyClient.GetTransferItem(0, Me.txtUpc.Text, mySession.SelectedProductType, Convert.ToInt32(mySession.TransferFromStoreNo), mySession.transferVendorId, Convert.ToInt32(mySession.TransferFromSubteamKey), mySession.SelectedSupplySubteam.ToString())
 
                 ' Explicitly handle service faults, timeouts, and connection failures.  If this search fails, allow the user to retry.

@@ -590,8 +590,11 @@ Public Class ReceiveDocumentScan
         ItemIsLoaded = False
 
         If Not String.IsNullOrEmpty(txtUPC.Text) Then
+
+            Dim currentScannedUpc = GetUpc(Me.txtUPC.Text)
+
             'check for scale item
-            Me.txtUPC.Text = ScaleItemCheck(Me.txtUPC.Text)
+            Me.txtUPC.Text = ScaleItemCheck(currentScannedUpc)
 
             Try
                 ' Attempt a service call to get item information and quantity units.
@@ -605,17 +608,17 @@ Public Class ReceiveDocumentScan
                 Dim err As New ErrorHandler(serviceFault)
                 err.ShowErrorNotification()
                 serviceCallSuccess = False
-                
+
             Catch ex As TimeoutException
                 Dim err As New ErrorHandler()
                 err.DisplayErrorMessage(Messages.TIMEOUT_EXCEPTION, "Search")
                 serviceCallSuccess = False
-                
+
             Catch ex As CommunicationException
                 Dim err As New ErrorHandler()
                 err.DisplayErrorMessage(Messages.COMM_EXCEPTION, "Search")
                 serviceCallSuccess = False
-                
+
             Catch ex As Exception
                 Dim err As New ErrorHandler()
                 err.DisplayErrorMessage(ex.Message, "Search")

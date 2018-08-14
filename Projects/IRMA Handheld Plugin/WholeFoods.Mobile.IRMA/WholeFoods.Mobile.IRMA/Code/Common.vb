@@ -130,4 +130,35 @@ Public Class Common
         Return reasonCodeAbbr
     End Function
 
+    Public Shared Function GetUpc(ByVal barcode As String) As String
+        Dim upc As String = String.Empty
+        Dim charArray As Char() = {"0"c}
+
+        If (barcode.Length <= 13) Then
+            upc = barcode.TrimStart(charArray)
+        Else
+            upc = ExtractUpcFromQrCode(barcode)
+        End If
+
+        Return upc
+
+    End Function
+
+    Private Shared Function ExtractUpcFromQrCode(ByVal barcode As String) As String
+        Dim upc As String = String.Empty
+        Dim startingPosition As Integer = 5
+        Dim charArray As Char() = {"0"c}
+        Dim startingPositionIfNoCharacters As Integer = 2
+        Dim length As Integer = 13
+
+        If (barcode.StartsWith("]C")) Then
+            upc = barcode.Substring(startingPosition, length).TrimStart(charArray)
+        Else
+            upc = barcode.Substring(startingPositionIfNoCharacters, length).TrimStart(charArray)
+        End If
+
+        Return upc
+
+    End Function
+
 End Class

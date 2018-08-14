@@ -504,9 +504,10 @@ Public Class ShrinkScan
             Try
                 ' Attempt a service call to search for an item.
                 serviceCallSuccess = True
+                Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
 
                 'check for scale item
-                Me.txtUpc.Text = ScaleItemCheck(Me.txtUpc.Text)
+                Me.txtUpc.Text = ScaleItemCheck(currentScannedUpc)
                 myItem = Me.mySession.WebProxyClient.GetStoreItem(mySession.StoreNo, mySession.SubteamKey, mySession.UserID, Nothing, Me.txtUpc.Text)
 
 

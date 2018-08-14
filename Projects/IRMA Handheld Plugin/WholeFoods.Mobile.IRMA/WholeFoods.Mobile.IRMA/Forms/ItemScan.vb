@@ -367,9 +367,11 @@ Public Class ItemScan
         Dim IsDSDVendor As Boolean = False
 
         If Not String.IsNullOrEmpty(txtUpc.Text) Then
+
+            Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
             'check for scale item
-            Me.txtUpc.Text = ScaleItemCheck(txtUpc.Text)
-            
+            Me.txtUpc.Text = ScaleItemCheck(currentScannedUpc)
+
             Try
                 IsDSDVendor = Me.mySession.WebProxyClient.IsDSDStoreVendorByUPC(Me.txtUpc.Text, mySession.StoreNo)
 

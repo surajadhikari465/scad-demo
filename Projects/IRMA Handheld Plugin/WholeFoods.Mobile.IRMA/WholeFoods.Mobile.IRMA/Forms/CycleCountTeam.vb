@@ -3,6 +3,8 @@ Imports System
 Imports System.Linq
 Imports System.Data
 Imports System.ServiceModel
+Imports WholeFoods.Mobile.IRMA.Common
+
 
 Public Class CycleCountTeam
     Inherits HandheldHardware.ScanForm
@@ -369,8 +371,11 @@ Public Class CycleCountTeam
         Dim sIdentifier As String = ""
 
         If Not String.IsNullOrEmpty(txtUpc.Text) Then
+
+            Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
+
             'trim only leading zeros
-            Me.txtUpc.Text = Me.txtUpc.Text.TrimStart(charArray)
+            Me.txtUpc.Text = currentScannedUpc.TrimStart(charArray)
 
             'check if scale item and if so, format it to have 00000 at the end
             If txtUpc.Text.Length = 11 And txtUpc.Text.StartsWith("2") Then
@@ -408,7 +413,7 @@ Public Class CycleCountTeam
                 err.DisplayErrorMessage(ex.Message, "Search")
                 serviceCallSuccess = False
             End Try
-            
+
             If Not serviceCallSuccess Then
                 ' The call to GetStoreItem failed.  Exit the method.
                 Return False
@@ -444,7 +449,7 @@ Public Class CycleCountTeam
                         err.DisplayErrorMessage(ex.Message, "PopulateInformation")
                         found = False
                     End Try
-                    
+
 
                     'cycle master
                     Try

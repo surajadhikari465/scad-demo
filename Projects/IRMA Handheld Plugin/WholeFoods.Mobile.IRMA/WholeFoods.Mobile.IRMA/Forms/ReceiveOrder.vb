@@ -1177,9 +1177,10 @@ Public Class ReceiveOrder
             Exit Sub
         End If
 
+        Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
         ' Verify that the UPC value is an integer (needs to be 64-bit to avoid overflow).
         Try
-            Int64.Parse(txtUpc.Text)
+            Int64.Parse(currentScannedUpc)
         Catch ex As FormatException
             MessageBox.Show("Please enter a numeric value for the UPC with no special characters.", "Invalid UPC", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Cursor.Current = Cursors.Default
@@ -1195,7 +1196,7 @@ Public Class ReceiveOrder
         End Try
 
         ' Check for scale item.
-        Me.txtUpc.Text = ScaleItemCheck(Me.txtUpc.Text)
+        Me.txtUpc.Text = ScaleItemCheck(currentScannedUpc)
 
         Dim storeItem As StoreItem = Nothing
         Try
@@ -1710,9 +1711,11 @@ Public Class ReceiveOrder
 
     Private Sub FindOrdersByUPC()
 
+        Dim currentScannedUpc = GetUpc(Me.txtUpc.Text)
         ' Verify that the UPC value is an integer (needs to be 64-bit to avoid overflow).
         Try
-            Int64.Parse(txtUpc.Text)
+
+            Int64.Parse(currentScannedUpc)
         Catch ex As FormatException
             MessageBox.Show("Please enter a numeric value for the UPC with no special characters.", "Invalid UPC", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
             Cursor.Current = Cursors.Default
@@ -1727,7 +1730,7 @@ Public Class ReceiveOrder
             Exit Sub
         End Try
 
-        Dim findOrderByItem As New FindOrderByItem(mySession, txtUpc.Text)
+        Dim findOrderByItem As New FindOrderByItem(mySession, currentScannedUpc)
 
         If findOrderByItem.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' A PO# was chosen by the user.  Populate the value and search for that PO#.
