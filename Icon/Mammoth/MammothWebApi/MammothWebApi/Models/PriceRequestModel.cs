@@ -16,5 +16,7 @@ namespace MammothWebApi.Models
         [Required]
         [Range(typeof(DateTime), "9/26/2017", "1/18/2038")]
         public DateTime EffectiveDate { get; set; }
+
+        public string PriceType { get; set; }
     }
 }

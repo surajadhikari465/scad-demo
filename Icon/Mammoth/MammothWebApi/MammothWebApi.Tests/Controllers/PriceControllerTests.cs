@@ -443,11 +443,12 @@ namespace MammothWebApi.Tests.Controllers
             {
                 BusinessUnitId = 33333,
                 ScanCode = "7777777777",
-                EffectiveDate = DateTime.Now.Date
+                EffectiveDate = DateTime.Now.Date,
+                PriceType = "REG"
             };
 
             // When
-            var response = this.controller.GetPrices(priceRequestModel, "REG");
+            var response = this.controller.GetPrices(priceRequestModel);
 
             // Then
             this.mockGetItemStorePriceService
@@ -469,11 +470,12 @@ namespace MammothWebApi.Tests.Controllers
             {
                 BusinessUnitId = 11111,
                 ScanCode = "7777777774",
-                EffectiveDate = DateTime.Now.Date
+                EffectiveDate = DateTime.Now.Date,
+                PriceType = "TPR"
             };
 
             // When
-            var response = this.controller.GetPrices(priceRequestModel, "TPR");
+            var response = this.controller.GetPrices(priceRequestModel);
 
             // Then
             this.mockGetItemStorePriceService
@@ -581,11 +583,12 @@ namespace MammothWebApi.Tests.Controllers
             var priceRequestModel = new PriceCollectionRequestModel()
             {
                 StoreItems = testStoreItems,
-                IncludeFuturePrices = false
+                IncludeFuturePrices = false,
+                PriceType = "REG"
             };
 
             // When
-            var response = this.controller.GetPrices(priceRequestModel, "REG");
+            var response = this.controller.GetPrices(priceRequestModel);
 
             // Then
             this.mockGetItemStorePriceService
@@ -609,11 +612,12 @@ namespace MammothWebApi.Tests.Controllers
             var priceRequestModel = new PriceCollectionRequestModel()
             {
                 StoreItems = testStoreItems,
-                IncludeFuturePrices = false
+                IncludeFuturePrices = false,
+                PriceType = "TPR"
             };
 
             // When
-            var response = this.controller.GetPrices(priceRequestModel, "TPR");
+            var response = this.controller.GetPrices(priceRequestModel);
 
             // Then
             this.mockGetItemStorePriceService

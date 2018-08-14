@@ -175,7 +175,7 @@ namespace MammothWebApi.Controllers
 
         [HttpGet]
         [Route("api/price")]
-        public IHttpActionResult GetPrices([FromUri] PriceRequestModel request, string priceType = null)
+        public IHttpActionResult GetPrices([FromUri] PriceRequestModel request)
         {
             if (!ModelState.IsValid || request == null)
             {
@@ -194,7 +194,7 @@ namespace MammothWebApi.Controllers
                     ItemStores = priceRequests.ToStoreScanCodeServiceModel(),
                     EffectiveDate = request.EffectiveDate,
                     IncludeFuturePrices = false,
-                    PriceType = priceType
+                    PriceType = request.PriceType
                 };
 
                 var prices = this.itemStorePriceQueryService.Get(getItemPrice);
@@ -211,7 +211,7 @@ namespace MammothWebApi.Controllers
 
         [HttpPost]
         [Route("api/price")]
-        public IHttpActionResult GetPrices([FromBody] PriceCollectionRequestModel request, string priceType = null)
+        public IHttpActionResult GetPrices([FromBody] PriceCollectionRequestModel request)
         {
             if (!ModelState.IsValid || request == null)
             {
@@ -225,7 +225,7 @@ namespace MammothWebApi.Controllers
                     ItemStores = request.StoreItems.ToStoreScanCodeServiceModel(),
                     EffectiveDate = DateTime.Today, // Get current prices
                     IncludeFuturePrices = request.IncludeFuturePrices, // include future if requested
-                    PriceType = priceType
+                    PriceType = request.PriceType
                 };
 
                 var prices = this.itemStorePriceQueryService.Get(getItemPrice);
