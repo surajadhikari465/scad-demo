@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
+﻿alter PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
 	@UploadSession_ID			integer,
 	@UploadRow_ID				int,
 	@RetryCount					int,
@@ -50,6 +50,7 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
                                     or validated produce items if the region doesn't have any stores on GPM. 
 									If a region has a store on GPM, the Retail Size and Retail UOM update will be blocked
 									after the item is validated.
+EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates if the validated Customer Friendly Description is in use
 ***********************************************************************************************/
 	
 	SET NOCOUNT ON
@@ -233,7 +234,7 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
 		-- pre-populate data variables
 		DECLARE @IsDefaultJurisdictionValue varchar(10),
 			@StoreJurisdictionIDValue varchar(10)
-		
+
 		-- get the jurtisdiction values from the upload
 		SELECT @IsDefaultJurisdictionValue = uv.Value
 			FROM UploadValue (NOLOCK) uv
@@ -729,7 +730,10 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
 		   AND ((CONVERT(FLOAT, Identifier) >= 46000000000 And CONVERT(FLOAT, Identifier)  <= 46999999999) Or (CONVERT(FLOAT, Identifier) >= 48000000000 And CONVERT(FLOAT, Identifier) <= 48999999999))
 		   AND Deleted_Identifier = 0 
 		   AND Remove_Identifier = 0
-		
+
+		--check whether the Sign Caption is controlled by Icon or not
+		DECLARE	@enableIconSignCaptionUpdatedFlag bit = ISNULL((SELECT FlagValue FROM dbo.InstanceDataFlags WHERE FlagKey = 'EnableIconSignCaptionUpdates')	,0)
+				
 		-- Now loop through the UploadValues for the UploadRow
 		-- and marshall the values into the appropriate variable
 		DECLARE UploadValue_cursor CURSOR FOR
@@ -760,7 +764,15 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
 				ELSE IF @ColumnName = LOWER('Item_Description')
 					SELECT  @Item_Description = CASE WHEN @BlockCanonicalFieldUpdate = 0 THEN CAST(@ColumnValue AS varchar(60)) ELSE @Item_Description END
 				ELSE IF @ColumnName = LOWER('Sign_Description') 
-					SELECT  @Sign_Description = CAST(@ColumnValue AS varchar(60))
+					SELECT @Sign_Description = CASE 
+						WHEN @BlockCanonicalFieldUpdate = 0 
+							THEN CAST(@ColumnValue AS varchar(60)) 
+						WHEN @IsDefaultJurisdiction = 0 
+							THEN CAST(@ColumnValue AS varchar(60)) 
+						WHEN @IsDefaultJurisdiction = 1 AND @enableIconSignCaptionUpdatedFlag = 1
+							THEN @Sign_Description
+						ELSE @Sign_Description
+					END
 				ELSE IF @ColumnName = LOWER('Min_Temperature') 
 					SELECT  @Min_Temperature = CAST(@ColumnValue AS smallint)
 				ELSE IF @ColumnName = LOWER('Max_Temperature') 
