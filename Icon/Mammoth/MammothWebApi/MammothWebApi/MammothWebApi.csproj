@@ -200,6 +200,7 @@
     <Compile Include="BackgroundJobs\JobFactory.cs" />
     <Compile Include="BackgroundJobs\ReconnectToEsbJob.cs" />
     <Compile Include="Controllers\ItemLocaleController.cs" />
+    <Compile Include="Controllers\ItemNutritionController.cs" />
     <Compile Include="Controllers\PriceController.cs" />
     <Compile Include="Email\EmailMessageBuilder.cs" />
     <Compile Include="Extensions\ServiceModelMappingExtensions.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ItemNutritionRequestModel.cs" />
     <Compile Include="Models\PriceCollectionRequestModel.cs" />
     <Compile Include="Models\PriceRequestModel.cs" />
     <Compile Include="Models\PriceModel.cs" />

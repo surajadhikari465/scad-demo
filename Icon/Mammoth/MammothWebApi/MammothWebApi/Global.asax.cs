@@ -39,7 +39,7 @@ namespace MammothWebApi
         protected void Application_Start()
         {
             // Simple Injector Registration
-            var container = new Container();
+            var container = new Container(); 
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             // Cross-cutting concerns
@@ -80,6 +80,7 @@ namespace MammothWebApi
             container.RegisterDecorator(typeof(IUpdateService<DeletePrice>), typeof(PrimeAffinityPsgDeletePriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<CancelAllSales>), typeof(PrimeAffinityPsgCancelAllSalesPriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<>), typeof(DbConnectionServiceDecorator<>));
+            container.RegisterDecorator<IQueryHandler<GetItemNutritionAttributesByItemIdQuery, IEnumerable<ItemNutritionAttributes>>, DbConnectionQueryHandlerDecorator<GetItemNutritionAttributesByItemIdQuery, IEnumerable<ItemNutritionAttributes>>>();
             container.RegisterDecorator<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>, DbConnectionQueryHandlerDecorator<GetAllBusinessUnitsQuery, List<int>>>();
             container.RegisterDecorator<IQueryHandler<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>,
                 DbConnectionQueryHandlerDecorator<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>>(Lifestyle.Scoped);

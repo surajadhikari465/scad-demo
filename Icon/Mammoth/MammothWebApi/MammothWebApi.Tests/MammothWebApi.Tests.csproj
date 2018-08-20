@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ItemLocaleControllerTests.cs" />
+    <Compile Include="Controllers\ItemNutritionControllerTests.cs" />
     <Compile Include="Controllers\PriceControllerTests.cs" />
     <Compile Include="Helpers\ItemLocaleTestData.cs" />
     <Compile Include="Helpers\PriceTestData.cs" />

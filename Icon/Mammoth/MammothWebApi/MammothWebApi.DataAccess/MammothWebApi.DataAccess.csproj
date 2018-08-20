@@ -141,6 +141,7 @@
     <Compile Include="Models\CancelAllSalesModel.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />
+    <Compile Include="Models\ItemNutritionAttributes.cs" />
     <Compile Include="Models\PrimePsgItemDataModel.cs" />
     <Compile Include="Models\ItemLocale_Supplier.cs" />
     <Compile Include="Models\StagingItemLocaleSupplierDeleteModel.cs" />
@@ -191,6 +192,8 @@
     <Compile Include="Queries\GetActivePricesByScanCodeAndStoreQueryHandler.cs" />
     <Compile Include="Queries\GetAllBusinessUnitsQuery.cs" />
     <Compile Include="Queries\GetAllBusinessUnitsQueryHandler.cs" />
+    <Compile Include="Queries\GetItemNutritionAttributesByItemIdQuery.cs" />
+    <Compile Include="Queries\GetItemNutritionAttributesByItemIdQueryHandler.cs" />
     <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQuery.cs" />
     <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQueryHandler.cs" />
     <Compile Include="Queries\GetLocalesByBusinessUnitsQuery.cs" />
