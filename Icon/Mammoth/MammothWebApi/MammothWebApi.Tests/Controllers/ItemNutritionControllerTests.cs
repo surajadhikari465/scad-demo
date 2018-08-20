@@ -94,5 +94,52 @@ namespace MammothWebApi.Tests.Controllers
 
         }
 
+        [TestMethod]
+        public void ItemNutritionController_MultipleItemIds_ReturnsResults()
+        {
+            // Given
+            var itemNutritionRequestModel = new ItemNutritionRequestModel()
+            {
+                ItemIds = new[] { 9999990, 9999991 }
+            };
+
+            this.getItemNutritionAttributesByItemIdHandler
+                .Setup(h => h.Search(It.IsAny<GetItemNutritionAttributesByItemIdQuery>()))
+                .Returns(new List<ItemNutritionAttributes>() {
+                    new ItemNutritionAttributes()
+                    {
+                        ItemId =9999990,
+                        Calories = 100,
+                        ServingPerContainer = "1",
+                        ServingSizeDesc = "1 ea",
+                        ServingsPerPortion = 1.0m
+                    },
+                    new ItemNutritionAttributes() {
+                        ItemId =9999991,
+                        Calories = 200,
+                        ServingPerContainer = "2",
+                        ServingSizeDesc = "2 ea",
+                        ServingsPerPortion = 2.0m
+                    }
+                });
+            // When
+            var response = (JsonResult<IOrderedEnumerable<KeyValuePair<int, ItemNutritionAttributes>>>)this.controller.GetItemNutrition(itemNutritionRequestModel);
+
+            var data = response.Content.ToDictionary(p => p.Key, p => p.Value);
+
+
+
+            // Then
+
+            Assert.IsNotNull(response, "The Result response is null.");
+            Assert.IsNotNull(data[9999990], "An expected item was not found [9999990]");
+            Assert.IsNotNull(data[9999991], "An expected item was not found [9999991]");
+            Assert.IsTrue(data[9999990].Calories == 100, "A response was returned but unexpected data was found [9999990]");
+            Assert.IsTrue(data[9999991].Calories == 200, "A response was returned but unexpected data was found [9999991]");
+
+            //Assert.AreEqual(expectedMessage, response.Message, "The BadRequestErrorMessageResult Message did not match the expected error message.");
+
+        }
+
     }
 }
