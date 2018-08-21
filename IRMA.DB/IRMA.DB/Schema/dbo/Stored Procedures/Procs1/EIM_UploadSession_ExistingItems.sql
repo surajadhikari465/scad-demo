@@ -1,4 +1,4 @@
-﻿alter PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
+﻿CREATE PROCEDURE [dbo].[EIM_UploadSession_ExistingItems]
 	@UploadSession_ID			integer,
 	@UploadRow_ID				int,
 	@RetryCount					int,
