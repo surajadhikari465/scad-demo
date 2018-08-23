@@ -92,6 +92,14 @@
 			<modTime>1519416278845</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>RewardPriceAttribute</name>
+			<value>RWD</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1534965601595</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>SendMessageRetrySleepInMilliseconds</name>
 			<value>3000</value>
 			<deploymentSettable>true</deploymentSettable>
