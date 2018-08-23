@@ -372,6 +372,33 @@ BEGIN
 		JOIN Vendor		vs	ON	oh.PurchaseLocation_ID	= vs.Vendor_ID
 		JOIN Inserted	i	ON	oh.OrderHeader_ID		= i.OrderHeader_ID
 
+	-- Purchase Order in Sent status is a 'PO_CRE' event type goes into amz.PurchaseOrderQueue
+	-- Transfer Order in Sent status is a 'TSF_CRE' event type goes into amz.TransferQueue
+	DECLARE @PO_CRE_EvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_CRE')
+	DECLARE @TSF_CRE_EvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_CRE')
+
+	INSERT INTO amz.PurchaseOrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
+	SELECT
+		@PO_CRE_EvenTypeID,
+		inserted.OrderHeader_ID,
+		SYSDATETIME(),
+		'U', -- for 'Unprocessed'
+		SYSUTCDATETIME()
+	FROM inserted
+	WHERE inserted.Sent = 1
+		AND inserted.OrderType_ID <> 3 -- purchase orders
+
+	INSERT INTO amz.TransferQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
+	SELECT
+		@TSF_CRE_EvenTypeID,
+		inserted.OrderHeader_ID,
+		SYSDATETIME(),
+		'U', -- for 'Unprocessed'
+		SYSUTCDATETIME()
+	FROM inserted
+	WHERE inserted.Sent = 1
+		AND inserted.OrderType_ID = 3 --transfer order
+
 END
 GO
 GRANT VIEW CHANGE TRACKING

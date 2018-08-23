@@ -274,7 +274,7 @@ where				InsertedData.Item_Key = OnHand.Item_Key AND
         WHERE (
                      ((Ingredient = 0 AND ISNULL(UseLastReceivedCost, 0) = 0) AND (Item.Subteam_No = Inserted.Subteam_No))
                      OR Store.Distribution_Center = 1
-                    )    
+                    )
 
     IF @Error_No <> 0
     BEGIN

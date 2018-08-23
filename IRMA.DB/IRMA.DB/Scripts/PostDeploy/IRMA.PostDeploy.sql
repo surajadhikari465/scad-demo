@@ -14,6 +14,7 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 :r Add_IDF_for_EnableIconSignCaptionUpdates.sql -- 2018.07.31 PBI 25133 Pass CustomerFriendlyDescription from Icon & lock down in IRMA
+:r PopulateAmzEventTypeTable.sql -- 2018.08.15 - Honeycrisp Project - Populate new table called [amz].[EventType]
 
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28

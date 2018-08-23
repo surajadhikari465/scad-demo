@@ -140,6 +140,8 @@
     <Folder Include="Scripts\PostDeploy\Archive\22981-AddInstanceDataFlagForExtraTextLineFeed" />
     <Folder Include="Scripts\PostDeploy\Archive\23005-AddAllergensAndIngredientsToEIM" />
     <Folder Include="Scripts\Other" />
+    <Folder Include="Schema\amz" />
+    <Folder Include="Schema\amz\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3326,10 +3328,18 @@
     <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI27183-AddItemDeauthorization Event to ItemChangeEventType.sql" />
     <None Include="Scripts\PostDeploy\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
+    <Build Include="Schema\amz\Tables\EventType.sql" />
+    <Build Include="Schema\amz\Tables\InventoryQueue.sql" />
+    <Build Include="Schema\amz\Tables\TransferQueue.sql" />
+    <Build Include="Schema\amz\Tables\ReceiptQueue.sql" />
+    <Build Include="Schema\amz\Tables\PurchaseOrderQueue.sql" />
+    <Build Include="Schema\amz\Tables\MessageArchive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
     <None Include="IRMA.DB.publish.xml" />
+    <Build Include="Schema\amz\amz.sql" />
+    <None Include="Scripts\PostDeploy\PopulateAmzEventTypeTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
