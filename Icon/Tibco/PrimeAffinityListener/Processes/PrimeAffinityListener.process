@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns9="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd">
+<pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:pfx7="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:pfx8="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:pfx="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:pfx9="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx3="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:pfx5="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns8="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ns7="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns9="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:ns10="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/ItemAttributesStore.xsd"/>
@@ -91,7 +91,7 @@
         <config>
             <element ref="pfx3:items"/>
         </config>
-        <pd:inputBindings>
+        <pd:inputBindings excludePrefixes="">
             <pfx3:items>
                 <xsl:for-each select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice">
                     <pfx3:item>
@@ -118,6 +118,23 @@
                             <pfx5:name>
                                 <xsl:value-of select="pfx2:StoreName"/>
                             </pfx5:name>
+                            <pfx5:traits>
+                                <ns4:trait>
+                                    <ns10:code>
+                                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/PsBusinessUnitTraitCode"/>
+                                    </ns10:code>
+                                    <ns10:type>
+                                        <pfx8:description>
+                                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/PsBusinessUnitTraitDesc"/>
+                                        </pfx8:description>
+                                        <pfx8:value>
+                                            <pfx9:value>
+                                                <xsl:value-of select="pfx2:BusinessUnit"/>
+                                            </pfx9:value>
+                                        </pfx8:value>
+                                    </ns10:type>
+                                </ns4:trait>
+                            </pfx5:traits>
                             <pfx5:type>
                                 <pfx6:code>
                                     <xsl:value-of select="&quot;STR&quot;"/>
@@ -230,6 +247,16 @@
                 <Body>
                     <xsl:value-of select="$Render-XML/xmlString"/>
                 </Body>
+                <DynamicProperties>
+                    <property>
+                        <name>
+                            <xsl:value-of select="&quot;IconMessageID&quot;"/>
+                        </name>
+                        <value>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns3:ActivityOutput/OtherProperties/TransactionID"/>
+                        </value>
+                    </property>
+                </DynamicProperties>
             </ns3:ActivityInput>
         </pd:inputBindings>
     </pd:activity>

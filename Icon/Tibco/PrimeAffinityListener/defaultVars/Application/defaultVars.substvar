@@ -57,5 +57,21 @@
 			<type>String</type>
 			<modTime>1533666036145</modTime>
 		</globalVariable>
+		<globalVariable>
+			<name>PsBusinessUnitTraitCode</name>
+			<value>BU</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1535075719655</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PsBusinessUnitTraitDesc</name>
+			<value>PS Business Unit ID</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1535075719577</modTime>
+		</globalVariable>
 	</globalVariables>
 </repository>
