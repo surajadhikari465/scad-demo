@@ -10,7 +10,7 @@
         </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/EMSPriceBatchsize</name>
-            <value>2</value>
+            <value>100</value>
         </NameValuePairInteger>
         <NameValuePair>
             <name>Application/QueryExpiringTprSubsetSize</name>
