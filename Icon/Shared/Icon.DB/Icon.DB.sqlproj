@@ -676,6 +676,8 @@
     <None Include="Scripts\PopulateData\Archive\AddCurrencyCodeTrait.sql" />
     <Build Include="dbo\Tables\LocaleSubType.sql" />
     <None Include="Scripts\PopulateData\Release\AddLocaleSubtypeTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddMessageResponseR10TableToRetentionPolicy.sql" />
+    <None Include="Scripts\PopulateData\Archive\DeleteR10MessageResponseTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -710,8 +712,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\Release\DeleteR10MessageResponseTable.sql" />
-    <None Include="Scripts\PopulateData\Release\AddMessageResponseR10TableToRetentionPolicy.sql" />
     <None Include="Scripts\PopulateData\Release\AddVenueLocaleType.sql" />
     <None Include="Scripts\PopulateData\Release\AddVenueCodeOccupantLocaleTrait.sql" />
     <None Include="Scripts\PopulateData\Release\AddHospitalityToLocaleSubType.sql" />

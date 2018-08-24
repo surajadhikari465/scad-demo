@@ -10,7 +10,7 @@
         </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/PublisherTimerInMilliseconds</name>
-            <value>3000</value>
+            <value>300000</value>
         </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/SendToJobQueueMaxRetryCount</name>

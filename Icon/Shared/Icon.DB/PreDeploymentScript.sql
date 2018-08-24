@@ -16,4 +16,4 @@ See template script for hints:
 :r .\Scripts\PopulateData\Release\IconPredeploymentScript.sql
 */
 
-:r .\Scripts\PopulateData\Release\AddMessageResponseR10TableToRetentionPolicy.sql
+
