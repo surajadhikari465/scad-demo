@@ -104,6 +104,10 @@ namespace Mammoth.Framework
 
         public decimal? AltRetailSize { get; set; }
 
+        public int? IrmaItemKey { get; set; }
+
+        public bool? DefaultScanCode { get; set; }
+
         public virtual MessageAction MessageAction { get; set; }
 
         public virtual MessageHistory MessageHistory { get; set; }

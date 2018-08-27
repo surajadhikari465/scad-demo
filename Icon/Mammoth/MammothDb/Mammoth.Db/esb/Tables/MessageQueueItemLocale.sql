@@ -46,6 +46,8 @@
 	[OrderedByInfor]			 BIT            NULL,
 	[AltRetailSize]              NUMERIC(9, 4)  NULL,
     [AltRetailUOM]               NVARCHAR(25)   NULL,
+    [IrmaItemKey]                INT		    NULL,
+    [DefaultScanCode]            BIT		    NULL,
     CONSTRAINT [PK_MessageQueueItemLocale] PRIMARY KEY CLUSTERED ([MessageQueueId] ASC) WITH (FILLFACTOR = 100),
     CONSTRAINT [FK_MessageQueueItemLocale_MessageActionId] FOREIGN KEY ([MessageActionId]) REFERENCES [esb].[MessageAction] ([MessageActionId]),
     CONSTRAINT [FK_MessageQueueItemLocale_MessageHistoryId] FOREIGN KEY ([MessageHistoryId]) REFERENCES [esb].[MessageHistory] ([MessageHistoryId]) ON DELETE CASCADE,

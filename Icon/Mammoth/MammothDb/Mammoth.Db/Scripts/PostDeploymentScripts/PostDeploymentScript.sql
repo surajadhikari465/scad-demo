@@ -15,3 +15,4 @@ Post-Deployment Script Template
 -- Run every time
 :r ..\..\Security\SecurityGrants.sql
 :r PopulateItemPriceTypeWithGsp.sql
+:r AddIrmaItemKeyAttributes.sql --PBI 28239 Aug. 15, 2018

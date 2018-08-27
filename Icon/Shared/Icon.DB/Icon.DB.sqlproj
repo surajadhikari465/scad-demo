@@ -715,6 +715,7 @@
     <None Include="Scripts\PopulateData\Release\AddVenueLocaleType.sql" />
     <None Include="Scripts\PopulateData\Release\AddVenueCodeOccupantLocaleTrait.sql" />
     <None Include="Scripts\PopulateData\Release\AddHospitalityToLocaleSubType.sql" />
+	<None Include="Scripts\PopulateData\AddIrmaItemKeyTraitCodes.sql" />  
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

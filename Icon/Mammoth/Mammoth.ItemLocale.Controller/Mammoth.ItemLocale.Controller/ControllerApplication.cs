@@ -14,8 +14,8 @@ namespace Mammoth.ItemLocale.Controller
     public class ControllerApplication : IControllerApplication
     {
         private ItemLocaleControllerApplicationSettings settings;
-        private IQueueManager<ItemLocaleEventModel> itemLocelQueueManager;
-        private IService<ItemLocaleEventModel> itemLocelService;
+        private IQueueManager<ItemLocaleEventModel> itemLocaleQueueManager;
+        private IService<ItemLocaleEventModel> itemLocaleService;
         private IEmailClient emailClient;
         private ILogger logger;
 
@@ -26,8 +26,8 @@ namespace Mammoth.ItemLocale.Controller
             IEmailClient emailClient, ILogger logger)
         {
             this.settings = settings;
-            this.itemLocelQueueManager = itemLocelQueueManager;
-            this.itemLocelService = itemLocelService;
+            this.itemLocaleQueueManager = itemLocelQueueManager;
+            this.itemLocaleService = itemLocelService;
             this.emailClient = emailClient;
             this.logger = logger;
         }
@@ -38,13 +38,13 @@ namespace Mammoth.ItemLocale.Controller
             {
                 settings.CurrentRegion = region;
 
-                var events = itemLocelQueueManager.Get();
+                var events = itemLocaleQueueManager.Get();
 
                 while (events.QueuedEvents.Any())
                 {
                     try
                     {
-                        this.itemLocelService.Process(events.EventModels);
+                        this.itemLocaleService.Process(events.EventModels);
                     }
                     catch(Exception ex)
                     {
@@ -60,11 +60,11 @@ namespace Mammoth.ItemLocale.Controller
                     }
                     finally
                     {
-                        this.itemLocelQueueManager.Finalize(events);
+                        this.itemLocaleQueueManager.Finalize(events);
                     }
 
                     events.ClearEvents();
-                    events = this.itemLocelQueueManager.Get();
+                    events = this.itemLocaleQueueManager.Get();
                 }
             }
         }

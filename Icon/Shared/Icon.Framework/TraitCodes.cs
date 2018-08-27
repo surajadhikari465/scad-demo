@@ -172,9 +172,11 @@ namespace Icon.Framework
         public const string WicEligible = "WIC";
         public const string ShelfLife = "SLF";
         public const string SelfCheckoutItemTareGroup = "ITG";
-        public const string Currency = "CUR";
+        public const string CurrencyCode = "CUR";
         public const string VenueCode = "VNC";
         public const string VenueOccupant = "VNO";
         public const string LocaleSubtype = "LST";
+        public const string IrmaItemKey = "IIK";
+        public const string DefaultIdentifier = "IDI";
 	}
 }

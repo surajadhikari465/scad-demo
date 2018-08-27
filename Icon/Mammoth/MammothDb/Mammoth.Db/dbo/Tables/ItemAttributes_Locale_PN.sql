@@ -22,6 +22,7 @@
     [Sign_RomanceText_Short] NVARCHAR (255) NULL,
     [AltRetailUOM]           NVARCHAR  (25) NULL,
     [AltRetailSize]          NUMERIC  (9,4) NULL,
+	[IrmaItemKey]			 INT			NULL,
     [MSRP]                   SMALLMONEY     DEFAULT ((0)) NOT NULL,
     [AddedDate]              DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME       NULL,

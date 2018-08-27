@@ -51,6 +51,8 @@ namespace Mammoth.Common.Testing.Builders
         private string supplierItemID;
         private decimal? supplierCaseSize;
         private bool? orderedByInfor;
+        private bool? defaultScanCode;
+        private int? irmaItemKey;
 
         public TestMessageQueueItemLocaleBuilder()
         {
@@ -99,6 +101,8 @@ namespace Mammoth.Common.Testing.Builders
             this.irmaVendorKey = null;
             this.supplierCaseSize = null;
             this.orderedByInfor = null;
+            this.defaultScanCode = null;
+            this.irmaItemKey = null;
         }   
 
         public TestMessageQueueItemLocaleBuilder WithMessageQueueId(int messageQueueId)
@@ -371,6 +375,18 @@ namespace Mammoth.Common.Testing.Builders
             return this;
         }
 
+        public TestMessageQueueItemLocaleBuilder WithDefaultScanCode(bool? defaultScanCode)
+        {
+            this.defaultScanCode = defaultScanCode;
+            return this;
+        }
+
+        public TestMessageQueueItemLocaleBuilder WithIrmaItemKey(int? irmaItemKey)
+        {
+            this.irmaItemKey = irmaItemKey;
+            return this;
+        }
+
         public TestMessageQueueItemLocaleBuilder PopulateAllAttributes()
         {
             this.messageQueueId = 0;
@@ -417,6 +433,10 @@ namespace Mammoth.Common.Testing.Builders
             this.irmaVendorKey = "VendorKey";
             this.supplierCaseSize = 1;
             this.orderedByInfor = false;
+            this.orderedByInfor = false;
+            this.orderedByInfor = false;
+            this.defaultScanCode = true;
+            this.irmaItemKey = 481271;
 
             return this;
         }
@@ -470,6 +490,8 @@ namespace Mammoth.Common.Testing.Builders
             messageQueueItemLocale.SupplierCaseSize = this.supplierCaseSize;
             messageQueueItemLocale.IrmaVendorKey = this.irmaVendorKey;
             messageQueueItemLocale.OrderedByInfor = this.orderedByInfor;
+            messageQueueItemLocale.DefaultScanCode = this.defaultScanCode;
+            messageQueueItemLocale.IrmaItemKey = this.irmaItemKey;
 
             return messageQueueItemLocale;
         }

@@ -43,6 +43,7 @@ namespace MammothWebApi.DataAccess.Commands
         [AltRetailUOM]			 NVARCHAR(25)	  NULL,
         [AltRetailSize]			 NUMERIC(9,4)	  NULL,
         [DefaultScanCode]		 BIT        	  NULL,
+        [IrmaItemKey]		     INT        	  NULL,
         [InsertOrUpdate]		 CHAR			  NOT NULL,
         PRIMARY KEY ([Region], [ItemID], [BusinessUnitID])
     )
@@ -73,6 +74,7 @@ namespace MammothWebApi.DataAccess.Commands
         stage.[AltRetailUOM],
         stage.[AltRetailSize],	
         stage.[DefaultScanCode],
+        stage.[IrmaItemKey],
 	    CASE WHEN att.[ItemAttributeLocaleID] is null THEN 'I' ELSE 'U' END As [InsertOrUpdate]
     FROM 
 	    [stage].[ItemLocale]	        AS stage
@@ -115,7 +117,8 @@ namespace MammothWebApi.DataAccess.Commands
                 [MSRP]                      = tmp.[Msrp],
                 [AltRetailUOM]	            = tmp.[AltRetailUOM],
                 [AltRetailSize]	            = tmp.[AltRetailSize],
-                [DefaultScanCode]           = tmp.[DefaultScanCode],
+                [DefaultScanCode]           = ISNULL(tmp.[DefaultScanCode],0),
+                [IrmaItemKey]               = tmp.[IrmaItemKey],
 			    [ModifiedDate]              = @Timestamp
 	        FROM
 		       [dbo].[ItemAttributes_Locale_{0}] att
@@ -153,6 +156,7 @@ namespace MammothWebApi.DataAccess.Commands
                 [AltRetailUOM],
                 [AltRetailSize],
                 [DefaultScanCode],
+                [IrmaItemKey],
 				[AddedDate]
             )
 			SELECT 
@@ -178,7 +182,8 @@ namespace MammothWebApi.DataAccess.Commands
 				tmp.[MSRP],
                 tmp.[AltRetailUOM],
                 tmp.[AltRetailSize],
-                tmp.[DefaultScanCode],
+                ISNULL(tmp.[DefaultScanCode],0),
+                tmp.[IrmaItemKey],
 				@Timestamp
 			FROM #tmpStagedItemLocale tmp
 			WHERE tmp.[InsertOrUpdate] = 'I'

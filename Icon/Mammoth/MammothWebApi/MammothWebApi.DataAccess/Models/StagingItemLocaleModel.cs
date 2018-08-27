@@ -29,7 +29,8 @@ namespace MammothWebApi.DataAccess.Models
         public bool OrderedByInfor { get; set; }
         public decimal? AltRetailSize { get; set; }
         public string AltRetailUOM { get; set; }
-        public bool DefaultScanCode { get; set; }
+        public bool? DefaultScanCode { get; set; }
+        public int? IrmaItemKey { get; set; }
         public bool ScaleItem { get; set; }
         public DateTime Timestamp { get; set; }
         public Guid TransactionId { get; set; }

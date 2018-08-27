@@ -74,7 +74,9 @@ namespace MammothWebApi.DataAccess.Commands
                                     [SupplierCaseSize] = ils.SupplierCaseSize, 
                                     [OrderedByInfor] = s.OrderedByInfor,
                                     [AltRetailSize] = s.AltRetailSize,
-                                    [AltRetailUOM]  = s.AltRetailUOM
+                                    [AltRetailUOM]  = s.AltRetailUOM,
+                                    [IrmaItemKey]  = s.IrmaItemKey,
+                                    [DefaultScanCode]  = s.DefaultScanCode
                                 from
 	                                stage.ItemLocale s
 	                                join dbo.Items i on s.ScanCode = i.ScanCode

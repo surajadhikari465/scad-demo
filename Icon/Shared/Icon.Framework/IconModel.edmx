@@ -263,6 +263,8 @@
           <Property Name="PosScaleTare" Type="int" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+          <Property Name="IrmaItemKey" Type="int" />
+          <Property Name="DefaultScanCode" Type="bit" />
         </EntityType>
         <EntityType Name="MessageQueueLocale">
           <Key>
@@ -4991,6 +4993,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageQueueItemLocale" ToRole="MessageType" />
           <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="MessageQueueItemLocale" ToRole="IRMAPush" />
           <Property Name="PreviousLinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="IrmaItemKey" Type="Int32" />
+          <Property Name="DefaultScanCode" Type="Boolean" />
         </EntityType>
         <EntityType Name="MessageQueuePrice">
           <Key>
@@ -6913,6 +6917,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueItemLocale">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueItemLocale">
               <MappingFragment StoreEntitySet="MessageQueueItemLocale">
+                <ScalarProperty Name="DefaultScanCode" ColumnName="DefaultScanCode" />
+                <ScalarProperty Name="IrmaItemKey" ColumnName="IrmaItemKey" />
                 <ScalarProperty Name="PreviousLinkedItemScanCode" ColumnName="PreviousLinkedItemScanCode" />
                 <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
                 <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />

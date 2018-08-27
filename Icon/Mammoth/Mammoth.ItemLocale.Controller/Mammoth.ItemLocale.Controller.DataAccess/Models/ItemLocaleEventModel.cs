@@ -32,7 +32,8 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public bool? OrderedByInfor { get; set; }
         public string AltRetailUOM { get; set; }
         public decimal? AltRetailSize { get; set; }
-        public bool DefaultScanCode { get; set; }
+        public bool? DefaultScanCode { get; set; }
+        public int? IrmaItemKey { get; set; }
 
         //Vendor Attributes
         public string VendorItemId { get; set; }

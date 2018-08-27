@@ -173,7 +173,12 @@ namespace Icon.Framework
         public const int WicEligible = 164;
         public const int ShelfLife = 165;
         public const int SelfCheckoutItemTareGroup = 166;
-        public const int Currency = 167;
+        public const int CurrencyCode = 167;
+        public const int VenueCode = 168;
+        public const int VenueOccupant = 169;
+        public const int LocaleSubtype = 170;
+        public const int IrmaItemKey = 171;
+        public const int DefaultIdentifier = 172;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -338,7 +343,12 @@ namespace Icon.Framework
 				{ "WIC", 164 },
 				{ "SLF", 165 },
 				{ "ITG", 166 },
-				{ "CUR", 167 }
+				{ "CUR", 167 },
+				{ "VNC", 168 },
+				{ "VNO", 169 },
+				{ "LST", 170 },
+				{ "IIK", 171 },
+				{ "IDI", 172 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -505,7 +515,12 @@ namespace Icon.Framework
 			public const string WicEligible = "WIC Eligible";
 			public const string ShelfLife = "Shelf Life";
 			public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
-			public const string Currency = "Currency";
+			public const string CurrencyCode = "Currency Code";
+			public const string VenueCode = "Venue Code";
+			public const string VenueOccupant = "Venue Occupant";
+			public const string LocaleSubtype = "Locale Subtype";
+			public const string IrmaItemKey = "IRMA Item Key";
+			public const string DefaultIdentifier = "Default Identifier";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -670,7 +685,12 @@ namespace Icon.Framework
 				{ 164, "WIC Eligible" },
 				{ 165, "Shelf Life" },
 				{ 166, "Self Checkout Item Tare Group" },
-				{ 167, "Currency" }
+				{ 167, "Currency Code" },
+				{ 168, "Venue Code" },
+				{ 169, "Venue Occupant" },
+				{ 170, "Locale Subtype" },
+				{ 171, "IRMA Item Key" },
+				{ 172, "Default Identifier" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -838,7 +858,12 @@ namespace Icon.Framework
 			public const string WicEligible = "WIC";
 			public const string ShelfLife = "SLF";
 			public const string SelfCheckoutItemTareGroup = "ITG";
-			public const string Currency = "CUR";
+			public const string CurrencyCode = "CUR";
+			public const string VenueCode = "VNC";
+			public const string VenueOccupant = "VNO";
+			public const string LocaleSubtype = "LST";
+			public const string IrmaItemKey = "IIK";
+			public const string DefaultIdentifier = "IDI";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1003,7 +1028,12 @@ namespace Icon.Framework
 				{ 164, "WIC" },
 				{ 165, "SLF" },
 				{ 166, "ITG" },
-				{ 167, "CUR" }
+				{ 167, "CUR" },
+				{ 168, "VNC" },
+				{ 169, "VNO" },
+				{ 170, "LST" },
+				{ 171, "IIK" },
+				{ 172, "IDI" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

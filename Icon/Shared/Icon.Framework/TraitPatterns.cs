@@ -172,6 +172,11 @@ namespace Icon.Framework
         public const string WicEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
         public const string ShelfLife = @"^[0-9][0-9]?$|^100$|^$";
         public const string SelfCheckoutItemTareGroup = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,60}$|^$";
-        public const string Currency = @"^[C][A][D]$|^[G][B][P]$|^[U][S][D]$";
+        public const string CurrencyCode = @"^[C][A][D]$|^[G][B][P]$|^[U][S][D]$";
+        public const string VenueCode = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$";
+        public const string VenueOccupant = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,255}$";
+        public const string LocaleSubtype = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$";
+        public const string IrmaItemKey = @"^[0-9]+$";
+        public const string DefaultIdentifier = @"0|1";
 	}
 }

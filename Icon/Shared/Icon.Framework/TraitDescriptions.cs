@@ -172,6 +172,11 @@ namespace Icon.Framework
         public const string WicEligible = "WIC Eligible";
         public const string ShelfLife = "Shelf Life";
         public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
-        public const string Currency = "Currency";
+        public const string CurrencyCode = "Currency Code";
+        public const string VenueCode = "Venue Code";
+        public const string VenueOccupant = "Venue Occupant";
+        public const string LocaleSubtype = "Locale Subtype";
+        public const string IrmaItemKey = "IRMA Item Key";
+        public const string DefaultIdentifier = "Default Identifier";
 	}
 }

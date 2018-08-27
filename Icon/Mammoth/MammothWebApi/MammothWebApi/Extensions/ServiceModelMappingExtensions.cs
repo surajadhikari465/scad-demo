@@ -57,6 +57,7 @@ namespace MammothWebApi.Extensions
                     ScaleItem = itemLocale.ScaleItem,
                     UseBy = itemLocale.UseBy,
                     ShelfLife = itemLocale.ShelfLife,
+                    IrmaItemKey = itemLocale.IrmaItemKey
                 };
                 itemLocaleServiceModels.Add(serviceModel);
             }

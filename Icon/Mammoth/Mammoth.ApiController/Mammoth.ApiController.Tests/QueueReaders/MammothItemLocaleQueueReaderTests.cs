@@ -104,12 +104,19 @@ namespace Mammoth.ApiController.Tests.QueueReaders
                     (c) => c.QueuedMessages[0].ItemId == 2)), 
                 Times.Once);
         }
-
+        
         [TestMethod]
-        public void GetQueueMessages_MessagesExist_ShouldReturnMessages()
+        public void GetQueueMessages_MessagesExist_ShouldReturnMessages_WithExpectedValues()
         {
             //Given
-            var list = new List<MessageQueueItemLocale>();
+            var list = new List<MessageQueueItemLocale>
+            {
+                new TestMessageQueueItemLocaleBuilder().WithItemId(1).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(2).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(3).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(4).WithBusinessUnitId(55),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(5).WithBusinessUnitId(55),
+            };
             mockGetMessageQueueQuery.Setup(m =>
                 m.Search(It.Is<GetMessageQueueParameters<MessageQueueItemLocale>>(p => p.Instance == settings.Instance && p.MessageQueueStatusId == MessageStatusTypes.Ready)))
                 .Returns(list);
@@ -119,6 +126,39 @@ namespace Mammoth.ApiController.Tests.QueueReaders
 
             //Then
             Assert.AreEqual(list, results);
+        }
+
+        [TestMethod]
+        public void GetQueueMessages_MessagesExist_ShouldReturnMessages_WithExpectedIrmaItemKeyAndDefaultScanCodeValues()
+        {
+            //Given
+            var list = new List<MessageQueueItemLocale>
+            {
+                new TestMessageQueueItemLocaleBuilder().WithItemId(1).WithBusinessUnitId(55).WithIrmaItemKey(56789001).WithDefaultScanCode(true),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(2).WithBusinessUnitId(55).WithIrmaItemKey(56789002).WithDefaultScanCode(false),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(3).WithBusinessUnitId(55).WithIrmaItemKey(56789003).WithDefaultScanCode(true),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(4).WithBusinessUnitId(55).WithIrmaItemKey(56789004).WithDefaultScanCode(false),
+                new TestMessageQueueItemLocaleBuilder().WithItemId(5).WithBusinessUnitId(55).WithIrmaItemKey(null).WithDefaultScanCode(null),
+            };
+            mockGetMessageQueueQuery.Setup(m =>
+                m.Search(It.Is<GetMessageQueueParameters<MessageQueueItemLocale>>(p => p.Instance == settings.Instance && p.MessageQueueStatusId == MessageStatusTypes.Ready)))
+                .Returns(list);
+
+            //When
+            var results = queueReader.GetQueuedMessages();
+
+            //Then
+            Assert.AreEqual(list, results);
+            Assert.AreEqual(true, results[0].DefaultScanCode, nameof(MessageQueueItemLocale.DefaultScanCode));
+            Assert.AreEqual(false, results[1].DefaultScanCode, nameof(MessageQueueItemLocale.DefaultScanCode));
+            Assert.AreEqual(true, results[2].DefaultScanCode, nameof(MessageQueueItemLocale.DefaultScanCode));
+            Assert.AreEqual(false, results[3].DefaultScanCode, nameof(MessageQueueItemLocale.DefaultScanCode));
+            Assert.AreEqual(null, results[4].DefaultScanCode, nameof(MessageQueueItemLocale.DefaultScanCode));
+            Assert.AreEqual(56789001, results[0].IrmaItemKey, nameof(MessageQueueItemLocale.IrmaItemKey));
+            Assert.AreEqual(56789002, results[1].IrmaItemKey, nameof(MessageQueueItemLocale.IrmaItemKey));
+            Assert.AreEqual(56789003, results[2].IrmaItemKey, nameof(MessageQueueItemLocale.IrmaItemKey));
+            Assert.AreEqual(56789004, results[3].IrmaItemKey, nameof(MessageQueueItemLocale.IrmaItemKey));
+            Assert.AreEqual(null, results[4].IrmaItemKey, nameof(MessageQueueItemLocale.IrmaItemKey));
         }
 
         [TestMethod]
@@ -227,6 +267,7 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             Assert.IsTrue(actualMessages.Single(m => m.ItemId == 1).Authorized);
         }
 
+
         private void AssertMessageQueueIsEqualToContractItem(MessageQueueItemLocale messageQueue, Contracts.ItemType item)
         {
             var itemBase = item.@base;
@@ -272,6 +313,8 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             AssertTraitValuesAreEqual(messageQueue.OrderedByInfor, Attributes.Codes.OrderedByInfor, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.AltRetailSize, Attributes.Codes.AltRetailSize, itemTraits);
             AssertTraitValuesAreEqual(messageQueue.AltRetailUOM, Attributes.Codes.AltRetailUom, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.DefaultScanCode, Attributes.Codes.DefaultIdentifier, itemTraits);
+            AssertTraitValuesAreEqual(messageQueue.IrmaItemKey, Attributes.Codes.IrmaItemKey, itemTraits);
         }
 
         private void AssertTraitValuesAreEqual(DateTime? messageQueueValue, string attributeCode, Contracts.TraitType[] itemTraits)

@@ -34,6 +34,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
         private int itemTypeId;
         private string testSupplierName;
         private string testSupplierItemId;
+        private List<bool> testDefaultScanCodes;
+        private List<int> testIrmaItemKeys;
 
         [TestInitialize]
         public void Initialize()
@@ -44,6 +46,18 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             testBusinessUnitId = 44444;
             testSupplierName = "Test Supplier";
             testSupplierItemId = "Test Suppplier";
+            testDefaultScanCodes = new List<bool>
+            {
+                true,
+                false,
+                true
+            };
+            testIrmaItemKeys = new List<int>
+            {
+                45678901,
+                45678902,
+                45678903
+            };
 
             string connectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
@@ -210,11 +224,14 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             testStagingItemLocaleData = new List<StagingItemLocaleModel>
             {
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[0]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),                 
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                    .WithDefaultScanCode(testDefaultScanCodes[0]).WithIrmaItemKey(testIrmaItemKeys[0]).Build(),                 
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[1]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build(),
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                    .WithDefaultScanCode(testDefaultScanCodes[1]).WithIrmaItemKey(testIrmaItemKeys[1]).Build(),
                 new TestStagingItemLocaleModelBuilder().WithScanCode(testScanCodes[2]).WithOrderedByInfor(true).WithAltRetailSize(9.8m).WithAltRetailUom("EA")
-                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId).Build()
+                    .WithBusinessUnit(testBusinessUnitId).WithTimestamp(now).WithRegion(this.testRegion).WithTransactionId(this.transactionId)
+                    .WithDefaultScanCode(testDefaultScanCodes[1]).WithIrmaItemKey(testIrmaItemKeys[2]).Build(),
             };
 
             if (customItemLocaleProperties != null)
@@ -253,7 +270,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                                 TransactionId,
                                 OrderedByInfor,
                                 AltRetailSize,
-                                AltRetailUOM
+                                AltRetailUOM,
+                                DefaultScanCode,
+                                IrmaItemKey
                             )
                             VALUES
                             (
@@ -280,7 +299,9 @@ namespace MammothWebApi.Tests.DataAccess.Commands
                                 @TransactionId,
                                 @OrderedByInfor,
                                 @AltRetailSize,
-                                @AltRetailUOM
+                                @AltRetailUOM,
+                                @DefaultScanCode,
+                                @IrmaItemKey
                             )";
 
             db.Connection.Execute(sql, testStagingItemLocaleData, transaction: db.Transaction);
@@ -639,6 +660,36 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             }
         }
 
+        [TestMethod]
+        public void AddToMessageQueueItemLocale_DefaultScanCodeAndIrmaItemKey_MessagesQueuedWithExpectedValues()
+        {
+            // Given.
+            StageCoreItemLocaleData();
+
+            var command = new AddEsbMessageQueueItemLocaleCommand
+            {
+                Region = testRegion,
+                Timestamp = now,
+                TransactionId = this.transactionId
+            };
+
+            // When.
+            commandHandler.Execute(command);
+
+            // Then.
+            dynamic queuedMessages = db.Connection.Query<dynamic>("select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
+                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction).ToList();
+
+            Assert.AreEqual(testStagingItemLocaleData.Count, queuedMessages.Count);
+
+            for (int i = 0; i < queuedMessages.Count; i++)
+            {
+                AssertQueuedMessageMatchesStagingItemLocaleModel(queuedMessages[i], testStagingItemLocaleData[i],
+                    now.Date, testRegion, testBusinessUnitId, testLocale.StoreName, testItems[i].ItemID, testScanCodes[i],
+                    testDefaultScanCodes[i], testIrmaItemKeys[i]);
+            }
+        }
+
         private void AssertQueuedMessageMatchesStagingItemLocaleModel(dynamic queuedMessage,
             StagingItemLocaleModel stagingItemLocaleModel,
             DateTime expectedDate,
@@ -647,6 +698,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             string expectedStoreName,
             int expectedItemID,
             string expectedScanCode,
+            bool expectedDefaultScanCode = true,
+            int? expectedIrmaItemKey = null,
             int expectedMessageType = MessageTypes.ItemLocale,
             int messageStatusType = MessageStatusTypes.Ready,
             int expectedMessageAction = MessageActions.AddOrUpdate,
@@ -683,6 +736,8 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             Assert.AreEqual(stagingItemLocaleModel.Sign_RomanceText_Short, queuedMessage.SignRomanceShort);
             Assert.AreEqual(stagingItemLocaleModel.Msrp, queuedMessage.Msrp);
             Assert.AreEqual(stagingItemLocaleModel.OrderedByInfor, queuedMessage.OrderedByInfor);
+            Assert.AreEqual(stagingItemLocaleModel.DefaultScanCode, queuedMessage.DefaultScanCode);
+            Assert.AreEqual(stagingItemLocaleModel.IrmaItemKey, queuedMessage.IrmaItemKey);
 
             Assert.IsNull(queuedMessage.InProcessBy);
             Assert.IsNull(queuedMessage.ProcessedDate);

@@ -33,6 +33,8 @@ namespace MammothWebApi.Tests.ModelBuilders
         private string scaleExtraText;
         private string tagUom;
         private decimal msrp;
+        private bool defaultScanCode;
+        private int? irmaItemKey;
 
         internal TestItemLocaleModelBuilder()
         {
@@ -61,6 +63,8 @@ namespace MammothWebApi.Tests.ModelBuilders
             this.scaleExtraText = null;
             this.tagUom = null;
             this.msrp = 5.99M;
+            this.defaultScanCode = true;
+            this.irmaItemKey = 678901;
         }
 
         internal TestItemLocaleModelBuilder WithRegion(string region)
@@ -224,6 +228,16 @@ namespace MammothWebApi.Tests.ModelBuilders
             this.msrp = msrp;
             return this;
         }
+        internal TestItemLocaleModelBuilder WithDefaultScanCode(bool defaultScanCode)
+        {
+            this.defaultScanCode = defaultScanCode;
+            return this;
+        }
+        internal TestItemLocaleModelBuilder WithIrmaItemKey(int? irmaItemKey)
+        {
+            this.irmaItemKey = irmaItemKey;
+            return this;
+        }
 
         internal ItemLocaleModel Build()
         {
@@ -256,7 +270,9 @@ namespace MammothWebApi.Tests.ModelBuilders
                 Origin = this.origin,
                 ScaleExtraText = this.scaleExtraText,
                 TagUom = this.tagUom,
-                MSRP = this.msrp
+                MSRP = this.msrp,
+                DefaultScanCode = this.defaultScanCode,
+                IrmaItemKey = this.irmaItemKey
             };
 
             return itemLocaleStaging;

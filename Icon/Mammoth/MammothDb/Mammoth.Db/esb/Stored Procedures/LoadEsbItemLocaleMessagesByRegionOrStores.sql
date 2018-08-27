@@ -102,6 +102,8 @@ SELECT
     lnk.AttributeValue			as [LinkedItem],
     sce.AttributeValue			as [ScaleExtraText],
 	ia.MSRP						as [Msrp],
+	ia.IrmaItemKey				as [IrmaItemKey],
+	ia.DefaultScanCode			as [DefaultScanCode],
     NULL						as [InProcessBy],
     NULL						as [ProcessedDate]
 FROM

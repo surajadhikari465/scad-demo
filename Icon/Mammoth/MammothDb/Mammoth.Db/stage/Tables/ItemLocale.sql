@@ -23,6 +23,7 @@
     [AltRetailSize]				NUMERIC(9,4)	NULL,
     [AltRetailUOM]				NVARCHAR(25)	NULL,
     [DefaultScanCode]			BIT				NULL,
+    [IrmaItemKey]			    INT 			NULL,
 	[Timestamp]					DATETIME		NOT NULL,
 	[TransactionId]				UNIQUEIDENTIFIER NOT NULL
 )

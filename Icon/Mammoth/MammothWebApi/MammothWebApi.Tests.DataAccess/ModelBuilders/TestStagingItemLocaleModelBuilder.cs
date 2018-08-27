@@ -30,6 +30,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private DateTime timestamp;
         private Guid transactionId;
         private bool scaleItem;
+        private int? irmaItemKey;
 
         internal TestStagingItemLocaleModelBuilder()
         {
@@ -57,6 +58,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             timestamp = DateTime.Now;
             transactionId = Guid.NewGuid();
             scaleItem = true;
+            irmaItemKey = 5678901;
         }
 
         internal TestStagingItemLocaleModelBuilder WithRegion(string region)
@@ -203,6 +205,12 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
+        internal TestStagingItemLocaleModelBuilder WithIrmaItemKey(int? irmaItemKey)
+        {
+            this.irmaItemKey = irmaItemKey;
+            return this;
+        }
+
         internal StagingItemLocaleModel Build()
         {
             var itemLocaleStaging = new StagingItemLocaleModel
@@ -229,6 +237,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 AltRetailSize = altRetailSize,
                 AltRetailUOM = altRetailUom,
                 DefaultScanCode = defaultScanCode,
+                IrmaItemKey = irmaItemKey,
                 ScaleItem = scaleItem,
                 Timestamp = timestamp,
                 TransactionId = transactionId

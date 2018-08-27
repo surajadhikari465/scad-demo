@@ -40,6 +40,7 @@ namespace MammothWebApi.Service.Extensions
                     AltRetailSize = itemLocale.AltRetailSize,
                     AltRetailUOM = itemLocale.AltRetailUOM,
                     DefaultScanCode = itemLocale.DefaultScanCode,
+                    IrmaItemKey = itemLocale.IrmaItemKey,
                     ScaleItem = itemLocale.ScaleItem.GetValueOrDefault(false),
                     Timestamp = timestamp,
                     TransactionId = transactionId,

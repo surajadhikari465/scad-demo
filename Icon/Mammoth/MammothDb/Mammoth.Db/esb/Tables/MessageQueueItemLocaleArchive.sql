@@ -47,5 +47,7 @@
 	[OrderedByInfor]			 BIT            NULL,
 	[AltRetailSize]              NUMERIC(9, 4)  NULL,
     [AltRetailUOM]               NVARCHAR(25)   NULL,
+    [IrmaItemKey]                INT		    NULL,
+    [DefaultScanCode]            BIT		    NULL,
 );
 go

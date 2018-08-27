@@ -225,12 +225,6 @@ namespace Icon.Testing.Builders
             return this;
         }
 
-        public TestHierarchyClassBuilder WithItemSignAttribute(List<ItemSignAttribute> itemSignAttributes)
-        {
-            this.itemSignAttributes = itemSignAttributes;
-            return this;
-        }
-
         public HierarchyClass Build()
         {
             HierarchyClass hierarchyClass = new HierarchyClass();
@@ -262,7 +256,6 @@ namespace Icon.Testing.Builders
             AddHierarchyClassTrait(hierarchyClass, Traits.NationalClassCode, this.nationalClassCode);
 
             hierarchyClass.HierarchyClassTrait = hierarchyTraits;
-            hierarchyClass.ItemSignAttribute = itemSignAttributes;
 
             return hierarchyClass;
         }

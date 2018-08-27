@@ -86,7 +86,10 @@ SELECT q.QueueID AS QueueId
     ,ii.Scale_Identifier as ScaleItem
     ,seb.Description as UseBy
     ,sc.ShelfLife_Length as ShelfLife
-
+    ,CASE 
+        WHEN ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1 THEN NULL 
+        ELSE i.Item_Key 
+    END as IrmaItemKey
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -201,6 +204,11 @@ SELECT q.QueueID AS QueueId
     ,ii.Scale_Identifier as ScaleItem
     ,seb.Description as UseBy
     ,sc.ShelfLife_Length as ShelfLife
+    ,CASE 
+        WHEN ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1 THEN NULL 
+        ELSE i.Item_Key 
+    END as IrmaItemKey
+
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key

@@ -23,6 +23,7 @@
     [AltRetailUOM]           NVARCHAR  (25) NULL,
     [AltRetailSize]          NUMERIC  (9,4) NULL,
     [MSRP]                   SMALLMONEY     DEFAULT ((0)) NOT NULL,
+	[IrmaItemKey]			 INT			NULL,
     [AddedDate]              DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME       NULL,
     CONSTRAINT [PK_ItemAttributes_Locale_MW] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_MW],

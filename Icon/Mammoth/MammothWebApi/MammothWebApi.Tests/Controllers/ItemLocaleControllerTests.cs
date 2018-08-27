@@ -235,6 +235,28 @@ namespace MammothWebApi.Tests.Controllers
             Assert.AreEqual(sqlException.InnerException, response.Exception.InnerException);
         }
 
+        [TestMethod]
+        public void ItemLocaleController_ValidItemLocaleDataIncludingIrmaItemKey_AddUpdateServiceCalledWithExpectedData()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
+            var expectedItemLocaleModel = new TestItemLocaleModelBuilder().Build();
+            var expectedIrmaItemKey = expectedItemLocaleModel.IrmaItemKey;
+            var expectedDefaultScanCode = expectedItemLocaleModel.DefaultScanCode;
+            itemLocales.Add(expectedItemLocaleModel);
+
+            this.mockGetAllBusinessUnitsQueryHandler.Setup(h => h.Search(It.IsAny<GetAllBusinessUnitsQuery>()))
+                .Returns(new List<int>(itemLocales.Select(il => il.BusinessUnitId)));
+
+            // When
+            var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as OkResult;
+
+            // Then
+            this.mockItemLocaleService.Verify(s => s.Handle(It.Is<AddUpdateItemLocale>(il=>
+                (expectedIrmaItemKey == il.ItemLocales.First().IrmaItemKey) && (expectedDefaultScanCode == il.ItemLocales.First().DefaultScanCode))
+                ), Times.Once);
+        }
+
         //[TestMethod]
         public void BuildTestItemLocaleJsonFile()
         {
