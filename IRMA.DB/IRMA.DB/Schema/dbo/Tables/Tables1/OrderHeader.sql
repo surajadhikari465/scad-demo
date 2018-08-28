@@ -260,6 +260,7 @@ AS
 -- 03/20/2017   MZ		26106   Register an order for a Amazon Extract store to
 --                              the [infor].[OrderExpectedDateChangeQueue] table when
 --                              its expected date changes before the order is closed.
+-- 08/16/2018	BJ		28014	Added queuing events for Amazon when an order is updated
 -- **************************************************************************
 
 BEGIN
@@ -370,6 +371,87 @@ BEGIN
 		AND         (s.mega_store = 1 
 		 OR			 s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('WFMBannerStoresForOrdering', 'IRMA CLIENT'), '|'))
 		 OR          s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('StoreBUsForAMZExtract', 'IRMA CLIENT'), '|')))	
+
+		SELECT @Error_No = @@ERROR
+	END
+
+	--
+	-- Amazon event 
+	--
+	IF @Error_No = 0
+	BEGIN
+		DECLARE @po_creEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_CRE')
+		DECLARE @po_modEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_MOD')
+		DECLARE @tsf_creEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_CRE')
+		DECLARE @tsf_modEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_MOD')
+		DECLARE @unprocessedStatus NCHAR(1) = 'U'
+
+		CREATE TABLE #tempOrders (EventTypeID INT, KeyID INT, OrderType_ID INT)
+
+		INSERT INTO #tempOrders(EventTypeID, KeyID, OrderType_ID)
+		SELECT		CASE
+						WHEN (i.Sent = 1 AND d.Sent = 0) THEN @po_creEventTypeID
+						ELSE @po_modEventTypeID
+					END AS EventTypeID,
+					i.OrderHeader_ID,
+					i.OrderType_ID
+		FROM		INSERTED	i	
+		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
+		WHERE       i.OrderType_ID <> 3 
+		AND			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
+						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
+						OR	((i.ApprovedDate IS NULL AND i.CloseDate IS NOT NULL)
+							AND d.CloseDate IS NULL) --Order is suspended
+						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
+					)
+		UNION
+		SELECT		CASE
+						WHEN (i.Sent = 1 AND d.Sent = 0) THEN @tsf_creEventTypeID
+						ELSE @tsf_modEventTypeID
+					END AS EventTypeID,
+					i.OrderHeader_ID,
+					i.OrderType_ID
+		FROM		INSERTED	i	
+		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
+		WHERE       i.OrderType_ID = 3 
+		AND			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
+						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
+						OR	((i.ApprovedDate IS NULL AND i.CloseDate IS NOT NULL)
+							AND d.CloseDate IS NULL) --Order is suspended
+						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
+					)
+
+		INSERT INTO amz.PurchaseOrderQueue (EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
+		SELECT EventTypeID,
+			KeyID,
+			@unprocessedStatus,
+			SYSDATETIME(),
+			SYSUTCDATETIME()
+		FROM #tempOrders o
+		WHERE o.OrderType_ID <> 3 
+		AND NOT EXISTS
+		(
+			SELECT 1 
+			FROM amz.PurchaseOrderQueue q
+			WHERE o.EventTypeID = q.EventTypeID
+				AND o.KeyID = q.KeyID
+		)
+
+		INSERT INTO amz.TransferQueue(EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
+		SELECT EventTypeID,
+			KeyID,
+			@unprocessedStatus,
+			SYSDATETIME(),
+			SYSUTCDATETIME()
+		FROM #tempOrders o
+		WHERE o.OrderType_ID = 3 
+		AND NOT EXISTS
+		(
+			SELECT 1 
+			FROM amz.TransferQueue q
+			WHERE o.EventTypeID = q.EventTypeID
+				AND o.KeyID = q.KeyID
+		)
 
 		SELECT @Error_No = @@ERROR
 	END

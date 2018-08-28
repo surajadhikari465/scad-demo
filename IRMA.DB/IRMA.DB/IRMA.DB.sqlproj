@@ -3334,12 +3334,14 @@
     <Build Include="Schema\amz\Tables\ReceiptQueue.sql" />
     <Build Include="Schema\amz\Tables\PurchaseOrderQueue.sql" />
     <Build Include="Schema\amz\Tables\MessageArchive.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\OrderType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
     <None Include="IRMA.DB.publish.xml" />
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\PostDeploy\PopulateAmzEventTypeTable.sql" />
+    <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

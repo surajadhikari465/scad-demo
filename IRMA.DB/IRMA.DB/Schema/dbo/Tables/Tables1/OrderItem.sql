@@ -219,8 +219,6 @@ FOR DELETE, INSERT, UPDATE
 AS 
 BEGIN
     BEGIN TRY
-    
-    
     -- StoreOps Export 
 	UPDATE OrderExportQueue
 	SET QueueInsertedDate = GetDate(), DeliveredToStoreOpsDate = null
@@ -308,7 +306,20 @@ BEGIN
             
             DELETE @ReceivedList WHERE OrderItem_ID = @OrderItem_ID
         END
-                                           
+         
+		 
+    --declare @keyID int = (select OrderItem_ID from inserted);
+	declare @unprocessedStatusCode nvarchar(1) = 'U';
+	  declare @eventTypeID int = (select Top 1 EventTypeID from amx.EventType where EventTypeDescription = 'Order Receipt Creation');
+
+	  insert into amz.ReceiptOrderQueue(EventTypeID, KeyID, Status)
+	    select @eventTypeID, OrderItem_ID, @unprocessedStatusCode from inserted i
+		inner join OrderHeader oh on oh.OrderHeader_ID = i.OrderHeader_ID 
+		left join amz.ReceiptOrderQueue B on B.KeyID = i.OrderItem_ID
+			and B.EventTypeID = @eventTypeID and B.Status <> @unprocessedStatusCode
+		where B.KeyID is null  and (oh.OrderType_ID <> 2 or oh.Return_Order <> 1)
+		and (i.ApprovedDate is not null or i.DateReceived is not null) ;
+
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
@@ -320,9 +331,9 @@ BEGIN
         
         RAISERROR ('OrderItemAddUpdDel trigger failed with @@ERROR: %d - %s', @err_sev, 1, @err_no, @err_msg)
     END CATCH	
-    
 END
 GO
+
 GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[OrderItem] TO [IRMAAdminRole]
     AS [dbo];
