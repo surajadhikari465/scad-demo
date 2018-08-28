@@ -19,6 +19,10 @@
 
 
 GO
+ALTER TABLE [dbo].[PriceBatchHeader] ENABLE CHANGE_TRACKING WITH (TRACK_COLUMNS_UPDATED = OFF);
+
+
+GO
 CREATE NONCLUSTERED INDEX [IX_PriceBatchHeader_StartDate_PriceBatchStatusId_INC_HId_ApplyDate]
     ON [dbo].[PriceBatchHeader]([StartDate] ASC, [PriceBatchStatusID] ASC)
     INCLUDE([PriceBatchHeaderID], [ApplyDate]) WITH (FILLFACTOR = 80);
