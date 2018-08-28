@@ -310,7 +310,7 @@ BEGIN
 		 
     --declare @keyID int = (select OrderItem_ID from inserted);
 	declare @unprocessedStatusCode nvarchar(1) = 'U';
-	  declare @eventTypeID int = (select Top 1 EventTypeID from amx.EventType where EventTypeDescription = 'Order Receipt Creation');
+	  declare @eventTypeID int = (select Top 1 EventTypeID from amz.EventType where EventTypeDescription = 'Order Receipt Creation');
 
 	  insert into amz.ReceiptOrderQueue(EventTypeID, KeyID, Status)
 	    select @eventTypeID, OrderItem_ID, @unprocessedStatusCode from inserted i
