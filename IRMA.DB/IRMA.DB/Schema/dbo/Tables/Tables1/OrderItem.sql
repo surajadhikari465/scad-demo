@@ -270,55 +270,111 @@ BEGIN
     INNER JOIN OrderHeader OH ON
             OI.OrderHeader_ID = OH.OrderHeader_ID
     
-    
-            -- Capture for the update avgcost/onhand process 
-        INSERT INTO ItemHistoryInsertedQueue (Store_No, Item_Key, DateStamp, SubTeam_No, ItemHistoryID, Adjustment_ID)
-        SELECT IH.Store_No, IH.Item_Key, IH.DateStamp, IH.SubTeam_No, IH.ItemHistoryID, IH.Adjustment_ID
-        FROM Inserted
-        INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-        INNER JOIN ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
-        INNER JOIN Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-        INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No
-        -- exclude ingredient items unless the affected store is a Distribution Center
-        WHERE (((Ingredient = 0 AND ISNULL(UseLastReceivedCost, 0) = 0) AND (Item.Subteam_No = IH.Subteam_No)) OR Store.Distribution_Center = 1)
-            AND IH.Adjustment_ID = 5
-            AND (
-                ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
-                OR Inserted.UnitsReceived <> Deleted.UnitsReceived
-                )
+    -- Capture for the update avgcost/onhand process 
+    INSERT INTO ItemHistoryInsertedQueue (Store_No, Item_Key, DateStamp, SubTeam_No, ItemHistoryID, Adjustment_ID)
+    SELECT IH.Store_No, IH.Item_Key, IH.DateStamp, IH.SubTeam_No, IH.ItemHistoryID, IH.Adjustment_ID
+    FROM Inserted
+    INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
+    INNER JOIN ItemHistory IH (nolock) ON IH.OrderItem_ID = Inserted.OrderItem_ID
+    INNER JOIN Item (nolock) ON Item.Item_Key = Inserted.Item_Key
+    INNER JOIN Store (nolock) ON Store.Store_No = IH.Store_No
+    -- exclude ingredient items unless the affected store is a Distribution Center
+    WHERE (((Ingredient = 0 AND ISNULL(UseLastReceivedCost, 0) = 0) AND (Item.Subteam_No = IH.Subteam_No)) OR Store.Distribution_Center = 1)
+        AND IH.Adjustment_ID = 5
+        AND (
+            ((Inserted.ReceivedItemCost + Inserted.ReceivedItemFreight) <> (Deleted.ReceivedItemCost + Deleted.ReceivedItemFreight))
+            OR Inserted.UnitsReceived <> Deleted.UnitsReceived
+            )
                         
-        -- For updates, keep receiving ItemHistory in synch
-        -- Use a table variable and a while loop instead of a cursor
-        DECLARE @ReceivedList TABLE (OrderItem_ID int PRIMARY KEY)
-        DECLARE @OrderItem_ID int
+    -- For updates, keep receiving ItemHistory in synch
+    -- Use a table variable and a while loop instead of a cursor
+    DECLARE @ReceivedList TABLE (OrderItem_ID int PRIMARY KEY)
+    DECLARE @OrderItem_ID int
         
-        INSERT INTO @ReceivedList
-        SELECT Inserted.OrderItem_ID
-        FROM Inserted
-        INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
-        WHERE (Inserted.UnitsReceived <> Deleted.UnitsReceived)
+    INSERT INTO @ReceivedList
+    SELECT Inserted.OrderItem_ID
+    FROM Inserted
+    INNER JOIN Deleted ON Inserted.OrderItem_ID = Deleted.OrderItem_ID
+    WHERE (Inserted.UnitsReceived <> Deleted.UnitsReceived)
         
-        WHILE EXISTS (SELECT * FROM @ReceivedList)
-        BEGIN
-            SET @OrderItem_ID = (SELECT TOP 1 OrderItem_ID FROM @ReceivedList)
+    WHILE EXISTS (SELECT * FROM @ReceivedList)
+    BEGIN
+        SET @OrderItem_ID = (SELECT TOP 1 OrderItem_ID FROM @ReceivedList)
             
-            EXEC InsertReceivingItemHistory @OrderItem_ID, 0  -- Does not matter who the user is as far as ItemHistory since there is a link to OrderItem.  The receiver should be recorded in the OrderHeader record.
+        EXEC InsertReceivingItemHistory @OrderItem_ID, 0  -- Does not matter who the user is as far as ItemHistory since there is a link to OrderItem.  The receiver should be recorded in the OrderHeader record.
             
-            DELETE @ReceivedList WHERE OrderItem_ID = @OrderItem_ID
-        END
-         
-		 
-    --declare @keyID int = (select OrderItem_ID from inserted);
-	declare @unprocessedStatusCode nvarchar(1) = 'U';
-	  declare @eventTypeID int = (select Top 1 EventTypeID from amz.EventType where EventTypeDescription = 'Order Receipt Creation');
+        DELETE @ReceivedList WHERE OrderItem_ID = @OrderItem_ID
+    END
+    
+	----
+	-- Amazon Event
+	----
+	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+	DECLARE @orderReceiptCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Order Receipt Creation'
+			);
+	DECLARE @orderReceiptModificationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Order Receipt Modification'
+			);
 
-	  insert into amz.ReceiptOrderQueue(EventTypeID, KeyID, Status)
-	    select @eventTypeID, OrderItem_ID, @unprocessedStatusCode from inserted i
-		inner join OrderHeader oh on oh.OrderHeader_ID = i.OrderHeader_ID 
-		left join amz.ReceiptOrderQueue B on B.KeyID = i.OrderItem_ID
-			and B.EventTypeID = @eventTypeID and B.Status <> @unprocessedStatusCode
-		where B.KeyID is null  and (oh.OrderType_ID <> 2 or oh.Return_Order <> 1)
-		and (i.ApprovedDate is not null or i.DateReceived is not null) ;
+	INSERT INTO amz.ReceiptQueue (
+		EventTypeID
+		,KeyID
+		,Status
+		,InsertDate
+		,MessageTimestampUtc
+		)
+	SELECT @orderReceiptCreationEventTypeId
+		,i.OrderItem_ID
+		,@unprocessedStatusCode
+		,SYSDATETIME()
+		,SYSUTCDATETIME()
+	FROM inserted i
+	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	LEFT JOIN amz.ReceiptQueue roq ON roq.KeyID = i.OrderItem_ID
+		AND roq.EventTypeID = @orderReceiptCreationEventTypeId
+		AND roq.Status <> @unprocessedStatusCode
+	WHERE roq.KeyID IS NULL
+		AND (
+			oh.OrderType_ID <> 2
+			OR oh.Return_Order <> 1
+			)
+		AND (
+			i.QuantityReceived IS NOT NULL 
+			AND d.QuantityReceived IS NULL
+			)
+
+	INSERT INTO amz.ReceiptQueue (
+		EventTypeID
+		,KeyID
+		,Status
+		,InsertDate
+		,MessageTimestampUtc
+		)
+	SELECT @orderReceiptModificationEventTypeId
+		,i.OrderItem_ID
+		,@unprocessedStatusCode
+		,SYSDATETIME()
+		,SYSUTCDATETIME()
+	FROM inserted i
+	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	LEFT JOIN amz.ReceiptQueue roq ON roq.KeyID = i.OrderItem_ID
+		AND roq.EventTypeID = @orderReceiptModificationEventTypeId
+		AND roq.Status <> @unprocessedStatusCode
+	WHERE roq.KeyID IS NULL
+		AND (
+			oh.OrderType_ID <> 2
+			OR oh.Return_Order <> 1
+			)
+		AND (
+			i.QuantityReceived <> d.QuantityReceived
+			)
 
     END TRY
     BEGIN CATCH

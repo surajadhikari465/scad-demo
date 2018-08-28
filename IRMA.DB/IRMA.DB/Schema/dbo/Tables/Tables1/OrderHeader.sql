@@ -435,6 +435,7 @@ BEGIN
 			FROM amz.PurchaseOrderQueue q
 			WHERE o.EventTypeID = q.EventTypeID
 				AND o.KeyID = q.KeyID
+				AND q.Status = @unprocessedStatus
 		)
 
 		INSERT INTO amz.TransferQueue(EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
@@ -451,6 +452,7 @@ BEGIN
 			FROM amz.TransferQueue q
 			WHERE o.EventTypeID = q.EventTypeID
 				AND o.KeyID = q.KeyID
+				AND q.Status = @unprocessedStatus
 		)
 
 		SELECT @Error_No = @@ERROR
