@@ -413,7 +413,7 @@ BEGIN
 				dbo.fn_GetEplumUnitOfMeasure(
 					ScaleUOM.PlumUnitAbbr,
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					idf.FlagValue) AS PlumUnitAbbr,	
 				ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 				CASE 
@@ -503,13 +503,13 @@ BEGIN
 				dbo.fn_GetEplumFixedWeight(
 					ItemScale.Scale_FixedWeight, 
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					Item.Package_Desc2,
 					idf.FlagValue) AS Scale_FixedWeight,
 				dbo.fn_GetEplumByCount(
 					ItemScale.Scale_ByCount, 
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					idf.FlagValue) AS Scale_ByCount,
 				Scale_Grade.Zone1 AS Grade,
 				CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
@@ -707,7 +707,7 @@ BEGIN
 				dbo.fn_GetEplumUnitOfMeasure(
 					ScaleUOM.PlumUnitAbbr,
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					idf.FlagValue) AS PlumUnitAbbr,
 				ScaleUOM.Unit_Abbreviation AS ScaleUnitOfMeasure,
 				CAST(Scale_Tare.Zone1 AS int) AS ScaleTare_Int,
@@ -741,13 +741,13 @@ BEGIN
 				dbo.fn_GetEplumFixedWeight(
 					ItemScale.Scale_FixedWeight, 
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					Item.Package_Desc2,
 					idf.FlagValue) AS Scale_FixedWeight,
 				dbo.fn_GetEplumByCount(
 					ItemScale.Scale_ByCount, 
 					gpmSellingUnit.Unit_Abbreviation,
-					RU.Unit_Abbreviation,
+					PU.Unit_Abbreviation,
 					idf.FlagValue) AS Scale_ByCount,
 				Scale_Grade.Zone1 AS Grade,
 				CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ',' + CAST(Scale_LabelStyle.Description AS VARCHAR(5)) + ','+ CAST(Scale_LabelStyle.Description AS VARCHAR(5)) AS [Digi_LNU],
@@ -887,24 +887,15 @@ BEGIN
 							THEN RIGHT(@LeadingZeros + II.Identifier, 13) -- NON TYPE-2 ITEM
 						ELSE SUBSTRING(II.Identifier, 2, 5)
 						END	AS ScaleUPC,
-				 CASE 
-					WHEN idf.FlagValue = 1 
-					THEN dbo.fn_GetEplumUnitOfMeasure(
-							ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') ,
-							gpmSellingUnit.Unit_Abbreviation,
-							RU.Unit_Abbreviation,
-							idf.FlagValue) 
-				ELSE 
 					CASE ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') 
 						WHEN 'UNIT' THEN 'FW'
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
-					END 
-				END AS UnitOfMeasure,
+						END AS UnitOfMeasure,
 					dbo.fn_GetEplumUnitOfMeasure(
 						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						idf.FlagValue) AS PlumUnitAbbr,
 					ISNULL(ScaleUOM_Override.Unit_Abbreviation, ScaleUOM.Unit_Abbreviation) AS ScaleUnitOfMeasure,
 					CASE 
@@ -979,13 +970,13 @@ BEGIN
 					dbo.fn_GetEplumFixedWeight(
 						ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight), 
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						Item.Package_Desc2,
 						idf.FlagValue) AS Scale_FixedWeight,
 					dbo.fn_GetEplumByCount(
 						ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount), 
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						idf.FlagValue) AS Scale_ByCount,
 					Scale_Grade.Zone1 AS Grade,
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
@@ -1252,24 +1243,15 @@ BEGIN
 							THEN RIGHT(@LeadingZeros + II.Identifier, 13) -- NON TYPE-2 ITEM
 						ELSE SUBSTRING(II.Identifier, 2, 5)
 						END	AS ScaleUPC,
-				 CASE 
-					WHEN idf.FlagValue = 1 
-					THEN dbo.fn_GetEplumUnitOfMeasure(
-							ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') ,
-							gpmSellingUnit.Unit_Abbreviation,
-							RU.Unit_Abbreviation,
-							idf.FlagValue) 
-				ELSE 
 					CASE ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') 
 						WHEN 'UNIT' THEN 'FW'
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
-					END 
-				END AS UnitOfMeasure,
+						END AS UnitOfMeasure,
 					dbo.fn_GetEplumUnitOfMeasure(
 						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						idf.FlagValue) AS PlumUnitAbbr,
 					ISNULL(ScaleUOM_Override.Unit_Abbreviation, ScaleUOM.Unit_Abbreviation) AS ScaleUnitOfMeasure,
 					CASE 
@@ -1344,13 +1326,13 @@ BEGIN
 					dbo.fn_GetEplumFixedWeight(
 						ISNULL(ISO.Scale_FixedWeight, ItemScale.Scale_FixedWeight), 
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						Item.Package_Desc2,
 						idf.FlagValue) AS Scale_FixedWeight,
 					dbo.fn_GetEplumByCount(
 						ISNULL(ISO.Scale_ByCount, ItemScale.Scale_ByCount), 
 						gpmSellingUnit.Unit_Abbreviation,
-						RU.Unit_Abbreviation,
+						PU.Unit_Abbreviation,
 						idf.FlagValue) AS Scale_ByCount,
 					Scale_Grade.Zone1 AS Grade,
 					CONVERT(VARCHAR, ISNULL(Scale_Grade.Zone1,0))+','+
@@ -1619,4 +1601,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetPLUMCorpChg] TO [IRMAReportsRole]
     AS [dbo];
-
