@@ -1,7 +1,11 @@
-﻿using KitBuilderWebApi.DataAccess.Dto;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DataAccess.UnitOfWork;
 using KitBuilderWebApi.DatabaseModels;
+using KitBuilderWebApi.Filters;
 using KitBuilderWebApi.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -11,13 +15,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace KitBuilderWebApi
 {
@@ -35,12 +38,14 @@ namespace KitBuilderWebApi
         {
             services.AddMvc(setupAction =>
             {
+                // Web API configuration and services
+                setupAction.Filters.Add(new ValidateModelAttribute());
                 setupAction.ReturnHttpNotAcceptable = true;
             })
                  .AddMvcOptions(o => o.OutputFormatters.Add(
                      new XmlDataContractSerializerOutputFormatter()));
 
-            var connectionString = Startup.Configuration["connectionStrings:KitBuilderDBConnectionString"];
+            var connectionString = Configuration["connectionStrings:KitBuilderDBConnectionString"];
             services.AddDbContext<KitBuilderContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -57,6 +62,15 @@ namespace KitBuilderWebApi
                 return new UrlHelper(actionContext);
             });
             services.AddScoped<InstructionListHelper, InstructionListHelper>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             // add services here
             //exmaple: Services.AddSingleTon <>
@@ -103,6 +117,18 @@ namespace KitBuilderWebApi
                     });
                 });
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
+            });
+
+
 
             app.UseMvc();
         }
