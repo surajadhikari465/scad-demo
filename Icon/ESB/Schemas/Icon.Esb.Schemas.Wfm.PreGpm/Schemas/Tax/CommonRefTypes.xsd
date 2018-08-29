@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.3">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="AuthorityIDType">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AuthorityNameType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxRateIDType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxCatType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxDescriptionType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="IncludedType">
+		<xs:restriction base="crf:WfmBoolType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StartDateType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="EndDateType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="TaxIndicatorType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="DependenceRateIDType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="UnitType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="CouponReducesTaxationType">
+		<xs:restriction base="crf:WfmBoolType"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Enumerations                -->
+	<!-- ================== -->
+	<xs:simpleType name="AuthorityLevelTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Federal"/>
+			<xs:enumeration value="State"/>
+			<xs:enumeration value="County"/>
+			<xs:enumeration value="City"/>
+			<xs:enumeration value="Local"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxRateTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Tax"/>
+			<xs:enumeration value="Fee"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxCalculationMethodTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Fixed"/>
+			<xs:enumeration value="Percentage"/>
+			<xs:enumeration value="Tiered"/>
+			<xs:enumeration value="TopTiered"/>
+			<xs:enumeration value="Volume"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RoundingTypeEnum">
+		<xs:annotation>
+			<xs:documentation>nomenclature of "C_" is undefined but derived from CCH to use for State specific rounding types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="C_FL"/>
+			<xs:enumeration value="C_ID"/>
+			<xs:enumeration value="C_PA"/>
+			<xs:enumeration value="Down"/>
+			<xs:enumeration value="Nearest"/>
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Up"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="TaxBaseType">
+		<xs:sequence>
+			<xs:element name="taxRate" type="crf:WfmDecimalType"/>
+			<xs:element name="minBase" type="crf:WfmDecimalType" minOccurs="0"/>
+			<xs:element name="maxBase" type="crf:WfmDecimalType" minOccurs="0"/>
+			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================== -->
+	<!--  Attributes                      -->
+	<!-- ================== -->
+	<xs:attribute name="cchVersion">
+		<xs:simpleType>
+			<xs:restriction base="crf:WfmIntType"/>
+		</xs:simpleType>
+	</xs:attribute>
+</xs:schema>

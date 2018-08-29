@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <ApplicationIcon />
+
+    <OutputType>Library</OutputType>
+
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esb.Core" Version="2018.8.28.2" />
+    <PackageReference Include="Icon.Common" Version="2018.8.16.2" />
+    <PackageReference Include="Icon.DbContextFactory" Version="2017.2.8.1" />
+    <PackageReference Include="Icon.Esb" Version="2018.8.16.2" />
+    <PackageReference Include="Icon.Esb.Schemas.Infor" Version="2017.12.13.1" />
+    <PackageReference Include="Icon.Esb.Schemas.Mammoth" Version="2017.12.27.2" />
+    <PackageReference Include="Icon.Esb.Schemas.Wfm" Version="2018.7.25.1" />
+    <PackageReference Include="Icon.Esb.Schemas.Wfm.PreGpm" Version="2018.8.28.1" />
+    <PackageReference Include="Icon.Logging" Version="2016.10.18.4" />
+    <PackageReference Include="Icon.RenewableContext" Version="2016.10.19.5" />
+    <PackageReference Include="Mammoth.Common.DataAccess" Version="2018.8.16.1" />
+    <PackageReference Include="Mammoth.Framework" Version="2018.8.16.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AmazonLoad.MammothPrice\AmazonLoad.MammothPrice.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\System.Configuration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

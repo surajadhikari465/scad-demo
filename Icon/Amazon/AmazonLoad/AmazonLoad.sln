@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Item", "AmazonLoad.Item\AmazonLoad.Item.csproj", "{2261314B-7BC1-45CA-B7E5-1852CA892F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.IconItem", "AmazonLoad.IconItem\AmazonLoad.IconItem.csproj", "{2261314B-7BC1-45CA-B7E5-1852CA892F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Locale", "AmazonLoad.Locale\AmazonLoad.Locale.csproj", "{39F67413-354B-47D1-9069-34FB4474862A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.IconLocale", "AmazonLoad.IconLocale\AmazonLoad.IconLocale.csproj", "{39F67413-354B-47D1-9069-34FB4474862A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.ItemLocale", "AmazonLoad.ItemLocale\AmazonLoad.ItemLocale.csproj", "{72E0C95C-5681-4AC3-B33A-FF658E8E255C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.MammothItemLocale", "AmazonLoad.MammothItemLocale\AmazonLoad.MammothItemLocale.csproj", "{72E0C95C-5681-4AC3-B33A-FF658E8E255C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Hierarchy", "AmazonLoad.Hierarchy\AmazonLoad.Hierarchy.csproj", "{1B6E827E-BAF6-46B9-B5E7-96380F8CD845}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.IconHierarchy", "AmazonLoad.IconHierarchy\AmazonLoad.IconHierarchy.csproj", "{1B6E827E-BAF6-46B9-B5E7-96380F8CD845}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Common", "AmazonLoad.Common\AmazonLoad.Common.csproj", "{881D22D2-F97C-46AB-B64C-72AC0F547A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Price", "AmazonLoad.Price\AmazonLoad.Price.csproj", "{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.MammothPrice", "AmazonLoad.MammothPrice\AmazonLoad.MammothPrice.csproj", "{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.MammothPrice.Tests", "AmazonLoad.MammothPrice.Tests\AmazonLoad.MammothPrice.Tests.csproj", "{6D28C226-8D47-4C6A-957C-A671652598E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D28C226-8D47-4C6A-957C-A671652598E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D28C226-8D47-4C6A-957C-A671652598E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D28C226-8D47-4C6A-957C-A671652598E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D28C226-8D47-4C6A-957C-A671652598E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

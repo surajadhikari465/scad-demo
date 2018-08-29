@@ -2,8 +2,11 @@
 using Icon.Esb.Schemas.Infor.ContractTypes;
 using Icon.Esb.Schemas.Mammoth.ContractTypes;
 using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using System;
 using System.Xml.Serialization;
+using GpmContracts = Icon.Esb.Schemas.Wfm.Contracts;
+using PreGpmContracts= Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Esb.Core.Serializer
 {
@@ -13,19 +16,19 @@ namespace Esb.Core.Serializer
         {
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
 
-            if (t == typeof(items))
+            if (t == typeof(GpmContracts.items) || t == typeof(PreGpmContracts.items))
             {
                 AddItemNamespaces(namespaces);
             }
-            else if (t == typeof(HierarchyType))
+            else if (t == typeof(GpmContracts.HierarchyType) || t == typeof(PreGpmContracts.HierarchyType))
             {
                 AddHierarchyNamespaces(namespaces);
             }
-            else if (t == typeof(LocaleType))
+            else if (t == typeof(GpmContracts.LocaleType) || t == typeof(PreGpmContracts.LocaleType))
             {
                 AddLocaleNamespaces(namespaces);
             }
-            else if (t == typeof(SelectionGroupsType))
+            else if (t == typeof(GpmContracts.SelectionGroupsType) || t == typeof(PreGpmContracts.SelectionGroupsType))
             {
                 AddSelectionGroupsNameSpaces(namespaces);
             }

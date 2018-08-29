@@ -1,4 +1,4 @@
-﻿using Icon.Esb.Schemas.Wfm.Contracts;
+﻿using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using System;

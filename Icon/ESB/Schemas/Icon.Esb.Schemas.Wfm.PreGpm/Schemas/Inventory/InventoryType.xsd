@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1" 
+xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" 
+xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" 
+targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="inventoryType" type="InventoryTypeType">
+		<xs:annotation>
+			<xs:documentation>THIS SCHEMA IS STILL YET TO BE DEFINED AND IS A PLACEHOLDER UNTIL REQUIREMENTS DISCOVERED</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="InventoryTypeType">
+		<xs:sequence>
+			<xs:element name="code" type="crf:CodeType"/>
+			<xs:element name="description" type="crf:DescriptionType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

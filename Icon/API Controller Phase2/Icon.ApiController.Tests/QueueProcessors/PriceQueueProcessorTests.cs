@@ -12,7 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using Icon.ApiController.Common;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.ApiController.Controller.Monitoring;
