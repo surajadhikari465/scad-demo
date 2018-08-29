@@ -887,11 +887,20 @@ BEGIN
 							THEN RIGHT(@LeadingZeros + II.Identifier, 13) -- NON TYPE-2 ITEM
 						ELSE SUBSTRING(II.Identifier, 2, 5)
 						END	AS ScaleUPC,
+				 CASE 
+					WHEN idf.FlagValue = 1 
+					THEN dbo.fn_GetEplumUnitOfMeasure(
+							ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') ,
+							gpmSellingUnit.Unit_Abbreviation,
+							RU.Unit_Abbreviation,
+							idf.FlagValue) 
+				ELSE 
 					CASE ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') 
 						WHEN 'UNIT' THEN 'FW'
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
-						END AS UnitOfMeasure,
+					END 
+				END AS UnitOfMeasure,
 					dbo.fn_GetEplumUnitOfMeasure(
 						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
 						gpmSellingUnit.Unit_Abbreviation,
@@ -1243,11 +1252,20 @@ BEGIN
 							THEN RIGHT(@LeadingZeros + II.Identifier, 13) -- NON TYPE-2 ITEM
 						ELSE SUBSTRING(II.Identifier, 2, 5)
 						END	AS ScaleUPC,
+				 CASE 
+					WHEN idf.FlagValue = 1 
+					THEN dbo.fn_GetEplumUnitOfMeasure(
+							ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') ,
+							gpmSellingUnit.Unit_Abbreviation,
+							RU.Unit_Abbreviation,
+							idf.FlagValue) 
+				ELSE 
 					CASE ISNULL(ISNULL(RU_Override.Unit_Abbreviation, RU.Unit_Abbreviation), '') 
 						WHEN 'UNIT' THEN 'FW'
 						WHEN 'LB' THEN 'LB'
 						WHEN 'EA' THEN 'BC'
-						END AS UnitOfMeasure,
+					END 
+				END AS UnitOfMeasure,
 					dbo.fn_GetEplumUnitOfMeasure(
 						ISNULL(ScaleUOM_Override.PlumUnitAbbr, ScaleUOM.PlumUnitAbbr),
 						gpmSellingUnit.Unit_Abbreviation,
