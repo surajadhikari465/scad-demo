@@ -81,4 +81,7 @@
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeploy.sql" />
+  </ItemGroup>
 </Project>

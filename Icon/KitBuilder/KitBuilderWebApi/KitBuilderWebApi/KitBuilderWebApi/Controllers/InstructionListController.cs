@@ -27,7 +27,7 @@ namespace KitBuilderWebApi.Controllers
         public InstructionListController(IRepository<InstructionList> instructionListRepository,
                                          IRepository<InstructionListMember> instructionListMemberRepository,
                                          IRepository<InstructionType> instructionTypeRespository,
-                                          IRepository<Status> statusRespository,
+                                         IRepository<Status> statusRespository,
                                          ILogger<InstructionListController> logger,
                                          InstructionListHelper instructionListHelper
                                          )
@@ -79,5 +79,52 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(instructionListsAfterPaging.ShapeData(instructionListsParameters.Fields));
         }
+
+        [HttpPut]
+        public IActionResult UpdateInstructionList(InstructionList parameters)
+        {
+        
+            var list = instructionListRepository.Find(i => i.InstructionListId == parameters.InstructionListId);
+
+            if (list == null) return NotFound();
+
+           // Mapper.Map(parameters, list);
+
+            instructionListRepository.Update(parameters, list.InstructionListId);
+            instructionListRepository.Save();
+        
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult AddInstructionList(AddInstructionListPrameters parameters)
+        {
+            if (!ModelState.IsValid || parameters == null)
+                return BadRequest(ModelState);
+
+            var defaultStatus = statusRespository.Find(s => s.StatusCode == "ENA");
+            if (defaultStatus == null)
+            {
+
+                ModelState.AddModelError("DefaultStatus", "Unable to find 'Enabled' Status");
+                return BadRequest(ModelState);
+            }
+
+            var instructionList = new InstructionList()
+            {
+                InstructionTypeId = parameters.TypeId,
+                Name = parameters.Name,
+                StatusId = defaultStatus.StatusId
+            };
+
+            instructionListRepository.Add(instructionList);
+            instructionListRepository.Save();
+
+
+            return Ok();
+        }
+        
     }
+    
 }
