@@ -243,20 +243,21 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateCollection_AnimalWelfareRatingIsInvalid_InvalidAnimalWelfareRatingError()
+        public void ValidateCollection_AnimalWelfareRatingAStringUpTo50Characters_NoError()
         {
             //Given
-            testItem.AnimalWelfareRating = "Invalid value";
+            testItem.AnimalWelfareRating = new string('a', 50);
 
             //When
             validator.ValidateCollection(testItems);
 
             //Then
-            AssertExpectedErrorsWithExpectedMessages(
-                ValidationErrorCodes.InvalidAnimalWelfareRating,
-                ValidationErrorMessages.InvalidAnimalWelfareRating,
-                nameof(testItem.AnimalWelfareRating),
-                (i) => i.AnimalWelfareRating);
+            AssertExpectedErrors(null, null);
+            //AssertExpectedErrorsWithExpectedMessages(
+            //    ValidationErrorCodes.InvalidAnimalWelfareRating,
+            //    ValidationErrorMessages.InvalidAnimalWelfareRating,
+            //    nameof(testItem.AnimalWelfareRating),
+            //    (i) => i.AnimalWelfareRating);
         }
 
         [TestMethod]
@@ -264,6 +265,19 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         {
             //Given
             testItem.AnimalWelfareRating = string.Empty;
+
+            //When
+            validator.ValidateCollection(testItems);
+
+            //Then
+            AssertExpectedErrors(null, null);
+        }
+
+        [TestMethod]
+        public void ValidateCollection_AnimalWelfareRatingIsNull_NoError()
+        {
+            //Given
+            testItem.AnimalWelfareRating = null;
 
             //When
             validator.ValidateCollection(testItems);

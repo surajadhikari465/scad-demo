@@ -188,7 +188,7 @@ namespace Mammoth.ApiController.QueueReaders
             else if (messageActionId == MessageActions.Delete)
                 return Contracts.ActionEnum.Delete;
             else
-                throw new ArgumentException(string.Format("Invalid MessageActionId passed. Value was {0}."));
+                throw new ArgumentException(string.Format("Invalid MessageActionId passed. Value was {0}.", messageActionId));
         }
 
         private Contracts.WfmUomCodeEnumType GetEsbUomCode(string uomCode)

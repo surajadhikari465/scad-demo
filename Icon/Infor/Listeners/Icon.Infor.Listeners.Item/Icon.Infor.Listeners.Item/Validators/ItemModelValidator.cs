@@ -44,7 +44,7 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .WithErrorCode(ValidationErrorCodes.InvalidAlcoholByVolume)
                 .WithMessage(ValidationErrorMessages.InvalidAlcoholByVolume);
             RuleFor(i => i.AnimalWelfareRating)
-                .Must(r => animalWelfareRatingDescriptions.Contains(r))
+                .Matches(TraitPatterns.AnimalWelfareRating)
                 .Unless(i => i.AnimalWelfareRating == string.Empty)
                 .WithErrorCode(ValidationErrorCodes.InvalidAnimalWelfareRating)
                 .WithMessage(ValidationErrorMessages.InvalidAnimalWelfareRating);
