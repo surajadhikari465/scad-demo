@@ -33,7 +33,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_NA]
     BEGIN
 
 		INSERT INTO [gpm].[PriceHistory]
-		(
+    (
 			Region,
 			PriceID,
 			GpmID,
@@ -42,6 +42,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_NA]
 			StartDate,
 			EndDate,
 			Price,
+      PercentOff,
 			PriceType,
 			PriceTypeAttribute,
 			SellableUOM,
@@ -60,6 +61,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_NA]
 			StartDate,
 			EndDate,
 			Price,
+      PercentOff,
 			PriceType,
 			PriceTypeAttribute,
 			SellableUOM,
