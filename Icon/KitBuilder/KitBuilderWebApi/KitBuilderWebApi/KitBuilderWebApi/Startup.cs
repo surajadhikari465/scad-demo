@@ -53,7 +53,9 @@ namespace KitBuilderWebApi
             services.AddScoped<IRepository<InstructionListMember>, Repository<InstructionListMember>>();
             services.AddScoped<IRepository<InstructionType>, Repository<InstructionType>>();
             services.AddScoped<IRepository<Status>, Repository<Status>>();
-            
+            services.AddScoped<IRepository<KitLinkGroupItem>, Repository<KitLinkGroupItem>>();
+            services.AddScoped<IRepository<LinkGroupDto>, Repository<LinkGroupDto>>();
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(implementationFactory =>
             {
@@ -88,7 +90,7 @@ namespace KitBuilderWebApi
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<InstructionList, InstructionListDto>();
-
+                cfg.CreateMap<LinkGroup, LinkGroupDto>();
             });
 
             // only when environment is development show fill exception
@@ -127,8 +129,6 @@ namespace KitBuilderWebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
             });
-
-
 
             app.UseMvc();
         }

@@ -147,6 +147,11 @@ namespace KitBuilderWebApi.DataAccess.Repository
             return queryable;
         }
 
+        public int ExecWithStoreProcedure(string StoredProcedureName, params object[] parameters)
+        {
+            return UnitOfWork.Context.Database.ExecuteSqlCommand("EXEC " + StoredProcedureName, parameters);
+        }
+
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
