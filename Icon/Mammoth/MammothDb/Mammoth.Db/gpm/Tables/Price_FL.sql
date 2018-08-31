@@ -1,13 +1,13 @@
 ﻿CREATE TABLE [gpm].[Price_FL](
        [Region] [nchar](2) NOT NULL CONSTRAINT [DF_Gpm_PriceFL_Region] DEFAULT ('FL'),
        [PriceID] [bigint] IDENTITY(1,1) NOT NULL,
-	   [GpmID] [uniqueidentifier] NULL,
+	     [GpmID] [uniqueidentifier] NULL,
        [ItemID] [int] NOT NULL,
        [BusinessUnitID] [int] NOT NULL,
        [StartDate] [datetime2](0) NOT NULL,
        [EndDate] [datetime2](0) NULL,
        [Price] DECIMAL(9,2) NOT NULL,
-	   [PercentOff] DECIMAL(5,2) NULL,
+	     [PercentOff] DECIMAL(5,2) NULL,
        [PriceType] [nvarchar](3) NOT NULL,
        [PriceTypeAttribute] [nvarchar](10) NOT NULL,
        [SellableUOM] [nvarchar](3) NOT NULL,
@@ -15,7 +15,7 @@
        [Multiple] [tinyint] NOT NULL,
        [TagExpirationDate] [datetime2](0) NULL,
        [InsertDateUtc] [datetime2](7) NOT NULL CONSTRAINT [DF_Gpm_Price_FL_InsertDateUtc] DEFAULT (SYSUTCDATETIME()),
-	   [ModifiedDateUtc] [datetime2](7) NULL,
+	     [ModifiedDateUtc] [datetime2](7) NULL,
 	   CONSTRAINT [PK_GpmPrice_FL] PRIMARY KEY NONCLUSTERED ([Region] ASC, [ItemID] ASC, [BusinessUnitID] ASC, [StartDate] ASC, [PriceType] ASC) WITH (FILLFACTOR = 100) ON [FG_FL],
 	   CONSTRAINT [CK_Gpm_Price_FL_Region] CHECK (Region = 'FL')
 ) ON [FG_FL]
@@ -33,7 +33,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_FL]
     BEGIN
 	
 		INSERT INTO [gpm].[PriceHistory]
-		(
+    (
 			Region,
 			PriceID,
 			GpmID,
@@ -42,6 +42,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_FL]
 			StartDate,
 			EndDate,
 			Price,
+      PercentOff,
 			PriceType,
 			PriceTypeAttribute,
 			SellableUOM,
@@ -60,6 +61,7 @@ CREATE TRIGGER [gpm].[Trigger_Price_FL]
 			StartDate,
 			EndDate,
 			Price,
+      PercentOff,
 			PriceType,
 			PriceTypeAttribute,
 			SellableUOM,
