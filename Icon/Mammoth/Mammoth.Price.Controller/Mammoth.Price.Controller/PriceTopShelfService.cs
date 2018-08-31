@@ -54,11 +54,11 @@ namespace Mammoth.Price.Controller
             {
                 this.runTimer.Stop();
 
-                logger.Info("Starting Mammoth " + settings.ControllerName + " Controller.");
+                logger.Debug("Starting Mammoth " + settings.ControllerName + " Controller.");
 
                 controllerApplication.Run();
 
-                logger.Info("Shutting down Mammoth " + settings.ControllerName + " Controller.");
+                logger.Debug("Shutting down Mammoth " + settings.ControllerName + " Controller.");
             }
             catch (Exception ex)
             {

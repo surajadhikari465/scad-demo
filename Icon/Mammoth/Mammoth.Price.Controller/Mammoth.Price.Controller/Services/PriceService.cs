@@ -30,6 +30,7 @@ namespace Mammoth.Price.Controller.Services
             logger.Info(String.Format("Processing {0} Mammoth Price Events.", data.Count));
             SendData(data, Uris.PriceUpdate, IrmaEventTypes.Price);
             SendData(data, Uris.PriceRollback, IrmaEventTypes.PriceRollback);
+            logger.Info(String.Format("Finished Processing {0} Mammot Price Events.", data.Count));
         }
 
         private void SendData(List<PriceEventModel> data, string uri, int eventTypeId)

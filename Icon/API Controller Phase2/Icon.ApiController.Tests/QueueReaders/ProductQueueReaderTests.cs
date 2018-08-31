@@ -5,7 +5,6 @@ using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Testing.Builders;
@@ -14,7 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Icon.ApiController.Tests.QueueReaderTests
 {
@@ -51,10 +50,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 settings);
         }
 
-        private TraitValueType AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
+        private Contracts.TraitValueType AssertItemHasExpectedTrait(Contracts.EnterpriseItemAttributesType itemAttributes,
             string expectedTraitCode, string expectedTraitDesc)
         {
-            TraitType trait = itemAttributes.traits
+            Contracts.TraitType trait = itemAttributes.traits
                 .SingleOrDefault(it => it.code == expectedTraitCode);
             Assert.IsNotNull(trait, $"product message should have had {expectedTraitDesc} trait");
             Assert.AreEqual(expectedTraitCode, trait.code);
@@ -62,7 +61,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.AreEqual(expectedTraitDesc, trait.type.description);
             Assert.IsNotNull(trait.type.value);
             Assert.AreEqual(1, trait.type.value.Length);
-            TraitValueType traitValue = trait.type.value[0];
+            Contracts.TraitValueType traitValue = trait.type.value[0];
             return traitValue;
         }
 
@@ -642,8 +641,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         public void BuildMiniBulk_ProductMessageWithRetailUomTraitContainingSpaces_RetailUomShouldBeMatchedToEnum()
         {
             // Given.
-            mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.CT);
-            mockUomMapper.Setup(m => m.GetEsbUomDescription(It.IsAny<string>())).Returns(Contracts.WfmUomDescEnumType.COUNT);
+            mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>()))
+                .Returns(Contracts.WfmUomCodeEnumType.CT);
+            mockUomMapper.Setup(m => m.GetEsbUomDescription(It.IsAny<string>()))
+                .Returns(Contracts.WfmUomDescEnumType.COUNT);
             var fakeMessage = TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
 
             fakeMessage.RetailUom = "CT";

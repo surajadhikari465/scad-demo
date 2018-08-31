@@ -791,6 +791,7 @@
     <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

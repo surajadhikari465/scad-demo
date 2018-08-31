@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AddressMgmt/Territory/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:cry="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" targetNamespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Territory/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/Country/V2" schemaLocation="Country.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="territory" type="TerritoryType"/>
+	<xs:complexType name="TerritoryType">
+		<xs:sequence>
+			<xs:element name="type" type="arf:TerritoryType"/>
+			<xs:element name="country" type="cry:CountryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

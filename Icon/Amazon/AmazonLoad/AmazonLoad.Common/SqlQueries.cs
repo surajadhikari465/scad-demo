@@ -563,6 +563,36 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
             }
         }
 
+        public static string PriceGpmSql
+        {
+            get
+            {
+                return @"SELECT {top query}
+                    p.ItemID            as ItemId,
+	                t.ItemTypeCode		as ItemTypeCode,
+	                t.ItemTypeDesc		as ItemTypeDesc,
+                    p.BusinessUnitID    as BusinessUnitId,
+	                l.StoreName			as LocaleName,
+	                i.ScanCode			as ScanCode,
+                    p.SellableUOM       as UomCode,
+                    p.CurrencyCode      as CurrencyCode,
+	                p.PriceType         as PriceType,
+                    p.Price				as Price,
+	                p.Multiple			as Multiple,
+	                p.StartDate			as StartDate,
+	                p.EndDate			as EndDate,
+                    p.GpmID			    as GpmId,
+                    p.PriceTypeAttribute as PriceTypeAttribute,
+                    p.PercentOff        as PercentOff
+	            FROM gpm.Price_{region} p
+	                JOIN dbo.Locales_{region}   l	on	p.BusinessUnitId	= l.BusinessUnitID
+	                JOIN dbo.Items		        i	on	p.ItemID			= i.ItemID
+	                JOIN dbo.ItemTypes	        t	on	i.ItemTypeID		= t.ItemTypeID
+                    JOIN dbo.Currency           c   on  p.CurrencyCode      = c.CurrencyCode
+                ORDER BY p.BusinessUnitId";
+            }
+        }
+
         public static string ProductSelectionGroupSql
         {
             get
@@ -577,6 +607,14 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                     psgt.ProductSelectionGroupTypeName
                     FROM app.ProductSelectionGroup psg
                     JOIN app.ProductSelectionGroupType psgt ON psg.ProductSelectionGroupTypeId = psgt.ProductSelectionGroupTypeId";
+            }
+        }
+
+        public static string QueryRegionGpmStatus
+        {
+            get
+            {
+                return @"SELECT IsGpmEnabled FROM dbo.RegionGpmStatus WHERE Region = '{region}'";
             }
         }
     }

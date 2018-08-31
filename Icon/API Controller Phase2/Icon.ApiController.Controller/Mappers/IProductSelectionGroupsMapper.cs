@@ -1,5 +1,5 @@
 ﻿using Icon.Framework;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Icon.ApiController.Controller.Mappers
 {

@@ -11,7 +11,7 @@ using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Mammoth.ApiController.QueueReaders
 {
@@ -184,11 +184,11 @@ namespace Mammoth.ApiController.QueueReaders
         private Contracts.ActionEnum GetAction(int messageActionId)
         {
             if (messageActionId == MessageActions.AddOrUpdate)
-                return Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.AddOrUpdate;
+                return Contracts.ActionEnum.AddOrUpdate;
             else if (messageActionId == MessageActions.Delete)
-                return Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.Delete;
+                return Contracts.ActionEnum.Delete;
             else
-                throw new ArgumentException(string.Format("Invalid MessageActionId passed. Value was {0}."));
+                throw new ArgumentException(string.Format("Invalid MessageActionId passed. Value was {0}.", messageActionId));
         }
 
         private Contracts.WfmUomCodeEnumType GetEsbUomCode(string uomCode)

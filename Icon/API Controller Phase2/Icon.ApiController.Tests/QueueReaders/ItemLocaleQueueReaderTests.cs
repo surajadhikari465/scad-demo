@@ -13,7 +13,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Icon.ApiController.Tests.QueueReaderTests
 {

@@ -12,7 +12,7 @@ using Icon.Esb;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Icon.ApiController.Controller.ControllerBuilders
 {

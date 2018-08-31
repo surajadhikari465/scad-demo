@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 sp2 (x64) (http://www.altova.com) by Madelyn Lescalleet (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tzf="http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="timezone" type="TimezoneType"/>
+	<xs:element name="dateTimezone" type="DateTimezoneType"/>
+	<xs:complexType name="TimezoneType">
+		<xs:sequence>
+			<xs:element name="code" type="tzf:TimezoneCodeType" minOccurs="0"/>
+			<xs:element name="name" type="tzf:TimezoneNameType" minOccurs="0"/>
+			<xs:element name="gmtOffset" type="tzf:GmtOffsetType" minOccurs="0"/>
+			<xs:element name="dstStart" type="crf:WfmDateTimeType" minOccurs="0"/>
+			<xs:element name="dstEnd" type="crf:WfmDateTimeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateTimezoneType">
+		<xs:sequence>
+			<xs:element name="dateTime" type="crf:WfmDateTimeType"/>
+			<xs:element name="timezone" type="TimezoneType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -47,9 +47,9 @@ namespace MammothWebApi.DataAccess.Commands
                         nameof(StagingItemLocaleModel.AltRetailSize),
                         nameof(StagingItemLocaleModel.AltRetailUOM),
                         nameof(StagingItemLocaleModel.DefaultScanCode),
+                        nameof(StagingItemLocaleModel.IrmaItemKey),
                         nameof(StagingItemLocaleModel.Timestamp),
-                        nameof(StagingItemLocaleModel.TransactionId),
-                        nameof(StagingItemLocaleModel.IrmaItemKey)))
+                        nameof(StagingItemLocaleModel.TransactionId)))
                     {
                         bulkCopy.DestinationTableName = "[stage].[ItemLocale]";
                         bulkCopy.WriteToServer(reader);

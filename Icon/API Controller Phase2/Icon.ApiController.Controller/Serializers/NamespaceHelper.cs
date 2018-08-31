@@ -1,5 +1,5 @@
 ﻿using Icon.ApiController.Common;
-using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using System;
 using System.Xml.Serialization;
 

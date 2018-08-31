@@ -2,7 +2,7 @@
 
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
-using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using Icon.Framework;
 using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

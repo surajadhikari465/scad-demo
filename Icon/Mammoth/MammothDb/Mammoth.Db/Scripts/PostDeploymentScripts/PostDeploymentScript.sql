@@ -16,3 +16,4 @@ Post-Deployment Script Template
 :r ..\..\Security\SecurityGrants.sql
 :r PopulateItemPriceTypeWithGsp.sql
 :r AddIrmaItemKeyAttributes.sql --PBI 28239 Aug. 15, 2018
+:r UpdateAppLogRetention.sql -- PBI 28749 8/27/2018

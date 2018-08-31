@@ -1,0 +1,446 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{990917E3-D9E6-4C7D-9470-0CB73AA9AAF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Icon.Esb.Schemas.Wfm.PreGpm</RootNamespace>
+    <AssemblyName>Icon.Esb.Schemas.Wfm.PreGpm</AssemblyName>
+    <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <XsdCodeGenEnabled>True</XsdCodeGenEnabled>
+    <XsdCodeGenSerializerMode>XmlSerializer</XsdCodeGenSerializerMode>
+    <XsdCodeGenReuseTypesFlag>True</XsdCodeGenReuseTypesFlag>
+    <XsdCodeGenReuseTypesMode>All</XsdCodeGenReuseTypesMode>
+    <XsdCodeGenReferences />
+    <XsdCodeGenNamespaceMappings>%2a, Icon.Esb.Schemas.Wfm.PreGpm.ContractTypes</XsdCodeGenNamespaceMappings>
+    <XsdCodeGenCollectionTypes>System.Array%3bSystem.Collections.Generic.Dictionary`2</XsdCodeGenCollectionTypes>
+    <XsdCodeGenExcludedTypes />
+    <XsdCodeGenImportXmlTypes>True</XsdCodeGenImportXmlTypes>
+    <XsdCodeGenGenerateSerializableTypes>True</XsdCodeGenGenerateSerializableTypes>
+    <XsdCodeGenGenerateInternalTypes>False</XsdCodeGenGenerateInternalTypes>
+    <XsdCodeGenEnableDataBinding>False</XsdCodeGenEnableDataBinding>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WfmContracts.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schemas\Address\Address.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\AddressType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\AddressUsage.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\City.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\Country.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\County.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\PhoneAddress.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\PhysicalAddress.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\PostalCode.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Address\Territory.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Affinity\Affinity.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Affinity\AffinityType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Affinity\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Affinity\TransactionAffinity.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Amount\Amount.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Amount\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Common\CommonRefEnumTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Common\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Common\GroupType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Common\LinkType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Common\NameType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Demographic\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Demographic\Demographic.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Demographic\DemographicGroup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Demographic\DemographicType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Demographic\DemographicValue.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\FinancialTransactionAccount.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\Gainshare\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\Gainshare\Gainshare.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\Subteam\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\FinancialTransactionAccount\Subteam\Subteam.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Hierarchy\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Hierarchy\Hierarchy.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Hierarchy\HierarchyClass.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Hierarchy\HierarchyPrototype.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\BaseIndividual.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\Individual.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\IndividualAddress.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\IndividualName.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\IndividualNameType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Individual\IndividualTrait.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\Inventory.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\InventoryType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\TransactionInventoryItem.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\BaseItem.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ConsumerInformation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\Item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ItemAttributesEnterprise.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ItemAttributesRegional.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ItemAttributesStore.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ItemType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\ScanCode.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Item\TransactionItem.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Locale\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Locale\Locale.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Locale\LocaleTrait.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Locale\LocaleType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\Organization.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\OrganizationName.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\OrganizationNameType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\OrganizationTrait.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Organization\OrganizationType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\Party.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\PartyIdentifier.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\PartyIdentifierType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\PartyStatus.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\PartyType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Party\TransactionParty.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\Persona.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\PersonaIdentifier.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\PersonaIdentifierType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\PersonaTrait.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Persona\PersonaType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Price\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Price\Price.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Price\PriceType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Promotion\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Promotion\Promotion.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Promotion\PromotionType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Promotion\TransactionPromotion.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\SelectionGroup\SelectionGroup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Status\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Status\Status.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Status\StatusHistory.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Store\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Store\Store.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Store\StoreGroup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Store\StoreGroupType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\TaxAuthority.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\TaxHierarchyClass.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\TaxRate.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\TaxZone.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Tax\TransactionTax.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Timezone\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Timezone\Timezone.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Trait\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Trait\Trait.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Trait\TraitGroup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Trait\TraitType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Trait\TraitValue.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefEnumTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefItemTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefPromoTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefTaxTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefTenderTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Common\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\ItemMovement\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\ItemMovement\TransactionItemMovement.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Uom\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Uom\UnitOfMeasure.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio</VSToolsPath>
+    <WcfServiceModelTargetPath>$(VSToolsPath)\WCF</WcfServiceModelTargetPath>
+  </PropertyGroup>
+  <Import Project="$(WcfServiceModelTargetPath)\Microsoft.VisualStudio.ServiceModel.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
+        <WcfProjectProperties>
+          <AutoStart>False</AutoStart>
+        </WcfProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

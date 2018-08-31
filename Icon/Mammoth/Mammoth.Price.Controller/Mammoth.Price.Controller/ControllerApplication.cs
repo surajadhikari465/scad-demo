@@ -46,7 +46,7 @@ namespace Mammoth.Price.Controller
             {
                 settings.CurrentRegion = region;
 
-                logger.Info(new { Region = region, Message = "Beginning event processing." }.ToJson());
+                logger.Debug(new { Region = region, Message = "Beginning event processing." }.ToJson());
 
                 List<EventQueueModel> events = queueManager.GetEvents();
                 while (events.Any())
@@ -59,7 +59,7 @@ namespace Mammoth.Price.Controller
                     events = queueManager.GetEvents();
                 }
 
-                logger.Info(new { Region = region, Message = "Ending event processing." }.ToJson());
+                logger.Debug(new { Region = region, Message = "Ending event processing." }.ToJson());
             }
         }
 
