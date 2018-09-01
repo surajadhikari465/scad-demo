@@ -45,6 +45,9 @@ namespace KitBuilderWebApi.Controllers
         [HttpGet(Name = "GetInstructionsList")]
         public IActionResult GetInstructionsList(InstructionListsParameters instructionListsParameters)
         {
+            if (!ModelState.IsValid || instructionListsParameters == null)
+                return BadRequest(ModelState);
+
 
             var instructionListsBeforePaging = from i in instructionListRepository.GetAll()
                                                join  itr in instructionTypeRespository.GetAll() on i.InstructionTypeId equals itr.InstructionTypeId
@@ -61,7 +64,11 @@ namespace KitBuilderWebApi.Controllers
                                                };
               // will set order by if passed, otherwise use default orderby                           
             if (!instructionListHelper.SetOrderBy(ref instructionListsBeforePaging, instructionListsParameters))
-                return BadRequest();
+            {
+                ModelState.AddModelError("BadOrderBy","Invalid OrderBy Parameter");
+                return BadRequest(ModelState);
+            }
+               
 
             //build the query if any filter or search query critiera is passed
             instructionListHelper.BuildQueryToFilterData(instructionListsParameters, ref instructionListsBeforePaging);
@@ -83,12 +90,13 @@ namespace KitBuilderWebApi.Controllers
         [HttpPut]
         public IActionResult UpdateInstructionList(InstructionList parameters)
         {
-        
+            if (!ModelState.IsValid || parameters == null)
+                return BadRequest(ModelState);
+
+
             var list = instructionListRepository.Find(i => i.InstructionListId == parameters.InstructionListId);
 
             if (list == null) return NotFound();
-
-           // Mapper.Map(parameters, list);
 
             instructionListRepository.Update(parameters, list.InstructionListId);
             instructionListRepository.Save();
