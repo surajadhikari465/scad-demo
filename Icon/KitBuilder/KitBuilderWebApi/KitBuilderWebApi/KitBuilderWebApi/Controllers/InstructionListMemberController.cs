@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,10 +22,10 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<InstructionListMember> instructionListMemberRepository { get; set; }
         private IRepository<InstructionType> instructionTypeRespository { get; set; }
         private IRepository<Status> statusRespository { get; set; }
-        private ILogger<InstructionListController> logger;
+        private ILogger<InstructionListMemberController> logger;
         private InstructionListHelper instructionListHelper;
 
-        public InstructionListMemberController(ILogger<InstructionListController> logger,
+        public InstructionListMemberController(ILogger<InstructionListMemberController> logger,
             InstructionListHelper instructionListHelper, IRepository<InstructionList> instructionListRepository,
             IRepository<InstructionListMember> instructionListMemberRepository,
             IRepository<InstructionType> instructionTypeRespository, IRepository<Status> statusRespository)
@@ -47,9 +45,14 @@ namespace KitBuilderWebApi.Controllers
             //It will accept a list of model with InstructionListId, Group, Member and Sequence as fields.It will insert records into Instruction
             //List Member table.
 
+            if (!ModelState.IsValid || parameters == null)
+                return BadRequest(ModelState);
+
+            // get all the instruction lists referenced in the parameters.
             var ids = parameters.Select(p => p.InstructionListId);
             var instructionLists =
                 instructionListRepository.FindAll(f => ids.Contains(f.InstructionListId));
+
 
             foreach (var il in parameters)
             {
@@ -61,22 +64,28 @@ namespace KitBuilderWebApi.Controllers
                     InstructionListId = il.InstructionListId
                 };
 
+                // make sure the referenced instruction list exists.
                 var existingInstructionList =
                     instructionLists.FirstOrDefault(existing => existing.InstructionListId == il.InstructionListId);
 
-                if(existingInstructionList != null) instructionListMemberRepository.Add(instructionListMember);
+                // if it does, add the instruction list member.
+                if (existingInstructionList != null) instructionListMemberRepository.Add(instructionListMember);
 
             }
+            // save changes
             instructionListMemberRepository.Save();
 
             return Ok();
         }
 
         [HttpPut]
-        public IActionResult UpdateInstructionListMember(UpdateInstructionListMemberParameters[] parameters)
+        public IActionResult UpdateInstructionListMember([FromBody]List<UpdateInstructionListMemberParameters> parameters)
         {
             //Update Instruction members - this method will let consumers update instruction members.It will accept a
             //list of model with InstructionListId, Group,Member and Sequence as fields.It will update existing records in Instruction List Member table.
+
+            if (!ModelState.IsValid || parameters == null)
+                return BadRequest(ModelState);
 
             foreach (var update in parameters)
             {
@@ -85,13 +94,14 @@ namespace KitBuilderWebApi.Controllers
 
                 var instructionListMember = new InstructionListMember()
                 {
+                    InstructionListMemberId =  update.InstructionListMemberId, 
+                    InstructionListId =  update.InstructionListId,
                     Group = update.Group,
                     Member = update.Member,
-                    Sequence = update.Sequence,
-                    InstructionListId = update.InstructionListId
+                    Sequence = update.Sequence
                 };
 
-                instructionListMemberRepository.Update(instructionListMember, instructionListMember.InstructionListId);
+                instructionListMemberRepository.Update(instructionListMember, update.InstructionListMemberId);
 
             }
             instructionListMemberRepository.Save();
@@ -105,12 +115,15 @@ namespace KitBuilderWebApi.Controllers
             //Delete instruction member from instruction list -this method will let consumers delete instruction members from the instruction list.
             //It will accept InstructionListId and list of InstructionListMemberID. It will delete records from Instruction List Member table.
 
+            if (!ModelState.IsValid || parameters == null)
+                return BadRequest(ModelState);
+
             var instructionList =
                 instructionListRepository.Find(il => il.InstructionListId == parameters.InstructionListId);
 
             if (instructionList == null)
             {
-                ModelState.AddModelError("UnknownInstructionLIst", $"Instruction List for Id {parameters.InstructionListId} not found");
+                ModelState.AddModelError("UnknownInstructionList", $"Instruction List for Id {parameters.InstructionListId} not found");
                 return NotFound(ModelState);
             }
 

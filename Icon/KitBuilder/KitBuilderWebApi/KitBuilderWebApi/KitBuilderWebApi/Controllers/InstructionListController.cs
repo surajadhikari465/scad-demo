@@ -81,6 +81,7 @@ namespace KitBuilderWebApi.Controllers
 
             var paginationMetadata = instructionListHelper.getPaginationData(instructionListsAfterPaging, instructionListsParameters);
 
+            if (Response !=null)
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
