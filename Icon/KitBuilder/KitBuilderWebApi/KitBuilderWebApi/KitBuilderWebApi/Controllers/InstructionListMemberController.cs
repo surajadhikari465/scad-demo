@@ -18,10 +18,10 @@ namespace KitBuilderWebApi.Controllers
     public class InstructionListMemberController : Controller
     {
 
-        private IRepository<InstructionList> instructionListRepository { get; set; }
-        private IRepository<InstructionListMember> instructionListMemberRepository { get; set; }
-        private IRepository<InstructionType> instructionTypeRespository { get; set; }
-        private IRepository<Status> statusRespository { get; set; }
+        private IRepository<InstructionList> instructionListRepository;
+        private IRepository<InstructionListMember> instructionListMemberRepository;
+        private IRepository<InstructionType> instructionTypeRespository;
+        private IRepository<Status> statusRespository;
         private ILogger<InstructionListMemberController> logger;
         private InstructionListHelper instructionListHelper;
 
