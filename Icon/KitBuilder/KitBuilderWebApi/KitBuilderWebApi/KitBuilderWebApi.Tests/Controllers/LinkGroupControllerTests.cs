@@ -36,11 +36,13 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitlinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
             mockKitlinkGroupRepository = new Mock<IRepository<KitLinkGroup>>();
 
-            mockLinkGroupHelper = new Mock<LinkGroupHelper>(mockUrlHelper, mockLinkGroupRepository, mockLinkGroupItemRepository,
-                                                            mockItemsRepository, mockKitlinkGroupItemRepository,
-                                                            mockKitlinkGroupRepository);
+            mockLinkGroupHelper = new Mock<LinkGroupHelper>(mockUrlHelper);
 
-            linkGroupController = new LinkGroupController(mockLogger.Object,
+            linkGroupController = new LinkGroupController(mockLinkGroupRepository.Object,
+                                                          mockLinkGroupItemRepository.Object,
+                                                          mockItemsRepository.Object,
+                                                          mockKitlinkGroupRepository.Object,
+                                                          mockLogger.Object,
                                                           mockLinkGroupHelper.Object);
         }
 
@@ -49,7 +51,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         {   // Given
 
             //When
-            var response = linkGroupController.GetLinkGroups(null);
+           var response = linkGroupController.GetLinkGroups(null);
 
             // Then
             Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");

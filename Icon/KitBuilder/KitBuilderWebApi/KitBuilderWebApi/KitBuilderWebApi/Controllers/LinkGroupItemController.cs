@@ -16,15 +16,21 @@ namespace KitBuilderWebApi.Controllers
     [Route("api/LinkGroups")]
     public class LinkGroupItemController : Controller
     {
+        private IRepository<LinkGroup> linkGroupRepository;
+        private IRepository<LinkGroupItem> linkGroupItemRepository;
+        private IRepository<Items> itemsRepository;
         private ILogger<LinkGroupController> logger;
-        private LinkGroupItemHelper linkGroupItemHelper;
 
-        public LinkGroupItemController(ILogger<LinkGroupController> logger,
-                                       LinkGroupItemHelper linkGroupItemHelper
-                                      )
+        public LinkGroupItemController(IRepository<LinkGroup> linkGroupRepository,
+                                        IRepository<LinkGroupItem> linkGroupItemRepository,
+                                        IRepository<Items> itemsRepository,
+                                        ILogger<LinkGroupController> logger
+                                       )
         {
+            this.linkGroupRepository = linkGroupRepository;
+            this.linkGroupItemRepository = linkGroupItemRepository;
+            this.itemsRepository = itemsRepository;
             this.logger = logger;
-            this.linkGroupItemHelper = linkGroupItemHelper;
         }
 
        // GET api/GetLinkGroups
@@ -36,7 +42,7 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest();
             }
 
-            var linkGroup = linkGroupItemHelper.GetLinkGroupById(linkGroupId);
+            var linkGroup = linkGroupRepository.Get(linkGroupId);
 
             if (linkGroup == null)
             {
@@ -45,10 +51,11 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var linkGroupItem = Mapper.Map<LinkGroupItem>(linkGroupItemDto);
+            linkGroup.LinkGroupItem.Add(linkGroupItem);
 
             try
             {
-                linkGroupItemHelper.AddLinkGroupItemToLinkGroup(linkGroup, linkGroupItem);
+                linkGroupRepository.UnitOfWork.Commit();
                 return StatusCode((int)HttpStatusCode.Created);
             }
 
@@ -60,7 +67,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         // GET api/GetLinkGroups
-        [HttpPost("linkGroupId}/LinkGroupItems", Name = "CreateLinkGroupItems")]
+        [HttpPost("{linkGroupId}/LinkGroupItems", Name = "CreateLinkGroupItems")]
         public IActionResult CreateLinkGroupItems(int linkGroupId, List<LinkGroupItemDto> linkGroupItemsDto)
         {
             if (linkGroupItemsDto == null)
@@ -68,7 +75,7 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest();
             }
 
-            var linkGroup = linkGroupItemHelper.GetLinkGroupById(linkGroupId);
+            var linkGroup = linkGroupRepository.Get(linkGroupId);
 
             if (linkGroup == null)
             {
@@ -76,9 +83,15 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
+            foreach (var linkGroupItemDto in linkGroupItemsDto)
+            {
+                var linkGroupItem = Mapper.Map<LinkGroupItem>(linkGroupItemDto);
+                linkGroup.LinkGroupItem.Add(linkGroupItem);
+            }
+
             try
             {
-                linkGroupItemHelper.AddLinkGroupItemsToLinkGroup(linkGroup, linkGroupItemsDto);
+                linkGroupRepository.UnitOfWork.Commit();
                 return StatusCode((int)HttpStatusCode.Created);
             }
 
@@ -90,10 +103,10 @@ namespace KitBuilderWebApi.Controllers
         }
 
         // GET api/GetLinkGroups
-        [HttpDelete("{linkGroupId}/LinkGroupItems", Name = "GetLinkGroups")]
+        [HttpDelete("{linkGroupId}/LinkGroupItems", Name = "DeleteLinkGroupItems")]
         public IActionResult DeleteLinkGroupItems(int linkGroupId, List<int> linkGroupItemIDs)
         {
-            var linkGroup = linkGroupItemHelper.GetLinkGroupById(linkGroupId);
+            var linkGroup = linkGroupRepository.Get(linkGroupId);
 
             if (linkGroupItemIDs == null)
             {
@@ -106,11 +119,16 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
-            var linkGroupItemsToDelete = linkGroupItemHelper.BuildLinkGroupItemsDeleteQuery(linkGroupItemIDs);
-           
+            var linkGroupItemsToDelete = BuildLinkGroupItemsDeleteQuery(linkGroupItemIDs);
+
+            foreach (var linkGroupItem in linkGroupItemsToDelete)
+            {
+                linkGroup.LinkGroupItem.Remove(linkGroupItem);
+            }
+
             try
             {
-                linkGroupItemHelper.DeleteLinkGroupItems(linkGroup, linkGroupItemsToDelete);
+                linkGroupItemRepository.UnitOfWork.Commit();
 
                 return NoContent();
             }
@@ -120,6 +138,12 @@ namespace KitBuilderWebApi.Controllers
                 logger.LogError(ex.Message);
                 return StatusCode(500, "A problem happened while handling your request.");
             }
+        }
+
+        internal IQueryable<LinkGroupItem> BuildLinkGroupItemsDeleteQuery(List<int> linkGroupItemIDs)
+        {
+            return linkGroupRepository.UnitOfWork.Context.LinkGroupItem.Where(l => linkGroupItemIDs.Contains(l.LinkGroupItemId));
+
         }
     }
 }

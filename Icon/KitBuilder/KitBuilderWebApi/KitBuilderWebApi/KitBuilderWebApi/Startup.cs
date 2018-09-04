@@ -53,6 +53,10 @@ namespace KitBuilderWebApi
             services.AddScoped<IRepository<InstructionListMember>, Repository<InstructionListMember>>();
             services.AddScoped<IRepository<InstructionType>, Repository<InstructionType>>();
             services.AddScoped<IRepository<Status>, Repository<Status>>();
+            services.AddScoped<IRepository<LinkGroup>, Repository<LinkGroup>>();
+            services.AddScoped<IRepository<LinkGroupItem>, Repository<LinkGroupItem>>();
+            services.AddScoped<IRepository<KitLinkGroup>, Repository<KitLinkGroup>>();
+            services.AddScoped<IRepository<Items>, Repository<Items>>();
             services.AddScoped<IRepository<KitLinkGroupItem>, Repository<KitLinkGroupItem>>();
             services.AddScoped<IRepository<LinkGroupDto>, Repository<LinkGroupDto>>();
 
@@ -64,6 +68,8 @@ namespace KitBuilderWebApi
                 return new UrlHelper(actionContext);
             });
             services.AddScoped<InstructionListHelper, InstructionListHelper>();
+            services.AddScoped<IHelper<ItemsDto, QueryParameters.ItemsParameters>, ItemHelper>();
+            services.AddScoped<IHelper<LinkGroupDto, QueryParameters.LinkGroupParameters>, LinkGroupHelper>();
 
             services.AddSwaggerGen(c =>
             {

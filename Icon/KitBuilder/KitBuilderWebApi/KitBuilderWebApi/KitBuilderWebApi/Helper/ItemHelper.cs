@@ -1,34 +1,28 @@
 ﻿using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace KitBuilderWebApi.Helper
 {
-    public class ItemHelper
+    public class ItemHelper: IHelper<ItemsDto, ItemsParameters>
     {
-
         private IUrlHelper urlHelper;
-        private IRepository<Items> itemsRepository { get; set; }
 
-        public ItemHelper(IUrlHelper urlHelper,
-                                IRepository<Items> itemsRepository
-                                    )
+        public ItemHelper(IUrlHelper urlHelper
+                          )
         {
             this.urlHelper = urlHelper;
-            this.itemsRepository = itemsRepository;
         }
-        internal bool SetOrderBy(ref IQueryable<ItemsDto> ItemsBeforePaging, ItemsParameters ItemsParameters)
+        public bool SetOrderBy(ref IQueryable<ItemsDto> DataBeforePaging, ItemsParameters Parameters)
         {
             string[] orderBy;
 
-            if (!string.IsNullOrEmpty(ItemsParameters.OrderBy))
+            if (!string.IsNullOrEmpty(Parameters.OrderBy))
             {
-                orderBy = ItemsParameters.OrderBy.Split(',');
+                orderBy = Parameters.OrderBy.Split(',');
             }
             else
 
@@ -38,87 +32,40 @@ namespace KitBuilderWebApi.Helper
 
             foreach (string orderByOption in orderBy)
             {
-                if (typeof(InstructionList).GetProperty(orderByOption.Split(" ")[0]) == null)
+                if (typeof(Items).GetProperty(orderByOption.Split(" ")[0]) == null)
                 {
                     return false;
                 }
 
-                ItemsBeforePaging = ItemsBeforePaging.OrderBy(orderByOption);
+                DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
             }
 
             return true;
         }
-        internal object getPaginationData(PagedList<ItemsDto> ItemsAfterPaging, ItemsParameters ItemsParameters)
+
+        public object getPaginationData(PagedList<ItemsDto> DataAfterPaging, ItemsParameters Parameters)
         {
-            var previousPageLink = ItemsAfterPaging.HasPrevious ?
-                CreateItemsResourceUri(ItemsParameters,
+            var previousPageLink = DataAfterPaging.HasPrevious ?
+                CreateItemsResourceUri(Parameters,
                 ResourceUriType.PreviousPage) : null;
 
-            var nextPageLink = ItemsAfterPaging.HasNext ?
-                CreateItemsResourceUri(ItemsParameters,
+            var nextPageLink = DataAfterPaging.HasNext ?
+                CreateItemsResourceUri(Parameters,
                 ResourceUriType.NextPage) : null;
 
             var paginationMetadata = new
             {
                 previousPageLink = previousPageLink,
                 nextPageLink = nextPageLink,
-                totalCount = ItemsAfterPaging.TotalCount,
-                pageSize = ItemsAfterPaging.PageSize,
-                currentPage = ItemsAfterPaging.CurrentPage,
-                totalPages = ItemsAfterPaging.TotalPages
+                totalCount = DataAfterPaging.TotalCount,
+                pageSize = DataAfterPaging.PageSize,
+                currentPage = DataAfterPaging.CurrentPage,
+                totalPages = DataAfterPaging.TotalPages
             };
 
             return paginationMetadata;
         }
-        internal void BuildQueryToFilterData(ItemsParameters itemsParameters, ref IQueryable<ItemsDto> itemsBeforePaging)
-        {
-            if (!string.IsNullOrEmpty(itemsParameters.ProductDesc))
-            {
-                var nameForWhereClause = itemsParameters.ProductDesc.Trim().ToLowerInvariant();
-                itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ProductDesc.ToLowerInvariant() == nameForWhereClause);
-            }
 
-            if (!string.IsNullOrEmpty(itemsParameters.ScanCode))
-            {
-                var scanCodeForWhereClause = itemsParameters.ScanCode.Trim().ToLowerInvariant();
-                itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ScanCode.ToLowerInvariant() == scanCodeForWhereClause);
-            }
-
-            if (!string.IsNullOrEmpty(itemsParameters.SearchScanCodeQuery))
-            {
-                var searchQueryForWhereClause = itemsParameters.SearchScanCodeQuery.Trim().ToLowerInvariant();
-                itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ScanCode.ToLowerInvariant().Contains(searchQueryForWhereClause));
-            }
-
-            if (!string.IsNullOrEmpty(itemsParameters.SearchProductDescQuery))
-            {
-                var searchQueryForWhereClause = itemsParameters.SearchProductDescQuery.Trim().ToLowerInvariant();
-                itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ProductDesc.ToLowerInvariant().Contains(searchQueryForWhereClause));
-            }
-        }
-
-        internal IQueryable<ItemsDto> GetitemsListBeforePaging()
-        {
-            var itemsListBeforePaging = from l in itemsRepository.GetAll()
-                                        select new ItemsDto()
-                                        {
-                                            ItemId = l.ItemId,
-                                            ScanCode = l.ScanCode,
-                                            ProductDesc = l.ProductDesc,
-                                            CustomerFriendlyDesc = l.CustomerFriendlyDesc,
-                                            KitchenDesc = l.KitchenDesc,
-                                            BrandName = l.BrandName,
-                                            LargeImageUrl = l.LargeImageUrl,
-                                            SmallImageUrl = l.SmallImageUrl,
-                                            InsertDate = l.InsertDate
-                                        };
-
-            return itemsListBeforePaging;
-        }
         internal string CreateItemsResourceUri(
            ItemsParameters ItemsParameters,
            ResourceUriType type)
@@ -167,5 +114,6 @@ namespace KitBuilderWebApi.Helper
                     });
             }
         }
+
     }
 }
