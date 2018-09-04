@@ -40,11 +40,8 @@ namespace KitBuilderWebApi.Tests.Controllers
                                                             mockItemsRepository, mockKitlinkGroupItemRepository,
                                                             mockKitlinkGroupRepository);
 
-            linkGroupController = new LinkGroupController(mockLinkGroupRepository.Object,
-                mockLinkGroupItemRepository.Object,
-                mockItemsRepository.Object,
-                mockLogger.Object,
-                mockLinkGroupHelper.Object);
+            linkGroupController = new LinkGroupController(mockLogger.Object,
+                                                          mockLinkGroupHelper.Object);
         }
 
         [TestMethod]

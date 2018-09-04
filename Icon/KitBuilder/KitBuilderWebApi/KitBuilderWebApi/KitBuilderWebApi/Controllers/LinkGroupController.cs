@@ -20,23 +20,15 @@ namespace KitBuilderWebApi.Controllers
     [Route("api/LinkGroups")]
     public class LinkGroupController : Controller
     {
-        private IRepository<LinkGroup> linkGroupRepository;
-        private IRepository<LinkGroupItem> linkGroupItemRepository;
-        private IRepository<Items> itemsRepository;
         private ILogger<LinkGroupController> logger;
         private LinkGroupHelper linkGroupHelper;
         private const string deleteLinkGroupSpName = "DeleteLinkGroupByLinkGroupId";
 
-        public LinkGroupController(IRepository<LinkGroup> linkGroupRepository,
-                                   IRepository<LinkGroupItem> linkGroupItemRepository,
-                                   IRepository<Items> itemsRepository,
+        public LinkGroupController(
                                    ILogger<LinkGroupController> logger,
                                    LinkGroupHelper linkGroupHelper
                                   )
         {
-            this.linkGroupRepository = linkGroupRepository;
-            this.linkGroupItemRepository = linkGroupItemRepository;
-            this.itemsRepository = itemsRepository;
             this.logger = logger;
             this.linkGroupHelper = linkGroupHelper;
         }
