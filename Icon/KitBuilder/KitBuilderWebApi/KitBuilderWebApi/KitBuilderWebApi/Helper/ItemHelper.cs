@@ -13,14 +13,14 @@ namespace KitBuilderWebApi.Helper
     {
 
         private IUrlHelper urlHelper;
-      private IRepository<Items> itemsRepository { get; set; }
-       
+        private IRepository<Items> itemsRepository { get; set; }
+
         public ItemHelper(IUrlHelper urlHelper,
                                 IRepository<Items> itemsRepository
                                     )
         {
-            this.urlHelper = urlHelper;         
-            this.itemsRepository = itemsRepository;          
+            this.urlHelper = urlHelper;
+            this.itemsRepository = itemsRepository;
         }
         internal bool SetOrderBy(ref IQueryable<ItemsDto> ItemsBeforePaging, ItemsParameters ItemsParameters)
         {
@@ -48,7 +48,6 @@ namespace KitBuilderWebApi.Helper
 
             return true;
         }
-
         internal object getPaginationData(PagedList<ItemsDto> ItemsAfterPaging, ItemsParameters ItemsParameters)
         {
             var previousPageLink = ItemsAfterPaging.HasPrevious ?
@@ -71,7 +70,6 @@ namespace KitBuilderWebApi.Helper
 
             return paginationMetadata;
         }
-
         internal void BuildQueryToFilterData(ItemsParameters itemsParameters, ref IQueryable<ItemsDto> itemsBeforePaging)
         {
             if (!string.IsNullOrEmpty(itemsParameters.ProductDesc))
@@ -102,7 +100,25 @@ namespace KitBuilderWebApi.Helper
                                                .Where(i => i.ProductDesc.ToLowerInvariant().Contains(searchQueryForWhereClause));
             }
         }
-    
+
+        internal IQueryable<ItemsDto> GetitemsListBeforePaging()
+        {
+            var itemsListBeforePaging = from l in itemsRepository.GetAll()
+                                        select new ItemsDto()
+                                        {
+                                            ItemId = l.ItemId,
+                                            ScanCode = l.ScanCode,
+                                            ProductDesc = l.ProductDesc,
+                                            CustomerFriendlyDesc = l.CustomerFriendlyDesc,
+                                            KitchenDesc = l.KitchenDesc,
+                                            BrandName = l.BrandName,
+                                            LargeImageUrl = l.LargeImageUrl,
+                                            SmallImageUrl = l.SmallImageUrl,
+                                            InsertDate = l.InsertDate
+                                        };
+
+            return itemsListBeforePaging;
+        }
         internal string CreateItemsResourceUri(
            ItemsParameters ItemsParameters,
            ResourceUriType type)

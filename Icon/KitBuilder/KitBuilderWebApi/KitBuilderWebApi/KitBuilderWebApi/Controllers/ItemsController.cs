@@ -14,15 +14,12 @@ namespace KitBuilderWebApi.Controllers
     [Route("api/Items")]
     public class ItemsController : Controller
     {
-        private IRepository<Items> itemsRepository; 
         private ILogger<LinkGroupController> logger;
         private ItemHelper itemHelper;
-        public ItemsController(IRepository<Items> itemsRepository,
-                                ILogger<LinkGroupController> logger,
+        public ItemsController( ILogger<LinkGroupController> logger,
                                 ItemHelper itemHelper
                                    )
         {
-            this.itemsRepository = itemsRepository;
             this.logger = logger;
             this.itemHelper = itemHelper;
         }
@@ -32,19 +29,7 @@ namespace KitBuilderWebApi.Controllers
         public IActionResult GetItems(ItemsParameters itemsParameters)
         {
 
-            var itemsListBeforePaging = from l in itemsRepository.GetAll()
-                                            select new ItemsDto()
-                                            {
-                                                ItemId = l.ItemId,
-                                                ScanCode = l.ScanCode,
-                                                ProductDesc = l.ProductDesc,
-                                                CustomerFriendlyDesc = l.CustomerFriendlyDesc,
-                                                KitchenDesc = l.KitchenDesc,
-                                                BrandName = l.BrandName,
-                                                LargeImageUrl= l.LargeImageUrl,
-                                                SmallImageUrl = l.SmallImageUrl,
-                                                InsertDate = l.InsertDate
-                                            };
+            var itemsListBeforePaging = itemHelper.GetitemsListBeforePaging();
 
             // will set order by if passed, otherwise use default orderby                           
             if (!itemHelper.SetOrderBy(ref itemsListBeforePaging, itemsParameters))
