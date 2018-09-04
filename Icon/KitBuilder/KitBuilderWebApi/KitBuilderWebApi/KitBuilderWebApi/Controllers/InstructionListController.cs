@@ -17,12 +17,12 @@ namespace KitBuilderWebApi.Controllers
     [Route("api/InstructionList")]
     public class InstructionListController : Controller
     {
-        private IRepository<InstructionList> instructionListRepository { get; set; }
-        private IRepository<InstructionListMember> instructionListMemberRepository { get; set; }
-        private IRepository<InstructionType> instructionTypeRespository { get; set; }
-        private IRepository<Status> statusRespository { get; set; }
-        private ILogger<InstructionListController> logger;
+        private IRepository<InstructionList> instructionListRepository;
+        private IRepository<InstructionListMember> instructionListMemberRepository;
+        private IRepository<InstructionType> instructionTypeRespository;
+        private IRepository<Status> statusRespository;
         private InstructionListHelper instructionListHelper;
+        private ILogger<InstructionListController> logger;
 
         public InstructionListController(IRepository<InstructionList> instructionListRepository,
                                          IRepository<InstructionListMember> instructionListMemberRepository,

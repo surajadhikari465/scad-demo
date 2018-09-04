@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace KitBuilderWebApi.DatabaseModels
+namespace KitBuilderWebApi.DataAccess.Dto
 {
     public partial class LinkGroupDto
     {
         public LinkGroupDto()
         {
-            KitLinkGroup = new HashSet<KitLinkGroup>();
-            LinkGroupItem = new HashSet<LinkGroupItem>();
+            LinkGroupItemDto = new HashSet<LinkGroupItemDto>();
         }
 
         public int LinkGroupId { get; set; }
@@ -19,9 +18,7 @@ namespace KitBuilderWebApi.DatabaseModels
         [Required]
         [StringLength(500, ErrorMessage = "Group Description can have maximum length of 500.")]
         public string GroupDescription { get; set; }
-        public DateTime InsertDate { get; set; }
-
-        public ICollection<KitLinkGroup> KitLinkGroup { get; set; }
-        public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
+        public DateTime InsertDate { get; set; }        
+        public ICollection<LinkGroupItemDto> LinkGroupItemDto { get; set; }
     }
 }

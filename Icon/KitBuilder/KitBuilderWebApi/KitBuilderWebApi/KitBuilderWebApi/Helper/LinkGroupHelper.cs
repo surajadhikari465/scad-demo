@@ -4,6 +4,8 @@ using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
@@ -12,18 +14,18 @@ namespace KitBuilderWebApi.Helper
     public class LinkGroupHelper
     {
         private IUrlHelper urlHelper;
-        private IRepository<LinkGroupItem> linkGroupItemRepository { get; set; }
-        private IRepository<Items> itemsRepository { get; set; }
-        private IRepository<LinkGroup> linkGroupRepository { get; set; }
-        private IRepository<KitLinkGroupItem> kitlinkGroupItemRepository { get; set; }
-        private IRepository<KitLinkGroup> kitlinkGroupRepository { get; set; }
+        private IRepository<LinkGroupItem> linkGroupItemRepository;
+        private IRepository<Items> itemsRepository;
+        private IRepository<LinkGroup> linkGroupRepository;
+        private IRepository<KitLinkGroupItem> kitlinkGroupItemRepository;
+        private IRepository<KitLinkGroup> kitlinkGroupRepository;
 
-        public LinkGroupHelper(IUrlHelper urlHelper,
+        public LinkGroupHelper( IUrlHelper urlHelper,
                                 IRepository<LinkGroup> linkGroupRepository,
                                 IRepository<LinkGroupItem> linkGroupItemRepository,
                                 IRepository<Items> itemsRepository,
-                                 IRepository<KitLinkGroupItem> kitlinkGroupItemRepository,
-                                 IRepository<KitLinkGroup> kitlinkGroupRepository
+                                IRepository<KitLinkGroupItem> kitlinkGroupItemRepository,
+                                IRepository<KitLinkGroup> kitlinkGroupRepository
                                     )
         {
             this.urlHelper = urlHelper;
@@ -53,9 +55,9 @@ namespace KitBuilderWebApi.Helper
                                         select l;
             }
 
-            if (!string.IsNullOrEmpty(linkGroupParameters.SearchQuery))
+            if (!string.IsNullOrEmpty(linkGroupParameters.SearchGroupNameQuery))
             {
-                var searchQueryForWhereClause = linkGroupParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = linkGroupParameters.SearchGroupNameQuery.Trim().ToLowerInvariant();
                 linkGroupBeforePaging = linkGroupBeforePaging
                                                .Where(i => i.GroupName.ToLowerInvariant().Contains(searchQueryForWhereClause));
             }
@@ -138,7 +140,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = LinkGroupParameters.Fields,
                           orderBy = LinkGroupParameters.OrderBy,
-                          searchQuery = LinkGroupParameters.SearchQuery,
+                          searchQuery = LinkGroupParameters.SearchGroupNameQuery,
                           GroupName = LinkGroupParameters.GroupName,
                           ScanCode = LinkGroupParameters.ScanCode,
                           pageNumber = LinkGroupParameters.PageNumber - 1,
@@ -150,7 +152,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = LinkGroupParameters.Fields,
                           orderBy = LinkGroupParameters.OrderBy,
-                          searchQuery = LinkGroupParameters.SearchQuery,
+                          searchQuery = LinkGroupParameters.SearchGroupNameQuery,
                           GroupName = LinkGroupParameters.GroupName,
                           ScanCode = LinkGroupParameters.ScanCode,
                           pageNumber = LinkGroupParameters.PageNumber + 1,
@@ -163,7 +165,7 @@ namespace KitBuilderWebApi.Helper
                     {
                         fields = LinkGroupParameters.Fields,
                         orderBy = LinkGroupParameters.OrderBy,
-                        searchQuery = LinkGroupParameters.SearchQuery,
+                        searchQuery = LinkGroupParameters.SearchGroupNameQuery,
                         GroupName = LinkGroupParameters.GroupName,
                         ScanCode = LinkGroupParameters.ScanCode,
                         pageNumber = LinkGroupParameters.PageNumber,
@@ -180,6 +182,33 @@ namespace KitBuilderWebApi.Helper
 
             return query.Any();
 
+        }
+
+        internal IQueryable<LinkGroupDto> GetlinkGroupBeforePagingQuery()
+        {
+            var linkGroupListBeforePaging = from l in linkGroupRepository.GetAll()
+                                            select new LinkGroupDto()
+                                            {
+                                                LinkGroupId = l.LinkGroupId,
+                                                GroupName = l.GroupName,
+                                                GroupDescription = l.GroupDescription,
+                                                InsertDate = l.InsertDate
+                                            };
+
+            return linkGroupListBeforePaging;
+        }
+
+        internal void CreateLinkGroup(LinkGroup linkGroup)
+        {
+            linkGroupRepository.Add(linkGroup);
+            linkGroupRepository.UnitOfWork.Commit();
+        }
+
+        internal void DeleteLinkGroup(int linkGroupId, string spName)
+        {
+            var param1 = new SqlParameter("linkGroupid", SqlDbType.BigInt) { Value = linkGroupId };
+
+            linkGroupRepository.ExecWithStoreProcedure(spName + " @linkGroupid", param1);
         }
     }
 }

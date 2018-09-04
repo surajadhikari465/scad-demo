@@ -13,19 +13,19 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using System.Data;
 using System.Data.SqlClient;
+using KitBuilderWebApi.DataAccess.Dto;
 
 namespace KitBuilderWebApi.Controllers
 {
     [Route("api/LinkGroups")]
     public class LinkGroupController : Controller
     {
-        private IRepository<LinkGroup> linkGroupRepository { get; set; }
-        private IRepository<LinkGroupItem> linkGroupItemRepository { get; set; }
-        private IRepository<Items> itemsRepository { get; set; }
-        private IRepository<Status> statusRespository { get; set; }
+        private IRepository<LinkGroup> linkGroupRepository;
+        private IRepository<LinkGroupItem> linkGroupItemRepository;
+        private IRepository<Items> itemsRepository;
         private ILogger<LinkGroupController> logger;
         private LinkGroupHelper linkGroupHelper;
-        private const string deleteLinkGroupSpName = "DeleteLinkGroup";
+        private const string deleteLinkGroupSpName = "DeleteLinkGroupByLinkGroupId";
 
         public LinkGroupController(IRepository<LinkGroup> linkGroupRepository,
                                    IRepository<LinkGroupItem> linkGroupItemRepository,
@@ -37,7 +37,6 @@ namespace KitBuilderWebApi.Controllers
             this.linkGroupRepository = linkGroupRepository;
             this.linkGroupItemRepository = linkGroupItemRepository;
             this.itemsRepository = itemsRepository;
-            this.statusRespository = statusRespository;
             this.logger = logger;
             this.linkGroupHelper = linkGroupHelper;
         }
@@ -47,18 +46,15 @@ namespace KitBuilderWebApi.Controllers
         public IActionResult GetLinkGroups(LinkGroupParameters linkGroupParameters)
         {
 
-            var linkGroupListBeforePaging = from l in linkGroupRepository.GetAll()
-                                            select new LinkGroupDto()
-                                            {
-                                                LinkGroupId = l.LinkGroupId,
-                                                GroupName = l.GroupName,
-                                                GroupDescription = l.GroupDescription,
-                                                InsertDate = l.InsertDate
-                                            };
+            var linkGroupListBeforePaging = linkGroupHelper.GetlinkGroupBeforePagingQuery();
 
             // will set order by if passed, otherwise use default orderby                           
             if (!linkGroupHelper.SetOrderBy(ref linkGroupListBeforePaging, linkGroupParameters))
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return BadRequest();
+            }
+              
 
             //build the query if any filter or search query critiera is passed
             linkGroupHelper.BuildQueryToFilterData(linkGroupParameters, ref linkGroupListBeforePaging);
@@ -82,13 +78,12 @@ namespace KitBuilderWebApi.Controllers
         [HttpGet("{id}", Name = "GetLinkGroupById")]
         public IActionResult GetLinkGroupById(int id, bool loadChildObjects)
         {
-
             var linkGroupQuery = linkGroupHelper.BuildLinkGroupByItemIdQuery(id, loadChildObjects);
-
             var linkGroup = linkGroupQuery.FirstOrDefault();
 
             if (linkGroup == null)
             {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return NotFound();
             }
 
@@ -97,16 +92,15 @@ namespace KitBuilderWebApi.Controllers
             return Ok(linkGroupDto);
         }
 
-
         [HttpPost()]
         public IActionResult CreateLinkGroup(
             [FromBody] LinkGroupDto linkGroup)
         {
             if (linkGroup == null)
             {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return BadRequest();
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -115,25 +109,21 @@ namespace KitBuilderWebApi.Controllers
 
             var linkGroupPassed = Mapper.Map<LinkGroup>(linkGroup);
 
-            linkGroupRepository.Add(linkGroupPassed);
-
             try
             {
-                linkGroupRepository.UnitOfWork.Commit();
+                linkGroupHelper.CreateLinkGroup(linkGroupPassed);
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex.Message);
                 return StatusCode(500, "A problem happened while handling your request.");
             }
 
             var createdlinkOfGroup = Mapper.Map<LinkGroupDto>(linkGroupPassed);
 
             return CreatedAtRoute("GetLinkGroupById", new
-            { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
-
+                           { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
         }
-
 
         [HttpDelete("{id}", Name = "DeleteLinkGroup")]
         public IActionResult DeleteLinkGroup(int id)
@@ -142,29 +132,29 @@ namespace KitBuilderWebApi.Controllers
 
             if (linkGroupToDelete == null)
             {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return NotFound();
             }
 
             if (!linkGroupHelper.IsLinkGroupUsedbyKit(id))
             {
-                var param1 = new SqlParameter("linkGroupid", SqlDbType.BigInt) { Value = id };
-                linkGroupRepository.ExecWithStoreProcedure(deleteLinkGroupSpName + " @linkGroupid", param1);
+                try
+                {
+                    linkGroupHelper.DeleteLinkGroup(id, deleteLinkGroupSpName);
+                    return NoContent();
+                }
+
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message);
+                    return StatusCode(500, "A problem happened while handling your request.");
+                }
             }
             else
             {
                 return StatusCode(StatusCodes.Status409Conflict);
             }
-
-            try
-            {
-                linkGroupRepository.UnitOfWork.Commit();
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, "A problem happened while handling your request.");
-            }
+           
         }
     }
 }

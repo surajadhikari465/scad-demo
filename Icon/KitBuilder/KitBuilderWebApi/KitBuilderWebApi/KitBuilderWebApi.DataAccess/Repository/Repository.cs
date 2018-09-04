@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using KitBuilderWebApi.DataAccess.UnitOfWork;
-using KitBuilderWebApi.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.DataAccess.Repository

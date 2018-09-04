@@ -4,5 +4,6 @@
     {
         public string GroupName { get; set; }
         public string ScanCode { get; set; }
+        public string SearchGroupNameQuery { get; set; }
     }
 }
