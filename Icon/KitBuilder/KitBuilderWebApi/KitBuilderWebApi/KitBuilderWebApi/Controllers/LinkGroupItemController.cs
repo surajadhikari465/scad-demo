@@ -116,7 +116,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         [HttpDelete("{linkGroupId}/LinkGroupItem/{linkGroupItemId}", Name = "DeleteLinkGroupItem")]
-        public IActionResult DeleteLinkGroupItem(int linkGroupId, int linkGroupItemID)
+        public IActionResult DeleteLinkGroupItem(int linkGroupId, int linkGroupItemId)
         {
             var linkGroup = linkGroupRepository.Get(linkGroupId);
 
@@ -126,8 +126,8 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
-            var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemID);
-            linkGroup.LinkGroupItem.Remove(linkGroupItem);
+            var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemId);
+            linkGroupItemRepository.Delete(linkGroupItem);
 
             try
             {
@@ -144,11 +144,11 @@ namespace KitBuilderWebApi.Controllers
         }
 
         [HttpDelete("{linkGroupId}/LinkGroupItems", Name = "DeleteLinkGroupItems")]
-        public IActionResult DeleteLinkGroupItems(int linkGroupId, [FromBody]List<int> linkGroupItemIDs)
+        public IActionResult DeleteLinkGroupItems(int linkGroupId, [FromBody] List<int> linkGroupItemIds)
         {
             var linkGroup = linkGroupRepository.Get(linkGroupId);
 
-            if (linkGroupItemIDs == null)
+            if (linkGroupItemIds == null)
             {
                 return BadRequest();
             }
@@ -159,11 +159,11 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
-            var linkGroupItemsToDelete = BuildLinkGroupItemsDeleteQuery(linkGroupItemIDs);
+            var linkGroupItemsToDelete = BuildLinkGroupItemsDeleteQuery(linkGroupItemIds);
 
-            foreach (var linkGroupItem in linkGroupItemsToDelete)
+            foreach (var linkGroupItem in linkGroupItemsToDelete.ToList())
             {
-                linkGroup.LinkGroupItem.Remove(linkGroupItem);
+                linkGroupItemRepository.Delete(linkGroupItem);
             }
 
             try
