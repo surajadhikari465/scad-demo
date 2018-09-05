@@ -269,7 +269,7 @@ create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V
 
 ###Bridge between SB1_ Topic and All R10Price and R10PriceComplete Queues
 
-create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1
+create bridge source=topic:WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1 target=queue:WFMSB1.Mammoth.Retail.JustInTimeR10.MammothPrice.Queue.V1 selector="nonReceivingSysName is null OR nonReceivingSysName not like '%ExpiredPriceReductionToPOS%'"
 
 
 ###Bridge between SB1_ Topic and All Archive Queues
