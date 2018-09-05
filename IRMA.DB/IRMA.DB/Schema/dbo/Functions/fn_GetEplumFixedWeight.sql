@@ -32,7 +32,8 @@ BEGIN
 				CASE
 					WHEN ISNULL(@gpmSellingUom, '') = 'EA' THEN
 						CASE 
-							WHEN @inforRetailUom = 'OZ' THEN REPLACE(SUBSTRING(@inforRetailSizeVarChar, 1, LEN(@inforRetailSizeVarChar) - 2), '.', '')
+						
+							WHEN @inforRetailUom = 'OZ' THEN SUBSTRING(@inforRetailSizeVarChar, 1, CHARINDEX('.',@inforRetailSizeVarChar)-1)
 							ELSE NULL
 						END
 					ELSE @irmaFixedWeight
