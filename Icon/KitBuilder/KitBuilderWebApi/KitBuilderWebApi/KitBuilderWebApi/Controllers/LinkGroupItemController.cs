@@ -33,9 +33,23 @@ namespace KitBuilderWebApi.Controllers
             this.logger = logger;
         }
 
-       // GET api/GetLinkGroups
+        [HttpGet("{linkGroupId}/LinkGroupItem/{linkGroupItemId}", Name = "GetLinkGroupItem")]
+        public IActionResult GetLinkGroupItem(int linkGroupId, int linkGroupItemId)
+        {
+            var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemId);
+
+            if (linkGroupItem == null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return NotFound();
+            }
+
+            var linkGroupItemDto = Mapper.Map<LinkGroupItemDto>(linkGroupItem);
+            return Ok(linkGroupItemDto);
+        }
+
         [HttpPost("{linkGroupId}/LinkGroupItem", Name = "CreateLinkGroupItem")]
-        public IActionResult CreateLinkGroupItem(int linkGroupId, LinkGroupItemDto linkGroupItemDto)
+        public IActionResult CreateLinkGroupItem(int linkGroupId, [FromBody]LinkGroupItemDto linkGroupItemDto)
         {
             if (linkGroupItemDto == null)
             {
@@ -66,9 +80,8 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
-        // GET api/GetLinkGroups
         [HttpPost("{linkGroupId}/LinkGroupItems", Name = "CreateLinkGroupItems")]
-        public IActionResult CreateLinkGroupItems(int linkGroupId, List<LinkGroupItemDto> linkGroupItemsDto)
+        public IActionResult CreateLinkGroupItems(int linkGroupId, [FromBody]List<LinkGroupItemDto> linkGroupItemsDto)
         {
             if (linkGroupItemsDto == null)
             {
@@ -102,9 +115,36 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
-        // GET api/GetLinkGroups
+        [HttpDelete("{linkGroupId}/LinkGroupItem/{linkGroupItemId}", Name = "DeleteLinkGroupItem")]
+        public IActionResult DeleteLinkGroupItem(int linkGroupId, int linkGroupItemID)
+        {
+            var linkGroup = linkGroupRepository.Get(linkGroupId);
+
+            if (linkGroup == null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return NotFound();
+            }
+
+            var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemID);
+            linkGroup.LinkGroupItem.Remove(linkGroupItem);
+
+            try
+            {
+                linkGroupItemRepository.UnitOfWork.Commit();
+
+                return NoContent();
+            }
+
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+        }
+
         [HttpDelete("{linkGroupId}/LinkGroupItems", Name = "DeleteLinkGroupItems")]
-        public IActionResult DeleteLinkGroupItems(int linkGroupId, List<int> linkGroupItemIDs)
+        public IActionResult DeleteLinkGroupItems(int linkGroupId, [FromBody]List<int> linkGroupItemIDs)
         {
             var linkGroup = linkGroupRepository.Get(linkGroupId);
 

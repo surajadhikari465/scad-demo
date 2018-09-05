@@ -86,7 +86,7 @@ namespace KitBuilderWebApi.Helper
                           pageSize = ItemsParameters.PageSize
                       });
                 case ResourceUriType.NextPage:
-                    return urlHelper.Link("GetItemss",
+                    return urlHelper.Link("GetItems",
                       new
                       {
                           fields = ItemsParameters.Fields,
@@ -100,7 +100,7 @@ namespace KitBuilderWebApi.Helper
                       });
                 case ResourceUriType.Current:
                 default:
-                    return urlHelper.Link("GetItemss",
+                    return urlHelper.Link("GetItems",
                     new
                     {
                         fields = ItemsParameters.Fields,
