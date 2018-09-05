@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.Data;
 using System.Data.SqlClient;
 using KitBuilderWebApi.DataAccess.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -81,7 +82,6 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(instructionListsAfterPaging.ShapeData(linkGroupParameters.Fields));
         }
-
 
         // GET api/GetLinkGroupById
         [HttpGet("{id}", Name = "GetLinkGroupById")]
@@ -183,7 +183,9 @@ namespace KitBuilderWebApi.Controllers
             if (loadChildObjects)
             {
                 return linkGroupRepository.UnitOfWork.Context.LinkGroup
-                            .IncludeMultiple(l => l.LinkGroupItem, l => l.LinkGroupItem.Select(o => o.Item), l => l.LinkGroupItem.Select(o => o.InstructionList));
+                            .Where(l => l.LinkGroupId == id)
+                            .Include(l => l.LinkGroupItem).ThenInclude(p => p.Item)
+                            .Include(l => l.LinkGroupItem).ThenInclude(p => p.InstructionList);
             }
 
             else

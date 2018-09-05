@@ -10,7 +10,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/LinkGroups/",
+      "launchUrl": "api/Items/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

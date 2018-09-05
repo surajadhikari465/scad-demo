@@ -94,9 +94,16 @@ namespace KitBuilderWebApi
             app.UseStatusCodePages();
 
             AutoMapper.Mapper.Initialize(cfg =>
-            {
+            { cfg.CreateMap<LinkGroup, LinkGroupDto>()
+               .ForMember(dest => dest.LinkGroupItemDto, conf => conf.MapFrom(src => src.LinkGroupItem));
+               
+                cfg.CreateMap<LinkGroupDto, LinkGroup>();
+                cfg.CreateMap<LinkGroupItem, LinkGroupItemDto>();
+                cfg.CreateMap<LinkGroupItemDto, LinkGroupItem>();
+                cfg.CreateMap<Items, ItemsDto>();            
+                cfg.CreateMap<ItemsDto, Items>();
                 cfg.CreateMap<InstructionList, InstructionListDto>();
-                cfg.CreateMap<LinkGroup, LinkGroupDto>();
+                cfg.CreateMap<InstructionListDto, InstructionList>();
             });
 
             // only when environment is development show fill exception
