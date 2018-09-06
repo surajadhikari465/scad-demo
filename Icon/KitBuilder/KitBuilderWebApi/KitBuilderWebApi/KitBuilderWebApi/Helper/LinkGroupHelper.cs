@@ -2,6 +2,7 @@
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
@@ -17,31 +18,38 @@ namespace KitBuilderWebApi.Helper
             this.urlHelper = urlHelper;
         }   
 
-        public bool SetOrderBy(ref IQueryable<LinkGroupDto> DataBeforePaging, LinkGroupParameters Parameters)
+        public IQueryable<LinkGroupDto> SetOrderBy(IQueryable<LinkGroupDto> DataBeforePaging, LinkGroupParameters Parameters)
         {
-            string[] orderBy;
-
-            if (!string.IsNullOrEmpty(Parameters.OrderBy))
+            try
             {
-                orderBy = Parameters.OrderBy.Split(',');
-            }
-            else
+                string[] orderBy;
 
-            {
-                orderBy = new string[] { "GroupName" };
-            }
-
-            foreach (string orderByOption in orderBy)
-            {
-                if (typeof(LinkGroup).GetProperty(orderByOption.Split(" ")[0]) == null)
+                if (!string.IsNullOrEmpty(Parameters.OrderBy))
                 {
-                    return false;
+                    orderBy = Parameters.OrderBy.Split(',');
+                }
+                else
+
+                {
+                    orderBy = new string[] { "GroupName" };
                 }
 
-                DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
-            }
+                foreach (string orderByOption in orderBy)
+                {
+                    if (typeof(LinkGroup).GetProperty(orderByOption.Split(" ")[0]) == null)
+                    {
+                        throw new Exception("Invalid Order By");
+                    }
 
-            return true;
+                    DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
+                }
+                return DataBeforePaging;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public object getPaginationData(PagedList<LinkGroupDto> DataAfterPaging, LinkGroupParameters Parameters)

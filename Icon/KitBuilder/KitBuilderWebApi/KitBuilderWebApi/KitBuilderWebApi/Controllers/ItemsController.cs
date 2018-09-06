@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Dynamic.Core;
 using KitBuilderWebApi.QueryParameters;
 using KitBuilderWebApi.DataAccess.Dto;
+using System;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -46,9 +47,16 @@ namespace KitBuilderWebApi.Controllers
                                             InsertDate = l.InsertDate
                                         };
 
-            // will set order by if passed, otherwise use default orderby                           
-            if (!itemHelper.SetOrderBy(ref itemsListBeforePaging, itemsParameters))
+            // will set order by if passed, otherwise use default orderby 
+            try
+            {
+                itemsListBeforePaging = itemHelper.SetOrderBy(itemsListBeforePaging, itemsParameters);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
                 return BadRequest();
+            }
 
             //build the query if any filter or search query critiera is passed
             BuildQueryToFilterData(itemsParameters, ref itemsListBeforePaging);

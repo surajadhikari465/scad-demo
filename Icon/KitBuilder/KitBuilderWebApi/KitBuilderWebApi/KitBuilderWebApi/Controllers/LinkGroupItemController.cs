@@ -127,7 +127,16 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemId);
-            linkGroupItemRepository.Delete(linkGroupItem);
+
+            if (linkGroup.LinkGroupId == linkGroupItem.LinkGroupId)
+            {
+                linkGroupItemRepository.Delete(linkGroupItem);
+            }
+            else
+            {
+                logger.LogWarning("The id's passed does not match.");
+                return NotFound();
+            }
 
             try
             {
@@ -159,7 +168,7 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
-            var linkGroupItemsToDelete = BuildLinkGroupItemsDeleteQuery(linkGroupItemIds);
+            var linkGroupItemsToDelete = BuildLinkGroupItemsDeleteQuery(linkGroupItemIds, linkGroupId);
 
             foreach (var linkGroupItem in linkGroupItemsToDelete.ToList())
             {
@@ -180,9 +189,9 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
-        internal IQueryable<LinkGroupItem> BuildLinkGroupItemsDeleteQuery(List<int> linkGroupItemIDs)
+        internal IQueryable<LinkGroupItem> BuildLinkGroupItemsDeleteQuery(List<int> linkGroupItemIDs, int linkGroupId)
         {
-            return linkGroupRepository.UnitOfWork.Context.LinkGroupItem.Where(l => linkGroupItemIDs.Contains(l.LinkGroupItemId));
+            return linkGroupRepository.UnitOfWork.Context.LinkGroupItem.Where(l => linkGroupItemIDs.Contains(l.LinkGroupItemId) && l.LinkGroupId == linkGroupId);
 
         }
     }
