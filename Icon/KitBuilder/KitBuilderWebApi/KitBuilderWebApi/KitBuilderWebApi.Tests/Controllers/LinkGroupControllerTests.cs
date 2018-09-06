@@ -65,7 +65,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             SetUpDataAndRepository();
         }
 
-       private void InitializeMapper()
+        private void InitializeMapper()
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
@@ -110,17 +110,17 @@ namespace KitBuilderWebApi.Tests.Controllers
                 {
                     linkGroup.LinkGroupItem.Add(new LinkGroupItem { LinkGroupItemId = count, LinkGroupId = linkGroup.LinkGroupId, ItemId = item.ItemId });
                     count = count + 1;
-                }             
+                }
             }
 
-             linkGroupsDto = (from l in linkGroups
-                                            select new LinkGroupDto()
-                                            {
-                                                LinkGroupId = l.LinkGroupId,
-                                                GroupName = l.GroupName,
-                                                GroupDescription = l.GroupDescription,
-                                                InsertDate = l.InsertDate
-                                            }).ToList();
+            linkGroupsDto = (from l in linkGroups
+                             select new LinkGroupDto()
+                             {
+                                 LinkGroupId = l.LinkGroupId,
+                                 GroupName = l.GroupName,
+                                 GroupDescription = l.GroupDescription,
+                                 InsertDate = l.InsertDate
+                             }).ToList();
 
             mockLinkGroupRepository.Setup(m => m.GetAll()).Returns(linkGroups.AsQueryable());
         }
@@ -131,7 +131,7 @@ namespace KitBuilderWebApi.Tests.Controllers
 
             var LinkGroupParameters = new LinkGroupParameters();
             var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
-            string orderBy =  "GroupName" ;
+            string orderBy = "GroupName";
             var headerDictionary = new HeaderDictionary();
             var mockResponse = new Mock<HttpResponse>();
             mockResponse.SetupGet(r => r.Headers).Returns(headerDictionary);
@@ -140,7 +140,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             linkGroupController.ControllerContext = new ControllerContext();
             linkGroupController.ControllerContext.HttpContext = httpContext.Object;
 
-           mockLinkGroupHelper.Setup(s => s.SetOrderBy(linkGroupListBeforePaging, LinkGroupParameters)).Returns(linkGroupListBeforePaging.OrderBy(orderBy));
+            mockLinkGroupHelper.Setup(s => s.SetOrderBy(linkGroupListBeforePaging, LinkGroupParameters)).Returns(linkGroupListBeforePaging.OrderBy(orderBy));
 
             //When
             var response = linkGroupController.GetLinkGroups(LinkGroupParameters);
@@ -152,7 +152,6 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void LinkGroupController_GetLinkGroupsParametersPassedWithInvalidOrderBy_ReturnsBadRequest()
         {   // Given
-
             var LinkGroupParameters = new LinkGroupParameters();
             LinkGroupParameters.OrderBy = "InvalidField";
             var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
@@ -164,7 +163,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             linkGroupController.ControllerContext = new ControllerContext();
             linkGroupController.ControllerContext.HttpContext = httpContext.Object;
 
-            mockLinkGroupHelper.Setup(s => s.SetOrderBy(It.IsAny<IQueryable<LinkGroupDto>>(), LinkGroupParameters)).Throws(new Exception("Invalid Order By") );
+            mockLinkGroupHelper.Setup(s => s.SetOrderBy(It.IsAny<IQueryable<LinkGroupDto>>(), LinkGroupParameters)).Throws(new Exception("Invalid Order By"));
 
             //When
             var response = linkGroupController.GetLinkGroups(LinkGroupParameters);
@@ -190,7 +189,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         {   // Given
             int linkGroupId = linkGroups.FirstOrDefault().LinkGroupId;
             InitializeMapper();
-          
+
             //When
             var response = linkGroupController.GetLinkGroupById(linkGroupId, false);
 
@@ -218,8 +217,8 @@ namespace KitBuilderWebApi.Tests.Controllers
         {   // Given
             LinkGroupDto linkGroupDto = new LinkGroupDto { LinkGroupId = 999, GroupName = "Taco2", GroupDescription = "Cheese taco2" };
             InitializeMapper();
-
             mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
+
             //When
             var response = linkGroupController.CreateLinkGroup(linkGroupDto);
 
@@ -230,7 +229,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         }
 
         [TestMethod]
-        public void LinkGroupController_DeleteLinkGroupInvalidIdPassed_ReturnsBadRequest()
+        public void LinkGroupController_DeleteLinkGroupInvalidIdPassed_ReturnsNotFound()
         {   // Given
             int linkGroupId = 999;
 
@@ -238,22 +237,22 @@ namespace KitBuilderWebApi.Tests.Controllers
             var response = linkGroupController.DeleteLinkGroup(linkGroupId);
 
             // Then
-            Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Request Expected");
         }
 
         [TestMethod]
         public void LinkGroupController_DeleteLinkGroupValidLinkGroupPassed_ReturnsNoContent()
         {   // Given
             int linkGroupId = linkGroups.FirstOrDefault().LinkGroupId;
+            mockLinkGroupRepository.Setup(s => s.ExecWithStoreProcedure(It.IsAny<string>(), It.IsAny<object[]>())).Returns(1);
             InitializeMapper();
-
             mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
+
             //When
             var response = linkGroupController.DeleteLinkGroup(linkGroupId);
 
             // Then
-            Assert.IsInstanceOfType(response, typeof(CreatedAtRouteResult), "Bad Request Expected");
-            _mockUnitWork.Verify(m => m.Commit(), Times.Once);
+            Assert.IsInstanceOfType(response, typeof(NoContentResult), "No Content Result Expected");
             Mapper.Reset();
         }
 
