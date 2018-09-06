@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using KitBuilderWebApi.DataAccess.UnitOfWork;
-using KitBuilderWebApi.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.DataAccess.Repository
@@ -114,7 +113,6 @@ namespace KitBuilderWebApi.DataAccess.Repository
 
         public virtual void Save()
         {
-
             this.UnitOfWork.Context.SaveChanges();
         }
 
@@ -145,6 +143,11 @@ namespace KitBuilderWebApi.DataAccess.Repository
             }
 
             return queryable;
+        }
+
+        public int ExecWithStoreProcedure(string StoredProcedureName, params object[] parameters)
+        {
+            return UnitOfWork.Context.Database.ExecuteSqlCommand("EXEC " + StoredProcedureName, parameters);
         }
 
         private bool disposed = false;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using KitBuilderWebApi.DataAccess.Dto;
@@ -106,10 +107,10 @@ namespace KitBuilderWebApi.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public IActionResult AddInstructionList(AddInstructionListPrameters parameters)
+        [HttpPost(Name="AddInstructionList")]
+        public IActionResult AddInstructionList([FromBody]InstructionListDto InstructionListDto)
         {
-            if (!ModelState.IsValid || parameters == null)
+            if (!ModelState.IsValid || InstructionListDto == null)
                 return BadRequest(ModelState);
 
             var defaultStatus = statusRespository.Find(s => s.StatusCode == "ENA");
@@ -120,18 +121,20 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var instructionList = new InstructionList()
-            {
-                InstructionTypeId = parameters.TypeId,
-                Name = parameters.Name,
-                StatusId = defaultStatus.StatusId
-            };
-
+            var instructionList = Mapper.Map<InstructionList>(InstructionListDto);
             instructionListRepository.Add(instructionList);
-            instructionListRepository.Save();
 
+            try
+            {
+                instructionListRepository.Save();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
 
-            return Ok();
+            return CreatedAtRoute("AddInstructionList", new {id=instructionList.InstructionListId}, instructionList);
         }
         
     }

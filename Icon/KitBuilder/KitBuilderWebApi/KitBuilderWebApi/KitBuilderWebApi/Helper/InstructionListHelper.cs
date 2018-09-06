@@ -26,9 +26,9 @@ namespace KitBuilderWebApi.Helper
                                                .Where(i => i.Name.ToLowerInvariant() == nameForWhereClause);
             }
 
-            if (!string.IsNullOrEmpty(instructionListsParameters.SearchQuery))
+            if (!string.IsNullOrEmpty(instructionListsParameters.SearchNameQuery))
             {
-                var searchQueryForWhereClause = instructionListsParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = instructionListsParameters.SearchNameQuery.Trim().ToLowerInvariant();
                 instructionListsBeforePaging = instructionListsBeforePaging
                                                .Where(i => i.Name.ToLowerInvariant().Contains(searchQueryForWhereClause));
             }
@@ -96,7 +96,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = instructionListsParameters.Fields,
                           orderBy = instructionListsParameters.OrderBy,
-                          searchQuery = instructionListsParameters.SearchQuery,
+                          searchQuery = instructionListsParameters.SearchNameQuery,
                           name = instructionListsParameters.Name,
                           pageNumber = instructionListsParameters.PageNumber - 1,
                           pageSize = instructionListsParameters.PageSize
@@ -107,7 +107,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = instructionListsParameters.Fields,
                           orderBy = instructionListsParameters.OrderBy,
-                          searchQuery = instructionListsParameters.SearchQuery,
+                          searchQuery = instructionListsParameters.SearchNameQuery,
                           name = instructionListsParameters.Name,
                           pageNumber = instructionListsParameters.PageNumber + 1,
                           pageSize = instructionListsParameters.PageSize
@@ -119,7 +119,7 @@ namespace KitBuilderWebApi.Helper
                     {
                         fields = instructionListsParameters.Fields,
                         orderBy = instructionListsParameters.OrderBy,
-                        searchQuery = instructionListsParameters.SearchQuery,
+                        searchQuery = instructionListsParameters.SearchNameQuery,
                         name = instructionListsParameters.Name,
                         pageNumber = instructionListsParameters.PageNumber,
                         pageSize = instructionListsParameters.PageSize

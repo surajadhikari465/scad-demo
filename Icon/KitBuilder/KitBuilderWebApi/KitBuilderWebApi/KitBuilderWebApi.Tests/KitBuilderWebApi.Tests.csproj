@@ -18,4 +18,13 @@
     <ProjectReference Include="..\KitBuilderWebApi\KitBuilderWebApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KitBuilderWebApi\KitBuilderWebApi.csproj" />
+  </ItemGroup>
+
 </Project>

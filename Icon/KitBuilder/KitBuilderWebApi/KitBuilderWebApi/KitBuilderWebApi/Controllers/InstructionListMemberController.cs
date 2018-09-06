@@ -1,6 +1,9 @@
 ﻿using System;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
@@ -14,7 +17,7 @@ namespace KitBuilderWebApi.Controllers
 
 
     [Produces("application/json")]
-    [Route("api/InstructionListMember")]
+    [Route("api/InstructionList")]
     public class InstructionListMemberController : Controller
     {
 
@@ -38,110 +41,233 @@ namespace KitBuilderWebApi.Controllers
             this.statusRespository = statusRespository;
         }
 
-        [HttpPost]
-        public IActionResult AddInstructionListMember([FromBody]List<AddInstructionListMemberParameters> parameters)
+        [HttpGet("{instructionListId}/InstructionListMember/{instructionListMemberId}")]
+        public IActionResult GetInstructionListMember(int instructionListId, int instructionListMemberId)
+        {
+            var instructionListMember =
+                instructionListMemberRepository.Find(ilm =>
+                    ilm.InstructionListId == instructionListId &&
+                    ilm.InstructionListMemberId == instructionListMemberId);
+
+            if (instructionListMember == null)
+            {
+                logger.LogWarning($"The InstructionListMember with Id {instructionListMemberId} was not found for Instruction List Id {instructionListId}.");
+                return NotFound(ModelState);
+            }
+
+            var instructionListMemberDto = Mapper.Map<InstructionListMemberDto>(instructionListMember);
+            return Ok(instructionListMemberDto);
+        }
+
+        [HttpGet("{instructionListId}/InstructionListMembers")]
+        public IActionResult GetInstructionListMembers(int instructionListId)
+        {
+            var instructionList = instructionListRepository.Find(il => il.InstructionListId == instructionListId);
+
+            if (instructionList == null)
+            {
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                return NotFound(ModelState);
+            }
+
+            var instructionListMembers =
+                instructionListMemberRepository.FindAll(il =>
+                    il.InstructionListId == instructionListId);
+
+            var instructionListMembersDto = Mapper.Map<List<InstructionListMemberDto>>(instructionListMembers);
+            return Ok(instructionListMembersDto);
+        }
+
+
+        [HttpPost("{instructionListId}/InstructionListMember")]
+        public IActionResult AddInstructionListMember(int instructionListId, [FromBody]InstructionListMemberDto instructionListMemberDto)
         {
             //Add instruction members to instruction list -this method will let consumers add instruction members to the instruction list.
             //It will accept a list of model with InstructionListId, Group, Member and Sequence as fields.It will insert records into Instruction
             //List Member table.
 
-            if (!ModelState.IsValid || parameters == null)
+            if (!ModelState.IsValid || instructionListMemberDto == null)
                 return BadRequest(ModelState);
+            
+            var instructionList =
+                instructionListRepository.Find(f => f.InstructionListId==instructionListId);
 
-            // get all the instruction lists referenced in the parameters.
-            var ids = parameters.Select(p => p.InstructionListId);
-            var instructionLists =
-                instructionListRepository.FindAll(f => ids.Contains(f.InstructionListId));
-
-
-            foreach (var il in parameters)
+            if (instructionList == null)
             {
-                var instructionListMember = new InstructionListMember
-                { 
-                    Group = il.Group,
-                    Member = il.Member,
-                    Sequence = il.Sequence,
-                    InstructionListId = il.InstructionListId
-                };
-
-                // make sure the referenced instruction list exists.
-                var existingInstructionList =
-                    instructionLists.FirstOrDefault(existing => existing.InstructionListId == il.InstructionListId);
-
-                // if it does, add the instruction list member.
-                if (existingInstructionList != null) instructionListMemberRepository.Add(instructionListMember);
-
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                return NotFound();
             }
-            // save changes
-            instructionListMemberRepository.Save();
 
-            return Ok();
+            var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
+            instructionList.InstructionListMember.Add(instructionListMember);
+
+            try
+            {
+                instructionListRepository.Save();
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
         }
 
-        [HttpPut]
-        public IActionResult UpdateInstructionListMember([FromBody]List<UpdateInstructionListMemberParameters> parameters)
+        [HttpPost("{instructionListId}/InstructionListMembers")]
+        public IActionResult AddInstructionListMembers(int instructionListId, [FromBody]List<InstructionListMemberDto> instructionListMembersDto)
         {
-            //Update Instruction members - this method will let consumers update instruction members.It will accept a
-            //list of model with InstructionListId, Group,Member and Sequence as fields.It will update existing records in Instruction List Member table.
 
-            if (!ModelState.IsValid || parameters == null)
+            if (!ModelState.IsValid || instructionListMembersDto == null)
                 return BadRequest(ModelState);
 
-            foreach (var update in parameters)
+            var instructionList =
+                instructionListRepository.Find(f => f.InstructionListId == instructionListId);
+
+            if (instructionList == null)
             {
-                var existingInstructionList = instructionListRepository.Find(il => il.InstructionListId == update.InstructionListId);
-                if (existingInstructionList == null) continue;
-
-                var instructionListMember = new InstructionListMember()
-                {
-                    InstructionListMemberId =  update.InstructionListMemberId, 
-                    InstructionListId =  update.InstructionListId,
-                    Group = update.Group,
-                    Member = update.Member,
-                    Sequence = update.Sequence
-                };
-
-                instructionListMemberRepository.Update(instructionListMember, update.InstructionListMemberId);
-
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                return NotFound();
             }
-            instructionListMemberRepository.Save();
 
-            return Ok();
+            foreach (var instructionListMemberDto in instructionListMembersDto)
+            {
+                var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
+                instructionList.InstructionListMember.Add(instructionListMember);
+            }
+
+
+            try
+            {
+                instructionListRepository.Save();
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
         }
 
-        [HttpDelete]
-        public IActionResult DeleteInstructionListMember([FromBody]DeleteInstructionListMembersParameters parameters)
+        [HttpDelete("{instructionListId}/InstructionListMember/{instructionListMemberId}")]
+        public IActionResult DeleteInstructionListMember(int instructionListId, int instructionListMemberId)
         {
             //Delete instruction member from instruction list -this method will let consumers delete instruction members from the instruction list.
             //It will accept InstructionListId and list of InstructionListMemberID. It will delete records from Instruction List Member table.
 
-            if (!ModelState.IsValid || parameters == null)
-                return BadRequest(ModelState);
-
             var instructionList =
-                instructionListRepository.Find(il => il.InstructionListId == parameters.InstructionListId);
+                instructionListRepository.Find(il => il.InstructionListId == instructionListId);
 
             if (instructionList == null)
             {
-                ModelState.AddModelError("UnknownInstructionList", $"Instruction List for Id {parameters.InstructionListId} not found");
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                ModelState.AddModelError("UnknownInstructionList", $"Instruction List for Id {instructionListId} not found");
                 return NotFound(ModelState);
             }
 
+            var instructionListMember =
+                instructionListMemberRepository.Find(ilm =>
+                    ilm.InstructionListId == instructionListId &&
+                    ilm.InstructionListMemberId == instructionListMemberId);
+               
+            
+            if (instructionListMember != null)
+                   instructionListMemberRepository.Delete(instructionListMember);
 
-            var instructionListMembers =
-                instructionListMemberRepository.FindAll(ilm => ilm.InstructionListId == parameters.InstructionListId)
-                    .Where(ilm=>parameters.InstructionListMemberIds.Contains(ilm.InstructionListMemberId));
 
-            foreach (var ilm in instructionListMembers)
+            try
             {
-                instructionListMemberRepository.Delete(ilm);
+                instructionListMemberRepository.Save();
+                return NoContent();
             }
-            instructionListMemberRepository.Save();
-
-
-            return Ok();
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
 
         }
+
+        [HttpDelete("{instructionListId}/InstructionListMembers")]
+        public IActionResult DeleteInstructionListMembers(int instructionListId, [FromBody]List<int> instructionListMemberIds )
+        {
+            
+            var instructionList =
+                instructionListRepository.Find(il => il.InstructionListId == instructionListId);
+
+            if (instructionList == null)
+            {
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                ModelState.AddModelError("UnknownInstructionList", $"Instruction List for Id {instructionListId} not found");
+                return NotFound(ModelState);
+            }
+
+            var instructionListMembersToDelete =
+                instructionListMemberRepository.FindAll(il => il.InstructionListId == instructionListId)
+                    .Where(ilm => instructionListMemberIds.Contains(ilm.InstructionListMemberId));
+
+            foreach (var instructionListMember in instructionListMembersToDelete)
+            {
+                instructionListMemberRepository.Delete(instructionListMember);
+            }
+
+            try
+            {
+                instructionListMemberRepository.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+        }
+
+        [HttpPut("{instructionListId}/InstructionListMembers")]
+        public IActionResult UpdateInstructionListMembers(int instructionListId, [FromBody]List<InstructionListMemberDto> InstructionListMembersDto)
+        {
+            if (!ModelState.IsValid || InstructionListMembersDto == null)
+                return BadRequest(ModelState);
+
+            var instructionList = instructionListRepository.Find(il => il.InstructionListId == instructionListId);
+
+            if (instructionList == null)
+            {
+                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                ModelState.AddModelError("UnknownInstructionList", $"Instruction List for Id {instructionListId} not found");
+                return NotFound(ModelState);
+
+            }
+
+            foreach (var instructionListMemberDto in InstructionListMembersDto)
+            {
+                var instructionListMember = new InstructionListMember()
+                {
+                    InstructionListMemberId = instructionListMemberDto.InstructionListMemberId,
+                    InstructionListId = instructionListMemberDto.InstructionListId,
+                    Group = instructionListMemberDto.Group,
+                    Member = instructionListMemberDto.Member,
+                    Sequence = instructionListMemberDto.Sequence
+                };
+
+                instructionListMemberRepository.Update(instructionListMember, instructionListMemberDto.InstructionListMemberId);
+            }
+
+            try
+            {
+                instructionListMemberRepository.Save();
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+        }
+
+
+
 
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace KitBuilderWebApi.DatabaseModels
+namespace KitBuilderWebApi.DataAccess.Dto
 {
-    public partial class LinkGroupItem
+    public class LinkGroupItemDto
     {
-        public LinkGroupItem()
+        public LinkGroupItemDto()
         {
-            KitLinkGroupItem = new HashSet<KitLinkGroupItem>();
+            
         }
 
         public int LinkGroupItemId { get; set; }
@@ -19,9 +20,7 @@ namespace KitBuilderWebApi.DatabaseModels
         public int? InstructionListId { get; set; }
         public DateTime InsertDate { get; set; }
 
-        public InstructionList InstructionList { get; set; }
-        public Items Item { get; set; }
-        public LinkGroup LinkGroup { get; set; }
-        public ICollection<KitLinkGroupItem> KitLinkGroupItem { get; set; }
+        public InstructionListDto InstructionList { get; set; }
+        public ItemsDto Item { get; set; }
     }
 }

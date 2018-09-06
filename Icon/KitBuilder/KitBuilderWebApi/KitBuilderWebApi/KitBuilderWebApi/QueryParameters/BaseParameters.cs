@@ -5,7 +5,7 @@
         const int maxPageSize = 1000;
         public int PageNumber { get; set; } = 1;
 
-        private int pageSize = 20;
+        private int pageSize = 2;
         public int PageSize
         {
             get
@@ -17,9 +17,7 @@
                 pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
-
-        public string SearchQuery { get; set; }
-
+    
         public string OrderBy { get; set; }
         public string Fields { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using System;  
+﻿using KitBuilderWebApi.DataAccess.UnitOfWork;
+using System;  
 using System.Collections.Generic;  
 using System.Linq;  
 using System.Linq.Expressions;  
@@ -27,6 +28,8 @@ namespace KitBuilderWebApi.DataAccess.Repository
     void Save();  
     Task<int> SaveAsync();  
     T Update(T t, object key);  
-    Task<T> UpdateAsync(T t, object key);  
-  }  
+    Task<T> UpdateAsync(T t, object key);
+    IUnitOfWork UnitOfWork { get; set; }
+    int ExecWithStoreProcedure(string StoredProcedureName, params object[] parameters);
+    }  
 }  
