@@ -229,19 +229,33 @@ namespace KitBuilderWebApi.Tests.Controllers
             Mapper.Reset();
         }
 
-
         [TestMethod]
-        public void LinkGroupController_DeleteLinkGroupNullLinkGroupPassed_ReturnsBadRequest()
+        public void LinkGroupController_DeleteLinkGroupInvalidIdPassed_ReturnsBadRequest()
         {   // Given
-            LinkGroupDto linkGroupDto = null;
+            int linkGroupId = 999;
 
             //When
-            var response = linkGroupController.CreateLinkGroup(linkGroupDto);
+            var response = linkGroupController.DeleteLinkGroup(linkGroupId);
 
             // Then
             Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
         }
 
+        [TestMethod]
+        public void LinkGroupController_DeleteLinkGroupValidLinkGroupPassed_ReturnsNoContent()
+        {   // Given
+            int linkGroupId = linkGroups.FirstOrDefault().LinkGroupId;
+            InitializeMapper();
+
+            mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
+            //When
+            var response = linkGroupController.DeleteLinkGroup(linkGroupId);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(CreatedAtRouteResult), "Bad Request Expected");
+            _mockUnitWork.Verify(m => m.Commit(), Times.Once);
+            Mapper.Reset();
+        }
 
     }
 }
