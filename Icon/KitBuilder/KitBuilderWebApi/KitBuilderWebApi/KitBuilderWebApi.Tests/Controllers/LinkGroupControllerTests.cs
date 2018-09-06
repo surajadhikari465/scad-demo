@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Http;
 using KitBuilderWebApi.DataAccess.Dto;
 using AutoMapper;
+using System.Linq.Dynamic.Core;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
@@ -110,8 +111,39 @@ namespace KitBuilderWebApi.Tests.Controllers
 
             var LinkGroupParameters = new LinkGroupParameters();
             var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
+            string orderBy =  "GroupName" ;
+            var headerDictionary = new HeaderDictionary();
+            var mockResponse = new Mock<HttpResponse>();
+            mockResponse.SetupGet(r => r.Headers).Returns(headerDictionary);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(a => a.Response).Returns(mockResponse.Object);
+            linkGroupController.ControllerContext = new ControllerContext();
+            linkGroupController.ControllerContext.HttpContext = httpContext.Object;
 
-           // mockLinkGroupHelper.Setup(s => s.SetOrderBy(linkGroupListBeforePaging, LinkGroupParameters)).Returns(true);
+           mockLinkGroupHelper.Setup(s => s.SetOrderBy(linkGroupListBeforePaging, LinkGroupParameters)).Returns(linkGroupListBeforePaging.OrderBy(orderBy));
+
+            //When
+            var response = linkGroupController.GetLinkGroups(LinkGroupParameters);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
+        }
+
+        public void linkGroupController_GetInstructionsList_ParametersPassedWithInvalidOrderBy_Returns_OK()
+        {   // Given
+
+            var LinkGroupParameters = new LinkGroupParameters();
+            var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
+            string orderBy = "GroupName";
+            var headerDictionary = new HeaderDictionary();
+            var mockResponse = new Mock<HttpResponse>();
+            mockResponse.SetupGet(r => r.Headers).Returns(headerDictionary);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(a => a.Response).Returns(mockResponse.Object);
+            linkGroupController.ControllerContext = new ControllerContext();
+            linkGroupController.ControllerContext.HttpContext = httpContext.Object;
+
+            mockLinkGroupHelper.Setup(s => s.SetOrderBy(linkGroupListBeforePaging, LinkGroupParameters)).Returns(linkGroupListBeforePaging.OrderBy(orderBy));
 
             //When
             var response = linkGroupController.GetLinkGroups(LinkGroupParameters);
