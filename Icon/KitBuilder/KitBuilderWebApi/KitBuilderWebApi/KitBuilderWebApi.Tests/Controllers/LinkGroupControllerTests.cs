@@ -229,5 +229,19 @@ namespace KitBuilderWebApi.Tests.Controllers
             Mapper.Reset();
         }
 
+
+        [TestMethod]
+        public void LinkGroupController_DeleteLinkGroupNullLinkGroupPassed_ReturnsBadRequest()
+        {   // Given
+            LinkGroupDto linkGroupDto = null;
+
+            //When
+            var response = linkGroupController.CreateLinkGroup(linkGroupDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
+        }
+
+
     }
 }
