@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
@@ -9,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq.Expressions;
+using KitBuilderWebApi.DataAccess.Dto;
+using InstructionType = KitBuilderWebApi.DatabaseModels.InstructionType;
 
 
 namespace KitBuilderWebApi.Tests.Controllers
@@ -20,29 +25,71 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         private InstructionListController instructionListController;
         private Mock<ILogger<InstructionListController>> mockLogger;
-        private Mock<IRepository<InstructionList>> instructionListRepository;
-        private Mock<IRepository<InstructionListMember>> instructionListMemberRepository;
-        private Mock<IRepository<InstructionType>> instructionTypeRespository;
-        private Mock<IRepository<Status>> statusRespository;
-        private Mock<IUrlHelper> urlHelper;
-        private Mock<InstructionListHelper> instructionListHelper;
+        private Mock<IRepository<InstructionList>> mockInstructionListRepository;
+        private Mock<IRepository<InstructionListMember>> mockInstructionListMemberRepository;
+        private Mock<IRepository<InstructionType>> mockInstructionTypeRespository;
+        private Mock<IRepository<Status>> mockStatusRespository;
+        private Mock<IUrlHelper> mockUrlHelper;
+        private Mock<IHelper<InstructionListDto, InstructionListsParameters>> mockLinkGroupHelper;
+        private List<InstructionList> instructionLists;
+        private List<InstructionType> instructionTypes;
+        private List<Status> statuses;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            mockLogger = new Mock<ILogger<InstructionListController>>();
-            instructionListRepository = new Mock<IRepository<InstructionList>>();
-            instructionListMemberRepository = new Mock<IRepository<InstructionListMember>>();
-            instructionTypeRespository = new Mock<IRepository<InstructionType>>();
-            statusRespository = new Mock<IRepository<Status>>();
-            instructionListHelper = new Mock<InstructionListHelper>(urlHelper);
 
-            instructionListController = new InstructionListController(instructionListRepository.Object,
-                instructionListMemberRepository.Object,
-                instructionTypeRespository.Object,
-                statusRespository.Object,
+            string locationUrl = "http://localhost:55873/api/InstructionList/";
+            mockLogger = new Mock<ILogger<InstructionListController>>();
+            mockInstructionListRepository = new Mock<IRepository<InstructionList>>();
+            mockInstructionListMemberRepository = new Mock<IRepository<InstructionListMember>>();
+            mockInstructionTypeRespository = new Mock<IRepository<InstructionType>>();
+            mockStatusRespository = new Mock<IRepository<Status>>();
+            mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
+
+
+            mockLinkGroupHelper = new Mock<IHelper<InstructionListDto, InstructionListsParameters>>();
+
+            instructionListController = new InstructionListController(mockInstructionListRepository.Object,
+                mockInstructionListMemberRepository.Object,
+                mockInstructionTypeRespository.Object,
+                mockStatusRespository.Object,
                 mockLogger.Object,
-                instructionListHelper.Object);
+                mockLinkGroupHelper.Object);
+        }
+
+        private void SetUpDataAndRepository()
+        {
+            MappingHelper.InitializeMapper();
+
+            instructionLists = new List<InstructionList>
+            {
+                new InstructionList {InstructionListId = 1, InstructionTypeId = 1, StatusId = 1, Name = "List 1"},
+                new InstructionList {InstructionListId = 2, InstructionTypeId = 1, StatusId = 1, Name = "List 1"}
+            };
+
+            instructionTypes = new List<InstructionType>
+            {
+                new InstructionType {InstructionTypeId = 1, Name = "Type1"}
+            };
+
+            statuses = new List<Status>
+            {
+                new Status {StatusId = 1, StatusCode = "ENA", StatusDescription = "Enabled"}
+            };
+
+            mockInstructionListRepository.Setup(m => m.GetAll()).Returns(instructionLists.AsQueryable());
+            mockInstructionTypeRespository.Setup(m => m.GetAll()).Returns(instructionTypes.AsQueryable());
+            mockStatusRespository.Setup(m => m.GetAll()).Returns(statuses.AsQueryable());
+
+
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            Mapper.Reset();
         }
 
         [TestMethod]
@@ -51,7 +98,6 @@ namespace KitBuilderWebApi.Tests.Controllers
             var response =  instructionListController.GetInstructionsList(null);
             Assert.IsInstanceOfType(response,typeof(BadRequestObjectResult), "Bad Request Expected");
             Assert.IsNotNull(response, "The response is null");
-
         }
 
         [TestMethod]
@@ -67,6 +113,8 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void InstructionListController_GetInstructionsList_InvalidOrderBy_Returns_BadRequest()
         {
+            mockLinkGroupHelper.Setup(s => s.SetOrderBy(It.IsAny<IQueryable<InstructionListDto>>(), It.IsAny<InstructionListsParameters>())).Throws(new Exception("Invalid Order By"));
+
             var parameters = new InstructionListsParameters {OrderBy = "ThisValueDoesntExist"};
 
             var response = instructionListController.GetInstructionsList(parameters);
@@ -102,21 +150,6 @@ namespace KitBuilderWebApi.Tests.Controllers
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
             Assert.IsNotNull(response, "The response is null");
         }
-
-        [TestMethod]
-        public void InstructionListController_AddInstructionsList_MissingDefaultStatus_Returns_BadRequest()
-        {
-            //var parameters = new AddInstructionListPrameters() { TypeId = 1, Name = "Something"};
-            //statusRespository.Setup(s => s.Find(It.IsAny<Expression<Func<Status, bool>>>())).Returns( (Status)null );
-
-            //var response = instructionListController.AddInstructionList(parameters);
-
-            //Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            //Assert.IsNotNull(response, "The response is null");
-        }
-
-
-
 
 
     }

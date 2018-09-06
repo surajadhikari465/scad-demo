@@ -23,14 +23,14 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<InstructionType> instructionTypeRespository;
         private IRepository<Status> statusRespository;
         private ILogger<InstructionListController> logger;
-        private InstructionListHelper instructionListHelper;
+        private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
 
         public InstructionListController(IRepository<InstructionList> instructionListRepository,
                                          IRepository<InstructionListMember> instructionListMemberRepository,
                                          IRepository<InstructionType> instructionTypeRespository,
                                          IRepository<Status> statusRespository,
                                          ILogger<InstructionListController> logger,
-                                         InstructionListHelper instructionListHelper
+                                         IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper
                                          )
         {
             this.instructionListRepository = instructionListRepository;
@@ -96,17 +96,19 @@ namespace KitBuilderWebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateInstructionList(InstructionList parameters)
+        public IActionResult UpdateInstructionList([FromBody]InstructionListDto parameter)
         {
-            if (!ModelState.IsValid || parameters == null)
+            if (!ModelState.IsValid || parameter == null)
                 return BadRequest(ModelState);
 
 
-            var list = instructionListRepository.Find(i => i.InstructionListId == parameters.InstructionListId);
+            var list = instructionListRepository.Find(i => i.InstructionListId == parameter.InstructionListId);
 
             if (list == null) return NotFound();
 
-            instructionListRepository.Update(parameters, list.InstructionListId);
+            var instructionList = Mapper.Map<InstructionList>(parameter);
+
+            instructionListRepository.Update(instructionList, list.InstructionListId);
             instructionListRepository.Save();
         
 

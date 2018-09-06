@@ -38,7 +38,7 @@ namespace KitBuilderWebApi.Helper
 
                 foreach (string orderByOption in orderBy)
                 {
-                    if (typeof(LinkGroup).GetProperty(orderByOption.Split(" ")[0]) == null)
+                    if (typeof(InstructionList).GetProperty(orderByOption.Split(" ")[0]) == null)
                     {
                         throw new Exception("Invalid Order By");
                     }

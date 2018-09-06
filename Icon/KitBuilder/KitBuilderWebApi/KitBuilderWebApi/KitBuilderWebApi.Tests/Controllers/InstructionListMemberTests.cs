@@ -6,10 +6,10 @@ using AutoMapper;
 using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
+using KitBuilderWebApi.DataAccess.UnitOfWork;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
-using KitBuilderWebApi.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,6 +28,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<Status>> mockStatusRespository;
         private Mock<IUrlHelper> mockUrlHelper;
         private Mock<IHelper<InstructionListDto, InstructionListsParameters>> mockInstructionListHelper;
+        private Mock<IUnitOfWork> mockUnitWork;
 
         private IList<InstructionListDto> instructionListsDto;
         private IList<InstructionList> instructionLists;
@@ -50,7 +51,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockInstructionListMemberRepository = new Mock<IRepository<InstructionListMember>>();
             mockInstructionTypeRespository = new Mock<IRepository<InstructionType>>();
             mockStatusRespository = new Mock<IRepository<Status>>();
-            mockUrlHelper= new Mock<IUrlHelper>();
+            mockUnitWork = new Mock<IUnitOfWork>();
+            mockUrlHelper = new Mock<IUrlHelper>();  
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(locationUrl);
 
@@ -59,12 +61,12 @@ namespace KitBuilderWebApi.Tests.Controllers
                 new Mock<IHelper<InstructionListDto, InstructionListsParameters>>();
 
 
-               instructionListMemberController = new InstructionListMemberController(mockLogger.Object,
-                mockInstructionListHelper.Object, 
-                mockInstructionListRepository.Object,
-                mockInstructionListMemberRepository.Object,
-                mockInstructionTypeRespository.Object,
-                mockStatusRespository.Object);
+           instructionListMemberController = new InstructionListMemberController(mockLogger.Object,
+            mockInstructionListHelper.Object, 
+            mockInstructionListRepository.Object,
+            mockInstructionListMemberRepository.Object,
+            mockInstructionTypeRespository.Object,
+            mockStatusRespository.Object);
 
 
             InitializeMapper();
@@ -91,83 +93,229 @@ namespace KitBuilderWebApi.Tests.Controllers
                 new InstructionListMember {Group="Seasoning", InstructionListId = 2, Member = "Pepper", Sequence = 1, InstructionListMemberId = 5}
             };
 
+            mockInstructionListMemberRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionListMember, bool>>>()))
+                .Returns<Expression<Func<InstructionListMember, bool>>>(s => instructionListMembers.Where(s.Compile()).FirstOrDefault());
+
+            mockInstructionListMemberRepository.Setup(il => il.FindAll(It.IsAny<Expression<Func<InstructionListMember, bool>>>()))
+                .Returns<Expression<Func<InstructionListMember, bool>>>(s => instructionListMembers.Where(s.Compile()).ToList());
+
+            mockInstructionListRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionList, bool>>>()))
+                .Returns<Expression<Func<InstructionList, bool>>>(s => instructionLists.Where(s.Compile()).FirstOrDefault());
+
+
         }
 
         private void InitializeMapper()
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<LinkGroup, LinkGroupDto>()
-                    .ForMember(dest => dest.LinkGroupItemDto, conf => conf.MapFrom(src => src.LinkGroupItem));
-
-                cfg.CreateMap<LinkGroupDto, LinkGroup>();
-                cfg.CreateMap<LinkGroupItem, LinkGroupItemDto>();
-                cfg.CreateMap<LinkGroupItemDto, LinkGroupItem>();
-                cfg.CreateMap<Items, ItemsDto>();
-                cfg.CreateMap<ItemsDto, Items>();
-                cfg.CreateMap<InstructionList, InstructionListDto>();
-                cfg.CreateMap<InstructionListDto, InstructionList>();
-            });
-
-        }
-
-
-
-        [TestMethod]
-        public void InstructionListMemberController_GetInstructionListMember()
-        {
-            mockInstructionListMemberRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionListMember, bool>>>()))
-                .Returns<Expression<Func<InstructionListMember, bool>>>(s => instructionListMembers.Where(s.Compile()).First());
-
-          var resutls=    instructionListMemberController.GetInstructionListMember(2, 4);
+            MappingHelper.InitializeMapper();
         }
 
         [TestMethod]
-        public void InstructionListMemberController_AddInstructionListMember_NoParameters_Returns_BadRequest()
+        public void InstructionListMemberController_GetInstructionListMember_ValidILM()
         {
+            var listId = 2;
+            var listMemberId = 4;
+            var response = instructionListMemberController.GetInstructionListMember(listId, listMemberId);
 
-
-            //var response = instructionListMemberController.AddInstructionListMember(null);
-            //Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            //Assert.IsNotNull(response, "The response is null");
-
-        }
-
-
-        [TestMethod]
-        public void InstructionListMemberController_UpdateInstructionListMember_NoParameters_Returns_BadRequest()
-        {
-            //var response = instructionListMemberController.UpdateInstructionListMember(null);
-            //Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            //Assert.IsNotNull(response, "The response is null");
+            Assert.IsInstanceOfType(response, typeof(OkObjectResult), "OK Expected");
 
         }
 
         [TestMethod]
-        public void InstructionListMemberController_DeleteInstructionListMember_NoParameters_Returns_BadRequest()
+        public void InstructionListMemberController_GetInstructionListMember_InvalidListId()
         {
-            //var response = instructionListMemberController.DeleteInstructionListMember(null);
-            //Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            //Assert.IsNotNull(response, "The response is null");
+            var listId = 9;
+            var listMemberId = 4;
+            var response = instructionListMemberController.GetInstructionListMember(listId, listMemberId);
+
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
 
         }
 
         [TestMethod]
-        public void InstructionListMemberController_DeleteInstructionListMember_InvalidInstructionList_Returns_NotFound()
+        public void InstructionListMemberController_GetInstructionListMember_InvalidListMemberId()
         {
+            var listId = 2;
+            var listMemberId = 14;
+            var response = instructionListMemberController.GetInstructionListMember(listId, listMemberId);
 
-            //instructionListRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionList, bool>>>()))
-            //    .Returns((InstructionList) null);
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+        }
 
-            //var parameters = new DeleteInstructionListMembersParameters();
-            //parameters.InstructionListId = 99; 
-            //parameters.InstructionListMemberIds = new List<int>() {1,2,3};
+
+        [TestMethod]
+        public void InstructionListMemberController_AddInstructionListMember_ValidILM()
+        {
+            mockInstructionListRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 1;
+            var InstructionListMemberDto = new InstructionListMemberDto { InstructionListId  = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0};
+
+            //When
             
-            //var response = instructionListMemberController.DeleteInstructionListMember(parameters);
-            //Assert.IsInstanceOfType(response, typeof(NotFoundObjectResult), "Not Found Expected");
-            //Assert.IsNotNull(response, "The response is null");
+            var response = instructionListMemberController.AddInstructionListMember(instructionListId,InstructionListMemberDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(StatusCodeResult), "HTTP 201 Expected");
+            Assert.AreEqual(((StatusCodeResult)response).StatusCode, 201, "HTTP 201 Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Once);
 
         }
+
+        [TestMethod]
+        public void InstructionListMemberController_AddInstructionListMember_InvalidList()
+        {
+            mockInstructionListRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 99;
+            var InstructionListMemberDto = new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 };
+
+            //When
+
+            var response = instructionListMemberController.AddInstructionListMember(instructionListId, InstructionListMemberDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Never);
+
+        }
+
+
+        [TestMethod]
+        public void InstructionListMemberController_UpdateInstructionListMember_InvalidList()
+        {
+
+            mockInstructionListRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 99;
+            var InstructionListMemberDto = new List<InstructionListMemberDto>
+            {
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 }
+            };
+
+            //When
+
+            var response = instructionListMemberController.UpdateInstructionListMembers(instructionListId, InstructionListMemberDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NotFoundObjectResult), "Not Found Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Never);
+
+
+        }
+
+        [TestMethod]
+        public void InstructionListMemberController_UpdateInstructionListMember_Valid_One()
+        {
+
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 1;
+            var InstructionListMemberDto = new List<InstructionListMemberDto>
+            {
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 }
+            };
+
+            //When
+
+            var response = instructionListMemberController.UpdateInstructionListMembers(instructionListId, InstructionListMemberDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(AcceptedResult), "Accepted Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Once);
+
+
+        }
+
+        [TestMethod]
+        public void InstructionListMemberController_UpdateInstructionListMember_Valid_MoreThanOne()
+        {
+
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 1;
+            var InstructionListMemberDto = new List<InstructionListMemberDto>
+            {
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 },
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember2", Sequence = 1 }
+            };
+
+            //When
+
+            var response = instructionListMemberController.UpdateInstructionListMembers(instructionListId, InstructionListMemberDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(AcceptedResult), "Accepted Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Once);
+
+
+        }
+
+        [TestMethod]
+        public void InstructionListMemberController_DeleteInstructionListMember_InvalidList()
+        {
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 99;
+            var instructionListMemberId = 1;
+          
+
+            //When
+
+            var response = instructionListMemberController.DeleteInstructionListMember(instructionListId, instructionListMemberId);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NotFoundObjectResult), "Not Found Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Never);
+        }
+
+
+        [TestMethod]
+        public void InstructionListMemberController_DeleteInstructionListMembers_InvalidList()
+        {
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 99;
+            var instructionListMemberId = new List<int>{1,2};
+
+
+            //When
+
+            var response = instructionListMemberController.DeleteInstructionListMembers(instructionListId, instructionListMemberId);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NotFoundObjectResult), "Not Found Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Never);
+        }
+
+        [TestMethod]
+        public void InstructionListMemberController_DeleteInstructionListMember_Valid()
+        {
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 1;
+            var instructionListMemberId = 1;
+
+
+            //When
+
+            var response = instructionListMemberController.DeleteInstructionListMember(instructionListId, instructionListMemberId);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NoContentResult), "No Content Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Once);
+        }
+
+        [TestMethod]
+        public void InstructionListMemberController_DeleteInstructionListMembers_Valid()
+        {
+            mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            var instructionListId = 1;
+            var instructionListMemberId = new List<int> { 1, 2 };
+
+
+            //When
+
+            var response = instructionListMemberController.DeleteInstructionListMembers(instructionListId, instructionListMemberId);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NoContentResult), "No Content Expected");
+            mockUnitWork.Verify(m => m.Commit(), Times.Once);
+        }
+
+
 
     }
 }

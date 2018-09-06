@@ -69,8 +69,9 @@ namespace KitBuilderWebApi
             );
 
                 services.AddScoped<InstructionListHelper, InstructionListHelper>();
-            services.AddScoped<IHelper<ItemsDto, QueryParameters.ItemsParameters>, ItemHelper>();
-            services.AddScoped<IHelper<LinkGroupDto, QueryParameters.LinkGroupParameters>, LinkGroupHelper>();
+            services.AddScoped<IHelper<ItemsDto, ItemsParameters>, ItemHelper>();
+            services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
+            services.AddScoped<IHelper<InstructionListDto, InstructionListsParameters>, InstructionListHelper>();
 
             services.AddSwaggerGen(c =>
             {
@@ -94,20 +95,7 @@ namespace KitBuilderWebApi
             // makes debugging easier--it will show error like 400 on browser
             app.UseStatusCodePages();
 
-            AutoMapper.Mapper.Initialize(cfg =>
-            { cfg.CreateMap<LinkGroup, LinkGroupDto>()
-               .ForMember(dest => dest.LinkGroupItemDto, conf => conf.MapFrom(src => src.LinkGroupItem));
-               
-                cfg.CreateMap<LinkGroupDto, LinkGroup>();
-                cfg.CreateMap<LinkGroupItem, LinkGroupItemDto>();
-                cfg.CreateMap<LinkGroupItemDto, LinkGroupItem>();
-                cfg.CreateMap<Items, ItemsDto>();            
-                cfg.CreateMap<ItemsDto, Items>();
-                cfg.CreateMap<InstructionList, InstructionListDto>();
-                cfg.CreateMap<InstructionListDto, InstructionList>();
-                cfg.CreateMap<InstructionListMemberDto, InstructionListMember>();
-                cfg.CreateMap<InstructionListMember, InstructionListMemberDto>();
-            });
+            MappingHelper.InitializeMapper();
 
             // only when environment is development show fill exception
             if (env.IsDevelopment())

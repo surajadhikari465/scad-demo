@@ -55,7 +55,7 @@ namespace KitBuilderWebApi.Controllers
             if (instructionListMember == null)
             {
                 logger.LogWarning($"The InstructionListMember with Id {instructionListMemberId} was not found for Instruction List Id {instructionListId}.");
-                return NotFound(ModelState);
+                return NotFound();
             }
 
             var instructionListMemberDto = Mapper.Map<InstructionListMemberDto>(instructionListMember);
@@ -74,7 +74,7 @@ namespace KitBuilderWebApi.Controllers
             if (instructionList == null)
             {
                 logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
-                return NotFound(ModelState);
+                return NotFound();
             }
 
             var instructionListMembers =
@@ -111,7 +111,7 @@ namespace KitBuilderWebApi.Controllers
 
             try
             {
-                instructionListRepository.Save();
+                instructionListRepository.UnitOfWork.Commit();
                 return StatusCode((int)HttpStatusCode.Created);
             }
 
@@ -189,7 +189,7 @@ namespace KitBuilderWebApi.Controllers
                    instructionListMemberRepository.Delete(instructionListMember);
             try
             {
-                instructionListMemberRepository.Save();
+                instructionListMemberRepository.UnitOfWork.Commit();
                 return NoContent();
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace KitBuilderWebApi.Controllers
 
             try
             {
-                instructionListMemberRepository.Save();
+                instructionListMemberRepository.UnitOfWork.Commit();
                 return NoContent();
             }
             catch (Exception ex)
@@ -279,7 +279,7 @@ namespace KitBuilderWebApi.Controllers
 
             try
             {
-                instructionListMemberRepository.Save();
+                instructionListMemberRepository.UnitOfWork.Commit();
                 return Accepted();
             }
             catch (Exception ex)
