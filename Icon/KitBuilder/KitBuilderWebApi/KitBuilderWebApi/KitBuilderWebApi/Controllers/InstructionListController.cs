@@ -63,16 +63,22 @@ namespace KitBuilderWebApi.Controllers
                                                    InstructionTypeName = itr.Name
 
                                                };
-              // will set order by if passed, otherwise use default orderby                           
-            if (!instructionListHelper.SetOrderBy(ref instructionListsBeforePaging, instructionListsParameters))
+            // will set order by if passed, otherwise use default orderby    
+            try
             {
-                ModelState.AddModelError("BadOrderBy","Invalid OrderBy Parameter");
+                instructionListsBeforePaging =
+                    instructionListHelper.SetOrderBy(instructionListsBeforePaging, instructionListsParameters);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                ModelState.AddModelError("BadOrderBy", "Invalid OrderBy Parameter");
                 return BadRequest(ModelState);
             }
                
 
             //build the query if any filter or search query critiera is passed
-            instructionListHelper.BuildQueryToFilterData(instructionListsParameters, ref instructionListsBeforePaging);
+            BuildQueryToFilterData(instructionListsParameters, ref instructionListsBeforePaging);
 
             // call the static method on the paged list to filter items
             var instructionListsAfterPaging = PagedList<InstructionListDto>.Create(instructionListsBeforePaging,
@@ -136,7 +142,24 @@ namespace KitBuilderWebApi.Controllers
 
             return CreatedAtRoute("AddInstructionList", new {id=instructionList.InstructionListId}, instructionList);
         }
-        
+
+        internal void BuildQueryToFilterData(InstructionListsParameters instructionListsParameters, ref IQueryable<InstructionListDto> instructionListsBeforePaging)
+        {
+            if (!string.IsNullOrEmpty(instructionListsParameters.Name))
+            {
+                var nameForWhereClause = instructionListsParameters.Name.Trim().ToLowerInvariant();
+                instructionListsBeforePaging = instructionListsBeforePaging
+                    .Where(i => i.Name.ToLowerInvariant() == nameForWhereClause);
+            }
+
+            if (!string.IsNullOrEmpty(instructionListsParameters.SearchNameQuery))
+            {
+                var searchQueryForWhereClause = instructionListsParameters.SearchNameQuery.Trim().ToLowerInvariant();
+                instructionListsBeforePaging = instructionListsBeforePaging
+                    .Where(i => i.Name.ToLowerInvariant().Contains(searchQueryForWhereClause));
+            }
+        }
+
     }
-    
+
 }

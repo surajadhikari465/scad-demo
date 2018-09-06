@@ -7,7 +7,7 @@ namespace KitBuilderWebApi.Helper
 {
     public interface IHelper<T,Y>
     {
-        bool SetOrderBy(ref IQueryable<T> DataBeforePaging, Y Parameters);
+        IQueryable<T> SetOrderBy(IQueryable<T> DataBeforePaging, Y Parameters);
         object getPaginationData(PagedList<T> DataAfterPaging, Y Parameters);
     }
 }

@@ -13,25 +13,23 @@ using Microsoft.Extensions.Logging;
 
 namespace KitBuilderWebApi.Controllers
 {
-
-
-
     [Produces("application/json")]
     [Route("api/InstructionList")]
     public class InstructionListMemberController : Controller
     {
-
         private IRepository<InstructionList> instructionListRepository;
         private IRepository<InstructionListMember> instructionListMemberRepository;
         private IRepository<InstructionType> instructionTypeRespository;
         private IRepository<Status> statusRespository;
         private ILogger<InstructionListMemberController> logger;
-        private InstructionListHelper instructionListHelper;
+        private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
 
         public InstructionListMemberController(ILogger<InstructionListMemberController> logger,
-            InstructionListHelper instructionListHelper, IRepository<InstructionList> instructionListRepository,
+            IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper,
+            IRepository<InstructionList> instructionListRepository,
             IRepository<InstructionListMember> instructionListMemberRepository,
-            IRepository<InstructionType> instructionTypeRespository, IRepository<Status> statusRespository)
+            IRepository<InstructionType> instructionTypeRespository,
+            IRepository<Status> statusRespository)
         {
             this.logger = logger;
             this.instructionListHelper = instructionListHelper;
@@ -41,8 +39,13 @@ namespace KitBuilderWebApi.Controllers
             this.statusRespository = statusRespository;
         }
 
+        /// <summary>
+        /// Gets a specific InstructionListMember for an InstructionList.
+        /// </summary>
+        /// <param name="instructionListId">InstructionList Id</param>
+        /// <param name="instructionListMemberId">InstructionListMember Id</param>
         [HttpGet("{instructionListId}/InstructionListMember/{instructionListMemberId}")]
-        public IActionResult GetInstructionListMember(int instructionListId, int instructionListMemberId)
+        public IActionResult GetInstructionListMember([FromRoute]int instructionListId, [FromRoute]int instructionListMemberId)
         {
             var instructionListMember =
                 instructionListMemberRepository.Find(ilm =>
@@ -59,8 +62,12 @@ namespace KitBuilderWebApi.Controllers
             return Ok(instructionListMemberDto);
         }
 
+        /// <summary>
+        /// Gets all InstructionListMembers for an InstructionList
+        /// </summary>
+        /// <param name="instructionListId">Instruction List Id</param>
         [HttpGet("{instructionListId}/InstructionListMembers")]
-        public IActionResult GetInstructionListMembers(int instructionListId)
+        public IActionResult GetInstructionListMembers([FromRoute]int instructionListId)
         {
             var instructionList = instructionListRepository.Find(il => il.InstructionListId == instructionListId);
 
@@ -78,14 +85,15 @@ namespace KitBuilderWebApi.Controllers
             return Ok(instructionListMembersDto);
         }
 
-
+        /// <summary>
+        /// Add a single InstructionListMember to an InstructionList
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="instructionListMemberDto"></param>
+        
         [HttpPost("{instructionListId}/InstructionListMember")]
-        public IActionResult AddInstructionListMember(int instructionListId, [FromBody]InstructionListMemberDto instructionListMemberDto)
+        public IActionResult AddInstructionListMember([FromRoute]int instructionListId, [FromBody]InstructionListMemberDto instructionListMemberDto)
         {
-            //Add instruction members to instruction list -this method will let consumers add instruction members to the instruction list.
-            //It will accept a list of model with InstructionListId, Group, Member and Sequence as fields.It will insert records into Instruction
-            //List Member table.
-
             if (!ModelState.IsValid || instructionListMemberDto == null)
                 return BadRequest(ModelState);
             
@@ -113,9 +121,14 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "A problem happened while handling your request.");
             }
         }
-
+        /// <summary>
+        /// Add multiple LnstructionListMembers to an InstructionList
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="instructionListMembersDto"></param>
+        
         [HttpPost("{instructionListId}/InstructionListMembers")]
-        public IActionResult AddInstructionListMembers(int instructionListId, [FromBody]List<InstructionListMemberDto> instructionListMembersDto)
+        public IActionResult AddInstructionListMembers([FromRoute]int instructionListId, [FromBody]List<InstructionListMemberDto> instructionListMembersDto)
         {
 
             if (!ModelState.IsValid || instructionListMembersDto == null)
@@ -136,7 +149,6 @@ namespace KitBuilderWebApi.Controllers
                 instructionList.InstructionListMember.Add(instructionListMember);
             }
 
-
             try
             {
                 instructionListRepository.Save();
@@ -149,12 +161,15 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a single InstructionListMember from an InstructionList
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="instructionListMemberId"></param>
+        
         [HttpDelete("{instructionListId}/InstructionListMember/{instructionListMemberId}")]
-        public IActionResult DeleteInstructionListMember(int instructionListId, int instructionListMemberId)
+        public IActionResult DeleteInstructionListMember([FromRoute]int instructionListId, [FromRoute]int instructionListMemberId)
         {
-            //Delete instruction member from instruction list -this method will let consumers delete instruction members from the instruction list.
-            //It will accept InstructionListId and list of InstructionListMemberID. It will delete records from Instruction List Member table.
-
             var instructionList =
                 instructionListRepository.Find(il => il.InstructionListId == instructionListId);
 
@@ -169,12 +184,9 @@ namespace KitBuilderWebApi.Controllers
                 instructionListMemberRepository.Find(ilm =>
                     ilm.InstructionListId == instructionListId &&
                     ilm.InstructionListMemberId == instructionListMemberId);
-               
             
             if (instructionListMember != null)
                    instructionListMemberRepository.Delete(instructionListMember);
-
-
             try
             {
                 instructionListMemberRepository.Save();
@@ -185,11 +197,16 @@ namespace KitBuilderWebApi.Controllers
                 logger.LogError(ex.Message);
                 return StatusCode(500, "A problem happened while handling your request.");
             }
-
         }
 
+        /// <summary>
+        /// Delete multiple InstructionListMembers from a single InstructionList
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="instructionListMemberIds"></param>
+
         [HttpDelete("{instructionListId}/InstructionListMembers")]
-        public IActionResult DeleteInstructionListMembers(int instructionListId, [FromBody]List<int> instructionListMemberIds )
+        public IActionResult DeleteInstructionListMembers([FromRoute]int instructionListId, [FromBody]List<int> instructionListMemberIds )
         {
             
             var instructionList =
@@ -224,8 +241,14 @@ namespace KitBuilderWebApi.Controllers
 
         }
 
+        /// <summary>
+        /// Update an existing InstructionListMember for an InstructionList
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="InstructionListMembersDto"></param>
+        /// <returns></returns>
         [HttpPut("{instructionListId}/InstructionListMembers")]
-        public IActionResult UpdateInstructionListMembers(int instructionListId, [FromBody]List<InstructionListMemberDto> InstructionListMembersDto)
+        public IActionResult UpdateInstructionListMembers([FromRoute]int instructionListId, [FromBody]List<InstructionListMemberDto> InstructionListMembersDto)
         {
             if (!ModelState.IsValid || InstructionListMembersDto == null)
                 return BadRequest(ModelState);
@@ -265,9 +288,5 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "A problem happened while handling your request.");
             }
         }
-
-
-
-
     }
 }

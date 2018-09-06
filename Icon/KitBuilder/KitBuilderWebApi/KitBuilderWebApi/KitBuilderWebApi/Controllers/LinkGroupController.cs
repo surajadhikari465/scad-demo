@@ -59,13 +59,17 @@ namespace KitBuilderWebApi.Controllers
                                                 InsertDate = l.InsertDate
                                             };
 
-            // will set order by if passed, otherwise use default orderby                           
-            if (!linkGroupHelper.SetOrderBy(ref linkGroupListBeforePaging, linkGroupParameters))
+            // will set order by if passed, otherwise use default orderby    
+            try
             {
-                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                linkGroupListBeforePaging = linkGroupHelper.SetOrderBy( linkGroupListBeforePaging, linkGroupParameters);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
                 return BadRequest();
             }
-
+            
             //build the query if any filter or search query critiera is passed
             BuildQueryToFilterData(linkGroupParameters, ref linkGroupListBeforePaging);
 

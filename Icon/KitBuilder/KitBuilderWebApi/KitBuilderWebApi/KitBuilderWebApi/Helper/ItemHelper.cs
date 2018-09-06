@@ -2,6 +2,7 @@
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
@@ -16,31 +17,37 @@ namespace KitBuilderWebApi.Helper
         {
             this.urlHelper = urlHelper;
         }
-        public bool SetOrderBy(ref IQueryable<ItemsDto> DataBeforePaging, ItemsParameters Parameters)
+        public IQueryable<ItemsDto> SetOrderBy(IQueryable<ItemsDto> DataBeforePaging, ItemsParameters Parameters)
         {
-            string[] orderBy;
-
-            if (!string.IsNullOrEmpty(Parameters.OrderBy))
+            try
             {
-                orderBy = Parameters.OrderBy.Split(',');
-            }
-            else
+                string[] orderBy;
 
-            {
-                orderBy = new string[] { "ScanCode" };
-            }
-
-            foreach (string orderByOption in orderBy)
-            {
-                if (typeof(Items).GetProperty(orderByOption.Split(" ")[0]) == null)
+                if (!string.IsNullOrEmpty(Parameters.OrderBy))
                 {
-                    return false;
+                    orderBy = Parameters.OrderBy.Split(',');
+                }
+                else
+
+                {
+                    orderBy = new string[] { "ScanCode" };
                 }
 
-                DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
-            }
+                foreach (string orderByOption in orderBy)
+                {
+                    if (typeof(Items).GetProperty(orderByOption.Split(" ")[0]) == null)
+                    {
+                        throw new Exception("Invalid Order By");
+                    }
 
-            return true;
+                    DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
+                }
+                return DataBeforePaging;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public object getPaginationData(PagedList<ItemsDto> DataAfterPaging, ItemsParameters Parameters)
