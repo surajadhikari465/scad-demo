@@ -22,9 +22,9 @@ namespace KitBuilderWebApi.Controllers
         private ILogger<LinkGroupController> logger;
 
         public LinkGroupItemController(IRepository<LinkGroup> linkGroupRepository,
-                                        IRepository<LinkGroupItem> linkGroupItemRepository,
-                                        IRepository<Items> itemsRepository,
-                                        ILogger<LinkGroupController> logger
+                                       IRepository<LinkGroupItem> linkGroupItemRepository,
+                                       IRepository<Items> itemsRepository,
+                                       ILogger<LinkGroupController> logger
                                        )
         {
             this.linkGroupRepository = linkGroupRepository;
