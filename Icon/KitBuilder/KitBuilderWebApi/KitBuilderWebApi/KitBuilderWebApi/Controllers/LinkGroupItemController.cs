@@ -190,7 +190,7 @@ namespace KitBuilderWebApi.Controllers
 
         internal IQueryable<LinkGroupItem> BuildLinkGroupItemsDeleteQuery(List<int> linkGroupItemIDs, int linkGroupId)
         {
-            return linkGroupRepository.UnitOfWork.Context.LinkGroupItem.Where(l => linkGroupItemIDs.Contains(l.LinkGroupItemId) && l.LinkGroupId == linkGroupId);
+            return linkGroupItemRepository.FindBy(l => linkGroupItemIDs.Contains(l.LinkGroupId) && l.LinkGroupId == linkGroupId);
 
         }
     }

@@ -104,7 +104,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void ItemsController_GetItemsNoParametersPassed_ReturnsOK()
-        {   // Given
+        {   
+            // Given
             var itemsParameters = new ItemsParameters();
             var itemsListBeforePaging = itemsDto.AsQueryable();
             string orderBy = "ScanCode";
@@ -127,7 +128,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void ItemsController_GetItemsParametersPassedWithInvalidOrderBy_ReturnsBadRequest()
-        {   // Given
+        {   
+            // Given
             var itemsParameters = new ItemsParameters();
             var itemsListBeforePaging = itemsDto.AsQueryable();
             var headerDictionary = new HeaderDictionary();

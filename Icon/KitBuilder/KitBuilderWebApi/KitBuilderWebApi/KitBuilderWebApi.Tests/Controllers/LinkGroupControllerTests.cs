@@ -129,8 +129,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_GetLinkGroupsNoParametersPassed_ReturnsOK()
-        {   // Given
-
+        {  
+            // Given
             var LinkGroupParameters = new LinkGroupParameters();
             var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
             string orderBy = "GroupName";
@@ -153,7 +153,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_GetLinkGroupsParametersPassedWithInvalidOrderBy_ReturnsBadRequest()
-        {   // Given
+        {   
+            // Given
             var LinkGroupParameters = new LinkGroupParameters();
             var linkGroupListBeforePaging = linkGroupsDto.AsQueryable();
             var headerDictionary = new HeaderDictionary();
@@ -174,8 +175,9 @@ namespace KitBuilderWebApi.Tests.Controllers
         }
 
         [TestMethod]
-        public void LinkGroupController_GetLinkGroupByIdlinkGroupDoesNotExist_ReturnsNotFound()
-        {   // Given
+        public void LinkGroupController_GetLinkGroupByIdLinkGroupDoesNotExist_ReturnsNotFound()
+        {   
+            // Given
             int linkGroupId = 999;
 
             //When
@@ -187,7 +189,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_GetLinkGroupByIdlinkGroupExist_ReturnsOk()
-        {   // Given
+        {   
+            // Given
             int linkGroupId = linkGroups.FirstOrDefault().LinkGroupId;
 
             //When
@@ -200,7 +203,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_CreateLinkGroupNullLinkGroupPassed_ReturnsBadRequest()
-        {   // Given
+        {   
+            // Given
             LinkGroupDto linkGroupDto = null;
 
             //When
@@ -212,7 +216,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_CreateLinkGroupValidLinkGroupPassed_ReturnsCreatedStatusCode()
-        {   // Given
+        {  
+            // Given
             LinkGroupDto linkGroupDto = new LinkGroupDto { LinkGroupId = 999, GroupName = "Taco2", GroupDescription = "Cheese taco2" };
             mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
 
@@ -220,13 +225,14 @@ namespace KitBuilderWebApi.Tests.Controllers
             var response = linkGroupController.CreateLinkGroup(linkGroupDto);
 
             // Then
-            Assert.IsInstanceOfType(response, typeof(CreatedAtRouteResult), "Bad Request Expected");
+            Assert.IsInstanceOfType(response, typeof(CreatedAtRouteResult), "Create At Expected");
             _mockUnitWork.Verify(m => m.Commit(), Times.Once);
         }
 
         [TestMethod]
         public void LinkGroupController_DeleteLinkGroupInvalidIdPassed_ReturnsNotFound()
-        {   // Given
+        {  
+            // Given
             int linkGroupId = 999;
 
             //When
@@ -238,7 +244,8 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         [TestMethod]
         public void LinkGroupController_DeleteLinkGroupValidLinkGroupPassed_ReturnsNoContent()
-        {   // Given
+        {   
+            // Given
             int linkGroupId = linkGroups.FirstOrDefault().LinkGroupId;
             mockLinkGroupRepository.Setup(s => s.ExecWithStoreProcedure(It.IsAny<string>(), It.IsAny<object[]>())).Returns(1);
             mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
