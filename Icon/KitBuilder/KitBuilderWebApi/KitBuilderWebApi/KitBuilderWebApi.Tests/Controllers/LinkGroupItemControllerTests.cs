@@ -311,7 +311,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockLinkGroupItemRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
             mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
             mockLinkGroupRepository.Setup(m => m.Get(It.IsAny<int>())).Returns(linkGroups.Where(l => l.LinkGroupId == linkGroupId).FirstOrDefault());
-            mockLinkGroupRepository.SetupGet(s => s.UnitOfWork.Context.LinkGroupItem.Where(It.IsAny<Expression<Func<LinkGroupItem, bool>>>())).Returns(linkGroupItemsList.AsQueryable());
+            mockLinkGroupItemRepository.Setup(s => s.FindBy(It.IsAny<Expression<Func<LinkGroupItem, bool>>>())).Returns(linkGroupItemsList.AsQueryable());
 
             //When
             var response = listGroupItemController.DeleteLinkGroupItems(linkGroupId, linkGroupItemIds);
