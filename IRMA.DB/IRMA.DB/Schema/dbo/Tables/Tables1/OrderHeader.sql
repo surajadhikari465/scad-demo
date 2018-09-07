@@ -202,27 +202,17 @@ BEGIN
 	DECLARE @TSF_DeleteEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_DEL')
 	DECLARE @PO_DeleteEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_DEL')
 
-	INSERT INTO amz.PurchaseOrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
-	SELECT
-		@PO_DeleteEventTypeID,
+	INSERT INTO amz.OrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
+	SELECT CASE 
+			WHEN deleted.OrderType_ID <> 3 THEN @PO_DeleteEventTypeID
+			ELSE @TSF_DeleteEventTypeID
+		   END,
 		deleted.OrderHeader_ID,
 		SYSDATETIME(),
 		'U', -- for 'Unprocessed'
 		SYSUTCDATETIME()
 	FROM deleted
 	WHERE deleted.Sent = 1
-		AND deleted.OrderType_ID <> 3 
-
-	INSERT INTO amz.TransferQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
-	SELECT
-		@TSF_DeleteEventTypeID,
-		deleted.OrderHeader_ID,
-		SYSDATETIME(),
-		'U', -- for 'Unprocessed'
-		SYSUTCDATETIME()
-	FROM deleted
-	WHERE deleted.Sent = 1
-		AND deleted.OrderType_ID = 3 -- transfer orders
 
 	END
 
@@ -386,70 +376,39 @@ BEGIN
 		DECLARE @tsf_modEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_MOD')
 		DECLARE @unprocessedStatus NCHAR(1) = 'U'
 
-		CREATE TABLE #tempOrders (EventTypeID INT, KeyID INT, OrderType_ID INT)
+		CREATE TABLE #tempOrders (EventTypeID INT, KeyID INT)
 
-		INSERT INTO #tempOrders(EventTypeID, KeyID, OrderType_ID)
+		INSERT INTO #tempOrders(EventTypeID, KeyID)
 		SELECT		CASE
-						WHEN (i.Sent = 1 AND d.Sent = 0) THEN @po_creEventTypeID
-						ELSE @po_modEventTypeID
+						WHEN (i.Sent = 1 AND d.Sent = 0 AND i.OrderType_ID <> 3) THEN @po_creEventTypeID
+						WHEN (i.Sent = 1 AND d.Sent = 0 AND i.OrderType_ID = 3) THEN @tsf_creEventTypeID
+						ELSE CASE 
+								WHEN i.OrderType_ID = 3 THEN @tsf_modEventTypeID
+								ELSE @po_modEventTypeID
+							 END	
 					END AS EventTypeID,
-					i.OrderHeader_ID,
-					i.OrderType_ID
+					i.OrderHeader_ID
 		FROM		INSERTED	i	
 		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
-		WHERE       i.OrderType_ID <> 3 
-		AND			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
-						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
-						OR	((i.ApprovedDate IS NULL AND i.CloseDate IS NOT NULL)
-							AND d.CloseDate IS NULL) --Order is suspended
-						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
-					)
-		UNION
-		SELECT		CASE
-						WHEN (i.Sent = 1 AND d.Sent = 0) THEN @tsf_creEventTypeID
-						ELSE @tsf_modEventTypeID
-					END AS EventTypeID,
-					i.OrderHeader_ID,
-					i.OrderType_ID
-		FROM		INSERTED	i	
-		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
-		WHERE       i.OrderType_ID = 3 
-		AND			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
+		WHERE			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
 						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
 						OR	((i.ApprovedDate IS NULL AND i.CloseDate IS NOT NULL)
 							AND d.CloseDate IS NULL) --Order is suspended
 						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
 					)
 
-		INSERT INTO amz.PurchaseOrderQueue (EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
-		SELECT EventTypeID,
+		INSERT INTO amz.OrderQueue (EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
+		SELECT 
+			EventTypeID,
 			KeyID,
 			@unprocessedStatus,
 			SYSDATETIME(),
 			SYSUTCDATETIME()
 		FROM #tempOrders o
-		WHERE o.OrderType_ID <> 3 
-		AND NOT EXISTS
+		WHERE NOT EXISTS
 		(
 			SELECT 1 
-			FROM amz.PurchaseOrderQueue q
-			WHERE o.EventTypeID = q.EventTypeID
-				AND o.KeyID = q.KeyID
-				AND q.Status = @unprocessedStatus
-		)
-
-		INSERT INTO amz.TransferQueue(EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
-		SELECT EventTypeID,
-			KeyID,
-			@unprocessedStatus,
-			SYSDATETIME(),
-			SYSUTCDATETIME()
-		FROM #tempOrders o
-		WHERE o.OrderType_ID = 3 
-		AND NOT EXISTS
-		(
-			SELECT 1 
-			FROM amz.TransferQueue q
+			FROM amz.OrderQueue q
 			WHERE o.EventTypeID = q.EventTypeID
 				AND o.KeyID = q.KeyID
 				AND q.Status = @unprocessedStatus
@@ -486,6 +445,23 @@ BEGIN
 		OrderHeader		oh
 		JOIN Vendor		vs	ON	oh.PurchaseLocation_ID	= vs.Vendor_ID
 		JOIN Inserted	i	ON	oh.OrderHeader_ID		= i.OrderHeader_ID
+
+-- Purchase Order in Sent status is a 'PO_CRE' event type goes into amz.PurchaseOrderQueue
+	-- Transfer Order in Sent status is a 'TSF_CRE' event type goes into amz.TransferQueue
+	DECLARE @PO_CRE_EvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_CRE')
+	DECLARE @TSF_CRE_EvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_CRE')
+
+	INSERT INTO amz.OrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
+	SELECT CASE
+		WHEN inserted.OrderType_ID <> 3 THEN @PO_CRE_EvenTypeID
+		ELSE @TSF_CRE_EvenTypeID
+		END,
+		inserted.OrderHeader_ID,
+		SYSDATETIME(),
+		'U', -- for 'Unprocessed'
+		SYSUTCDATETIME()
+	FROM inserted
+	WHERE inserted.Sent = 1
 
 END
 GO

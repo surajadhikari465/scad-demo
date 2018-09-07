@@ -3330,11 +3330,10 @@
     <None Include="Scripts\PostDeploy\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
     <Build Include="Schema\amz\Tables\EventType.sql" />
     <Build Include="Schema\amz\Tables\InventoryQueue.sql" />
-    <Build Include="Schema\amz\Tables\TransferQueue.sql" />
     <Build Include="Schema\amz\Tables\ReceiptQueue.sql" />
-    <Build Include="Schema\amz\Tables\PurchaseOrderQueue.sql" />
     <Build Include="Schema\amz\Tables\MessageArchive.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\OrderType.sql" />
+    <Build Include="Schema\amz\Tables\OrderQueue.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemVendorLaneFile.sql" />
     <None Include="SQL Agent Job\Amazon Vendor Lane Data Feed - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\VendorLaneExtract.sql" />

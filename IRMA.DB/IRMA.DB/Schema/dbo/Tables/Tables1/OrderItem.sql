@@ -213,9 +213,166 @@ CREATE STATISTICS [_dta_stat_OrderItem_Item_Key_OrderHeader_ID_OrderItem_ID_Orig
 
 
 GO
-CREATE TRIGGER [dbo].[OrderItemAddUpdDel]
+
+CREATE TRIGGER [dbo].[OrderItemAdd]
 ON [dbo].[OrderItem]
-FOR DELETE, INSERT, UPDATE 
+FOR INSERT
+AS 
+BEGIN
+    BEGIN TRY
+    -- StoreOps Export 
+	UPDATE OrderExportQueue
+	SET QueueInsertedDate = GetDate(), DeliveredToStoreOpsDate = null
+	WHERE OrderHeader_ID in (
+	    SELECT DISTINCT OH.OrderHeader_ID
+		FROM 
+			OrderHeader OH
+		INNER JOIN
+			(SELECT OrderHeader_ID FROM Inserted) OI
+			ON OI.OrderHeader_ID = OH.OrderHeader_ID
+		WHERE (OH.SentDate IS NOT NULL)
+		-- excludes closed and reconciled (reconciled in StoreOPs)warehouse orders sending updates
+		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
+		 	
+	)
+	IF @@ROWCOUNT=0
+	BEGIN
+		INSERT INTO OrderExportQueue
+		SELECT DISTINCT OH.OrderHeader_ID, GetDate(), null
+		FROM 
+			OrderHeader OH
+		INNER JOIN
+			(SELECT OrderHeader_ID FROM Inserted) OI
+			ON OI.OrderHeader_ID = OH.OrderHeader_ID
+		WHERE (OH.SentDate IS NOT NULL)
+		-- excludes closed and reconciled (reconciled in StoreOPs)warehouse orders sending updates
+		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
+	END
+
+    --Copy the Cost and CostUnit value in OrigReceivedItemCost and OrigReceivedItemUnit
+    --when data is inserted into OrderItem table
+    UPDATE OI
+       SET OI.OrigReceivedItemCost = I.Cost
+	     , OI.OrigReceivedItemUnit = I.CostUnit
+      FROM OrderItem OI
+INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID     	 
+    
+    --Copy the OrderDate from OrderHeader table insert into OHOrderDate when data is inserted into OrderItem table
+    UPDATE OI
+    SET OI.OHOrderDate = OH.OrderDate 
+    FROM OrderItem OI
+    INNER JOIN INSERTED I ON
+            I.OrderItem_ID  = OI.OrderItem_ID 
+    INNER JOIN OrderHeader OH ON
+            OI.OrderHeader_ID = OH.OrderHeader_ID
+                        
+	----
+	-- Amazon Events
+	----
+	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+	DECLARE @orderReceiptCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Order Receipt Creation'
+			);
+	DECLARE @poLineAddEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Line Item Add'
+			);
+	DECLARE @transferLineAddEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Line Item Add'
+			);
+	DECLARE @poCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Creation'
+			);
+	DECLARE @transferCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Order Creation'
+			);
+
+	INSERT INTO amz.OrderQueue (
+			EventTypeID
+			, KeyID
+			, SecondaryKeyID
+			, Status
+			, InsertDate
+			, MessageTimestampUtc
+			)
+		SELECT CASE
+				 WHEN oh.OrderType_ID = 3 THEN @transferLineAddEventTypeId
+				 ELSE @poLineAddEventTypeId 
+			   END	   
+			 ,i.OrderHeader_ID
+			 , i.OrderItem_ID
+			 , @unprocessedStatusCode
+			 , SYSDATETIME()
+			 , SYSUTCDATETIME()
+		  FROM inserted i
+		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.OrderQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+				--Line Item Add event will only be queued after the order is sent to AMZN. That's why the order creation events are checked here.
+		       AND q.EventTypeID NOT IN (@poCreationEventTypeId, @transferCreationEventTypeId, @poLineAddEventTypeId, @transferLineAddEventTypeId)
+			   AND q.Status = @unprocessedStatusCode
+		)
+	  AND oh.Sent = 1
+
+	INSERT INTO amz.ReceiptQueue (
+		EventTypeID
+		,KeyID
+		,SecondaryKeyID
+		,Status
+		,InsertDate
+		,MessageTimestampUtc
+		)
+	SELECT @orderReceiptCreationEventTypeId
+		,oh.OrderHeader_ID
+		,i.OrderItem_ID
+		,@unprocessedStatusCode
+		,SYSDATETIME()
+		,SYSUTCDATETIME()
+	FROM inserted i
+	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.ReceiptQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND q.EventTypeID = @orderReceiptCreationEventTypeId
+			   AND q.Status = @unprocessedStatusCode
+		)
+	  AND i.QuantityReceived IS NOT NULL 
+
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
+        SELECT @err_no = ERROR_NUMBER(), @err_sev = ERROR_SEVERITY(), @err_msg = ERROR_MESSAGE()
+        IF @@TranCount > 0 
+          begin
+            ROLLBACK TRAN
+          end
+        
+        RAISERROR ('OrderItemAdd trigger failed with @@ERROR: %d - %s', @err_sev, 1, @err_no, @err_msg)
+    END CATCH	
+END
+
+GO
+
+CREATE TRIGGER [dbo].[OrderItemUpdate]
+ON [dbo].[OrderItem]
+FOR UPDATE 
 AS 
 BEGIN
     BEGIN TRY
@@ -250,25 +407,7 @@ BEGIN
 		WHERE (OH.SentDate IS NOT NULL)
 		-- excludes closed and reconciled (reconciled in StoreOPs)warehouse orders sending updates
 		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
-	END
-
-    --Copy the Cost and CostUnit value in OrigReceivedItemCost and OrigReceivedItemUnit
-    --when data is inserted into OrderItem table
-    UPDATE OI
-    SET OI.OrigReceivedItemCost = I.Cost, OI.OrigReceivedItemUnit = I.CostUnit
-    FROM OrderItem OI
-    INNER JOIN INSERTED I ON
-		I.OrderItem_ID  = OI.OrderItem_ID 
-    WHERE NOT EXISTS (SELECT * FROM DELETED D WHERE D.OrderItem_ID  = I.OrderItem_ID)    	 
-    
-    --Copy the OrderDate from OrderHeader table insert into OHOrderDate when data is inserted into OrderItem table
-    UPDATE OI
-    SET OI.OHOrderDate = OH.OrderDate 
-    FROM OrderItem OI
-    INNER JOIN INSERTED I ON
-            I.OrderItem_ID  = OI.OrderItem_ID 
-    INNER JOIN OrderHeader OH ON
-            OI.OrderHeader_ID = OH.OrderHeader_ID
+	END	 
     
     -- Capture for the update avgcost/onhand process 
     INSERT INTO ItemHistoryInsertedQueue (Store_No, Item_Key, DateStamp, SubTeam_No, ItemHistoryID, Adjustment_ID)
@@ -307,7 +446,7 @@ BEGIN
     END
     
 	----
-	-- Amazon Event
+	-- Amazon Events
 	----
 	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
 	DECLARE @orderReceiptCreationEventTypeId INT = (
@@ -320,15 +459,59 @@ BEGIN
 			FROM amz.EventType
 			WHERE EventTypeDescription = 'Order Receipt Modification'
 			);
+	DECLARE @poLineModificationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Line Item Modification'
+			);
+	DECLARE @transferLineModificationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Line Item Modification'
+			);
+
+	INSERT INTO amz.OrderQueue (
+			EventTypeID
+			, KeyID
+			, SecondaryKeyID
+			, Status
+			, InsertDate
+			, MessageTimestampUtc
+			)
+		SELECT CASE
+				 WHEN oh.OrderType_ID = 3 THEN @transferLineModificationEventTypeId
+				 ELSE @poLineModificationEventTypeId 
+			   END	   
+				,oh.OrderHeader_ID
+				,i.OrderItem_ID
+				,@unprocessedStatusCode
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+		  FROM inserted i
+		  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.OrderQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND (q.EventTypeID = @poLineModificationEventTypeId
+		        OR  q.EventTypeID = @transferLineModificationEventTypeId)
+			   AND q.Status = @unprocessedStatusCode
+		)
+	  AND i.QuantityOrdered <> d.QuantityOrdered
 
 	INSERT INTO amz.ReceiptQueue (
 		EventTypeID
 		,KeyID
+		,SecondaryKeyID
 		,Status
 		,InsertDate
 		,MessageTimestampUtc
 		)
 	SELECT @orderReceiptCreationEventTypeId
+		,i.OrderHeader_ID
 		,i.OrderItem_ID
 		,@unprocessedStatusCode
 		,SYSDATETIME()
@@ -336,27 +519,30 @@ BEGIN
 	FROM inserted i
 	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
 	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	LEFT JOIN amz.ReceiptQueue roq ON roq.KeyID = i.OrderItem_ID
-		AND roq.EventTypeID = @orderReceiptCreationEventTypeId
-		AND roq.Status <> @unprocessedStatusCode
-	WHERE roq.KeyID IS NULL
-		AND (
-			oh.OrderType_ID <> 2
-			OR oh.Return_Order <> 1
-			)
-		AND (
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.ReceiptQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND q.EventTypeID = @orderReceiptCreationEventTypeId
+			   AND q.Status = @unprocessedStatusCode
+		)
+	  AND (													--Line item receipt information is first entered
 			i.QuantityReceived IS NOT NULL 
 			AND d.QuantityReceived IS NULL
-			)
+		  )
 
 	INSERT INTO amz.ReceiptQueue (
 		EventTypeID
 		,KeyID
+		,SecondaryKeyID
 		,Status
 		,InsertDate
 		,MessageTimestampUtc
 		)
 	SELECT @orderReceiptModificationEventTypeId
+		,i.OrderHeader_ID
 		,i.OrderItem_ID
 		,@unprocessedStatusCode
 		,SYSDATETIME()
@@ -364,17 +550,17 @@ BEGIN
 	FROM inserted i
 	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
 	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	LEFT JOIN amz.ReceiptQueue roq ON roq.KeyID = i.OrderItem_ID
-		AND roq.EventTypeID = @orderReceiptModificationEventTypeId
-		AND roq.Status <> @unprocessedStatusCode
-	WHERE roq.KeyID IS NULL
-		AND (
-			oh.OrderType_ID <> 2
-			OR oh.Return_Order <> 1
-			)
-		AND (
-			i.QuantityReceived <> d.QuantityReceived
-			)
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.ReceiptQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND q.EventTypeID = @orderReceiptModificationEventTypeId
+			   AND q.Status = @unprocessedStatusCode
+		) 
+	    AND i.QuantityReceived IS NOT NULL					----Line item receipt information is modified after the receipt info was entered
+		AND	i.QuantityReceived <> d.QuantityReceived
 
     END TRY
     BEGIN CATCH
@@ -385,9 +571,100 @@ BEGIN
             ROLLBACK TRAN
           end
         
-        RAISERROR ('OrderItemAddUpdDel trigger failed with @@ERROR: %d - %s', @err_sev, 1, @err_no, @err_msg)
+        RAISERROR ('OrderItemUpdate trigger failed with @@ERROR: %d - %s', @err_sev, 1, @err_no, @err_msg)
     END CATCH	
 END
+
+GO
+
+CREATE TRIGGER [dbo].[OrderItemDelete]
+ON [dbo].[OrderItem]
+FOR DELETE 
+AS 
+BEGIN
+    BEGIN TRY
+    -- StoreOps Export 
+	UPDATE OrderExportQueue
+	SET QueueInsertedDate = GetDate(), DeliveredToStoreOpsDate = null
+	WHERE OrderHeader_ID in (
+	    SELECT DISTINCT OH.OrderHeader_ID
+		FROM 
+			OrderHeader OH
+		INNER JOIN
+			(SELECT OrderHeader_ID FROM Deleted) OI
+			ON OI.OrderHeader_ID = OH.OrderHeader_ID
+		WHERE (OH.SentDate IS NOT NULL)
+		-- excludes closed and reconciled (reconciled in StoreOPs)warehouse orders sending updates
+		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
+		 	
+	)
+	IF @@ROWCOUNT=0
+	BEGIN
+		INSERT INTO OrderExportQueue
+		SELECT DISTINCT OH.OrderHeader_ID, GetDate(), null
+		FROM 
+			OrderHeader OH
+		INNER JOIN
+			(SELECT OrderHeader_ID FROM Deleted) OI
+			ON OI.OrderHeader_ID = OH.OrderHeader_ID
+		WHERE (OH.SentDate IS NOT NULL)
+		-- excludes closed and reconciled (reconciled in StoreOPs)warehouse orders sending updates
+		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
+	END 	 
+
+	----
+	-- Amazon Events
+	----
+	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+	DECLARE @poLineDeletionEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
+			);
+	DECLARE @transferLineDeletionEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Line Item Deletion'
+			);
+
+	INSERT INTO amz.OrderQueue (EventTypeID, KeyID,SecondaryKeyID, Status, InsertDate, MessageTimestampUtc)
+		SELECT CASE
+				 WHEN oh.OrderType_ID = 3 THEN @transferLineDeletionEventTypeId
+				 ELSE @poLineDeletionEventTypeId 
+			   END
+				,oh.OrderHeader_ID
+				,i.OrderItem_ID
+				,@unprocessedStatusCode
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+		  FROM inserted i
+		  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+	WHERE NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.OrderQueue q
+			 WHERE q.KeyID = oh.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND (q.EventTypeID = @poLineDeletionEventTypeId
+		        OR  q.EventTypeID = @transferLineDeletionEventTypeId)
+			   AND q.Status = @unprocessedStatusCode
+		) 
+	   AND oh.Sent = 1
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
+        SELECT @err_no = ERROR_NUMBER(), @err_sev = ERROR_SEVERITY(), @err_msg = ERROR_MESSAGE()
+        IF @@TranCount > 0 
+          begin
+            ROLLBACK TRAN
+          end
+        
+        RAISERROR ('OrderItemDelete trigger failed with @@ERROR: %d - %s', @err_sev, 1, @err_no, @err_msg)
+    END CATCH	
+END
+
 GO
 
 GRANT VIEW CHANGE TRACKING
