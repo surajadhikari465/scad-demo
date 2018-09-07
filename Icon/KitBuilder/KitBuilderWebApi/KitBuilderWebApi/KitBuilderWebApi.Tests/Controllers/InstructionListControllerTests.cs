@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using KitBuilderWebApi.Controllers;
+using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
@@ -11,15 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Linq.Expressions;
-using KitBuilderWebApi.DataAccess.Dto;
-using InstructionType = KitBuilderWebApi.DatabaseModels.InstructionType;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
 
-  [TestClass]
+    [TestClass]
   public class InstructionListControllerTests
     {
 
@@ -124,8 +121,8 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void InstructionListController_UpdateInstructionsList_ListDoesntExist_Returns_NotFound()
         {
-            var parameters = new InstructionList {InstructionListId = -1};
-            var response = instructionListController.UpdateInstructionList(parameters);
+            var parameters = new InstructionListUpdateDto() { Name="BadUpdate"};
+            var response = instructionListController.UpdateInstructionList(-1,parameters);
 
             Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
             Assert.IsNotNull(response, "The response is null");
@@ -135,7 +132,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         public void InstructionListController_UpdateInstructionsList_Null_Returns_BadRequest()
         {
             
-            var response = instructionListController.UpdateInstructionList(null);
+            var response = instructionListController.UpdateInstructionList(-1,null);
 
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
             Assert.IsNotNull(response, "The response is null");

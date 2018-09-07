@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
-using Microsoft.AspNetCore.Authorization;
+using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq.Dynamic.Core;
-using KitBuilderWebApi.QueryParameters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace KitBuilderWebApi.Controllers
-{
-    //[Authorize]
+{ 
     [Route("api/InstructionList")]
     public class InstructionListController : Controller
     {
@@ -43,6 +41,13 @@ namespace KitBuilderWebApi.Controllers
 
 
         // GET api/InstructionLists
+        /// <summary>
+        /// InstructionList - GET
+        /// </summary>
+        /// <param name="instructionListsParameters"></param>
+        [SwaggerResponse(200, "Ok")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(500, "Server Error")]
         [HttpGet(Name = "GetInstructionsList")]
         public IActionResult GetInstructionsList(InstructionListsParameters instructionListsParameters)
         {
@@ -51,7 +56,7 @@ namespace KitBuilderWebApi.Controllers
 
 
             var instructionListsBeforePaging = from i in instructionListRepository.GetAll()
-                                               join  itr in instructionTypeRespository.GetAll() on i.InstructionTypeId equals itr.InstructionTypeId
+                                               join itr in instructionTypeRespository.GetAll() on i.InstructionTypeId equals itr.InstructionTypeId
                                                join s in statusRespository.GetAll() on i.StatusId equals s.StatusId
                                                select new InstructionListDto()
                                                {
@@ -75,7 +80,7 @@ namespace KitBuilderWebApi.Controllers
                 ModelState.AddModelError("BadOrderBy", "Invalid OrderBy Parameter");
                 return BadRequest(ModelState);
             }
-               
+
 
             //build the query if any filter or search query critiera is passed
             BuildQueryToFilterData(instructionListsParameters, ref instructionListsBeforePaging);
@@ -88,37 +93,103 @@ namespace KitBuilderWebApi.Controllers
 
             var paginationMetadata = instructionListHelper.getPaginationData(instructionListsAfterPaging, instructionListsParameters);
 
-            if (Response !=null)
-            Response.Headers.Add("X-Pagination",
-                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+            if (Response != null)
+                Response.Headers.Add("X-Pagination",
+                    Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(instructionListsAfterPaging.ShapeData(instructionListsParameters.Fields));
         }
 
-        [HttpPut]
-        public IActionResult UpdateInstructionList([FromBody]InstructionListDto parameter)
+        /// <summary>
+        /// InstructionList - UPDATE
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "Ok")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(404, "Not Found")]
+        [SwaggerResponse(500, "Server Error")]
+        [HttpPut("{instructionListId}")]
+        public IActionResult UpdateInstructionList([FromRoute]int instructionListId, [FromBody]InstructionListUpdateDto list)
         {
-            if (!ModelState.IsValid || parameter == null)
+            if (!ModelState.IsValid || list == null)
                 return BadRequest(ModelState);
 
 
-            var list = instructionListRepository.Find(i => i.InstructionListId == parameter.InstructionListId);
+            var existingList = instructionListRepository.Find(i => i.InstructionListId == instructionListId);
+
+            if (existingList == null) return NotFound();
+
+            var instructionList = Mapper.Map<InstructionList>(list);
+            instructionList.InstructionListId = existingList.InstructionListId;
+
+            try
+            {
+                instructionListRepository.Update(instructionList, existingList.InstructionListId);
+                instructionListRepository.UnitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+ 
+        }
+        /// <summary>
+        /// InstructionList - DELETE
+        /// </summary>
+        /// <param name="instructionListId"></param>
+        [SwaggerResponse(200, "Ok")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(404, "Not Found")]
+        [SwaggerResponse(500, "Server Error")]
+        [HttpDelete("{instructionListId}")]
+        public IActionResult DeleteInstructionList([FromRoute]int instructionListId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            var list = instructionListRepository.Find(i => i.InstructionListId == instructionListId);
 
             if (list == null) return NotFound();
 
-            var instructionList = Mapper.Map<InstructionList>(parameter);
+            if (InstructionListHasMembers(list)) return NoContent();
 
-            instructionListRepository.Update(instructionList, list.InstructionListId);
-            instructionListRepository.Save();
-        
 
-            return Ok();
+            try
+            {
+                instructionListRepository.Delete(list);
+                instructionListRepository.UnitOfWork.Commit();
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+
         }
 
-        [HttpPost(Name="AddInstructionList")]
-        public IActionResult AddInstructionList([FromBody]InstructionListDto InstructionListDto)
+        /// <summary>
+        /// InstructionList - ADD
+        /// </summary>
+        /// <param name="instructionListAddDto"></param>
+        /// <response code="201">Created</response>
+
+     
+        [SwaggerResponse(201, "Created")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(500, "Server Error")]
+        [HttpPost(Name = "AddInstructionList")]
+        public IActionResult AddInstructionList([FromBody]InstructionListAddDto instructionListAddDto)
         {
-            if (!ModelState.IsValid || InstructionListDto == null)
+            if (!ModelState.IsValid || instructionListAddDto == null)
                 return BadRequest(ModelState);
 
             var defaultStatus = statusRespository.Find(s => s.StatusCode == "ENA");
@@ -129,12 +200,15 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var instructionList = Mapper.Map<InstructionList>(InstructionListDto);
+            var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
+            instructionList.StatusId = defaultStatus.StatusId;
+
             instructionListRepository.Add(instructionList);
 
             try
             {
-                instructionListRepository.Save();
+                instructionListRepository.UnitOfWork.Commit();
+                return CreatedAtRoute("AddInstructionList", new { id = instructionList.InstructionListId }, instructionList);
             }
             catch (Exception ex)
             {
@@ -142,7 +216,12 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "A problem happened while handling your request.");
             }
 
-            return CreatedAtRoute("AddInstructionList", new {id=instructionList.InstructionListId}, instructionList);
+          
+        }
+
+        internal bool InstructionListHasMembers(InstructionList list)
+        {
+            return instructionListMemberRepository.FindAll(ilm => ilm.InstructionListId == list.InstructionListId).Any();
         }
 
         internal void BuildQueryToFilterData(InstructionListsParameters instructionListsParameters, ref IQueryable<InstructionListDto> instructionListsBeforePaging)

@@ -40,7 +40,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Gets a specific InstructionListMember for an InstructionList.
+        /// InstructionListMember - GET - One
         /// </summary>
         /// <param name="instructionListId">InstructionList Id</param>
         /// <param name="instructionListMemberId">InstructionListMember Id</param>
@@ -63,7 +63,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all InstructionListMembers for an InstructionList
+        /// InstructionListMember - GET - All
         /// </summary>
         /// <param name="instructionListId">Instruction List Id</param>
         [HttpGet("{instructionListId}/InstructionListMembers")]
@@ -86,11 +86,11 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Add a single InstructionListMember to an InstructionList
+        /// InstructionListMember - ADD - One
         /// </summary>
         /// <param name="instructionListId"></param>
         /// <param name="instructionListMemberDto"></param>
-        
+
         [HttpPost("{instructionListId}/InstructionListMember")]
         public IActionResult AddInstructionListMember([FromRoute]int instructionListId, [FromBody]InstructionListMemberDto instructionListMemberDto)
         {
@@ -107,6 +107,7 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
+            instructionList.InstructionListId = instructionListId;
             instructionList.InstructionListMember.Add(instructionListMember);
 
             try
@@ -122,11 +123,11 @@ namespace KitBuilderWebApi.Controllers
             }
         }
         /// <summary>
-        /// Add multiple LnstructionListMembers to an InstructionList
+        /// InstructionListMember - GET - Multiple
         /// </summary>
         /// <param name="instructionListId"></param>
         /// <param name="instructionListMembersDto"></param>
-        
+
         [HttpPost("{instructionListId}/InstructionListMembers")]
         public IActionResult AddInstructionListMembers([FromRoute]int instructionListId, [FromBody]List<InstructionListMemberDto> instructionListMembersDto)
         {
@@ -146,6 +147,7 @@ namespace KitBuilderWebApi.Controllers
             foreach (var instructionListMemberDto in instructionListMembersDto)
             {
                 var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
+                instructionListMember.InstructionListId = instructionListId;
                 instructionList.InstructionListMember.Add(instructionListMember);
             }
 
@@ -162,11 +164,11 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Delete a single InstructionListMember from an InstructionList
+        /// InstructionListMember - DELETE - One
         /// </summary>
         /// <param name="instructionListId"></param>
         /// <param name="instructionListMemberId"></param>
-        
+
         [HttpDelete("{instructionListId}/InstructionListMember/{instructionListMemberId}")]
         public IActionResult DeleteInstructionListMember([FromRoute]int instructionListId, [FromRoute]int instructionListMemberId)
         {
@@ -200,7 +202,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Delete multiple InstructionListMembers from a single InstructionList
+        /// InstructionListMember - DELETE - Multiple
         /// </summary>
         /// <param name="instructionListId"></param>
         /// <param name="instructionListMemberIds"></param>
@@ -242,7 +244,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         /// <summary>
-        /// Update an existing InstructionListMember for an InstructionList
+        /// InstructionListMember - UPDATE - Multiple
         /// </summary>
         /// <param name="instructionListId"></param>
         /// <param name="InstructionListMembersDto"></param>

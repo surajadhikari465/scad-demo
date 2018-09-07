@@ -62,9 +62,7 @@ namespace KitBuilderWebApi
             services.AddScoped<IRepository<LinkGroupDto>, Repository<LinkGroupDto>>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IUrlHelper>(it =>
-            
-               it.GetRequiredService<IUrlHelperFactory>()
+            services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
             );
 
@@ -75,11 +73,13 @@ namespace KitBuilderWebApi
 
             services.AddSwaggerGen(c =>
             {
+                
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                
             });
 
             // add services here
@@ -132,6 +132,7 @@ namespace KitBuilderWebApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
+               
             });
 
             app.UseMvc();

@@ -19,6 +19,8 @@ namespace KitBuilderWebApi.Helper
                 cfg.CreateMap<Items, ItemsDto>();
                 cfg.CreateMap<ItemsDto, Items>();
                 cfg.CreateMap<InstructionList, InstructionListDto>();
+                cfg.CreateMap<InstructionListAddDto, InstructionList>();
+                cfg.CreateMap<InstructionListUpdateDto, InstructionList>();
                 cfg.CreateMap<InstructionListDto, InstructionList>();
                 cfg.CreateMap<InstructionListMemberDto, InstructionListMember>();
                 cfg.CreateMap<InstructionListMember, InstructionListMemberDto>();
