@@ -244,8 +244,10 @@ UPDATE Price
     INNER JOIN #Grouper G
         ON PBD.PriceBatchDetailID = G.PriceBatchDetailID AND PBD.Item_Key = G.Item_Key AND PBD.Store_No = G.Store_No
     INNER JOIN PriceChgType PCT  ON PCT.PriceChgTypeID = PBD.PriceChgTypeID
+     LEFT JOIN [dbo].[fn_GetInstanceDataFlagStoreValues] ('GlobalPriceManagement') f ON f.Store_No = Price.Store_No  --Check GPM store Instance Flag
     WHERE PBD.PriceChgTypeID IS NOT NULL
         AND ISNULL(PBD.StartDate, PBH.StartDate) = G.StartDate 
+        AND f.FlagValue = 0    -- Only Price only for non-GPM stores.
     
 --IF PRICE TABLE IS BEING UPDATED WITH A REGULAR PRICE CHANGE, THEN UPDATE THE SALE_END_DATE IF IT IS IN THE FUTURE;
 --SET THE NEW SALE_END_DATE TO 1 DAY BEFORE THE START DATE OF THE REG PRICE CHANGE
