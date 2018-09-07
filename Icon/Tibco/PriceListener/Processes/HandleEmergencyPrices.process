@@ -122,7 +122,7 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>JDBC Update</pd:to>
+            <pd:to>Insert Emergency Prices</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -148,37 +148,17 @@
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
-        <pd:transition>
-            <pd:from>JDBC Update</pd:from>
-            <pd:to>Insert Emergency Prices</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>JDBC Update</pd:from>
-            <pd:to>Sleep</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-65485</pd:lineColor>
-            <pd:conditionType>error</pd:conditionType>
-        </pd:transition>
         <pd:activity name="Insert Emergency Prices">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>367</pd:x>
-            <pd:y>354</pd:y>
+            <pd:x>291</pd:x>
+            <pd:y>355</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <statement>INSERT INTO gpm.MessageQueueEmergencyPrice(ItemId, BusinessUnitId, PriceType, MammothPriceXml)
-SELECT ?, ?, ?, ?
-WHERE NOT EXISTS (
-	SELECT 1
-	FROM gpm.MessageQueueEmergencyPrice q
-	WHERE q.ItemId = ?
-		AND q.BusinessUnitId = ?
-		AND q.PriceType = ?)</statement>
+SELECT ?, ?, ?, ?</statement>
                 <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
                 <batchUpdate>true</batchUpdate>
                 <Prepared_Param_DataType>
@@ -196,18 +176,6 @@ WHERE NOT EXISTS (
                     </parameter>
                     <parameter>
                         <parameterName>MammothPriceXml</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>ItemId2</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>BusinessUnitId2</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>PriceType2</parameterName>
                         <dataType>VARCHAR</dataType>
                     </parameter>
                 </Prepared_Param_DataType>
@@ -228,15 +196,6 @@ WHERE NOT EXISTS (
                             <MammothPriceXml>
                                 <xsl:value-of select="tib:render-xml(current())"/>
                             </MammothPriceXml>
-                            <ItemId2>
-                                <xsl:value-of select="pfx:ItemId"/>
-                            </ItemId2>
-                            <BusinessUnitId2>
-                                <xsl:value-of select="pfx:BusinessUnit"/>
-                            </BusinessUnitId2>
-                            <PriceType2>
-                                <xsl:value-of select="pfx:PriceType"/>
-                            </PriceType2>
                         </Record>
                     </xsl:for-each>
                 </jdbcUpdateActivityInput>
@@ -275,62 +234,6 @@ WHERE NOT EXISTS (
                         </messageCode>
                     </xsl:if>
                 </ns02:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="JDBC Update">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>204</pd:x>
-            <pd:y>343</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
-                <statement>UPDATE gpm.MessageQueueEmergencyPrice
-SET MammothPriceXml = ?
-WHERE ItemId = ?
-	AND BusinessUnitId = ?
-	AND PriceType = ?</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>MammothPriceXml</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>ItemId</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>BusinessUnitId</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>PriceType</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-                <batchUpdate>true</batchUpdate>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <xsl:for-each select="$Map-Data/pfx:MammothPrices/pfx:MammothPrice">
-                        <Record>
-                            <MammothPriceXml>
-                                <xsl:value-of select="tib:render-xml(current())"/>
-                            </MammothPriceXml>
-                            <ItemId>
-                                <xsl:value-of select="pfx:ItemId"/>
-                            </ItemId>
-                            <BusinessUnitId>
-                                <xsl:value-of select="pfx:BusinessUnit"/>
-                            </BusinessUnitId>
-                            <PriceType>
-                                <xsl:value-of select="pfx:PriceType"/>
-                            </PriceType>
-                        </Record>
-                    </xsl:for-each>
-                </jdbcUpdateActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

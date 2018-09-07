@@ -86,14 +86,14 @@
     <pd:activity name="Map Mammoth Schema to WFM Schema">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>760</pd:x>
+        <pd:x>814</pd:x>
         <pd:y>67</pd:y>
         <config>
             <element ref="pfx3:items"/>
         </config>
         <pd:inputBindings excludePrefixes="">
             <pfx3:items>
-                <xsl:for-each select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices/pfx2:MammothPrice">
+                <xsl:for-each select="$HandleAddAndUpdateSameItem/pfx2:MammothPrices/pfx2:MammothPrice">
                     <pfx3:item>
                         <xsl:attribute name="ns4:Action">
                             <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
@@ -184,8 +184,8 @@
     <pd:activity name="Send Prices to R10">
         <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>1030</pd:x>
-        <pd:y>61</pd:y>
+        <pd:x>1047</pd:x>
+        <pd:y>57</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -392,8 +392,8 @@
     <pd:activity name="Render XML">
         <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
         <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-        <pd:x>892</pd:x>
-        <pd:y>62</pd:y>
+        <pd:x>934</pd:x>
+        <pd:y>60</pd:y>
         <config>
             <renderAsText>text</renderAsText>
             <validateInput>false</validateInput>
@@ -415,7 +415,7 @@
         </config>
         <pd:inputBindings>
             <pfx2:MammothPrices>
-                <xsl:for-each select="$Parse-XML/pfx2:MammothPrices/pfx2:MammothPrice[pfx2:PriceType = 'TPR' and (tib:compare-date(pfx2:StartDate, current-date()) = 0 or tib:compare-date(pfx2:EndDate, current-date()) = -1)]">
+                <xsl:for-each select="$Parse-XML/pfx2:MammothPrices/pfx2:MammothPrice[pfx2:PriceType = 'TPR' and&#xA;((tib:compare-date(pfx2:StartDate, current-date()) = -1 and tib:compare-date(pfx2:EndDate, current-date()) = 1) or&#xA;tib:compare-date(pfx2:StartDate, current-date()) = 0 or&#xA;tib:compare-date(pfx2:EndDate, current-date()) = -1)]">
                     <pfx2:MammothPrice>
                         <pfx2:Region>
                             <xsl:value-of select="pfx2:Region"/>
@@ -549,8 +549,8 @@
     <pd:activity name="Filter Prices By Excluded SubTeams">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>560</pd:x>
-        <pd:y>65</pd:y>
+        <pd:x>544</pd:x>
+        <pd:y>66</pd:y>
         <config>
             <processName>/Processes/FilterPricesByExcludedSubTeams.process</processName>
         </config>
@@ -615,8 +615,20 @@
                         </ns9:ResetFlag>
                     </xsl:if>
                 </ns9:MessageHeaders>
-                <xsl:copy-of select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices"/>
+                <xsl:copy-of select="$HandleAddAndUpdateSameItem/pfx2:MammothPrices"/>
             </MessageData>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="HandleAddAndUpdateSameItem">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>675</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <processName>/Processes/HandleAddAndUpdateSameItem.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Filter-Prices-By-Excluded-SubTeams/pfx2:MammothPrices"/>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -730,7 +742,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Filter Prices By Excluded SubTeams</pd:from>
-        <pd:to>Map Mammoth Schema to WFM Schema</pd:to>
+        <pd:to>HandleAddAndUpdateSameItem</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
@@ -754,6 +766,13 @@
     <pd:transition>
         <pd:from>Archive Sent Messages</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HandleAddAndUpdateSameItem</pd:from>
+        <pd:to>Map Mammoth Schema to WFM Schema</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
