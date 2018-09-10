@@ -34,7 +34,7 @@ namespace KitBuilderWebApi.Helper
                     orderBy = new string[] { "GroupName" };
                 }
 
-                foreach (string orderByOption in orderBy)
+                foreach (string orderByOption in orderBy.Reverse())
                 {
                     if (typeof(LinkGroup).GetProperty(orderByOption.Split(" ")[0]) == null)
                     {

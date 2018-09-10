@@ -33,7 +33,7 @@ namespace KitBuilderWebApi.Helper
                     orderBy = new string[] { "ScanCode" };
                 }
 
-                foreach (string orderByOption in orderBy)
+                foreach (string orderByOption in orderBy.Reverse())
                 {
                     if (typeof(Items).GetProperty(orderByOption.Split(" ")[0]) == null)
                     {
