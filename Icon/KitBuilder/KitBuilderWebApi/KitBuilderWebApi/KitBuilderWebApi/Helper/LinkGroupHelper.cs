@@ -52,7 +52,7 @@ namespace KitBuilderWebApi.Helper
             }
         }
 
-        public object getPaginationData(PagedList<LinkGroupDto> DataAfterPaging, LinkGroupParameters Parameters)
+        public object GetPaginationData(PagedList<LinkGroupDto> DataAfterPaging, LinkGroupParameters Parameters)
         {
             var previousPageLink = DataAfterPaging.HasPrevious ?
                 CreateInstructionListResourceUri(Parameters,

@@ -54,7 +54,7 @@ namespace KitBuilderWebApi.Helper
             }
         }
 
-        public object getPaginationData(PagedList<InstructionListDto> instructionListsAfterPaging, InstructionListsParameters instructionListsParameters)
+        public object GetPaginationData(PagedList<InstructionListDto> instructionListsAfterPaging, InstructionListsParameters instructionListsParameters)
         {
             var previousPageLink = instructionListsAfterPaging.HasPrevious ?
                 CreateInstructionListResourceUri(instructionListsParameters,

@@ -79,7 +79,7 @@ namespace KitBuilderWebApi.Controllers
                                                             linkGroupParameters.PageSize
                                                             );
 
-            var paginationMetadata = linkGroupHelper.getPaginationData(instructionListsAfterPaging, linkGroupParameters);
+            var paginationMetadata = linkGroupHelper.GetPaginationData(instructionListsAfterPaging, linkGroupParameters);
 
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));

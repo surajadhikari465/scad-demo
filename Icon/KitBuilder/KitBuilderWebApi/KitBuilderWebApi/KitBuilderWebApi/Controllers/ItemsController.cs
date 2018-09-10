@@ -67,7 +67,7 @@ namespace KitBuilderWebApi.Controllers
                                                             itemsParameters.PageSize
                                                             );
 
-            var paginationMetadata = itemHelper.getPaginationData(itemsListsAfterPaging, itemsParameters);
+            var paginationMetadata = itemHelper.GetPaginationData(itemsListsAfterPaging, itemsParameters);
 
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));

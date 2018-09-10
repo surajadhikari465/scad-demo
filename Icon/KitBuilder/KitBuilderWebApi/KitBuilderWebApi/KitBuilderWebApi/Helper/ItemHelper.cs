@@ -50,7 +50,7 @@ namespace KitBuilderWebApi.Helper
             }
         }
 
-        public object getPaginationData(PagedList<ItemsDto> DataAfterPaging, ItemsParameters Parameters)
+        public object GetPaginationData(PagedList<ItemsDto> DataAfterPaging, ItemsParameters Parameters)
         {
             var previousPageLink = DataAfterPaging.HasPrevious ?
                 CreateItemsResourceUri(Parameters,

@@ -91,7 +91,7 @@ namespace KitBuilderWebApi.Controllers
                                                             instructionListsParameters.PageSize
                                                             );
 
-            var paginationMetadata = instructionListHelper.getPaginationData(instructionListsAfterPaging, instructionListsParameters);
+            var paginationMetadata = instructionListHelper.GetPaginationData(instructionListsAfterPaging, instructionListsParameters);
 
             if (Response != null)
                 Response.Headers.Add("X-Pagination",
@@ -172,8 +172,6 @@ namespace KitBuilderWebApi.Controllers
                 logger.LogError(ex.Message);
                 return StatusCode(500, "A problem happened while handling your request.");
             }
-
-
         }
 
         /// <summary>
@@ -195,8 +193,8 @@ namespace KitBuilderWebApi.Controllers
             var defaultStatus = statusRespository.Find(s => s.StatusCode == "ENA");
             if (defaultStatus == null)
             {
-
                 ModelState.AddModelError("DefaultStatus", "Unable to find 'Enabled' Status");
+                logger.LogError("AddInstructionList: Unable to find default status.");
                 return BadRequest(ModelState);
             }
 
@@ -222,6 +220,7 @@ namespace KitBuilderWebApi.Controllers
         internal bool InstructionListHasMembers(InstructionList list)
         {
             return instructionListMemberRepository.FindAll(ilm => ilm.InstructionListId == list.InstructionListId).Any();
+            
         }
 
         internal void BuildQueryToFilterData(InstructionListsParameters instructionListsParameters, ref IQueryable<InstructionListDto> instructionListsBeforePaging)
