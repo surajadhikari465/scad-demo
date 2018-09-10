@@ -416,8 +416,6 @@ BEGIN
 		END
 END
 
-print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Finish: [dbo.UpdatePriceBatchPackage.sql]'
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[UpdatePriceBatchPackage] TO [IRMAClientRole]
