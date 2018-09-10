@@ -465,8 +465,8 @@
             <pd:activity name="ArchiveMessage">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>778</pd:x>
-                <pd:y>270</pd:y>
+                <pd:x>779</pd:x>
+                <pd:y>268</pd:y>
                 <config>
                     <spawn>true</spawn>
                     <processName>/Processes/ArchiveSentMessage.process</processName>
@@ -537,6 +537,16 @@
                                     <pfx:ScanCode>
                                         <xsl:value-of select="pfx:ScanCode"/>
                                     </pfx:ScanCode>
+                                    <xsl:if test="pfx:SubTeamNumber">
+                                        <pfx:SubTeamNumber>
+                                            <xsl:value-of select="pfx:SubTeamNumber"/>
+                                        </pfx:SubTeamNumber>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:PercentOff">
+                                        <pfx:PercentOff>
+                                            <xsl:value-of select="pfx:PercentOff"/>
+                                        </pfx:PercentOff>
+                                    </xsl:if>
                                 </pfx:MammothPrice>
                             </xsl:for-each>
                         </pfx:MammothPrices>

@@ -43,6 +43,11 @@
                         <pfx:Region>
                             <xsl:value-of select="pfx:Region"/>
                         </pfx:Region>
+                        <xsl:if test="pfx:PriceID">
+                            <pfx:PriceID>
+                                <xsl:value-of select="pfx:PriceID"/>
+                            </pfx:PriceID>
+                        </xsl:if>
                         <pfx:BusinessUnit>
                             <xsl:value-of select="pfx:BusinessUnit"/>
                         </pfx:BusinessUnit>
@@ -95,6 +100,16 @@
                         <pfx:ScanCode>
                             <xsl:value-of select="pfx:ScanCode"/>
                         </pfx:ScanCode>
+                        <xsl:if test="pfx:SubTeamNumber">
+                            <pfx:SubTeamNumber>
+                                <xsl:value-of select="pfx:SubTeamNumber"/>
+                            </pfx:SubTeamNumber>
+                        </xsl:if>
+                        <xsl:if test="pfx:PercentOff">
+                            <pfx:PercentOff>
+                                <xsl:value-of select="pfx:PercentOff"/>
+                            </pfx:PercentOff>
+                        </xsl:if>
                     </pfx:MammothPrice>
                 </xsl:for-each>
             </pfx:MammothPrices>
