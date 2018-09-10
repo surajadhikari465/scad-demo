@@ -7,6 +7,7 @@ using KitBuilderWebApi.DataAccess.UnitOfWork;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Filters;
 using KitBuilderWebApi.Helper;
+using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -53,23 +54,32 @@ namespace KitBuilderWebApi
             services.AddScoped<IRepository<InstructionListMember>, Repository<InstructionListMember>>();
             services.AddScoped<IRepository<InstructionType>, Repository<InstructionType>>();
             services.AddScoped<IRepository<Status>, Repository<Status>>();
-            
+            services.AddScoped<IRepository<LinkGroup>, Repository<LinkGroup>>();
+            services.AddScoped<IRepository<LinkGroupItem>, Repository<LinkGroupItem>>();
+            services.AddScoped<IRepository<KitLinkGroup>, Repository<KitLinkGroup>>();
+            services.AddScoped<IRepository<Items>, Repository<Items>>();
+            services.AddScoped<IRepository<KitLinkGroupItem>, Repository<KitLinkGroupItem>>();
+            services.AddScoped<IRepository<LinkGroupDto>, Repository<LinkGroupDto>>();
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IUrlHelper>(implementationFactory =>
-            {
-                var actionContext = implementationFactory.GetService<IActionContextAccessor>()
-                .ActionContext;
-                return new UrlHelper(actionContext);
-            });
-            services.AddScoped<InstructionListHelper, InstructionListHelper>();
+            services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
+                    .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
+            );
+
+                services.AddScoped<InstructionListHelper, InstructionListHelper>();
+            services.AddScoped<IHelper<ItemsDto, ItemsParameters>, ItemHelper>();
+            services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
+            services.AddScoped<IHelper<InstructionListDto, InstructionListsParameters>, InstructionListHelper>();
 
             services.AddSwaggerGen(c =>
             {
+                
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                
             });
 
             // add services here
@@ -85,11 +95,7 @@ namespace KitBuilderWebApi
             // makes debugging easier--it will show error like 400 on browser
             app.UseStatusCodePages();
 
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<InstructionList, InstructionListDto>();
-
-            });
+            MappingHelper.InitializeMapper();
 
             // only when environment is development show fill exception
             if (env.IsDevelopment())
@@ -126,9 +132,8 @@ namespace KitBuilderWebApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
+               
             });
-
-
 
             app.UseMvc();
         }

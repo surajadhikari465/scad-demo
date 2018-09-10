@@ -1,4 +1,5 @@
-﻿using KitBuilderWebApi.DataAccess.Dto;
+﻿using System;
+using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace KitBuilderWebApi.Helper
 {
-    public class InstructionListHelper
+    public class InstructionListHelper : IHelper<InstructionListDto, InstructionListsParameters>
     {
         private IUrlHelper urlHelper;
 
@@ -17,51 +18,43 @@ namespace KitBuilderWebApi.Helper
             this.urlHelper = urlHelper;
         }
 
-        public void BuildQueryToFilterData(InstructionListsParameters instructionListsParameters, ref IQueryable<InstructionListDto> instructionListsBeforePaging)
+
+
+        public IQueryable<InstructionListDto> SetOrderBy(IQueryable<InstructionListDto> DataBeforePaging, InstructionListsParameters Parameters)
         {
-            if (!string.IsNullOrEmpty(instructionListsParameters.Name))
+            try
             {
-                var nameForWhereClause = instructionListsParameters.Name.Trim().ToLowerInvariant();
-                instructionListsBeforePaging = instructionListsBeforePaging
-                                               .Where(i => i.Name.ToLowerInvariant() == nameForWhereClause);
-            }
+                string[] orderBy;
 
-            if (!string.IsNullOrEmpty(instructionListsParameters.SearchQuery))
-            {
-                var searchQueryForWhereClause = instructionListsParameters.SearchQuery.Trim().ToLowerInvariant();
-                instructionListsBeforePaging = instructionListsBeforePaging
-                                               .Where(i => i.Name.ToLowerInvariant().Contains(searchQueryForWhereClause));
-            }
-        }
-
-        public bool SetOrderBy(ref IQueryable<InstructionListDto> instructionListsBeforePaging, InstructionListsParameters instructionListsParameters)
-        {
-            string[] orderBy;
-
-            if (!string.IsNullOrEmpty(instructionListsParameters.OrderBy))
-            {
-                orderBy = instructionListsParameters.OrderBy.Split(',');
-            }
-            else
-
-            {
-                orderBy = new string[] { "Name" };
-            }
-
-            foreach (string orderByOption in orderBy)
-            {
-                if (typeof(InstructionList).GetProperty(orderByOption.Split(" ")[0]) == null)
+                if (!string.IsNullOrEmpty(Parameters.OrderBy))
                 {
-                    return false;
+                    orderBy = Parameters.OrderBy.Split(',');
+                }
+                else
+
+                {
+                    orderBy = new string[] { "Name" };
                 }
 
-                instructionListsBeforePaging = instructionListsBeforePaging.OrderBy(orderByOption);
-            }
+                foreach (string orderByOption in orderBy.Reverse())
+                {
+                    if (typeof(InstructionList).GetProperty(orderByOption.Split(" ")[0]) == null)
+                    {
+                        throw new Exception("Invalid Order By");
+                    }
 
-            return true;
+                    DataBeforePaging = DataBeforePaging.OrderBy(orderByOption);
+                }
+                return DataBeforePaging;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public object getPaginationData(PagedList<InstructionListDto> instructionListsAfterPaging, InstructionListsParameters instructionListsParameters)
+        public object GetPaginationData(PagedList<InstructionListDto> instructionListsAfterPaging, InstructionListsParameters instructionListsParameters)
         {
             var previousPageLink = instructionListsAfterPaging.HasPrevious ?
                 CreateInstructionListResourceUri(instructionListsParameters,
@@ -96,7 +89,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = instructionListsParameters.Fields,
                           orderBy = instructionListsParameters.OrderBy,
-                          searchQuery = instructionListsParameters.SearchQuery,
+                          searchQuery = instructionListsParameters.SearchNameQuery,
                           name = instructionListsParameters.Name,
                           pageNumber = instructionListsParameters.PageNumber - 1,
                           pageSize = instructionListsParameters.PageSize
@@ -107,7 +100,7 @@ namespace KitBuilderWebApi.Helper
                       {
                           fields = instructionListsParameters.Fields,
                           orderBy = instructionListsParameters.OrderBy,
-                          searchQuery = instructionListsParameters.SearchQuery,
+                          searchQuery = instructionListsParameters.SearchNameQuery,
                           name = instructionListsParameters.Name,
                           pageNumber = instructionListsParameters.PageNumber + 1,
                           pageSize = instructionListsParameters.PageSize
@@ -119,7 +112,7 @@ namespace KitBuilderWebApi.Helper
                     {
                         fields = instructionListsParameters.Fields,
                         orderBy = instructionListsParameters.OrderBy,
-                        searchQuery = instructionListsParameters.SearchQuery,
+                        searchQuery = instructionListsParameters.SearchNameQuery,
                         name = instructionListsParameters.Name,
                         pageNumber = instructionListsParameters.PageNumber,
                         pageSize = instructionListsParameters.PageSize

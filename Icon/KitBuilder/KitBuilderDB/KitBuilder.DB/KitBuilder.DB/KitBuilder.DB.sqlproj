@@ -59,6 +59,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -77,8 +78,12 @@
     <Build Include="dbo\Tables\KitLinkGroupItemLocale.sql" />
     <Build Include="dbo\Tables\InstructionListMember.sql" />
     <Build Include="dbo\Tables\KitInstructionList.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteLinkGroupByLinkGroupId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeploy.sql" />
   </ItemGroup>
 </Project>
