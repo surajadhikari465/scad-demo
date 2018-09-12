@@ -3344,6 +3344,7 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\PostDeploy\PopulateAmzEventTypeTable.sql" />
     <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
+    <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

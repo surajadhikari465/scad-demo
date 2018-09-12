@@ -269,32 +269,34 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 	----
 	-- Amazon Events
 	----
-	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-	DECLARE @orderReceiptCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Order Receipt Creation'
-			);
-	DECLARE @poLineAddEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Line Item Add'
-			);
-	DECLARE @transferLineAddEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Line Item Add'
-			);
-	DECLARE @poCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Creation'
-			);
-	DECLARE @transferCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Order Creation'
-			);
+	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
+	BEGIN
+		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+		DECLARE @orderReceiptCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Order Receipt Creation'
+				);
+		DECLARE @poLineAddEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Line Item Add'
+				);
+		DECLARE @transferLineAddEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Line Item Add'
+				);
+		DECLARE @poCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Creation'
+				);
+		DECLARE @transferCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Order Creation'
+				);
 
 	INSERT INTO amz.OrderQueue (
 			EventTypeID
@@ -335,32 +337,33 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 		)
 	  AND oh.Sent = 1
 
-	INSERT INTO amz.ReceiptQueue (
-		EventTypeID
-		,KeyID
-		,SecondaryKeyID
-		,Status
-		,InsertDate
-		,MessageTimestampUtc
-		)
-	SELECT @orderReceiptCreationEventTypeId
-		,oh.OrderHeader_ID
-		,i.OrderItem_ID
-		,@unprocessedStatusCode
-		,SYSDATETIME()
-		,SYSUTCDATETIME()
-	FROM inserted i
-	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	WHERE NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.ReceiptQueue q
-			 WHERE q.KeyID = i.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
-		       AND q.EventTypeID = @orderReceiptCreationEventTypeId
-			   AND q.Status = @unprocessedStatusCode
-		)
-	  AND i.QuantityReceived IS NOT NULL 
+		INSERT INTO amz.ReceiptQueue (
+			EventTypeID
+			,KeyID
+			,SecondaryKeyID
+			,Status
+			,InsertDate
+			,MessageTimestampUtc
+			)
+		SELECT @orderReceiptCreationEventTypeId
+			,oh.OrderHeader_ID
+			,i.OrderItem_ID
+			,@unprocessedStatusCode
+			,SYSDATETIME()
+			,SYSUTCDATETIME()
+		FROM inserted i
+		JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+		WHERE NOT EXISTS
+			(
+				SELECT 1 
+				  FROM amz.ReceiptQueue q
+				 WHERE q.KeyID = i.OrderHeader_ID
+				   AND q.SecondaryKeyID = i.OrderItem_ID
+				   AND q.EventTypeID = @orderReceiptCreationEventTypeId
+				   AND q.Status = @unprocessedStatusCode
+			)
+			AND i.QuantityReceived IS NOT NULL 
+	END
 
     END TRY
     BEGIN CATCH
@@ -456,148 +459,150 @@ BEGIN
 	----
 	-- Amazon Events
 	----
-	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-	DECLARE @orderReceiptCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Order Receipt Creation'
-			);
-	DECLARE @orderReceiptModificationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Order Receipt Modification'
-			);
-	DECLARE @poLineAddEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Line Item Add'
-			);
-	DECLARE @poLineModificationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Line Item Modification'
-			);
-	DECLARE @transferLineModificationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Line Item Modification'
-			);
-	DECLARE @transferLineAddEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Line Item Add'
-			);
-	DECLARE @poCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Creation'
-			);
-	DECLARE @transferCreationEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Order Creation'
-			);
+	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
+	BEGIN
+		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+		DECLARE @orderReceiptCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Order Receipt Creation'
+				);
+		DECLARE @orderReceiptModificationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Order Receipt Modification'
+				);
+		DECLARE @poLineAddEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Line Item Add'
+				);
+		DECLARE @poLineModificationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Line Item Modification'
+				);
+		DECLARE @transferLineModificationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Line Item Modification'
+				);
+		DECLARE @transferLineAddEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Line Item Add'
+				);
+		DECLARE @poCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Creation'
+				);
+		DECLARE @transferCreationEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Order Creation'
+				);
 
-	INSERT INTO amz.OrderQueue (
-			EventTypeID
-			, KeyID
-			, SecondaryKeyID
-			, Status
-			, InsertDate
-			, MessageTimestampUtc
+		INSERT INTO amz.OrderQueue (
+				EventTypeID
+				, KeyID
+				, SecondaryKeyID
+				, Status
+				, InsertDate
+				, MessageTimestampUtc
+				)
+			SELECT CASE
+					 WHEN oh.OrderType_ID = 3 THEN @transferLineModificationEventTypeId
+					 ELSE @poLineModificationEventTypeId 
+				   END	   
+					,oh.OrderHeader_ID
+					,i.OrderItem_ID
+					,@unprocessedStatusCode
+					,SYSDATETIME()
+					,SYSUTCDATETIME()
+			  FROM inserted i
+			  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+			  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+		WHERE  NOT EXISTS
+			(
+				SELECT 1 
+				  FROM amz.OrderQueue q
+				 WHERE q.KeyID = i.OrderHeader_ID
+					--Line Item Add event will only be queued after the order is sent to AMZN. That's why the order creation events are checked here.
+				   AND q.EventTypeID IN (@poCreationEventTypeId, @transferCreationEventTypeId, @orderReceiptCreationEventTypeId)
+				   AND q.Status = @unprocessedStatusCode
 			)
-		SELECT CASE
-				 WHEN oh.OrderType_ID = 3 THEN @transferLineModificationEventTypeId
-				 ELSE @poLineModificationEventTypeId 
-			   END	   
-				,oh.OrderHeader_ID
+			AND NOT EXISTS
+			(
+				SELECT 1 
+				  FROM amz.OrderQueue q
+				 WHERE q.KeyID = i.OrderHeader_ID
+				   AND q.SecondaryKeyID = i.OrderItem_ID
+				   AND q.EventTypeID IN (@poLineAddEventTypeId, @transferLineAddEventTypeId, @poLineModificationEventTypeId, @transferLineModificationEventTypeId)
+				   AND q.Status = @unprocessedStatusCode
+			)
+		  AND i.QuantityOrdered <> d.QuantityOrdered
+
+			INSERT INTO amz.ReceiptQueue (
+				EventTypeID
+				,KeyID
+				,SecondaryKeyID
+				,Status
+				,InsertDate
+				,MessageTimestampUtc
+				)
+			SELECT @orderReceiptCreationEventTypeId
+				,i.OrderHeader_ID
 				,i.OrderItem_ID
 				,@unprocessedStatusCode
 				,SYSDATETIME()
 				,SYSUTCDATETIME()
-		  FROM inserted i
-		  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	WHERE  NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.OrderQueue q
-			 WHERE q.KeyID = i.OrderHeader_ID
-				--Line Item Add event will only be queued after the order is sent to AMZN. That's why the order creation events are checked here.
-		       AND q.EventTypeID IN (@poCreationEventTypeId, @transferCreationEventTypeId, @orderReceiptCreationEventTypeId)
-			   AND q.Status = @unprocessedStatusCode
-		)
-		AND NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.OrderQueue q
-			 WHERE q.KeyID = i.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
-		       AND q.EventTypeID IN (@poLineAddEventTypeId, @transferLineAddEventTypeId, @poLineModificationEventTypeId, @transferLineModificationEventTypeId)
-			   AND q.Status = @unprocessedStatusCode
-		)
-	  AND i.QuantityOrdered <> d.QuantityOrdered
+			FROM inserted i
+			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+			WHERE NOT EXISTS
+				(
+					SELECT 1 
+					  FROM amz.ReceiptQueue q
+					 WHERE q.KeyID = i.OrderHeader_ID
+					   AND q.SecondaryKeyID = i.OrderItem_ID
+					   AND q.EventTypeID = @orderReceiptCreationEventTypeId
+					   AND q.Status = @unprocessedStatusCode
+				)
+			  AND (													--Line item receipt information is first entered
+					i.QuantityReceived IS NOT NULL 
+					AND d.QuantityReceived IS NULL
+				  )
 
-	INSERT INTO amz.ReceiptQueue (
-		EventTypeID
-		,KeyID
-		,SecondaryKeyID
-		,Status
-		,InsertDate
-		,MessageTimestampUtc
-		)
-	SELECT @orderReceiptCreationEventTypeId
-		,i.OrderHeader_ID
-		,i.OrderItem_ID
-		,@unprocessedStatusCode
-		,SYSDATETIME()
-		,SYSUTCDATETIME()
-	FROM inserted i
-	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	WHERE NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.ReceiptQueue q
-			 WHERE q.KeyID = i.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
-		       AND q.EventTypeID = @orderReceiptCreationEventTypeId
-			   AND q.Status = @unprocessedStatusCode
-		)
-	  AND (													--Line item receipt information is first entered
-			i.QuantityReceived IS NOT NULL 
-			AND d.QuantityReceived IS NULL
-		  )
-
-	INSERT INTO amz.ReceiptQueue (
-		EventTypeID
-		,KeyID
-		,SecondaryKeyID
-		,Status
-		,InsertDate
-		,MessageTimestampUtc
-		)
-	SELECT @orderReceiptModificationEventTypeId
-		,i.OrderHeader_ID
-		,i.OrderItem_ID
-		,@unprocessedStatusCode
-		,SYSDATETIME()
-		,SYSUTCDATETIME()
-	FROM inserted i
-	JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-	JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	WHERE NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.ReceiptQueue q
-			 WHERE q.KeyID = i.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
-		       AND q.EventTypeID = @orderReceiptModificationEventTypeId
-			   AND q.Status = @unprocessedStatusCode
-		) 
-	    AND i.QuantityReceived IS NOT NULL					----Line item receipt information is modified after the receipt info was entered
-		AND	i.QuantityReceived <> d.QuantityReceived
-
+			INSERT INTO amz.ReceiptQueue (
+				EventTypeID
+				,KeyID
+				,SecondaryKeyID
+				,Status
+				,InsertDate
+				,MessageTimestampUtc
+				)
+			SELECT @orderReceiptModificationEventTypeId
+				,i.OrderHeader_ID
+				,i.OrderItem_ID
+				,@unprocessedStatusCode
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+			FROM inserted i
+			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+			WHERE NOT EXISTS
+				(
+					SELECT 1 
+					  FROM amz.ReceiptQueue q
+					 WHERE q.KeyID = i.OrderHeader_ID
+					   AND q.SecondaryKeyID = i.OrderItem_ID
+					   AND q.EventTypeID = @orderReceiptModificationEventTypeId
+					   AND q.Status = @unprocessedStatusCode
+				) 
+				AND i.QuantityReceived IS NOT NULL					----Line item receipt information is modified after the receipt info was entered
+				AND	i.QuantityReceived <> d.QuantityReceived
+	END
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
@@ -651,19 +656,21 @@ BEGIN
 	----
 	-- Amazon Events
 	----
-	DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-	DECLARE @poLineDeletionEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
-			);
-	DECLARE @transferLineDeletionEventTypeId INT = (
-			SELECT TOP 1 EventTypeID
-			FROM amz.EventType
-			WHERE EventTypeDescription = 'Transfer Line Item Deletion'
-			);
+	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
+	BEGIN
+		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
+		DECLARE @poLineDeletionEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
+				);
+		DECLARE @transferLineDeletionEventTypeId INT = (
+				SELECT TOP 1 EventTypeID
+				FROM amz.EventType
+				WHERE EventTypeDescription = 'Transfer Line Item Deletion'
+				);
 
-	INSERT INTO amz.OrderQueue (EventTypeID, KeyID,SecondaryKeyID, Status, InsertDate, MessageTimestampUtc)
+		INSERT INTO amz.OrderQueue (EventTypeID, KeyID,SecondaryKeyID, Status, InsertDate, MessageTimestampUtc)
 		SELECT CASE
 				 WHEN oh.OrderType_ID = 3 THEN @transferLineDeletionEventTypeId
 				 ELSE @poLineDeletionEventTypeId 
@@ -686,7 +693,7 @@ BEGIN
 			   AND q.Status = @unprocessedStatusCode
 		) 
 	   AND oh.Sent = 1
-
+	END
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
