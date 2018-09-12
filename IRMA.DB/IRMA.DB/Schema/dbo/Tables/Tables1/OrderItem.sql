@@ -320,9 +320,17 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 			SELECT 1 
 			  FROM amz.OrderQueue q
 			 WHERE q.KeyID = i.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
 				--Line Item Add event will only be queued after the order is sent to AMZN. That's why the order creation events are checked here.
-		       AND q.EventTypeID NOT IN (@poCreationEventTypeId, @transferCreationEventTypeId, @poLineAddEventTypeId, @transferLineAddEventTypeId)
+		       AND q.EventTypeID IN (@poCreationEventTypeId, @transferCreationEventTypeId)
+			   AND q.Status = @unprocessedStatusCode
+		)
+		AND NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.OrderQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+	           AND q.SecondaryKeyID = i.OrderItem_ID
+		       AND q.EventTypeID IN (@poLineAddEventTypeId, @transferLineAddEventTypeId)
 			   AND q.Status = @unprocessedStatusCode
 		)
 	  AND oh.Sent = 1
@@ -354,7 +362,6 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 		)
 	  AND i.QuantityReceived IS NOT NULL 
 
-
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
@@ -376,6 +383,7 @@ FOR UPDATE
 AS 
 BEGIN
     BEGIN TRY
+
     -- StoreOps Export 
 	UPDATE OrderExportQueue
 	SET QueueInsertedDate = GetDate(), DeliveredToStoreOpsDate = null
@@ -459,6 +467,11 @@ BEGIN
 			FROM amz.EventType
 			WHERE EventTypeDescription = 'Order Receipt Modification'
 			);
+	DECLARE @poLineAddEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Line Item Add'
+			);
 	DECLARE @poLineModificationEventTypeId INT = (
 			SELECT TOP 1 EventTypeID
 			FROM amz.EventType
@@ -468,6 +481,21 @@ BEGIN
 			SELECT TOP 1 EventTypeID
 			FROM amz.EventType
 			WHERE EventTypeDescription = 'Transfer Line Item Modification'
+			);
+	DECLARE @transferLineAddEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Line Item Add'
+			);
+	DECLARE @poCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Purchase Order Creation'
+			);
+	DECLARE @transferCreationEventTypeId INT = (
+			SELECT TOP 1 EventTypeID
+			FROM amz.EventType
+			WHERE EventTypeDescription = 'Transfer Order Creation'
 			);
 
 	INSERT INTO amz.OrderQueue (
@@ -490,14 +518,22 @@ BEGIN
 		  FROM inserted i
 		  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
 		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-	WHERE NOT EXISTS
+	WHERE  NOT EXISTS
+		(
+			SELECT 1 
+			  FROM amz.OrderQueue q
+			 WHERE q.KeyID = i.OrderHeader_ID
+				--Line Item Add event will only be queued after the order is sent to AMZN. That's why the order creation events are checked here.
+		       AND q.EventTypeID IN (@poCreationEventTypeId, @transferCreationEventTypeId, @orderReceiptCreationEventTypeId)
+			   AND q.Status = @unprocessedStatusCode
+		)
+		AND NOT EXISTS
 		(
 			SELECT 1 
 			  FROM amz.OrderQueue q
 			 WHERE q.KeyID = i.OrderHeader_ID
 	           AND q.SecondaryKeyID = i.OrderItem_ID
-		       AND (q.EventTypeID = @poLineModificationEventTypeId
-		        OR  q.EventTypeID = @transferLineModificationEventTypeId)
+		       AND q.EventTypeID IN (@poLineAddEventTypeId, @transferLineAddEventTypeId, @poLineModificationEventTypeId, @transferLineModificationEventTypeId)
 			   AND q.Status = @unprocessedStatusCode
 		)
 	  AND i.QuantityOrdered <> d.QuantityOrdered
@@ -633,19 +669,18 @@ BEGIN
 				 ELSE @poLineDeletionEventTypeId 
 			   END
 				,oh.OrderHeader_ID
-				,i.OrderItem_ID
+				,d.OrderItem_ID
 				,@unprocessedStatusCode
 				,SYSDATETIME()
 				,SYSUTCDATETIME()
-		  FROM inserted i
-		  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+		  FROM deleted d
+		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = d.OrderHeader_ID
 	WHERE NOT EXISTS
 		(
 			SELECT 1 
 			  FROM amz.OrderQueue q
 			 WHERE q.KeyID = oh.OrderHeader_ID
-	           AND q.SecondaryKeyID = i.OrderItem_ID
+	           AND q.SecondaryKeyID = d.OrderItem_ID
 		       AND (q.EventTypeID = @poLineDeletionEventTypeId
 		        OR  q.EventTypeID = @transferLineDeletionEventTypeId)
 			   AND q.Status = @unprocessedStatusCode
