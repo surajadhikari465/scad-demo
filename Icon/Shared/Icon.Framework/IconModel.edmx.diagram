@@ -127,8 +127,6 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageType" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_ProductSelectionGroupType" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.R10MessageResponse" Width="1.5" PointX="24.625" PointY="14.75" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_R10MessageResponse_MessageHistory" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageResendStatus" Width="1.5" PointX="24.5" PointY="11.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
         <EntityTypeShape EntityType="Icon.Framework.Model.PLUCategory" Width="1.5" PointX="17.375" PointY="15.75" />

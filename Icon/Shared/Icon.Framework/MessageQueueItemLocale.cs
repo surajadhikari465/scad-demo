@@ -50,8 +50,6 @@ namespace Icon.Framework
         public Nullable<int> InProcessBy { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
         public string PreviousLinkedItemScanCode { get; set; }
-        public Nullable<int> IrmaItemKey { get; set; }
-        public Nullable<bool> DefaultScanCode { get; set; }
     
         public virtual MessageAction MessageAction { get; set; }
         public virtual MessageHistory MessageHistory { get; set; }

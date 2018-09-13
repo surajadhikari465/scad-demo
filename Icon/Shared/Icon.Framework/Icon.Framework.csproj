@@ -344,9 +344,6 @@
     <Compile Include="ProductSelectionGroupType.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="R10MessageResponse.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="RegionalSettings.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>

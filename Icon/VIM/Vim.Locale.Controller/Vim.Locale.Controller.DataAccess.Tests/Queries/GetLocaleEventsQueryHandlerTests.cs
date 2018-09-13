@@ -17,6 +17,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
     {
         private GetLocaleEventsQueryHandler queryHandler;
         private SqlDbProvider dbProvider;
+        private TransactionScope transaction;
 
         private int queryInstance = 55;
         private int eventInstance = 56;
@@ -25,10 +26,10 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
         [TestInitialize]
         public void Initialize()
         {
+            transaction = new TransactionScope();
             dbProvider = new SqlDbProvider();
             dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
             dbProvider.Connection.Open();
-            dbProvider.Transaction = dbProvider.Connection.BeginTransaction();
 
             queryHandler = new GetLocaleEventsQueryHandler(dbProvider);
         }
@@ -36,27 +37,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
         [TestCleanup]
         public void Cleanup()
         {
-            dbProvider.Connection.Execute(
-                @"delete vim.EventQueue where InProcessBy = @eventInstance",
-                new { eventInstance = eventInstance },
-                transaction: dbProvider.Transaction,
-                commandTimeout: 120);
-
-            dbProvider.Connection.Execute(
-                @"delete LocaleTrait
-                   where traitID = (select traitID from Trait where traitDesc = 'PS Business Unit ID')
-                     and traitValue = @PSBU",
-                new { PSBU = psBU.ToString() },
-                transaction: dbProvider.Transaction,
-                commandTimeout: 120);
-
-            dbProvider.Connection.Execute(
-                @"delete locale where localeName = 'Test'",
-                transaction: dbProvider.Transaction,
-                commandTimeout: 120);
-
-            dbProvider.Transaction.Dispose();
-            dbProvider.Connection.Dispose();
+            transaction.Dispose();
         }
 
         [TestMethod]
@@ -77,7 +58,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
                 transaction: dbProvider.Transaction).First();
             var localeId = dbProvider.Connection.Query<int>(
                 @"insert into dbo.Locale(ownerOrgPartyID, localeName, localeOpenDate,localeCloseDate,localeTypeID,parentLocaleID)
-                  values (1,'Test',DATEADD(year,-1,GETDATE()),GETDATE(),4,@parentLocaleId)
+                  values (1,'VimTest',DATEADD(year,-1,GETDATE()),GETDATE(),4,@parentLocaleId)
                   select cast(SCOPE_IDENTITY() as int)",
                 new { parentLocaleId = parentLocaleId },
                 transaction: dbProvider.Transaction).First();
@@ -92,8 +73,6 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
                 new { LocaleId = localeId, Instance = eventInstance },
                 transaction: dbProvider.Transaction);
 
-            dbProvider.Transaction.Commit();
-
             //When
             var results = queryHandler.Search(new GetLocaleEventsQuery
             {
@@ -107,7 +86,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual(localeId, results[0].EventReferenceId);
             Assert.AreEqual(psBU, results[0].StoreModel.PSBU);
-            Assert.AreEqual("Test", results[0].StoreModel.StoreName);
+            Assert.AreEqual("VimTest", results[0].StoreModel.StoreName);
             Assert.AreEqual(regionCode, results[0].StoreModel.Region);
             Assert.AreEqual("CLOSED", results[0].StoreModel.Status.ToUpper());
             Assert.AreEqual("CREATE", results[0].StoreModel.Action.ToUpper());
@@ -120,7 +99,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
             //Given
             var localeId = dbProvider.Connection.Query<int>(
                 @"insert into dbo.Locale(ownerOrgPartyID, localeName, localeOpenDate,localeCloseDate,localeTypeID,parentLocaleID)
-                  values (1,'Test',getdate(),null,4,(select top 1 localeID from dbo.Locale where LocaleTypeID = 3))
+                  values (1,'VimTest',getdate(),null,4,(select top 1 localeID from dbo.Locale where LocaleTypeID = 3))
                   select cast(SCOPE_IDENTITY() as int)",
                 transaction: dbProvider.Transaction).First();
             dbProvider.Connection.Execute(
@@ -128,8 +107,6 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
                   values(1, @LocaleId, Null, @Instance)",
                 new { LocaleId = localeId, Instance = eventInstance },
                 transaction: dbProvider.Transaction);
-
-            dbProvider.Transaction.Commit();
 
             //When    
             var results = queryHandler.Search(new GetLocaleEventsQuery
@@ -158,7 +135,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
                 transaction: dbProvider.Transaction).First();
             var localeId = dbProvider.Connection.Query<int>(
                 @"insert into dbo.Locale(ownerOrgPartyID, localeName, localeOpenDate, localeCloseDate, localeTypeID, parentLocaleID)
-                  values (1,'Test',DATEADD(year,-1,GETDATE()),GETDATE(),4,@parentLocaleId)
+                  values (1,'VimTest',DATEADD(year,-1,GETDATE()),GETDATE(),4,@parentLocaleId)
                   select cast(SCOPE_IDENTITY() as int)",
                 new { parentLocaleId = parentLocaleId },
                 transaction: dbProvider.Transaction).First();
@@ -173,8 +150,6 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
                 new { LocaleId = localeId, Instance = eventInstance },
                 transaction: dbProvider.Transaction);
 
-            dbProvider.Transaction.Commit();
-
             //When
             var actualStores = queryHandler.Search(new GetLocaleEventsQuery
             {
@@ -188,7 +163,7 @@ namespace Vim.Locale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(1, actualStores.Count);
             foreach (var store in actualStores)
             {
-                Assert.AreEqual("Test", store.StoreModel.StoreName);
+                Assert.AreEqual("VimTest", store.StoreModel.StoreName);
                 Assert.AreEqual("TS", store.StoreModel.Region);
             }
         }

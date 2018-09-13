@@ -38,15 +38,25 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         public void ArchiveItems_Given10Items_ShouldAddItemsToArchiveTable()
         {
             //Given
-            testModels = CreateTestModels(10);
+            testModels = CreateTestModels(10).ToList();
 
             //When
             commandHandler.Execute(new ArchiveItemsCommand { Models = testModels });
 
             //Then
-            var archivedProducts = context.MessageArchiveProduct.Where(p => p.ScanCode.StartsWith("test")).ToList();
+            var archivedProducts = context.MessageArchiveProduct
+                .OrderByDescending(i => i.MessageArchiveId)
+                .Take(10)
+                .ToList()
+                .OrderBy(i => i.ItemId)
+                .ToList();
 
-            Assert.AreEqual(10, archivedProducts.Count);
+            for (int i = 0; i < testModels.Count(); i++)
+            {
+                Assert.AreEqual(testModels.ElementAt(i).ItemId, archivedProducts.ElementAt(i).ItemId);
+                Assert.AreEqual(testModels.ElementAt(i).ScanCode, archivedProducts.ElementAt(i).ScanCode);
+                Assert.AreEqual(testModels.ElementAt(i).InforMessageId, archivedProducts.ElementAt(i).InforMessageId);
+            }
         }
 
         [TestMethod]
@@ -60,9 +70,19 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             commandHandler.Execute(new ArchiveItemsCommand { Models = testModels });
 
             //Then
-            var archivedProducts = context.MessageArchiveProduct.Where(p => p.ScanCode.StartsWith("test")).ToList();
+            var archivedProducts = context.MessageArchiveProduct
+                .OrderByDescending(i => i.MessageArchiveId)
+                .Take(1)
+                .ToList()
+                .OrderBy(i => i.ItemId)
+                .ToList();
 
-            Assert.AreEqual(1, archivedProducts.Count);
+            for (int i = 0; i < testModels.Count(); i++)
+            {
+                Assert.AreEqual(testModels.ElementAt(i).ItemId, archivedProducts.ElementAt(i).ItemId);
+                Assert.AreEqual(testModels.ElementAt(i).ScanCode, archivedProducts.ElementAt(i).ScanCode);
+                Assert.AreEqual(testModels.ElementAt(i).InforMessageId, archivedProducts.ElementAt(i).InforMessageId);
+            }
         }
 
         [TestMethod]

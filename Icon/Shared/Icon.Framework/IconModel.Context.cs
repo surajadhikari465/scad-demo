@@ -77,7 +77,6 @@ namespace Icon.Framework
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<SettingSection> SettingSection { get; set; }
         public virtual DbSet<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
-        public virtual DbSet<R10MessageResponse> R10MessageResponse { get; set; }
         public virtual DbSet<MessageResendStatus> MessageResendStatus { get; set; }
         public virtual DbSet<PLUCategory> PLUCategory { get; set; }
         public virtual DbSet<ItemMovement> ItemMovement { get; set; }

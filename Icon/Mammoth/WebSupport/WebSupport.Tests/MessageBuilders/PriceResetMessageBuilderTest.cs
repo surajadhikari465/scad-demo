@@ -68,6 +68,7 @@ namespace WebSupport.Tests.MessageBuilders
         public void BuildMessage_OnePriceWithGpmID_ReturnsPriceMessage()
         {
             //Given
+            var expectedMessage = File.ReadAllText(@"TestMessages\PriceResetMessageWithGpmID.xml");
             PriceResetMessageBuilderModel request = new PriceResetMessageBuilderModel
             {
                 PriceResetPrices = new List<PriceResetPrice>
@@ -97,7 +98,7 @@ namespace WebSupport.Tests.MessageBuilders
             var message = builder.BuildMessage(request);
 
             //Then
-            Assert.AreEqual(File.ReadAllText(@"TestMessages\PriceResetMessageWithGpmID.xml"), message);
+            Assert.AreEqual(expectedMessage, message);
             var a = JsonConvert.SerializeObject(new { Message = message });
             Console.WriteLine(a);
         }

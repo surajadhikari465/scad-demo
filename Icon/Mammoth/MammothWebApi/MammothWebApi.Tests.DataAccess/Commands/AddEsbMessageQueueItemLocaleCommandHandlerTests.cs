@@ -647,8 +647,12 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             commandHandler.Execute(command);
 
             // Then.
-            dynamic queuedMessages = db.Connection.Query<dynamic>("select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
-                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction).ToList();
+            dynamic queuedMessages = db.Connection.Query<dynamic>(
+                    "select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
+                    new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction)
+                .OrderBy(i => i.ItemId) //Ordering the results so that the assert works below
+                .ToList();
+
             // even with no supplier data, the messages should still have been queued
             Assert.AreEqual(testStagingItemLocaleData.Count, queuedMessages.Count);
 
@@ -677,8 +681,11 @@ namespace MammothWebApi.Tests.DataAccess.Commands
             commandHandler.Execute(command);
 
             // Then.
-            dynamic queuedMessages = db.Connection.Query<dynamic>("select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
-                new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction).ToList();
+            dynamic queuedMessages = db.Connection.Query<dynamic>(
+                    "select * from esb.MessageQueueItemLocale where RegionCode = @Region and InsertDate > @Timestamp",
+                    new { Region = testRegion, Timestamp = now.Subtract(TimeSpan.FromMilliseconds(1000)) }, transaction: db.Transaction)
+                .OrderBy(i => i.ItemId) //Ordering the results so that the assert works below
+                .ToList();
 
             Assert.AreEqual(testStagingItemLocaleData.Count, queuedMessages.Count);
 
