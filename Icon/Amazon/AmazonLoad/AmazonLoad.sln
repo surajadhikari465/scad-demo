@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.MammothPrice", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.MammothPrice.Tests", "AmazonLoad.MammothPrice.Tests\AmazonLoad.MammothPrice.Tests.csproj", "{6D28C226-8D47-4C6A-957C-A671652598E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.IconItemLocale", "AmazonLoad.IconItemLocale\AmazonLoad.IconItemLocale.csproj", "{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.IconItemLocale.Tests", "AmazonLoad.IconItemLocale.Tests\AmazonLoad.IconItemLocale.Tests.csproj", "{F74E7872-A23B-4441-A532-C15CEB225C5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{6D28C226-8D47-4C6A-957C-A671652598E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D28C226-8D47-4C6A-957C-A671652598E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D28C226-8D47-4C6A-957C-A671652598E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74E7872-A23B-4441-A532-C15CEB225C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74E7872-A23B-4441-A532-C15CEB225C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74E7872-A23B-4441-A532-C15CEB225C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74E7872-A23B-4441-A532-C15CEB225C5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

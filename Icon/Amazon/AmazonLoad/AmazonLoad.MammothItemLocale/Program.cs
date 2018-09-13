@@ -41,7 +41,7 @@ namespace AmazonLoad.MammothItemLocale
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
 
-            string formattedSql = SqlQueries.ItemLocaleSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
+            string formattedSql = SqlQueries.MammothItemLocaleSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
             if (maxNumberOfRows != 0)
             {
                 formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");

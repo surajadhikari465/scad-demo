@@ -150,7 +150,7 @@ namespace AmazonLoad.MammothPrice.Test
         }
 
         [TestMethod]
-        public void MammothPriceBuilder_SendMessagesToEsb_WhenGpmActive_SendsXXXX()
+        public void MammothPriceBuilder_SendMessagesToEsb_WhenGpmActive_CallsSendMessageToEsb()
         {
             //Given
             bool shouldSaveMessages = false;
@@ -199,7 +199,7 @@ namespace AmazonLoad.MammothPrice.Test
         }
 
         [TestMethod]
-        public void MammothPriceBuilder_SendMessagesToEsb_WhenGpmInactive_SendsXXXX()
+        public void MammothPriceBuilder_SendMessagesToEsb_WhenGpmInactive_CallsSendMessageToEsb()
         {
             //Given
             bool shouldSaveMessages = false;

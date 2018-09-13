@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CA5F1DCE-1235-4606-9D27-3C6CC6A363B5}</ProjectGuid>
+    <ProjectGuid>{EA7B3087-3A79-423D-9368-A2D6E0CE1DB6}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AmazonLoad.MammothPrice</RootNamespace>
-    <AssemblyName>AmazonLoad.MammothPrice</AssemblyName>
+    <RootNamespace>AmazonLoad.IconItemLocale</RootNamespace>
+    <AssemblyName>AmazonLoad.IconItemLocale</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,12 +75,6 @@
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
-    <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.8.16.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
-    </Reference>
-    <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Framework.2018.8.16.1\lib\net46\Mammoth.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
@@ -119,22 +113,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPriceModel.cs" />
-    <Compile Include="MessageBuilderForGpmPrice.cs" />
-    <Compile Include="MammothPriceBuilder.cs" />
-    <Compile Include="MessageBuilderForPreGpmPrice.cs" />
-    <Compile Include="PriceModelGpm.cs" />
-    <Compile Include="PriceModel.cs" />
+    <Compile Include="ItemLocaleModelForWormhole.cs" />
+    <Compile Include="IconItemLocaleBuilder.cs" />
+    <Compile Include="IconStoreModel.cs" />
+    <Compile Include="ItemLocaleModelForIrma.cs" />
+    <Compile Include="MessageBuilderForIconItemLocale.cs" />
+    <Compile Include="IconItemLocalePsgMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AmazonLoad.Common\AmazonLoad.Common.csproj">
-      <Project>{881D22D2-F97C-46AB-B64C-72AC0F547A5D}</Project>
+      <Project>{881d22d2-f97c-46ab-b64c-72ac0f547a5d}</Project>
       <Name>AmazonLoad.Common</Name>
     </ProjectReference>
   </ItemGroup>

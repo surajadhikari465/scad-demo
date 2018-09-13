@@ -437,7 +437,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
             }
         }
 
-        public static string ItemLocaleSql
+        public static string MammothItemLocaleSql
         {
             get
             {
@@ -610,11 +610,86 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
             }
         }
 
-        public static string QueryRegionGpmStatus
+        public static string QueryRegionGpmStatusSql
         {
             get
             {
                 return @"SELECT IsGpmEnabled FROM dbo.RegionGpmStatus WHERE Region = '{region}'";
+            }
+        }
+
+        public static string QueryIconValidStoresSql
+        {
+            get
+            {
+                return @"
+                    SELECT 
+	                    regionAbbr.traitValue as RegionCode
+	                    ,store.localeID
+	                    ,store.localeName
+	                    ,buLocaleTrait.traitValue as BusinessUnit
+	                    ,lclType.localeTypeCode as LocaleTypeCode
+	                    ,lclType.localeTypeDesc as LocaleTypeDesc
+                    FROM dbo.Locale store
+	                    JOIN dbo.LocaleType lclType ON store.localeTypeID = lclType.localeTypeID
+	                    JOIN dbo.Trait buTrait ON buTrait.traitCode='BU' 
+	                    JOIN dbo.LocaleTrait buLocaleTrait on buLocaleTrait.traitID=buTrait.traitID and buLocaleTrait.localeID=store.localeID
+	                    JOIN dbo.Locale metro on metro.localeID=store.parentLocaleID
+	                    JOIN dbo.Locale region on region.localeID=metro.parentLocaleID
+	                    JOIN dbo.Trait regionAbbrTrait on regionAbbrTrait.traitCode='ABB'
+	                    JOIN dbo.LocaleTrait regionAbbr on regionAbbr.localeID=region.localeID and regionAbbr.traitID=regionAbbrTrait.traitID
+                    WHERE lclType.localeTypeDesc = 'Store'
+	                    and store.localeCloseDate is null
+	                    and regionAbbr.traitValue = '{region}'";
+            }
+        }
+
+        public static string QueryIrmaItemLocaleSql
+        {
+            get
+            {
+                return
+                    @" SELECT {top query}
+                        '{region}' as RegionCode
+	                    ,s.BusinessUnit_ID as BusinessUnit
+	                    ,ii.Identifier as Identifier
+	                    ,vsc.InforItemId as InforItemId
+	                    ,si.Authorized as Authorized
+	                    ,vsc.ItemTypeCode as ItemTypeCode
+	                    ,CASE WHEN COALESCE(iov.Recall_Flag, i.Recall_Flag,0)=1 OR ISNULL(p.NotAuthorizedForSale,0)=1 
+		                    THEN 1 
+		                    ELSE 0 
+	                    END as LockedForSale
+	                    ,COALESCE(iov.Recall_Flag, i.Recall_Flag) as Recall
+	                    ,COALESCE(iov.Quantity_Required, i.Quantity_Required) as Quantity_Required
+	                    ,COALESCE(iov.Price_Required, i.Price_Required) as Price_Required
+	                    ,COALESCE(iov.QtyProhibit, i.QtyProhibit) as QtyProhibit
+	                    ,COALESCE(iov.Case_Discount, i.Case_Discount) as Case_Discount
+	                    ,COALESCE(rtl_uom_ov.Weight_Unit, rtl_iov.Weight_Unit, rtl_i.Weight_Unit) as Sold_By_Weight
+	                    ,p.VisualVerify as VisualVerify
+	                    ,ISNULL(p.PosTare,0) as PosScaleTare
+	                    ,p.Discountable as TMDiscountEligible
+	                    ,p.AgeCode as AgeCode
+                        ,vscLink.InforItemId as LinkedItem_InforItemId
+                        ,vscLink.ScanCode as LinkedItem_Identifier
+                        ,vscLink.ItemTypeCode as LinkedItem_Type
+                    FROM	                    
+	                    dbo.ValidatedScanCode vsc
+	                    JOIN dbo.ItemIdentifier ii on vsc.ScanCode=ii.Identifier
+	                    JOIN dbo.Item i on ii.Item_Key=i.Item_Key
+	                    JOIN dbo.StoreItem si on si.Item_Key= i.Item_Key
+	                    JOIN dbo.Store s on s.Store_No= si.Store_No
+	                    JOIN dbo.Price p on p.Item_Key=i.Item_Key and p.Store_No = s.Store_No
+	                    LEFT JOIN dbo.ItemOverride iov on iov.Item_Key=i.Item_Key and iov.StoreJurisdictionID=s.StoreJurisdictionID
+	                    LEFT JOIN dbo.ItemUomOverride iuo on iuo.Item_Key = i.Item_Key and iuo.Store_No= s.Store_No
+	                    LEFT JOIN dbo.ItemUnit rtl_uom_ov on rtl_uom_ov.Unit_ID = iuo.Retail_Unit_ID
+	                    LEFT JOIN dbo.ItemUnit rtl_iov on rtl_iov.Unit_ID = iov.Retail_Unit_ID
+	                    LEFT JOIN dbo.ItemUnit rtl_i on rtl_i.Unit_ID = i.Retail_Unit_ID
+                        LEFT JOIN dbo.ItemIdentifier iiLink on iiLink.Item_Key = p.LinkedItem
+                        LEFT JOIN dbo.ValidatedScanCode vscLink on vscLink.ScanCode = iiLink.Identifier
+                    WHERE ii.Default_Identifier = 1 and ii.Remove_Identifier = 0 and ii.Deleted_Identifier = 0
+                        and i.Retail_Sale = 1 and i.Remove_Item = 0 and i.Deleted_Item = 0
+	                    and s.BusinessUnit_ID = {businessUnit} and (s.WFM_Store = 1 OR s.Mega_Store = 1); ";
             }
         }
     }

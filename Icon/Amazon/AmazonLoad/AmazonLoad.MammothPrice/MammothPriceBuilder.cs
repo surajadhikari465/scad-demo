@@ -43,7 +43,7 @@ namespace AmazonLoad.MammothPrice
         {
             // first query the GPM status for the region
             bool isGpmActive = false;
-            string sqlForGpmStatus = SqlQueries.QueryRegionGpmStatus.Replace("{region}", region);
+            string sqlForGpmStatus = SqlQueries.QueryRegionGpmStatusSql.Replace("{region}", region);
             using (var sqlConnection = new SqlConnection(connectionString))
             {
                 var gpmQueryResults = sqlConnection.Query<bool>(sqlForGpmStatus, buffered: false, commandTimeout: 60);

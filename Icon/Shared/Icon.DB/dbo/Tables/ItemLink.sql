@@ -30,3 +30,6 @@ ALTER TABLE [dbo].[ItemLink] ADD CONSTRAINT [ItemLink_PK] PRIMARY KEY CLUSTERED 
 , [childItemID]
 , [localeID]
 )
+GO
+CREATE NONCLUSTERED INDEX IX_ItemLink_childItemID_localeID ON dbo.ItemLink (childItemID, localeID) INCLUDE (parentItemID)
+GO
