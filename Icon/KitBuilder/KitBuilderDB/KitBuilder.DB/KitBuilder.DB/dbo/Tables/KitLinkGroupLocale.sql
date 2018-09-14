@@ -7,7 +7,7 @@
     [DisplaySequence] INT NULL, 
     [MinimumCalories] INT NULL, 
     [MaximumCalories] INT NULL, 
-    [Exclude] INT NULL, 
+    [Exclude] BIT NULL, 
     [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
     [LastModifiedDate] DATETIME2 NULL, 
     [LastModifiedBy] NVARCHAR(100) NULL, 

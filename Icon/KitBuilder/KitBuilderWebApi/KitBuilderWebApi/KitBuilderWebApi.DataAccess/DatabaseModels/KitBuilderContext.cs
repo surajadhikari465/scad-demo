@@ -227,7 +227,7 @@ namespace KitBuilderWebApi.DatabaseModels
                 entity.HasOne(d => d.KitLocale)
                     .WithMany(p => p.KitLinkGroupLocale)
                     .HasForeignKey(d => d.KitLocaleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_KitLinkGroupLocale_KitLocale");
             });
 
