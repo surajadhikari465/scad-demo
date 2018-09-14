@@ -15,6 +15,7 @@ using System.Data;
 using System.Data.SqlClient;
 using KitBuilderWebApi.DataAccess.Dto;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -35,7 +36,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitlinkGroupRepository,
                              ILogger<LinkGroupController> logger,
-                             IHelper<LinkGroupDto, LinkGroupParameters> linkGroupHelper
+                             IHelper<LinkGroupDto, LinkGroupParameters> kitHelper
                             )
         {
             this.linkGroupRepository = linkGroupRepository;
@@ -47,10 +48,10 @@ namespace KitBuilderWebApi.Controllers
 
 
         [HttpPost()]
-        public IActionResult AssignLocations(
-           [FromBody] LinkGroupDto linkGroup)
+        public IActionResult AssignUnassignLocations(
+           [FromBody] List<KitLocaleDto> kitLocaleDtoList)
         {
-            if (linkGroup == null)
+            if (kitLocaleDtoList == null)
             {
                 logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return BadRequest();
@@ -61,12 +62,29 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var linkGroupPassed = Mapper.Map<LinkGroup>(linkGroup);
-            linkGroupRepository.Add(linkGroupPassed);
+            List<KitLocale> kitLocaleDbList = kitLocaleRepository.GetAll().Where(kl => kl.KitId == kitLocaleDtoList.FirstOrDefault().KitId).ToList() ;
+
+            List<KitLocale> kitLocalePassedList = new List<KitLocale>();
+            foreach (var kitLocaleDto in kitLocaleDtoList)
+            {
+                var kitLocale = Mapper.Map<KitLocale>(kitLocaleDto);
+                kitLocalePassedList.Add(kitLocale);
+            }
+
+            // delete records that exist in db but not in list. Cascade delete is enabled so child records will be deleted.
+            var kitLocaleRecordsToDelete = kitLocaleDbList.Where(t => !kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId));
+            // records that are in list passed but not in database
+            var kitLocaleRecordsToAdd = kitLocalePassedList.Where(t => !kitLocalePassedList.Select(l => l.LocaleId).Contains(t.LocaleId));
+
+            var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId));
+
+            kitLocaleRepository.UnitOfWork.Context.KitLocale.RemoveRange(kitLocaleRecordsToDelete);
+            kitLocaleRepository.UnitOfWork.Context.KitLocale.AddRange(kitLocaleRecordsToAdd);
 
             try
             {
-                linkGroupRepository.UnitOfWork.Commit();
+                kitLocaleRepository.UnitOfWork.Commit();
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -74,10 +92,6 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "A problem happened while handling your request.");
             }
 
-            var createdlinkOfGroup = Mapper.Map<LinkGroupDto>(linkGroupPassed);
-
-            return CreatedAtRoute("GetLinkGroupById", new
-            { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
         }
     }
 }
