@@ -5,6 +5,7 @@
     [ItemId] INT NOT NULL, 
     [InstructionListId] INT NULL, 
     [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
+	[UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
     CONSTRAINT [FK_LinkGroupItem_InstructionList] FOREIGN KEY ([InstructionListId]) REFERENCES [InstructionList]([InstructionListId]), 
     CONSTRAINT [FK_LinkGroupItem_Items] FOREIGN KEY ([ItemId]) REFERENCES [Items]([ItemId]), 
     CONSTRAINT [FK_LinkGroupItem_LinkGroup] FOREIGN KEY ([LinkGroupId]) REFERENCES [LinkGroup]([LinkGroupId])

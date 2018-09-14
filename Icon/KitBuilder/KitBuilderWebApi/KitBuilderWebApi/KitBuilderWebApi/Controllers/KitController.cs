@@ -64,23 +64,28 @@ namespace KitBuilderWebApi.Controllers
 
             List<KitLocale> kitLocaleDbList = kitLocaleRepository.GetAll().Where(kl => kl.KitId == kitLocaleDtoList.FirstOrDefault().KitId).ToList() ;
 
-            List<KitLocale> kitLocalePassedList = new List<KitLocale>();
+            List<KitLocale> kitLocaleListPassed = new List<KitLocale>();
             foreach (var kitLocaleDto in kitLocaleDtoList)
             {
                 var kitLocale = Mapper.Map<KitLocale>(kitLocaleDto);
-                kitLocalePassedList.Add(kitLocale);
+                kitLocaleListPassed.Add(kitLocale);
             }
 
             // delete records that exist in db but not in list. Cascade delete is enabled so child records will be deleted.
-            var kitLocaleRecordsToDelete = kitLocaleDbList.Where(t => !kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId));
+            var kitLocaleRecordsToDelete = kitLocaleDbList.Where(t => !kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
             // records that are in list passed but not in database
-            var kitLocaleRecordsToAdd = kitLocalePassedList.Where(t => !kitLocalePassedList.Select(l => l.LocaleId).Contains(t.LocaleId));
+            var kitLocaleRecordsToAdd = kitLocaleListPassed.Where(t => !kitLocaleDtoList.Select(l => l.LocaleId).Contains(t.LocaleId));
 
-            var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId));
+            var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
 
             kitLocaleRepository.UnitOfWork.Context.KitLocale.RemoveRange(kitLocaleRecordsToDelete);
             kitLocaleRepository.UnitOfWork.Context.KitLocale.AddRange(kitLocaleRecordsToAdd);
 
+            foreach(KitLocale kitToUpdate in kitLocaleRecordsToUpdate)
+            {
+                KitLocale currentKit = kitLocaleDbList.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
+                currentKit.Exclude = kitToUpdate.Exclude;
+            }
             try
             {
                 kitLocaleRepository.UnitOfWork.Commit();
