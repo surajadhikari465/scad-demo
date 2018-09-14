@@ -59,7 +59,7 @@ SELECT q.QueueID AS QueueId
 	,lsc.Identifier AS LinkedItem
 	,p.LocalItem AS LocalItem
 	,sa.Locality AS Locality
-	,ii.NumPluDigitsSentToScale AS NumberOfDigitsSentToScale
+	,CASE WHEN s.Mega_Store = 1 AND IsNull(icf.SendToScale, 0) = 1 THEN LEN(ii.identifier) ELSE ii.NumPluDigitsSentToScale END AS NumberOfDigitsSentToScale
 	,COALESCE(ovo.Origin_Name, oo.Origin_Name) AS Origin
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
@@ -80,7 +80,7 @@ SELECT q.QueueID AS QueueId
 	,v.Vendor_Key AS VendorKey
 	,v.CompanyName AS VendorCompanyName
     ,sc.ForceTare as ForceTare
-    ,icf.SendToScale as SendtoCFS
+    ,CASE WHEN s.Mega_Store = 1 THEN icf.SendToScale ELSE NULL END as SendtoCFS
     ,sct.Description as WrappedTareWeight
     ,utw.Description as UnWrappedTareWeight
     ,ii.Scale_Identifier as ScaleItem
@@ -177,7 +177,7 @@ SELECT q.QueueID AS QueueId
 	,lsc.Identifier AS LinkedItem
 	,p.LocalItem AS LocalItem
 	,sa.Locality AS Locality
-	,ii.NumPluDigitsSentToScale AS NumberOfDigitsSentToScale
+	,CASE WHEN s.Mega_Store = 1 AND IsNull(icf.SendToScale, -1) = 1 THEN LEN(ii.identifier) ELSE ii.NumPluDigitsSentToScale END AS NumberOfDigitsSentToScale
 	,COALESCE(ovo.Origin_Name, oo.Origin_Name) AS Origin
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
@@ -198,7 +198,7 @@ SELECT q.QueueID AS QueueId
 	,v.Vendor_Key AS VendorKey
 	,v.CompanyName AS VendorCompanyName
     ,sc.ForceTare as ForceTare
-    ,icf.SendToScale as SendtoCFS
+    ,CASE WHEN s.Mega_Store = 1 THEN icf.SendToScale ELSE NULL END as SendtoCFS
     ,sct.Description as WrappedTareWeight
     ,utw.Description as UnWrappedTareWeight
     ,ii.Scale_Identifier as ScaleItem

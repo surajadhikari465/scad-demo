@@ -17,3 +17,4 @@ Post-Deployment Script Template
 :r PopulateItemPriceTypeWithGsp.sql
 :r AddIrmaItemKeyAttributes.sql --PBI 28239 Aug. 15, 2018
 :r UpdateAppLogRetention.sql -- PBI 28749 8/27/2018
+:r AddNumberOfDigitsForCFSItems.sql -- PBI 28686 09/13/2018

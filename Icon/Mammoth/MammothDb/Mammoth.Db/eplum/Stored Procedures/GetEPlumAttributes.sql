@@ -736,7 +736,7 @@ INNER JOIN #prices p on ist.Region = p.Region
 	AND ist.ItemID = p.ItemID
 	AND ist.BusinessUnitID = p.BusinessUnitID
 INNER JOIN StoreAddress sa on il.BusinessUnitID = sa.BusinessUnitID
-WHERE (il.ScaleItem = 1 OR ist.CfsSendToScale = 'True')
+WHERE (il.ScaleItem = 1 OR (ist.CfsSendToScale = 'True' AND LEN(i.ScanCode) <= 6 )) --CFS scales can only handle upto 6 characters
 	AND il.Region = @Region
 OPTION (RECOMPILE)
 

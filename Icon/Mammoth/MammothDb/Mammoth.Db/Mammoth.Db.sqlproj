@@ -792,6 +792,7 @@
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
