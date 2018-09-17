@@ -1990,12 +1990,12 @@ me_err:
                 SetActive(cmdTaxClassZoom, False)
                 SetActive(chkField(iItemOrganic), False)
                 SetActive(cmbField(iItemNatClassID), False)
-            End If
 
-            'Lock down the Sign Caption field if we are using the Icon
-            '  validated CustomerFriendlyDescription as the Sign_Description
-            If InstanceDataDAO.IsFlagActive("EnableIconSignCaptionUpdates") Then
-                SetActive(_txtField_SignCaption, False)
+                'Lock down the Sign Caption field if we are using the Icon
+                '  validated CustomerFriendlyDescription as the Sign_Description
+                If InstanceDataDAO.IsFlagActive("EnableIconSignCaptionUpdates") Then
+                    SetActive(_txtField_SignCaption, False)
+                End If
             End If
 
             'If the identifier falls into the specified range, it's a non-retail ingredient item
