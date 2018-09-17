@@ -255,26 +255,47 @@ where				InsertedData.Item_Key = OnHand.Item_Key AND
                IH.Store_No = OnHand.Store_No AND
                IH.SubTeam_No = OnHand.SubTeam_No
                
-               
-           
-
         SELECT @Error_No = @@ERROR
     END
     
-    
-            -- Capture for the update avgcost/onhand process 
-        INSERT INTO ItemHistoryInsertedQueue (Store_No, Item_Key, DateStamp, SubTeam_No, ItemHistoryID, Adjustment_ID)
-        SELECT Inserted.Store_No, Inserted.Item_Key, Inserted.DateStamp, Inserted.SubTeam_No, Inserted.ItemHistoryID, Inserted.Adjustment_ID
-        FROM Inserted
-        INNER JOIN
-            Item (nolock) ON Item.Item_Key = Inserted.Item_Key
-        INNER JOIN
-            Store (nolock) ON Store.Store_No = Inserted.Store_No
-        -- exclude ingredient items unless the affected store is a Distribution Center
-        WHERE (
-                     ((Ingredient = 0 AND ISNULL(UseLastReceivedCost, 0) = 0) AND (Item.Subteam_No = Inserted.Subteam_No))
-                     OR Store.Distribution_Center = 1
-                    )
+	IF @Error_No = 0 
+	BEGIN
+		-- Capture for the update avgcost/onhand process 
+		INSERT INTO ItemHistoryInsertedQueue (Store_No, Item_Key, DateStamp, SubTeam_No, ItemHistoryID, Adjustment_ID)
+		SELECT Inserted.Store_No, Inserted.Item_Key, Inserted.DateStamp, Inserted.SubTeam_No, Inserted.ItemHistoryID, Inserted.Adjustment_ID
+		FROM Inserted
+		INNER JOIN
+			Item (nolock) ON Item.Item_Key = Inserted.Item_Key
+		INNER JOIN
+			Store (nolock) ON Store.Store_No = Inserted.Store_No
+		-- exclude ingredient items unless the affected store is a Distribution Center
+		WHERE (
+						((Ingredient = 0 AND ISNULL(UseLastReceivedCost, 0) = 0) AND (Item.Subteam_No = Inserted.Subteam_No))
+						OR Store.Distribution_Center = 1
+					)
+	
+		SELECT @Error_No = @@ERROR
+	END
+
+	IF @Error_No = 0 AND (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
+	BEGIN
+		DECLARE @invAdjEvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'INV_ADJ')
+		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U'
+
+		INSERT INTO amz.InventoryQueue(EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
+		SELECT 
+			@invAdjEvenTypeID,
+			inserted.ItemHistoryID,
+			SYSDATETIME(),
+			@unprocessedStatusCode,
+			SYSUTCDATETIME()
+		FROM inserted
+		JOIN Item i on inserted.Item_Key = i.Item_Key
+		WHERE inserted.Adjustment_ID = 1
+		  AND i.Retail_Sale = 1
+		
+		SELECT @Error_No = @@ERROR
+	END
 
     IF @Error_No <> 0
     BEGIN
