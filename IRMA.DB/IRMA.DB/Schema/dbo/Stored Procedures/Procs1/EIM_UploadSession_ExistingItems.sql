@@ -763,15 +763,13 @@ EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates
 					SELECT  @POS_Description = CASE WHEN @BlockCanonicalFieldUpdate = 0 THEN CAST(@ColumnValue AS varchar(26)) ELSE @POS_Description END
 				ELSE IF @ColumnName = LOWER('Item_Description')
 					SELECT  @Item_Description = CASE WHEN @BlockCanonicalFieldUpdate = 0 THEN CAST(@ColumnValue AS varchar(60)) ELSE @Item_Description END
-				ELSE IF @ColumnName = LOWER('Sign_Description') 
+				ELSE IF @ColumnName = LOWER('Sign_Description')
 					SELECT @Sign_Description = CASE 
-						WHEN @BlockCanonicalFieldUpdate = 0 
-							THEN CAST(@ColumnValue AS varchar(60)) 
-						WHEN @IsDefaultJurisdiction = 0 
-							THEN CAST(@ColumnValue AS varchar(60)) 
-						WHEN @IsDefaultJurisdiction = 1 AND @enableIconSignCaptionUpdatedFlag = 1
-							THEN @Sign_Description
-						ELSE @Sign_Description
+						WHEN @IsDefaultJurisdiction = 1 AND
+							 @BlockCanonicalFieldUpdate = 1 AND 
+							 @enableIconSignCaptionUpdatedFlag =1
+						THEN @Sign_Description
+						ELSE CAST(@ColumnValue AS varchar(60))
 					END
 				ELSE IF @ColumnName = LOWER('Min_Temperature') 
 					SELECT  @Min_Temperature = CAST(@ColumnValue AS smallint)

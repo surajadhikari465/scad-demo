@@ -1307,6 +1307,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                         Dim enforceCanonicalFieldLocking As Boolean = ItemIdentifierDAO.Instance.IsValidatedItemInIcon(theUploadRow.ItemKey)
                         Dim anyStoreInRegionIsOnGpm As Boolean = InstanceDataDAO.FlagIsOnForAnyStore("GlobalPriceManagement")
                         Dim itemSubteam As String = ItemIdentifierDAO.Instance.GetItemSubTeamName(theUploadRow.ItemKey)
+                        Dim isSignCaptionComingFromIcon As Boolean = InstanceDataDAO.IsFlagActive("EnableIconSignCaptionUpdates")
 
                         If enforceCanonicalFieldLocking Then
                             GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_ITEM_DESCRIPTION_ATTR_KEY)
@@ -1320,7 +1321,7 @@ Namespace WholeFoods.IRMA.ExtendedItemMaintenance.Logic
                                 GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_DESC2_ATTR_KEY)
                                 GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_PACKAGE_UNIT_ID_ATTR_KEY)
                             End If
-                            If isDefaultJurisdiction Then
+                            If isDefaultJurisdiction And isSignCaptionComingFromIcon Then
                                 GridUtilities.DisableCell(theGridAndDataRowHolder.GridRow, EIM_Constants.ITEM_SIGN_DESCRIPTION_ATTR_KEY)
                             End If
                         End If
