@@ -16,6 +16,10 @@ Post-Deployment Script Template
 :r PopulateAmzEventTypeTable.sql -- 2018.08.15 - Honeycrisp Project - Populate new table called [amz].[EventType]
 :r InsertOrderTypes.sql
 :r AddEnableAmazonEventGenerationIdf.sql
+:r HC_PurgeMessageArchive.sql
+:r HC_PurgeInventoryQueue.sql
+:r HC_PurgeOrderQueue.sql	
+:r HC_PurgeReceiptQueue.sql
 
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
