@@ -491,7 +491,9 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                             ils.SupplierCaseSize [SupplierCaseSize], 
                             s.OrderedByInfor [OrderedByInfor],
                             s.AltRetailSize [AltRetailSize],
-                            s.AltRetailUOM [AltRetailUOM]
+                            s.AltRetailUOM [AltRetailUOM],
+                            s.DefaultScanCode [DefaultScanCode],
+                            s.IrmaItemKey [IrmaItemKey]
                         from
 	                        dbo.ItemAttributes_Locale_{region} s
 	                        join dbo.Items i						ON s.ItemID = i.ItemID
@@ -538,28 +540,38 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
         {
             get
             {
-                return @"SELECT {top query}
-	                            i.ItemID			as ItemId,
-	                            t.ItemTypeCode		as ItemTypeCode,
-	                            t.ItemTypeDesc		as ItemTypeDesc,
-	                            l.BusinessUnitID	as BusinessUnitId,
-	                            l.StoreName			as LocaleName,
-	                            i.ScanCode			as ScanCode,
-	                            p.PriceUom			as UomCode,
-	                            c.CurrencyCode		as CurrencyCode,
-                                CASE WHEN p.PriceType <> 'REG' THEN 'TPR' ELSE 'REG' END as PriceTypeCode,
-	                            CASE WHEN p.PriceType <> 'REG' THEN p.PriceType END as SubPriceTypeCode,
-	                            p.Price				as Price,
-	                            p.Multiple			as Multiple,
-	                            p.StartDate			as StartDate,
-	                            p.EndDate			as EndDate
-                            FROM
-	                            dbo.Price_{region}          p
-	                            JOIN dbo.Locales_{region}   l	on	p.BusinessUnitId	= l.BusinessUnitID
-	                            JOIN dbo.Items		        i	on	p.ItemID			= i.ItemID
-	                            JOIN dbo.ItemTypes	        t	on	i.ItemTypeID		= t.ItemTypeID
-                                JOIN dbo.Currency           c   on  p.CurrencyID        = c.CurrencyID
-                            ORDER BY p.BusinessUnitId";
+                return @"
+                SELECT {top query}
+	                i.ItemID			as ItemId,
+	                t.ItemTypeCode		as ItemTypeCode,
+	                t.ItemTypeDesc		as ItemTypeDesc,
+	                i.ScanCode			as ScanCode,
+	                l.BusinessUnitID	as BusinessUnitId,
+	                l.StoreName			as LocaleName,
+                    p.Price				as Price,
+                    CASE WHEN p.PriceType <> 'REG' THEN 'TPR' ELSE 'REG' END as PriceTypeCode,
+	                CASE WHEN p.PriceType <> 'REG' THEN pTypTpr.ItemPriceTypeId ELSE pTypReg.ItemPriceTypeId END as PriceTypeId,
+	                CASE WHEN p.PriceType <> 'REG' THEN pTypTpr.ItemPriceTypeDesc ELSE pTypReg.ItemPriceTypeDesc END as PriceTypeDesc,
+	                p.Multiple			as Multiple,
+	                p.PriceUom			as UomCode,
+	                uom.UomName			as UomName,
+	                c.CurrencyCode		as CurrencyCode,
+	                CASE WHEN p.PriceType <> 'REG' THEN p.PriceType END as SubPriceTypeCode,
+	                CASE WHEN p.PriceType <> 'REG' THEN pTypSub.ItemPriceTypeId END as SubPriceTypeId,
+	                CASE WHEN p.PriceType <> 'REG' THEN pTypSub.ItemPriceTypeDesc END as SubPriceTypeDesc,
+	                p.StartDate			as StartDate,
+	                p.EndDate			as EndDate
+                FROM
+	                dbo.Price_{region}			p
+	                JOIN dbo.Locales_{region}	l		on p.BusinessUnitId			 = l.BusinessUnitID
+	                JOIN dbo.ItemPriceType		pTypReg	on pTypReg.ItemPriceTypeCode = 'REG'
+	                JOIN dbo.ItemPriceType		pTypTpr	on pTypTpr.ItemPriceTypeCode = 'TPR'
+	                LEFT JOIN dbo.ItemPriceType pTypSub on pTypSub.ItemPriceTypeCode = p.PriceType
+	                JOIN dbo.Uom				uom		on uom.UomCode				 = p.PriceUom
+	                JOIN dbo.Items				i		on p.ItemID					 = i.ItemID
+	                JOIN dbo.ItemTypes			t		on i.ItemTypeID				 = t.ItemTypeID
+                    JOIN dbo.Currency			c		on p.CurrencyID				 = c.CurrencyID
+                ORDER BY p.BusinessUnitId";
             }
         }
 
@@ -567,28 +579,40 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
         {
             get
             {
-                return @"SELECT {top query}
-                    p.ItemID            as ItemId,
-	                t.ItemTypeCode		as ItemTypeCode,
-	                t.ItemTypeDesc		as ItemTypeDesc,
-                    p.BusinessUnitID    as BusinessUnitId,
-	                l.StoreName			as LocaleName,
-	                i.ScanCode			as ScanCode,
-                    p.SellableUOM       as UomCode,
-                    p.CurrencyCode      as CurrencyCode,
-	                p.PriceType         as PriceType,
-                    p.Price				as Price,
-	                p.Multiple			as Multiple,
-	                p.StartDate			as StartDate,
-	                p.EndDate			as EndDate,
+                return @"
+                SELECT {top query}
                     p.GpmID			    as GpmId,
-                    p.PriceTypeAttribute as PriceTypeAttribute,
-                    p.PercentOff        as PercentOff
-	            FROM gpm.Price_{region} p
-	                JOIN dbo.Locales_{region}   l	on	p.BusinessUnitId	= l.BusinessUnitID
-	                JOIN dbo.Items		        i	on	p.ItemID			= i.ItemID
-	                JOIN dbo.ItemTypes	        t	on	i.ItemTypeID		= t.ItemTypeID
-                    JOIN dbo.Currency           c   on  p.CurrencyCode      = c.CurrencyCode
+                    p.ItemID            as ItemId,
+                    t.ItemTypeCode		as ItemTypeCode,
+                    t.ItemTypeDesc		as ItemTypeDesc,
+                    i.ScanCode			as ScanCode,
+                    p.BusinessUnitID    as BusinessUnitId,
+                    l.StoreName			as LocaleName,
+                    p.Price				as Price,
+                    CASE WHEN p.PriceType <> 'REG' THEN 'TPR' ELSE 'REG' END as PriceTypeCode,
+                    CASE WHEN p.PriceType <> 'REG' THEN pTypTpr.ItemPriceTypeId ELSE pTypReg.ItemPriceTypeId END as PriceTypeId,
+                    CASE WHEN p.PriceType <> 'REG' THEN pTypTpr.ItemPriceTypeDesc ELSE pTypReg.ItemPriceTypeDesc END as PriceTypeDesc,
+                    p.SellableUOM       as UomCode,
+                    uom.UomName         as UomName,
+                    p.CurrencyCode      as CurrencyCode,
+                    CASE WHEN p.PriceType <> 'REG' THEN p.PriceType END as SubPriceTypeCode,
+                    CASE WHEN p.PriceType <> 'REG' THEN pTypSub.ItemPriceTypeId END as SubPriceTypeId,
+                    CASE WHEN p.PriceType <> 'REG' THEN pTypSub.ItemPriceTypeDesc END as SubPriceTypeDesc,
+                    p.Multiple			as Multiple,
+                    p.PercentOff		as PercentOff,
+                    p.TagExpirationDate as TagExpirationDate,
+                    p.StartDate			as StartDate,
+                    p.EndDate			as EndDate
+                FROM gpm.Price_{region}         p
+	                JOIN dbo.Locales_{region}	l	    on	p.BusinessUnitId	= l.BusinessUnitID
+	                JOIN dbo.ItemPriceType		ipt		on ipt.ItemPriceTypeCode	 = p.PriceType
+	                JOIN dbo.ItemPriceType		pTypReg	on pTypReg.ItemPriceTypeCode = 'REG'
+	                JOIN dbo.ItemPriceType		pTypTpr	on pTypTpr.ItemPriceTypeCode = 'TPR'
+	                LEFT JOIN dbo.ItemPriceType pTypSub on pTypSub.ItemPriceTypeCode = p.PriceType
+	                JOIN dbo.Uom				uom		on uom.UomCode				 = p.SellableUOM
+	                JOIN dbo.Items		        i		on	p.ItemID				 = i.ItemID
+	                JOIN dbo.ItemTypes	        t		on	i.ItemTypeID			 = t.ItemTypeID
+                    JOIN dbo.Currency           c		on  p.CurrencyCode			 = c.CurrencyCode
                 ORDER BY p.BusinessUnitId";
             }
         }

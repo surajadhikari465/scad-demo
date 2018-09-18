@@ -106,28 +106,11 @@ namespace AmazonLoad.IconItemLocale
         }
 
         internal static void SendMessagesToEsb(IEnumerable<ItemLocaleModelForWormhole> models,
-           IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName,
-           int maxNumberOfRows, bool sendToEsbFlag = true)
+           IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
+           string nonReceivingSysName, int maxNumberOfRows, bool sendToEsbFlag = true)
         {
-            var batchSize = 100;
-            if (maxNumberOfRows != 0 && maxNumberOfRows > 0)
-            {
-                if (maxNumberOfRows < batchSize)
-                {
-                    batchSize = maxNumberOfRows;
-                }
-                else if (NumberOfRecordsSent < maxNumberOfRows)
-                {
-                    if (maxNumberOfRows - NumberOfMessagesSent <= batchSize)
-                    {
-                        batchSize = maxNumberOfRows - NumberOfMessagesSent;
-                    }
-                }
-                else if (NumberOfRecordsSent >= maxNumberOfRows)
-                {
-                    return;
-                }
-            }
+            var batchSize = GetBatchSize(maxNumberOfRows, NumberOfRecordsSent);
+            if (batchSize < 0) return;
 
             foreach (var modelBatch in models.Batch(batchSize))
             {
@@ -155,6 +138,30 @@ namespace AmazonLoad.IconItemLocale
                     File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
                 }
             }
+        }
+
+        internal static int GetBatchSize(int maxNumberOfRows, int numberOfRecordsSent)
+        {
+            var batchSize = 100;
+            if (maxNumberOfRows != 0 && maxNumberOfRows > 0)
+            {
+                if (maxNumberOfRows < batchSize)
+                {
+                    batchSize = maxNumberOfRows;
+                }
+                else if (NumberOfRecordsSent < maxNumberOfRows)
+                {
+                    if (maxNumberOfRows - NumberOfMessagesSent <= batchSize)
+                    {
+                        batchSize = maxNumberOfRows - NumberOfMessagesSent;
+                    }
+                }
+                else if (NumberOfRecordsSent >= maxNumberOfRows)
+                {
+                    return -1;
+                }
+            }
+            return batchSize;
         }
     }
 }

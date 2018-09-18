@@ -54,6 +54,9 @@
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2018.8.16.2\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.7.25.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.PreGpm.2018.8.28.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
     </Reference>
@@ -104,10 +107,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MammothPriceBuilderTests.cs" />
+    <Compile Include="MammothPriceBuilderForGpmTests.cs" />
+    <Compile Include="MammothPriceBuilderForPreGpmTests.cs" />
     <Compile Include="MessageBuilderForGpmPriceTests.cs" />
     <Compile Include="MessageBuilderForPreGpmPriceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -122,6 +127,32 @@
       <Project>{ca5f1dce-1235-4606-9d27-3c6cc6a363b5}</Project>
       <Name>AmazonLoad.MammothPrice</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExpectedGpmTestMessage_REG_10414_666666666.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedGpmTestMessage_REG_10414_7777777777.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedGpmTestMessage_REG_10414_7777777777and666666666.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedGpmTestMessage_TPR_10414_6700760076.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedNonGpmMessage_REG_10414_888888888.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedNonGpmMessage_REG_10414_888888888and999999999.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedNonGpmMessage_REG_10414_999999999.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExpectedNonGpmMessage_TPR_10414_70017007.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

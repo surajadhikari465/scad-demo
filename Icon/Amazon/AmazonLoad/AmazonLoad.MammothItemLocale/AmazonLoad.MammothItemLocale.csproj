@@ -119,7 +119,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemLocaleModel.cs" />
+    <Compile Include="MammothItemLocaleBuilder.cs" />
+    <Compile Include="MammothItemLocaleModel.cs" />
+    <Compile Include="MessageBuilderForMammothItemLocale.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

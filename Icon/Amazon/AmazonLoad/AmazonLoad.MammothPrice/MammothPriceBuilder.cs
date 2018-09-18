@@ -14,49 +14,76 @@ namespace AmazonLoad.MammothPrice
 {
     public static class MammothPriceBuilder
     {
-        public static EsbMessageSendResult LoadMammothPricesAndSendMessages(IEsbProducer esbProducer, string connectionString, string region,
-            int maxNumberOfRows, bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName)
+        public static int NumberOfRecordsSent = 0;
+        public static int NumberOfMessagesSent = 0;
+
+        public static EsbMessageSendResult LoadMammothPricesAndSendMessages(IEsbProducer esbProducer,
+            string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
+            string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsb = true)
         {
-            // first query the GPM status for the region
-            var isGpmActive = IsGpmActive(connectionString, region);
+            IEnumerable<PriceModel> legacyPriceModels = null;
+            IEnumerable<PriceModelGpm> gpmPriceModels = null;
 
-            IEnumerable<IPriceModel> priceModels = null;
-
-            using (var sqlConnection = new SqlConnection(connectionString))
+            using (var sqlConnection = new SqlConnection(mammothConnectionString))
             {
+                // first query the GPM status for the region
+                var isGpmActive = IsGpmActive(sqlConnection, region);
+
                 // load mammoth prices
                 if (isGpmActive)
                 {
-                    priceModels = LoadMammothGpmPrices(sqlConnection, region, maxNumberOfRows);
+                    // load mammoth prices
+                    gpmPriceModels = LoadMammothGpmPrices(sqlConnection, region, maxNumberOfRows);
+
+                    // now send the price message(s) to the eSB
+                    MammothPriceBuilder.SendMessagesToEsb(
+                        gpmPriceModels: gpmPriceModels,
+                        esbProducer: esbProducer,
+                        saveMessages: saveMessages,
+                        saveMessagesDirectory: saveMessagesDirectory,
+                        nonReceivingSysName: nonReceivingSysName,
+                        maxNumberOfRows: maxNumberOfRows,
+                        sendToEsb: sendToEsb);
                 }
                 else
                 {
-                    priceModels = LoadMammothNonGpmPrices(sqlConnection, region, maxNumberOfRows);
-                }
+                    // load mammoth prices
+                    legacyPriceModels = LoadMammothNonGpmPrices(sqlConnection, region, maxNumberOfRows);
 
-                // now send the price message(s) to the eSB
-                return SendMessagesToEsb(priceModels, esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName);
+                    // now send the price message(s) to the eSB
+                    MammothPriceBuilder.SendMessagesToEsb(
+                        legacyPriceModels: legacyPriceModels,
+                        esbProducer: esbProducer,
+                        saveMessages: saveMessages,
+                        saveMessagesDirectory: saveMessagesDirectory,
+                        nonReceivingSysName: nonReceivingSysName,
+                        maxNumberOfRows: maxNumberOfRows,
+                        sendToEsb: sendToEsb);
+                }
             }
+            return new EsbMessageSendResult(NumberOfRecordsSent, NumberOfMessagesSent);
         }
 
-        public static bool IsGpmActive(string connectionString, string region)
+        internal static bool IsGpmActive(SqlConnection sqlConnection, string region)
         {
-            // first query the GPM status for the region
             bool isGpmActive = false;
-            string sqlForGpmStatus = SqlQueries.QueryRegionGpmStatusSql.Replace("{region}", region);
-            using (var sqlConnection = new SqlConnection(connectionString))
+            string sqlForGpmStatus = GetFormattedSqlQueryFoQueryRegionGpmStatus(region);
+
+            var gpmQueryResults = sqlConnection.Query<bool>(sqlForGpmStatus, buffered: false, commandTimeout: 60);
+            if (gpmQueryResults != null && gpmQueryResults.Count() == 1)
             {
-                var gpmQueryResults = sqlConnection.Query<bool>(sqlForGpmStatus, buffered: false, commandTimeout: 60);
-                if (gpmQueryResults != null && gpmQueryResults.Count() == 1)
-                {
-                    isGpmActive = gpmQueryResults.Single();
-                }
+                isGpmActive = gpmQueryResults.Single();
             }
 
             return isGpmActive;
         }
 
-        public static string GetFormattedSqlQueryForGpmPrices(string region, int maxNumberOfRows)
+        internal static string GetFormattedSqlQueryFoQueryRegionGpmStatus(string region)
+        {
+            return SqlQueries.QueryRegionGpmStatusSql.Replace("{region}", region);
+        }
+
+        internal static string GetFormattedSqlQueryForGpmPrices(string region, int maxNumberOfRows)
         {
             // query for gpm price data
             string sqlForGpmPrices = SqlQueries.PriceGpmSql.Replace("{region}", region);
@@ -71,7 +98,7 @@ namespace AmazonLoad.MammothPrice
             return sqlForGpmPrices;
         }
 
-        public static string GetFormattedSqlQueryForNonGpmPrices(string region, int maxNumberOfRows)
+        internal static string GetFormattedSqlQueryForNonGpmPrices(string region, int maxNumberOfRows)
         {
             string sqlForNonGpmPrices = SqlQueries.PriceSql.Replace("{region}", region);
             if (maxNumberOfRows != 0)
@@ -104,35 +131,54 @@ namespace AmazonLoad.MammothPrice
             // query for non-gpm price data
             string sqlForNonGpmPrices = GetFormattedSqlQueryForNonGpmPrices(region, maxNumberOfRows);
 
-            //using (var sqlConnection = new SqlConnection(connectionString))
-            //{
-                priceModels = sqlConnection.Query<PriceModel>(sqlForNonGpmPrices, buffered: false, commandTimeout: 60);
-            //}
+            priceModels = sqlConnection.Query<PriceModel>(sqlForNonGpmPrices, buffered: false, commandTimeout: 60);
 
             return priceModels;
         }
 
-        public static EsbMessageSendResult SendMessagesToEsb(IEnumerable<IPriceModel> models,
-            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName)
+        internal static int GetBatchSize(int maxNumberOfRows, int numberOfRecordsSent)
         {
-            int numberOfRecordsSent = 0;
-            int numberOfMessagesSent = 0;
-            foreach (var modelBatch in models.Batch(100))
+            int batchSize = 100;
+            if (maxNumberOfRows != 0 && maxNumberOfRows > 0)
             {
+                if (maxNumberOfRows < batchSize)
+                {
+                    batchSize = maxNumberOfRows;
+                }
+                else if (numberOfRecordsSent < maxNumberOfRows)
+                {
+                    if (maxNumberOfRows - numberOfRecordsSent <= batchSize)
+                    {
+                        batchSize = maxNumberOfRows - numberOfRecordsSent;
+                    }
+                }
+                else if (numberOfRecordsSent >= maxNumberOfRows)
+                {
+                    return -1;
+                }
+            }
+            return batchSize;
+        }
+
+        internal static void SendMessagesToEsb(IEnumerable<PriceModelGpm> gpmPriceModels,
+            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
+            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsb = true)
+        {
+            var batchSize = GetBatchSize(maxNumberOfRows, NumberOfRecordsSent);
+            if (batchSize < 0) return;
+
+            foreach (var modelBatch in gpmPriceModels.Batch(batchSize))
+            {
+                if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
+
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
                 {
-                    string message = string.Empty;
-                    if (models.GetType() == typeof(IEnumerable<PriceModel>))
-                    {
-                        message = MessageBuilderForPreGpmPrice.BuildPreGpmMessage((modelGroup as IEnumerable<PriceModel>).ToList());
-                    }
-                    else if (models.GetType() == typeof(IEnumerable<PriceModelGpm>))
-                    {
-                        message = MessageBuilderForGpmPrice.BuildGpmMessage((modelGroup as IEnumerable<PriceModelGpm>).ToList());
-                    }
+                    string message = MessageBuilderForGpmPrice.BuildGpmMessage(modelGroup);
                     string messageId = Guid.NewGuid().ToString();
 
-                    esbProducer.Send(
+                    if (sendToEsb)
+                    {
+                        esbProducer.Send(
                         message,
                         messageId,
                         new Dictionary<string, string>
@@ -141,16 +187,53 @@ namespace AmazonLoad.MammothPrice
                             { "Source", "Icon" },
                             { "nonReceivingSysName", nonReceivingSysName }
                         });
-                    numberOfRecordsSent += modelGroup.Count();
-                    numberOfMessagesSent += 1;
+                    }
+                    NumberOfRecordsSent += modelGroup.Count();
+                    NumberOfMessagesSent += 1;
                     if (saveMessages)
                     {
                         File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
                     }
                 }
             }
+        }
 
-            return new EsbMessageSendResult(numberOfRecordsSent, numberOfMessagesSent);
+        internal static void SendMessagesToEsb(IEnumerable<PriceModel> legacyPriceModels,
+            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
+            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsb = true)
+        {
+            var batchSize = GetBatchSize(maxNumberOfRows, NumberOfRecordsSent);
+            if (batchSize < 0) return;
+
+            foreach (var modelBatch in legacyPriceModels.Batch(batchSize))
+            {
+                if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
+
+                foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
+                {
+                    string message = MessageBuilderForPreGpmPrice.BuildPreGpmMessage(modelGroup);
+                    string messageId = Guid.NewGuid().ToString();
+
+                    if (sendToEsb)
+                    {
+                        esbProducer.Send(
+                        message,
+                        messageId,
+                        new Dictionary<string, string>
+                        {
+                            { "IconMessageID", messageId },
+                            { "Source", "Icon" },
+                            { "nonReceivingSysName", nonReceivingSysName }
+                        });
+                    }
+                    NumberOfRecordsSent += modelGroup.Count();
+                    NumberOfMessagesSent += 1;
+                    if (saveMessages)
+                    {
+                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    }
+                }
+            }
         }
     }
 }

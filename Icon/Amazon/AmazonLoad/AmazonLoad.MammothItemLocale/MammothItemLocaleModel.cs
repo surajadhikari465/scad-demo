@@ -2,7 +2,7 @@
 
 namespace AmazonLoad.MammothItemLocale
 {
-    internal class ItemLocaleModel
+    internal class MammothItemLocaleModel
     {
         public bool? ColorAdded { get; set; }
         public string CountryOfProcessing { get; set; }

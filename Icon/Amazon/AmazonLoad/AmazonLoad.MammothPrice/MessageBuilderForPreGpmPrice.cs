@@ -12,51 +12,38 @@ namespace AmazonLoad.MammothPrice
 {
     public static class MessageBuilderForPreGpmPrice
     {
-        public static string BuildPreGpmMessage(List<PriceModel> messages)
+        public static string BuildPreGpmMessage(IEnumerable<PriceModel> messages)
         {
             List<Contracts.ItemType> items = new List<Contracts.ItemType>();
             foreach (var message in messages)
             {
-                items.Add(
-                    BuildPreGpmItemType(
-                        message,
-                        message.PriceTypeCode,
-                        message.Price,
-                        message.Multiple,
-                        message.StartDate,
-                        message.EndDate));
+                items.Add(BuildPreGpmItemType(message));
             }
             var preGpmSerializer = new Serializer<Contracts.items>();
             return preGpmSerializer.Serialize(new Contracts.items { item = items.ToArray() });
         }
 
-        private static Contracts.ItemType BuildPreGpmItemType(
-            PriceModel message,
-            string priceTypeCode,
-            decimal price,
-            int multiple,
-            DateTime startDate,
-            DateTime? endDate)
+        internal static Contracts.ItemType BuildPreGpmItemType(PriceModel priceModel)
         {
             var itemType = new Contracts.ItemType
             {
-                id = message.ItemId,
+                id = priceModel.ItemId,
                 @base = new Contracts.BaseItemType
                 {
                     type = new Contracts.ItemTypeType
                     {
-                        code = message.ItemTypeCode,
-                        description = message.ItemTypeDesc
+                        code = priceModel.ItemTypeCode,
+                        description = priceModel.ItemTypeDesc
                     }
                 },
                 locale = new Contracts.LocaleType[]
                 {
                     new Contracts.LocaleType
                     {
+                        id = priceModel.BusinessUnitId.ToString(),
                         Action = Contracts.ActionEnum.AddOrUpdate,
                         ActionSpecified = true,
-                        id = message.BusinessUnitId.ToString(),
-                        name = message.LocaleName,
+                        name = priceModel.LocaleName,
                         type = new Contracts.LocaleTypeType
                         {
                             code = Contracts.LocaleCodeType.STR,
@@ -68,12 +55,12 @@ namespace AmazonLoad.MammothPrice
                             {
                                 new Contracts.ScanCodeType
                                 {
-                                    code = message.ScanCode,
+                                    code = priceModel.ScanCode,
                                 }
                             },
                             prices = new Contracts.PriceType[]
                             {
-                                CreatePreGpmPriceType(message, priceTypeCode, price, multiple, startDate, endDate)
+                                CreatePreGpmPriceType(priceModel)
                             }
                         }
                     }
@@ -83,48 +70,42 @@ namespace AmazonLoad.MammothPrice
             return itemType;
         }
 
-        private static Contracts.PriceType CreatePreGpmPriceType(
-            PriceModel message,
-            string priceTypeCode,
-            decimal price,
-            int multiple,
-            DateTime startDate,
-            DateTime? endDate)
+        internal static Contracts.PriceType CreatePreGpmPriceType(PriceModel priceModel)
         {
             var priceType = new Contracts.PriceType
             {
                 type = new Contracts.PriceTypeType
                 {
-                    description = ItemPriceTypes.Descriptions.ByCode[priceTypeCode],
-                    id = priceTypeCode,
-                    type = string.IsNullOrWhiteSpace(message.SubPriceTypeCode) ? null
+                    id = priceModel.PriceTypeCode,
+                    description = ItemPriceTypes.Descriptions.ByCode[priceModel.PriceTypeCode],
+                    type = string.IsNullOrWhiteSpace(priceModel.SubPriceTypeCode) ? null
                         : new Contracts.PriceTypeType
                         {
-                            description = message.SubPriceTypeCode,
-                            id = message.SubPriceTypeCode,
+                            id = priceModel.SubPriceTypeCode,
+                            description = priceModel.SubPriceTypeDesc,
                         }
                 },
                 uom = new Contracts.UomType
                 {
                     codeSpecified = true,
                     nameSpecified = true,
-                    code = GetEsbUomCode(message.UomCode),
-                    name = GetEsbUomName(message.UomCode, message.ScanCode)
+                    code = GetEsbUomCode(priceModel.UomCode),
+                    name = GetEsbUomName(priceModel.UomCode, priceModel.ScanCode)
                 },
-                currencyTypeCode = GetEsbCurrencyTypeCode(message.CurrencyCode),
+                currencyTypeCode = GetEsbCurrencyTypeCode(priceModel.CurrencyCode),
                 priceAmount = new Contracts.PriceAmount
                 {
-                    amount = price,
+                    amount = priceModel.Price,
                     amountSpecified = true
                 },
-                priceMultiple = multiple,
-                priceStartDate = startDate,
+                priceMultiple = priceModel.Multiple,
+                priceStartDate = priceModel.StartDate,
                 priceStartDateSpecified = true,
             };
 
-            if (endDate.HasValue)
+            if (priceModel.EndDate.HasValue)
             {
-                priceType.priceEndDate = endDate.Value;
+                priceType.priceEndDate = priceModel.EndDate.Value;
                 priceType.priceEndDateSpecified = true;
             }
 

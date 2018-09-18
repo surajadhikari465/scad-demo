@@ -15,8 +15,8 @@ namespace AmazonLoad.IconItemLocale
     {
         private string iconConnectionString;
 
-        internal protected virtual List<ProductSelectionGroupModel> TraitProductSelectionGroups { get; set; }
-        internal protected virtual Dictionary<int, Func<ItemLocaleModelForWormhole, string>> TraitIdToItemLocaleMessageTraitValues { get; set; }
+        protected internal virtual List<ProductSelectionGroupModel> TraitProductSelectionGroups { get; set; }
+        protected internal virtual Dictionary<int, Func<ItemLocaleModelForWormhole, string>> TraitIdToItemLocaleMessageTraitValues { get; set; }
 
         public IconItemLocalePsgMapper() { }
 
@@ -35,7 +35,7 @@ namespace AmazonLoad.IconItemLocale
             TraitIdToItemLocaleMessageTraitValues = LoadTraitIdToItemLocaleMessageTraitValues(TraitProductSelectionGroups);
         }
 
-        internal protected virtual List<ProductSelectionGroupModel> QueryForProductSelectionGroups()
+        protected internal virtual List<ProductSelectionGroupModel> QueryForProductSelectionGroups()
         {
             List<ProductSelectionGroupModel> productSelectionGroups = null;
             using (var sqlConnection = new SqlConnection(this.iconConnectionString))
@@ -47,14 +47,14 @@ namespace AmazonLoad.IconItemLocale
             return productSelectionGroups;
         }
 
-        internal protected virtual List<ProductSelectionGroupModel> FilterProductSelectionGroups(
+        protected internal virtual List<ProductSelectionGroupModel> FilterProductSelectionGroups(
             IList<ProductSelectionGroupModel> psgs)
         {
             return psgs.Where(psg => psg.TraitId != null && psg.TraitValue != null)
                 .ToList();
         }
 
-        internal protected virtual Dictionary<int, Func<ItemLocaleModelForWormhole, string>> LoadTraitIdToItemLocaleMessageTraitValues(
+        protected internal virtual Dictionary<int, Func<ItemLocaleModelForWormhole, string>> LoadTraitIdToItemLocaleMessageTraitValues(
             List<ProductSelectionGroupModel> traitProductSelectionGroups)
         {
             var traitIdToItemLocaleMessageTraitValues = new Dictionary<int, Func<ItemLocaleModelForWormhole, string>>();

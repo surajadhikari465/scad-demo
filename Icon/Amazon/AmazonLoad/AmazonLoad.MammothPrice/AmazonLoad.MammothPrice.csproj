@@ -119,7 +119,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPriceModel.cs" />
     <Compile Include="MessageBuilderForGpmPrice.cs" />
     <Compile Include="MammothPriceBuilder.cs" />
     <Compile Include="MessageBuilderForPreGpmPrice.cs" />

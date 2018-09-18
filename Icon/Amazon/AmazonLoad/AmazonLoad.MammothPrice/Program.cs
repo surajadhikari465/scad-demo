@@ -1,19 +1,11 @@
-﻿using AmazonLoad.Common;
-using Dapper;
-using Esb.Core.Serializer;
-using Icon.Common;
+﻿using Icon.Common;
 using Icon.Esb;
 using Icon.Esb.Factory;
-using Icon.Esb.Producer;
-using Mammoth.Common.DataAccess;
-using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.MammothPrice
 {
@@ -23,10 +15,28 @@ namespace AmazonLoad.MammothPrice
 
         static void Main(string[] args)
         {
+            var startTime = DateTime.Now;
+            Console.WriteLine($"[{startTime}] beginning...");
+
+            var region = AppSettingsAccessor.GetStringSetting("Region");
             var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
             var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
-            var region = AppSettingsAccessor.GetStringSetting("Region");
+            var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
+            var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+
+            Console.WriteLine("Flags:");
+            Console.WriteLine($"  Region: \"{region}\"");
+            Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
+            Console.WriteLine($"  SaveMessages: {saveMessages}");
+            Console.WriteLine($"  SaveMessages: \"{saveMessagesDirectory}\"");
+            Console.WriteLine($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
+            Console.WriteLine($"  SendMessagesToEsb: {sendToEsb}");
+            if (!sendToEsb)
+            {
+                Console.WriteLine($"\"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
+            }
+            Console.WriteLine("");
 
             var connectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
@@ -43,7 +53,7 @@ namespace AmazonLoad.MammothPrice
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
 
-            var recordsAndMesssagesSent = MammothPriceBuilder
+            var sendResult = MammothPriceBuilder
                 .LoadMammothPricesAndSendMessages(
                     esbProducer,
                     connectionString,
@@ -51,10 +61,12 @@ namespace AmazonLoad.MammothPrice
                     maxNumberOfRows,
                     saveMessages,
                     saveMessagesDirectory,
-                    nonReceivingSysName);
+                    nonReceivingSysName,
+                    sendToEsb);
 
-            Console.WriteLine($"Number of records sent: {recordsAndMesssagesSent.NumberOfRecordsSent}.");
-            Console.WriteLine($"Number of messages sent: {recordsAndMesssagesSent.NumberOfMessagesSent}.");
+            Console.WriteLine($"Number of records sent: {sendResult.NumberOfRecordsSent}.");
+            Console.WriteLine($"Number of messages sent: {sendResult.NumberOfMessagesSent}."); var endTime = DateTime.Now;
+            Console.WriteLine($"{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
             Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
         }

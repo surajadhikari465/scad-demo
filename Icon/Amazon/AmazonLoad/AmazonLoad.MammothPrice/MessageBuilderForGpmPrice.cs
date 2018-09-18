@@ -14,40 +14,26 @@ namespace AmazonLoad.MammothPrice
     {
         public static Serializer<Contracts.items> gpmSerializer = new Serializer<Contracts.items>();
 
-        public static string BuildGpmMessage(List<PriceModelGpm> messages)
+        public static string BuildGpmMessage(IEnumerable<PriceModelGpm> gpmPriceModels)
         {
-            List<Contracts.ItemType> items = new List<Contracts.ItemType>();
-            foreach (var message in messages)
+            Contracts.items items = new Contracts.items
             {
-                items.Add(
-                    BuildGpmItemType(
-                        message,
-                        message.PriceType,
-                        message.Price,
-                        message.Multiple,
-                        message.StartDate,
-                        message.EndDate));
-            }
-            return gpmSerializer.Serialize(new Contracts.items { item = items.ToArray() });
+                item = gpmPriceModels.Select(p => BuildGpmItemType(p)).ToArray()
+            };
+            return gpmSerializer.Serialize(items);
         }
 
-        private static Contracts.ItemType BuildGpmItemType(
-            PriceModelGpm message,
-            string priceTypeCode,
-            decimal price,
-            int multiple,
-            DateTime startDate,
-            DateTime? endDate)
+        internal static Contracts.ItemType BuildGpmItemType(PriceModelGpm gpmPriceModel)
         {
             var itemType = new Contracts.ItemType
             {
-                id = message.ItemId,
+                id = gpmPriceModel.ItemId,
                 @base = new Contracts.BaseItemType
                 {
                     type = new Contracts.ItemTypeType
                     {
-                        code = message.ItemTypeCode,
-                        description = message.ItemTypeDesc
+                        code = gpmPriceModel.ItemTypeCode,
+                        description = gpmPriceModel.ItemTypeDesc
                     }
                 },
                 locale = new Contracts.LocaleType[]
@@ -56,8 +42,8 @@ namespace AmazonLoad.MammothPrice
                     {
                         Action = Contracts.ActionEnum.AddOrUpdate,
                         ActionSpecified = true,
-                        id = message.BusinessUnitId.ToString(),
-                        name = message.LocaleName,
+                        id = gpmPriceModel.BusinessUnitId.ToString(),
+                        name = gpmPriceModel.LocaleName,
                         type = new Contracts.LocaleTypeType
                         {
                             code = Contracts.LocaleCodeType.STR,
@@ -69,12 +55,12 @@ namespace AmazonLoad.MammothPrice
                             {
                                 new Contracts.ScanCodeType
                                 {
-                                    code = message.ScanCode,
+                                    code = gpmPriceModel.ScanCode,
                                 }
                             },
                             prices = new Contracts.PriceType[]
                             {
-                                CreateGpmPriceType(message, MapPriceIdTypeFromCode(priceTypeCode), price, multiple, startDate, endDate)
+                                CreateGpmPriceType(gpmPriceModel)
                             }
                         }
                     }
@@ -84,51 +70,95 @@ namespace AmazonLoad.MammothPrice
             return itemType;
         }
 
-        private static Contracts.PriceType CreateGpmPriceType(
-            PriceModelGpm message,
-            PriceTypeIdType priceTypeIdType,
-            decimal price,
-            int multiple,
-            DateTime startDate,
-            DateTime? endDate)
+        internal static Contracts.PriceType CreateGpmPriceType(PriceModelGpm gpmPriceModel)
         {
+            var priceTypeIdType = MapPriceIdTypeFromCode(gpmPriceModel.PriceType);
+
             var priceType = new Contracts.PriceType
             {
+                Id = gpmPriceModel.GpmId.Value.ToString().ToUpper(),
+                Action = ActionEnum.Add,
+                ActionSpecified = true,
                 type = new Contracts.PriceTypeType
                 {
-                    description = ItemPriceTypes.Descriptions.ByCode[priceTypeIdType.ToString()],
                     id = priceTypeIdType,
-                    type =  new Contracts.PriceTypeType
-                    {
-                        id = priceTypeIdType,
-                        description = message.PriceType,
-                    }
+                    description = ItemPriceTypes.Descriptions.ByCode[priceTypeIdType.ToString()],
+                    type = string.IsNullOrWhiteSpace(gpmPriceModel.SubPriceTypeCode) ? null
+                        : new Contracts.PriceTypeType
+                        {
+                            id = MapPriceIdTypeFromCode(gpmPriceModel.SubPriceTypeCode),
+                            description = gpmPriceModel.SubPriceTypeDesc,
+                        }
                 },
                 uom = new Contracts.UomType
                 {
                     codeSpecified = true,
                     nameSpecified = true,
-                    code = GetEsbUomCode(message.SellableUOM),
-                    name = GetEsbUomName(message.SellableUOM, message.ScanCode)
+                    code = GetEsbUomCode(gpmPriceModel.SellableUOM),
+                    name = GetEsbUomName(gpmPriceModel.SellableUOM, gpmPriceModel.ScanCode)
                 },
-                currencyTypeCode = GetEsbCurrencyTypeCode(message.CurrencyCode),
+                currencyTypeCode = GetEsbCurrencyTypeCode(gpmPriceModel.CurrencyCode),
                 priceAmount = new Contracts.PriceAmount
                 {
-                    amount = price,
+                    amount = gpmPriceModel.Price,
                     amountSpecified = true
                 },
-                priceMultiple = multiple,
-                priceStartDate = startDate,
+                priceMultiple = gpmPriceModel.Multiple,
+                priceStartDate = gpmPriceModel.StartDate,
                 priceStartDateSpecified = true,
+                traits = CreateTraitsForGpmPrice(gpmPriceModel)
             };
 
-            if (endDate.HasValue)
+            if (gpmPriceModel.EndDate.HasValue)
             {
-                priceType.priceEndDate = endDate.Value;
+                priceType.priceEndDate = gpmPriceModel.EndDate.Value;
                 priceType.priceEndDateSpecified = true;
             }
 
             return priceType;
+        }
+
+        internal static Contracts.TraitType[] CreateTraitsForGpmPrice(PriceModelGpm gpmPriceModel)
+        {
+            Contracts.TraitType nteTrait = CreateTrait(
+                traitCode: "NTE",
+                traitDesc: "NewTagExpiration",
+                traitValue: gpmPriceModel.TagExpirationDate.HasValue
+                     ? gpmPriceModel.TagExpirationDate.Value.ToString("yyyy'-'MM'-'dd'T'00:00:00")
+                     : string.Empty,
+                action: gpmPriceModel.TagExpirationDate.HasValue 
+                    ? ActionEnum.AddOrUpdate 
+                    : ActionEnum.Delete);
+
+                return new Contracts.TraitType[]
+                {
+                    nteTrait
+                };
+        }
+
+        internal static Contracts.TraitType CreateTrait(string traitCode, string traitDesc, string traitValue, ActionEnum? action = null)
+        {
+            var traitType = new Contracts.TraitType
+            {
+                code = traitCode,
+                type = new Contracts.TraitTypeType
+                {
+                    description = traitDesc,
+                    value = new Contracts.TraitValueType[]
+                    {
+                        new Contracts.TraitValueType
+                        {
+                            value = traitValue == null ? string.Empty : traitValue
+                        }
+                    }
+                }
+            };
+            if (action.HasValue)
+            {
+                traitType.ActionSpecified = action.HasValue;
+                traitType.Action = action.Value;
+            };
+            return traitType;
         }
 
         private static Contracts.WfmUomCodeEnumType GetEsbUomCode(string uomCode)
