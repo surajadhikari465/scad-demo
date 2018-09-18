@@ -1,8 +1,8 @@
 print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Start: [UpdateVersion.sql]'
 go
 
-RAISERROR ('Updating Version table to 10.4.0', 10,1) with nowait
+RAISERROR ('Updating Version table to 10.5.0', 10,1) with nowait
 UPDATE [Version]
-SET [Version] = '10.4.0'
-where applicationname in ('IRMA CLIENT', 'DATABASE', 'SYSTEM')
+SET [Version] = '10.5.0'
+where applicationname in ('DATABASE', 'SYSTEM')
 GO

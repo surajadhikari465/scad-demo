@@ -3327,7 +3327,6 @@
     <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.rollback.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25850-PostDeployDataUpdate-AddOrderedByInforPOSDataElement.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI27183-AddItemDeauthorization Event to ItemChangeEventType.sql" />
-    <None Include="Scripts\PostDeploy\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
     <Build Include="Schema\amz\Tables\EventType.sql" />
     <Build Include="Schema\amz\Tables\InventoryQueue.sql" />
     <Build Include="Schema\amz\Tables\ReceiptQueue.sql" />
@@ -3337,6 +3336,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemVendorLaneFile.sql" />
     <None Include="SQL Agent Job\Amazon Vendor Lane Data Feed - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\VendorLaneExtract.sql" />
+    <None Include="Scripts\PostDeploy\Archive\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
