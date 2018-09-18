@@ -22,10 +22,10 @@
     [Sign_RomanceText_Short] NVARCHAR (255) NULL,
     [AltRetailUOM]           NVARCHAR  (25) NULL,
     [AltRetailSize]          NUMERIC  (9,4) NULL,
-	[IrmaItemKey]			 INT			NULL,
     [MSRP]                   SMALLMONEY     DEFAULT ((0)) NOT NULL,
     [AddedDate]              DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME       NULL,
+	[IrmaItemKey]			 INT			NULL,
     CONSTRAINT [PK_ItemAttributes_Locale_PN] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_PN],
     CONSTRAINT [CK_ItemAttributes_Locale_PN_Restriction_Age] CHECK ([Restriction_Age]=(21) OR [Restriction_Age]=(18)),
     CONSTRAINT [CK_ItemAttributes_Locale_PN_Region] CHECK ([Region] = 'PN')

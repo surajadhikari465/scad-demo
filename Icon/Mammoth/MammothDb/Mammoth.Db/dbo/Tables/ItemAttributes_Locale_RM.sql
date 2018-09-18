@@ -23,9 +23,9 @@
     [AltRetailUOM]           NVARCHAR  (25) NULL,
     [AltRetailSize]          NUMERIC  (9,4) NULL,
     [MSRP]                   SMALLMONEY     DEFAULT ((0)) NOT NULL,
-	[IrmaItemKey]			 INT			NULL,
     [AddedDate]              DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME       NULL,
+	[IrmaItemKey]			 INT			NULL,
     CONSTRAINT [PK_ItemAttributes_Locale_RM] PRIMARY KEY CLUSTERED ([Region] ASC, [ItemAttributeLocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_RM],
     CONSTRAINT [CK_ItemAttributes_Locale_RM_Restriction_Age] CHECK ([Restriction_Age]=(21) OR [Restriction_Age]=(18)),
     CONSTRAINT [CK_ItemAttributes_Locale_RM_Region] CHECK ([Region] = 'RM')
