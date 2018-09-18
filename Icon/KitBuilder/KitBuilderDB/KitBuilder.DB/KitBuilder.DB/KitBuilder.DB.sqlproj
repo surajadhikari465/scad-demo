@@ -65,6 +65,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Scripts\PostDeploymentScripts" />
     <Folder Include="Scripts\Templates" />
+    <Folder Include="Jobs" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -87,6 +88,10 @@
     <Build Include="Schemas\app.sql" />
     <Build Include="app\PostDeploymentScriptHistory.sql" />
     <PostDeploy Include="Scripts\PostDeploymentScripts\PostDeploymentScript.sql" />
+    <Build Include="dbo\Tables\AppLog.sql" />
+    <Build Include="dbo\Tables\PurgeTableInfo.sql" />
+    <Build Include="dbo\Stored Procedures\AddLogEvent.sql" />
+    <Build Include="dbo\Stored Procedures\PurgeData.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
@@ -95,5 +100,6 @@
     <None Include="Scripts\PostDeploymentScripts\InitialStatusTablePopulate.sql" />
     <None Include="Scripts\Templates\EndDataTransformation.sql" />
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
+    <None Include="Jobs\KitBuilder_Data_History_Purge.sql" />
   </ItemGroup>
 </Project>
