@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using Microsoft.Rest;
+using KitInstructionList = KitBuilderWebApi.DatabaseModels.KitInstructionList;
 
 
 namespace KitBuilderWebApi.Controllers
@@ -32,7 +34,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<KitInstructionList> kitInstructionListRepository;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IHelper<KitDto, KitSearchParameters> kitHelper;
-        private readonly ILogger<LinkGroupController> logger;
+        private readonly ILogger<KitController> logger;
 
         public KitController(IRepository<Kit> kitRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
@@ -42,7 +44,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitLinkGroupRepository,
                              IRepository<KitLinkGroupItem> kitLinkGroupItemRepository,
-                             ILogger<LinkGroupController> logger,
+                             ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper
                             )
         {
@@ -96,8 +98,6 @@ namespace KitBuilderWebApi.Controllers
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(kitsAfterPaging.ShapeData(kitSearchParameters.Fields));
-
-            
         }
 
         internal void BuildQueryToFilterKitData(KitSearchParameters kitSearchParameters,
@@ -133,8 +133,6 @@ namespace KitBuilderWebApi.Controllers
                     where lg.GroupName.ToLower().Contains(linkGroupNameForWhereClause)
                     select k;
             }
-
-            kitsBeforePaging.WriteDebugSql(" Kits ");
         }
 
         [HttpPost(Name="SaveKit")]
@@ -144,6 +142,8 @@ namespace KitBuilderWebApi.Controllers
 
             try
             {
+
+                ValidateKitSaveParameters(kitSaveParameters);
 
                 var kit = kitRepository.GetAll().Where(k => k.KitId == kitSaveParameters.KitId).FirstOrDefault();
                 var item = itemsRepository.GetAll().Where(i => i.ItemId == kitSaveParameters.KitItem).FirstOrDefault();
@@ -156,6 +156,7 @@ namespace KitBuilderWebApi.Controllers
                         InstructionListId = id,
                         KitId = kitSaveParameters.KitId
                     };
+                    
 
                 var existingKitLinkGroups =
                     kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == kitSaveParameters.KitId);
@@ -168,7 +169,7 @@ namespace KitBuilderWebApi.Controllers
 
                 var existingKitLinkGroupItems =
                     kitLinkGroupItemRepository.GetAll().Where(kli => kli.KitId == kitSaveParameters.KitId);
-                var newKitLinkGroupItems =
+                var newKitLinkGroupItems = 
                     from id in kitSaveParameters.LinkGroupItemIds
                     select new KitLinkGroupItem()
                     {
@@ -225,9 +226,35 @@ namespace KitBuilderWebApi.Controllers
             {
                 logger.LogError($"SaveKit: Error Saving Kit. [id: {kitSaveParameters.KitId}]");
                 logger.LogError(Ex.Message);
-                return BadRequest();
+                return BadRequest(Ex.Message);
             }
 
+        }
+
+        internal void ValidateKitSaveParameters(KitSaveParameters parameters)
+        {
+            var errorFound = false;
+            var message = string.Empty;
+
+            if (parameters.InstructionListIds == null)
+            {
+                errorFound = true;
+                message = "InstructionListIds cannot be null";
+            }
+
+            if (parameters.LinkGroupIds == null)
+            {
+                errorFound = true;
+                message = "LinkGroupIds cannot be null";
+            }
+
+            if (parameters.LinkGroupItemIds == null)
+            {
+                errorFound = true;
+                message = "LinkGroupItemIds cannot be null";
+            }
+
+            if (errorFound) throw new ValidationException(message);
         }
 
         [HttpPost("AssignLocations")]

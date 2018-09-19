@@ -26,5 +26,10 @@ namespace KitBuilderWebApi.Helper
                 cfg.CreateMap<InstructionListMember, InstructionListMemberDto>();
             });
         }
+
+        public static void CleanupMapper()
+        {
+            AutoMapper.Mapper.Reset();
+        }
     }
 }
