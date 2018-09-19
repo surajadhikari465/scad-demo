@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Thu Jul 26 15:07:48 CDT 2018
+#Mon Sep 17 13:06:41 CDT 2018
 6=SharedJdbcConnections.projlib\=
 5=SharedArchivePriceMessage.projlib\=
 4=WfmUtilities_v2.2.projlib\=

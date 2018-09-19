@@ -50,7 +50,7 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>549</pd:x>
+        <pd:x>612</pd:x>
         <pd:y>84</pd:y>
         <pd:width>214</pd:width>
         <pd:height>180</pd:height>
@@ -84,7 +84,7 @@
         <pd:activity name="Load Prices Into IRMA (Batch Update)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>651</pd:x>
+            <pd:x>714</pd:x>
             <pd:y>165</pd:y>
             <config>
                 <timeout>10</timeout>
@@ -155,7 +155,7 @@
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
-                    <xsl:for-each select="$Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice">
+                    <xsl:for-each select="$HandleAddAndUpdateSameItem/pfx10:MammothPrices/pfx10:MammothPrice">
                         <Record>
                             <BusinessUnit_ID>
                                 <xsl:value-of select="pfx10:BusinessUnit"/>
@@ -278,9 +278,10 @@
            ,[PriceType]
            ,[PriceTypeAttribute]
            ,[SellableUOM]
+           ,[Action]
 	  , [TransactionId])
      VALUES
-           (?, ?, ?, ?, ?, ?, ?, ?, ?,?)</statement>
+           (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
                     <parameter>
@@ -317,6 +318,10 @@
                     </parameter>
                     <parameter>
                         <parameterName>SellableUOM</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Action</parameterName>
                         <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
@@ -368,6 +373,9 @@
                     <SellableUOM>
                         <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:SellableUom"/>
                     </SellableUOM>
+                    <Action>
+                        <xsl:value-of select="$SinglePriceLoad/pfx10:MammothPrice/pfx10:Action"/>
+                    </Action>
                     <TransactionId>
                         <xsl:value-of select="$transactionId/UID"/>
                     </TransactionId>
@@ -415,8 +423,8 @@
     <pd:activity name="Assign">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>168</pd:x>
-        <pd:y>172</pd:y>
+        <pd:x>75</pd:x>
+        <pd:y>67</pd:y>
         <config>
             <variableName>transactionId</variableName>
         </config>
@@ -450,8 +458,8 @@
     <pd:activity name="Parse Price Message">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>351</pd:x>
-        <pd:y>184</pd:y>
+        <pd:x>275</pd:x>
+        <pd:y>82</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -773,8 +781,8 @@ WHERE TransactionId = ?</statement>
     <pd:activity name="Log Message Received">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>256</pd:x>
-        <pd:y>183</pd:y>
+        <pd:x>179</pd:x>
+        <pd:y>75</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -957,8 +965,8 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:activity name="Filter out RWD Prices">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>450</pd:x>
-        <pd:y>186</pd:y>
+        <pd:x>396</pd:x>
+        <pd:y>196</pd:y>
         <config>
             <element ref="pfx10:MammothPrices"/>
         </config>
@@ -1068,8 +1076,8 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:activity name="Log Number of RWD Prices to Remove">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>353</pd:x>
-        <pd:y>307</pd:y>
+        <pd:x>265</pd:x>
+        <pd:y>200</pd:y>
         <config>
             <spawn>true</spawn>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
@@ -1254,6 +1262,20 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
             </Input>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="HandleAddAndUpdateSameItem">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>532</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <processName>/Processes/HandleAddAndUpdateSameItem.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx10:MammothPrices>
+                <xsl:copy-of select="$Filter-out-RWD-Prices/pfx10:MammothPrices/pfx10:MammothPrice"/>
+            </pfx10:MammothPrices>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Group</pd:from>
         <pd:to>Load One By One Group</pd:to>
@@ -1365,7 +1387,7 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     </pd:transition>
     <pd:transition>
         <pd:from>Filter out RWD Prices</pd:from>
-        <pd:to>Group</pd:to>
+        <pd:to>HandleAddAndUpdateSameItem</pd:to>
         <pd:xpathDescription>Prices Exist</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -1426,6 +1448,13 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>Archive Price Message On Error</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HandleAddAndUpdateSameItem</pd:from>
+        <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

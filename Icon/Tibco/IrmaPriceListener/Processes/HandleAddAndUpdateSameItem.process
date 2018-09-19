@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/HandleAddAndUpdateSameItem.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:MammothPrices"/>
+    <pd:startX>74</pd:startX>
+    <pd:startY>158</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$GroupByPriceType/pfx:MammothPrices"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:MammothPrices"/>
+    <pd:endX>826</pd:endX>
+    <pd:endY>157</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1536960536700</pd:targetNamespace>
+    <pd:activity name="SortByStartDate">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>160</pd:y>
+        <config>
+            <element ref="pfx:MammothPrices"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:MammothPrices>
+                <xsl:for-each select="$Start/pfx:MammothPrices/pfx:MammothPrice">
+                    <xsl:sort select="pfx:StartDate" order="descending"/>
+                    <pfx:MammothPrice>
+                        <pfx:Region>
+                            <xsl:value-of select="pfx:Region"/>
+                        </pfx:Region>
+                        <xsl:if test="pfx:PriceID">
+                            <pfx:PriceID>
+                                <xsl:value-of select="pfx:PriceID"/>
+                            </pfx:PriceID>
+                        </xsl:if>
+                        <pfx:BusinessUnit>
+                            <xsl:value-of select="pfx:BusinessUnit"/>
+                        </pfx:BusinessUnit>
+                        <pfx:ItemId>
+                            <xsl:value-of select="pfx:ItemId"/>
+                        </pfx:ItemId>
+                        <xsl:if test="pfx:GpmId">
+                            <pfx:GpmId>
+                                <xsl:value-of select="pfx:GpmId"/>
+                            </pfx:GpmId>
+                        </xsl:if>
+                        <pfx:Multiple>
+                            <xsl:value-of select="pfx:Multiple"/>
+                        </pfx:Multiple>
+                        <pfx:Price>
+                            <xsl:value-of select="pfx:Price"/>
+                        </pfx:Price>
+                        <pfx:StartDate>
+                            <xsl:value-of select="pfx:StartDate"/>
+                        </pfx:StartDate>
+                        <xsl:if test="pfx:EndDate">
+                            <pfx:EndDate>
+                                <xsl:value-of select="pfx:EndDate"/>
+                            </pfx:EndDate>
+                        </xsl:if>
+                        <pfx:PriceType>
+                            <xsl:value-of select="pfx:PriceType"/>
+                        </pfx:PriceType>
+                        <pfx:PriceTypeAttribute>
+                            <xsl:value-of select="pfx:PriceTypeAttribute"/>
+                        </pfx:PriceTypeAttribute>
+                        <pfx:SellableUom>
+                            <xsl:value-of select="pfx:SellableUom"/>
+                        </pfx:SellableUom>
+                        <xsl:if test="pfx:CurrencyCode">
+                            <pfx:CurrencyCode>
+                                <xsl:value-of select="pfx:CurrencyCode"/>
+                            </pfx:CurrencyCode>
+                        </xsl:if>
+                        <xsl:if test="pfx:TagExpirationDate">
+                            <pfx:TagExpirationDate>
+                                <xsl:value-of select="pfx:TagExpirationDate"/>
+                            </pfx:TagExpirationDate>
+                        </xsl:if>
+                        <pfx:Action>
+                            <xsl:value-of select="pfx:Action"/>
+                        </pfx:Action>
+                        <pfx:ItemTypeCode>
+                            <xsl:value-of select="pfx:ItemTypeCode"/>
+                        </pfx:ItemTypeCode>
+                        <pfx:StoreName>
+                            <xsl:value-of select="pfx:StoreName"/>
+                        </pfx:StoreName>
+                        <pfx:ScanCode>
+                            <xsl:value-of select="pfx:ScanCode"/>
+                        </pfx:ScanCode>
+                        <xsl:if test="pfx:SubTeamNumber">
+                            <pfx:SubTeamNumber>
+                                <xsl:value-of select="pfx:SubTeamNumber"/>
+                            </pfx:SubTeamNumber>
+                        </xsl:if>
+                        <xsl:if test="pfx:PercentOff">
+                            <pfx:PercentOff>
+                                <xsl:value-of select="pfx:PercentOff"/>
+                            </pfx:PercentOff>
+                        </xsl:if>
+                    </pfx:MammothPrice>
+                </xsl:for-each>
+            </pfx:MammothPrices>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GroupByPriceType">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>158</pd:y>
+        <config>
+            <element ref="pfx:MammothPrices"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:MammothPrices>
+                <xsl:for-each-group select="$SortByStartDate/pfx:MammothPrices/pfx:MammothPrice" group-by="pfx:ItemId">
+                    <xsl:for-each-group select="current-group()" group-by="pfx:PriceType">
+                        <xsl:copy-of select="current-group()[1]"/>
+                    </xsl:for-each-group>
+                </xsl:for-each-group>
+            </pfx:MammothPrices>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SortByStartDate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SortByStartDate</pd:from>
+        <pd:to>GroupByPriceType</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GroupByPriceType</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
