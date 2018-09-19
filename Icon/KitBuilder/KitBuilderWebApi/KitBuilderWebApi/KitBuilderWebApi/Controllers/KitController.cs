@@ -113,7 +113,6 @@ namespace KitBuilderWebApi.Controllers
                     select k;
             }
 
-            //todo: which description(s) should be filtered on? CustomerFriendlyDesc or, ProductDesc, or KitchenDesc, or all?
             if (!string.IsNullOrEmpty(kitSearchParameters.ItemDescription))
             {
                 var itemDescriptionForWhereClause = kitSearchParameters.ItemDescription.Trim().ToLower();
