@@ -79,30 +79,30 @@ namespace KitBuilderWebApi.Controllers
         {
             if (!string.IsNullOrEmpty(itemsParameters.ProductDesc))
             {
-                var nameForWhereClause = itemsParameters.ProductDesc.Trim().ToLowerInvariant();
+                var nameForWhereClause = itemsParameters.ProductDesc.Trim().ToLower();
                 itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ProductDesc.ToLowerInvariant() == nameForWhereClause);
+                                               .Where(i => i.ProductDesc.ToLower() == nameForWhereClause);
             }
 
             if (!string.IsNullOrEmpty(itemsParameters.ScanCode))
             {
-                var scanCodeForWhereClause = itemsParameters.ScanCode.Trim().ToLowerInvariant();
+                var scanCodeForWhereClause = itemsParameters.ScanCode.Trim().ToLower();
                 itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ScanCode.ToLowerInvariant() == scanCodeForWhereClause);
+                                               .Where(i => i.ScanCode.ToLower() == scanCodeForWhereClause);
             }
 
             if (!string.IsNullOrEmpty(itemsParameters.SearchScanCodeQuery))
             {
-                var searchQueryForWhereClause = itemsParameters.SearchScanCodeQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = itemsParameters.SearchScanCodeQuery.Trim().ToLower();
                 itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ScanCode.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                                               .Where(i => i.ScanCode.ToLower().Contains(searchQueryForWhereClause));
             }
 
             if (!string.IsNullOrEmpty(itemsParameters.SearchProductDescQuery))
             {
-                var searchQueryForWhereClause = itemsParameters.SearchProductDescQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = itemsParameters.SearchProductDescQuery.Trim().ToLower();
                 itemsBeforePaging = itemsBeforePaging
-                                               .Where(i => i.ProductDesc.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                                               .Where(i => i.ProductDesc.ToLower().Contains(searchQueryForWhereClause));
             }
         }
     }

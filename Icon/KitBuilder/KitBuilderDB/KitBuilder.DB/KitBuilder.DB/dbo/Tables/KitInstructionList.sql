@@ -4,7 +4,7 @@
 	[KitId] INT NOT NULL, 
     [InstructionListId] INT NOT NULL, 
     CONSTRAINT [FK_KitInstructionList_InstructionList] FOREIGN KEY ([InstructionListId]) REFERENCES [InstructionList]([InstructionListId]), 
-    CONSTRAINT [FK_KitInstructionList_Kit] FOREIGN KEY ([KitInstructionListId]) REFERENCES [Kit]([KitId])
+    CONSTRAINT [FK_KitInstructionList_Kit] FOREIGN KEY ([KitId]) REFERENCES [Kit]([KitId])
 )
 
 GO
