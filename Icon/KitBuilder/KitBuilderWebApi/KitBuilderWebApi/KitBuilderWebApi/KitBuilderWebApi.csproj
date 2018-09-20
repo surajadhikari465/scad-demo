@@ -31,6 +31,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\KitBuilderWebApi.Common\KitBuilderWebApi.Common.csproj" />
     <ProjectReference Include="..\KitBuilderWebApi.DataAccess\KitBuilderWebApi.DataAccess.csproj" />
   </ItemGroup>
 

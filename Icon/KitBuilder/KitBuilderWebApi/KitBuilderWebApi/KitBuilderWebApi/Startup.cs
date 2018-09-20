@@ -50,27 +50,19 @@ namespace KitBuilderWebApi
             services.AddDbContext<KitBuilderContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IRepository<InstructionList>, Repository<InstructionList>>();
-            services.AddScoped<IRepository<InstructionListMember>, Repository<InstructionListMember>>();
-            services.AddScoped<IRepository<InstructionType>, Repository<InstructionType>>();
-            services.AddScoped<IRepository<Status>, Repository<Status>>();
-            services.AddScoped<IRepository<LinkGroup>, Repository<LinkGroup>>();
-            services.AddScoped<IRepository<LinkGroupItem>, Repository<LinkGroupItem>>();
-            services.AddScoped<IRepository<KitLinkGroup>, Repository<KitLinkGroup>>();
-            services.AddScoped<IRepository<Items>, Repository<Items>>();
-            services.AddScoped<IRepository<KitLinkGroupItem>, Repository<KitLinkGroupItem>>();
-            services.AddScoped<IRepository<LinkGroupDto>, Repository<LinkGroupDto>>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
             );
 
-                services.AddScoped<InstructionListHelper, InstructionListHelper>();
+            services.AddScoped<InstructionListHelper, InstructionListHelper>();
             services.AddScoped<IHelper<ItemsDto, ItemsParameters>, ItemHelper>();
             services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
             services.AddScoped<IHelper<InstructionListDto, InstructionListsParameters>, InstructionListHelper>();
-
+            services.AddScoped<IHelper<KitDto, KitSearchParameters>, KitHelper>();
+            
             services.AddSwaggerGen(c =>
             {
                 

@@ -227,16 +227,16 @@ namespace KitBuilderWebApi.Controllers
         {
             if (!string.IsNullOrEmpty(instructionListsParameters.Name))
             {
-                var nameForWhereClause = instructionListsParameters.Name.Trim().ToLowerInvariant();
+                var nameForWhereClause = instructionListsParameters.Name.Trim().ToLower();
                 instructionListsBeforePaging = instructionListsBeforePaging
-                    .Where(i => i.Name.ToLowerInvariant() == nameForWhereClause);
+                    .Where(i => i.Name.ToLower() == nameForWhereClause);
             }
 
             if (!string.IsNullOrEmpty(instructionListsParameters.SearchNameQuery))
             {
-                var searchQueryForWhereClause = instructionListsParameters.SearchNameQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = instructionListsParameters.SearchNameQuery.Trim().ToLower();
                 instructionListsBeforePaging = instructionListsBeforePaging
-                    .Where(i => i.Name.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(i => i.Name.ToLower().Contains(searchQueryForWhereClause));
             }
         }
 

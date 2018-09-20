@@ -4,6 +4,8 @@
     [Name] NVARCHAR(10) NOT NULL, 
     [InstructionTypeId] INT NOT NULL, 
     [StatusId] INT NOT NULL, 
+	[InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
+	[UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
     CONSTRAINT [FK_InstructionList_InstructionType_InstructionTypeId] FOREIGN KEY ([InstructionTypeId]) REFERENCES [dbo].[InstructionType]([InstructionTypeId])
 				ON DELETE NO ACTION
                 ON UPDATE NO ACTION,

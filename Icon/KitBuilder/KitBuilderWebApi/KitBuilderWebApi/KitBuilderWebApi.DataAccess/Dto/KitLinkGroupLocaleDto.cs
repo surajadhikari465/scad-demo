@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace KitBuilderWebApi.DatabaseModels
+namespace KitBuilderWebApi.DataAccess.Dto
 {
-    public partial class KitLinkGroupLocale
+    public class KitLinkGroupLocaleDto
     {
         public int KitLinkGroupLocaleId { get; set; }
         [Required]
@@ -15,12 +16,12 @@ namespace KitBuilderWebApi.DatabaseModels
         public int? DisplaySequence { get; set; }
         public int? MinimumCalories { get; set; }
         public int? MaximumCalories { get; set; }
-        public Boolean? Exclude { get; set; }
+        public int? Exclude { get; set; }
         public DateTime InsertDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public string LastModifiedBy { get; set; }
 
-        public KitLinkGroup KitLinkGroup { get; set; }
-        public KitLocale KitLocale { get; set; }
+        public KitLinkGroupDto KitLinkGroup { get; set; }
+        public KitLocaleDto KitLocale { get; set; }
     }
 }

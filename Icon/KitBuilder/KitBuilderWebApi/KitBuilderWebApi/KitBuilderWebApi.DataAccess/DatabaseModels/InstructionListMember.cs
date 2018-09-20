@@ -15,7 +15,8 @@ namespace KitBuilderWebApi.DatabaseModels
         [Required(ErrorMessage = "Sequence is required.")]
         public int Sequence { get; set; }
         public string Member { get; set; }
-
+        public DateTime InsertDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
         public InstructionList InstructionList { get; set; }
     }
 }

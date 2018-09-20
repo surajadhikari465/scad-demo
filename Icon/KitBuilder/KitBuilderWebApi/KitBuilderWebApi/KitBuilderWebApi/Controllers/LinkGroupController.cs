@@ -202,26 +202,26 @@ namespace KitBuilderWebApi.Controllers
         {
             if (!string.IsNullOrEmpty(linkGroupParameters.GroupName))
             {
-                var nameForWhereClause = linkGroupParameters.GroupName.Trim().ToLowerInvariant();
+                var nameForWhereClause = linkGroupParameters.GroupName.Trim().ToLower();
                 linkGroupBeforePaging = linkGroupBeforePaging
-                                               .Where(i => i.GroupName.ToLowerInvariant() == nameForWhereClause);
+                                               .Where(i => i.GroupName.ToLower() == nameForWhereClause);
             }
 
             if (!string.IsNullOrEmpty(linkGroupParameters.ScanCode))
             {
-                var scanCodeForWhereClause = linkGroupParameters.ScanCode.Trim().ToLowerInvariant();
+                var scanCodeForWhereClause = linkGroupParameters.ScanCode.Trim().ToLower();
                 linkGroupBeforePaging = from l in linkGroupBeforePaging
                                         join lgi in linkGroupItemRepository.GetAll() on l.LinkGroupId equals lgi.LinkGroupId
                                         join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
-                                        where i.ScanCode.ToLowerInvariant().Contains(scanCodeForWhereClause)
+                                        where i.ScanCode.ToLower().Contains(scanCodeForWhereClause)
                                         select l;
             }
 
             if (!string.IsNullOrEmpty(linkGroupParameters.SearchGroupNameQuery))
             {
-                var searchQueryForWhereClause = linkGroupParameters.SearchGroupNameQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = linkGroupParameters.SearchGroupNameQuery.Trim().ToLower();
                 linkGroupBeforePaging = linkGroupBeforePaging
-                                               .Where(i => i.GroupName.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                                               .Where(i => i.GroupName.ToLower().Contains(searchQueryForWhereClause));
             }
         }
     }
