@@ -465,7 +465,6 @@
     <Build Include="app\Stored Procedures\GetCertificationAgencies.sql" />
     <Build Include="app\User Defined Types\ItemCanonicalDataType.sql" />
     <Build Include="dbo\Tables\HealthyEatingRating.sql" />
-    <None Include="Security\NutriCon.Security.sql" />
     <Build Include="app\Stored Procedures\AddOrUpdateCertificationAgencies.sql" />
     <Build Include="app\User Defined Types\CertificationAgencyImportType.sql" />
     <Build Include="app\User Defined Types\IntList.sql" />
@@ -675,9 +674,13 @@
     <Build Include="app\Tables\MessageResponseR10.sql" />
     <None Include="Scripts\PopulateData\Archive\AddCurrencyCodeTrait.sql" />
     <Build Include="dbo\Tables\LocaleSubType.sql" />
-    <None Include="Scripts\PopulateData\Release\AddLocaleSubtypeTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\AddMessageResponseR10TableToRetentionPolicy.sql" />
     <None Include="Scripts\PopulateData\Archive\DeleteR10MessageResponseTable.sql" />
+    <None Include="Scripts\PopulateData\Release\AddIrmaItemKeyTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddHospitalityToLocaleSubType.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddLocaleSubtypeTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddVenueCodeOccupantLocaleTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddVenueLocaleType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -712,10 +715,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\Release\AddVenueLocaleType.sql" />
-    <None Include="Scripts\PopulateData\Release\AddVenueCodeOccupantLocaleTrait.sql" />
-    <None Include="Scripts\PopulateData\Release\AddHospitalityToLocaleSubType.sql" />
-	<None Include="Scripts\PopulateData\AddIrmaItemKeyTraitCodes.sql" />  
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
