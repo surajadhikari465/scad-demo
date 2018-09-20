@@ -56,8 +56,9 @@ namespace Mammoth.PrimeAffinity.Library.Processors
                             {
                                 { PrimeAffinityConstants.Esb.IconMessageIdMessageHeaderKey, messageId },
                                 { PrimeAffinityConstants.Esb.SourceMessageHeaderKey, PrimeAffinityConstants.Esb.SourceMessageHeaderValue },
-                                { PrimeAffinityConstants.Esb.NonReceivingSystemsMessageHeaderKey, settings.NonReceivingSystems }
-                            };
+                                { PrimeAffinityConstants.Esb.NonReceivingSystemsMessageHeaderKey, settings.NonReceivingSystems },
+								{ PrimeAffinityConstants.Esb.TransactionTypeKey, "Item/Locale"}
+							};
                             producer.Send(message, messageId, messageProperties);
                             archivePrimeAffinityMessagesCommandHandler.Execute(new ArchivePrimeAffinityMessageCommand
                             {

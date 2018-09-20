@@ -46,7 +46,8 @@ namespace Mammoth.ApiController.QueueProcessors
             {
                 { "IconMessageID", "" },
                 { "Source", settings.Source },
-                { "nonReceivingSysName", settings.NonReceivingSystemsPrice }
+                { "nonReceivingSysName", settings.NonReceivingSystemsPrice },
+				{"TransactionType" , "Legacy Price" }
             };
         }
 

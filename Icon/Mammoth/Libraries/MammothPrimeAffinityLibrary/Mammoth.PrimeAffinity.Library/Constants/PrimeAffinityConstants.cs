@@ -18,6 +18,8 @@
             public const string NonReceivingSystemsMessageHeaderKey = "nonReceivingSysName";
             public const string MessageActionAddOrUpdate = "AddOrUpdate";
             public const string MessageActionDelete = "Delete";
-        }
+			public const string TransactionTypeKey = "TransactionType";
+
+		}
     }
 }

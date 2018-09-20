@@ -138,8 +138,9 @@ namespace Icon.ApiController.Controller.QueueProcessors
             messageProperties = new Dictionary<string, string>();
             messageProperties.Add("IconMessageID", string.Empty);
             messageProperties.Add("Source", "Icon");
+			messageProperties.Add("TransactionType", "Item/Locale"); //PSG
 
-            if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
+			if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
             {
                 messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
             }

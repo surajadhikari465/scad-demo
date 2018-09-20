@@ -18,6 +18,7 @@ using Mammoth.Esb.ProductListener.Mappers;
 using Mammoth.Esb.ProductListener.MessageParsers;
 using Mammoth.Esb.ProductListener.Models;
 using Mammoth.PrimeAffinity.Library.Commands;
+using Mammoth.PrimeAffinity.Library.Esb;
 using Mammoth.PrimeAffinity.Library.MessageBuilders;
 using Mammoth.PrimeAffinity.Library.Processors;
 using SimpleInjector;
@@ -56,6 +57,7 @@ namespace Mammoth.Esb.ProductListener
             container.Register<ILogger<PrimeAffinityPsgProcessor>, NLogLogger<PrimeAffinityPsgProcessor>>();
             container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
             container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
+			container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
 
             //Data Access
             container.RegisterSingleton<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
@@ -71,7 +73,10 @@ namespace Mammoth.Esb.ProductListener
             Registration dbConnectionRegistration = container.GetRegistration(typeof(IDbConnection)).Registration;
             dbConnectionRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IDbConnection is taken care of by the application.");
 
-            container.Verify();
+			EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10");
+			EsbConnectionCache.InitializeConnectionFactoryAndConnection();
+
+			container.Verify();
             return container;
         }
     }

@@ -1,4 +1,7 @@
-﻿using System.ServiceProcess;
+﻿using Icon.Esb;
+using Icon.Logging;
+using Mammoth.PrimeAffinity.Library.Esb;
+using System.ServiceProcess;
 using System.Threading;
 
 namespace Mammoth.Esb.ProductListener.Service
@@ -13,9 +16,8 @@ namespace Mammoth.Esb.ProductListener.Service
 #if DEBUG
             var container = SimpleInjectorInitializer.InitializeContainer();
             container.Verify();
-            var listener = container.GetInstance<ProductListener>();
+			var listener = container.GetInstance<ProductListener>();
             listener.Run();
-
             System.Console.ReadLine();
 
             while (true)

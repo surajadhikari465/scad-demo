@@ -140,8 +140,9 @@ namespace Icon.ApiController.Controller.QueueProcessors
             messageProperties = new Dictionary<string, string>();
             messageProperties.Add("IconMessageID", String.Empty);
             messageProperties.Add("Source", "Icon");
+			messageProperties.Add("TransactionType", "Locale");
 
-            if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
+			if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
             {
                 messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
             }

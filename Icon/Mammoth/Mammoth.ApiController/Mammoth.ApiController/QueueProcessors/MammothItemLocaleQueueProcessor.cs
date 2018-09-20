@@ -47,8 +47,9 @@ namespace Mammoth.ApiController.QueueProcessors
             {
                 { "IconMessageID", "" },
                 { "Source", settings.Source },
-                { "nonReceivingSysName", settings.NonReceivingSystemsItemLocale }
-            };
+                { "nonReceivingSysName", settings.NonReceivingSystemsItemLocale },
+				{"TransactionType" , "Item/Locale" }
+			};
         }
 
         internal override int MessageType => MessageTypes.ItemLocale;
