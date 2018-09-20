@@ -25,12 +25,21 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
         private List<ItemLocaleEventModel> data;
         private ItemLocaleControllerApplicationSettings settings;
 
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "FL";
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
             mockClientWrapper = new Mock<IHttpClientWrapper>();
             mockLogger = new Mock<ILogger>();
-            this.settings = new ItemLocaleControllerApplicationSettings { CurrentRegion = "FL", ApiRowLimit = 100 };
+            this.settings = new ItemLocaleControllerApplicationSettings { CurrentRegion = region, ApiRowLimit = 100 };
             service = new ItemLocaleService(mockClientWrapper.Object, mockLogger.Object, settings);
 
             data = new List<ItemLocaleEventModel>();

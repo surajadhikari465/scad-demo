@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Irma.Framework;
 using Irma.Testing;
+using Mammoth.Common;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.ItemLocale.Controller.DataAccess.Models;
@@ -24,15 +25,40 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         private SqlDbProvider dbProvider;
         private int storeNumber;
 
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "FL";
+            }
+        }
+
+        protected string irmaDatabaseForRegion
+        {
+            get
+            {
+                return $"ItemCatalog_{region}";
+            }
+        }
+
+        protected string irmaConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings[irmaDatabaseForRegion].ConnectionString;
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
             dbProvider = new SqlDbProvider();
-            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
+            dbProvider.Connection = new SqlConnection(irmaConnectionString);
             dbProvider.Connection.Open();
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction(IsolationLevel.Snapshot);
             query = new GetItemLocaleDataQuery(dbProvider);
-            parameters = new GetItemLocaleDataParameters { Instance = 777, Region = "FL" };
+            parameters = new GetItemLocaleDataParameters { Instance = 777, Region = region };
 
             IEnumerable<int> validStores = this.dbProvider.Connection
                 .Query<int>(@"DECLARE @ExcludedStoreNo varchar(250);
@@ -67,7 +93,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -95,109 +121,31 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedDefaultScanCode = false;
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .With(x => x.WFM_Store, true)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, true);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
-
-            // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
-
-            // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            // Insert New VSC, Item-Vendor, Store-Item-Vendor, Store-Item
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued, true, DateTime.Now);
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Item Extra Text
             var itemExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Item_ExtraText, int>(
@@ -229,25 +177,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             //        .ToObject(),
             //    x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier, IrmaEventTypes.ItemLocaleAddOrUpdate);
 
             //When
             var actual = query.Search(parameters).First();
@@ -302,7 +232,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -344,87 +274,26 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             int? expectedShelfLife = null;
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .With(x => x.WFM_Store, true)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, true);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Item_ID, expectedVendorItemId)
-                    .ToObject());
-
-            // Insert StoreItemVendor
-            var storeItemVendorId = this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
+            // Insert New Validated Scan Code, Item-Vendor, Store-Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId, expectedVendorItemId);
+            var storeItemVendorId = InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued, true, DateTime.Now);
 
             // Insert VendorCostHistory
             this.dbProvider.Insert(new IrmaQueryParams<VendorCostHistory, int>(
@@ -437,27 +306,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 x => x.VendorCostHistoryID));
 
             // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert WrappedTareWeight
             var wrappedTareWeight = this.dbProvider.Insert(new IrmaQueryParams<Scale_Tare, int>(
@@ -509,25 +362,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.StoreItemExtendedID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier, IrmaEventTypes.ItemLocaleAddOrUpdate);
 
             //When
             var actual = query.Search(parameters).First();
@@ -596,7 +431,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -641,87 +476,26 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 x => x.StoreJurisdictionID));
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, storeJurisdictionID)
-                .With(x => x.WFM_Store, true)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, storeJurisdictionID, true);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Item_ID, expectedVendorItemId)
-                    .ToObject());
-
-            // Insert StoreItemVendor
-            var storeItemVendorId = this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
+            // Insert New Validated Scan Code, Item-Vendor, Store-Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId, expectedVendorItemId);
+            var storeItemVendorId = InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued, true, DateTime.Now);
 
             // Insert VendorCostHistory
             this.dbProvider.Insert(new IrmaQueryParams<VendorCostHistory, int>(
@@ -734,27 +508,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 x => x.VendorCostHistoryID));
 
             // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality,
+                expectedSignRomanceLong, expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -793,25 +551,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.Vendor_Unit_ID, testItemUnitId)
                     .ToObject());
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier, IrmaEventTypes.ItemLocaleAddOrUpdate);
 
             //When
             var actual = query.Search(parameters).First();
@@ -882,7 +622,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -912,118 +652,44 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count();
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedInternalStore)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedInternalStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            // Insert New Validated Scan Code, Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
-            // Insert StoreItem
+            // Insert StoreItem            
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -1040,25 +706,8 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.Scale_ExtraText_ID, scaleExtraTextId)
                     .ToObject(),
                 x => x.ItemScale_ID));
-
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+;
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(r => r.BusinessUnitId).ToList();
@@ -1116,7 +765,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -1146,118 +795,46 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count();
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedInternalStore)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedInternalStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            // Insert New Validated Scan Code, Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
 
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            var z = expectedStoreNumbers.Select(s => s.Store_No).ToList();
 
             expectedStoreNumbers.ForEach(s =>
             {
-                // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                // Insert StoreItemVendor 
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -1275,24 +852,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(r => r.BusinessUnitId).ToList();
@@ -1350,7 +910,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -1380,148 +940,49 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count() + 1;
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
+            var itemKey2 = InsertNewItem(subTeamNo, expectedSignDescription + "2", expectedProductCode + "2",
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
-            var itemKey2 = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription + "2")
-                        .With(x => x.Product_Code, expectedProductCode + "2")
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
-
-            // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey2)
-                        .With(x => x.Identifier, expectedIdentifier + "2")
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale + 2)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            // Insert New Item Identifiers
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
+            InsertNewItemIdentifier(itemKey2, expectedIdentifier + "2", expectedNumberOfDigitsSentToScale + 2);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedInternalStore)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedInternalStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
             // Insert another Price for ItemKey2
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp + 2)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey2)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
-
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier + "2")
-                    .ToObject(),
-                x => x.Id));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp + 2, storeNo, itemKey2, expectedAgeRestrictionId, expectedLinkedItemKey);
+            
+            // Insert New Validated Scan Codes
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertNewValidatedScanCode(expectedIdentifier + "2");
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
 
@@ -1534,31 +995,10 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             x => x.StoreItemAuthorizationID));
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
-
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey2)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby + "2")
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality + "2")
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong + "2")
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort + "2")
-                    .With(x => x.UomRegulationTagUom, expectedTagUom + 2)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+            InsertItemSignAttributes(itemKey2, expectedChicagoBaby + "2", expectedColorAdd, expectedLocality + "2", expectedSignRomanceLong + "2",
+                expectedSignRomanceShort + "2", expectedTagUom + 2, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -1590,44 +1030,8 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
-
-            var expectedQueueId2 = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey2,
-                        Identifier = expectedIdentifier + "2",
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance,
-                        StoreNo = storeNo
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
+            var expectedQueueId2 = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(q => q.ScanCode).ThenBy(r => r.BusinessUnitId).ToList();
@@ -1701,7 +1105,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual((expectedTagUom + 2).ToString(), actualRowSet[y].TagUom, "The expected TagUom did not match the actual.");
             Assert.AreEqual(Convert.ToDouble(expectedMsrp + 2), actualRowSet[y].Msrp, "The expected Msrp did not match the actual.");
             Assert.IsTrue(string.IsNullOrEmpty(actualRowSet[y].ErrorMessage));
-
         }
 
         [TestMethod]
@@ -1747,118 +1150,44 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count();
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Mega_Store, true)
-                .With(x => x.Internal, expectedStoreInternal)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, null, expectedStoreInternal);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
-
+            // Insert New Validated Scan Code, Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -1876,24 +1205,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters);
@@ -1947,119 +1259,44 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count();
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Mega_Store, expectedMegaStore)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedStoreInternal)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedStoreInternal, expectedMegaStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
-
-            // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            // Insert New Validated Scan Code, Item-Vendor
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -2077,24 +1314,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters);
@@ -2104,7 +1324,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         }
 
         [TestMethod]
-        public void GetItemLocaleEvents_AddUpdateAndItemDeleteEventsExistWithValidStoreNoAndNullStoreNo_ReturnsOneRowForEachStoreAssociatedToTheItem()
+       public void GetItemLocaleEvents_AddUpdateAndItemDeleteEventsExistWithValidStoreNoAndNullStoreNo_ReturnsOneRowForEachStoreAssociatedToTheItem()
         {
             // Given
             var storeNo = 834792;
@@ -2118,7 +1338,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -2148,152 +1368,50 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count() + 2; // one more for the row with valid storeNo and another row for the ItemDelete events
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
+            var itemKey2 = InsertNewItem(subTeamNo, expectedSignDescription + "2", expectedProductCode + "2",
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
-            var itemKey2 = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription + "2")
-                        .With(x => x.Product_Code, expectedProductCode + "2")
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
-
-            // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
-
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey2)
-                        .With(x => x.Identifier, expectedIdentifier + "2")
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale + 2)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            // Insert New Item Identifiers
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
+            InsertNewItemIdentifier(itemKey2, expectedIdentifier + "2", expectedNumberOfDigitsSentToScale + 2);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedInternalStore)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedInternalStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
             // Insert another Price for ItemKey2
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp + 2)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey2)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp + 2, storeNo, itemKey2, expectedAgeRestrictionId, expectedLinkedItemKey);
 
-            // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .With(x => x.InforItemId, 1)
-                    .ToObject(),
-                x => x.Id));
-
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier + "2")
-                    .With(x => x.InforItemId, 2)
-                    .ToObject(),
-                x => x.Id));
+            // Insert New Validated Scan Codes
+            InsertNewValidatedScanCode(expectedIdentifier, 1);
+            InsertNewValidatedScanCode(expectedIdentifier + "2", 2);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
-
 
             this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
             IrmaTestObjectFactory.Build<StoreItem>()
@@ -2304,31 +1422,10 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             x => x.StoreItemAuthorizationID));
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
-
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey2)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby + "2")
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality + "2")
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong + "2")
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort + "2")
-                    .With(x => x.UomRegulationTagUom, expectedTagUom + 2)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+            InsertItemSignAttributes(itemKey2, expectedChicagoBaby + "2", expectedColorAdd, expectedLocality + "2", expectedSignRomanceLong + "2",
+                expectedSignRomanceShort + "2", expectedTagUom + 2, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -2360,64 +1457,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
-
-            var expectedQueueId2 = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey2,
-                        Identifier = expectedIdentifier + "2",
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance,
-                        StoreNo = storeNo
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
-
-            var expectedDeleteQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey2,
-                        Identifier = expectedIdentifier + "2",
-                        EventTypeId = IrmaEventTypes.ItemDelete,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance,
-                        StoreNo = storeNo
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
+            var expectedQueueId2 = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", expectedEventTypeid);
+            var expectedDeleteQueueId = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", IrmaEventTypes.ItemDelete);  
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(q => q.ScanCode).ThenBy(r => r.EventTypeId).ThenBy(r => r.BusinessUnitId).ToList();
@@ -2541,7 +1583,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "1234567";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -2572,118 +1614,46 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             UpdateLabAndClosedStoreValues(new List<int> { storeNo });
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.WFM_Store, expectedWfmStore)
-                .With(x => x.Internal, expectedInternalStore)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, expectedWfmStore, expectedInternalStore);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             allStores.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
             // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            InsertNewValidatedScanCode(expectedIdentifier);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             allStores.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             allStores.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -2701,24 +1671,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(r => r.BusinessUnitId).ToList();
@@ -2778,118 +1731,46 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedRows = expectedStoreNumbers.Count();
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Mega_Store, true)
-                .With(x => x.Internal, true)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, null, true, true);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert New Price
-                this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                    IrmaTestObjectFactory.Build<Price>()
-                        .With(x => x.IBM_Discount, expectedCaseDiscount)
-                        .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                        .With(x => x.LocalItem, expectedLocalItem)
-                        .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                        .With(x => x.Discountable, expectedTmDiscount)
-                        .With(x => x.MSRPPrice, expectedMsrp)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.AgeCode, expectedAgeRestrictionId)
-                        .With(x => x.LinkedItem, expectedLinkedItemKey)
-                        .ToObject(),
-                    null,
-                    new Dictionary<string, string> { { "Price1", "Price" } }));
+                InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                    expectedMsrp, s.Store_No, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
             });
 
             // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            InsertNewValidatedScanCode(expectedIdentifier);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                    IrmaTestObjectFactory.Build<StoreItemVendor>()
-                        .With(x => x.Vendor_ID, vendorId)
-                        .With(x => x.Store_No, s.Store_No)
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.DiscontinueItem, expectedDiscontinued)
-                        .With(x => x.PrimaryVendor, true)
-                        .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                        .ToObject(),
-                    x => x.StoreItemVendorID));
+                InsertStoreItemVendor(vendorId, s.Store_No, itemKey, expectedDiscontinued, true, DateTime.Now);
             });
 
             // Insert StoreItem
             expectedStoreNumbers.ForEach(s =>
             {
-                this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, s.Store_No)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+                InsertStoreItem(s.Store_No, itemKey, expectedAuthorized);
             });
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -2907,24 +1788,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(r => r.BusinessUnitId).ToList();
@@ -3007,107 +1871,37 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
             // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            InsertNewValidatedScanCode(expectedIdentifier);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued, true, DateTime.Now);
 
             // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -3125,25 +1919,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .ToObject(),
                 x => x.ItemScale_ID));
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier, expectedEventTypeid);
 
             //When
             var actual = query.Search(parameters).First();
@@ -3224,158 +2000,45 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
 
             // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale);
 
-            // Insert New Store
-            // TS Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_Name, "Test TS Store")
-                .With(x => x.Store_No, storeNoTs)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitIdTs)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
-
-            // RM Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_Name, "Test RM Store")
-                .With(x => x.Store_No, storeNoRm)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitIdRm)
-                .With(x => x.StoreJurisdictionID, 1)
-                .ToObject());
+            // Insert New Stores
+            InsertNewStore(storeNoTs, expectedBusinessUnitIdTs, 1, true, null, null, "Test TS Store");
+            InsertNewStore(storeNoRm, expectedBusinessUnitIdRm, 1, true, null, null, "Test RM Store");
 
             // Insert New Store Region Mapping
             // Ts
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNoTs)
-                .With(x => x.Region_Code, expectedRegionTs)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNoTs, expectedRegionTs);
             // Rm
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNoRm)
-                .With(x => x.Region_Code, expectedRegionRm)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNoRm, expectedRegionRm);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNoTs)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
-
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNoRm)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNoTs, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNoRm, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
             // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            InsertNewValidatedScanCode(expectedIdentifier);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNoTs)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
-
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNoRm)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
+            InsertStoreItemVendor(vendorId, storeNoTs, itemKey, expectedDiscontinued, true, DateTime.Now);
+            InsertStoreItemVendor(vendorId, storeNoRm, itemKey, expectedDiscontinued, true, DateTime.Now);
 
             // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNoTs)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
-
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNoRm)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            InsertStoreItem(storeNoTs, itemKey, expectedAuthorized);
+            InsertStoreItem(storeNoRm, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
             // Insert Scale Extra Text
             var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
@@ -3413,25 +2076,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     "mammoth.ItemLocaleChangeQueue",
                     true));
 
-            var expectedQueueIdRm = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNoRm,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = expectedEventTypeid,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueIdRm = InsertToItemLocaleChangeQueue(itemKey, storeNoRm, expectedIdentifier, expectedEventTypeid);
 
             //When
             var actual = query.Search(parameters).OrderBy(a => a.Region).ToList();
@@ -3515,7 +2160,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -3539,133 +2184,43 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedTagUom = 23;
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
             var expectedDefaultScanCode = true;
-
-            // Insert New Item
-            var itemKey = this.dbProvider.Insert(
-                new IrmaQueryParams<Item, int>(
-                    IrmaTestObjectFactory.BuildItem()
-                        .With(x => x.SubTeam_No, subTeamNo)
-                        .With(x => x.Sign_Description, expectedSignDescription)
-                        .With(x => x.Product_Code, expectedProductCode)
-                        .With(x => x.Origin_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.CountryProc_ID, expectedOrigin.Origin_ID)
-                        .With(x => x.LabelType_ID, expectedLabelType.LabelType_ID)
-                        .With(x => x.Retail_Unit_ID, expectedRetailUnit.Unit_ID)
-                        .ToObject(),
-                x => x.Item_Key));
+                        
+            // Insert New Item 
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             var expectedIrmaItemKey = itemKey;
 
             // Insert New Item Identifier
-            this.dbProvider.Insert(
-                new IrmaQueryParams<ItemIdentifier, int>(
-                    IrmaTestObjectFactory.BuildItemIdentifier()
-                        .With(x => x.Item_Key, itemKey)
-                        .With(x => x.Identifier, expectedIdentifier)
-                        .With(x => x.NumPluDigitsSentToScale, expectedNumberOfDigitsSentToScale)
-                        .With(x => x.Default_Identifier, expectedDefaultScanCode ? (byte)1 : (byte)0)
-                        .ToObject(),
-                    x => x.Identifier_ID));
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode);
 
             // Insert New Store
-            this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.BusinessUnit_ID, expectedBusinessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .With(x => x.WFM_Store, true)
-                .ToObject());
+            InsertNewStore(storeNo, expectedBusinessUnitId, 1, true);
 
             // Insert New Store Region Mapping
-            this.dbProvider.Insert(IrmaTestObjectFactory.Build<StoreRegionMapping>()
-                .With(x => x.Store_No, storeNo)
-                .With(x => x.Region_Code, expectedRegion)
-                .ToObject());
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
 
             // Insert New Price
-            this.dbProvider.Insert(new IrmaQueryParams<Price, int>(
-                IrmaTestObjectFactory.Build<Price>()
-                    .With(x => x.IBM_Discount, expectedCaseDiscount)
-                    .With(x => x.ElectronicShelfTag, expectedElectronicShelfTag)
-                    .With(x => x.LocalItem, expectedLocalItem)
-                    .With(x => x.Restricted_Hours, expectedRestrictedHours)
-                    .With(x => x.Discountable, expectedTmDiscount)
-                    .With(x => x.MSRPPrice, expectedMsrp)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.AgeCode, expectedAgeRestrictionId)
-                    .With(x => x.LinkedItem, expectedLinkedItemKey)
-                    .ToObject(),
-                null,
-                new Dictionary<string, string> { { "Price1", "Price" } }));
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
 
             // Insert New Validated Scan Code
-            this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
-                IrmaTestObjectFactory.BuildValidatedScanCode()
-                    .With(x => x.ScanCode, expectedIdentifier)
-                    .ToObject(),
-                x => x.Id));
+            InsertNewValidatedScanCode(expectedIdentifier);
 
             // Insert Item Vendor
-            this.dbProvider.Insert(
-                IrmaTestObjectFactory.Build<ItemVendor>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Vendor_ID, vendorId)
-                    .ToObject());
+            InsertItemVendor(itemKey, vendorId);
 
             // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
-                IrmaTestObjectFactory.Build<StoreItemVendor>()
-                    .With(x => x.Vendor_ID, vendorId)
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, expectedDiscontinued)
-                    .With(x => x.PrimaryVendor, true)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
-                    .ToObject(),
-                x => x.StoreItemVendorID));
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued, true, DateTime.Now);
 
             // Insert StoreItem
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItem, int>(
-                IrmaTestObjectFactory.Build<StoreItem>()
-                    .With(x => x.Store_No, storeNo)
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.Authorized, expectedAuthorized)
-                    .ToObject(),
-                x => x.StoreItemAuthorizationID));
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
 
             // Insert Sign Attributes
-            this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
-                IrmaTestObjectFactory.Build<ItemSignAttribute>()
-                    .With(x => x.Item_Key, itemKey)
-                    .With(x => x.UomRegulationChicagoBaby, expectedChicagoBaby)
-                    .With(x => x.ColorAdded, expectedColorAdd)
-                    .With(x => x.Locality, expectedLocality)
-                    .With(x => x.SignRomanceTextLong, expectedSignRomanceLong)
-                    .With(x => x.SignRomanceTextShort, expectedSignRomanceShort)
-                    .With(x => x.UomRegulationTagUom, expectedTagUom)
-                    .With(x => x.Exclusive, expectedExclusive)
-                    .ToObject(),
-                x => x.ItemSignAttributeID));
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
-            var expectedQueueId = this.dbProvider.Insert(
-                new IrmaQueryParams<TestQueueModel, int>(
-                    new TestQueueModel
-                    {
-                        ItemKey = itemKey,
-                        StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
-                        InsertDate = DateTime.Now,
-                        InProcessBy = this.parameters.Instance
-                    },
-                    null,
-                    new Dictionary<string, string>
-                    {
-                        { "ItemKey", "Item_Key" },
-                        { "StoreNo", "Store_No" },
-                    },
-                    "mammoth.ItemLocaleChangeQueue",
-                    true));
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);          
 
             //When
             var actual = query.Search(parameters).First();
@@ -3679,7 +2234,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         }
 
         [TestMethod]
-        public void GetItemLocaleEvents_HasIrmaItemKeyAsNull_ShouldReturnNullIrmaItemKeyAndDefaultScanCode()
+        public void GetItemLocaleEvents_HasIrmaItemKeyAsNull_ShouldReturnNullIrmaItemKey()
         {
             var storeNo = 834792;
             var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
@@ -3690,7 +2245,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
             var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
             var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
-            var expectedRegion = "FL";
+            var expectedRegion = region;
             var expectedIdentifier = "22222242";
             var expectedBusinessUnitId = 83472;
             var expectedAgeRestrictionId = 2;
@@ -3728,17 +2283,304 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             InsertItemVendor(itemKey, vendorId);
             InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued);
             InsertStoreItem(storeNo, itemKey, expectedAuthorized);
-            InsertSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
                 expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(expectedEventTypeid, actual.EventTypeId, "The expected EventTypeId did not match the actual.");
+            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
+            Assert.AreEqual(expectedDefaultScanCode, actual.DefaultScanCode, "The expected DefaultScanCode did not match the actual.");
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_IrmaItemIdentifierIsRemoved_ShouldReturnNullIrmaItemKey()
+        {
+            var storeNo = 834792;
+            var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
+            var vendorId = this.GetFirstFromTable<Vendor>().Vendor_ID;
+            var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
+            var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
+            var expectedLabelType = this.GetFirstFromTable<LabelType>();
+            var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
+            var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
+            var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
+            var expectedRegion = region;
+            var expectedIdentifier = "22222242";
+            var expectedBusinessUnitId = 83472;
+            var expectedAgeRestrictionId = 2;
+            var expectedAuthorized = true;
+            var expectedCaseDiscount = true;
+            var expectedDiscontinued = false;
+            var expectedLocalItem = true;
+            var expectedLocality = "Test Locality";
+            var expectedProductCode = "TestProductCode";
+            var expectedRestrictedHours = true;
+            var expectedSignRomanceLong = "Test Sign Romance Long";
+            var expectedSignRomanceShort = "Test Sign Romance Short";
+            var expectedSignDescription = "Test Sign Description";
+            var expectedTmDiscount = true;
+            var expectedMsrp = 2000m;
+            var expectedChicagoBaby = "Test Baby";
+            var expectedColorAdd = true;
+            var expectedElectronicShelfTag = true;
+            var expectedExclusive = DateTime.Today;
+            var expectedNumberOfDigitsSentToScale = 123;
+            var expectedTagUom = 23;
+            var expectedDefaultScanCode = true;
+
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
+            var expectedIrmaItemKey = itemKey;
+
+            InsertNewItemIdentifier(
+                itemKey: itemKey,
+                Identifier: expectedIdentifier,
+                numberOfDigitsSentToScale: expectedNumberOfDigitsSentToScale,
+                defaultScanCode: expectedDefaultScanCode,
+                removeIdentifier: true,
+                deletedIdentifier: false);
+            InsertNewStore(storeNo, expectedBusinessUnitId);
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued);
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_IrmaItemIdentifierIsDeleted_ShouldReturnNullIrmaItemKey()
+        {
+            var storeNo = 834792;
+            var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
+            var vendorId = this.GetFirstFromTable<Vendor>().Vendor_ID;
+            var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
+            var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
+            var expectedLabelType = this.GetFirstFromTable<LabelType>();
+            var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
+            var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
+            var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
+            var expectedRegion = region;
+            var expectedIdentifier = "22222242";
+            var expectedBusinessUnitId = 83472;
+            var expectedAgeRestrictionId = 2;
+            var expectedAuthorized = true;
+            var expectedCaseDiscount = true;
+            var expectedDiscontinued = false;
+            var expectedLocalItem = true;
+            var expectedLocality = "Test Locality";
+            var expectedProductCode = "TestProductCode";
+            var expectedRestrictedHours = true;
+            var expectedSignRomanceLong = "Test Sign Romance Long";
+            var expectedSignRomanceShort = "Test Sign Romance Short";
+            var expectedSignDescription = "Test Sign Description";
+            var expectedTmDiscount = true;
+            var expectedMsrp = 2000m;
+            var expectedChicagoBaby = "Test Baby";
+            var expectedColorAdd = true;
+            var expectedElectronicShelfTag = true;
+            var expectedExclusive = DateTime.Today;
+            var expectedNumberOfDigitsSentToScale = 123;
+            var expectedTagUom = 23;
+            var expectedDefaultScanCode = true;
+
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
+            var expectedIrmaItemKey = itemKey;
+
+            InsertNewItemIdentifier(
+                itemKey: itemKey,
+                Identifier: expectedIdentifier,
+                numberOfDigitsSentToScale: expectedNumberOfDigitsSentToScale,
+                defaultScanCode: expectedDefaultScanCode,
+                removeIdentifier: false,
+                deletedIdentifier: true);
+            InsertNewStore(storeNo, expectedBusinessUnitId);
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued);
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
+
+            var test = dbProvider.Connection.Query<ItemIdentifier>(
+                "SELECT * FROM dbo.ItemIdentifier WHERE Identifier = @identifier",
+                new { identifier = expectedIdentifier },
+                dbProvider.Transaction)
+                .ToList();
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            var test2 = dbProvider.Connection.Query<ItemIdentifier>(
+                "SELECT * FROM dbo.ItemIdentifier WHERE Identifier = @identifier",
+                new { identifier = expectedIdentifier },
+                dbProvider.Transaction)
+                .ToList();
+
+            var test3 = dbProvider.Connection.Query<ItemIdentifier>(
+                "SELECT * FROM mammoth.ItemLocaleChangeQueue",
+                null,
+                dbProvider.Transaction)
+                .ToList();
+
+            //Then
+            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
+        }
+        [TestMethod]
+
+        public void GetItemLocaleEvents_IrmaItemIsRemoved_ShouldReturnNullIrmaItemKey()
+        {
+            var storeNo = 834792;
+            var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
+            var vendorId = this.GetFirstFromTable<Vendor>().Vendor_ID;
+            var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
+            var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
+            var expectedLabelType = this.GetFirstFromTable<LabelType>();
+            var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
+            var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
+            var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
+            var expectedRegion = region;
+            var expectedIdentifier = "22222242";
+            var expectedBusinessUnitId = 83472;
+            var expectedAgeRestrictionId = 2;
+            var expectedAuthorized = true;
+            var expectedCaseDiscount = true;
+            var expectedDiscontinued = false;
+            var expectedLocalItem = true;
+            var expectedLocality = "Test Locality";
+            var expectedProductCode = "TestProductCode";
+            var expectedRestrictedHours = true;
+            var expectedSignRomanceLong = "Test Sign Romance Long";
+            var expectedSignRomanceShort = "Test Sign Romance Short";
+            var expectedSignDescription = "Test Sign Description";
+            var expectedTmDiscount = true;
+            var expectedMsrp = 2000m;
+            var expectedChicagoBaby = "Test Baby";
+            var expectedColorAdd = true;
+            var expectedElectronicShelfTag = true;
+            var expectedExclusive = DateTime.Today;
+            var expectedNumberOfDigitsSentToScale = 123;
+            var expectedTagUom = 23;
+            var expectedDefaultScanCode = true;
+
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID, true);
+            var expectedIrmaItemKey = itemKey;
+
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode, true);
+            InsertNewStore(storeNo, expectedBusinessUnitId);
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued);
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_IrmaItemIsDeleted_ShouldReturnNullIrmaItemKey()
+        {
+            var storeNo = 834792;
+            var subTeamNo = this.GetFirstFromTable<SubTeam>().SubTeam_No;
+            var vendorId = this.GetFirstFromTable<Vendor>().Vendor_ID;
+            var expectedRetailUnit = this.GetFirstFromTable<ItemUnit>();
+            var expectedOrigin = this.GetFirstFromTable<ItemOrigin>();
+            var expectedLabelType = this.GetFirstFromTable<LabelType>();
+            var expectedLinkedItemKey = this.GetFirstFromTable<Item>().Item_Key;
+            var expectedLinkedIdentifier = this.GetLinkedIdentifierByItemKey(expectedLinkedItemKey);
+            var expectedScaleExtraTextId = this.GetFirstFromTable<ItemScale>().Scale_ExtraText_ID;
+            var expectedRegion = region;
+            var expectedIdentifier = "22222242";
+            var expectedBusinessUnitId = 83472;
+            var expectedAgeRestrictionId = 2;
+            var expectedAuthorized = true;
+            var expectedCaseDiscount = true;
+            var expectedDiscontinued = false;
+            var expectedLocalItem = true;
+            var expectedLocality = "Test Locality";
+            var expectedProductCode = "TestProductCode";
+            var expectedRestrictedHours = true;
+            var expectedSignRomanceLong = "Test Sign Romance Long";
+            var expectedSignRomanceShort = "Test Sign Romance Short";
+            var expectedSignDescription = "Test Sign Description";
+            var expectedTmDiscount = true;
+            var expectedMsrp = 2000m;
+            var expectedChicagoBaby = "Test Baby";
+            var expectedColorAdd = true;
+            var expectedElectronicShelfTag = true;
+            var expectedExclusive = DateTime.Today;
+            var expectedNumberOfDigitsSentToScale = 123;
+            var expectedTagUom = 23;
+            var expectedDefaultScanCode = true;
+
+            var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
+                expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID, false, true);
+            var expectedIrmaItemKey = itemKey;
+
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode, true);
+            InsertNewStore(storeNo, expectedBusinessUnitId);
+            InsertNewStoreRegionMapping(storeNo, expectedRegion);
+            InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
+                expectedMsrp, storeNo, itemKey, expectedAgeRestrictionId, expectedLinkedItemKey);
+            InsertNewValidatedScanCode(expectedIdentifier);
+            InsertItemVendor(itemKey, vendorId);
+            InsertStoreItemVendor(vendorId, storeNo, itemKey, expectedDiscontinued);
+            InsertStoreItem(storeNo, itemKey, expectedAuthorized);
+            InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
+                expectedSignRomanceShort, expectedTagUom, expectedExclusive);
+
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
+        }
+
+        protected int InsertToItemLocaleChangeQueue(int itemKey, int? storeNo, string identfiier, int eventType = IrmaEventTypes.ItemLocaleAddOrUpdate)
+        {
             var expectedQueueId = this.dbProvider.Insert(
                 new IrmaQueryParams<TestQueueModel, int>(
                     new TestQueueModel
                     {
                         ItemKey = itemKey,
                         StoreNo = storeNo,
-                        Identifier = expectedIdentifier,
-                        EventTypeId = IrmaEventTypes.ItemLocaleAddOrUpdate,
+                        Identifier = identfiier,
+                        EventTypeId = eventType,
                         InsertDate = DateTime.Now,
                         InProcessBy = this.parameters.Instance
                     },
@@ -3750,14 +2592,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     },
                     "mammoth.ItemLocaleChangeQueue",
                     true));
-
-            //When
-            var actual = query.Search(parameters).First();
-
-            //Then
-            Assert.IsNull(actual.IrmaItemKey, nameof(ItemLocaleEventModel.IrmaItemKey));
-            Assert.IsNull(actual.DefaultScanCode, nameof(ItemLocaleEventModel.DefaultScanCode));
+            return expectedQueueId;
         }
+
 
         private void InsertIntoChangeQueue(int rows, int jobInstance, int eventTypeId, int? storeNumber)
         {
@@ -3992,7 +2829,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         }
         
         private int InsertNewItem(int subTeamNo, string signDescription, string productCode,
-            int originID, int labelTypeID, int retailUnitID)
+            int originID, int labelTypeID, int retailUnitID, bool removeItem = false, bool deletedItem = false)
         {
             // Insert New Item
             var itemKey = this.dbProvider.Insert(
@@ -4005,14 +2842,15 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.CountryProc_ID, originID)
                         .With(x => x.LabelType_ID, labelTypeID)
                         .With(x => x.Retail_Unit_ID, retailUnitID)
+                        .With(x => x.Remove_Item, removeItem ? (byte)1 : (byte)0)
+                        .With(x => x.Deleted_Item, deletedItem)
                         .ToObject(),
                 x => x.Item_Key));
             return itemKey;
         }
 
-        private void InsertSignAttributes(int itemKey, string chicagoBaby, bool? ColorAdd,
-            string locality, string signRomanceLong, string signRomanceShort,
-            int? tagUom, DateTime? exclusive)
+        private void InsertItemSignAttributes(int itemKey, string chicagoBaby, bool? ColorAdd,
+            string locality, string signRomanceLong, string signRomanceShort, int? tagUom, DateTime? exclusive)
         {
             // Insert Sign Attributes
             this.dbProvider.Insert(new IrmaQueryParams<ItemSignAttribute, int>(
@@ -4041,26 +2879,27 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 x => x.StoreItemAuthorizationID));
         }
 
-        private void InsertStoreItemVendor(int vendorId, int storeNo, int itemKey,
-            bool Discontinued, bool primaryVendor = true, DateTime? lastCostRefreshedDate = null)
+        private int InsertStoreItemVendor(int vendorId, int storeNo, int itemKey,
+            bool discontinued, bool primaryVendor = true, DateTime? lastCostRefreshedDate = null)
         {
             if (lastCostRefreshedDate == null) lastCostRefreshedDate = DateTime.Now;
             // Insert StoreItemVendor
-            this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
+            int storeItemVendorId = this.dbProvider.Insert(new IrmaQueryParams<StoreItemVendor, int>(
                 IrmaTestObjectFactory.Build<StoreItemVendor>()
                     .With(x => x.Vendor_ID, vendorId)
                     .With(x => x.Store_No, storeNo)
                     .With(x => x.Item_Key, itemKey)
-                    .With(x => x.DiscontinueItem, Discontinued)
+                    .With(x => x.DiscontinueItem, discontinued)
                     .With(x => x.PrimaryVendor, primaryVendor)
-                    .With(x => x.LastCostRefreshedDate, DateTime.Now)
+                    .With(x => x.LastCostRefreshedDate, lastCostRefreshedDate)
                     .ToObject(),
                 x => x.StoreItemVendorID));
+
+            return storeItemVendorId;
         }
-
-
+        
         private void InsertNewItemIdentifier(int itemKey, string Identifier, int? numberOfDigitsSentToScale,
-            bool defaultScanCode, bool removeIdentifier=false)
+            bool defaultScanCode = true, bool removeIdentifier = false, bool deletedIdentifier = false)
         {
             // Insert New Item Identifier
             this.dbProvider.Insert(
@@ -4071,19 +2910,23 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.NumPluDigitsSentToScale, numberOfDigitsSentToScale)
                         .With(x => x.Default_Identifier, defaultScanCode ? (byte)1 : (byte)0)
                         .With(x => x.Remove_Identifier, removeIdentifier ? (byte)1 : (byte)0)
+                        .With(x => x.Deleted_Identifier, deletedIdentifier ? (byte)1 : (byte)0)
                         .ToObject(),
                     x => x.Identifier_ID));
         }
 
-        private void InsertNewStore(int storeNo, int? businessUnitId,
-            int? jurisdictionID = 1, bool wfm_store = true)
+        private void InsertNewStore(int storeNo, int? businessUnitId, int? jurisdictionID = 1,
+            bool? wfm_store = true, bool? internal_store = false, bool? mega_store = false, string storeName = "Test Store")
         {
             // Insert New Store
             this.dbProvider.Insert(IrmaTestObjectFactory.BuildStore()
                 .With(x => x.Store_No, storeNo)
                 .With(x => x.BusinessUnit_ID, businessUnitId)
-                .With(x => x.StoreJurisdictionID, 1)
-                .With(x => x.WFM_Store, true)
+                .With(x => x.StoreJurisdictionID, jurisdictionID)
+                .With(x => x.WFM_Store, wfm_store)
+                .With(x => x.Store_Name, storeName)
+                .With(x => x.Mega_Store, mega_store)
+                .With(x => x.Internal, internal_store)
                 .ToObject());
         }
 
@@ -4118,23 +2961,25 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             new Dictionary<string, string> { { "Price1", "Price" } }));
         }
 
-        private void InsertNewValidatedScanCode(string identifier)
+        private void InsertNewValidatedScanCode(string identifier, int inforItemId = 0)
         {
             // Insert New Validated Scan Code
             this.dbProvider.Insert(new IrmaQueryParams<ValidatedScanCode, int>(
                 IrmaTestObjectFactory.BuildValidatedScanCode()
                     .With(x => x.ScanCode, identifier)
+                    .With(x => x.InforItemId, inforItemId)
                     .ToObject(),
                 x => x.Id));
         }
 
-        private void InsertItemVendor(int itemKey, int vendorId)
+        private void InsertItemVendor(int itemKey, int vendorId, string vendorItemId = null)
         {
             // Insert Item Vendor
             this.dbProvider.Insert(
                 IrmaTestObjectFactory.Build<ItemVendor>()
                     .With(x => x.Item_Key, itemKey)
                     .With(x => x.Vendor_ID, vendorId)
+                    .With(x => x.Item_ID, vendorItemId)
                     .ToObject());
         }
     }

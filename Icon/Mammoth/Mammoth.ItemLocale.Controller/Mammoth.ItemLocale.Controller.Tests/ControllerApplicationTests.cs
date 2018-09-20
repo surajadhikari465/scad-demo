@@ -1,4 +1,5 @@
-﻿using Mammoth.Common.ControllerApplication;
+﻿using Mammoth.Common;
+using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.ControllerApplication.Models;
 using Mammoth.Common.ControllerApplication.Services;
 using Mammoth.Common.Email;
@@ -23,10 +24,19 @@ namespace Mammoth.ItemLocale.Controller.Tests
         private Mock<IService<ItemLocaleEventModel>> mockService;
         private Mock<ILogger> mockLogger;
 
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "FL";
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
-            settings = new ItemLocaleControllerApplicationSettings { Regions = new List<string> { "FL" } };
+            settings = new ItemLocaleControllerApplicationSettings { Regions = new List<string> { region } };
             mockQueueManager = new Mock<IQueueManager<ItemLocaleEventModel>>();
             mockService = new Mock<IService<ItemLocaleEventModel>>();
             mockLogger = new Mock<ILogger>();
@@ -60,7 +70,7 @@ namespace Mammoth.ItemLocale.Controller.Tests
             application.Run();
 
             //Then
-            Assert.AreEqual("FL", settings.CurrentRegion);
+            Assert.AreEqual(region, settings.CurrentRegion);
         }
 
         [TestMethod]

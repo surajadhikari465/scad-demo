@@ -29,13 +29,21 @@ namespace Mammoth.ItemLocale.Controller.ApplicationModules.Tests
         private Mock<ICommandHandler<ArchiveEventsCommand>> mockArchiveEventsCommandHandler;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IEmailBuilder> mockEmailBuilder;
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "MA";
+            }
+        }
 
         [TestInitialize]
         public void InitializeTests()
         {
             this.settings = new ItemLocaleControllerApplicationSettings
                 {
-                    CurrentRegion = "FL",
+                    CurrentRegion = region,
                     MaxNumberOfRowsToMark = 100,
                     Instance = 1111,
                     NonAlertErrors = new List<string>()

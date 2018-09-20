@@ -1,4 +1,5 @@
-﻿using Mammoth.Common.ControllerApplication;
+﻿using Mammoth.Common;
+using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.ControllerApplication.Services;
 using Mammoth.ItemLocale.Controller.DataAccess.Models;
 using Mammoth.ItemLocale.Controller.Services;
@@ -19,10 +20,19 @@ namespace Mammoth.ItemLocale.Controller.Tests.Services
         private Mock<ILogger> mockLogger;
         private ItemLocaleControllerApplicationSettings settings;
 
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "FL";
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
-            this.settings = new ItemLocaleControllerApplicationSettings { CurrentRegion = "FL" };
+            this.settings = new ItemLocaleControllerApplicationSettings { CurrentRegion = region };
             mockLogger = new Mock<ILogger>();
             mockService = new Mock<IService<ItemLocaleEventModel>>();
             decorator = new ValidateItemLocaleServiceDecorator(mockService.Object, mockLogger.Object, settings);

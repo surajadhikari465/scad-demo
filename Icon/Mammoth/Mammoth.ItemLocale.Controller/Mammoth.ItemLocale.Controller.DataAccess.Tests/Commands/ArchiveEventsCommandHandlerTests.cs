@@ -8,6 +8,7 @@ using Mammoth.Common.DataAccess.Models;
 using System.Collections.Generic;
 using Dapper;
 using System.Linq;
+using Mammoth.Common;
 
 namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Commands
 {
@@ -20,11 +21,36 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Commands
         private string testContext = "Unit Test Context";
         private int? maxHistoryId;
 
+        protected string region
+        {
+            get
+            {
+                var regionForTesting = AppSettingsAccessor.GetStringSetting("RegionForTesting", false);
+                return regionForTesting ?? "FL";
+            }
+        }
+
+        protected string irmaDatabaseForRegion
+        {
+            get
+            {
+                return $"ItemCatalog_{region}";
+            }
+        }
+
+        protected string irmaConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings[irmaDatabaseForRegion].ConnectionString;
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
             dbProvider = new SqlDbProvider();
-            dbProvider.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ItemCatalog_FL"].ConnectionString);
+            dbProvider.Connection = new SqlConnection(irmaConnectionString);
             dbProvider.Connection.Open();
 
             this.commandHandler = new ArchiveEventsCommandHandler(dbProvider);

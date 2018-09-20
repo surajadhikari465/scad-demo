@@ -87,7 +87,9 @@ SELECT q.QueueID AS QueueId
     ,seb.Description as UseBy
     ,sc.ShelfLife_Length as ShelfLife
     ,CASE 
-        WHEN ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1 THEN NULL 
+        WHEN (ii.Deleted_Identifier is NULL OR ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1) 
+            OR (i.Remove_Item = 1 OR i.Deleted_Item = 1)
+        THEN NULL 
         ELSE i.Item_Key 
     END as IrmaItemKey
 FROM [mammoth].[ItemLocaleChangeQueue] q
@@ -205,7 +207,9 @@ SELECT q.QueueID AS QueueId
     ,seb.Description as UseBy
     ,sc.ShelfLife_Length as ShelfLife
     ,CASE 
-        WHEN ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1 THEN NULL 
+        WHEN (ii.Deleted_Identifier is NULL OR ii.Remove_Identifier = 1 OR ii.Deleted_Identifier = 1) 
+            OR (i.Remove_Item = 1 OR i.Deleted_Item = 1)
+        THEN NULL 
         ELSE i.Item_Key 
     END as IrmaItemKey
 
