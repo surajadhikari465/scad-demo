@@ -204,7 +204,7 @@ namespace KitBuilderWebApi.DatabaseModels
                 entity.HasOne(d => d.KitLocale)
                     .WithMany(p => p.KitLinkGroupItemLocale)
                     .HasForeignKey(d => d.KitLocaleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_KitLinkGroupItemLocale_KitLocale");
             });
 
@@ -354,6 +354,9 @@ namespace KitBuilderWebApi.DatabaseModels
                     .IsRequired()
                     .HasMaxLength(100);
             });
+
+            modelBuilder.Entity<Items>()
+             .Ignore(b => b.Kit);
         }
     }
 }

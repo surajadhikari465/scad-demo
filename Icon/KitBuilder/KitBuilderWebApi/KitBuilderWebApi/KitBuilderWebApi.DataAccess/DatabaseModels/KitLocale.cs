@@ -23,7 +23,7 @@ namespace KitBuilderWebApi.DatabaseModels
         [Required]
         public int StatusId { get; set; }
         public DateTime InsertDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
 
         public Kit Kit { get; set; }
         public Locale Locale { get; set; }

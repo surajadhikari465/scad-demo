@@ -8,7 +8,6 @@ namespace KitBuilderWebApi.DataAccess.Dto
     {
         public LocaleDto()
         {
-            KitLocale = new HashSet<KitLocaleDto>();
         }
 
         public int LocaleId { get; set; }
@@ -30,6 +29,5 @@ namespace KitBuilderWebApi.DataAccess.Dto
         public bool? Hospitality { get; set; }
 
         public LocaleTypeDto LocaleType { get; set; }
-        public ICollection<KitLocaleDto> KitLocale { get; set; }
     }
 }

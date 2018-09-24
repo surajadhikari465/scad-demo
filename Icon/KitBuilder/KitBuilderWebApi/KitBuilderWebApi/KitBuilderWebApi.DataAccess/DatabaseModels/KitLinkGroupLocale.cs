@@ -12,10 +12,10 @@ namespace KitBuilderWebApi.DatabaseModels
         [Required]
         public int KitLocaleId { get; set; }
         public string Properties { get; set; }
-        public int? DisplaySequence { get; set; }
+        public int DisplaySequence { get; set; }
         public int? MinimumCalories { get; set; }
         public int? MaximumCalories { get; set; }
-        public Boolean? Exclude { get; set; }
+        public bool? Exclude { get; set; }
         public DateTime InsertDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public string LastModifiedBy { get; set; }

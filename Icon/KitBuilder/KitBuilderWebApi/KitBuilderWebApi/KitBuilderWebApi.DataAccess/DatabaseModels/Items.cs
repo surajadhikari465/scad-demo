@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KitBuilderWebApi.DatabaseModels
 {
@@ -26,9 +27,11 @@ namespace KitBuilderWebApi.DatabaseModels
         public string LargeImageUrl { get; set; }
         public string SmallImageUrl { get; set; }
         public DateTime InsertDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
+
 
         public ICollection<Kit> Kit { get; set; }
+
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }
 }

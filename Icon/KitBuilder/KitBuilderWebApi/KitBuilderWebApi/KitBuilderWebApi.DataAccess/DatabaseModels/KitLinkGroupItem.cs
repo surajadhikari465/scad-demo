@@ -14,8 +14,7 @@ namespace KitBuilderWebApi.DatabaseModels
         public int KitId { get; set; }
         public int LinkGroupItemId { get; set; }
         public DateTime InsertDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-
+        public DateTime LastUpdatedDate { get; set; }
         public Kit Kit { get; set; }
         public LinkGroupItem LinkGroupItem { get; set; }
         public ICollection<KitLinkGroupItemLocale> KitLinkGroupItemLocale { get; set; }

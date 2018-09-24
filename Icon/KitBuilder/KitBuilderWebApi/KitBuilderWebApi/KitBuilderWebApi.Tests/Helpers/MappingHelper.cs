@@ -1,7 +1,7 @@
 ﻿using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DatabaseModels;
 
-namespace KitBuilderWebApi.Helper
+namespace KitBuilderWebApi.Tests.Helper
 {
     public static class MappingHelper
     {
@@ -30,11 +30,6 @@ namespace KitBuilderWebApi.Helper
                 cfg.CreateMap<KitInstructionListDto, KitInstructionList>();
                 cfg.CreateMap<KitDto, Kit>();
             });
-        }
-
-        public static void CleanupMapper()
-        {
-            AutoMapper.Mapper.Reset();
         }
     }
 }

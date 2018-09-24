@@ -6,7 +6,7 @@
     [Sequence] INT NOT NULL, 
     [Member] NVARCHAR(15) NULL, 
 	[InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-	[UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
+	[LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
     CONSTRAINT [FK_InstructionListMember_InstructionList] FOREIGN KEY ([InstructionListId]) REFERENCES [InstructionList]([InstructionListId])
 )
 

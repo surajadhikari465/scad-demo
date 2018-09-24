@@ -9,5 +9,5 @@
     [LargeImageUrl] NVARCHAR(MAX) NULL, 
     [SmallImageUrl] NVARCHAR(MAX) NULL, 
     [InsertDate] DATETIME2 NOT NULL DEFAULT GetDate(),
-    [UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate()
+    [LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate()
 )

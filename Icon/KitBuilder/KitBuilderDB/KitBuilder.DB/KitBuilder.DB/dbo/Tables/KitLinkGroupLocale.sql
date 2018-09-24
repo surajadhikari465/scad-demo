@@ -4,7 +4,7 @@
     [KitLinkGroupId] INT NOT NULL, 
     [KitLocaleId] INT NOT NULL, 
     [Properties] NVARCHAR(MAX) NULL, 
-    [DisplaySequence] INT NULL, 
+    [DisplaySequence] INT NOT NULL, 
     [MinimumCalories] INT NULL, 
     [MaximumCalories] INT NULL, 
     [Exclude] BIT NULL, 
@@ -12,7 +12,7 @@
     [LastModifiedDate] DATETIME2 NULL, 
     [LastModifiedBy] NVARCHAR(100) NULL, 
     CONSTRAINT [FK_KitLinkGroupLocale_KitLinkGroup] FOREIGN KEY ([KitLinkGroupId]) REFERENCES [KitLinkGroup]([KitLinkGroupId]), 
-    CONSTRAINT [FK_KitLinkGroupLocale_KitLocale] FOREIGN KEY ([KitLocaleId]) REFERENCES [KitLocale]([KitLocaleId])
+    CONSTRAINT [FK_KitLinkGroupLocale_KitLocale] FOREIGN KEY ([KitLocaleId]) REFERENCES [KitLocale]([KitLocaleId])  ON DELETE CASCADE
 )
 
 GO

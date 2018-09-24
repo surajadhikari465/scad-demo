@@ -26,7 +26,7 @@ namespace KitBuilderWebApi.DatabaseModels
         public InstructionType InstructionType { get; set; }
         public Status Status { get; set; }
         public DateTime InsertDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
         public ICollection<InstructionListMember> InstructionListMember { get; set; }
         public ICollection<Kit> Kit { get; set; }
         public ICollection<KitInstructionList> KitInstructionList { get; set; }

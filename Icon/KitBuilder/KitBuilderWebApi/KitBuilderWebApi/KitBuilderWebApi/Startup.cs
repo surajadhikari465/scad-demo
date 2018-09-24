@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -43,7 +44,11 @@ namespace KitBuilderWebApi
                 setupAction.Filters.Add(new ValidateModelAttribute());
                 setupAction.ReturnHttpNotAcceptable = true;
             })
-                 .AddMvcOptions(o => o.OutputFormatters.Add(
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            })
+             .AddMvcOptions(o => o.OutputFormatters.Add(
                      new XmlDataContractSerializerOutputFormatter()));
 
             var connectionString = Configuration["connectionStrings:KitBuilderDBConnectionString"];
@@ -65,13 +70,13 @@ namespace KitBuilderWebApi
             
             services.AddSwaggerGen(c =>
             {
-                
+
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-                
+
             });
 
             // add services here
@@ -124,7 +129,7 @@ namespace KitBuilderWebApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
-               
+
             });
 
             app.UseMvc();

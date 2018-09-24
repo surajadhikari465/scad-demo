@@ -19,7 +19,6 @@ namespace KitBuilderWebApi.DataAccess.Dto
         public int LinkGroupId { get; set; }
         public DateTime InsertDate { get; set; }
 
-        public KitDto Kit { get; set; }
         public LinkGroupDto LinkGroup { get; set; }
         public ICollection<KitLinkGroupLocaleDto> KitLinkGroupLocale { get; set; }
     }

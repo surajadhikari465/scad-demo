@@ -23,6 +23,7 @@ namespace KitBuilderWebApi.DataAccess.Dto
         [Required]
         public int StatusId { get; set; }
         public DateTime InsertDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
 
         public KitDto Kit { get; set; }
         public LocaleDto Locale { get; set; }

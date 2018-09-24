@@ -9,8 +9,6 @@ using System.Reflection;
 
 namespace KitBuilderWebApi.Common
 {
-
-
     public static class IQueryableHelper
     {
         private static readonly FieldInfo _queryCompilerField = typeof(EntityQueryProvider).GetTypeInfo().DeclaredFields
@@ -53,4 +51,3 @@ namespace KitBuilderWebApi.Common
         }
     }
 }
-

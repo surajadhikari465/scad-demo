@@ -4,7 +4,7 @@
     [KitId] INT NOT NULL, 
     [LinkGroupItemId] INT NOT NULL, 
     [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-	[UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
+	[LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
     CONSTRAINT [FK_KitLinkGroupItem_Kit] FOREIGN KEY ([KitId]) REFERENCES [Kit]([KitId]), 
     CONSTRAINT [FK_KitLinkGroupItem_LinkGroupItem] FOREIGN KEY ([LinkGroupItemId]) REFERENCES [LinkGroupItem]([LinkGroupItemId])
 )

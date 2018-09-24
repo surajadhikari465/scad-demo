@@ -4,5 +4,5 @@
     [GroupName] NVARCHAR(100) NOT NULL, 
     [GroupDescription] NVARCHAR(500) NOT NULL,
     [InsertDate] DATETIME2 NOT NULL DEFAULT getdate(),
-	[UpdatedDate] DATETIME2 NOT NULL DEFAULT getDate()
+	[LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate()
 )

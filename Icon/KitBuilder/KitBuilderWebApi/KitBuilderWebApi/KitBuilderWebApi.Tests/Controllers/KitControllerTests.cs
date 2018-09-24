@@ -7,51 +7,68 @@ using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
     [TestClass]
     public class KitControllerTests
     {
+        private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
+        private Mock<IHelper<KitDto, KitSearchParameters>> mockKitHelper;
+
         private KitController kitController;
+        private Mock<ILogger<KitController>> mockLogger;
         private Mock<IRepository<LinkGroup>> mockLinkGroupRepository;
         private Mock<IRepository<Kit>> mockKitRepository;
-        private Mock<IRepository<KitLinkGroup>> mockKitLinkGroupRepository;
+        private Mock<IRepository<Locale>> mockLocaleRepository;
         private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
         private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
         private Mock<IRepository<Items>> mockItemsRepository;
-        private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
+        private Mock<IRepository<KitLinkGroup>> mockKitLinkGroupRepository;
+        private Mock<IRepository<KitLinkGroupLocale>> mockKitLinkGroupLocaleRepository;
         private Mock<IRepository<KitLinkGroupItem>> mockKitLinkGroupItemRepository;
-        private Mock<IHelper<KitDto, KitSearchParameters>> mockKitHelper;
-        private Mock<ILogger<KitController>> mockLogger;
+        private Mock<IRepository<LocaleType>> mockLocaleTypeRepository;
+        private Mock<IRepository<KitLinkGroupItemLocale>> mockKitLinkGroupItemLocaleRepository;
         private Mock<IUnitOfWork> mockUnitWork;
         private List<Kit> kits;
         private List<Items> items;
         private List<LinkGroup> linkGroups;
         private List<KitLinkGroup> kitLinkGroups;
         private List<KitDto> kitsDto;
+        IList<KitLinkGroupItem> KitLinkGroupItems;
+        private List<KitLocale> kitLocaleList;
+        private List<KitLinkGroupLocale> kitLinkGroupLocaleList;
+        private List<KitLocaleDto> kitLocaleDtoList;
 
-
-        [TestInitialize]
+      [TestInitialize]
         public void InitializeTests()
         {
+            mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
             mockLogger = new Mock<ILogger<KitController>>();
             mockKitLinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
-            mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
-            mockItemsRepository = new Mock<IRepository<Items>>();
-            mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
-            mockKitLinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
-            mockKitLinkGroupRepository = new Mock<IRepository<KitLinkGroup>>();
-            mockKitRepository = new Mock<IRepository<Kit>>();
             mockLinkGroupRepository = new Mock<IRepository<LinkGroup>>();
+            mockKitRepository = new Mock<IRepository<Kit>>();
+            mockLocaleRepository = new Mock<IRepository<Locale>>();
             mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
+            mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
+            mockItemsRepository = new Mock<IRepository<Items>>();
+            mockKitLinkGroupRepository = new Mock<IRepository<KitLinkGroup>>();
+            mockKitLinkGroupLocaleRepository = new Mock<IRepository<KitLinkGroupLocale>>();
+            mockKitLinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
+            mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
+            mockKitLinkGroupItemLocaleRepository = new Mock<IRepository<KitLinkGroupItemLocale>>();
+            mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
+            mockUnitWork = new Mock<IUnitOfWork>();
 
             string locationUrl = "http://localhost:55873/api/Kits/";
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -59,20 +76,24 @@ namespace KitBuilderWebApi.Tests.Controllers
 
             mockKitHelper = new Mock<IHelper<KitDto, KitSearchParameters>>();
 
-            kitController = new KitController(mockKitRepository.Object,
-                mockKitInstructionListRepository.Object, 
-                mockKitLocaleRepository.Object, 
-                mockLinkGroupRepository.Object, 
-                mockLinkGroupItemRepository.Object, 
+            kitController = new KitController(mockLinkGroupRepository.Object,
+                mockKitRepository.Object,
+                mockLocaleRepository.Object,
+                mockKitLocaleRepository.Object,
+                mockLinkGroupItemRepository.Object,
                 mockItemsRepository.Object,
                 mockKitLinkGroupRepository.Object,
+                mockKitLinkGroupLocaleRepository.Object,
                 mockKitLinkGroupItemRepository.Object,
+                mockKitLinkGroupItemLocaleRepository.Object,
+                mockLocaleTypeRepository.Object,
+                mockKitInstructionListRepository.Object,
                 mockLogger.Object,
-                mockKitHelper.Object);
+                mockKitHelper.Object
+                );
 
             MappingHelper.InitializeMapper();
             SetUpDataAndRepository();
-
         }
 
         [TestCleanup]
@@ -113,22 +134,66 @@ namespace KitBuilderWebApi.Tests.Controllers
                 new KitLinkGroup() {KitLinkGroupId = 2, KitId = 2, LinkGroupId = 3},
             };
 
-            kitsDto = (from k in kits
-                select new KitDto()
-                {
-                    Description = k.Description,
-                    InsertDate = k.InsertDate,
-                    InstructionListId = k.InstructionListId,
-                    ItemId = k.ItemId,
-                    KitId = k.KitId
-                }).ToList();
+            KitLinkGroupItems = new List<KitLinkGroupItem>
+            {
+                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 1},
+                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 7},
+                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 8},
+                new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 2}
+            };
 
+            List<LocaleType> localeTypeList = new List<LocaleType>
+            {
+                  new LocaleType { LocaleTypeCode = "C", LocaleTypeDesc = "Chain", LocaleTypeId =1 },
+                  new LocaleType { LocaleTypeCode = "Re", LocaleTypeDesc = "Region", LocaleTypeId =2 },
+                  new LocaleType { LocaleTypeCode = "M", LocaleTypeDesc = "Metro", LocaleTypeId =3 },
+                  new LocaleType { LocaleTypeCode = "St", LocaleTypeDesc = "store", LocaleTypeId =4},
+                  new LocaleType { LocaleTypeCode = "V", LocaleTypeDesc = "Venue", LocaleTypeId =5},
+            };
+
+            List<Locale> localeList = new List<Locale> {
+                               new Locale { LocaleId = 1, LocaleName = "Texas", LocaleTypeId =2, ChainId=7},
+                               new Locale { LocaleId = 6, LocaleName = "Kentukky", LocaleTypeId =2, ChainId=7 },
+                               new Locale { LocaleId = 3, LocaleName = "Lamar", LocaleTypeId =4, MetroId = 4, RegionId=1 },
+                               new Locale { LocaleId = 5, LocaleName = "Lamar5", LocaleTypeId =4,MetroId = 6, RegionId=1, ChainId=7 },
+                               new Locale { LocaleId = 4, LocaleName = "Austin", LocaleTypeId =3,RegionId=1, ChainId=7 },
+                               new Locale { LocaleId = 7, LocaleName = "Chain", LocaleTypeId =1},
+                };
+
+           kitLocaleList = new List<KitLocale> {
+                                                     new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
+                                                      new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
+             };
+
+            kitLocaleDtoList = new List<KitLocaleDto> {
+                                                     new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
+                                                     new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
+             };
+
+            kitsDto = (from k in kits
+                       select new KitDto()
+                       {
+                           Description = k.Description,
+                           InsertDate = k.InsertDate,
+                           InstructionListId = k.InstructionListId,
+                           ItemId = k.ItemId,
+                           KitId = k.KitId
+                       }).ToList();
+
+            kitLinkGroupLocaleList = new List<KitLinkGroupLocale>
+            {
+                new KitLinkGroupLocale {KitLinkGroupLocaleId = 11, KitLinkGroupId= 1, KitLocaleId= 1, DisplaySequence=1}
+            };
 
             mockItemsRepository.Setup(m => m.GetAll()).Returns(items.AsQueryable());
             mockKitRepository.Setup(m => m.GetAll()).Returns(kits.AsQueryable());
             mockLinkGroupRepository.Setup(m => m.GetAll()).Returns(linkGroups.AsQueryable());
             mockKitLinkGroupRepository.Setup(m => m.GetAll()).Returns(kitLinkGroups.AsQueryable());
-
+            mockKitLinkGroupItemRepository.Setup(m => m.GetAll()).Returns(KitLinkGroupItems.AsQueryable());
+            mockLocaleRepository.Setup(m => m.GetAll()).Returns(localeList.AsQueryable());
+            mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocaleList.AsQueryable());
+            mockLocaleTypeRepository.Setup(m => m.GetAll()).Returns(localeTypeList.AsQueryable());
+            mockKitLinkGroupLocaleRepository.Setup(m => m.GetAll()).Returns(kitLinkGroupLocaleList.AsQueryable());
         }
 
         [TestMethod]
@@ -175,21 +240,106 @@ namespace KitBuilderWebApi.Tests.Controllers
         }
 
         [TestMethod]
+        public void KitsController_GetKitByLocaleIdKitLocaleRecordDoesNotExist_ReturnsNotFound()
+        {
+            int kitId = 1;
+            int localeId = 5;
+
+            var response = kitController.GetKitByLocaleId(kitId, localeId, false);
+
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+        }
+
+        [TestMethod]
+        public void KitsController_GetKitByLocaleIdKitDoesNotExist_ReturnsNotFound()
+        {
+            int kitId = 999;
+            int localeId = 5;
+
+            var response = kitController.GetKitByLocaleId(kitId, localeId, false);
+
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+        }
+     
+        [TestMethod]
+        public void KitsController_GetKitPropertiesByLocaleIdKitLocaleRecordDoesNotExist_ReturnsNotFound()
+        {
+            int kitId = 1;
+            int localeId = 99;
+
+            var response = kitController.GetKitPropertiesByLocaleId(kitId, localeId);
+
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+        }
+
+        [TestMethod]
+        public void KitsController_GetKitPropertiesByLocaleIdKitLocaleRecordExist_ReturnsOk()
+        {
+            int kitId = 1;
+            int localeId = 1;
+
+            var mockContext = new Mock<KitBuilderContext>();
+            var mockDbSet = GetMockDbSet<Kit>(kits);
+            var mockKitLocaleDbSet = GetMockDbSet<KitLocale>(kitLocaleList);
+            mockContext.Setup(c => c.Set<Kit>()).Returns(mockDbSet.Object);
+
+            mockKitRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+           // mockUnitWork.SetupGet(s => s.Context).Returns(mockContext.Object);
+            mockContext.Setup(m => m.Kit).Returns(mockDbSet.Object);
+            mockContext.Setup(m => m.KitLocale).Returns(mockKitLocaleDbSet.Object);
+
+            var response = kitController.GetKitPropertiesByLocaleId(kitId, localeId);
+
+            Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Result Expected");
+        }
+
+        [TestMethod]
+        public void KitsController_AssignUnassignLocationsNullListPassed_ReturnsBadRequest()
+        {
+            var response = kitController.AssignUnassignLocations(null);
+
+            Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
+        }
+
+        [TestMethod]
+        public void KitsController_AssignUnassignLocationsValidListPassed_ReturnsOk()
+        {
+            var mockContext = new Mock<KitBuilderContext>();
+            var mockDbSet = GetMockDbSet<KitLocale>(kitLocaleList);
+            mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+            mockKitLocaleRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            mockUnitWork.SetupGet(s => s.Context).Returns(mockContext.Object);
+            mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+
+            var response = kitController.AssignUnassignLocations(kitLocaleDtoList);
+
+            Assert.IsInstanceOfType(response, typeof(OkResult), "Ok Result Expected");
+        }
+
+        [TestMethod]
+        public void KitsController_SaveKitPropertiesNullListPassed_ReturnsBadRequest()
+        {
+            var response = kitController.SaveKitProperties(null);
+
+            Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
+        }
+
+        [TestMethod]
         public void KitsController_Save_InvalidItemId_ReturnsBadRequest()
         {
             var kitSaveParameters = new KitSaveParameters()
             {
                 KitId = 1,
                 KitDescription = "Bad Kit",
-                KitItem = 99, 
+                KitItem = 99,
                 LinkGroupItemIds = new List<int>(),
-                LinkGroupIds= new List<int>(),
-                InstructionListIds =  new List<int>()
+                LinkGroupIds = new List<int>(),
+                InstructionListIds = new List<int>()
 
             };
 
             var response = kitController.KitSaveDetails(kitSaveParameters);
-            
+
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
             Assert.IsTrue(((BadRequestObjectResult)response).Value.ToString().Contains("Unable to find Item"), "Missing Item Expected");
 
@@ -203,7 +353,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                 KitId = 1,
                 KitDescription = "Bad Kit",
                 KitItem = 99,
-                LinkGroupItemIds = null, 
+                LinkGroupItemIds = null,
                 LinkGroupIds = new List<int>(),
                 InstructionListIds = new List<int>()
 
@@ -257,7 +407,16 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         }
 
+        private Mock<DbSet<T>> GetMockDbSet<T>(List<T> objectPassed) where T : class
+        {
+            var mockSet = new Mock<DbSet<T>>();
+            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(objectPassed.AsQueryable().Provider);
+            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(objectPassed.AsQueryable().Expression);
+            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(objectPassed.AsQueryable().ElementType);
+            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(objectPassed.AsQueryable().GetEnumerator());
 
+            return mockSet;
 
+        }
     }
 }
