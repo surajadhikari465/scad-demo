@@ -157,7 +157,56 @@ namespace KitBuilderWebApi.Controllers
             return Ok(kitsAfterPaging.ShapeData(kitSearchParameters.Fields));
         }
 
-        [HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
+		[HttpGet(Name = "GetKitLocale")]
+		public IActionResult GetKitLocale(int KitId)
+		{
+			var queryBuilder = BuildKitLocaleQuery(KitId);
+			try
+			{
+				var matchingElements = queryBuilder.ToList();
+				if (matchingElements == null)
+				{
+					logger.LogWarning("The object passed is either null or does not contain any rows.");
+					return NotFound();
+				}
+				return Ok(matchingElements);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.Message);
+				return StatusCode(500, "A problem happened while handling your request.");
+			}
+		}
+
+		internal IQueryable<KitLocaleResponse> BuildKitLocaleQuery(int kitId)
+		{
+			return 
+				from l in localeRepository.GetAll()
+				join kl in kitLocaleRepository.GetAll().Where(x => x.KitId == kitId) on l.LocaleId equals kl.LocaleId
+				into temp
+				from de in temp.DefaultIfEmpty()
+				select new KitLocaleResponse()
+				{
+					KitId = de == null ? null : (int?)de.KitId,
+					LocaleId = de == null ? null : (int?)de.LocaleId,
+					KitLocaleId = de == null ? null : (int?)de.KitLocaleId,
+					LocaleName = l.LocaleName,
+					LocaleTypeId = l.LocaleTypeId,
+					StoreId = l.StoreId,
+					MetroId = l.MetroId,
+					RegionId = l.RegionId,
+					ChainId = l.ChainId,
+					StoreAbbreviation = l.StoreAbbreviation,
+					RegionCode = l.RegionCode,
+					BusinessUnitId = l.BusinessUnitId,
+					Exclude = de == null ? null : (int?)de.Exclude,
+					StatusId = de == null ? null : (int?)de.StatusId
+				};
+		}
+
+
+
+		[HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
         public IActionResult AssignUnassignLocations(
                  [FromBody] List<KitLocaleDto> kitLocaleDtoList)
         {

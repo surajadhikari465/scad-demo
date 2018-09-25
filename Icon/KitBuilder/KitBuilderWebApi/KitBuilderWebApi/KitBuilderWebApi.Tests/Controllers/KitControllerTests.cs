@@ -158,16 +158,24 @@ namespace KitBuilderWebApi.Tests.Controllers
                                new Locale { LocaleId = 5, LocaleName = "Lamar5", LocaleTypeId =4,MetroId = 6, RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 4, LocaleName = "Austin", LocaleTypeId =3,RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 7, LocaleName = "Chain", LocaleTypeId =1},
-                };
+							   //new Locale { LocaleId = 8, LocaleName = "FL_MTR", LocaleTypeId =2 , StoreId = 1, MetroId = 1, RegionId = 1, ChainId= 7, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 1 },
+							   //new Locale { LocaleId = 9, LocaleName = "FL_SON", LocaleTypeId =1 , StoreId = 2, MetroId = 5, RegionId = 1, ChainId= 4, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 2 },
+							   //new Locale { LocaleId = 10, LocaleName = "MD_CHI", LocaleTypeId =4 , StoreId = 1, MetroId = 2, RegionId = 1, ChainId= 7, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 3 },
+							   //new Locale { LocaleId = 11, LocaleName = "MD_MRT", LocaleTypeId =5 , StoreId = 2, MetroId = 8, RegionId = 1, ChainId= 3, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 1 },
+							   //new Locale { LocaleId = 12, LocaleName = "FL_MKT", LocaleTypeId =2 , StoreId = 3, MetroId = 1, RegionId = 1, ChainId= 1, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 3 }
+				};
 
            kitLocaleList = new List<KitLocale> {
-                                                     new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
-                                                      new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
-             };
+                           new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
+                           new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
+						   new KitLocale { KitLocaleId = 3, KitId = 2, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 0, StatusId = 0 },
+						   new KitLocale { KitLocaleId = 4, KitId = 2, LocaleId = 4, MinimumCalories = 0, MaximumCalories = 0, Exclude = 0, StatusId = 0 },
+
+			 };
 
             kitLocaleDtoList = new List<KitLocaleDto> {
-                                                     new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
-                                                     new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
+							   new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
+                               new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
              };
 
             kitsDto = (from k in kits
@@ -218,7 +226,19 @@ namespace KitBuilderWebApi.Tests.Controllers
             Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
         }
 
-        [TestMethod]
+		[TestMethod]
+		public void KitController_GetKitLocale_ValidKitId_Ok()
+		{
+			//Given
+			var kitSearchParameters = 1;
+
+			//When
+			var response = kitController.GetKitLocale(kitSearchParameters);
+			//Then
+			Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
+		}
+
+		[TestMethod]
         public void KitsController_Save_InvalidKitId_ReturnsBadRequest()
         {
             var kitSaveParameters = new KitSaveParameters()
