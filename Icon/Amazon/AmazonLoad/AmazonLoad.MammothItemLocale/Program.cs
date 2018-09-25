@@ -15,8 +15,6 @@ namespace AmazonLoad.MammothItemLocale
 {
     class Program
     {
-        public static string saveMessagesDirectory = "Messages";
-
         static void Main(string[] args)
         {
             var startTime = DateTime.Now;
@@ -68,7 +66,7 @@ namespace AmazonLoad.MammothItemLocale
             Console.WriteLine($"Number of records sent: {MammothItemLocaleBuilder.NumberOfRecordsSent}.");
             Console.WriteLine($"Number of messages sent: {MammothItemLocaleBuilder.NumberOfMessagesSent}.");
             var endTime = DateTime.Now;
-            Console.WriteLine($"{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
+            Console.WriteLine($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
             Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
         }

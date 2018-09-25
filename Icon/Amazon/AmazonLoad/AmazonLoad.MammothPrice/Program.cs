@@ -66,7 +66,7 @@ namespace AmazonLoad.MammothPrice
 
             Console.WriteLine($"Number of records sent: {sendResult.NumberOfRecordsSent}.");
             Console.WriteLine($"Number of messages sent: {sendResult.NumberOfMessagesSent}."); var endTime = DateTime.Now;
-            Console.WriteLine($"{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
+            Console.WriteLine($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
             Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
         }

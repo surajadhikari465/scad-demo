@@ -18,17 +18,16 @@ namespace AmazonLoad.MammothItemLocale
     {
         public static int NumberOfRecordsSent = 0;
         public static int NumberOfMessagesSent = 0;
+        internal static int DefaultBatchSize = 100;
 
         public static void LoadMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
             string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsb = true)
         {
-            string formattedSql = GetFormattedSqlForMammothItemLocaleQuery(region, maxNumberOfRows);
-
             SqlConnection sqlConnection = new SqlConnection(mammothConnectionString);
 
             // load data
-            var models = sqlConnection.Query<MammothItemLocaleModel>(formattedSql, buffered: false, commandTimeout: 60);
+            var models = LoadMammothtemLocales(sqlConnection, region, maxNumberOfRows);
 
             // now send the message(s) to the eSB
             SendMessagesToEsb(models, esbProducer, saveMessages, saveMessagesDirectory,
@@ -37,7 +36,7 @@ namespace AmazonLoad.MammothItemLocale
 
         internal static string GetFormattedSqlForMammothItemLocaleQuery(string region, int maxNumberOfRows)
         {
-            string formattedSql = SqlQueries.MammothItemLocaleSql.Replace("{region}", AppSettingsAccessor.GetStringSetting("Region"));
+            string formattedSql = SqlQueries.MammothItemLocaleSql.Replace("{region}", region);
             if (maxNumberOfRows != 0)
             {
                 formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
@@ -48,42 +47,26 @@ namespace AmazonLoad.MammothItemLocale
             }
             return formattedSql;
         }
-
-        internal static int GetBatchSize(int maxNumberOfRows, int numberOfRecordsSent)
+        
+        internal static IEnumerable<MammothItemLocaleModel> LoadMammothtemLocales(SqlConnection irmaSqlConnection, string region, int maxNumberOfRows)
         {
-            int batchSize = 100;
-            if (maxNumberOfRows != 0 && maxNumberOfRows > 0)
-            {
-                if (maxNumberOfRows < batchSize)
-                {
-                    batchSize = maxNumberOfRows;
-                }
-                else if (numberOfRecordsSent < maxNumberOfRows)
-                {
-                    if (maxNumberOfRows - numberOfRecordsSent <= batchSize)
-                    {
-                        batchSize = maxNumberOfRows - numberOfRecordsSent;
-                    }
-                }
-                else if (numberOfRecordsSent >= maxNumberOfRows)
-                {
-                    return -1;
-                }
-            }
-            return batchSize;
+            var sql = GetFormattedSqlForMammothItemLocaleQuery(region, maxNumberOfRows);
+            var mamothItemLocaleModels = irmaSqlConnection.Query<MammothItemLocaleModel>(sql, buffered: false, commandTimeout: 60);
+            return mamothItemLocaleModels;
         }
 
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsbFlag = true)
         {
-            var batchSize = GetBatchSize(maxNumberOfRows, NumberOfRecordsSent);
+            var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
 
             foreach (var modelBatch in models.Batch(batchSize))
             {
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
                 {
+                    if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
                     string message = MessageBuilderForMammothItemLocale.BuildMessage(modelGroup.ToList());
                     string messageId = Guid.NewGuid().ToString();
 

@@ -17,6 +17,7 @@ namespace AmazonLoad.IconItemLocale
         public static IconItemLocalePsgMapper PsgMapper = new IconItemLocalePsgMapper();
         public static int NumberOfRecordsSent = 0;
         public static int NumberOfMessagesSent = 0;
+        internal static int DefaultBatchSize = 100;
 
         public static EsbMessageSendResult LoadItemLocalesAndSendMessages(string irmaConnectionString,
             string iconConnectionString, IEsbProducer esbProducer, string region, int maxNumberOfRows,
@@ -109,7 +110,7 @@ namespace AmazonLoad.IconItemLocale
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsbFlag = true)
         {
-            var batchSize = GetBatchSize(maxNumberOfRows, NumberOfRecordsSent);
+            var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
 
             foreach (var modelBatch in models.Batch(batchSize))
@@ -138,30 +139,6 @@ namespace AmazonLoad.IconItemLocale
                     File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
                 }
             }
-        }
-
-        internal static int GetBatchSize(int maxNumberOfRows, int numberOfRecordsSent)
-        {
-            var batchSize = 100;
-            if (maxNumberOfRows != 0 && maxNumberOfRows > 0)
-            {
-                if (maxNumberOfRows < batchSize)
-                {
-                    batchSize = maxNumberOfRows;
-                }
-                else if (NumberOfRecordsSent < maxNumberOfRows)
-                {
-                    if (maxNumberOfRows - NumberOfMessagesSent <= batchSize)
-                    {
-                        batchSize = maxNumberOfRows - NumberOfMessagesSent;
-                    }
-                }
-                else if (NumberOfRecordsSent >= maxNumberOfRows)
-                {
-                    return -1;
-                }
-            }
-            return batchSize;
         }
     }
 }

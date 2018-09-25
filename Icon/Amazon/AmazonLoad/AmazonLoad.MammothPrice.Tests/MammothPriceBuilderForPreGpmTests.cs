@@ -47,13 +47,19 @@ namespace AmazonLoad.MammothPrice.Tests
             //Given
             var region = "XY";
             int maxNumberOfRows = 10;
+            string businessUnit = "12345";
+
             string expectedTop = $"SELECT top {maxNumberOfRows}";
             string expectedRegion = $"dbo.Price_{region}";
+            string expectedBusinessUnit = $"WHERE p.BusinessUnitId = {businessUnit}";
+
             // When
-            var result = MammothPriceBuilder.GetFormattedSqlQueryForNonGpmPrices(region, maxNumberOfRows);
+            var result = MammothPriceBuilder.GetFormattedSqlQueryForNonGpmPrices(region, businessUnit, maxNumberOfRows);
+
             // Then
             Assert.IsTrue(result.Contains(expectedTop));
             Assert.IsTrue(result.Contains(expectedRegion));
+            Assert.IsTrue(result.Contains(expectedBusinessUnit));
         }
 
         [TestMethod]
@@ -62,11 +68,12 @@ namespace AmazonLoad.MammothPrice.Tests
             //Given
             string region = "MA";
             int maxNumberOfRows = 10;
+            string businessUnit = "10181";
 
             // When
             using (var sqlConnection = new SqlConnection(connectionString))
             {
-                var priceResults = MammothPriceBuilder.LoadMammothNonGpmPrices(sqlConnection, region, maxNumberOfRows);
+                var priceResults = MammothPriceBuilder.LoadMammothNonGpmPrices(sqlConnection, region, businessUnit,  maxNumberOfRows);
 
                 // Then
                 Assert.IsNotNull(priceResults);
@@ -229,7 +236,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForNonGpmRegMessage_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -255,7 +262,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -265,7 +272,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForNonGpmTprMsg_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             // send an non-authorized item/locale which should create a delete message
@@ -292,7 +299,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -302,7 +309,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForNonGpmRegMultiplePrices_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -330,7 +337,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, MammothPriceBuilder.NumberOfMessagesSent);
@@ -372,7 +379,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_MaxRecordsOfZeroMeansAllForNonGpmPrices()
         {
             // Given
-            int maxRows = 0;
+            int maxNumberOfRows = 0;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
 
@@ -391,7 +398,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, MammothPriceBuilder.NumberOfMessagesSent);

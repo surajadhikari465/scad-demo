@@ -44,13 +44,12 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             //Given
             var region = "MA";
-            int maxNumberOfRows = 50;
-            string expectedTop = $"SELECT top {maxNumberOfRows}";
-            string expectedRegion = $"gpm.Price_{region}";
+            string expectedRegion = $"WHERE Region = '{region}'";
+
             // When
-            var result = MammothPriceBuilder.GetFormattedSqlQueryForGpmPrices(region, maxNumberOfRows);
+            var result = MammothPriceBuilder.GetFormattedSqlQueryFoQueryRegionGpmStatus(region);
+
             // Then
-            Assert.IsTrue(result.Contains(expectedTop));
             Assert.IsTrue(result.Contains(expectedRegion));
         }
 
@@ -59,11 +58,43 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             //Given
             var region = "CA";
-            string expectedRegion = $"Region = '{region}'";
+            var businessUnit = "12345";
+            int maxNumberOfRows = 50;
+            string expectedTop = $"SELECT top {maxNumberOfRows}";
+            string expectedRegionPrice = $"gpm.Price_{region}";
+            string expectedRegionLocale = $"JOIN dbo.Locales_{region}";
+            string expectedBusinessUnit = $"WHERE p.BusinessUnitId = {businessUnit}";
+
             // When
-            var result = MammothPriceBuilder.GetFormattedSqlQueryFoQueryRegionGpmStatus(region);
+            var result = MammothPriceBuilder.GetFormattedSqlQueryForGpmPrices(region, businessUnit, maxNumberOfRows);
+
             // Then
-            Assert.IsTrue(result.Contains(expectedRegion));
+            Assert.IsTrue(result.Contains(expectedTop));
+            Assert.IsTrue(result.Contains(expectedRegionPrice));
+            Assert.IsTrue(result.Contains(expectedRegionLocale));
+            Assert.IsTrue(result.Contains(expectedBusinessUnit));
+        }
+
+        [TestMethod]
+        public void MammothPriceBuilder_GetFormattedSqlQueryForNonGpmPrices_ReplacesExpectedTokens()
+        {
+            //Given
+            var region = "CA";
+            var businessUnit = "12345";
+            int maxNumberOfRows = 50;
+            string expectedTop = $"SELECT top {maxNumberOfRows}";
+            string expectedRegionPrice = $"dbo.Price_{region}";
+            string expectedRegionLocale = $"JOIN dbo.Locales_{region}";
+            string expectedBusinessUnit = $"WHERE p.BusinessUnitId = {businessUnit}";
+
+            // When
+            var result = MammothPriceBuilder.GetFormattedSqlQueryForNonGpmPrices(region, businessUnit, maxNumberOfRows);
+
+            // Then
+            Assert.IsTrue(result.Contains(expectedTop));
+            Assert.IsTrue(result.Contains(expectedRegionPrice));
+            Assert.IsTrue(result.Contains(expectedRegionLocale));
+            Assert.IsTrue(result.Contains(expectedBusinessUnit));
         }
 
         [TestMethod]
@@ -71,17 +102,72 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             //Given
             string region = "FL";
+            var businessUnit = "10130";
             int maxNumberOfRows = 10;
 
             // When
             using (var sqlConnection = new SqlConnection(connectionString))
             {
-                var priceResults = MammothPriceBuilder.LoadMammothGpmPrices(sqlConnection, region, maxNumberOfRows);
+                var priceResults = MammothPriceBuilder.LoadMammothGpmPrices(sqlConnection, region, businessUnit, maxNumberOfRows);
                 
                 // Then
                 Assert.IsNotNull(priceResults);
                 Assert.AreEqual(maxNumberOfRows, priceResults.Count());
             }
+        }
+
+        [TestMethod]
+        public void MammothPriceBuilder_LoadMammothPrices_WhenGpmActive_ReturnsDataWithinTimeLimit()
+        {
+            // Given
+            string region = "FL";
+            string businessUnit = "10130";
+            int maxNumberOfRows = 100;
+            int maxAllowedMs = 2000;
+
+            DateTime start = DateTime.UtcNow;
+
+            // When
+            using (var sqlConnection = new SqlConnection(connectionString))
+            {
+                var priceResults = MammothPriceBuilder.LoadMammothGpmPrices(sqlConnection, region, businessUnit,  maxNumberOfRows);
+
+                // Then
+                Assert.IsNotNull(priceResults);
+                Assert.AreEqual(maxNumberOfRows, priceResults.Count());
+            }
+            DateTime end = DateTime.UtcNow;
+            var elapsedMs = (end - start).TotalMilliseconds;
+            
+            // Then
+            Assert.IsTrue(elapsedMs < maxAllowedMs, $"Took too long ({elapsedMs:0}ms) to load {maxNumberOfRows} records. Limit: {maxAllowedMs}ms");
+        }
+
+        [TestMethod]
+        public void MammothPriceBuilder_LoadMammothPrices_WhenGpmInactive_ReturnsDataWithinTimeLimit()
+        {
+            // Given
+            string region = "MA";
+            string businessUnit = "10181";
+            int maxNumberOfRows = 100;
+            int maxAllowedMs = 2000;
+
+            DateTime start = DateTime.UtcNow;
+
+            // When
+            using (var sqlConnection = new SqlConnection(connectionString))
+            {
+                var priceResults = MammothPriceBuilder.LoadMammothNonGpmPrices(sqlConnection, region, businessUnit, maxNumberOfRows);
+
+                // Then
+                Assert.IsNotNull(priceResults);
+                Assert.AreEqual(maxNumberOfRows, priceResults.Count());
+            }
+            DateTime end = DateTime.UtcNow;
+            var elapsedMs = (end - start).TotalMilliseconds;
+
+            // Then
+            Assert.IsTrue(elapsedMs < maxAllowedMs, $"Took too long ({elapsedMs:0}ms) to load {maxNumberOfRows} records. Limit: {maxAllowedMs}ms");
         }
 
         [TestMethod]
@@ -202,7 +288,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForGpmRegMessage_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -229,7 +315,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows,
+                maxNumberOfRows: maxNumberOfRows,
                 sendToEsb: true);
 
             // Then
@@ -240,7 +326,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForGpmTprMsg_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             // send an non-authorized item/locale which should create a delete message
@@ -267,7 +353,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -277,7 +363,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForGpmMultiplePrices_WithExpectedXml()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -304,7 +390,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, MammothPriceBuilder.NumberOfMessagesSent);
@@ -316,7 +402,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_MaxRecordsLimitsDataForGpmPrices()
         {
             // Given
-            int maxRows = 1;
+            int maxNumberOfRows = 1;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -334,7 +420,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, MammothPriceBuilder.NumberOfMessagesSent);
@@ -345,7 +431,7 @@ namespace AmazonLoad.MammothPrice.Tests
         public void MammothPriceBuilder_SendMessagesToEsb_MaxRecordsOfZeroMeansAllForGpmPrices()
         {
             // Given
-            int maxRows = 0;
+            int maxNumberOfRows = 0;
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -364,7 +450,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
-                maxNumberOfRows: maxRows);
+                maxNumberOfRows: maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, MammothPriceBuilder.NumberOfMessagesSent);

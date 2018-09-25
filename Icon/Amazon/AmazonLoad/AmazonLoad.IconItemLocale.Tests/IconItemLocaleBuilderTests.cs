@@ -25,7 +25,7 @@ namespace AmazonLoad.IconItemLocale.Tests
             set { region = value; }
         }
 
-        string iconnConnectionString
+        string iconConnectionString
         {
             get
             {
@@ -61,7 +61,7 @@ namespace AmazonLoad.IconItemLocale.Tests
             int expectedValidStoreCount = 59;
 
             // When
-            var iconStoreData = IconItemLocaleBuilder.LoadIconStoreData(TestRegion, iconnConnectionString);
+            var iconStoreData = IconItemLocaleBuilder.LoadIconStoreData(TestRegion, iconConnectionString);
 
             // Then
             Assert.IsNotNull(iconStoreData);
@@ -73,17 +73,17 @@ namespace AmazonLoad.IconItemLocale.Tests
         {
             // Given
             TestRegion = "MA";
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var store = testData.GetTestStore(TestRegion);
 
             // When 
             using (SqlConnection irmaSqlConnection = new SqlConnection(irmaConnectionString))
             {
-                var irmaItemLocaleData = IconItemLocaleBuilder.LoadIrmaItemLocales(irmaSqlConnection, store.RegionCode, store.BusinessUnit, maxRows).ToList();
+                var irmaItemLocaleData = IconItemLocaleBuilder.LoadIrmaItemLocales(irmaSqlConnection, store.RegionCode, store.BusinessUnit, maxNumberOfRows).ToList();
 
                 // Then
                 Assert.IsNotNull(irmaItemLocaleData);
-                Assert.AreEqual(maxRows, irmaItemLocaleData.Count());
+                Assert.AreEqual(maxNumberOfRows, irmaItemLocaleData.Count());
             }
         }
 
@@ -93,16 +93,16 @@ namespace AmazonLoad.IconItemLocale.Tests
             // Given
             TestRegion = "MA";
             var store = testData.GetTestStore(TestRegion);
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
 
             // When
             using (SqlConnection irmaSqlConnection = new SqlConnection(irmaConnectionString))
             {
-                var itemLocaleData = IconItemLocaleBuilder.LoadItemLocalesForWormhole(irmaSqlConnection, store, maxRows);
+                var itemLocaleData = IconItemLocaleBuilder.LoadItemLocalesForWormhole(irmaSqlConnection, store, maxNumberOfRows);
 
                 // Then
                 Assert.IsNotNull(itemLocaleData);
-                Assert.AreEqual(maxRows, itemLocaleData.Count());
+                Assert.AreEqual(maxNumberOfRows, itemLocaleData.Count());
             }
         }
 
@@ -111,13 +111,13 @@ namespace AmazonLoad.IconItemLocale.Tests
         {
             // Given
             TestRegion = "MA";
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var store = testData.GetTestStore(TestRegion);
 
             // When
             using (SqlConnection irmaSqlConnection = new SqlConnection(irmaConnectionString))
             {
-                var itemLocaleData = IconItemLocaleBuilder.LoadItemLocalesForWormhole(irmaSqlConnection,  store, maxRows);
+                var itemLocaleData = IconItemLocaleBuilder.LoadItemLocalesForWormhole(irmaSqlConnection,  store, maxNumberOfRows);
 
                 // Then
                 var itemLocaleForWormhole = itemLocaleData.ElementAt(4);
@@ -150,13 +150,13 @@ namespace AmazonLoad.IconItemLocale.Tests
             // Given
             string region = "XY";
             string businessUnit = "12345";
-            int maxRows = 10;
-            string expectedTop = $"SELECT top {maxRows}";
+            int maxNumberOfRows = 10;
+            string expectedTop = $"SELECT top {maxNumberOfRows}";
             string expectedRegion = $"'{region}' as RegionCode";
             string expectedBusinessUnit = $"s.BusinessUnit_ID = {businessUnit}";
 
             // When
-            var result = IconItemLocaleBuilder.GetFormattedSqlForIrmaItemLocaleQuery(region, businessUnit, maxRows);
+            var result = IconItemLocaleBuilder.GetFormattedSqlForIrmaItemLocaleQuery(region, businessUnit, maxNumberOfRows);
 
             // Then
             Assert.IsTrue(result.Contains(expectedTop));
@@ -168,7 +168,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_SingleMessageCallsSend()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedNonReceivingSystems = "non receivers";
 
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
@@ -178,7 +178,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, IconItemLocaleBuilder.NumberOfMessagesSent);
@@ -194,7 +194,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_SendsExpectedMsgPropNonReceivingSys()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedNonReceivingSystems = "non receivers";
 
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
@@ -204,7 +204,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows);
 
             // Then
             mockEsbProducer.Verify(p => p.Send(
@@ -218,7 +218,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForUPC()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10042_UPC.xml");
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
             {
@@ -234,16 +234,17 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
         }
+
         [TestMethod]
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForUPCWithLinkedItem()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10042_UPC_WithLinkedItem.xml");
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
             {
@@ -259,7 +260,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -269,7 +270,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedDeleteMsgForNonAuthorizedUPC()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10048_UPC_NonAuthorized.xml");
             // send an non-authorized item/locale which should create a delete message
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
@@ -286,7 +287,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -296,7 +297,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForPosPlu()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10042_PosPlu.xml");
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
             {
@@ -312,7 +313,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -322,7 +323,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForScalePlu()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10042_ScalePlu.xml");
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
             {
@@ -338,7 +339,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -348,7 +349,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForMultiple()
         {
             // Given
-            int maxRows = 10;
+            int maxNumberOfRows = 10;
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10042_MultipleItems.xml");
             var itemLocaleModels = new List<ItemLocaleModelForWormhole> 
             {
@@ -366,7 +367,7 @@ namespace AmazonLoad.IconItemLocale.Tests
                 ((message, messageId, messageProperties) => { actualXmlMsg = message; }));
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxRows);
+                false, null, "non receivers", maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, IconItemLocaleBuilder.NumberOfMessagesSent);
@@ -378,7 +379,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_MaxRecordsLimitsData()
         {
             // Given
-            int maxRows = 2;
+            int maxNumberOfRows = 2;
             var expectedNonReceivingSystems = "non receivers";
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
             {
@@ -390,7 +391,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, IconItemLocaleBuilder.NumberOfMessagesSent);
@@ -401,7 +402,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         public void IconItemLocaleBuilder_SendMessagesToEsb_MaxRecordsOfZeroMeansAll()
         {
             // Given
-            int maxRows = 0;
+            int maxNumberOfRows = 0;
             var expectedNonReceivingSystems = "non receivers";
 
             var itemLocaleModels = new List<ItemLocaleModelForWormhole>
@@ -412,7 +413,7 @@ namespace AmazonLoad.IconItemLocale.Tests
 
             // When
             IconItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows);
 
             // Then
             Assert.AreEqual(1, IconItemLocaleBuilder.NumberOfMessagesSent);

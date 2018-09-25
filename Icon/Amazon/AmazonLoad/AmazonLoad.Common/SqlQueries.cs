@@ -571,7 +571,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
 	                JOIN dbo.Items				i		on p.ItemID					 = i.ItemID
 	                JOIN dbo.ItemTypes			t		on i.ItemTypeID				 = t.ItemTypeID
                     JOIN dbo.Currency			c		on p.CurrencyID				 = c.CurrencyID
-                ORDER BY p.BusinessUnitId";
+                WHERE p.BusinessUnitId = {businessUnit}";
             }
         }
 
@@ -613,7 +613,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
 	                JOIN dbo.Items		        i		on	p.ItemID				 = i.ItemID
 	                JOIN dbo.ItemTypes	        t		on	i.ItemTypeID			 = t.ItemTypeID
                     JOIN dbo.Currency           c		on  p.CurrencyCode			 = c.CurrencyCode
-                ORDER BY p.BusinessUnitId";
+                WHERE p.BusinessUnitId = {businessUnit}";
             }
         }
 
@@ -714,6 +714,103 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                     WHERE ii.Default_Identifier = 1 and ii.Remove_Identifier = 0 and ii.Deleted_Identifier = 0
                         and i.Retail_Sale = 1 and i.Remove_Item = 0 and i.Deleted_Item = 0
 	                    and s.BusinessUnit_ID = {businessUnit} and (s.WFM_Store = 1 OR s.Mega_Store = 1); ";
+            }
+        }
+
+        public static string QueryMammothLocalesByRegionSql
+        {
+            get
+            {
+                return
+                    @"
+                    SELECT 
+	                    l.Region as RegionCode,
+	                    l.LocaleID as LocaleId,
+	                    l.BusinessUnitID as BusinessUnit,
+	                    l.StoreName as LocaleName,
+	                    l.StoreAbbrev as StoreAbbrev
+                    FROM dbo.Locale l
+                    WHERE l.Region = '{region}' and
+	                    LocaleCloseDate is null
+                    ";
+            }
+        }
+
+        public static string QueryMammothPrimeAffinityPsgsGpmActive
+        {
+            get
+            {
+                return
+                    @"
+                    DECLARE @Today datetime = convert(date, getdate());
+                    DECLARE @EndOfYesterday datetime = DATEADD(ms, -3, @Today);
+
+                    SELECT {top query}
+                        gpmPrc.Region as RegionCode,
+                        gpmPrc.BusinessUnitId as BusinessUnit,
+                        l.StoreName as LocaleName,
+                        i.ItemID as ItemId,
+                        i.ScanCode as ScanCode,
+                        it.ItemTypeCode as ItemTypeCode,
+                        it.ItemTypeDesc as ItemTypeDesc,
+                        gpmPrc.Price as 'Price',
+                        gpmPrc.PriceType as 'PriceType',
+                        i.PSNumber,
+                        CASE WHEN 
+                            i.PSNumber NOT IN ({excluded PSNumbers}) and
+                            gpmPrc.StartDate <= @Today and gpmPrc.EndDate > @Today
+                        THEN 1 ELSE 0 END as PrimeEligible
+                    FROM
+                        dbo.Items i
+                        join dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
+                        JOIN dbo.Locales_{region} l ON l.BusinessUnitID = {businessUnit} 
+                        CROSS APPLY 
+                            (SELECT TOP 1 *
+                            FROM gpm.Price_{region} gpm
+                            WHERE gpm.Region = l.Region
+                                AND gpm.BusinessUnitID = l.BusinessUnitID
+                                AND gpm.ItemID = i.ItemID 
+                                AND gpm.PriceType <> 'REG'
+                            ORDER BY gpm.StartDate DESC, gpm.InsertDateUtc DESC) AS gpmPrc ";
+            }
+        }
+
+        public static string QueryMammothPrimeAffinityPsgsGpmInactive
+        {
+            get
+            {
+                return
+                    @"
+                    DECLARE @Today datetime = convert(date, getdate());
+                    DECLARE @EndOfYesterday datetime = DATEADD(ms, -3, @Today);
+
+                    SELECT {top query}
+                        prc.Region as RegionCode,
+                        prc.BusinessUnitId as BusinessUnit,
+                        l.StoreName as LocaleName,
+                        i.ItemID as ItemId,
+                        i.ScanCode as ScanCode,
+                        it.ItemTypeCode as ItemTypeCode,
+                        it.ItemTypeDesc as ItemTypeDesc,
+                        CASE WHEN 
+                            prc.PriceType IN ({price types}) and 
+                            i.PSNumber NOT IN ({excluded PSNumbers}) and
+			                (prc.StartDate <= @Today and prc.EndDate > @Today)
+                        THEN 1 ELSE 0 END as PrimeEligible
+                    FROM
+                        dbo.Items i
+                        join dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
+                        JOIN dbo.Locales_{region} l ON l.BusinessUnitID = {businessUnit}
+                        CROSS APPLY 
+                            (SELECT TOP 1 *
+                            FROM dbo.Price_{region} prc
+                            WHERE prc.Region = '{region}'
+                                AND prc.ItemID = i.ItemID 
+                                AND prc.BusinessUnitID = {businessUnit}
+                                AND prc.PriceType IN ({price types})
+                            ORDER BY prc.StartDate DESC, prc.AddedDate DESC) AS prc
+                    WHERE
+                        l.BusinessUnitID = {businessUnit}";
             }
         }
     }
