@@ -785,7 +785,6 @@
     <None Include="Jobs\MAMMOTH.PurgePricesForClosedStores.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddDefaultValueToEplumSessionTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEmergencyPriceServiceToAppTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulateItemPriceTypeWithGsp.sql" />
     <None Include="Jobs\MAMMOTH.CopyGpmDataForAudit.sql" />
     <Build Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
     <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
@@ -793,6 +792,7 @@
     <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
