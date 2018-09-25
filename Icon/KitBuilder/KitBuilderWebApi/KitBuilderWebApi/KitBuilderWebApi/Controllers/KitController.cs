@@ -199,7 +199,7 @@ namespace KitBuilderWebApi.Controllers
 					StoreAbbreviation = l.StoreAbbreviation,
 					RegionCode = l.RegionCode,
 					BusinessUnitId = l.BusinessUnitId,
-					Exclude = de == null ? null : (int?)de.Exclude,
+					Exclude = de == null ? null : (bool?)de.Exclude,
 					StatusId = de == null ? null : (int?)de.StatusId
 				};
 		}

@@ -19,7 +19,7 @@ namespace KitBuilderWebApi.DatabaseModels
         public int LocaleId { get; set; }
         public int? MinimumCalories { get; set; }
         public int? MaximumCalories { get; set; }
-        public int? Exclude { get; set; }
+        public bool? Exclude { get; set; }
         [Required]
         public int StatusId { get; set; }
         public DateTime InsertDate { get; set; }

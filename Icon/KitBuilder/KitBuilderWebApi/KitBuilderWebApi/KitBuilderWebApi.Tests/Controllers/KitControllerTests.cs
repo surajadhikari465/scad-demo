@@ -166,16 +166,16 @@ namespace KitBuilderWebApi.Tests.Controllers
 				};
 
            kitLocaleList = new List<KitLocale> {
-                           new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
-                           new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
-						   new KitLocale { KitLocaleId = 3, KitId = 2, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 0, StatusId = 0 },
-						   new KitLocale { KitLocaleId = 4, KitId = 2, LocaleId = 4, MinimumCalories = 0, MaximumCalories = 0, Exclude = 0, StatusId = 0 },
+                           new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
+                           new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
+						   new KitLocale { KitLocaleId = 3, KitId = 2, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
+						   new KitLocale { KitLocaleId = 4, KitId = 2, LocaleId = 4, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
 
 			 };
 
             kitLocaleDtoList = new List<KitLocaleDto> {
-							   new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 },
-                               new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = 1, StatusId = 1 }
+							   new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
+                               new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 }
              };
 
             kitsDto = (from k in kits

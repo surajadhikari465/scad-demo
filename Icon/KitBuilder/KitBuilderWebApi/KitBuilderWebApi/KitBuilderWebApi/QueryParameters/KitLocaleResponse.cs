@@ -20,7 +20,7 @@ namespace KitBuilderWebApi.QueryParameters
 		public string StoreAbbreviation { get; set; }
 		public string RegionCode { get; set; }
 		public int? BusinessUnitId { get; set; }
-		public int? Exclude { get; set; }
+		public bool? Exclude { get; set; }
 		public int? StatusId { get; set; }
 	}
 }
