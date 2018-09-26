@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NLog;
 using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -78,14 +79,13 @@ namespace KitBuilderWebApi
                 c.IncludeXmlComments(xmlPath);
 
             });
-
-            // add services here
-            //exmaple: Services.AddSingleTon <>
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            GlobalDiagnosticsContext.Set("nLogConnectionString", Configuration.GetConnectionString("KitBuilderDBConnectionString"));
+
             // middleware to log 
             loggerFactory.AddNLog();
 
@@ -94,8 +94,8 @@ namespace KitBuilderWebApi
 
             MappingHelper.InitializeMapper();
 
-            // only when environment is development show fill exception
-            if (env.IsDevelopment())
+            // only when environment is development or local show fill exception
+            if (env.IsDevelopment() || env.IsLocal())
             {
                 app.UseDeveloperExceptionPage();
             }
