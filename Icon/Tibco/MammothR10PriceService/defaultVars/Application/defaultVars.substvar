@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>NonReceivingSystems</name>
-			<value>Slaw,Spice,Mammoth,Icon</value>
+			<value>Slaw,Spice,Mammoth,Icon,AMZ</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
