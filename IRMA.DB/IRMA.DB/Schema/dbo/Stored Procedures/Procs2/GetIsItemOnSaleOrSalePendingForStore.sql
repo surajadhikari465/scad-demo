@@ -20,8 +20,8 @@ BEGIN
 							WHERE
 								P.Item_Key = @Item_Key 
 								AND P.Store_No = @Store_No
-								AND PCT.On_Sale = 1				-- THE ITEM IS ASSIGNED TO A SALE PRICE TYPE
-								AND P.Sale_End_Date > GetDate() -- THE SALE IS STILL ONGOING
+								AND PCT.On_Sale = 1	                                                            -- THE ITEM IS ASSIGNED TO A SALE PRICE TYPE
+								AND cast(IsNull(P.Sale_End_Date, GetDate()) as date) >= cast(GetDate() as date) -- THE SALE IS STILL ONGOING
 						  ) 
 			THEN 1 -- ITEM IS CURRENTLY ON SALE IN IRMA
 			ELSE 0 -- ITEM IS NOT CURRENTLY ON SALE IN IRMA
@@ -44,17 +44,17 @@ BEGIN
 								WHERE PBD.Item_Key = @Item_Key
 									AND PBD.Store_No = @Store_No
 									AND ISNULL(PBH.PriceBatchStatusID, 0) < 6 -- UNPROCESSED BATCHES ONLY
-									AND PBD.PriceChgTypeID IS NOT NULL		  -- PRICE CHANGE REQUIRED
-									AND PCT.On_Sale = 1						  -- MUST BE A "SALE" PRICE CHANGE TYPE
-									AND PBD.Expired = 0						  -- EXCLUDE EXPIRED PRICE BATCHES
-									AND PBD.Sale_End_Date > GetDate()		  -- SALE IS STILL ONGOING	
+									AND PBD.PriceChgTypeID IS NOT NULL	      -- PRICE CHANGE REQUIRED
+									AND PCT.On_Sale = 1						            -- MUST BE A "SALE" PRICE CHANGE TYPE
+									AND PBD.Expired = 0						            -- EXCLUDE EXPIRED PRICE BATCHES
+									AND cast(IsNull(PBD.Sale_End_Date, GetDate()) as date) >= cast(GetDate() as date) -- SALE IS STILL ONGOING	
 							  )		
 				THEN 1 -- SALE(S) ARE PENDING FOR THE ITEM 
 				ELSE 0 -- SALE(S) ARE NOT PENDING FOR THE ITEM
 			END
 	END
 
-	SELECT IsOnSaleOrSalePending = @IsOnSaleOrSalePending 
+	SELECT IsOnSaleOrSalePending = @IsOnSaleOrSalePending
     SET NOCOUNT OFF
 END
 GO
