@@ -5,7 +5,7 @@
   HospitalityItem bit not null default(0),
   KitchenItem bit not null default(0),
   KitchenDescription varchar(15),
-  URL1 varchar(255),
+  ImageURL varchar(255),
 )
 GO
 
