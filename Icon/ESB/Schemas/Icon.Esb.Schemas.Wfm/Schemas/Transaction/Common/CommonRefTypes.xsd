@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:arf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:xrf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="16.27">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
@@ -238,6 +239,7 @@
 	<xs:complexType name="ReceiptImagesDataType">
 		<xs:sequence>
 			<xs:element name="receiptData" type="ReceiptImageDataType" maxOccurs="unbounded"/>
+			<xs:element name="receiptDelivery" type="ReceiptDeliveryType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReceiptImageDataType">
@@ -246,6 +248,11 @@
 			<xs:element name="format" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="notPrinted" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="line" type="crf:WfmStrType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReceiptDeliveryType">
+		<xs:sequence>
+			<xs:element name="ChannnelType" type="crf:WfmStrType" minOccurs="0"  maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReversalType">
@@ -370,5 +377,17 @@
 			<xs:element name="value" type="crf:WfmDecimalType" minOccurs="0"/>
 			<xs:element name="uom" type="uom:UomType"/>
 		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tabType">
+		<xs:sequence>
+			<xs:element name="tableId" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="actionLog" type="ActionLogType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionLogType">
+		<xs:all>
+			<xs:element name="logData" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="logTime" type="crf:WfmStrType" minOccurs="1"/>
+		</xs:all>
 	</xs:complexType>
 </xs:schema>

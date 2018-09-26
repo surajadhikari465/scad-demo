@@ -13,4 +13,12 @@
 	<xs:simpleType name="InventoryTypeCodeType">
 		<xs:restriction base="crf:WfmStrType"/>
 	</xs:simpleType>
+	<xs:complexType name="SubTeamType">
+		<xs:sequence>
+			<xs:element name="subTeamNumber"/>
+			<xs:element name="subTeamName"/>
+			<xs:element name="hostSubTeamNumber"/>
+			<xs:element name="hostSubTeamName"/>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

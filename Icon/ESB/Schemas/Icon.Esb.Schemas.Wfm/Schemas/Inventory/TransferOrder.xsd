@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports     -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item/Item.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements    -->
+	<!-- ================== -->
+	<xs:element name="transferOrders">
+		<xs:annotation>
+			<xs:documentation>Transfer Order Schema</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="transferOrder" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="transferNumber"/>
+							<xs:element name="purchaseOrderNumber"/>
+							<xs:element name="eventType"/>
+							<xs:element name="messageNumber">
+								<xs:annotation>
+									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="locationChange" type="LocationChangeType"/>
+							<xs:element name="subTeamChange" type="SubTeamChangeType"/>
+							<xs:element name="userInfo" type="prt:PartyType"/>
+							<xs:element name="createDateTime"/>
+							<xs:element name="approveDateTime" minOccurs="0"/>
+							<xs:element name="logicalTransfer" minOccurs="0"/>
+							<xs:element name="transferReasonCode" minOccurs="0"/>
+							<xs:element name="approver" type="prt:PartyType" minOccurs="0"/>
+							<xs:sequence>
+								<xs:element name="transferOrderDetail" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="transferOrderDetailNumber"/>
+											<xs:element name="Item" type="itm:ItemType" minOccurs="0"/>
+											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
+											<xs:element name="defaultScanCode"/>
+											<xs:element name="serialNumber" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="batchNumber" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+											<xs:element name="tsfStatus"/>
+											<xs:element name="invStatusChange" type="InvStatusChangeType"/>
+											<xs:element name="expectedArrivalDate"/>
+											<xs:element name="carrierSCAC" minOccurs="0"/>
+											<xs:element name="cartonQuantity" minOccurs="0"/>
+											<xs:element name="shipmentType" minOccurs="0"/>
+											<xs:element name="documentNumber" minOccurs="0"/>
+											<xs:element name="documentType" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="LocationChangeType">
+		<xs:sequence>
+			<xs:element name="fromLocationNumber"/>
+			<xs:element name="fromLocationName"/>
+			<xs:element name="toLocationNumber"/>
+			<xs:element name="toLocationName"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubTeamChangeType">
+		<xs:sequence>
+			<xs:element name="fromSubTeamNumber"/>
+			<xs:element name="fromSubTeamName"/>
+			<xs:element name="toSubTeamNumber"/>
+			<xs:element name="toSubTeamName"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvStatusChangeType">
+		<xs:sequence>
+			<xs:element name="fromInvStatus" minOccurs="0"/>
+			<xs:element name="toInvStatus" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
