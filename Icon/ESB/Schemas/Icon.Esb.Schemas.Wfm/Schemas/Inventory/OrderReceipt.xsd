@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports     -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item/Item.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements    -->
+	<!-- ================== -->
+	<xs:element name="orderReceipts">
+		<xs:annotation>
+			<xs:documentation>Inventory Order Receipt Schema</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="orderReceipt" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="receiptNumber"/>
+							<xs:element name="purchaseOrderNumber"/>
+							<xs:element name="locationNumber"/>
+							<xs:element name="locationName"/>
+							<xs:element name="eventType"/>
+							<xs:element name="messageNumber">
+								<xs:annotation>
+									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
+								</xs:annotation>
+							</xs:element>							
+							<xs:element name="ASN" minOccurs="0"/>
+							<xs:element name="receiptComments" minOccurs="0"/>
+							<xs:element name="receiptStatus"/>
+							<xs:sequence>
+								<xs:element name="receiptDetail" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="receiptDetailNumber"/>
+											<xs:element name="purchaseOrderDetailNumber"/>
+											<xs:element name="Item" type="itm:ItemType" minOccurs="0"/>
+											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
+											<xs:element name="serialNumber" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="itemVIN"/>
+											<xs:element name="batchNumber" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="quantityOrdered"/>
+											<xs:element name="quantityReceived"/>
+											<xs:element name="receiptStatus"/>
+											<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+											<xs:element name="cartonNumber" minOccurs="0"/>
+											<xs:element name="conversionRetailUoM" minOccurs="0"/>
+											<xs:element name="receiptItemCost" minOccurs="0"/>
+											<xs:element name="dispositionCode" minOccurs="0"/>
+											<xs:element name="Party" type="prt:PartyType" minOccurs="0"/>
+											<xs:element name="createDateTime"/>
+											<xs:element name="documentNumber" minOccurs="0"/>
+											<xs:element name="documentType" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
