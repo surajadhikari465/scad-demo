@@ -70,7 +70,7 @@ FROM  @StoreNoItemIdentiferData
 	JOIN  Price p ON siet.[ItemKey] = p.Item_Key  AND siet.StoreNo = p.Store_No
 	INNER JOIN PriceChgType (nolock) PCT ON PCT.PriceChgTypeID = P.PriceChgTypeID
 	WHERE   PCT.On_Sale = 1				
-			AND P.Sale_End_Date > GetDate() 
+			AND cast(IsNull(P.Sale_End_Date, GetDate()) as date) >= cast(GetDate() as date) 
 			AND ErrorDetails IS NULL
 
     UPDATE siet
@@ -84,7 +84,7 @@ FROM  @StoreNoItemIdentiferData
 		  AND PBD.PriceChgTypeID IS NOT NULL		  
 		  AND PCT.On_Sale = 1						 
 		  AND PBD.Expired = 0						 
-		  AND PBD.Sale_End_Date > GetDate()	
+		  AND cast(IsNull(PBD.Sale_End_Date, GetDate()) as date) >= cast(GetDate() as date)	
 		  AND siet.ItemKey IS NOT NULL
 		  AND ErrorDetails IS NULL
 
