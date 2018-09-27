@@ -135,6 +135,9 @@
 
             this.AddPriceToDatabase(existingTsPrice);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder();
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newRmPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -142,7 +145,8 @@
                 .WithMultiple(expectedMultiple)
                 .WithPriceChgTypeID(expectedPriceTypeId)
                 .WithStore_No(newStore.Store_No)
-                .WithStartDate(expectedRmStartDate);
+                .WithStartDate(expectedRmStartDate)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int rmPriceBatchDetailId = this.AddPriceBatchDetail(newRmPriceBatchDetail);
 
@@ -153,7 +157,8 @@
                 .WithMultiple(expectedMultiple)
                 .WithPriceChgTypeID(expectedPriceTypeId)
                 .WithStore_No(newTsStore.Store_No)
-                .WithStartDate(expectedTsStartDate);
+                .WithStartDate(expectedTsStartDate)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int tsPriceBatchDetailId = this.AddPriceBatchDetail(newTsPriceBatchDetail);
 
@@ -291,6 +296,10 @@
 
             this.AddValidatedScanCode(newValidScanCode);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -298,7 +307,8 @@
                 .WithMultiple(expectedNewMultiple)
                 .WithPriceChgTypeID(expectedPriceTypeId)
                 .WithStore_No(newStore.Store_No)
-                .WithStartDate(expectedStartDate);
+                .WithStartDate(expectedStartDate)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
 
@@ -413,6 +423,10 @@
 
             this.AddValidatedScanCode(newValidScanCode);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -423,7 +437,8 @@
                 .WithSale_Price(expectedSalePrice)
                 .WithStartDate(expectedStartDate)
                 .WithSale_End_Date(expectedSaleEndDate)
-                .WithSale_Multiple(expectedSaleMultiple);
+                .WithSale_Multiple(expectedSaleMultiple)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
 
@@ -536,6 +551,10 @@
 
             this.AddValidatedScanCode(newValidScanCode);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -543,7 +562,8 @@
                 .WithMultiple(expectedNewMultiple)
                 .WithPriceChgTypeID(expectedPriceTypeIdReg)
                 .WithStore_No(newStore.Store_No)
-                .WithStartDate(expectedStartDate);
+                .WithStartDate(expectedStartDate)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
 
@@ -758,6 +778,10 @@
 
             this.AddValidatedScanCode(newValidScanCode);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newPriceBatchDetail = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifier)
@@ -768,7 +792,8 @@
                 .WithSale_Price(expectedSalePrice)
                 .WithStartDate(expectedStartDate)
                 .WithSale_End_Date(expectedSaleEndDate)
-                .WithSale_Multiple(expectedSaleMultiple);
+                .WithSale_Multiple(expectedSaleMultiple)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailId = this.AddPriceBatchDetail(newPriceBatchDetail);
 
@@ -934,6 +959,10 @@
 
             this.AddValidatedScanCode(newValidScanCodeReg);
 
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
             PriceBatchDetail newPriceBatchDetailPromo = new TestPriceBatchDetailBuilder()
                 .WithItem_Key(itemKey)
                 .WithIdentifier(expectedIdentifierPromo)
@@ -944,7 +973,8 @@
                 .WithSale_Price(expectedNewSalePrice)
                 .WithStartDate(expectedStartDate)
                 .WithSale_End_Date(expectedSaleEndDate)
-                .WithSale_Multiple(expectedSaleMultiple);
+                .WithSale_Multiple(expectedSaleMultiple)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailIdPromo = this.AddPriceBatchDetail(newPriceBatchDetailPromo);
 
@@ -955,7 +985,8 @@
                 .WithMultiple(expectedNewMultiple)
                 .WithPriceChgTypeID(expectedPriceTypeIdReg)
                 .WithStore_No(newStore.Store_No)
-                .WithStartDate(expectedStartDate);
+                .WithStartDate(expectedStartDate)
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
 
             int priceBatchDetailIdReg = this.AddPriceBatchDetail(newPriceBatchDetailReg);
 
@@ -1013,6 +1044,168 @@
             Assert.AreEqual(expectedBusinessUnitId, promo.BusinessUnitId);
             Assert.AreEqual(expectedResultUnitAbbreviation, promo.PriceUom);
             Assert.AreEqual(expectedStartDate, promo.NewStartDate);
+            Assert.AreEqual(expectedPriceTypePromo, promo.NewPriceType);
+            Assert.AreEqual(expectedPriceTypeReg, promo.CurrentPriceType);
+            Assert.AreEqual(existingPricePromo.Sale_Multiple, promo.CurrentSaleMultiple);
+            Assert.AreEqual(existingPricePromo.Sale_Price, promo.CurrentSalePrice);
+            Assert.AreEqual(existingPricePromo.Sale_Start_Date, promo.CurrentSaleStartDate);
+            Assert.AreEqual(existingPricePromo.Sale_End_Date, promo.CurrentSaleEndDate);
+            Assert.AreEqual(expectedSaleEndDate, promo.NewSaleEndDate);
+            Assert.AreEqual(expectedSaleMultiple, promo.NewSaleMultiple);
+            Assert.AreEqual(expectedNewSalePrice, promo.NewSalePrice);
+            Assert.IsNull(promo.ErrorMessage);
+            Assert.AreEqual(this.region, promo.Region);
+        }
+
+        [TestMethod]
+        public void GetPriceEventsQuery_QueueHasSaleOffSalesWithOldPriceBatchDetailStartDates_ShouldReturnStartDateFromPriceBatchHeader()
+        {
+            // Given
+            decimal expectedNewSalePrice = 8.99M;
+            decimal expectedCurrentRegularPrice = 12.99M;
+
+            byte expectedNewMultiple = 1;
+            byte expectedCurrentMultiple = 1;
+            var expectedIdentifierReg = "7777777777775";
+            var expectedIdentifierPromo = "7777777777777";
+            var expectedBusinessUnitId = 723;
+            DateTime pastPbdStartDate = DateTime.Today.AddDays(-7);  // testing when the PriceBatchDetail.StartDate is in the past
+            DateTime expectedStartDate = DateTime.Today.AddDays(3);
+            DateTime expectedSaleEndDate = DateTime.Today.AddDays(16);
+            byte expectedSaleMultiple = 2;
+
+            string expectedPriceTypeReg = "REG";
+            byte expectedPriceTypeIdReg = dbProvider.Connection.Query<byte>(
+                "SELECT PriceChgTypeID FROM PriceChgType WHERE PriceChgTypeDesc = @Desc",
+                new { Desc = expectedPriceTypeReg },
+                dbProvider.Transaction).First();
+
+            string expectedPriceTypePromo = "SAL";
+            byte expectedPriceTypeIdPromo = dbProvider.Connection.Query<byte>(
+                "SELECT PriceChgTypeID FROM PriceChgType WHERE PriceChgTypeDesc = @Desc",
+                new { Desc = expectedPriceTypePromo },
+                dbProvider.Transaction).First();
+
+            var expectedResultUnitAbbreviation = "EA";
+            var expectedRetailUnitId = dbProvider.Connection.Query<int>(
+                "SELECT Unit_ID FROM ItemUnit WHERE Unit_Abbreviation = @Unit",
+                new { Unit = expectedResultUnitAbbreviation },
+                dbProvider.Transaction).First();
+
+            var subTeamNo = dbProvider.Connection.Query<int>(
+                "SELECT Top 1 SubTeam_No FROM SubTeam",
+                null,
+                dbProvider.Transaction).First();
+
+            Item newItem = new TestIrmaDbItemBuilder()
+                .WithRetail_Unit_ID(expectedRetailUnitId)
+                .WithSubTeam_No(subTeamNo);
+            var itemKey = this.AddItemToDatabase(newItem);
+
+            Item newItemReg = new TestIrmaDbItemBuilder()
+                .WithRetail_Unit_ID(expectedRetailUnitId)
+                .WithSubTeam_No(subTeamNo);
+            var itemKeyReg = this.AddItemToDatabase(newItemReg);
+
+            ItemIdentifier newItemIdentifier = new TestItemIdentifierBuilder()
+                .WithItem_Key(itemKey)
+                .WithIdentifier(expectedIdentifierPromo);
+
+            this.AddItemIdentifierToDatabase(newItemIdentifier);
+
+            ItemIdentifier newItemIdentifierReg = new TestItemIdentifierBuilder()
+                .WithItem_Key(itemKeyReg)
+                .WithIdentifier(expectedIdentifierReg);
+
+            this.AddItemIdentifierToDatabase(newItemIdentifierReg);
+
+            Store newStore = new TestStoreBuilder()
+               .WithBusinessUnitId(expectedBusinessUnitId)
+               .WithStoreJurisdictionId(1);
+
+            this.AddNewStore(newStore);
+
+            StoreRegionMapping newStoreRegionMapping = new TestStoreRegionMappingBuilder()
+                .WithStore_No(newStore.Store_No)
+                .WithRegion_Code(this.region);
+
+            this.AddNewStoreRegionMapping(newStoreRegionMapping);
+
+            Price existingPricePromo = new TestPriceBuilder()
+                .WithPrice1(expectedCurrentRegularPrice)
+                .WithMultiple(expectedCurrentMultiple)
+                .WithPriceChgTypeId(expectedPriceTypeIdReg)
+                .WithStore_No(newStore.Store_No)
+                .WithItem_Key(itemKey)
+                .WithSale_Start_Date(DateTime.Today.AddDays(-10))
+                .WithSale_End_Date(DateTime.Today.AddDays(10));
+
+            this.AddPriceToDatabase(existingPricePromo);
+
+            Price existingPriceReg = new TestPriceBuilder()
+                .WithPrice1(expectedCurrentRegularPrice)
+                .WithMultiple(1)
+                .WithPriceChgTypeId(expectedPriceTypeIdReg)
+                .WithStore_No(newStore.Store_No)
+                .WithItem_Key(itemKeyReg);
+
+            this.AddPriceToDatabase(existingPriceReg);
+
+            ValidatedScanCode newValidScanCodePromo = new TestValidatedScanCodeBuilder()
+                .WithScanCode(expectedIdentifierPromo);
+
+            this.AddValidatedScanCode(newValidScanCodePromo);
+
+            ValidatedScanCode newValidScanCodeReg = new TestValidatedScanCodeBuilder()
+                .WithScanCode(expectedIdentifierReg);
+
+            this.AddValidatedScanCode(newValidScanCodeReg);
+
+            PriceBatchHeader newPriceBatchHeader = new TestPriceBatchHeaderBuilder()
+                .WithStartDate(expectedStartDate);
+            int priceBatchHeaderId = this.AddPriceBatchHeader(newPriceBatchHeader);
+
+            PriceBatchDetail newPriceBatchDetailPromo = new TestPriceBatchDetailBuilder()
+                .WithItem_Key(itemKey)
+                .WithIdentifier(expectedIdentifierPromo)
+                .WithPrice(expectedCurrentRegularPrice)
+                .WithMultiple(expectedNewMultiple)
+                .WithPriceChgTypeID(expectedPriceTypeIdPromo)
+                .WithStore_No(newStore.Store_No)
+                .WithSale_Price(expectedNewSalePrice)
+                .WithStartDate(pastPbdStartDate)
+                .WithSale_End_Date(expectedSaleEndDate)
+                .WithSale_Multiple(expectedSaleMultiple)
+                .WithInsertApplication("Sale Off")    // Testing when PBD record is an Off Sale batch
+                .WithPriceBatchHeaderID(priceBatchHeaderId);
+
+            int priceBatchDetailIdPromo = this.AddPriceBatchDetail(newPriceBatchDetailPromo);
+
+            var itemPriceEvents = new List<TestItemsForPriceEvents>();
+            itemPriceEvents.Add(new TestItemsForPriceEvents
+            {
+                Item_Key = itemKey,
+                Identifier = expectedIdentifierPromo,
+                Store_No = newStore.Store_No,
+                PriceBatchDetailID = priceBatchDetailIdPromo
+            });
+
+            this.InsertIntoEventQueue(itemPriceEvents);
+
+            // When
+            var results = this.query.Search(this.parameters);
+            var promo = results.First(r => r.NewPriceType != "REG");
+
+            // Then
+            Assert.AreEqual(expectedCurrentRegularPrice, promo.CurrentRegularPrice);
+            Assert.AreEqual(expectedCurrentMultiple, promo.CurrentRegularMultiple);
+            Assert.AreEqual(expectedCurrentRegularPrice, promo.NewRegularPrice);
+            Assert.AreEqual(expectedNewMultiple, promo.NewRegularMultiple);
+            Assert.AreEqual(expectedIdentifierPromo, promo.ScanCode);
+            Assert.AreEqual(expectedBusinessUnitId, promo.BusinessUnitId);
+            Assert.AreEqual(expectedResultUnitAbbreviation, promo.PriceUom);
+            Assert.AreEqual(expectedStartDate, promo.NewStartDate);  // NewStartDate should be the PriceBatchHeader value
+            Assert.AreNotEqual(pastPbdStartDate, promo.NewStartDate);  // Another assertion to make sure it doesn't equal the PriceBatchDetail value
             Assert.AreEqual(expectedPriceTypePromo, promo.NewPriceType);
             Assert.AreEqual(expectedPriceTypeReg, promo.CurrentPriceType);
             Assert.AreEqual(existingPricePromo.Sale_Multiple, promo.CurrentSaleMultiple);
@@ -1674,6 +1867,42 @@
                 this.dbProvider.Transaction).First();
 
             return priceBatchDetailId;
+        }
+
+        private int AddPriceBatchHeader(PriceBatchHeader newPriceBatchHeader)
+        {
+            string sql = @"INSERT INTO [dbo].[PriceBatchHeader]
+                               ([PriceBatchStatusID]
+                               ,[ItemChgTypeID]
+                               ,[PriceChgTypeID]
+                               ,[StartDate]
+                               ,[PrintedDate]
+                               ,[SentDate]
+                               ,[ProcessedDate]
+                               ,[POSBatchID]
+                               ,[BatchDescription]
+                               ,[AutoApplyFlag]
+                               ,[ApplyDate])
+                         VALUES
+                               (@PriceBatchStatusID
+                               ,@ItemChgTypeID
+                               ,@PriceChgTypeID
+                               ,@StartDate
+                               ,@PrintedDate
+                               ,@SentDate
+                               ,@ProcessedDate
+                               ,@POSBatchID
+                               ,@BatchDescription
+                               ,@AutoApplyFlag
+                               ,@ApplyDate)
+
+                    SELECT SCOPE_IDENTITY();";
+
+            int priceBatchHeaderId = this.dbProvider.Connection.Query<int>(sql,
+                newPriceBatchHeader,
+                this.dbProvider.Transaction).First();
+
+            return priceBatchHeaderId;
         }
     }
 }

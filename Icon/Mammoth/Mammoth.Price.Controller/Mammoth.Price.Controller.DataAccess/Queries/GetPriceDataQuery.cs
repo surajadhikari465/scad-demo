@@ -34,7 +34,10 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
 	                            s.BusinessUnit_ID		as BusinessUnitId,
 	                            pbd.Price           	as NewRegularPrice,
                                 pbd.Multiple            as NewRegularMultiple,
-	                            pbd.StartDate			as NewStartDate,
+	                            CASE
+		                            WHEN pbd.InsertApplication = 'Sale Off' THEN h.StartDate
+		                            ELSE pbd.StartDate
+	                            END						as NewStartDate,
 	                            pbd.Sale_End_Date		as NewSaleEndDate,
                                 pbd.Sale_Price          as NewSalePrice,
                                 pbd.Sale_Multiple       as NewSaleMultiple,
@@ -56,6 +59,7 @@ namespace Mammoth.Price.Controller.DataAccess.Queries
                             FROM 
 	                            mammoth.PriceChangeQueue	q
 	                            JOIN PriceBatchDetail		pbd on	q.EventReferenceID = pbd.PriceBatchDetailID
+                                JOIN PriceBatchHeader       h   on  pbd.PriceBatchHeaderID = h.PriceBatchHeaderID
 	                            JOIN Price					p	on	pbd.Store_No = p.Store_No
 										                            AND pbd.Item_Key = p.Item_Key
 	                            JOIN PriceChgType			pct on	pbd.PriceChgTypeID = pct.PriceChgTypeID -- pbd Price Change Type

@@ -144,6 +144,7 @@
     <Compile Include="Commands\ArchiveEventsCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteEventQueueCommandHandlerTests.cs" />
     <Compile Include="Commands\ReprocessFailedCancelAllSalesEventsCommandHandlerTests.cs" />
+    <Compile Include="PriceBatchHeader.cs" />
     <Compile Include="Queries\GetCancelAllSalesDataQueryTests.cs" />
     <Compile Include="Queries\UpdateAndGetEventQueueInProcessQueryHandlerTests.cs" />
     <Compile Include="IrmaInsertHelpers.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="TestItemIdentifierBuilder.cs" />
     <Compile Include="TestItemOverrideBuilder.cs" />
     <Compile Include="TestPriceBatchDetailBuilder.cs" />
+    <Compile Include="TestPriceBatchHeaderBuilder.cs" />
     <Compile Include="TestPriceBuilder.cs" />
     <Compile Include="TestStoreBuilder.cs" />
     <Compile Include="TestStoreJurisdictionBuilder.cs" />
