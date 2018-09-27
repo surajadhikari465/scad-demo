@@ -14,7 +14,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/NonReceivingSystems</name>
-            <value>Slaw,Spice,Mammoth,Icon</value>
+            <value>Slaw,Spice,Mammoth,Icon,AMZ</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/RegStartDate</name>
