@@ -130,7 +130,7 @@ namespace KitBuilderWebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
 
             });
-
+            app.UseFileServer();
             app.UseMvc();
         }
 
