@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using KitBuilderWebApi.DataAccess.Dto;
+﻿using KitBuilderWebApi.DataAccess.Dto;
 using KitBuilderWebApi.DataAccess.Repository;
 using KitBuilderWebApi.DataAccess.UnitOfWork;
 using KitBuilderWebApi.DatabaseModels;
@@ -12,7 +9,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -24,6 +20,9 @@ using Newtonsoft.Json;
 using NLog;
 using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace KitBuilderWebApi
 {
