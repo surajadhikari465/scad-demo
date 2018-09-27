@@ -18,7 +18,7 @@ namespace KitBuilder.Web
             var storevalue = string.Empty;
             var regionvalue = string.Empty;
 
-
+            if (alias==null) return new AdUserInformation();
             // return new UserLocation() { FriendlyName = "Test User", Region = "SW", Store = "LMR"};
             if (string.IsNullOrEmpty(alias.Trim()))
                 throw new Exception("alias cant be empty.");
