@@ -157,7 +157,7 @@ namespace KitBuilderWebApi.Controllers
             return Ok(kitsAfterPaging.ShapeData(kitSearchParameters.Fields));
         }
 
-		[HttpGet(Name = "GetKitLocale")]
+		[HttpGet("GetKitLocale")]
 		public IActionResult GetKitLocale(int KitId)
 		{
 			var queryBuilder = BuildKitLocaleQuery(KitId);
