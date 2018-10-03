@@ -27,9 +27,6 @@ namespace AmazonLoad.PrimeAffinityPsg
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
             var mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
-            var primeAffinityPsgId = AppSettingsAccessor.GetStringSetting("PrimeAffinityPsgId", "PrimeAffinityPSG");
-            var primeAffinityPsgName = AppSettingsAccessor.GetStringSetting("PrimeAffinityPsgName", "PrimeAffinityPSG");
-            var primeAffinityPsgType = AppSettingsAccessor.GetStringSetting("PrimeAffinityPsgType", "Consumable");
 
             Console.WriteLine("Flags:");
             Console.WriteLine($"  Region: {region}");
@@ -38,9 +35,6 @@ namespace AmazonLoad.PrimeAffinityPsg
             Console.WriteLine($"  SaveMessagesDirectory: \"{saveMessagesDirectory}\"");
             Console.WriteLine($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
             Console.WriteLine($"  SendMessagesToEsb: {sendToEsb}");
-            Console.WriteLine($"  PrimePsgId: {primeAffinityPsgId}");
-            Console.WriteLine($"  PrimePsgName: {primeAffinityPsgName}");
-            Console.WriteLine($"  PrimePsgType: {primeAffinityPsgType}");
             if (!sendToEsb)
             {
                 Console.WriteLine($"  \"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
@@ -66,9 +60,6 @@ namespace AmazonLoad.PrimeAffinityPsg
                 region: region,
                 maxNumberOfRows: maxNumberOfRows,
                 nonReceivingSysName: nonReceivingSysName,
-                primePsgGroupId: primeAffinityPsgId,
-                primePsgGroupName: primeAffinityPsgName,
-                primePsgGroupType: "",
                 saveMessages: saveMessages,
                 saveMessagesDirectory: saveMessagesDirectory,
                 sendToEsb: sendToEsb);

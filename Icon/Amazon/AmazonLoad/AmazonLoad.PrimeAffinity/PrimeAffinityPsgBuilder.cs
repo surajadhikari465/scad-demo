@@ -17,12 +17,12 @@ namespace AmazonLoad.PrimeAffinityPsg
         public static int NumberOfRecordsSent = 0;
         public static int NumberOfMessagesSent = 0;
         internal static int DefaultBatchSize = 100;
-        internal const string priceTypes = "'SAL','ISS','FRZ'";
+        internal const string gpmPriceType = "TPR";
+        internal const string nonGpmPriceTypes = "'SAL','ISS','FRZ'";
         internal const string exludedPsNumbers = "2100,2200,2220";
 
         public static void LoadPrimeItemsAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, string nonReceivingSysName,
-            string primePsgGroupId, string primePsgGroupName, string primePsgGroupType,
             bool saveMessages, string saveMessagesDirectory, bool sendToEsb = true)
         {
             // first query the GPM status for the region
@@ -41,7 +41,8 @@ namespace AmazonLoad.PrimeAffinityPsg
                         store.BusinessUnit.ToString(),
                         isGpmActive,
                         maxNumberOfRows,
-                        priceTypes, 
+                        gpmPriceType,
+                        nonGpmPriceTypes, 
                         exludedPsNumbers);
 
                     // now send the message(s) to the eSB
@@ -50,9 +51,6 @@ namespace AmazonLoad.PrimeAffinityPsg
                          esbProducer: esbProducer,
                          nonReceivingSysName: nonReceivingSysName,
                          maxNumberOfRows: maxNumberOfRows,
-                         primePsgGroupId: primePsgGroupId,
-                         primePsgGroupName: primePsgGroupName,
-                         primePsgGroupType: primePsgGroupType,
                          saveMessages: saveMessages,
                          saveMessagesDirectory: saveMessagesDirectory,
                          sendToEsbFlag: sendToEsb);
@@ -83,18 +81,19 @@ namespace AmazonLoad.PrimeAffinityPsg
         }
 
         internal static string GetFormattedSqlForPrimeAffinityPsgQuery(string region, bool isGpmActive, string businessUnit,
-            int maxNumberOfRows, string priceTypes, string excludedPsNumbers)
+            int maxNumberOfRows, string gpmPriceType, string nonGpmPriceTypes, string excludedPsNumbers)
         {
             string formattedSql = isGpmActive
                 ? SqlQueries.QueryMammothPrimeAffinityPsgsGpmActive
                     .Replace("{region}", region)
                     .Replace("{businessUnit}", businessUnit)
+                    .Replace("{gpmPriceType}", gpmPriceType)
                     .Replace("{excluded PSNumbers}", excludedPsNumbers)
                 : SqlQueries.QueryMammothPrimeAffinityPsgsGpmInactive
                     .Replace("{region}", region)
                     .Replace("{businessUnit}", businessUnit)
                     .Replace("{excluded PSNumbers}", excludedPsNumbers)
-                    .Replace("{price types}", priceTypes);
+                    .Replace("{nonGpmPriceTypes}", nonGpmPriceTypes);
 
             if (maxNumberOfRows != 0)
             {
@@ -108,9 +107,9 @@ namespace AmazonLoad.PrimeAffinityPsg
         }
 
         internal static IEnumerable<PrimeAffinityPsgModel> LoadPrimeAffinityPsgs(SqlConnection mammothSqlConnection, string region,
-            string businessUnit, bool isGpmActive, int maxNumberOfRows, string priceTypes, string exludedPsNumbers)
+            string businessUnit, bool isGpmActive, int maxNumberOfRows, string gpmPriceType, string nonGpmPriceTypes, string exludedPsNumbers)
         {
-            var sql = GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive, businessUnit, maxNumberOfRows, priceTypes, exludedPsNumbers);
+            var sql = GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive, businessUnit, maxNumberOfRows, gpmPriceType, nonGpmPriceTypes, exludedPsNumbers);
             var mamothItemLocaleModels = mammothSqlConnection.Query<PrimeAffinityPsgModel>(sql, buffered: false, commandTimeout: 60);
 
             return mamothItemLocaleModels;
@@ -139,8 +138,7 @@ namespace AmazonLoad.PrimeAffinityPsg
         }
 
         internal static void SendMessagesToEsb(IEnumerable<PrimeAffinityPsgModel> models, IEsbProducer esbProducer,
-            string nonReceivingSysName, int maxNumberOfRows, string primePsgGroupId, string primePsgGroupName, string primePsgGroupType,
-            bool saveMessages, string saveMessagesDirectory, bool sendToEsbFlag = true)
+            string nonReceivingSysName, int maxNumberOfRows, bool saveMessages, string saveMessagesDirectory, bool sendToEsbFlag = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -150,7 +148,7 @@ namespace AmazonLoad.PrimeAffinityPsg
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnit))
                 {
                     if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
-                    string message = MessageBuilderForPrimeAffinityPsg.BuildMessage(modelGroup, primePsgGroupId, primePsgGroupName, primePsgGroupType);
+                    string message = MessageBuilderForPrimeAffinityPsg.BuildMessage(modelGroup);
                     string messageId = Guid.NewGuid().ToString();
 
                     if (sendToEsbFlag)

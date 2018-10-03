@@ -732,6 +732,7 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                     FROM dbo.Locale l
                     WHERE l.Region = '{region}' and
 	                    LocaleCloseDate is null
+                    ORDER BY l.BusinessUnitID
                     ";
             }
         }
@@ -740,38 +741,82 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
         {
             get
             {
-                return
-                    @"
-                    DECLARE @Today datetime = convert(date, getdate());
-                    DECLARE @EndOfYesterday datetime = DATEADD(ms, -3, @Today);
+                return @"
+                IF OBJECT_ID('tempdb..#GpmPrices') IS NOT NULL DROP TABLE #GpmPrices
 
-                    SELECT {top query}
-                        gpmPrc.Region as RegionCode,
-                        gpmPrc.BusinessUnitId as BusinessUnit,
-                        l.StoreName as LocaleName,
-                        i.ItemID as ItemId,
-                        i.ScanCode as ScanCode,
-                        it.ItemTypeCode as ItemTypeCode,
-                        it.ItemTypeDesc as ItemTypeDesc,
-                        gpmPrc.Price as 'Price',
-                        gpmPrc.PriceType as 'PriceType',
-                        i.PSNumber,
-                        CASE WHEN 
-                            i.PSNumber NOT IN ({excluded PSNumbers}) and
-                            gpmPrc.StartDate <= @Today and gpmPrc.EndDate > @Today
-                        THEN 1 ELSE 0 END as PrimeEligible
-                    FROM
-                        dbo.Items i
-                        join dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
-                        JOIN dbo.Locales_{region} l ON l.BusinessUnitID = {businessUnit} 
-                        CROSS APPLY 
-                            (SELECT TOP 1 *
-                            FROM gpm.Price_{region} gpm
-                            WHERE gpm.Region = l.Region
-                                AND gpm.BusinessUnitID = l.BusinessUnitID
-                                AND gpm.ItemID = i.ItemID 
-                                AND gpm.PriceType <> 'REG'
-                            ORDER BY gpm.StartDate DESC, gpm.InsertDateUtc DESC) AS gpmPrc ";
+                CREATE TABLE #GpmPrices
+                (
+                    Region NCHAR(2) NOT NULL,
+                    BusinessUnitID INT NOT NULL,
+                    StoreName NVARCHAR(255) NOT NULL,
+                    ItemID INT NOT NULL,
+                    ScanCode NVARCHAR(13) NULL,
+                    ItemTypeCode NVARCHAR(3) NOT NULL,
+                    ItemTypeDesc NVARCHAR(255) NULL,
+                    PrimeEligible BIT NOT NULL
+                )
+
+                DECLARE @today DATETIME = CONVERT(DATE, GETDATE())
+
+                INSERT INTO #GpmPrices
+                SELECT
+                    pTpr.Region,
+                    pTpr.BusinessUnitID,
+                    l1.StoreName,
+                    i.ItemID,
+                    i.ScanCode,
+                    it.ItemTypeCode,
+                    it.ItemTypeDesc,
+                    CASE WHEN 
+                        pTpr.PriceType = '{gpmPriceType}' and
+                        i.PSNumber NOT IN ({excluded PSNumbers})
+                    THEN 1 ELSE 0 END as PrimeEligible	
+                FROM
+                    gpm.Price_{region} pTpr
+                    JOIN dbo.Locales_{region} l1 on l1.BusinessUnitID = pTpr.BusinessUnitID
+                    JOIN dbo.Items i on i.ItemID = pTpr.ItemID
+                    JOIN dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
+                WHERE pTpr.BusinessUnitID = {businessUnit}
+                    AND pTpr.StartDate <= @today
+                    AND pTpr.EndDate > @today
+                    AND pTpr.PriceType <> 'REG'
+
+                INSERT INTO #GpmPrices
+                SELECT
+                    pReg.Region,
+                    pReg.BusinessUnitID,
+                    l2.StoreName,
+                    i.ItemID,
+                    i.ScanCode,
+                    it.ItemTypeCode,
+                    it.ItemTypeDesc,
+                    0 as PrimeEligible	
+                FROM 
+                    gpm.Price_{region} pReg
+                    JOIN dbo.Locales_{region} l2 on l2.BusinessUnitID = pReg.BusinessUnitID
+                    JOIN dbo.Items i on i.ItemID = pReg.ItemID
+                    JOIN dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID		
+                WHERE pReg.BusinessUnitID = {businessUnit}
+                    AND pReg.StartDate <= @today
+                    AND (pReg.EndDate >= @today or pReg.EndDate is null)
+                    AND pReg.PriceType = 'REG'
+                    AND NOT EXISTS (
+                        SELECT 1 FROM #GpmPrices tpr WHERE pReg.ItemID = tpr.ItemID AND pReg.BusinessUnitID = tpr.BusinessUnitID)
+
+                SELECT {top query}
+                    Region as RegionCode,
+                    BusinessUnitID as BusinessUnit,
+                    StoreName as LocaleName,
+                    ItemID as ItemId,
+                    ScanCode as ScanCode,
+                    ItemTypeCode as ItemTypeCode,
+                    ItemTypeDesc as ItemTypeDesc,
+                    PrimeEligible as PrimeEligible
+                FROM #GpmPrices 
+                ORDER BY ItemID
+
+                IF OBJECT_ID('tempdb..#GpmPrices') IS NOT NULL DROP TABLE #GpmPrices
+                ";
             }
         }
 
@@ -782,35 +827,45 @@ order by [ChainId], [RegionId], [MetroId], [StoreId]
                 return
                     @"
                     DECLARE @Today datetime = convert(date, getdate());
-                    DECLARE @EndOfYesterday datetime = DATEADD(ms, -3, @Today);
-
+                    
                     SELECT {top query}
-                        prc.Region as RegionCode,
-                        prc.BusinessUnitId as BusinessUnit,
-                        l.StoreName as LocaleName,
-                        i.ItemID as ItemId,
+	                    ISNULL(nonReg.Region, reg.Region) as RegionCode,
+	                    ISNULL(nonReg.BusinessUnitID, reg.BusinessUnitID) as BusinessUnit,
+	                    l.StoreName as LocaleName,
+	                    i.ItemID as ItemId,
                         i.ScanCode as ScanCode,
                         it.ItemTypeCode as ItemTypeCode,
                         it.ItemTypeDesc as ItemTypeDesc,
-                        CASE WHEN 
-                            prc.PriceType IN ({price types}) and 
-                            i.PSNumber NOT IN ({excluded PSNumbers}) and
-			                (prc.StartDate <= @Today and prc.EndDate > @Today)
-                        THEN 1 ELSE 0 END as PrimeEligible
+	                    CASE WHEN 
+		                    ISNULL(nonReg.PriceType, reg.PriceType) IN ({nonGpmPriceTypes}) and  
+		                    i.PSNumber NOT IN ({excluded PSNumbers})
+	                    THEN 1 ELSE 0 END as PrimeEligible
                     FROM
-                        dbo.Items i
-                        join dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
-                        JOIN dbo.Locales_{region} l ON l.BusinessUnitID = {businessUnit}
-                        CROSS APPLY 
-                            (SELECT TOP 1 *
-                            FROM dbo.Price_{region} prc
-                            WHERE prc.Region = '{region}'
-                                AND prc.ItemID = i.ItemID 
-                                AND prc.BusinessUnitID = {businessUnit}
-                                AND prc.PriceType IN ({price types})
-                            ORDER BY prc.StartDate DESC, prc.AddedDate DESC) AS prc
-                    WHERE
-                        l.BusinessUnitID = {businessUnit}";
+	                    dbo.Price_{region} p
+	                    JOIN dbo.Locale l on l.BusinessUnitID = p.BusinessUnitID
+	                    JOIN dbo.Items i on i.ItemID = p.ItemID
+	                    JOIN dbo.ItemTypes it ON it.ItemTypeID = i.ItemTypeID
+	                    CROSS APPLY
+		                    (SELECT TOP 1 *
+			                    FROM dbo.Price_{region} p1
+			                    WHERE
+				                    p1.ItemID = i.ItemID
+				                    AND p1.BusinessUnitID = p.BusinessUnitID
+				                    AND p1.StartDate <= @Today
+				                    AND (p1.EndDate >= @Today or p1.EndDate is null)
+				                    AND p1.PriceType='REG'
+			                    ORDER BY p1.StartDate DESC, p1.AddedDate DESC) AS reg
+	                    OUTER APPLY
+		                    (SELECT TOP 1 *
+			                    FROM dbo.Price_{region} p2
+			                    WHERE
+				                    p2.ItemID = i.ItemID
+				                    AND p2.BusinessUnitID = p.BusinessUnitID
+				                    AND p2.StartDate <= @Today
+				                    AND (p2.EndDate >= @Today or p.EndDate is null)
+				                    AND p2.PriceType<>'REG'
+			                    ORDER BY p2.StartDate DESC, p2.AddedDate DESC) AS nonReg
+                    WHERE p.BusinessUnitID = {businessUnit}";
             }
         }
     }

@@ -7,6 +7,9 @@ using Icon.Esb.Producer;
 using System.IO;
 using Moq;
 using System.Configuration;
+using Dapper;
+using MoreLinq;
+using AmazonLoad.Common;
 
 namespace AmazonLoad.PrimeAffinityPsg.Tests
 {
@@ -22,7 +25,8 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
         bool df_saveMessagesFlag = false;
         string df_saveMessagesDir = "Messages";
         bool df_sendToEsbFlag = true;
-        string df_priceTypes = "'SAL','ISS','FRZ'";
+        string df_gpmPriceType = "TPR";
+        string df_nonGpmPriceTypes = "'SAL','ISS','FRZ'";
         string df_excludedPsNumbers = "2100,2200,2220";
         string actualXmlMsg = string.Empty;
         Mock<IEsbProducer> mockEsbProducer = new Mock<IEsbProducer>();
@@ -50,13 +54,13 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = true;
             string businessUnit = "10130";
             int maxNumberOfRows = df_maxNumberOfRows;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
             string expectedTop = $"SELECT TOP {maxNumberOfRows}";
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
             Assert.IsTrue(result.Contains(expectedTop));
@@ -70,14 +74,14 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = false;
             string businessUnit = "10181";
             int maxNumberOfRows = df_maxNumberOfRows;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
             string expectedTop = $"SELECT TOP {maxNumberOfRows}";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
             Assert.IsTrue(result.Contains(expectedTop));
@@ -91,19 +95,24 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = true;
             string businessUnit = "10130";
             int maxNumberOfRows = 500;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
-            string expectedSubstitutionForLocale = $"dbo.Locales_{region} l";
-            string expectedSubstitutionForPrice = $"gpm.Price_{region} gpm";
+            string expectedSubstitutionForPrice1 = $"gpm.Price_{region} pTpr";
+            string expectedSubstitutionForLocale1 = $"dbo.Locales_{region} l1";
+            string expectedSubstitutionForPrice2 = $"gpm.Price_{region} pReg";
+            string expectedSubstitutionForLocale2 = $"dbo.Locales_{region} l2";
+
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
-            Assert.IsTrue(result.Contains(expectedSubstitutionForLocale));
-            Assert.IsTrue(result.Contains(expectedSubstitutionForPrice));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForPrice1));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForLocale1));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForPrice2));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForLocale2));
         }
 
         [TestMethod]
@@ -114,17 +123,19 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = true;
             string businessUnit = "10320";
             int maxNumberOfRows = 500;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
-            string expectedBusinessUnitSubForLocale = $"ON l.BusinessUnitID = {businessUnit}";
+            string expectedBusinessUnitSubForBizUnit1 = $"WHERE pTpr.BusinessUnitID = {businessUnit}";
+            string expectedBusinessUnitSubForBizUnit2 = $"WHERE pReg.BusinessUnitID = {businessUnit}";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
-            Assert.IsTrue(result.Contains(expectedBusinessUnitSubForLocale));
+            Assert.IsTrue(result.Contains(expectedBusinessUnitSubForBizUnit1));
+            Assert.IsTrue(result.Contains(expectedBusinessUnitSubForBizUnit2));
         }
 
         [TestMethod]
@@ -135,21 +146,21 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = false;
             string businessUnit = "10181";
             int maxNumberOfRows = 500;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
-            string expectedSubstitutionForLocale = $"dbo.Locales_{region} l";
-            string expectedSubstitutionForPrice = $"dbo.Price_{region} prc";
-            string expectedSubstitutionForPriceRegion = $"WHERE prc.Region = '{region}'";
+            string expectedSubstitutionForPrice = $"dbo.Price_{region} p";
+            string expectedSubstitutionForPrice1 = $"dbo.Price_{region} p1";
+            string expectedSubstitutionForPrice2 = $"dbo.Price_{region} p2";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
-            Assert.IsTrue(result.Contains(expectedSubstitutionForLocale));
             Assert.IsTrue(result.Contains(expectedSubstitutionForPrice));
-            Assert.IsTrue(result.Contains(expectedSubstitutionForPriceRegion));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForPrice1));
+            Assert.IsTrue(result.Contains(expectedSubstitutionForPrice2));
         }
 
         [TestMethod]
@@ -160,39 +171,35 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = false;
             string businessUnit = "10320";
             int maxNumberOfRows = 500;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = df_excludedPsNumbers;
 
-            string expectedBusinessUnitSubForLocale = $"ON l.BusinessUnitID = {businessUnit}";
-            string expectedBusinessUnitSubForPrice = $"AND prc.BusinessUnitID = {businessUnit}";
-            string expectedBusinessUnitSubForWhere = $"l.BusinessUnitID = {businessUnit}";
+            string expectedBusinessUnitSubForWhere = $"WHERE p.BusinessUnitID = {businessUnit}";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
-            Assert.IsTrue(result.Contains(expectedBusinessUnitSubForLocale));
-            Assert.IsTrue(result.Contains(expectedBusinessUnitSubForPrice));
             Assert.IsTrue(result.Contains(expectedBusinessUnitSubForWhere));
         }
 
         [TestMethod]
-        public void PrimeAffinityPsgBuilder_GetFormattedSqlForQuery_WhenGpmInactive_ReplacesPriceTypes()
+        public void PrimeAffinityPsgBuilder_GetFormattedSqlForPrimeAffinityPsgQuery_WhenGpmInactive_ReplacesPriceTypes()
         {
             // Given
             string region = "XY";
             bool isGpmActive = false;
             string businessUnit = "12345";
             int maxNumberOfRows = 60;
-            string priceTypes = "'ABC','DEF','GHI','JKL'";
+            string nonGpmriceTypes = "'ABC','DEF','GHI','JKL'";
             string excludedPsNumbers = df_excludedPsNumbers;
 
-            string expectedPriceTypesSubstitution = $"prc.PriceType IN ({priceTypes})";
+            string expectedPriceTypesSubstitution = $" IN ({nonGpmriceTypes})";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
             Assert.IsTrue(result.Contains(expectedPriceTypesSubstitution));
@@ -206,14 +213,14 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             string businessUnit = "10130";
             bool isGpmActive = true;
             int maxNumberOfRows = 100;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = "1000,2000,3000";
 
             string expectedPsNumberSubstitution = $"i.PSNumber NOT IN ({excludedPsNumbers})";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
             Assert.IsTrue(result.Contains(expectedPsNumberSubstitution));
@@ -227,17 +234,38 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             bool isGpmActive = false;
             string businessUnit = "10130";
             int maxNumberOfRows = 100;
-            string priceTypes = df_priceTypes;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
             string excludedPsNumbers = "1000,2000,3000";
 
             string expectedPsNumberSubstitution = $"i.PSNumber NOT IN ({excludedPsNumbers})";
 
             // When
             var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
-                    businessUnit, maxNumberOfRows, priceTypes, excludedPsNumbers);
+                    businessUnit, maxNumberOfRows, df_gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
 
             // Then
             Assert.IsTrue(result.Contains(expectedPsNumberSubstitution));
+        }
+        [TestMethod]
+        public void PrimeAffinityPsgBuilder_GetFormattedSqlForPrimeAffinityPsgQuery_WhenGpmActive_ReplacesPriceType()
+        {
+            // Given
+            string region = "FL";
+            string businessUnit = "10130";
+            bool isGpmActive = true;
+            int maxNumberOfRows = 100;
+            string nonGpmriceTypes = df_nonGpmPriceTypes;
+            string gpmPriceType = "EJM";
+            string excludedPsNumbers = "1000,2000,3000";
+
+            string expectedPriceTypeSub = $"pTpr.PriceType = '{gpmPriceType}'";
+
+            // When
+            var result = PrimeAffinityPsgBuilder.GetFormattedSqlForPrimeAffinityPsgQuery(region, isGpmActive,
+                    businessUnit, maxNumberOfRows, gpmPriceType, nonGpmriceTypes, excludedPsNumbers);
+
+            // Then
+            Assert.IsTrue(result.Contains(expectedPriceTypeSub));
         }
 
         [TestMethod]
@@ -259,17 +287,20 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
         {
             // Given
             string region = "FL";
-            int expectedRows = 33;
+            int expectedRows;
 
-                //using (SqlConnection mammothSqlConnection = new SqlConnection(mammothConnectionString))
-                // {
-                // When
-                var localeData = PrimeAffinityPsgBuilder.LoadMammothLocales(mammothConnectionString, region);
+            var sql = $"SELECT COUNT(*) FROM dbo.Locale WHERE Region = '{region}' and LocaleCloseDate is null;";
+            using (SqlConnection mammothSqlConnection = new SqlConnection(mammothConnectionString))
+            {
+                expectedRows = mammothSqlConnection.Query<int>(sql, buffered: false, commandTimeout: 60).FirstOrDefault();
+            }
 
-                // Then
-                Assert.IsNotNull(localeData);
-                Assert.AreEqual(expectedRows, localeData.Count());
-            //}
+            // When
+            var localeData = PrimeAffinityPsgBuilder.LoadMammothLocales(mammothConnectionString, region);
+
+            // Then
+            Assert.IsNotNull(localeData);
+            Assert.AreEqual(expectedRows, localeData.Count());
         }
 
         [TestMethod]
@@ -285,7 +316,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 // Then
                 Assert.IsNotNull(primeAffinityData);
@@ -306,7 +337,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 // Then
                 Assert.IsNotNull(primeAffinityData);
@@ -326,7 +357,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, df_maxNumberOfRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, df_maxNumberOfRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 // Then
                 Assert.IsNotNull(primeAffinityData);
@@ -349,7 +380,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, df_maxNumberOfRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, df_maxNumberOfRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 // Then
                 Assert.IsNotNull(primeAffinityData);
@@ -376,7 +407,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
                 // When
                 primeAffinityData = PrimeAffinityPsgBuilder
                     .LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers)
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers)
                     .ToList();
             }
 
@@ -405,7 +436,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers).ToList();
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers).ToList();
 
                 // Then
                 var item = primeAffinityData.FirstOrDefault();
@@ -434,7 +465,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 Assert.IsNotNull(primeAffinityData);
                 Assert.AreEqual(maxRows, primeAffinityData.Count());
@@ -461,7 +492,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             {
                 // When
                 var primeAffinityData = PrimeAffinityPsgBuilder.LoadPrimeAffinityPsgs(mammothSqlConnection, region,
-                    businessUnit, isGpmActive, maxRows, df_priceTypes, df_excludedPsNumbers);
+                    businessUnit, isGpmActive, maxRows, df_gpmPriceType, df_nonGpmPriceTypes, df_excludedPsNumbers);
 
                 Assert.IsNotNull(primeAffinityData);
                 Assert.AreEqual(maxRows, primeAffinityData.Count());
@@ -488,7 +519,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -517,7 +548,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -546,7 +577,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -575,7 +606,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -605,7 +636,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -629,7 +660,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -659,7 +690,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -696,7 +727,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -729,7 +760,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -761,7 +792,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -797,7 +828,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(8, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -833,7 +864,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -862,7 +893,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -891,7 +922,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -920,7 +951,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -950,7 +981,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -980,7 +1011,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -1010,7 +1041,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -1040,7 +1071,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -1072,7 +1103,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -1104,7 +1135,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
             }
 
             // Then
@@ -1126,7 +1157,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
 
             // When
             PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, maxNumberOfRows,
-                primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
             // Then
             Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfMessagesSent);
@@ -1150,7 +1181,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
 
             // When
             PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, maxNumberOfRows,
-                primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
             // Then
             Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfMessagesSent);
@@ -1173,7 +1204,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, nonReceivingSysName, df_maxNumberOfRows,
-                    primeAffinityPSG_id, primeAffinityPSG_name, primeAffinityPSG_type, df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
 
                 // Then
                 mockEsbProducer.Verify(p =>

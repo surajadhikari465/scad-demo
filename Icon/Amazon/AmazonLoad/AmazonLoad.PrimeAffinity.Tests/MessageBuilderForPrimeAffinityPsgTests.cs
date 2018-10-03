@@ -259,8 +259,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MA_10181_NonPrime_A.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -276,8 +275,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MA_10181_NonPrime_B.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -293,8 +291,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MA_10181_Prime_C.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -310,8 +307,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MA_10181_Prime_D.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -327,8 +323,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_FL_10130_NonPrime_A.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -344,8 +339,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_FL_10130_NonPrime_B.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -361,8 +355,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_FL_10130_Prime_C.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -378,8 +371,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_FL_10130_Prime_D.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -398,8 +390,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MA_10181_2Prime2Non.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");
@@ -418,8 +409,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_FL_10130_2Prime2Non.xml");
 
             // When
-            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems,
-                primeAffinityPSG_GroupId, primeAffinityPSG_GroupName, primeAffinityPSG_GroupType);
+            string actualMsg = MessageBuilderForPrimeAffinityPsg.BuildMessage(testPrimeAffinityItems);
 
             // Then
             Assert.AreEqual(expectedMsg, actualMsg, "esb xml message");

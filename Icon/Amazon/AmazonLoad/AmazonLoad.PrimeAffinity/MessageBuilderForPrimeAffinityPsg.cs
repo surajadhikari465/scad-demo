@@ -28,16 +28,6 @@ namespace AmazonLoad.PrimeAffinityPsg
             return serializer.Serialize(items);
         }
 
-        internal protected static string BuildMessage(IEnumerable<PrimeAffinityPsgModel> itemLocaleModels,
-            string primeAffinityPsgGroupId, string primeAffinityPsgGroupName, string primeAffinityPsgGroupType)
-        {
-            PrimeAffinityPsgGroupId = primeAffinityPsgGroupId;
-            PrimeAffinityPsgGroupName = primeAffinityPsgGroupName;
-            PrimeAffinityPsgGroupType = primeAffinityPsgGroupType;
-
-            return BuildMessage(itemLocaleModels);
-        }
-
         internal protected static Contracts.ItemType ConvertToContractsItemType(PrimeAffinityPsgModel model)
         {
             return new Contracts.ItemType
