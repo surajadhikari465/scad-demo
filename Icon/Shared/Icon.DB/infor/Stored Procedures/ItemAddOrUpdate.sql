@@ -12,10 +12,16 @@ BEGIN
 	USING @sourceTable AS Source 
 	ON Target.itemID = Source.ItemId
 	WHEN MATCHED THEN
-		UPDATE SET itemTypeID = Source.ItemTypeId
+		UPDATE SET itemTypeID = Source.ItemTypeId,
+               hospitalityItem = IsNull(Source.HospitalityItem, Target.hospitalityItem),
+               kitchenItem = IsNull(Source.KitchenItem, Target.KitchenItem),
+               kitchenDescription = case when Len(LTrim(RTrim(IsNull(Source.KitchenDescription, '')))) > 0 then LTrim(RTrim(Source.KitchenDescription)) else null end,
+               imageURL = case when Len(LTrim(RTrim(IsNull(Source.ImageURL, '')))) > 0 then LTrim(RTrim(Source.ImageURL)) else null end
 	WHEN NOT MATCHED BY Target THEN
-		INSERT (itemID, itemTypeID) 
-		VALUES (ItemId, ItemTypeId);
+		INSERT (itemID, itemTypeID, hospitalityItem, kitchenItem, kitchenDescription, imageURL) 
+		VALUES (ItemId, ItemTypeId, IsNull(Source.HospitalityItem, 0), IsNull(Source.KitchenItem, 0),
+            case when Len(LTrim(RTrim(IsNull(Source.KitchenDescription, '')))) > 0 then LTrim(RTrim(Source.KitchenDescription)) else null end,
+            case when Len(LTrim(RTrim(IsNull(Source.ImageURL, '')))) > 0 then LTrim(RTrim(Source.ImageURL)) else null end);
 
 	SET IDENTITY_INSERT dbo.Item OFF
 	
