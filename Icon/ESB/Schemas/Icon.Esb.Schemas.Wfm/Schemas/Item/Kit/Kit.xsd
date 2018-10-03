@@ -23,8 +23,8 @@
 		<xs:sequence>
 			<xs:element name="id" type="crf:ItemIdType"/>
 			<xs:element name="displaySequence" type="crf:IdStrType"/>
-			<xs:element name="description" minOccurs="0"/>
-			<xs:element name="detailedDescription" minOccurs="0"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="detailedDescription" type="xs:string" minOccurs="0"/>
 			<xs:element name="properties" type="crf:DescriptionType" minOccurs="0"/>
 			<xs:element name="minimumCalories" type="crf:WfmIntType" minOccurs="0"/>
 			<xs:element name="maximumCalories" type="crf:WfmIntType" minOccurs="0"/>
@@ -37,10 +37,10 @@
 			<xs:element name="kitItem" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence minOccurs="0">
-						<xs:element name="kitchenItem" minOccurs="0"/>
-						<xs:element name="kitchenDescription" minOccurs="0"/>
-						<xs:element name="imageUrl" minOccurs="0"/>
-						<xs:element name="hospitalityItem" minOccurs="0"/>
+						<xs:element name="kitchenItem" type="xs:boolean" minOccurs="0"/>
+						<xs:element name="kitchenDescription" type="xs:string"  minOccurs="0"/>
+						<xs:element name="imageUrl" type="xs:string" minOccurs="0"/>
+						<xs:element name="hospitalityItem" type="xs:boolean" minOccurs="0"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -99,7 +99,7 @@
 	</xs:complexType>
 	<xs:complexType name="GroupType">
 		<xs:sequence>
-			<xs:element name="groupId"/>
+			<xs:element name="groupId" type="xs:int"/>
 			<xs:element name="Ingredients" type="IngredientsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>

@@ -14,7 +14,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -86,7 +86,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -191,7 +191,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -224,7 +224,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -359,7 +359,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -509,7 +509,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -2671,7 +2671,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TimezoneMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -2836,7 +2836,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2877,7 +2877,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2918,7 +2918,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2959,7 +2959,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3122,7 +3122,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3199,7 +3199,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -3220,7 +3220,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/AddressType/V2", IncludeInSchema = false)]
     public enum ItemChoiceType
@@ -3240,7 +3240,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3296,7 +3296,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3352,7 +3352,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3393,7 +3393,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -3558,7 +3558,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -3734,7 +3734,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3760,7 +3760,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3816,7 +3816,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3857,7 +3857,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3898,7 +3898,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3932,7 +3932,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RewardAmount))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(PriceAmount))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AmountRoundedType))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4066,7 +4066,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4087,7 +4087,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4098,7 +4098,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4139,7 +4139,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4150,7 +4150,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4191,7 +4191,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4232,7 +4232,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4243,7 +4243,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4254,7 +4254,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4281,7 +4281,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4296,7 +4296,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4332,10 +4332,28 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         Replace,
+
+        /// <remarks/>
+        Exclude,
+
+        /// <remarks/>
+        AddOrUpdateInstruction,
+
+        /// <remarks/>
+        ClearInstruction,
+
+        /// <remarks/>
+        IsPartOf,
+
+        /// <remarks/>
+        AddsTo,
+
+        /// <remarks/>
+        IsRemovedFrom,
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4347,7 +4365,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4368,7 +4386,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4398,7 +4416,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4443,7 +4461,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4488,7 +4506,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4533,7 +4551,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -4549,10 +4567,55 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         Catering,
+
+        /// <remarks/>
+        Selfscan,
+
+        /// <remarks/>
+        HomeShopping,
+
+        /// <remarks/>
+        WIC,
+
+        /// <remarks/>
+        DriveOff,
+
+        /// <remarks/>
+        Unpaid,
+
+        /// <remarks/>
+        XReport,
+
+        /// <remarks/>
+        ZReport,
+
+        /// <remarks/>
+        Tab,
+
+        /// <remarks/>
+        TabSuspend,
+
+        /// <remarks/>
+        Tip,
+
+        /// <remarks/>
+        CollectiveTip,
+
+        /// <remarks/>
+        PersonalTip,
+
+        /// <remarks/>
+        Walkoff,
+
+        /// <remarks/>
+        WalkoffSuspend,
+
+        /// <remarks/>
+        Sale,
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4625,7 +4688,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4682,7 +4745,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4755,7 +4818,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4812,7 +4875,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4868,7 +4931,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4881,7 +4944,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ReasonCodeType))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(PointOfSaleRegisterTypeType))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4922,7 +4985,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4949,7 +5012,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4990,7 +5053,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5033,7 +5096,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5136,7 +5199,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5209,7 +5272,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5312,7 +5375,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5385,7 +5448,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5427,7 +5490,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5468,7 +5531,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5541,7 +5604,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2", IsNullable = false)]
@@ -5781,7 +5844,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2", IsNullable = false)]
@@ -6054,7 +6117,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6081,7 +6144,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6124,7 +6187,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6227,7 +6290,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6315,7 +6378,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6468,7 +6531,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6510,7 +6573,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6601,7 +6664,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6628,7 +6691,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6655,7 +6718,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6714,7 +6777,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6834,7 +6897,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6875,7 +6938,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7010,7 +7073,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7113,7 +7176,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7186,7 +7249,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7228,7 +7291,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7269,7 +7332,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7356,7 +7419,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7429,7 +7492,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7530,7 +7593,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7587,7 +7650,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -7602,7 +7665,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/IndividualMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -7617,7 +7680,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7658,7 +7721,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7699,7 +7762,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7805,7 +7868,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7820,7 +7883,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         private PersonaIdentifierType[] personaIdentifiersField;
 
-        private StatusHistoryType[] statusHistoriesField;
+        private StatusHistoryType[][] statusHistoriesField;
 
         private TraitType[] traitsField;
 
@@ -7878,7 +7941,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("statusHistory", typeof(StatusHistoryType), Namespace = "http://schemas.wfm.com/Enterprise/StatusMgmt/StatusHistory/V1", IsNullable = false)]
-        public StatusHistoryType[] statusHistories
+        public StatusHistoryType[][] statusHistories
         {
             get
             {
@@ -7989,7 +8052,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8046,7 +8109,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PersonaMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -8066,7 +8129,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8107,7 +8170,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8148,7 +8211,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8205,7 +8268,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8246,7 +8309,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8335,7 +8398,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8408,7 +8471,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8449,7 +8512,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8569,7 +8632,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8628,7 +8691,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8907,7 +8970,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8948,7 +9011,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -8975,7 +9038,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -9002,7 +9065,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9024,6 +9087,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private PriceType[] pricesField;
 
         private SelectionGroupsType selectionGroupsField;
+
+        private KitType kitField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("scanCode", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2", IsNullable = false)]
@@ -9121,10 +9186,23 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.selectionGroupsField = value;
             }
         }
+
+        /// <remarks/>
+        public KitType kit
+        {
+            get
+            {
+                return this.kitField;
+            }
+            set
+            {
+                this.kitField = value;
+            }
+        }
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9227,7 +9305,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9521,7 +9599,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9577,7 +9655,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -9622,7 +9700,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9679,7 +9757,2062 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("kit", Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = false)]
+    public partial class KitType
+    {
+
+        private int idField;
+
+        private string displaySequenceField;
+
+        private string descriptionField;
+
+        private string detailedDescriptionField;
+
+        private string propertiesField;
+
+        private int minimumCaloriesField;
+
+        private bool minimumCaloriesFieldSpecified;
+
+        private int maximumCaloriesField;
+
+        private bool maximumCaloriesFieldSpecified;
+
+        private int excludeField;
+
+        private bool excludeFieldSpecified;
+
+        private System.DateTime insertDateField;
+
+        private bool insertDateFieldSpecified;
+
+        private System.DateTime lastModifiedDateField;
+
+        private bool lastModifiedDateFieldSpecified;
+
+        private string lastModifiedByField;
+
+        private GroupType[] groupsField;
+
+        private ListType[] listsField;
+
+        private KitTypeKitItem kitItemField;
+
+        private ActionEnum actionField;
+
+        private bool actionFieldSpecified;
+
+        private string typeIdField;
+
+        private bool isAvailableField;
+
+        private bool isAvailableFieldSpecified;
+
+        private bool isKitField;
+
+        private bool isKitFieldSpecified;
+
+        /// <remarks/>
+        public int id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string displaySequence
+        {
+            get
+            {
+                return this.displaySequenceField;
+            }
+            set
+            {
+                this.displaySequenceField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string detailedDescription
+        {
+            get
+            {
+                return this.detailedDescriptionField;
+            }
+            set
+            {
+                this.detailedDescriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string properties
+        {
+            get
+            {
+                return this.propertiesField;
+            }
+            set
+            {
+                this.propertiesField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int minimumCalories
+        {
+            get
+            {
+                return this.minimumCaloriesField;
+            }
+            set
+            {
+                this.minimumCaloriesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool minimumCaloriesSpecified
+        {
+            get
+            {
+                return this.minimumCaloriesFieldSpecified;
+            }
+            set
+            {
+                this.minimumCaloriesFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public int maximumCalories
+        {
+            get
+            {
+                return this.maximumCaloriesField;
+            }
+            set
+            {
+                this.maximumCaloriesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maximumCaloriesSpecified
+        {
+            get
+            {
+                return this.maximumCaloriesFieldSpecified;
+            }
+            set
+            {
+                this.maximumCaloriesFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public int exclude
+        {
+            get
+            {
+                return this.excludeField;
+            }
+            set
+            {
+                this.excludeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool excludeSpecified
+        {
+            get
+            {
+                return this.excludeFieldSpecified;
+            }
+            set
+            {
+                this.excludeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime insertDate
+        {
+            get
+            {
+                return this.insertDateField;
+            }
+            set
+            {
+                this.insertDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool insertDateSpecified
+        {
+            get
+            {
+                return this.insertDateFieldSpecified;
+            }
+            set
+            {
+                this.insertDateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime lastModifiedDate
+        {
+            get
+            {
+                return this.lastModifiedDateField;
+            }
+            set
+            {
+                this.lastModifiedDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastModifiedDateSpecified
+        {
+            get
+            {
+                return this.lastModifiedDateFieldSpecified;
+            }
+            set
+            {
+                this.lastModifiedDateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string lastModifiedBy
+        {
+            get
+            {
+                return this.lastModifiedByField;
+            }
+            set
+            {
+                this.lastModifiedByField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("group", IsNullable = false)]
+        public GroupType[] Groups
+        {
+            get
+            {
+                return this.groupsField;
+            }
+            set
+            {
+                this.groupsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("list", IsNullable = false)]
+        public ListType[] Lists
+        {
+            get
+            {
+                return this.listsField;
+            }
+            set
+            {
+                this.listsField = value;
+            }
+        }
+
+        /// <remarks/>
+        public KitTypeKitItem kitItem
+        {
+            get
+            {
+                return this.kitItemField;
+            }
+            set
+            {
+                this.kitItemField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
+        public ActionEnum Action
+        {
+            get
+            {
+                return this.actionField;
+            }
+            set
+            {
+                this.actionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ActionSpecified
+        {
+            get
+            {
+                return this.actionFieldSpecified;
+            }
+            set
+            {
+                this.actionFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string TypeId
+        {
+            get
+            {
+                return this.typeIdField;
+            }
+            set
+            {
+                this.typeIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool IsAvailable
+        {
+            get
+            {
+                return this.isAvailableField;
+            }
+            set
+            {
+                this.isAvailableField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsAvailableSpecified
+        {
+            get
+            {
+                return this.isAvailableFieldSpecified;
+            }
+            set
+            {
+                this.isAvailableFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool IsKit
+        {
+            get
+            {
+                return this.isKitField;
+            }
+            set
+            {
+                this.isKitField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsKitSpecified
+        {
+            get
+            {
+                return this.isKitFieldSpecified;
+            }
+            set
+            {
+                this.isKitFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = true)]
+    public partial class GroupType
+    {
+
+        private int groupIdField;
+
+        private IngredientType[] ingredientsField;
+
+        private ActionEnum actionField;
+
+        private bool actionFieldSpecified;
+
+        private string displayIndexField;
+
+        private string linkGroupIdField;
+
+        /// <remarks/>
+        public int groupId
+        {
+            get
+            {
+                return this.groupIdField;
+            }
+            set
+            {
+                this.groupIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Ingredient", IsNullable = false)]
+        public IngredientType[] Ingredients
+        {
+            get
+            {
+                return this.ingredientsField;
+            }
+            set
+            {
+                this.ingredientsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
+        public ActionEnum Action
+        {
+            get
+            {
+                return this.actionField;
+            }
+            set
+            {
+                this.actionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ActionSpecified
+        {
+            get
+            {
+                return this.actionFieldSpecified;
+            }
+            set
+            {
+                this.actionFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DisplayIndex
+        {
+            get
+            {
+                return this.displayIndexField;
+            }
+            set
+            {
+                this.displayIndexField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string LinkGroupId
+        {
+            get
+            {
+                return this.linkGroupIdField;
+            }
+            set
+            {
+                this.linkGroupIdField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = true)]
+    public partial class IngredientType
+    {
+
+        private ItemType ingredientField;
+
+        private QuantityType[] quantitiesField;
+
+        private string displayIndexField;
+
+        private bool isVisibleField;
+
+        private bool isVisibleFieldSpecified;
+
+        private string ingredientProductIdField;
+
+        private bool isKitField;
+
+        private bool isKitFieldSpecified;
+
+        private bool isAvailableField;
+
+        private bool isAvailableFieldSpecified;
+
+        /// <remarks/>
+        public ItemType ingredient
+        {
+            get
+            {
+                return this.ingredientField;
+            }
+            set
+            {
+                this.ingredientField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public QuantityType[] quantities
+        {
+            get
+            {
+                return this.quantitiesField;
+            }
+            set
+            {
+                this.quantitiesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DisplayIndex
+        {
+            get
+            {
+                return this.displayIndexField;
+            }
+            set
+            {
+                this.displayIndexField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isVisible
+        {
+            get
+            {
+                return this.isVisibleField;
+            }
+            set
+            {
+                this.isVisibleField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isVisibleSpecified
+        {
+            get
+            {
+                return this.isVisibleFieldSpecified;
+            }
+            set
+            {
+                this.isVisibleFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string IngredientProductId
+        {
+            get
+            {
+                return this.ingredientProductIdField;
+            }
+            set
+            {
+                this.ingredientProductIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isKit
+        {
+            get
+            {
+                return this.isKitField;
+            }
+            set
+            {
+                this.isKitField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isKitSpecified
+        {
+            get
+            {
+                return this.isKitFieldSpecified;
+            }
+            set
+            {
+                this.isKitFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool IsAvailable
+        {
+            get
+            {
+                return this.isAvailableField;
+            }
+            set
+            {
+                this.isAvailableField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsAvailableSpecified
+        {
+            get
+            {
+                return this.isAvailableFieldSpecified;
+            }
+            set
+            {
+                this.isAvailableFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("item", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1", IsNullable = false)]
+    public partial class ItemType
+    {
+
+        private int idField;
+
+        private BaseItemType baseField;
+
+        private LocaleType[] localeField;
+
+        private ActionEnum actionField;
+
+        private bool actionFieldSpecified;
+
+        /// <remarks/>
+        public int id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
+        }
+
+        /// <remarks/>
+        public BaseItemType @base
+        {
+            get
+            {
+                return this.baseField;
+            }
+            set
+            {
+                this.baseField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("locale")]
+        public LocaleType[] locale
+        {
+            get
+            {
+                return this.localeField;
+            }
+            set
+            {
+                this.localeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
+        public ActionEnum Action
+        {
+            get
+            {
+                return this.actionField;
+            }
+            set
+            {
+                this.actionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ActionSpecified
+        {
+            get
+            {
+                return this.actionFieldSpecified;
+            }
+            set
+            {
+                this.actionFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("baseItem", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1", IsNullable = false)]
+    public partial class BaseItemType
+    {
+
+        private ItemTypeType typeField;
+
+        private ConsumerInformationType consumerInformationField;
+
+        private TraitType[] traitsField;
+
+        /// <remarks/>
+        public ItemTypeType type
+        {
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public ConsumerInformationType consumerInformation
+        {
+            get
+            {
+                return this.consumerInformationField;
+            }
+            set
+            {
+                this.consumerInformationField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("trait", Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public TraitType[] traits
+        {
+            get
+            {
+                return this.traitsField;
+            }
+            set
+            {
+                this.traitsField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("itemType", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1", IsNullable = false)]
+    public partial class ItemTypeType
+    {
+
+        private string codeField;
+
+        private string descriptionField;
+
+        /// <remarks/>
+        public string code
+        {
+            get
+            {
+                return this.codeField;
+            }
+            set
+            {
+                this.codeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("consumerInformation", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1", IsNullable = false)]
+    public partial class ConsumerInformationType
+    {
+
+        private StockProductLabelType stockItemConsumerProductLabelField;
+
+        /// <remarks/>
+        public StockProductLabelType stockItemConsumerProductLabel
+        {
+            get
+            {
+                return this.stockItemConsumerProductLabelField;
+            }
+            set
+            {
+                this.stockItemConsumerProductLabelField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class StockProductLabelType
+    {
+
+        private string consumerLabelTypeCodeField;
+
+        private UomType servingSizeUomField;
+
+        private decimal servingSizeUomCountField;
+
+        private UomType servingsInRetailSaleUnitCountField;
+
+        private decimal caloriesCountField;
+
+        private decimal caloriesFromFatCountField;
+
+        private decimal totalFatGramsAmountField;
+
+        private decimal totalFatDailyIntakePercentField;
+
+        private decimal saturatedFatGramsAmountField;
+
+        private decimal saturatedFatPercentField;
+
+        private decimal cholesterolMilligramsCountField;
+
+        private decimal cholesterolPercentField;
+
+        private decimal sodiumMilligramsCountField;
+
+        private decimal sodiumPercentField;
+
+        private decimal totalCarbohydrateMilligramsCountField;
+
+        private decimal totalCarbohydratePercentField;
+
+        private decimal dietaryFiberGramsCountField;
+
+        private decimal sugarsGramsCountField;
+
+        private decimal proteinGramsCountField;
+
+        private decimal vitaminADailyMinimumPercentField;
+
+        private decimal vitaminBDailyMinimumPercentField;
+
+        private decimal vitaminCDailyMinimumPercentField;
+
+        private decimal calciumDailyMinimumPercentField;
+
+        private decimal ironDailyMinimumPercentField;
+
+        private string nutritionalDescriptionTextField;
+
+        private bool isHazardousMaterialField;
+
+        private string hazardousMaterialTypeCodeField;
+
+        private ActionEnum actionField;
+
+        private bool actionFieldSpecified;
+
+        public StockProductLabelType()
+        {
+            this.servingSizeUomCountField = ((decimal)(0m));
+            this.caloriesCountField = ((decimal)(0m));
+            this.caloriesFromFatCountField = ((decimal)(0m));
+            this.totalFatGramsAmountField = ((decimal)(0m));
+            this.totalFatDailyIntakePercentField = ((decimal)(0m));
+            this.saturatedFatGramsAmountField = ((decimal)(0m));
+            this.saturatedFatPercentField = ((decimal)(0m));
+            this.cholesterolMilligramsCountField = ((decimal)(0m));
+            this.cholesterolPercentField = ((decimal)(0m));
+            this.sodiumMilligramsCountField = ((decimal)(0m));
+            this.sodiumPercentField = ((decimal)(0m));
+            this.totalCarbohydrateMilligramsCountField = ((decimal)(0m));
+            this.totalCarbohydratePercentField = ((decimal)(0m));
+            this.dietaryFiberGramsCountField = ((decimal)(0m));
+            this.sugarsGramsCountField = ((decimal)(0m));
+            this.proteinGramsCountField = ((decimal)(0m));
+            this.vitaminADailyMinimumPercentField = ((decimal)(0m));
+            this.vitaminBDailyMinimumPercentField = ((decimal)(0m));
+            this.vitaminCDailyMinimumPercentField = ((decimal)(0m));
+            this.calciumDailyMinimumPercentField = ((decimal)(0m));
+            this.ironDailyMinimumPercentField = ((decimal)(0m));
+            this.isHazardousMaterialField = false;
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string consumerLabelTypeCode
+        {
+            get
+            {
+                return this.consumerLabelTypeCodeField;
+            }
+            set
+            {
+                this.consumerLabelTypeCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public UomType servingSizeUom
+        {
+            get
+            {
+                return this.servingSizeUomField;
+            }
+            set
+            {
+                this.servingSizeUomField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal servingSizeUomCount
+        {
+            get
+            {
+                return this.servingSizeUomCountField;
+            }
+            set
+            {
+                this.servingSizeUomCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public UomType servingsInRetailSaleUnitCount
+        {
+            get
+            {
+                return this.servingsInRetailSaleUnitCountField;
+            }
+            set
+            {
+                this.servingsInRetailSaleUnitCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal caloriesCount
+        {
+            get
+            {
+                return this.caloriesCountField;
+            }
+            set
+            {
+                this.caloriesCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal caloriesFromFatCount
+        {
+            get
+            {
+                return this.caloriesFromFatCountField;
+            }
+            set
+            {
+                this.caloriesFromFatCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal totalFatGramsAmount
+        {
+            get
+            {
+                return this.totalFatGramsAmountField;
+            }
+            set
+            {
+                this.totalFatGramsAmountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal totalFatDailyIntakePercent
+        {
+            get
+            {
+                return this.totalFatDailyIntakePercentField;
+            }
+            set
+            {
+                this.totalFatDailyIntakePercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal saturatedFatGramsAmount
+        {
+            get
+            {
+                return this.saturatedFatGramsAmountField;
+            }
+            set
+            {
+                this.saturatedFatGramsAmountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal saturatedFatPercent
+        {
+            get
+            {
+                return this.saturatedFatPercentField;
+            }
+            set
+            {
+                this.saturatedFatPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal cholesterolMilligramsCount
+        {
+            get
+            {
+                return this.cholesterolMilligramsCountField;
+            }
+            set
+            {
+                this.cholesterolMilligramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal cholesterolPercent
+        {
+            get
+            {
+                return this.cholesterolPercentField;
+            }
+            set
+            {
+                this.cholesterolPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal sodiumMilligramsCount
+        {
+            get
+            {
+                return this.sodiumMilligramsCountField;
+            }
+            set
+            {
+                this.sodiumMilligramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal sodiumPercent
+        {
+            get
+            {
+                return this.sodiumPercentField;
+            }
+            set
+            {
+                this.sodiumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal totalCarbohydrateMilligramsCount
+        {
+            get
+            {
+                return this.totalCarbohydrateMilligramsCountField;
+            }
+            set
+            {
+                this.totalCarbohydrateMilligramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal totalCarbohydratePercent
+        {
+            get
+            {
+                return this.totalCarbohydratePercentField;
+            }
+            set
+            {
+                this.totalCarbohydratePercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal dietaryFiberGramsCount
+        {
+            get
+            {
+                return this.dietaryFiberGramsCountField;
+            }
+            set
+            {
+                this.dietaryFiberGramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal sugarsGramsCount
+        {
+            get
+            {
+                return this.sugarsGramsCountField;
+            }
+            set
+            {
+                this.sugarsGramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal proteinGramsCount
+        {
+            get
+            {
+                return this.proteinGramsCountField;
+            }
+            set
+            {
+                this.proteinGramsCountField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal vitaminADailyMinimumPercent
+        {
+            get
+            {
+                return this.vitaminADailyMinimumPercentField;
+            }
+            set
+            {
+                this.vitaminADailyMinimumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal vitaminBDailyMinimumPercent
+        {
+            get
+            {
+                return this.vitaminBDailyMinimumPercentField;
+            }
+            set
+            {
+                this.vitaminBDailyMinimumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal vitaminCDailyMinimumPercent
+        {
+            get
+            {
+                return this.vitaminCDailyMinimumPercentField;
+            }
+            set
+            {
+                this.vitaminCDailyMinimumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal calciumDailyMinimumPercent
+        {
+            get
+            {
+                return this.calciumDailyMinimumPercentField;
+            }
+            set
+            {
+                this.calciumDailyMinimumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal ironDailyMinimumPercent
+        {
+            get
+            {
+                return this.ironDailyMinimumPercentField;
+            }
+            set
+            {
+                this.ironDailyMinimumPercentField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string nutritionalDescriptionText
+        {
+            get
+            {
+                return this.nutritionalDescriptionTextField;
+            }
+            set
+            {
+                this.nutritionalDescriptionTextField = value;
+            }
+        }
+
+        /// <remarks/>
+        public bool isHazardousMaterial
+        {
+            get
+            {
+                return this.isHazardousMaterialField;
+            }
+            set
+            {
+                this.isHazardousMaterialField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string hazardousMaterialTypeCode
+        {
+            get
+            {
+                return this.hazardousMaterialTypeCodeField;
+            }
+            set
+            {
+                this.hazardousMaterialTypeCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
+        public ActionEnum Action
+        {
+            get
+            {
+                return this.actionField;
+            }
+            set
+            {
+                this.actionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ActionSpecified
+        {
+            get
+            {
+                return this.actionFieldSpecified;
+            }
+            set
+            {
+                this.actionFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class QuantityType
+    {
+
+        private string typeField;
+
+        private decimal valueField;
+
+        private bool valueFieldSpecified;
+
+        private UnitsType unitsField;
+
+        private EntryMethodEnum entryMethodField;
+
+        private bool entryMethodFieldSpecified;
+
+        /// <remarks/>
+        public string type
+        {
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public decimal value
+        {
+            get
+            {
+                return this.valueField;
+            }
+            set
+            {
+                this.valueField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool valueSpecified
+        {
+            get
+            {
+                return this.valueFieldSpecified;
+            }
+            set
+            {
+                this.valueFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public UnitsType units
+        {
+            get
+            {
+                return this.unitsField;
+            }
+            set
+            {
+                this.unitsField = value;
+            }
+        }
+
+        /// <remarks/>
+        public EntryMethodEnum entryMethod
+        {
+            get
+            {
+                return this.entryMethodField;
+            }
+            set
+            {
+                this.entryMethodField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool entryMethodSpecified
+        {
+            get
+            {
+                return this.entryMethodFieldSpecified;
+            }
+            set
+            {
+                this.entryMethodFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class UnitsType
+    {
+
+        private decimal valueField;
+
+        private bool valueFieldSpecified;
+
+        private UomType uomField;
+
+        /// <remarks/>
+        public decimal value
+        {
+            get
+            {
+                return this.valueField;
+            }
+            set
+            {
+                this.valueField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool valueSpecified
+        {
+            get
+            {
+                return this.valueFieldSpecified;
+            }
+            set
+            {
+                this.valueFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public UomType uom
+        {
+            get
+            {
+                return this.uomField;
+            }
+            set
+            {
+                this.uomField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
+    public enum EntryMethodEnum
+    {
+
+        /// <remarks/>
+        Automatic,
+
+        /// <remarks/>
+        CardholderNotPresent,
+
+        /// <remarks/>
+        Ecommerce,
+
+        /// <remarks/>
+        Imported,
+
+        /// <remarks/>
+        Imprint,
+
+        /// <remarks/>
+        IntegratedChipCard,
+
+        /// <remarks/>
+        Keyed,
+
+        /// <remarks/>
+        KeyedCoupon,
+
+        /// <remarks/>
+        MICR,
+
+        /// <remarks/>
+        Measured,
+
+        /// <remarks/>
+        Moved,
+
+        /// <remarks/>
+        NotRelevant,
+
+        /// <remarks/>
+        MSR,
+
+        /// <remarks/>
+        Promotion,
+
+        /// <remarks/>
+        Repeat,
+
+        /// <remarks/>
+        RFID,
+
+        /// <remarks/>
+        Scanned,
+
+        /// <remarks/>
+        SmartCard,
+
+        /// <remarks/>
+        Swiped,
+
+        /// <remarks/>
+        Tapped,
+
+        /// <remarks/>
+        Waved,
+
+        /// <remarks/>
+        Weighed,
+
+        /// <remarks/>
+        WavedSmartCard,
+
+        /// <remarks/>
+        WavedMSR,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("X:Moved")]
+        XMoved,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = true)]
+    public partial class ListType
+    {
+
+        private InstructionListType itemField;
+
+        private ItemChoiceType1 itemElementNameField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("cookingInstructions", typeof(InstructionListType))]
+        [System.Xml.Serialization.XmlElementAttribute("genericInstructions", typeof(InstructionListType))]
+        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemElementName")]
+        public InstructionListType Item
+        {
+            get
+            {
+                return this.itemField;
+            }
+            set
+            {
+                this.itemField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public ItemChoiceType1 ItemElementName
+        {
+            get
+            {
+                return this.itemElementNameField;
+            }
+            set
+            {
+                this.itemElementNameField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = true)]
+    public partial class InstructionListType
+    {
+
+        private string instructionListIdField;
+
+        private string nameField;
+
+        private string descriptionField;
+
+        private InstructionMemberType[] instructionListMemberField;
+
+        private string instructionTypeIdField;
+
+        private string statusIdField;
+
+        /// <remarks/>
+        public string instructionListId
+        {
+            get
+            {
+                return this.instructionListIdField;
+            }
+            set
+            {
+                this.instructionListIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("instructionListMember")]
+        public InstructionMemberType[] instructionListMember
+        {
+            get
+            {
+                return this.instructionListMemberField;
+            }
+            set
+            {
+                this.instructionListMemberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string InstructionTypeId
+        {
+            get
+            {
+                return this.instructionTypeIdField;
+            }
+            set
+            {
+                this.instructionTypeIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string StatusId
+        {
+            get
+            {
+                return this.statusIdField;
+            }
+            set
+            {
+                this.statusIdField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = true)]
+    public partial class InstructionMemberType
+    {
+
+        private string instructionListMemberIdField;
+
+        private string nameField;
+
+        private string descriptionField;
+
+        private string memberField;
+
+        private string groupField;
+
+        private string sequenceField;
+
+        private string displayIndexField;
+
+        private bool isVisibleField;
+
+        private bool isVisibleFieldSpecified;
+
+        private string ingredientProductIdField;
+
+        /// <remarks/>
+        public string instructionListMemberId
+        {
+            get
+            {
+                return this.instructionListMemberIdField;
+            }
+            set
+            {
+                this.instructionListMemberIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string member
+        {
+            get
+            {
+                return this.memberField;
+            }
+            set
+            {
+                this.memberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string group
+        {
+            get
+            {
+                return this.groupField;
+            }
+            set
+            {
+                this.groupField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string sequence
+        {
+            get
+            {
+                return this.sequenceField;
+            }
+            set
+            {
+                this.sequenceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DisplayIndex
+        {
+            get
+            {
+                return this.displayIndexField;
+            }
+            set
+            {
+                this.displayIndexField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isVisible
+        {
+            get
+            {
+                return this.isVisibleField;
+            }
+            set
+            {
+                this.isVisibleField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isVisibleSpecified
+        {
+            get
+            {
+                return this.isVisibleFieldSpecified;
+            }
+            set
+            {
+                this.isVisibleFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string IngredientProductId
+        {
+            get
+            {
+                return this.ingredientProductIdField;
+            }
+            set
+            {
+                this.ingredientProductIdField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IncludeInSchema = false)]
+    public enum ItemChoiceType1
+    {
+
+        /// <remarks/>
+        cookingInstructions,
+
+        /// <remarks/>
+        genericInstructions,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    public partial class KitTypeKitItem
+    {
+
+        private bool kitchenItemField;
+
+        private bool kitchenItemFieldSpecified;
+
+        private string kitchenDescriptionField;
+
+        private string imageUrlField;
+
+        private bool hospitalityItemField;
+
+        private bool hospitalityItemFieldSpecified;
+
+        /// <remarks/>
+        public bool kitchenItem
+        {
+            get
+            {
+                return this.kitchenItemField;
+            }
+            set
+            {
+                this.kitchenItemField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kitchenItemSpecified
+        {
+            get
+            {
+                return this.kitchenItemFieldSpecified;
+            }
+            set
+            {
+                this.kitchenItemFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string kitchenDescription
+        {
+            get
+            {
+                return this.kitchenDescriptionField;
+            }
+            set
+            {
+                this.kitchenDescriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string imageUrl
+        {
+            get
+            {
+                return this.imageUrlField;
+            }
+            set
+            {
+                this.imageUrlField = value;
+            }
+        }
+
+        /// <remarks/>
+        public bool hospitalityItem
+        {
+            get
+            {
+                return this.hospitalityItemField;
+            }
+            set
+            {
+                this.hospitalityItemField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool hospitalityItemSpecified
+        {
+            get
+            {
+                return this.hospitalityItemFieldSpecified;
+            }
+            set
+            {
+                this.hospitalityItemFieldSpecified = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9701,6 +11834,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private PriceType[] pricesField;
 
         private SelectionGroupsType selectionGroupsField;
+
+        private KitType kitField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("scanCode")]
@@ -9798,10 +11933,23 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.selectionGroupsField = value;
             }
         }
+
+        /// <remarks/>
+        public KitType kit
+        {
+            get
+            {
+                return this.kitField;
+            }
+            set
+            {
+                this.kitField = value;
+            }
+        }
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9825,6 +11973,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private RewardType[] rewardsField;
 
         private SelectionGroupsType selectionGroupsField;
+
+        private KitType kitField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("scanCode")]
@@ -9936,10 +12086,23 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.selectionGroupsField = value;
             }
         }
+
+        /// <remarks/>
+        public KitType kit
+        {
+            get
+            {
+                return this.kitField;
+            }
+            set
+            {
+                this.kitField = value;
+            }
+        }
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10171,7 +12334,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10212,7 +12375,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10285,7 +12448,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10372,7 +12535,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10429,7 +12592,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10456,7 +12619,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10483,7 +12646,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10510,7 +12673,98 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class SubTeamType
+    {
+
+        private string subTeamNumberField;
+
+        private string subTeamNumber1Field;
+
+        private string subTeamNameField;
+
+        private string hostSubTeamNumberField;
+
+        private string hostSubTeamNameField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+        public string subTeamNumber
+        {
+            get
+            {
+                return this.subTeamNumberField;
+            }
+            set
+            {
+                this.subTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("subTeamNumber", Order = 1)]
+        public string subTeamNumber1
+        {
+            get
+            {
+                return this.subTeamNumber1Field;
+            }
+            set
+            {
+                this.subTeamNumber1Field = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+        public string subTeamName
+        {
+            get
+            {
+                return this.subTeamNameField;
+            }
+            set
+            {
+                this.subTeamNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+        public string hostSubTeamNumber
+        {
+            get
+            {
+                return this.hostSubTeamNumberField;
+            }
+            set
+            {
+                this.hostSubTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
+        public string hostSubTeamName
+        {
+            get
+            {
+                return this.hostSubTeamNameField;
+            }
+            set
+            {
+                this.hostSubTeamNameField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10551,7 +12805,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10592,7 +12846,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10618,7 +12872,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10750,7 +13004,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10791,7 +13045,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10832,7 +13086,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10903,7 +13157,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11023,7 +13277,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11049,7 +13303,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11090,7 +13344,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11131,7 +13385,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11189,7 +13443,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PartyMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -11204,7 +13458,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11231,7 +13485,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11334,7 +13588,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11375,7 +13629,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11401,7 +13655,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11442,7 +13696,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11483,7 +13737,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11524,7 +13778,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11597,7 +13851,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11853,7 +14107,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12079,7 +14333,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12182,7 +14436,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12667,7 +14921,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12694,7 +14948,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1", IsNullable = false)]
@@ -12724,7 +14978,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1", IsNullable = false)]
@@ -12739,7 +14993,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12766,7 +15020,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute("TaxSubTypeCodeEnum", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1", IsNullable = false)]
@@ -12787,7 +15041,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1", IsNullable = false)]
@@ -12802,7 +15056,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12829,7 +15083,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12856,7 +15110,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12883,7 +15137,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12910,7 +15164,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12937,7 +15191,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13041,7 +15295,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -13065,7 +15319,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13198,7 +15452,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13362,7 +15616,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13389,7 +15643,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13492,79 +15746,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
-    public enum EntryMethodEnum
-    {
-
-        /// <remarks/>
-        Automatic,
-
-        /// <remarks/>
-        CardholderNotPresent,
-
-        /// <remarks/>
-        Ecommerce,
-
-        /// <remarks/>
-        Imported,
-
-        /// <remarks/>
-        Imprint,
-
-        /// <remarks/>
-        IntegratedChipCard,
-
-        /// <remarks/>
-        Keyed,
-
-        /// <remarks/>
-        KeyedCoupon,
-
-        /// <remarks/>
-        MICR,
-
-        /// <remarks/>
-        Measured,
-
-        /// <remarks/>
-        NotRelevant,
-
-        /// <remarks/>
-        MSR,
-
-        /// <remarks/>
-        Promotion,
-
-        /// <remarks/>
-        Repeat,
-
-        /// <remarks/>
-        RFID,
-
-        /// <remarks/>
-        Scanned,
-
-        /// <remarks/>
-        SmartCard,
-
-        /// <remarks/>
-        Swiped,
-
-        /// <remarks/>
-        Tapped,
-
-        /// <remarks/>
-        Waved,
-
-        /// <remarks/>
-        Weighed,
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13590,7 +15772,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13646,7 +15828,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13855,7 +16037,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13882,7 +16064,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13909,7 +16091,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13951,7 +16133,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14022,7 +16204,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14064,7 +16246,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14105,7 +16287,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14177,7 +16359,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14355,7 +16537,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14396,696 +16578,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("item", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1", IsNullable = false)]
-    public partial class ItemType
-    {
-
-        private int idField;
-
-        private BaseItemType baseField;
-
-        private LocaleType[] localeField;
-
-        private ActionEnum actionField;
-
-        private bool actionFieldSpecified;
-
-        /// <remarks/>
-        public int id
-        {
-            get
-            {
-                return this.idField;
-            }
-            set
-            {
-                this.idField = value;
-            }
-        }
-
-        /// <remarks/>
-        public BaseItemType @base
-        {
-            get
-            {
-                return this.baseField;
-            }
-            set
-            {
-                this.baseField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("locale")]
-        public LocaleType[] locale
-        {
-            get
-            {
-                return this.localeField;
-            }
-            set
-            {
-                this.localeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
-        public ActionEnum Action
-        {
-            get
-            {
-                return this.actionField;
-            }
-            set
-            {
-                this.actionField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ActionSpecified
-        {
-            get
-            {
-                return this.actionFieldSpecified;
-            }
-            set
-            {
-                this.actionFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("baseItem", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1", IsNullable = false)]
-    public partial class BaseItemType
-    {
-
-        private ItemTypeType typeField;
-
-        private ConsumerInformationType consumerInformationField;
-
-        private TraitType[] traitsField;
-
-        /// <remarks/>
-        public ItemTypeType type
-        {
-            get
-            {
-                return this.typeField;
-            }
-            set
-            {
-                this.typeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public ConsumerInformationType consumerInformation
-        {
-            get
-            {
-                return this.consumerInformationField;
-            }
-            set
-            {
-                this.consumerInformationField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("trait", Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1", IsNullable = false)]
-        public TraitType[] traits
-        {
-            get
-            {
-                return this.traitsField;
-            }
-            set
-            {
-                this.traitsField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("itemType", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1", IsNullable = false)]
-    public partial class ItemTypeType
-    {
-
-        private string codeField;
-
-        private string descriptionField;
-
-        /// <remarks/>
-        public string code
-        {
-            get
-            {
-                return this.codeField;
-            }
-            set
-            {
-                this.codeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string description
-        {
-            get
-            {
-                return this.descriptionField;
-            }
-            set
-            {
-                this.descriptionField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("consumerInformation", Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1", IsNullable = false)]
-    public partial class ConsumerInformationType
-    {
-
-        private StockProductLabelType stockItemConsumerProductLabelField;
-
-        /// <remarks/>
-        public StockProductLabelType stockItemConsumerProductLabel
-        {
-            get
-            {
-                return this.stockItemConsumerProductLabelField;
-            }
-            set
-            {
-                this.stockItemConsumerProductLabelField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class StockProductLabelType
-    {
-
-        private string consumerLabelTypeCodeField;
-
-        private UomType servingSizeUomField;
-
-        private decimal servingSizeUomCountField;
-
-        private UomType servingsInRetailSaleUnitCountField;
-
-        private decimal caloriesCountField;
-
-        private decimal caloriesFromFatCountField;
-
-        private decimal totalFatGramsAmountField;
-
-        private decimal totalFatDailyIntakePercentField;
-
-        private decimal saturatedFatGramsAmountField;
-
-        private decimal saturatedFatPercentField;
-
-        private decimal cholesterolMilligramsCountField;
-
-        private decimal cholesterolPercentField;
-
-        private decimal sodiumMilligramsCountField;
-
-        private decimal sodiumPercentField;
-
-        private decimal totalCarbohydrateMilligramsCountField;
-
-        private decimal totalCarbohydratePercentField;
-
-        private decimal dietaryFiberGramsCountField;
-
-        private decimal sugarsGramsCountField;
-
-        private decimal proteinGramsCountField;
-
-        private decimal vitaminADailyMinimumPercentField;
-
-        private decimal vitaminBDailyMinimumPercentField;
-
-        private decimal vitaminCDailyMinimumPercentField;
-
-        private decimal calciumDailyMinimumPercentField;
-
-        private decimal ironDailyMinimumPercentField;
-
-        private string nutritionalDescriptionTextField;
-
-        private bool isHazardousMaterialField;
-
-        private string hazardousMaterialTypeCodeField;
-
-        private ActionEnum actionField;
-
-        private bool actionFieldSpecified;
-
-        public StockProductLabelType()
-        {
-            this.servingSizeUomCountField = ((decimal)(0m));
-            this.caloriesCountField = ((decimal)(0m));
-            this.caloriesFromFatCountField = ((decimal)(0m));
-            this.totalFatGramsAmountField = ((decimal)(0m));
-            this.totalFatDailyIntakePercentField = ((decimal)(0m));
-            this.saturatedFatGramsAmountField = ((decimal)(0m));
-            this.saturatedFatPercentField = ((decimal)(0m));
-            this.cholesterolMilligramsCountField = ((decimal)(0m));
-            this.cholesterolPercentField = ((decimal)(0m));
-            this.sodiumMilligramsCountField = ((decimal)(0m));
-            this.sodiumPercentField = ((decimal)(0m));
-            this.totalCarbohydrateMilligramsCountField = ((decimal)(0m));
-            this.totalCarbohydratePercentField = ((decimal)(0m));
-            this.dietaryFiberGramsCountField = ((decimal)(0m));
-            this.sugarsGramsCountField = ((decimal)(0m));
-            this.proteinGramsCountField = ((decimal)(0m));
-            this.vitaminADailyMinimumPercentField = ((decimal)(0m));
-            this.vitaminBDailyMinimumPercentField = ((decimal)(0m));
-            this.vitaminCDailyMinimumPercentField = ((decimal)(0m));
-            this.calciumDailyMinimumPercentField = ((decimal)(0m));
-            this.ironDailyMinimumPercentField = ((decimal)(0m));
-            this.isHazardousMaterialField = false;
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
-        public string consumerLabelTypeCode
-        {
-            get
-            {
-                return this.consumerLabelTypeCodeField;
-            }
-            set
-            {
-                this.consumerLabelTypeCodeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public UomType servingSizeUom
-        {
-            get
-            {
-                return this.servingSizeUomField;
-            }
-            set
-            {
-                this.servingSizeUomField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal servingSizeUomCount
-        {
-            get
-            {
-                return this.servingSizeUomCountField;
-            }
-            set
-            {
-                this.servingSizeUomCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public UomType servingsInRetailSaleUnitCount
-        {
-            get
-            {
-                return this.servingsInRetailSaleUnitCountField;
-            }
-            set
-            {
-                this.servingsInRetailSaleUnitCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal caloriesCount
-        {
-            get
-            {
-                return this.caloriesCountField;
-            }
-            set
-            {
-                this.caloriesCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal caloriesFromFatCount
-        {
-            get
-            {
-                return this.caloriesFromFatCountField;
-            }
-            set
-            {
-                this.caloriesFromFatCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal totalFatGramsAmount
-        {
-            get
-            {
-                return this.totalFatGramsAmountField;
-            }
-            set
-            {
-                this.totalFatGramsAmountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal totalFatDailyIntakePercent
-        {
-            get
-            {
-                return this.totalFatDailyIntakePercentField;
-            }
-            set
-            {
-                this.totalFatDailyIntakePercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal saturatedFatGramsAmount
-        {
-            get
-            {
-                return this.saturatedFatGramsAmountField;
-            }
-            set
-            {
-                this.saturatedFatGramsAmountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal saturatedFatPercent
-        {
-            get
-            {
-                return this.saturatedFatPercentField;
-            }
-            set
-            {
-                this.saturatedFatPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal cholesterolMilligramsCount
-        {
-            get
-            {
-                return this.cholesterolMilligramsCountField;
-            }
-            set
-            {
-                this.cholesterolMilligramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal cholesterolPercent
-        {
-            get
-            {
-                return this.cholesterolPercentField;
-            }
-            set
-            {
-                this.cholesterolPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal sodiumMilligramsCount
-        {
-            get
-            {
-                return this.sodiumMilligramsCountField;
-            }
-            set
-            {
-                this.sodiumMilligramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal sodiumPercent
-        {
-            get
-            {
-                return this.sodiumPercentField;
-            }
-            set
-            {
-                this.sodiumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal totalCarbohydrateMilligramsCount
-        {
-            get
-            {
-                return this.totalCarbohydrateMilligramsCountField;
-            }
-            set
-            {
-                this.totalCarbohydrateMilligramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal totalCarbohydratePercent
-        {
-            get
-            {
-                return this.totalCarbohydratePercentField;
-            }
-            set
-            {
-                this.totalCarbohydratePercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal dietaryFiberGramsCount
-        {
-            get
-            {
-                return this.dietaryFiberGramsCountField;
-            }
-            set
-            {
-                this.dietaryFiberGramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal sugarsGramsCount
-        {
-            get
-            {
-                return this.sugarsGramsCountField;
-            }
-            set
-            {
-                this.sugarsGramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal proteinGramsCount
-        {
-            get
-            {
-                return this.proteinGramsCountField;
-            }
-            set
-            {
-                this.proteinGramsCountField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal vitaminADailyMinimumPercent
-        {
-            get
-            {
-                return this.vitaminADailyMinimumPercentField;
-            }
-            set
-            {
-                this.vitaminADailyMinimumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal vitaminBDailyMinimumPercent
-        {
-            get
-            {
-                return this.vitaminBDailyMinimumPercentField;
-            }
-            set
-            {
-                this.vitaminBDailyMinimumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal vitaminCDailyMinimumPercent
-        {
-            get
-            {
-                return this.vitaminCDailyMinimumPercentField;
-            }
-            set
-            {
-                this.vitaminCDailyMinimumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal calciumDailyMinimumPercent
-        {
-            get
-            {
-                return this.calciumDailyMinimumPercentField;
-            }
-            set
-            {
-                this.calciumDailyMinimumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal ironDailyMinimumPercent
-        {
-            get
-            {
-                return this.ironDailyMinimumPercentField;
-            }
-            set
-            {
-                this.ironDailyMinimumPercentField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string nutritionalDescriptionText
-        {
-            get
-            {
-                return this.nutritionalDescriptionTextField;
-            }
-            set
-            {
-                this.nutritionalDescriptionTextField = value;
-            }
-        }
-
-        /// <remarks/>
-        public bool isHazardousMaterial
-        {
-            get
-            {
-                return this.isHazardousMaterialField;
-            }
-            set
-            {
-                this.isHazardousMaterialField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
-        public string hazardousMaterialTypeCode
-        {
-            get
-            {
-                return this.hazardousMaterialTypeCodeField;
-            }
-            set
-            {
-                this.hazardousMaterialTypeCodeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
-        public ActionEnum Action
-        {
-            get
-            {
-                return this.actionField;
-            }
-            set
-            {
-                this.actionField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ActionSpecified
-        {
-            get
-            {
-                return this.actionFieldSpecified;
-            }
-            set
-            {
-                this.actionFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15248,7 +16741,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15289,7 +16782,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15393,7 +16886,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15420,7 +16913,34 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1", IsNullable = false)]
+    public partial class kits
+    {
+
+        private KitType[] kitField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("kit")]
+        public KitType[] kit
+        {
+            get
+            {
+                return this.kitField;
+            }
+            set
+            {
+                this.kitField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15447,7 +16967,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15476,7 +16996,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         private QuantityType[] quantitiesField;
 
-        private RetailPriceModifierType[] retailPriceModifiersField;
+        private RetailPriceModifierType[][] retailPriceModifiersField;
 
         private GroupIndicatorType groupIndicatorsField;
 
@@ -15610,7 +17130,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("modifier", typeof(RetailPriceModifierType), Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1", IsNullable = false)]
-        public RetailPriceModifierType[] retailPriceModifiers
+        public RetailPriceModifierType[][] retailPriceModifiers
         {
             get
             {
@@ -15692,7 +17212,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -15728,167 +17248,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class QuantityType
-    {
-
-        private string typeField;
-
-        private decimal valueField;
-
-        private bool valueFieldSpecified;
-
-        private UnitsType unitsField;
-
-        private EntryMethodEnum entryMethodField;
-
-        private bool entryMethodFieldSpecified;
-
-        /// <remarks/>
-        public string type
-        {
-            get
-            {
-                return this.typeField;
-            }
-            set
-            {
-                this.typeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public decimal value
-        {
-            get
-            {
-                return this.valueField;
-            }
-            set
-            {
-                this.valueField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool valueSpecified
-        {
-            get
-            {
-                return this.valueFieldSpecified;
-            }
-            set
-            {
-                this.valueFieldSpecified = value;
-            }
-        }
-
-        /// <remarks/>
-        public UnitsType units
-        {
-            get
-            {
-                return this.unitsField;
-            }
-            set
-            {
-                this.unitsField = value;
-            }
-        }
-
-        /// <remarks/>
-        public EntryMethodEnum entryMethod
-        {
-            get
-            {
-                return this.entryMethodField;
-            }
-            set
-            {
-                this.entryMethodField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool entryMethodSpecified
-        {
-            get
-            {
-                return this.entryMethodFieldSpecified;
-            }
-            set
-            {
-                this.entryMethodFieldSpecified = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class UnitsType
-    {
-
-        private decimal valueField;
-
-        private bool valueFieldSpecified;
-
-        private UomType uomField;
-
-        /// <remarks/>
-        public decimal value
-        {
-            get
-            {
-                return this.valueField;
-            }
-            set
-            {
-                this.valueField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool valueSpecified
-        {
-            get
-            {
-                return this.valueFieldSpecified;
-            }
-            set
-            {
-                this.valueFieldSpecified = value;
-            }
-        }
-
-        /// <remarks/>
-        public UomType uom
-        {
-            get
-            {
-                return this.uomField;
-            }
-            set
-            {
-                this.uomField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16146,7 +17506,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -16203,7 +17563,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16290,7 +17650,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16317,7 +17677,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16344,7 +17704,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16432,7 +17792,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(PromotionDeferredReward))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16534,7 +17894,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16560,7 +17920,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16587,7 +17947,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16643,7 +18003,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16669,7 +18029,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16696,7 +18056,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16723,7 +18083,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16750,7 +18110,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16900,7 +18260,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16927,7 +18287,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16968,7 +18328,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17009,7 +18369,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17036,7 +18396,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17063,7 +18423,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17090,7 +18450,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -17134,7 +18494,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17161,7 +18521,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17187,7 +18547,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17215,7 +18575,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TransactionPromotionAttrType))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17533,7 +18893,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17634,7 +18994,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17722,7 +19082,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -17743,7 +19103,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -17761,7 +19121,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17928,7 +19288,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueCouponType))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18091,7 +19451,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18118,7 +19478,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18145,7 +19505,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18172,7 +19532,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18199,7 +19559,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18240,7 +19600,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1", IsNullable = false)]
@@ -18255,7 +19615,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18296,7 +19656,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18325,7 +19685,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18368,7 +19728,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18395,7 +19755,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18422,7 +19782,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -18437,7 +19797,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -18461,7 +19821,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Legal/Retail/TaxMgmt/CommonRefTypes/V1", IsNullable = false)]
@@ -18491,7 +19851,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18594,7 +19954,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18637,7 +19997,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18680,7 +20040,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18768,7 +20128,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18811,7 +20171,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18854,7 +20214,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19281,7 +20641,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19354,7 +20714,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19397,7 +20757,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19424,7 +20784,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19439,7 +20799,160 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
+    public enum TipInActionTypeCodeEnum
+    {
+
+        /// <remarks/>
+        Add,
+
+        /// <remarks/>
+        Void,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "TransactionTypeEnum", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("TransactionTypeEnum", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
+    public enum TransactionTypeEnum1
+    {
+
+        /// <remarks/>
+        Selfscan,
+
+        /// <remarks/>
+        HomeShopping,
+
+        /// <remarks/>
+        WIC,
+
+        /// <remarks/>
+        DriveOff,
+
+        /// <remarks/>
+        Unpaid,
+
+        /// <remarks/>
+        XReport,
+
+        /// <remarks/>
+        ZReport,
+
+        /// <remarks/>
+        Tab,
+
+        /// <remarks/>
+        TabSuspend,
+
+        /// <remarks/>
+        Tip,
+
+        /// <remarks/>
+        CollectiveTip,
+
+        /// <remarks/>
+        PersonalTip,
+
+        /// <remarks/>
+        Walkoff,
+
+        /// <remarks/>
+        WalkoffSuspend,
+
+        /// <remarks/>
+        Sale,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
+    public enum DateTimeTypeEnum
+    {
+
+        /// <remarks/>
+        Message,
+
+        /// <remarks/>
+        ActualStart,
+
+        /// <remarks/>
+        AvailableForSale,
+
+        /// <remarks/>
+        BestBefore,
+
+        /// <remarks/>
+        Birth,
+
+        /// <remarks/>
+        Business,
+
+        /// <remarks/>
+        Cancel,
+
+        /// <remarks/>
+        CutBy,
+
+        /// <remarks/>
+        Dispatch,
+
+        /// <remarks/>
+        Effective,
+
+        /// <remarks/>
+        End,
+
+        /// <remarks/>
+        EnterFreezer,
+
+        /// <remarks/>
+        ExpectedDue,
+
+        /// <remarks/>
+        ExpectedStart,
+
+        /// <remarks/>
+        Expiration,
+
+        /// <remarks/>
+        Kill,
+
+        /// <remarks/>
+        Pack,
+
+        /// <remarks/>
+        Packaging,
+
+        /// <remarks/>
+        Production,
+
+        /// <remarks/>
+        Receipt,
+
+        /// <remarks/>
+        SellBy,
+
+        /// <remarks/>
+        Slaughter,
+
+        /// <remarks/>
+        Start,
+
+        /// <remarks/>
+        Transaction,
+
+        /// <remarks/>
+        UseBy,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19466,7 +20979,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19481,7 +20994,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19499,7 +21012,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19523,7 +21036,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19541,7 +21054,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19559,7 +21072,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19583,7 +21096,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19598,7 +21111,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19613,7 +21126,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19634,7 +21147,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19733,7 +21246,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19748,7 +21261,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19759,7 +21272,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         NoneReceiptReturn,
 
         /// <remarks/>
-        GiftReceiptReturn,
+        GiftReceiptedReturn,
 
         /// <remarks/>
         BottleDepositReturn,
@@ -19778,7 +21291,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19873,7 +21386,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19921,7 +21434,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19948,7 +21461,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19963,7 +21476,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19978,7 +21491,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -19999,7 +21512,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20126,10 +21639,17 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         WICCheck,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("Gift Card")]
+        GiftCard1,
+
+        /// <remarks/>
+        ACHPayment,
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20147,7 +21667,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20165,7 +21685,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20216,10 +21736,13 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         WrongData,
+
+        /// <remarks/>
+        Merged,
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20291,7 +21814,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20315,7 +21838,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20327,7 +21850,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1", IsNullable = false)]
@@ -20345,7 +21868,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1", IsNullable = false)]
@@ -20499,7 +22022,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefItemTypes/V1", IsNullable = false)]
@@ -20534,7 +22057,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20590,7 +22113,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20602,7 +22125,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MerchandiseyHeirarchyType))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20628,7 +22151,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20715,7 +22238,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20756,7 +22279,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefPromotionTypes/V1", IsNullable = false)]
@@ -20771,7 +22294,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTaxTypes/V1", IsNullable = false)]
@@ -20789,7 +22312,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20922,7 +22445,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21024,7 +22547,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21065,7 +22588,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21091,7 +22614,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21132,7 +22655,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21173,7 +22696,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21199,7 +22722,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21226,7 +22749,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21252,7 +22775,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21279,7 +22802,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21306,7 +22829,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21333,7 +22856,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21360,7 +22883,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21478,7 +23001,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21505,7 +23028,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21592,7 +23115,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21618,7 +23141,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21781,7 +23304,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21868,7 +23391,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22292,7 +23815,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22335,7 +23858,50 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class ReceiptImagesDataType
+    {
+
+        private ReceiptImageDataType[] receiptDataField;
+
+        private string[] receiptDeliveryField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("receiptData")]
+        public ReceiptImageDataType[] receiptData
+        {
+            get
+            {
+                return this.receiptDataField;
+            }
+            set
+            {
+                this.receiptDataField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("ChannnelType", IsNullable = false)]
+        public string[] receiptDelivery
+        {
+            get
+            {
+                return this.receiptDeliveryField;
+            }
+            set
+            {
+                this.receiptDeliveryField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22406,7 +23972,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22539,7 +24105,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22580,7 +24146,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22607,7 +24173,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22819,7 +24385,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22907,7 +24473,89 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class tabType
+    {
+
+        private string tableIdField;
+
+        private ActionLogType actionLogField;
+
+        /// <remarks/>
+        public string tableId
+        {
+            get
+            {
+                return this.tableIdField;
+            }
+            set
+            {
+                this.tableIdField = value;
+            }
+        }
+
+        /// <remarks/>
+        public ActionLogType actionLog
+        {
+            get
+            {
+                return this.actionLogField;
+            }
+            set
+            {
+                this.actionLogField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class ActionLogType
+    {
+
+        private string logDataField;
+
+        private string logTimeField;
+
+        /// <remarks/>
+        public string logData
+        {
+            get
+            {
+                return this.logDataField;
+            }
+            set
+            {
+                this.logDataField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string logTime
+        {
+            get
+            {
+                return this.logTimeField;
+            }
+            set
+            {
+                this.logTimeField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22979,7 +24627,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23035,7 +24683,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23076,7 +24724,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23117,7 +24765,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23176,7 +24824,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23266,7 +24914,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23526,7 +25174,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23553,7 +25201,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -23772,7 +25420,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24084,7 +25732,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24111,7 +25759,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24138,7 +25786,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24165,7 +25813,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24192,7 +25840,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24219,7 +25867,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24246,7 +25894,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24273,7 +25921,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24300,7 +25948,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24327,7 +25975,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24354,7 +26002,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24381,7 +26029,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24408,7 +26056,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24435,7 +26083,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24462,7 +26110,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24489,7 +26137,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24516,7 +26164,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24544,7 +26192,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TenderAuthorizationDomainSpecific))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -24584,6 +26232,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private AmountType requestedAmountField;
 
         private AuthorizationCode authorizationCodeField;
+
+        private AuthorizationCode preAuthorizationCodeField;
 
         private ReferenceNumber referenceNumberField;
 
@@ -24855,6 +26505,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order = 9)]
+        public AuthorizationCode preAuthorizationCode
+        {
+            get
+            {
+                return this.preAuthorizationCodeField;
+            }
+            set
+            {
+                this.preAuthorizationCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
         public ReferenceNumber referenceNumber
         {
             get
@@ -24868,7 +26532,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
         public MerchantNumber merchantNumber
         {
             get
@@ -24882,7 +26546,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 12)]
         public DateTimezoneType authorizationDateTime
         {
             get
@@ -24896,7 +26560,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 13)]
         public AmountType authorizedChangeAmount
         {
             get
@@ -24910,7 +26574,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 14)]
         public AuthorizingTermID authorizingTermID
         {
             get
@@ -24924,7 +26588,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 15)]
         public PreAuthorizedID preAuthorizedID
         {
             get
@@ -24938,7 +26602,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 16)]
         public AuthorizationDescription authorizationDescription
         {
             get
@@ -24952,7 +26616,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 16)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 17)]
         public ReversalType reversal
         {
             get
@@ -24966,7 +26630,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 17)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 18)]
         public POSLogDeclineTypeEnum electronicSignatureDecline
         {
             get
@@ -24994,7 +26658,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 18)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 19)]
         public string receiptText
         {
             get
@@ -25008,7 +26672,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 19)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 20)]
         public Signature signature
         {
             get
@@ -25022,7 +26686,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 20)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 21)]
         public ProviderID providerID
         {
             get
@@ -25036,7 +26700,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 21)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 22)]
         public ProviderDataType providerData
         {
             get
@@ -25050,7 +26714,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 22)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 23)]
         public CardId cardId
         {
             get
@@ -25064,7 +26728,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 23)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 24)]
         public CardType cardType
         {
             get
@@ -25078,7 +26742,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 24)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 25)]
         public AuthorizationType authorizationType
         {
             get
@@ -25092,7 +26756,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 25)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 26)]
         public VoiceAuthorizationType voiceAuthorization
         {
             get
@@ -25106,7 +26770,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 26)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 27)]
         public AuthorizationResponseCode authorizationResponseCode
         {
             get
@@ -25120,7 +26784,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 27)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 28)]
         public ExtendedData extendedData
         {
             get
@@ -25134,7 +26798,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 28)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 29)]
         public PrioritizedGroupAmounts prioritizedGroupAmounts
         {
             get
@@ -25148,7 +26812,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 29)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 30)]
         public string tokenData
         {
             get
@@ -25163,7 +26827,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25190,7 +26854,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25217,7 +26881,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25244,7 +26908,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25271,7 +26935,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25298,7 +26962,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25325,7 +26989,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25352,7 +27016,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25423,7 +27087,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25450,7 +27114,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25477,7 +27141,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25504,7 +27168,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25563,7 +27227,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25604,7 +27268,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25647,7 +27311,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25688,7 +27352,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25835,7 +27499,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25862,7 +27526,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25887,7 +27551,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25943,7 +27607,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -25971,7 +27635,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TenderChangeDomainSpecific))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26073,7 +27737,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26189,7 +27853,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26216,7 +27880,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26243,7 +27907,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26270,7 +27934,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26297,7 +27961,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26338,7 +28002,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26365,7 +28029,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26468,7 +28132,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26571,7 +28235,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26612,7 +28276,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26746,7 +28410,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26773,7 +28437,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26800,7 +28464,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26827,7 +28491,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -26855,7 +28519,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TenderCreditDebitDomainSpecific))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27186,7 +28850,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27213,7 +28877,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27240,7 +28904,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27267,7 +28931,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27294,7 +28958,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27321,7 +28985,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27379,7 +29043,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27406,7 +29070,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27433,7 +29097,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27461,7 +29125,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AdjudicationCode))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -27488,7 +29152,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     }
 
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.7.179+gac19036b0d")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
