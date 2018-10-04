@@ -54,7 +54,12 @@ namespace Icon.Infor.Listeners.Item.Commands
                     ScanCode = i.ScanCode,
                     ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
                     InforMessageId = i.InforMessageId,
-                    SequenceId = i.SequenceId
+                    SequenceId = i.SequenceId,
+                    HospitalityItem = i.HospitalityItem,
+                    KitchenItem = i.KitchenItem,
+                    KitchenDescription = i.KitchenDescription,
+                    ImageUrl = i.ImageUrl,
+                   
                 }).ToTvp("items", "infor.ItemAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);

@@ -6,6 +6,7 @@ using Icon.Infor.Listeners.Item.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace Icon.Infor.Listeners.Item.Extensions
     public static class Extensions
     {
         public static ItemModel ToItemModel(
-            this Esb.Schemas.Wfm.Contracts.ItemType item, 
-            string inforMessageId, 
-            DateTime messageParseTime,
-            decimal? sequenceId)
+           this Esb.Schemas.Wfm.Contracts.ItemType item,
+           string inforMessageId,
+           DateTime messageParseTime,
+           decimal? sequenceId)
         {
             var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
+            var kitItem = GetKitItem(enterpriseAttributes);
+
             return new ItemModel
             {
                 ItemId = item.id,
@@ -96,8 +99,31 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 WicEligible = GetTraitValue(enterpriseAttributes, TraitCodes.WicEligible),
                 ShelfLife = GetTraitValue(enterpriseAttributes, TraitCodes.ShelfLife),
                 SelfCheckoutItemTareGroup = GetTraitValue(enterpriseAttributes, TraitCodes.SelfCheckoutItemTareGroup),
-
+                KitchenDescription = kitItem == null ? null : kitItem.kitchenDescription,
+                ImageUrl = kitItem == null ? null : kitItem.imageUrl,
+                KitchenItem = kitItem == null ? null : (bool?)kitItem.kitchenItem,
+                HospitalityItem = kitItem == null ? null : (bool?)kitItem.hospitalityItem
             };
+        }
+
+        private static KitTypeKitItem GetKitItem(EnterpriseItemAttributesType enterpriseAttributes)
+        {
+            return enterpriseAttributes.kit == null || enterpriseAttributes.kit.kitItem == null ? null : GetKitItem(enterpriseAttributes.kit.kitItem);
+        }
+    
+        private static KitTypeKitItem GetKitItem(KitTypeKitItem kitItem)
+        {
+            KitTypeKitItem kitTypeKitItem = new KitTypeKitItem();
+
+            foreach (PropertyInfo pi in kitItem.GetType().GetProperties())
+            {
+                var value = pi.GetValue(kitItem);
+
+                if (value != null)
+                    kitTypeKitItem.GetType().GetProperty(pi.Name).SetValue(kitTypeKitItem, value);
+
+            }
+            return kitTypeKitItem;
         }
 
         private static string GetScanCodeTypeCode(string scanCode)

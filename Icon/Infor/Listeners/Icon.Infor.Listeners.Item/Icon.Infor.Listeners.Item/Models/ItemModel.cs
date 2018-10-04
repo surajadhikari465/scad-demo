@@ -84,5 +84,11 @@ namespace Icon.Infor.Listeners.Item.Models
         public string WicEligible { get; set; }
         public string ShelfLife { get; set; }
         public string SelfCheckoutItemTareGroup { get; set; }
+
+        public string KitchenDescription { get; set; }
+        public string ImageUrl { get; set; }
+        public bool? KitchenItem { get; set; }
+        public bool? HospitalityItem { get; set; }
+
     }
 }
