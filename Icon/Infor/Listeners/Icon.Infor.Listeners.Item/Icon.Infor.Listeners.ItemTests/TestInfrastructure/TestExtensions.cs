@@ -23,12 +23,29 @@ namespace Icon.Infor.Listeners.Item.Tests.TestInfrastructure
                 throw new ArgumentException("String is not in the expected format of a boolean message. Must be 1 or 0.", nameof(s));
         }
 
-        public static bool ParseBoolStringAdvanced(this string s)
+        public static bool ParseBoolStringAdvanced(this string s) => trueBoolValues.Contains(s);
+
+        public static bool? ParseBoolStringAdvancedNullable(this string s)
         {
-            if (s == "1" || s.Equals("true", StringComparison.CurrentCultureIgnoreCase) || s.Equals("yes", StringComparison.InvariantCultureIgnoreCase))
-                return true;
-            else
-                return false;
+            if (trueBoolValues.Contains(s)) return true;
+            if (falseBoolValues.Contains(s)) return false;
+            return (bool?)null;
         }
+
+        private static HashSet<string> trueBoolValues = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase)
+        {
+            "1",
+            "true",
+            "yes",
+            "y"
+         };
+
+        private static HashSet<string> falseBoolValues = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase)
+        {
+            "0",
+            "false",
+            "no",
+            "n"
+        };
     }
 }

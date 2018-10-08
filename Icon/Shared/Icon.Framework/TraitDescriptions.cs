@@ -178,5 +178,15 @@ namespace Icon.Framework
         public const string LocaleSubtype = "Locale Subtype";
         public const string IrmaItemKey = "IRMA Item Key";
         public const string DefaultIdentifier = "Default Identifier";
+        public const string Line = "Line";
+        public const string Sku = "SKU";
+        public const string PriceLine = "Price Line";
+        public const string VariantSize = "Variant Size";
+        public const string EstoreNutritionRequired = "EStore Nutrition Required";
+        public const string PrimeNowEligible = "Prime Now Eligible";
+        public const string EstoreEligible = "Estore Eligible";
+        public const string Tsf365Eligible = "TSF (365) Eligible";
+        public const string WfmEligilble = "WFM Eligilble";
+        public const string Other3pEligible = "Other 3P Eligible";
 	}
 }

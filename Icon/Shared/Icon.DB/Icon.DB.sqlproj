@@ -681,6 +681,7 @@
     <None Include="Scripts\PopulateData\Archive\AddLocaleSubtypeTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\AddVenueCodeOccupantLocaleTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\AddVenueLocaleType.sql" />
+    <None Include="Scripts\PopulateData\AddHospitalityAndEstoreTraitCodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

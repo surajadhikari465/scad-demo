@@ -148,6 +148,100 @@ namespace Icon.ApiController.Tests.Integration
         }
 
         [TestMethod]
+        public void ProductQueueProcessor_ValidProductRecordsWithHospitalityAndEstoreData_ShouldBeProcessedSuccessfully()
+        {
+            // Given.
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                TestHelpers.GetFakeMessageQueueProductWithHospitalityAndEstoreData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale),
+            };
+
+            var fakeEmptyMessageQueueProducts = new List<MessageQueueProduct>();
+
+            var fakeMessageQueue = new Queue<List<MessageQueueProduct>>();
+            fakeMessageQueue.Enqueue(fakeMessageQueueProducts);
+            fakeMessageQueue.Enqueue(fakeEmptyMessageQueueProducts);
+
+            context.MessageQueueProduct.AddRange(fakeMessageQueueProducts);
+            context.SaveChanges();
+
+            ControllerType.Instance = 1;
+
+            var mockQueueProcessorLogger = new Mock<ILogger<ProductQueueProcessor>>();
+            var mockContext = new Mock<IRenewableContext<IconContext>>();
+            var mockSerializerLogger = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockUpdateMessageQueueStatusLogger = new Mock<ILogger<UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>>>();
+            var mockQueueReaderLogger = new Mock<ILogger<ProductQueueReader>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockAssociateMessageToQueueLogger = new Mock<ILogger<AssociateMessageToQueueCommandHandler<MessageQueueProduct>>>();
+            var mockSaveToMessageHistoryLogger = new Mock<ILogger<SaveToMessageHistoryCommandHandler>>();
+            var mockSetProcessedDateLogger = new Mock<ILogger<UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>>>();
+            var mockUpdateMessageHistoryLogger = new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockMarkMessagesAsInProcessCommand = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProduct>>())).Returns(fakeMessageQueue.Dequeue);
+
+            var serializer = new Serializer<Contracts.items>(mockSerializerLogger.Object, mockEmailClient.Object);
+            var queueReader = new ProductQueueReader(
+                mockQueueReaderLogger.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+            var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
+            var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueProduct>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
+            var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueProduct>(mockSetProcessedDateLogger.Object, iconContextFactory);
+            var updateMessageHistoryCommandHandler = new UpdateMessageHistoryStatusCommandHandler(mockUpdateMessageHistoryLogger.Object, iconContextFactory);
+            var updateMessageQueueStatusCommandHandler = new UpdateMessageQueueStatusCommandHandler<MessageQueueProduct>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory);
+            var mockMonitor = new Mock<IMessageProcessorMonitor>();
+
+            var productQueueProcessor = new ProductQueueProcessor(
+                settings,
+                mockQueueProcessorLogger.Object,
+                queueReader,
+                serializer,
+                saveXmlMessageCommandHandler,
+                associateMessageToMessageQueueCommandHandler,
+                setProcessedDateCommandHandler,
+                updateMessageHistoryCommandHandler,
+                updateMessageQueueStatusCommandHandler,
+                mockMarkMessagesAsInProcessCommand.Object,
+                mockProducer.Object,
+                mockMonitor.Object);
+
+            // When.
+            productQueueProcessor.ProcessMessageQueue();
+
+            // Then.
+            var originalQueuedMessageId = fakeMessageQueueProducts.Select(p => p.MessageQueueId).ToList();
+            var queuedMessages = context.MessageQueueProduct.Where(mq => originalQueuedMessageId.Contains(mq.MessageQueueId)).ToList();
+
+            // Have to reload the entity since the update was done via stored procedure.
+            foreach (var message in queuedMessages)
+            {
+                context.Entry(message).Reload();
+            }
+
+            int savedMessageId = queuedMessages.First().MessageHistoryId.Value;
+            var savedMessage = context.MessageHistory.Single(mh => savedMessageId == mh.MessageHistoryId);
+
+            bool allQueuedMessagesAreUpdated = queuedMessages.TrueForAll(m =>
+                !m.InProcessBy.HasValue &&
+                m.ProcessedDate.Value.Date == DateTime.Today &&
+                m.MessageStatusId == MessageStatusTypes.Associated &&
+                m.MessageHistoryId != null);
+
+            Assert.IsTrue(allQueuedMessagesAreUpdated);
+            Assert.AreEqual(MessageStatusTypes.Sent, savedMessage.MessageStatusId);
+        }        
+
+        [TestMethod]
         public void ItemLocaleQueueProcessor_ValidItemLocaleRecords_ShouldBeProcessedSuccessfully()
         {
             // Given.

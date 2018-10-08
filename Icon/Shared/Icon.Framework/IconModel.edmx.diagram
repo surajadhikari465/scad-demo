@@ -94,12 +94,12 @@
         <AssociationConnector Association="Icon.Framework.Model.Locale_LocaleTrait_FK1" />
         <AssociationConnector Association="Icon.Framework.Model.Locale_ScanCode_FK1" />
         <AssociationConnector Association="Icon.Framework.Model.LocaleType_Locale_FK1" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="26" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="26.25" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueItemLocale" Width="1.5" PointX="32" PointY="9.625" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueuePrice" Width="1.5" PointX="28.5" PointY="14.25" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueuePrice" Width="1.5" PointX="28.625" PointY="16.875" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" />
@@ -131,7 +131,7 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
         <EntityTypeShape EntityType="Icon.Framework.Model.PLUCategory" Width="1.5" PointX="17.375" PointY="15.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ItemMovement" Width="1.5" PointX="0.75" PointY="17.125" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.IRMAPush" Width="1.5" PointX="23.375" PointY="19.25" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.IRMAPush" Width="1.5" PointX="23.625" PointY="24.125" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_IRMAPushID" />
         <EntityTypeShape EntityType="Icon.Framework.Model.Agency" Width="1.5" PointX="2" PointY="22.375" />
@@ -151,9 +151,9 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.AnimalWelfareRating" Width="1.5" PointX="19.375" PointY="40.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.EcoScaleRating" Width="1.5" PointX="19.375" PointY="43.125" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MilkType" Width="1.5" PointX="19.375" PointY="38.125" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.ItemNutrition" Width="1.5" PointX="25.375" PointY="19.75" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventQueue" Width="1.5" PointX="29.625" PointY="24" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventType" Width="1.5" PointX="27.375" PointY="24.5" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.ItemNutrition" Width="1.5" PointX="25.25" PointY="24.125" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventQueue" Width="1.5" PointX="29.625" PointY="25.25" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MammothEventType" Width="1.5" PointX="27.375" PointY="25.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_EventQueue_EventType1" />
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventQueue" Width="1.5" PointX="29.625" PointY="28.25" />
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventType" Width="1.5" PointX="27.375" PointY="28.875" />

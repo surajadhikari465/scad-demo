@@ -103,6 +103,16 @@ namespace Icon.Framework
         public Nullable<int> NationalLevel { get; set; }
         public Nullable<int> NationalParentId { get; set; }
         public Nullable<bool> Hidden { get; set; }
+        public string Line { get; set; }
+        public string SKU { get; set; }
+        public string PriceLine { get; set; }
+        public string VariantSize { get; set; }
+        public bool EStoreNutritionRequired { get; set; }
+        public Nullable<bool> PrimeNowEligible { get; set; }
+        public bool EstoreEligible { get; set; }
+        public Nullable<bool> TSFEligible { get; set; }
+        public Nullable<bool> WFMEligilble { get; set; }
+        public Nullable<bool> Other3PEligible { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }

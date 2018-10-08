@@ -28,6 +28,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
     {
         protected const string xmlFilePath = @"TestMessages/ProductMessageFromInfor2.xml";
         protected const string xmlFilePathVersion1Dot3 = @"TestMessages/ProductMessageFromInfor3.xml";
+        protected const string xmlFilePathWithHospitalityEstoreTraits = @"TestMessages/ProductMessageFromInfor4.xml";
         protected IconDbContextFactory contextFactory = new IconDbContextFactory();
         protected ItemListenerSettings settings = ItemListenerSettings.CreateFromConfig();
         protected ItemListenerTestData testData = new ItemListenerTestData();
@@ -314,11 +315,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                 //Then
                 using (var context = new IconContext())
                 {
-                    Framework.Item item = context.ScanCode.AsNoTracking()
-                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID)
-                        .Item;
+                    var scanCode = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID);
+                    Assert.IsNotNull(scanCode, "Item was not successfully saved to the database (ScanCode not found).");
 
-                    Assert.IsNotNull(item, "Item was not successfully saved to the database.");
+                    Framework.Item item = scanCode.Item;
+                    Assert.IsNotNull(scanCode, "Item was not successfully saved to the database (No item with ScanCode).");
 
                     traitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "GPP").traitValue;
                     Assert.AreEqual("Walnut 1B", traitValue);
@@ -330,5 +332,68 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
                 }
             }
         }
+
+        [TestMethod]
+        public void HandleMessage_ProductmessageFromInforWithHospitalityAndEstoreTraits_GeneratesMessageWithTraits()
+        {
+            //Given
+            using (var transaction = new TransactionScope())
+            {
+                //load the test message as an xml doc
+                var xmlData = XDocument.Load(xmlFilePathWithHospitalityEstoreTraits);
+                var mockMessageObj = testData.GetMockEsbMessage(xmlData.ToString());
+
+                //When
+                itemListener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessageObj });
+
+                //Then
+                using (var context = new IconContext())
+                {
+                    var scanCode = context.ScanCode.AsNoTracking()
+                        .FirstOrDefault(sc => sc.scanCode == testData.Item_A_ScanCode && sc.itemID == testData.Item_A_ItemID);
+                    Assert.IsNotNull(scanCode, "Item was not successfully saved to the database (ScanCode not found).");
+
+                    Framework.Item item = scanCode.Item;
+                    Assert.IsNotNull(scanCode, "Item was not successfully saved to the database (No item with ScanCode).");
+
+                    var linTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "LIN").traitValue;
+                    Assert.AreEqual("Sample Line", linTraitValue, "LIN Trait");
+                    var skuTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "SKU").traitValue;
+                    Assert.AreEqual("56789000", skuTraitValue, "SKU Trait");
+                    var plTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PL").traitValue;
+                    Assert.AreEqual("Sample Price Line", plTraitValue, "PL Trait");
+                    var vsTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "VS").traitValue;
+                    Assert.AreEqual("Sample Variant Size", vsTraitValue, "VS Trait");
+                    var esnTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "ESN").traitValue;
+                    Assert.AreEqual("N", esnTraitValue, "ESN Trait");
+                    var pneTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "PNE").traitValue;
+                    Assert.AreEqual("Y", pneTraitValue, "PNE Trait");
+                    var eseTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "ESE").traitValue;
+                    Assert.AreEqual("Y", eseTraitValue, "ESE Trait");
+                    var tseTrait = item.ItemTrait.FirstOrDefault(t => t.Trait.traitCode == "TSE");
+                    Assert.IsNull(tseTrait, "TSE Trait");
+                    var wfeTraitValue = item.ItemTrait.Single(t => t.Trait.traitCode == "WFE").traitValue;
+                    Assert.AreEqual("Y", wfeTraitValue, "WFE Trait");
+                    var oteTrait = item.ItemTrait.FirstOrDefault(t => t.Trait.traitCode == "OTE");
+                    Assert.IsNull(oteTrait, "OTE Trait");
+
+                    MessageQueueProduct messageQueueProduct = context.MessageQueueProduct.AsNoTracking()
+                        .Single(q => q.ItemId == 999999999);
+
+                    Assert.AreEqual("Sample Line", messageQueueProduct.Line, nameof(messageQueueProduct.Line));
+                    Assert.AreEqual("56789000", messageQueueProduct.SKU, nameof(messageQueueProduct.SKU));
+                    Assert.AreEqual("Sample Price Line", messageQueueProduct.PriceLine, nameof(messageQueueProduct.PriceLine));
+                    Assert.AreEqual("Sample Variant Size", messageQueueProduct.VariantSize, nameof(messageQueueProduct.VariantSize));
+                    Assert.AreEqual(false, messageQueueProduct.EStoreNutritionRequired, nameof(messageQueueProduct.EStoreNutritionRequired));
+                    Assert.AreEqual(true, messageQueueProduct.PrimeNowEligible, nameof(messageQueueProduct.PrimeNowEligible));
+                    Assert.AreEqual(true, messageQueueProduct.EstoreEligible, nameof(messageQueueProduct.EstoreEligible));
+                    Assert.AreEqual(null, messageQueueProduct.TSFEligible, nameof(messageQueueProduct.TSFEligible));
+                    Assert.AreEqual(true, messageQueueProduct.WFMEligilble, nameof(messageQueueProduct.WFMEligilble));
+                    Assert.AreEqual(null, messageQueueProduct.Other3PEligible, nameof(messageQueueProduct.Other3PEligible));
+                }
+            }
+        }
+
+        
     }
 }

@@ -178,5 +178,15 @@ namespace Icon.Framework
         public const string LocaleSubtype = "LST";
         public const string IrmaItemKey = "IIK";
         public const string DefaultIdentifier = "IDI";
+        public const string Line = "LIN";
+        public const string Sku = "SKU";
+        public const string PriceLine = "PL";
+        public const string VariantSize = "VS";
+        public const string EstoreNutritionRequired = "ESN";
+        public const string PrimeNowEligible = "PNE";
+        public const string EstoreEligible = "ESE";
+        public const string Tsf365Eligible = "TSE";
+        public const string WfmEligilble = "WFE";
+        public const string Other3pEligible = "OTE";
 	}
 }

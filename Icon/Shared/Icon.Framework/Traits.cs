@@ -179,6 +179,16 @@ namespace Icon.Framework
         public const int LocaleSubtype = 170;
         public const int IrmaItemKey = 171;
         public const int DefaultIdentifier = 172;
+        public const int Line = 173;
+        public const int Sku = 174;
+        public const int PriceLine = 175;
+        public const int VariantSize = 176;
+        public const int EstoreNutritionRequired = 177;
+        public const int PrimeNowEligible = 178;
+        public const int EstoreEligible = 179;
+        public const int Tsf365Eligible = 180;
+        public const int WfmEligilble = 181;
+        public const int Other3pEligible = 182;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -348,7 +358,17 @@ namespace Icon.Framework
 				{ "VNO", 169 },
 				{ "LST", 170 },
 				{ "IIK", 171 },
-				{ "IDI", 172 }
+				{ "IDI", 172 },
+				{ "LIN", 173 },
+				{ "SKU", 174 },
+				{ "PL", 175 },
+				{ "VS", 176 },
+				{ "ESN", 177 },
+				{ "PNE", 178 },
+				{ "ESE", 179 },
+				{ "TSE", 180 },
+				{ "WFE", 181 },
+				{ "OTE", 182 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -521,6 +541,16 @@ namespace Icon.Framework
 			public const string LocaleSubtype = "Locale Subtype";
 			public const string IrmaItemKey = "IRMA Item Key";
 			public const string DefaultIdentifier = "Default Identifier";
+			public const string Line = "Line";
+			public const string Sku = "SKU";
+			public const string PriceLine = "Price Line";
+			public const string VariantSize = "Variant Size";
+			public const string EstoreNutritionRequired = "EStore Nutrition Required";
+			public const string PrimeNowEligible = "Prime Now Eligible";
+			public const string EstoreEligible = "Estore Eligible";
+			public const string Tsf365Eligible = "TSF (365) Eligible";
+			public const string WfmEligilble = "WFM Eligilble";
+			public const string Other3pEligible = "Other 3P Eligible";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -690,7 +720,17 @@ namespace Icon.Framework
 				{ 169, "Venue Occupant" },
 				{ 170, "Locale Subtype" },
 				{ 171, "IRMA Item Key" },
-				{ 172, "Default Identifier" }
+				{ 172, "Default Identifier" },
+				{ 173, "Line" },
+				{ 174, "SKU" },
+				{ 175, "Price Line" },
+				{ 176, "Variant Size" },
+				{ 177, "EStore Nutrition Required" },
+				{ 178, "Prime Now Eligible" },
+				{ 179, "Estore Eligible" },
+				{ 180, "TSF (365) Eligible" },
+				{ 181, "WFM Eligilble" },
+				{ 182, "Other 3P Eligible" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -864,6 +904,16 @@ namespace Icon.Framework
 			public const string LocaleSubtype = "LST";
 			public const string IrmaItemKey = "IIK";
 			public const string DefaultIdentifier = "IDI";
+			public const string Line = "LIN";
+			public const string Sku = "SKU";
+			public const string PriceLine = "PL";
+			public const string VariantSize = "VS";
+			public const string EstoreNutritionRequired = "ESN";
+			public const string PrimeNowEligible = "PNE";
+			public const string EstoreEligible = "ESE";
+			public const string Tsf365Eligible = "TSE";
+			public const string WfmEligilble = "WFE";
+			public const string Other3pEligible = "OTE";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1033,7 +1083,17 @@ namespace Icon.Framework
 				{ 169, "VNO" },
 				{ 170, "LST" },
 				{ 171, "IIK" },
-				{ 172, "IDI" }
+				{ 172, "IDI" },
+				{ 173, "LIN" },
+				{ 174, "SKU" },
+				{ 175, "PL" },
+				{ 176, "VS" },
+				{ 177, "ESN" },
+				{ 178, "PNE" },
+				{ 179, "ESE" },
+				{ 180, "TSE" },
+				{ 181, "WFE" },
+				{ 182, "OTE" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

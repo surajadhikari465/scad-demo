@@ -102,7 +102,17 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 KitchenDescription = kitItem == null ? null : kitItem.kitchenDescription,
                 ImageUrl = kitItem == null ? null : kitItem.imageUrl,
                 KitchenItem = kitItem == null ? null : (bool?)kitItem.kitchenItem,
-                HospitalityItem = kitItem == null ? null : (bool?)kitItem.hospitalityItem
+                HospitalityItem = kitItem == null ? null : (bool?)kitItem.hospitalityItem,
+                Line = GetTraitValue(enterpriseAttributes, TraitCodes.Line),
+                SKU = GetTraitValue(enterpriseAttributes, TraitCodes.Sku),
+                PriceLine = GetTraitValue(enterpriseAttributes, TraitCodes.PriceLine),
+                VariantSize = GetTraitValue(enterpriseAttributes, TraitCodes.VariantSize),
+                EStoreNutritionRequired = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreNutritionRequired),
+                PrimeNowEligible = GetTraitValue(enterpriseAttributes, TraitCodes.PrimeNowEligible),
+                EstoreEligible = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreEligible),
+                TSFEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Tsf365Eligible),
+                WFMEligilble = GetTraitValue(enterpriseAttributes, TraitCodes.WfmEligilble),
+                Other3PEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Other3pEligible)
             };
         }
 

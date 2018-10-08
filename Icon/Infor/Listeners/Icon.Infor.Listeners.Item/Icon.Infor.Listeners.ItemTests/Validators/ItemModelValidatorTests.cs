@@ -3430,7 +3430,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Validators
         public void ValidateCollection_ShelfLifeIsInvalid_ShelfLifeError()
         {
             //Given
-            testItem.ShelfLife = "101";
+            testItem.ShelfLife = "1000";
 
             //When
             validator.ValidateCollection(testItems);

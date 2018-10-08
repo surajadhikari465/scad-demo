@@ -170,7 +170,7 @@ namespace Icon.Framework
         public const string Refrigerated = @"^[Rr][Ee][Ff][Rr][Ii][Gg][Ee][Rr][Aa][Tt][Ee][Dd]$|^[Ss][Hh][Ee][Ll][Ff][- ]?[Ss][Tt][Aa][Bb][Ll][Ee]$|^$";
         public const string SmithsonianBirdFriendly = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
         public const string WicEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
-        public const string ShelfLife = @"^[0-9][0-9]?$|^100$|^$";
+        public const string ShelfLife = @"^(?:0|[1-9]\d{0,2})$|^\s*$";
         public const string SelfCheckoutItemTareGroup = @"[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}].{0,60}$|^$";
         public const string CurrencyCode = @"^[C][A][D]$|^[G][B][P]$|^[U][S][D]$";
         public const string VenueCode = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$";
@@ -178,5 +178,15 @@ namespace Icon.Framework
         public const string LocaleSubtype = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,60}$";
         public const string IrmaItemKey = @"^[0-9]+$";
         public const string DefaultIdentifier = @"0|1";
+        public const string Line = @"^[^,]{0,255}$";
+        public const string Sku = @"^[^,]{0,255}$";
+        public const string PriceLine = @"^[^,]{0,255}$";
+        public const string VariantSize = @"^[^,]{0,255}$";
+        public const string EstoreNutritionRequired = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string PrimeNowEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string EstoreEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string Tsf365Eligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string WfmEligilble = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string Other3pEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
 	}
 }

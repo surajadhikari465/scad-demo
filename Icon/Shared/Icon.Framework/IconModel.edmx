@@ -505,6 +505,16 @@
           <Property Name="NationalLevel" Type="int" />
           <Property Name="NationalParentId" Type="int" />
           <Property Name="Hidden" Type="bit" />
+          <Property Name="Line" Type="nvarchar" MaxLength="255" />
+          <Property Name="SKU" Type="nvarchar" MaxLength="255" />
+          <Property Name="PriceLine" Type="nvarchar" MaxLength="255" />
+          <Property Name="VariantSize" Type="nvarchar" MaxLength="255" />
+          <Property Name="EStoreNutritionRequired" Type="bit" Nullable="false" />
+          <Property Name="PrimeNowEligible" Type="bit" />
+          <Property Name="EstoreEligible" Type="bit" Nullable="false" />
+          <Property Name="TSFEligible" Type="bit" />
+          <Property Name="WFMEligilble" Type="bit" />
+          <Property Name="Other3PEligible" Type="bit" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -808,6 +818,10 @@
           <Property Name="itemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="itemTypeID" Type="int" Nullable="false" />
           <Property Name="productKey" Type="int" Nullable="false" />
+          <Property Name="hospitalityItem" Type="bit" Nullable="false" />
+          <Property Name="kitchenItem" Type="bit" Nullable="false" />
+          <Property Name="kitchenDescription" Type="varchar" MaxLength="15" />
+          <Property Name="imageURL" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ItemHierarchyClass">
           <Key>
@@ -3669,6 +3683,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="ItemLink" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="Item" ToRole="ItemLink" />
           <NavigationProperty Name="ItemLink1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="Item" ToRole="ItemLink" />
           <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="Item" ToRole="ItemSignAttribute" />
+          <Property Name="hospitalityItem" Type="Boolean" Nullable="false" />
+          <Property Name="kitchenItem" Type="Boolean" Nullable="false" />
+          <Property Name="kitchenDescription" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="imageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ItemType">
           <Key>
@@ -4870,6 +4888,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="NationalLevel" Type="Int32" />
           <Property Name="NationalParentId" Type="Int32" />
           <Property Name="Hidden" Type="Boolean" />
+          <Property Name="Line" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SKU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PriceLine" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VariantSize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EStoreNutritionRequired" Type="Boolean" Nullable="false" />
+          <Property Name="PrimeNowEligible" Type="Boolean" />
+          <Property Name="EstoreEligible" Type="Boolean" Nullable="false" />
+          <Property Name="TSFEligible" Type="Boolean" />
+          <Property Name="WFMEligilble" Type="Boolean" />
+          <Property Name="Other3PEligible" Type="Boolean" />
          </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6352,6 +6380,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="Item">
             <EntityTypeMapping TypeName="Icon.Framework.Model.Item">
               <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="imageURL" ColumnName="imageURL" />
+                <ScalarProperty Name="kitchenDescription" ColumnName="kitchenDescription" />
+                <ScalarProperty Name="kitchenItem" ColumnName="kitchenItem" />
+                <ScalarProperty Name="hospitalityItem" ColumnName="hospitalityItem" />
                 <ScalarProperty Name="productKey" ColumnName="productKey" />
                 <ScalarProperty Name="itemTypeID" ColumnName="itemTypeID" />
                 <ScalarProperty Name="itemID" ColumnName="itemID" />
@@ -6759,6 +6791,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="Other3PEligible" ColumnName="Other3PEligible" />
+                <ScalarProperty Name="WFMEligilble" ColumnName="WFMEligilble" />
+                <ScalarProperty Name="TSFEligible" ColumnName="TSFEligible" />
+                <ScalarProperty Name="EstoreEligible" ColumnName="EstoreEligible" />
+                <ScalarProperty Name="PrimeNowEligible" ColumnName="PrimeNowEligible" />
+                <ScalarProperty Name="EStoreNutritionRequired" ColumnName="EStoreNutritionRequired" />
+                <ScalarProperty Name="VariantSize" ColumnName="VariantSize" />
+                <ScalarProperty Name="PriceLine" ColumnName="PriceLine" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="Line" ColumnName="Line" />
                 <ScalarProperty Name="Hidden" ColumnName="Hidden" />
                 <ScalarProperty Name="NationalParentId" ColumnName="NationalParentId" />
                 <ScalarProperty Name="NationalLevel" ColumnName="NationalLevel" />

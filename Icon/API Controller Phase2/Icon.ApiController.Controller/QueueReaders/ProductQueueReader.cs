@@ -304,8 +304,18 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.WicEligible, TraitDescriptions.WicEligible, message.WicEligible),
                 BuildTrait(TraitCodes.ShelfLife, TraitDescriptions.ShelfLife, message.ShelfLife),
                 BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, message.SelfCheckoutItemTareGroup),
-                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, message.Hidden)
-            };
+                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, message.Hidden),
+                BuildTrait(TraitCodes.Line, TraitDescriptions.Line, message.Line),
+                BuildTrait(TraitCodes.Sku, TraitDescriptions.Sku, message.SKU),
+                BuildTrait(TraitCodes.PriceLine, TraitDescriptions.PriceLine, message.PriceLine),
+                BuildTrait(TraitCodes.VariantSize, TraitDescriptions.VariantSize, message.VariantSize),
+                BuildTrait(TraitCodes.EstoreNutritionRequired, TraitDescriptions.EstoreNutritionRequired, message.EStoreNutritionRequired),
+                BuildTrait(TraitCodes.EstoreEligible, TraitDescriptions.EstoreEligible, message.EstoreEligible),
+                BuildTraitLeaveBlankIfNull(TraitCodes.PrimeNowEligible, TraitDescriptions.PrimeNowEligible, message.PrimeNowEligible),
+                BuildTraitLeaveBlankIfNull(TraitCodes.Tsf365Eligible, "365 Eligible", message.TSFEligible),
+                BuildTraitLeaveBlankIfNull(TraitCodes.WfmEligilble, TraitDescriptions.WfmEligilble, message.WFMEligilble),
+                BuildTraitLeaveBlankIfNull(TraitCodes.Other3pEligible, TraitDescriptions.Other3pEligible, message.Other3PEligible),
+            };   
 
             if (ShouldSendPhysicalCharacteristicTraits(message))
             {
@@ -514,6 +524,13 @@ namespace Icon.ApiController.Controller.QueueReaders
         private Contracts.TraitType BuildTrait(string traitCode, string traitDescription, bool? value)
         {
             return BuildTrait(traitCode, traitDescription, value.GetValueOrDefault(false));
+        }
+
+        private Contracts.TraitType BuildTraitLeaveBlankIfNull(string traitCode, string traitDescription, bool? value)
+        {
+            return BuildTrait(traitCode, traitDescription, value.HasValue
+                ? value.Value ? "1" : "0"
+                : string.Empty);
         }
 
         private Contracts.TraitType BuildTrait(string traitCode, string traitDescription, int? value)

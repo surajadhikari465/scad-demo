@@ -59,6 +59,23 @@ namespace Icon.ApiController.Tests
                 NationalParentId = 3
             };
         }
+        public static MessageQueueProduct GetFakeMessageQueueProductWithHospitalityAndEstoreData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
+        {
+            var msgQProduct = GetFakeMessageQueueProduct(messageStatusId, id, departmentSale, retailSaleFlag);
+
+            msgQProduct.Line = "Test Line";
+            msgQProduct.SKU = "a1234 SKU";
+            msgQProduct.PriceLine = "Test Price Line";
+            msgQProduct.VariantSize = "Test Variant Size";
+            msgQProduct.EStoreNutritionRequired = false;
+            msgQProduct.EstoreEligible = true;
+            msgQProduct.PrimeNowEligible = true;
+            msgQProduct.WFMEligilble = true;
+            msgQProduct.TSFEligible = false;
+            msgQProduct.Other3PEligible = null;
+
+            return msgQProduct;
+        }
 
         public static MessageQueueProduct GetFakeMessageQueueProductWithNutritionalData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
         {

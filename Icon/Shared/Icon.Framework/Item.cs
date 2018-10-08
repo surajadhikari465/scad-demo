@@ -28,6 +28,10 @@ namespace Icon.Framework
         public int itemID { get; set; }
         public int itemTypeID { get; set; }
         public int productKey { get; set; }
+        public bool hospitalityItem { get; set; }
+        public bool kitchenItem { get; set; }
+        public string kitchenDescription { get; set; }
+        public string imageURL { get; set; }
     
         public virtual ICollection<ScanCode> ScanCode { get; set; }
         public virtual ItemType ItemType { get; set; }

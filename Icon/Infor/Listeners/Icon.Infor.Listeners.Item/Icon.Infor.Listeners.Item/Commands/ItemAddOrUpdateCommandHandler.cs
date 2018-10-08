@@ -104,6 +104,16 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.ShelfLife, i.ShelfLife, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.SelfCheckoutItemTareGroup, i.SelfCheckoutItemTareGroup, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.GlobalPricingProgram, i.GlobalPricingProgram, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.Line, i.Line, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.Sku, i.SKU, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.PriceLine, i.PriceLine, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.VariantSize, i.VariantSize, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.EstoreNutritionRequired, i.EStoreNutritionRequired, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.PrimeNowEligible, i.PrimeNowEligible, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.EstoreEligible, i.EstoreEligible, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.Tsf365Eligible, i.TSFEligible, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.WfmEligilble, i.WFMEligilble, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.Other3pEligible, i.Other3PEligible, Locales.WholeFoods),
             }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);

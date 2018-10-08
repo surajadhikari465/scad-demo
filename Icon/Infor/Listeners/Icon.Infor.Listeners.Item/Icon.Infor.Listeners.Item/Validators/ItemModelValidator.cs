@@ -373,6 +373,50 @@ namespace Icon.Infor.Listeners.Item.Validators
                 .Matches(TraitPatterns.SelfCheckoutItemTareGroup)
                 .WithErrorCode(ValidationErrorCodes.InvalidSelfCheckoutItemTareGroup)
                 .WithMessage(ValidationErrorMessages.InvalidSelfCheckoutItemTareGroupPattern);
+            RuleFor(i => i.Line)
+                .Length(0, MaxLengths.StandardProperty255)
+                .Matches(TraitPatterns.Line)
+                .WithErrorCode(ValidationErrorCodes.InvalidLine)
+                .WithMessage(ValidationErrorMessages.InvalidLine);
+            RuleFor(i => i.SKU)
+                .Length(0, MaxLengths.StandardProperty255)
+                .Matches(TraitPatterns.Sku)
+                .WithErrorCode(ValidationErrorCodes.InvalidSKU)
+                .WithMessage(ValidationErrorMessages.InvalidSKU);
+            RuleFor(i => i.PriceLine)
+                .Length(0, MaxLengths.StandardProperty255)
+                .Matches(TraitPatterns.PriceLine)
+                .WithErrorCode(ValidationErrorCodes.InvalidPriceLine)
+                .WithMessage(ValidationErrorMessages.InvalidPriceLine);
+            RuleFor(i => i.VariantSize)
+                .Length(0, MaxLengths.StandardProperty255)
+                .Matches(TraitPatterns.VariantSize)
+                .WithErrorCode(ValidationErrorCodes.InvalidVariantSize)
+                .WithMessage(ValidationErrorMessages.InvalidVariantSize);
+            RuleFor(i => i.EStoreNutritionRequired)
+                .Matches(TraitPatterns.EstoreNutritionRequired)
+                .WithErrorCode(ValidationErrorCodes.InvalidEStoreNutritionRequired)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_NotNullable);
+            RuleFor(i => i.PrimeNowEligible)
+                .Matches(TraitPatterns.PrimeNowEligible)
+                .WithErrorCode(ValidationErrorCodes.InvalidPrimeNowEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_Nullable);
+            RuleFor(i => i.EstoreEligible)
+                .Matches(TraitPatterns.EstoreEligible)
+                .WithErrorCode(ValidationErrorCodes.InvalidEstoreEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_NotNullable);
+            RuleFor(i => i.TSFEligible)
+                .Matches(TraitPatterns.Tsf365Eligible)
+                .WithErrorCode(ValidationErrorCodes.InvalidTSFEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_Nullable);
+            RuleFor(i => i.WFMEligilble)
+                .Matches(TraitPatterns.WfmEligilble)
+                .WithErrorCode(ValidationErrorCodes.InvalidWFMEligilble)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_Nullable);
+            RuleFor(i => i.Other3PEligible)
+                .Matches(TraitPatterns.Other3pEligible)
+                .WithErrorCode(ValidationErrorCodes.InvalidOther3PEligible)
+                .WithMessage(ValidationErrorMessages.InvalidBooleanStringYorN_Nullable);
 
             this.settings = settings;
             this.getItemValidationPropertiesQueryHandler = getItemValidationPropertiesQueryHandler;

@@ -16,6 +16,8 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
         public static readonly string InvalidItemId = "Item ID is required and must be a non-negative integer.";
         public static readonly string InvalidItemTypeCode = InvalidProperty(ItemTypes.Codes.AsArray, true);
         public static readonly string InvalidBooleanStringZeroOrOne = "{PropertyName} has invalid value '{PropertyValue}'. {PropertyName} must be 1 or 0.";
+        public static readonly string InvalidBooleanStringYorN_Nullable = "{PropertyName} has invalid value '{PropertyValue}'. {PropertyName} must be Y or N (cannot be null).";
+        public static readonly string InvalidBooleanStringYorN_NotNullable = "{PropertyName} has invalid value '{PropertyValue}'. {PropertyName} must be Y or N (or null/empty).";
         public static readonly string InvalidAlcoholByVolume = "Alcohol By Volume has invalid value '{PropertyValue}'. " +
             "{PropertyName} must be empty or a number between 0 and 99.99 with up to 2 digits to the right of the decimal, following the regular expression pattern: " + TraitPatterns.AlcoholByVolume;
         public static readonly string InvalidAnimalWelfareRating = InvalidProperty(AnimalWelfareRatings.Descriptions.AsArray);
@@ -73,13 +75,23 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
         public static readonly string InvalidSmithsonianBirdFriendly = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.SmithsonianBirdFriendly);
         public static readonly string InvalidWicEligible = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.WicEligible);
         public static readonly string InvalidRefrigerated = InvalidValue + InvalidLengthOrPattern(MaxLengths.StandardProperty255, TraitPatterns.Refrigerated);
-        public static readonly string InvalidShelfLife = InvalidValue + " {PropertyName} value must be between 0 and " + MaxValues.ShelfLife;
+        public static readonly string InvalidShelfLife = InvalidValue + " {PropertyName} value must be between 0 and " + MaxValues.ShelfLife + " (or blank)";
         public static readonly string InvalidFlexibleTextLength = InvalidValue + InvalidLength(MaxLengths.FlexibleText);
         public static readonly string InvalidFlexibleTextPattern = InvalidValue + InvalidRegEx(TraitPatterns.FlexibleText);
         public static readonly string InvalidSelfCheckoutItemTareGroupLength = InvalidValue + InvalidLength(MaxLengths.SelfCheckoutItemTareGroup);
         public static readonly string InvalidSelfCheckoutItemTareGroupPattern = InvalidValue + InvalidRegEx(TraitPatterns.SelfCheckoutItemTareGroup);
         public const string InvalidRefrigeratedEnum = "was expected to be 'Refrigerated' or 'Shelf Stable'";
         public const string InvalidYesNoExpected = "was expected to be 'Yes' or 'No' (case-insensitive)";
+        public const string InvalidLine = "was expected to be any text up to 255 chars (excluding commas)";
+        public const string InvalidSKU = "was expected to be any text up to 255 chars (excluding commas)";
+        public const string InvalidPriceLine = "was expected to be any text up to 255 chars (excluding commas)";
+        public const string InvalidVariantSize = "was expected to be any text up to 255 chars (excluding commas)";
+        public const string InvalidEStoreNutritionRequired = "InvalidEStoreNutritionRequired";
+        public const string InvalidPrimeNowEligiblep = "InvalidPrimeNowEligiblep";
+        public const string InvalidEstoreEligible = "InvalidEstoreEligible";
+        public const string InvalidTSFEligible = "InvalidTSFEligible";
+        public const string InvalidWFMEligilble = "InvalidWFMEligilble";
+        public const string InvalidOther3PEligible = "InvalidOther3PEligible";
 
         private static string InvalidProperty(IEnumerable<string> collection, bool isRequired = false)
         {

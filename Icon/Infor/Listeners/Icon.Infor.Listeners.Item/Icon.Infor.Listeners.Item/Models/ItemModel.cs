@@ -90,5 +90,15 @@ namespace Icon.Infor.Listeners.Item.Models
         public bool? KitchenItem { get; set; }
         public bool? HospitalityItem { get; set; }
 
-    }
+        public string Line { get; set; }
+        public string SKU { get; set; }
+        public string PriceLine { get; set; }
+        public string VariantSize { get; set; }
+        public string EStoreNutritionRequired { get; set; }
+        public string PrimeNowEligible { get; set; }
+        public string EstoreEligible { get; set; }
+        public string TSFEligible { get; set; }
+        public string WFMEligilble { get; set; }
+        public string Other3PEligible { get; set; }
+}
 }

@@ -84,5 +84,15 @@ namespace Icon.Infor.Listeners.Item.Constants.ItemValidation
         public const string InvalidFlexibleText = "InvalidFlexibleText";
         public const string InvalidShelfLife = "InvalidShelfLife";
         public const string InvalidSelfCheckoutItemTareGroup = "InvalidSelfCheckoutItemTareGroup";
+        public const string InvalidLine = "InvalidLine";
+        public const string InvalidSKU = "InvalidSKU";
+        public const string InvalidPriceLine = "InvalidPriceLine";
+        public const string InvalidVariantSize = "InvalidVariantSize";
+        public const string InvalidEStoreNutritionRequired = "InvalidEStoreNutritionRequired";
+        public const string InvalidPrimeNowEligible = "InvalidPrimeNowEligiblep";
+        public const string InvalidEstoreEligible = "InvalidEstoreEligible";
+        public const string InvalidTSFEligible = "InvalidTSFEligible";
+        public const string InvalidWFMEligilble = "InvalidWFMEligilble";
+        public const string InvalidOther3PEligible = "InvalidOther3PEligible";
     }
 }
