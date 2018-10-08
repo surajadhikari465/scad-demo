@@ -226,10 +226,22 @@
     <None Include="Schemas\Inventory\Inventory.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Inventory\InventoryAdjustment.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Inventory\InventoryType.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Inventory\OrderReceipt.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\PurchaseOrder.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Inventory\TransactionInventoryItem.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Inventory\TransferOrder.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Schemas\Invoice\CommonRefTypes.xsd">
