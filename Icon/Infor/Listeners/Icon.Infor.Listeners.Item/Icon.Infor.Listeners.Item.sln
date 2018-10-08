@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Infor.Listeners.Item", "Icon.Infor.Listeners.Item\Icon.Infor.Listeners.Item.csproj", "{F6A50424-01AD-4B9C-9040-43F83C7D4B84}"
 EndProject
@@ -45,19 +45,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.Infor.Listeners.Item\\Icon.Infor.Listeners.Item.csproj
-		SccProjectName1 = Icon.Infor.Listeners.Item
-		SccLocalPath1 = Icon.Infor.Listeners.Item
-		SccProjectUniqueName2 = Icon.Infor.Listeners.ItemTests\\Icon.Infor.Listeners.Item.Tests.csproj
-		SccProjectName2 = Icon.Infor.Listeners.ItemTests
-		SccLocalPath2 = Icon.Infor.Listeners.ItemTests
-		SccProjectUniqueName3 = Icon.Infor.Listeners.Item.Tests.Integration\\Icon.Infor.Listeners.Item.Tests.Integration.csproj
-		SccProjectName3 = Icon.Infor.Listeners.Item.Tests.Integration
-		SccLocalPath3 = Icon.Infor.Listeners.Item.Tests.Integration
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB605C0C-AFAD-4389-B1D4-4BCEA64ABA6D}
 	EndGlobalSection
 EndGlobal
