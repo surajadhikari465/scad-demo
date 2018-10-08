@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace KitBuilderWebApi.DataAccess.Dto
 {
-	public class PropertiesDto
+	public class KitLinkGroupPropertiesDto
 	{
+		public int KitLocaleId { get; set; }
 		public int KitLinkGroupLocaleId { get; set; }
 		public int KitLinkGroupItemLocaleId { get; set; }
 		public int KitLinkGroupId { get; set; }
@@ -18,5 +20,6 @@ namespace KitBuilderWebApi.DataAccess.Dto
 
 		public string Properties { get; set; }
 		public bool? Excluded { get; set; }
+		public ICollection<PropertiesDto> KitLinkGroupItemLocaleList { get; set; }
 	}
 }

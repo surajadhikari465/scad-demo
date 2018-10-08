@@ -16,7 +16,7 @@ namespace KitBuilderWebApi.DataAccess.Dto
         public int LocaleIdAtWhichKitExists { get; set; }
         public int KitLocaleId { get; set; }
 
-        public List<PropertiesDto> KitLinkGroupLocaleList{ get; set; }
-        public List<PropertiesDto> KitLinkGroupItemLocaleList { get; set; }
+        public ICollection<KitLinkGroupPropertiesDto> KitLinkGroupLocaleList{ get; set; }
+        //public List<PropertiesDto> KitLinkGroupItemLocaleList { get; set; }
     }
 }

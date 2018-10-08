@@ -44,7 +44,7 @@ namespace KitBuilderWebApi.Controllers
                                             BrandName = l.BrandName,
                                             LargeImageUrl = l.LargeImageUrl,
                                             SmallImageUrl = l.SmallImageUrl,
-                                            InsertDate = l.InsertDate
+                                            InsertDateUtc = l.InsertDateUtc
                                         };
 
             // will set order by if passed, otherwise use default orderby 

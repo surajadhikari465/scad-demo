@@ -13,6 +13,6 @@ namespace KitBuilderWebApi.DatabaseModels
         public int InstructionListId { get; set; }
 
         public InstructionList InstructionList { get; set; }
-        public Kit KitInstructionListNavigation { get; set; }
+        public Kit Kit { get; set; }
     }
 }

@@ -26,11 +26,11 @@ namespace KitBuilderWebApi.DatabaseModels
         public string BrandName { get; set; }
         public string LargeImageUrl { get; set; }
         public string SmallImageUrl { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
+		public DateTime InsertDateUtc { get; set; }
+		public DateTime? LastUpdatedDateUtc { get; set; }
 
 
-        public ICollection<Kit> Kit { get; set; }
+		public ICollection<Kit> Kit { get; set; }
 
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }

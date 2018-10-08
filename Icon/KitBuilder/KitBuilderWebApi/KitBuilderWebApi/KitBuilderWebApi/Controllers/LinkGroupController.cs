@@ -56,7 +56,7 @@ namespace KitBuilderWebApi.Controllers
                                                 LinkGroupId = l.LinkGroupId,
                                                 GroupName = l.GroupName,
                                                 GroupDescription = l.GroupDescription,
-                                                InsertDate = l.InsertDate
+                                                InsertDateUtc = l.InsertDateUtc
                                             };
 
             // will set order by if passed, otherwise use default orderby    

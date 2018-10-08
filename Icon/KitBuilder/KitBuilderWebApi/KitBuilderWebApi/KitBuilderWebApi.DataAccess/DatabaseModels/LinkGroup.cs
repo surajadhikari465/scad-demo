@@ -19,10 +19,10 @@ namespace KitBuilderWebApi.DatabaseModels
         [Required]
         [StringLength(500, ErrorMessage = "Group Description can have maximum length of 500.")]
         public string GroupDescription { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
+		public DateTime InsertDateUtc { get; set; }
+		public DateTime? LastUpdatedDateUtc { get; set; }
 
-        public ICollection<KitLinkGroup> KitLinkGroup { get; set; }
+		public ICollection<KitLinkGroup> KitLinkGroup { get; set; }
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }
 }

@@ -6,7 +6,12 @@ namespace KitBuilderWebApi.DatabaseModels
 {
     public partial class KitLinkGroupLocale
     {
-        public int KitLinkGroupLocaleId { get; set; }
+		public KitLinkGroupLocale()
+		{
+			KitLinkGroupItemLocale = new HashSet<KitLinkGroupItemLocale>();
+		}
+
+		public int KitLinkGroupLocaleId { get; set; }
         [Required]
         public int KitLinkGroupId { get; set; }
         [Required]
@@ -16,11 +21,12 @@ namespace KitBuilderWebApi.DatabaseModels
         public int? MinimumCalories { get; set; }
         public int? MaximumCalories { get; set; }
         public bool? Exclude { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public string LastModifiedBy { get; set; }
+		public DateTime InsertDateUtc { get; set; }
+		public DateTime? LastUpdatedDateUtc { get; set; }
+		public string LastModifiedBy { get; set; }
 
         public KitLinkGroup KitLinkGroup { get; set; }
         public KitLocale KitLocale { get; set; }
-    }
+		public ICollection<KitLinkGroupItemLocale> KitLinkGroupItemLocale { get; set; }
+	}
 }

@@ -134,15 +134,34 @@ namespace KitBuilderWebApi.Tests.Controllers
                 new KitLinkGroup() {KitLinkGroupId = 2, KitId = 2, LinkGroupId = 3},
             };
 
-            KitLinkGroupItems = new List<KitLinkGroupItem>
-            {
-                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 1},
-                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 7},
-                 new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 8},
-                new KitLinkGroupItem{ KitLinkGroupItemId=1, KitId = 1, LinkGroupItemId = 2}
-            };
+            //KitLinkGroupItems = new List<KitLinkGroupItem>
+            //{
+            //     new KitLinkGroupItem{ KitLinkGroupItemId=1, KitLinkGroupId = 1, LinkGroupItemId = 1},
+            //     new KitLinkGroupItem{ KitLinkGroupItemId=2, KitLinkGroupId = 1, LinkGroupItemId = 7},
+            //     new KitLinkGroupItem{ KitLinkGroupItemId=3, KitLinkGroupId = 1, LinkGroupItemId = 8},
+            //     new KitLinkGroupItem{ KitLinkGroupItemId=4, KitLinkGroupId = 1, LinkGroupItemId = 2}
+            //};
 
-            List<LocaleType> localeTypeList = new List<LocaleType>
+			foreach (KitLinkGroup kitLinkGroup in kitLinkGroups)
+			{
+				if (kitLinkGroup.KitLinkGroupId == 1)
+				{
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 1, KitLinkGroupId = 1, LinkGroupItemId = 1 });
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 2, KitLinkGroupId = 1, LinkGroupItemId = 2 });
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 3, KitLinkGroupId = 1, LinkGroupItemId = 3});
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 4, KitLinkGroupId = 1, LinkGroupItemId = 4});
+				}
+
+				if (kitLinkGroup.KitLinkGroupId == 2)
+				{
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 5, KitLinkGroupId = 2, LinkGroupItemId = 5 });
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 6, KitLinkGroupId = 2, LinkGroupItemId = 6 });
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 7, KitLinkGroupId = 2, LinkGroupItemId = 7 });
+					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 8, KitLinkGroupId = 2, LinkGroupItemId = 8 });
+				}
+			}
+
+			List<LocaleType> localeTypeList = new List<LocaleType>
             {
                   new LocaleType { LocaleTypeCode = "C", LocaleTypeDesc = "Chain", LocaleTypeId =1 },
                   new LocaleType { LocaleTypeCode = "Re", LocaleTypeDesc = "Region", LocaleTypeId =2 },
@@ -158,7 +177,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                                new Locale { LocaleId = 5, LocaleName = "Lamar5", LocaleTypeId =4,MetroId = 6, RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 4, LocaleName = "Austin", LocaleTypeId =3,RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 7, LocaleName = "Chain", LocaleTypeId =1},
-							   //new Locale { LocaleId = 8, LocaleName = "FL_MTR", LocaleTypeId =2 , StoreId = 1, MetroId = 1, RegionId = 1, ChainId= 7, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 1 },
+							   new Locale { LocaleId = 8, LocaleName = "FL_MTR", LocaleTypeId =2 ,  RegionId = 1, ChainId= 7, RegionCode = "FL" },
 							   //new Locale { LocaleId = 9, LocaleName = "FL_SON", LocaleTypeId =1 , StoreId = 2, MetroId = 5, RegionId = 1, ChainId= 4, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 2 },
 							   //new Locale { LocaleId = 10, LocaleName = "MD_CHI", LocaleTypeId =4 , StoreId = 1, MetroId = 2, RegionId = 1, ChainId= 7, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 3 },
 							   //new Locale { LocaleId = 11, LocaleName = "MD_MRT", LocaleTypeId =5 , StoreId = 2, MetroId = 8, RegionId = 1, ChainId= 3, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 1 },
@@ -182,8 +201,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                        select new KitDto()
                        {
                            Description = k.Description,
-                           InsertDate = k.InsertDate,
-                           InstructionListId = k.InstructionListId,
+                           InsertDateUtc = k.InsertDateUtc,
                            ItemId = k.ItemId,
                            KitId = k.KitId
                        }).ToList();
@@ -197,7 +215,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitRepository.Setup(m => m.GetAll()).Returns(kits.AsQueryable());
             mockLinkGroupRepository.Setup(m => m.GetAll()).Returns(linkGroups.AsQueryable());
             mockKitLinkGroupRepository.Setup(m => m.GetAll()).Returns(kitLinkGroups.AsQueryable());
-            mockKitLinkGroupItemRepository.Setup(m => m.GetAll()).Returns(KitLinkGroupItems.AsQueryable());
+            mockKitLinkGroupItemRepository.Setup(m => m.GetAll()).Returns(kitLinkGroups.SelectMany(i => i.KitLinkGroupItem).AsQueryable());
             mockLocaleRepository.Setup(m => m.GetAll()).Returns(localeList.AsQueryable());
             mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocaleList.AsQueryable());
             mockLocaleTypeRepository.Setup(m => m.GetAll()).Returns(localeTypeList.AsQueryable());
@@ -241,14 +259,13 @@ namespace KitBuilderWebApi.Tests.Controllers
 		[TestMethod]
         public void KitsController_Save_InvalidKitId_ReturnsBadRequest()
         {
-            var kitSaveParameters = new KitSaveParameters()
+            var kitSaveParameters = new KitDto()
             {
                 KitId = 99,
-                KitDescription = "Bad Kit",
-                KitItem = 99,
-                LinkGroupItemIds = new List<int>(),
-                LinkGroupIds = new List<int>(),
-                InstructionListIds = new List<int>()
+                Description = "Bad Kit",
+                ItemId = 3,
+                KitLinkGroup = new List<KitLinkGroupDto>(),
+                KitInstructionList = new List<KitInstructionListDto>()
 
             };
 
@@ -263,7 +280,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         public void KitsController_GetKitByLocaleIdKitLocaleRecordDoesNotExist_ReturnsNotFound()
         {
             int kitId = 1;
-            int localeId = 5;
+            int localeId = 8;
 
             var response = kitController.GetKitByLocaleId(kitId, localeId, false);
 
@@ -347,14 +364,13 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void KitsController_Save_InvalidItemId_ReturnsBadRequest()
         {
-            var kitSaveParameters = new KitSaveParameters()
+            var kitSaveParameters = new KitDto()
             {
                 KitId = 1,
-                KitDescription = "Bad Kit",
-                KitItem = 99,
-                LinkGroupItemIds = new List<int>(),
-                LinkGroupIds = new List<int>(),
-                InstructionListIds = new List<int>()
+                Description = "Bad Kit",
+                ItemId = 99,
+                KitLinkGroup = new List<KitLinkGroupDto>(),
+                KitInstructionList = new List<KitInstructionListDto>()
 
             };
 
@@ -368,14 +384,13 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void KitsController_Save_InvalidLinkGroupItemIds_ReturnsBadRequest()
         {
-            var kitSaveParameters = new KitSaveParameters()
+            var kitSaveParameters = new KitDto()
             {
                 KitId = 1,
-                KitDescription = "Bad Kit",
-                KitItem = 99,
-                LinkGroupItemIds = null,
-                LinkGroupIds = new List<int>(),
-                InstructionListIds = new List<int>()
+                Description = "Bad Kit",
+                ItemId = 99,
+                KitLinkGroup = new List<KitLinkGroupDto>(),
+                KitInstructionList = new List<KitInstructionListDto>()
 
             };
 
@@ -389,34 +404,32 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void KitsController_Save_InvalidLinkGroupIds_ReturnsBadRequest()
         {
-            var kitSaveParameters = new KitSaveParameters()
+            var kitSaveParameters = new KitDto()
             {
                 KitId = 1,
-                KitDescription = "Bad Kit",
-                KitItem = 99,
-                LinkGroupItemIds = new List<int>(),
-                LinkGroupIds = null,
-                InstructionListIds = new List<int>()
+                Description = "Bad Kit",
+                ItemId = 3,
+                KitLinkGroup = null,
+                KitInstructionList = new List<KitInstructionListDto>()
 
             };
 
             var response = kitController.KitSaveDetails(kitSaveParameters);
 
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            Assert.IsTrue(((BadRequestObjectResult)response).Value.ToString().Contains("LinkGroupIds"), "LinkGroupIds parameter validation");
+            Assert.IsTrue(((BadRequestObjectResult)response).Value.ToString().Contains("LinkGroups"), "LinkGroupIds parameter validation");
 
         }
         [TestMethod]
         public void KitsController_Save_InvalidInstructionListIds_ReturnsBadRequest()
         {
-            var kitSaveParameters = new KitSaveParameters()
+            var kitSaveParameters = new KitDto()
             {
                 KitId = 1,
-                KitDescription = "Bad Kit",
-                KitItem = 99,
-                LinkGroupItemIds = new List<int>(),
-                LinkGroupIds = new List<int>(),
-                InstructionListIds = null
+                Description = "Bad Kit",
+                ItemId = 99,
+                KitLinkGroup = new List<KitLinkGroupDto>(),
+                KitInstructionList = null
 
             };
 

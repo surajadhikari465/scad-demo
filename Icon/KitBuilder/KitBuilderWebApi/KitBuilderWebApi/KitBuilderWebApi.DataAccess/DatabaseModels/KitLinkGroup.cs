@@ -8,7 +8,8 @@ namespace KitBuilderWebApi.DatabaseModels
     {
         public KitLinkGroup()
         {
-            KitLinkGroupLocale = new HashSet<KitLinkGroupLocale>();
+			KitLinkGroupItem = new HashSet<KitLinkGroupItem>();
+			KitLinkGroupLocale = new HashSet<KitLinkGroupLocale>();
         }
 
         public int KitLinkGroupId { get; set; }
@@ -16,11 +17,12 @@ namespace KitBuilderWebApi.DatabaseModels
         public int KitId { get; set; }
         [Required]
         public int LinkGroupId { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
+		public DateTime InsertDateUtc { get; set; }
+		public DateTime? LastUpdatedDateUtc { get; set; }
 
-        public Kit Kit { get; set; }
+		public Kit Kit { get; set; }
         public LinkGroup LinkGroup { get; set; }
-        public ICollection<KitLinkGroupLocale> KitLinkGroupLocale { get; set; }
+		public ICollection<KitLinkGroupItem> KitLinkGroupItem { get; set; }
+		public ICollection<KitLinkGroupLocale> KitLinkGroupLocale { get; set; }
     }
 }

@@ -96,7 +96,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                             BrandName = l.BrandName,
                             LargeImageUrl = l.LargeImageUrl,
                             SmallImageUrl = l.SmallImageUrl,
-                            InsertDate = l.InsertDate
+                            InsertDateUtc = l.InsertDateUtc
                         }).ToList();
 
             mockItemsRepository.Setup(m => m.GetAll()).Returns(items.AsQueryable());

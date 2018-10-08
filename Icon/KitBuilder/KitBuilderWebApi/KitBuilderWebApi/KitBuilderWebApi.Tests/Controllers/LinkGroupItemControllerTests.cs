@@ -123,7 +123,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                                  LinkGroupId = l.LinkGroupId,
                                  GroupName = l.GroupName,
                                  GroupDescription = l.GroupDescription,
-                                 InsertDate = l.InsertDate
+                                 InsertDateUtc = l.InsertDateUtc
                              }).ToList();
         }
 

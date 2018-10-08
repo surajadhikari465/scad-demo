@@ -22,8 +22,8 @@ namespace KitBuilderWebApi.DataAccess.Dto
         public bool? Exclude { get; set; }
         [Required]
         public int StatusId { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
+        public DateTime InsertDateUtc { get; set; }
+        public DateTime? LastUpdatedDateUtc { get; set; }
 
         public KitDto Kit { get; set; }
         public LocaleDto Locale { get; set; }

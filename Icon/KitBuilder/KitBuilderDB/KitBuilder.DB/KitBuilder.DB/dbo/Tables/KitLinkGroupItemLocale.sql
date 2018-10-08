@@ -2,20 +2,20 @@
 (
 	[KitLinkGroupItemLocaleId] INT NOT NULL IDENTITY PRIMARY KEY, 
     [KitLinkGroupItemId] INT NOT NULL, 
-    [KitLocaleId] INT NOT NULL, 
+    [KitLinkGroupLocaleId] INT NOT NULL, 
     [Properties] NVARCHAR(MAX) NULL, 
     [DisplaySequence] INT NOT NULL, 
 	[Exclude] BIT NULL, 
-    [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-    [LastModifiedDate] DATETIME2 NULL, 
+    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
+    [LastUpdatedDateUtc] DATETIME2 NULL, 
     [LastModifiedBy] NVARCHAR(100) NOT NULL, 
     CONSTRAINT [FK_KitLinkGroupItemLocale_KitLinkGroupItem] FOREIGN KEY ([KitLinkGroupItemId]) REFERENCES [KitLinkGroupItem]([KitLinkGroupItemId]), 
-    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLocale] FOREIGN KEY ([KitLocaleId]) REFERENCES [KitLocale]([KitLocaleId]) ON DELETE CASCADE
+    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLocale] FOREIGN KEY ([KitLinkGroupLocaleId]) REFERENCES [KitLinkGroupLocale]([KitLinkGroupLocaleId]) ON DELETE CASCADE
 )
 
 GO
 
-CREATE INDEX [IX_KitLinkGroupItemLocale_KitLocaleId] ON [dbo].[KitLinkGroupItemLocale] ([KitLocaleId])
+CREATE INDEX [IX_KitLinkGroupItemLocale_KitLinkGroupLocaleId] ON [dbo].[KitLinkGroupItemLocale] ([KitLinkGroupLocaleId])
 
 GO
 

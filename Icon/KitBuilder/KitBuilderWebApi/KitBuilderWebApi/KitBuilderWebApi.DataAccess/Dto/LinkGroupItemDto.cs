@@ -16,7 +16,7 @@ namespace KitBuilderWebApi.DataAccess.Dto
         [Required]
         public int ItemId { get; set; }
         public int? InstructionListId { get; set; }
-        public DateTime InsertDate { get; set; }
+        public DateTime InsertDateUtc { get; set; }
 
         public InstructionListDto InstructionList { get; set; }
         public ItemsDto Item { get; set; }

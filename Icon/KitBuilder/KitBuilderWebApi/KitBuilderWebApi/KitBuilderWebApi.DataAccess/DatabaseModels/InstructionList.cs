@@ -9,7 +9,6 @@ namespace KitBuilderWebApi.DatabaseModels
         public InstructionList()
         {
             InstructionListMember = new HashSet<InstructionListMember>();
-            Kit = new HashSet<Kit>();
             KitInstructionList = new HashSet<KitInstructionList>();
             LinkGroupItem = new HashSet<LinkGroupItem>();
         }
@@ -25,10 +24,9 @@ namespace KitBuilderWebApi.DatabaseModels
         public int StatusId { get; set; }
         public InstructionType InstructionType { get; set; }
         public Status Status { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
+        public DateTime InsertDateUtc { get; set; }
+        public DateTime? LastUpdatedDateUtc { get; set; }
         public ICollection<InstructionListMember> InstructionListMember { get; set; }
-        public ICollection<Kit> Kit { get; set; }
         public ICollection<KitInstructionList> KitInstructionList { get; set; }
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }

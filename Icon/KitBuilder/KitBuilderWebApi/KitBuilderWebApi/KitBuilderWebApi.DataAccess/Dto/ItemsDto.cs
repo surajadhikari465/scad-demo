@@ -25,7 +25,7 @@ namespace KitBuilderWebApi.DataAccess.Dto
         public string BrandName { get; set; }
         public string LargeImageUrl { get; set; }
         public string SmallImageUrl { get; set; }
-        public DateTime InsertDate { get; set; }
+        public DateTime InsertDateUtc { get; set; }
 
         public ICollection<Kit> Kit { get; set; }
         public ICollection<LinkGroupItemDto> LinkGroupItemDto { get; set; }

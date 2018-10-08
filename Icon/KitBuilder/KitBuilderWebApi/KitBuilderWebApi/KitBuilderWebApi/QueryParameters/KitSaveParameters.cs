@@ -12,7 +12,7 @@ namespace KitBuilderWebApi.QueryParameters
         public int KitItem { get; set; }
         public string KitDescription { get; set; }
         public List<int> InstructionListIds { get; set; }
-        public List<int> LinkGroupIds { get; set; }
-        public List<int> LinkGroupItemIds { get; set; }
+        public List<KeyValuePair<int, int>> LinkGroupIds { get; set; }
+        public List<KeyValuePair<int, int>> LinkGroupItemIds { get; set; }
     }
 }

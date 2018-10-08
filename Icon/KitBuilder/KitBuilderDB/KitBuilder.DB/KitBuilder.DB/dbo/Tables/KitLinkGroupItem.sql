@@ -1,11 +1,11 @@
 ﻿CREATE TABLE [dbo].[KitLinkGroupItem]
 (
 	[KitLinkGroupItemId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [KitId] INT NOT NULL, 
+    [KitLinkGroupId] INT NOT NULL, 
     [LinkGroupItemId] INT NOT NULL, 
-    [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-	[LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-    CONSTRAINT [FK_KitLinkGroupItem_Kit] FOREIGN KEY ([KitId]) REFERENCES [Kit]([KitId]), 
+    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
+	[LastUpdatedDateUtc] DATETIME2 NULL , 
+    CONSTRAINT [FK_KitLinkGroupItem_Kit] FOREIGN KEY ([KitLinkGroupId]) REFERENCES [KitLinkGroup]([KitLinkGroupId]) ON DELETE CASCADE, 
     CONSTRAINT [FK_KitLinkGroupItem_LinkGroupItem] FOREIGN KEY ([LinkGroupItemId]) REFERENCES [LinkGroupItem]([LinkGroupItemId])
 )
 
@@ -15,6 +15,6 @@ CREATE INDEX [IX_KitLinkGroupItem_LinkGroupItemId] ON [dbo].[KitLinkGroupItem] (
 
 GO
 
-CREATE INDEX [IX_KitLinkGroupItem_KitId] ON [dbo].[KitLinkGroupItem] ([KitId])
+CREATE INDEX [IX_KitLinkGroupItem_KitLinkGroupId] ON [dbo].[KitLinkGroupItem] ([KitLinkGroupId])
 
 GO

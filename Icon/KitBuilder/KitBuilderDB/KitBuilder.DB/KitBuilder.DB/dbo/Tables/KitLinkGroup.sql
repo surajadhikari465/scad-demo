@@ -3,8 +3,8 @@
 	[KitLinkGroupId] INT NOT NULL IDENTITY PRIMARY KEY, 
     [KitId] INT NOT NULL, 
     [LinkGroupId] INT NOT NULL, 
-    [InsertDate] DATETIME2 NOT NULL DEFAULT GetDate(), 
-	[LastUpdatedDate] DATETIME2 NOT NULL DEFAULT getDate(), 
+    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
+	[LastUpdatedDateUtc] DATETIME2 NULL , 
     CONSTRAINT [FK_KitLinkGroup_LinkGroup] FOREIGN KEY ([LinkGroupId]) REFERENCES [LinkGroup]([LinkGroupId]), 
     CONSTRAINT [FK_KitLinkGroup_Kit] FOREIGN KEY ([KitId]) REFERENCES [Kit]([KitId])
 )

@@ -29,7 +29,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
-        private IRepository<KitLinkGroupLocale> kitlinkGroupLocaleRepository;
+        private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
         private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
@@ -43,7 +43,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<LinkGroupItem> linkGroupItemRepository,
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitLinkGroupRepository,
-                             IRepository<KitLinkGroupLocale> kitlinkGroupLocaleRepository,
+                             IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository,
                              IRepository<KitLinkGroupItem> kitLinkGroupItemRepository,
                              IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository,
                              IRepository<LocaleType> localeTypeRepository,
@@ -59,7 +59,7 @@ namespace KitBuilderWebApi.Controllers
             this.linkGroupItemRepository = linkGroupItemRepository;
             this.itemsRepository = itemsRepository;
             this.kitLinkGroupRepository = kitLinkGroupRepository;
-            this.kitlinkGroupLocaleRepository = kitlinkGroupLocaleRepository;
+            this.kitLinkGroupLocaleRepository = kitLinkGroupLocaleRepository;
             this.kitLinkGroupItemRepository = kitLinkGroupItemRepository;
             this.kitLinkGroupItemLocaleRepository = kitLinkGroupItemLocaleRepository;
             this.localeTypeRepository = localeTypeRepository;
@@ -136,8 +136,8 @@ namespace KitBuilderWebApi.Controllers
                                    select new KitDto()
                                    {
                                        Description = k.Description,
-                                       InsertDate = k.InsertDate,
-                                       InstructionListId = k.InstructionListId,
+                                       InsertDateUtc = k.InsertDateUtc,
+									   LastUpdatedDateUtc = k.LastUpdatedDateUtc,
                                        ItemId = k.ItemId,
                                        KitId = k.KitId
                                    };
@@ -243,9 +243,12 @@ namespace KitBuilderWebApi.Controllers
 
             foreach (KitLocale kitToUpdate in kitLocaleRecordsToUpdate)
             {
-                KitLocale currentKit = kitLocaleDbList.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
-                currentKit.Exclude = kitToUpdate.Exclude;
-                currentKit.LastUpdatedDate = DateTime.Today;
+				KitLocale currentKit = kitLocaleDbList.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
+				KitLocale toBeUpdatedKit = kitLocaleListPassed.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
+				currentKit.MaximumCalories = toBeUpdatedKit.MaximumCalories;
+				currentKit.MinimumCalories = toBeUpdatedKit.MinimumCalories;
+				currentKit.Exclude = toBeUpdatedKit.Exclude;
+				currentKit.LastUpdatedDateUtc = DateTime.UtcNow;
             }
 
             try
@@ -275,39 +278,47 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingKitLinkGroupLocals = from klgl in kitlinkGroupLocaleRepository.GetAll()
-                                             join klg in kitLinkGroupRepository.GetAll() on klgl.KitLinkGroupId equals klg.KitLinkGroupId
-                                             where klg.KitId == kitPropertiesDto.KitId && klgl.KitLocaleId == kitPropertiesDto.KitLocaleId
-                                             select klgl;
+			var passedInKitLinkGroupItemLocales = kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(x => x.KitLinkGroupItemLocaleList);
 
-            var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
-                                                 join klg in kitLinkGroupItemRepository.GetAll() on klgl.KitLinkGroupItemId equals klg.KitLinkGroupItemId
-                                                 where klg.KitId == kitPropertiesDto.KitId && klgl.KitLocaleId == kitPropertiesDto.KitLocaleId
-                                                 select klgl;
+			var existingKitLinkGroupLocals = from klgl in kitLinkGroupLocaleRepository.GetAll()
+											 join klg in kitPropertiesDto.KitLinkGroupLocaleList on klgl.KitLocaleId equals klg.KitLocaleId
+											 select klgl;
 
-            var kitLinkGroupLocaleRecordsToAdd = kitPropertiesDto.KitLinkGroupLocaleList.Where(t => !existingKitLinkGroupLocals.Select(l => l.KitLinkGroupId).Contains(t.LinkGroupId));
+			//var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
+			//									 join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupItemLocaleId equals klg.KitLinkGroupItemLocaleId 
+			//									 select klgl;
 
-            var kitLinkGroupLocaleRecordsToUpdate = existingKitLinkGroupLocals.Where(t => kitPropertiesDto.KitLinkGroupLocaleList.Select(l => l.LinkGroupId).Contains(t.KitLinkGroupId));
+			var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
+												 join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupLocaleId equals klg.KitLinkGroupLocaleId
+												 select klgl;
 
-            IEnumerable<KitLinkGroupLocale> KitLinkGroupLocales = ConvertPropertiesToLinkGroupLocale(kitLinkGroupLocaleRecordsToAdd, kitPropertiesDto.KitLocaleId);
+			var kitLinkGroupLocaleRecordsToAdd = kitPropertiesDto.KitLinkGroupLocaleList.Where(t => !existingKitLinkGroupLocals.Select(l => l.KitLinkGroupLocaleId).Contains(t.KitLinkGroupLocaleId));
 
-            kitlinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.AddRange(KitLinkGroupLocales);
+			var kitLinkGroupLocalesToUpdate = existingKitLinkGroupLocals.Where(t => kitPropertiesDto.KitLinkGroupLocaleList.Select(l => l.KitLinkGroupLocaleId).Contains(t.KitLinkGroupLocaleId));
+			var kitLinkGroupLocalesToRemove = existingKitLinkGroupLocals.Where(t => !kitPropertiesDto.KitLinkGroupLocaleList.Select(l => l.KitLinkGroupLocaleId).Contains(t.KitLinkGroupLocaleId));
 
-            UpdateKitLinkGroupLocale(kitLinkGroupLocaleRecordsToUpdate, kitPropertiesDto);
+			IEnumerable<KitLinkGroupLocale> KitLinkGroupLocales = ConvertPropertiesToLinkGroupLocale(kitLinkGroupLocaleRecordsToAdd, kitPropertiesDto.KitLocaleId);
 
-            var kitLinkGroupItemLocaleRecordsToAdd = kitPropertiesDto.KitLinkGroupItemLocaleList.Where(t => !existingKitLinkGroupItemLocals.Select(l => l.KitLinkGroupItemId).Contains(t.LinkGroupItemId));
+			//Add brand new KitLinkGroupLocale records and their corresponding kids (KitLinkGroupItemLocale) records
+			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.AddRange(KitLinkGroupLocales);
+			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.RemoveRange(kitLinkGroupLocalesToRemove);
 
-            var kitLinkGroupItemLocaleRecordsToUpdate = existingKitLinkGroupItemLocals.Where(t => kitPropertiesDto.KitLinkGroupItemLocaleList.Select(l => l.LinkGroupItemId).Contains(t.KitLinkGroupItemId));
+			UpdateKitLinkGroupLocale(kitLinkGroupLocalesToUpdate, kitPropertiesDto);
 
-            IEnumerable<KitLinkGroupItemLocale> KitLinkGroupItemLocales = ConvertPropertiesToLinkGroupItemLocale(kitLinkGroupItemLocaleRecordsToAdd, kitPropertiesDto.KitLocaleId);
+            var kitLinkGroupItemLocalesToAdd = passedInKitLinkGroupItemLocales.Where(pi => pi.KitLinkGroupLocaleId > 0 && pi.KitLinkGroupItemLocaleId == 0);
+			var kitLinkGroupItemLocalesToUpdate = existingKitLinkGroupItemLocals.Where(t => kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(i => i.KitLinkGroupItemLocaleList).Select(l => l.KitLinkGroupItemLocaleId).Contains(t.KitLinkGroupItemLocaleId));
+			var kitLinkGroupItemLocalesToRemove = existingKitLinkGroupItemLocals.Where(t => !kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(i => i.KitLinkGroupItemLocaleList).Select(l => l.KitLinkGroupItemLocaleId).Contains(t.KitLinkGroupItemLocaleId));
 
-            kitlinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.AddRange(KitLinkGroupItemLocales);
+			IEnumerable<KitLinkGroupItemLocale> KitLinkGroupItemLocales = ConvertPropertiesToLinkGroupItemLocale(kitLinkGroupItemLocalesToAdd);
 
-            UpdateKitLinkGroupItemLocale(kitLinkGroupItemLocaleRecordsToUpdate, kitPropertiesDto);
+            kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.AddRange(KitLinkGroupItemLocales);
+			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.RemoveRange(kitLinkGroupItemLocalesToRemove);
 
-            try
+			UpdateKitLinkGroupItemLocale(kitLinkGroupItemLocalesToUpdate, kitPropertiesDto);
+
+			try
             {
-                kitlinkGroupLocaleRepository.UnitOfWork.Commit();
+                kitLinkGroupLocaleRepository.UnitOfWork.Commit();
                 return Ok();
             }
             catch (Exception ex)
@@ -318,93 +329,125 @@ namespace KitBuilderWebApi.Controllers
         }
 
         [HttpPost(Name = "SaveKit")]
-        public IActionResult KitSaveDetails([FromBody]KitSaveParameters kitSaveParameters)
+        public IActionResult KitSaveDetails([FromBody]KitDto kitToSave)
         {
             var errorMessage = string.Empty;
 
             try
             {
-                ValidateKitSaveParameters(kitSaveParameters);
+                ValidateKitSaveParameters(kitToSave);
 
-                var kit = kitRepository.GetAll().Where(k => k.KitId == kitSaveParameters.KitId).FirstOrDefault();
-                var item = itemsRepository.GetAll().Where(i => i.ItemId == kitSaveParameters.KitItem).FirstOrDefault();
+                var item = itemsRepository.GetAll().Where(i => i.ItemId == kitToSave.ItemId).FirstOrDefault();
 
-                var existingKitInstructionLists =
-                    kitInstructionListRepository.GetAll().Where(kil => kil.KitId == kit.KitId);
-                var newKitInstructionLists = from id in kitSaveParameters.InstructionListIds
-                                             select new KitInstructionList()
-                                             {
-                                                 InstructionListId = id,
-                                                 KitId = kitSaveParameters.KitId
-                                             };
+				if (item == null)
+				{
+					// error
+					errorMessage = $"SaveKit: Unable to find Item [id: {kitToSave.ItemId}]";
+					logger.LogError(errorMessage);
+					throw new Exception(errorMessage);
+				}
 
-                var existingKitLinkGroups =
-                    kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == kitSaveParameters.KitId);
-                var newKitLinkGroups = from id in kitSaveParameters.LinkGroupIds
-                                       select new KitLinkGroup()
-                                       {
-                                           KitId = kitSaveParameters.KitId,
-                                           KitLinkGroupId = id
-                                       };
+				if (kitToSave.KitId <= 0) //brand new kit
+				{
+					var newKit = Mapper.Map<Kit>(kitToSave);
+					kitLocaleRepository.UnitOfWork.Context.Kit.Add(newKit);
+				}
+				else
+				{
+					var kit = kitRepository.GetAll().Where(k => k.KitId == kitToSave.KitId).FirstOrDefault();
 
-                var existingKitLinkGroupItems =
-                    kitLinkGroupItemRepository.GetAll().Where(kli => kli.KitId == kitSaveParameters.KitId);
-                var newKitLinkGroupItems =
-                    from id in kitSaveParameters.LinkGroupItemIds
-                    select new KitLinkGroupItem()
-                    {
-                        KitId = kitSaveParameters.KitId,
-                        KitLinkGroupItemId = id
-                    };
+					if (kit == null)
+					{
+						// error
+						errorMessage = $"SaveKit: Unable to find Kit [id: {kitToSave.KitId}]";
+						logger.LogError(errorMessage);
+						throw new Exception(errorMessage);
+					}
 
-                if (kit == null)
-                {
-                    // error.
-                    errorMessage = $"SaveKit: Unable to find Kit [id: {kitSaveParameters.KitId}]";
-                    logger.LogError(errorMessage);
-                    throw new Exception(errorMessage);
-                }
+					var existingKitInstructionLists =
+						kitInstructionListRepository.GetAll().Where(kil => kil.KitId == kit.KitId);
 
-                if (item == null)
-                {
-                    // error
-                    errorMessage = $"SaveKit: Unable to find Item [id: {kitSaveParameters.KitItem}]";
-                    logger.LogError(errorMessage);
-                    throw new Exception(errorMessage);
-                }
+					var newKitInstructionLists = from id in kitToSave.KitInstructionList
+												 .Where(i => !existingKitInstructionLists.Select(l => l.KitInstructionListId).Contains(i.KitInstructionListId))
+												 select new KitInstructionList()
+												 {
+													 InstructionListId = id.InstructionListId,
+													 KitId = kitToSave.KitId
+												 };
 
-                kit.Description = kitSaveParameters.KitDescription;
-                kit.ItemId = kitSaveParameters.KitItem;
+					var kitInstructionListsToRemove = existingKitInstructionLists.Where(i => !kitToSave.KitInstructionList.Select(l => l.KitInstructionListId).Contains(i.KitInstructionListId));
 
-                kitRepository.UnitOfWork.Context.KitInstructionList.RemoveRange(existingKitInstructionLists);
-                kitRepository.UnitOfWork.Context.KitInstructionList.AddRange(newKitInstructionLists);
+					var existingKitLinkGroups =
+						kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == kitToSave.KitId);
+					var newKitLinkGroups = from lg in kitToSave.KitLinkGroup
+										   .Where(lg => lg.KitLinkGroupId <= 0)
+										   select new KitLinkGroup()
+										   {
+											   KitId = kitToSave.KitId,
+											   LinkGroupId = lg.LinkGroupId,
+											   KitLinkGroupItem = ConvertToLinkGroupItemList(kitToSave.KitLinkGroup.Where(l => l.LinkGroupId == lg.LinkGroupId).SelectMany(i => i.KitLinkGroupItem))
+										   };
+					var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
-                kitRepository.UnitOfWork.Context.KitLinkGroupItem.RemoveRange(existingKitLinkGroupItems);
-                kitRepository.UnitOfWork.Context.KitLinkGroupItem.AddRange(newKitLinkGroupItems);
+					var existingKitLinkGroupItems = from klgi in kitLinkGroupItemRepository.GetAll()
+													join klg in kitLinkGroupRepository.GetAll() on klgi.KitLinkGroupId equals klg.KitLinkGroupId
+													where klg.KitId == kitToSave.KitId
+													select klgi;
 
-                kitRepository.UnitOfWork.Context.KitLinkGroup.RemoveRange(existingKitLinkGroups);
-                kitRepository.UnitOfWork.Context.KitLinkGroup.AddRange(newKitLinkGroups);
 
+					var newKitLinkGroupItemDtos = kitToSave.KitLinkGroup.SelectMany(li => li.KitLinkGroupItem)
+						.Where(li => li.KitLinkGroupItemId <= 0 && li.KitLinkGroupId > 0);
+
+					List<KitLinkGroupItem> newKitLinkGroupItems = new List<KitLinkGroupItem>();
+					foreach(KitLinkGroupItemDto newLinkGroupItemDto in newKitLinkGroupItemDtos)
+					{
+						newKitLinkGroupItems.Add(Mapper.Map<KitLinkGroupItem>(newLinkGroupItemDto));
+					}
+
+					var KitLinkGroupItemsToRemove = from e in existingKitLinkGroupItems
+													join i in kitToSave.KitLinkGroup.SelectMany(li => li.KitLinkGroupItem)
+														 on e.KitLinkGroupItemId equals i.KitLinkGroupItemId into ps
+													from sub in ps.DefaultIfEmpty()
+													where sub == null
+													select new KitLinkGroupItem
+													{
+														KitLinkGroupItemId = e.KitLinkGroupItemId
+													};
+													  
+
+					kit.Description = kitToSave.Description;
+					kit.ItemId = kitToSave.ItemId;
+					kit.LastUpdatedDateUtc = DateTime.UtcNow;
+
+					kitRepository.UnitOfWork.Context.KitInstructionList.RemoveRange(kitInstructionListsToRemove);
+					kitRepository.UnitOfWork.Context.KitInstructionList.AddRange(newKitInstructionLists);
+
+					kitRepository.UnitOfWork.Context.KitLinkGroupItem.RemoveRange(KitLinkGroupItemsToRemove);
+					kitRepository.UnitOfWork.Context.KitLinkGroupItem.AddRange(newKitLinkGroupItems);
+
+					kitRepository.UnitOfWork.Context.KitLinkGroup.RemoveRange(KitLinkGroupsToRemove);
+					kitRepository.UnitOfWork.Context.KitLinkGroup.AddRange(newKitLinkGroups);			
+				}
                 kitRepository.UnitOfWork.Commit();
 
                 return Ok();
             }
             catch (DbUpdateConcurrencyException DbConcurrencyEx)
             {
-                logger.LogError($"SaveKit: Concurrency Error Saving Kit. [id: {kitSaveParameters.KitId}]");
+                logger.LogError($"SaveKit: Concurrency Error Saving Kit. [id: {kitToSave.KitId}]");
                 logger.LogError(DbConcurrencyEx.Message);
                 return BadRequest();
 
             }
             catch (DbUpdateException DbUpdateException)
             {
-                logger.LogError($"SaveKit: Database Update Error Saving Kit. [id: {kitSaveParameters.KitId}]");
+                logger.LogError($"SaveKit: Database Update Error Saving Kit. [id: {kitToSave.KitId}]");
                 logger.LogError(DbUpdateException.Message);
                 return BadRequest();
             }
             catch (Exception Ex)
             {
-                logger.LogError($"SaveKit: Error Saving Kit. [id: {kitSaveParameters.KitId}]");
+                logger.LogError($"SaveKit: Error Saving Kit. [id: {kitToSave.KitId}]");
                 logger.LogError(Ex.Message);
                 return BadRequest(Ex.Message);
             }
@@ -414,11 +457,11 @@ namespace KitBuilderWebApi.Controllers
         {
             foreach (KitLinkGroupItemLocale kitLinkGroupItemLocale in kitLinkGroupItemLocaleRecordsToUpdate)
             {
-                var kitLinkGroupItemLocalePropertiesDto = kitPropertiesDto.KitLinkGroupLocaleList.Where(s => s.LinkGroupItemId == kitLinkGroupItemLocale.KitLinkGroupItemId).FirstOrDefault();
+                var kitLinkGroupItemLocalePropertiesDto = kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(i => i.KitLinkGroupItemLocaleList).Where(s => s.KitLinkGroupItemId == kitLinkGroupItemLocale.KitLinkGroupItemId).FirstOrDefault();
                 kitLinkGroupItemLocale.Properties = kitLinkGroupItemLocalePropertiesDto.Properties;
                 kitLinkGroupItemLocale.Exclude = kitLinkGroupItemLocalePropertiesDto.Excluded;
                 kitLinkGroupItemLocale.DisplaySequence = (int)kitLinkGroupItemLocalePropertiesDto.DisplaySequence;
-                kitLinkGroupItemLocale.LastModifiedDate = DateTime.Now;
+                kitLinkGroupItemLocale.LastUpdatedDateUtc = DateTime.UtcNow;
                 kitLinkGroupItemLocale.LastModifiedBy = kitLinkGroupItemLocalePropertiesDto.LastModifiedBy;
             }
         }
@@ -427,16 +470,16 @@ namespace KitBuilderWebApi.Controllers
         {
             foreach (KitLinkGroupLocale kitLinkGroupLocale in kitLinkGroupLocaleRecordsToUpdate)
             {
-                var KitLinkGroupLocalePropertiesDto = kitPropertiesDto.KitLinkGroupLocaleList.Where(s => s.LinkGroupId == kitLinkGroupLocale.KitLinkGroupId).FirstOrDefault();
+                var KitLinkGroupLocalePropertiesDto = kitPropertiesDto.KitLinkGroupLocaleList.Where(s => s.KitLinkGroupLocaleId == kitLinkGroupLocale.KitLinkGroupLocaleId).FirstOrDefault();
                 kitLinkGroupLocale.Properties = KitLinkGroupLocalePropertiesDto.Properties;
                 kitLinkGroupLocale.Exclude = KitLinkGroupLocalePropertiesDto.Excluded;
-                kitLinkGroupLocale.LastModifiedDate = DateTime.Now;
+                kitLinkGroupLocale.LastUpdatedDateUtc = DateTime.UtcNow;
                 kitLinkGroupLocale.DisplaySequence = (int)KitLinkGroupLocalePropertiesDto.DisplaySequence;
-                kitLinkGroupLocale.LastModifiedBy = KitLinkGroupLocalePropertiesDto.LastModifiedBy;
-            }
+				kitLinkGroupLocale.LastModifiedBy = KitLinkGroupLocalePropertiesDto.LastModifiedBy;
+			}
         }
 
-        internal List<KitLinkGroupItemLocale> ConvertPropertiesToLinkGroupItemLocale(IEnumerable<PropertiesDto> kitLinkGroupItemLocaleRecordsToAdd, int kitLocaleId)
+        internal List<KitLinkGroupItemLocale> ConvertPropertiesToLinkGroupItemLocale(IEnumerable<PropertiesDto> kitLinkGroupItemLocaleRecordsToAdd)
         {
             List<KitLinkGroupItemLocale> KitLinkGroupItemLocaleList = new List<KitLinkGroupItemLocale>();
 
@@ -444,8 +487,8 @@ namespace KitBuilderWebApi.Controllers
             {
                 KitLinkGroupItemLocale KitLinkGroupItemLocale = new KitLinkGroupItemLocale
                 {
-                    KitLinkGroupItemId = propertiesDto.LinkGroupId,
-                    KitLocaleId = kitLocaleId,
+                    KitLinkGroupItemId = propertiesDto.KitLinkGroupItemId,
+					KitLinkGroupLocaleId = propertiesDto.KitLinkGroupLocaleId,
                     Properties = propertiesDto.Properties,
                     DisplaySequence = (int)propertiesDto.DisplaySequence,
                     Exclude = propertiesDto.Excluded,
@@ -457,29 +500,46 @@ namespace KitBuilderWebApi.Controllers
             return KitLinkGroupItemLocaleList;
         }
 
-        internal List<KitLinkGroupLocale> ConvertPropertiesToLinkGroupLocale(IEnumerable<PropertiesDto> kitLocaleRecordsToAdd, int kitLocaleId)
+        internal List<KitLinkGroupLocale> ConvertPropertiesToLinkGroupLocale(IEnumerable<KitLinkGroupPropertiesDto> kitLocaleRecordsToAdd, int kitLocaleId)
         {
             List<KitLinkGroupLocale> KitLinkGroupLocaleList = new List<KitLinkGroupLocale>();
 
-            foreach (PropertiesDto propertiesDto in kitLocaleRecordsToAdd)
+            foreach (KitLinkGroupPropertiesDto kitLinkGroupPropertiesDto in kitLocaleRecordsToAdd)
             {
                 KitLinkGroupLocale KitLinkGroupLocale = new KitLinkGroupLocale
                 {
-                    KitLinkGroupId = propertiesDto.LinkGroupId,
+					KitLinkGroupId = kitLinkGroupPropertiesDto.KitLinkGroupId,
                     KitLocaleId = kitLocaleId,
-                    Properties = propertiesDto.Properties,
-                    DisplaySequence = (int)propertiesDto.DisplaySequence,
-                    MinimumCalories = propertiesDto.MaximumCalories,
-                    MaximumCalories = propertiesDto.MinimumCalories,
-                    Exclude = propertiesDto.Excluded,
-                };
+                    Properties = kitLinkGroupPropertiesDto.Properties,
+                    DisplaySequence = (int)kitLinkGroupPropertiesDto.DisplaySequence,
+                    MinimumCalories = kitLinkGroupPropertiesDto.MaximumCalories,
+                    MaximumCalories = kitLinkGroupPropertiesDto.MinimumCalories,
+                    Exclude = kitLinkGroupPropertiesDto.Excluded,
+					KitLinkGroupItemLocale = ConvertPropertiesToLinkGroupItemLocale(kitLinkGroupPropertiesDto.KitLinkGroupItemLocaleList),
+				};
                 KitLinkGroupLocaleList.Add(KitLinkGroupLocale);
             }
 
             return KitLinkGroupLocaleList;
         }
+		internal List<KitLinkGroupItem> ConvertToLinkGroupItemList(IEnumerable<KitLinkGroupItemDto> kitLinkGroupItems)
+		{
+			List<KitLinkGroupItem> kitLinkGroupItemList = new List<KitLinkGroupItem>();
 
-        internal int? getlocaleIdAtWhichkitRecordExits(int kitId, int localeId)
+			foreach (KitLinkGroupItemDto kitLinkGroupItemDto in kitLinkGroupItems)
+			{
+				
+				KitLinkGroupItem kitLinkGroupItem = new KitLinkGroupItem
+				{
+					KitLinkGroupId = kitLinkGroupItemDto.KitLinkGroupId,
+					LinkGroupItemId = kitLinkGroupItemDto.LinkGroupItemId,
+				};
+				kitLinkGroupItemList.Add(kitLinkGroupItem);
+			}
+
+			return kitLinkGroupItemList;
+		}
+		internal int? getlocaleIdAtWhichkitRecordExits(int kitId, int localeId)
         {
             int? localeIdWithKitLocaleRecord = null;
             Locale locale = (from l in localeRepository.GetAll()
@@ -491,7 +551,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 return null;
             }
-            if (kitLocaleRepository.GetAll().Where(kl => kl.LocaleId == localeId).Any())
+            if (kitLocaleRepository.GetAll().Where(kl => kl.LocaleId == localeId && kl.KitId == kitId).Any())
             {
                 return localeId;
             }
@@ -524,16 +584,17 @@ namespace KitBuilderWebApi.Controllers
         {
             if (loadChildObjects)
             {
-                return kitRepository.UnitOfWork.Context.Kit.Where(k => k.KitId == kitId)
-                       .Include(k => k.KitLinkGroup).ThenInclude(s => s.LinkGroup)
-                       .Include(k => k.KitLinkGroupItem).ThenInclude(d => d.LinkGroupItem)
-                       .ThenInclude(lg => lg.Item)
-                       .Include(k => k.KitLinkGroupItem).ThenInclude(kgi => kgi.KitLinkGroupItemLocale)
-                       .Include(k => k.KitLocale).ThenInclude(f => f.KitLinkGroupLocale)
-                       .Include(k => k.KitLocale)
-                       .Where(k => k.KitLocale.Any(l => l.LocaleId == localeId));
-            }
-            else
+				return kitRepository.UnitOfWork.Context.Kit.Where(k => k.KitId == kitId)
+					   .Include(k => k.KitLinkGroup).ThenInclude(s => s.LinkGroup)
+					   .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem).ThenInclude(d => d.LinkGroupItem)
+					   .ThenInclude(lg => lg.Item)
+					   .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem).ThenInclude(kgi => kgi.KitLinkGroupItemLocale)
+					   .Include(k => k.KitLocale).ThenInclude(f => f.KitLinkGroupLocale)
+					   .Include(k => k.KitLocale)
+					   .Where(k => k.KitLocale.Any(l => l.LocaleId == localeId));
+
+			}
+			else
             {
                 return kitRepository.UnitOfWork.Context.Kit.Where(k => k.KitId == kitId)
                       .Include(k => k.KitLocale)
@@ -563,48 +624,61 @@ namespace KitBuilderWebApi.Controllers
                 return null;
             }
 
-            List<PropertiesDto> KitLinkGroupLocaleList = (from klg in kitLinkGroupRepository.GetAll().Where(klgr => klgr.KitId == kitId)
+            List<KitLinkGroupPropertiesDto> KitLinkGroupLocaleList = (from klg in kitLinkGroupRepository.GetAll().Where(klgr => klgr.KitId == kitId)
                                                           join lg in linkGroupRepository.GetAll() on klg.LinkGroupId equals lg.LinkGroupId
                                                           join kl in kitLocaleRepository.GetAll() on kitId equals kl.KitId
-                                                          join klgl in kitlinkGroupLocaleRepository.GetAll()
+                                                          join klgl in kitLinkGroupLocaleRepository.GetAll()
                                                           on new { kl.KitLocaleId, klg.KitLinkGroupId } equals new { klgl.KitLocaleId, klgl.KitLinkGroupId } into ps
                                                           from klgl in ps.DefaultIfEmpty()
                                                           where kl.LocaleId == localeIdWithKitLocaleRecord
-                                                          select new PropertiesDto
-                                                          {
-                                                              LinkGroupId = klg.KitLinkGroupId,
-                                                              LinkGroupItemId = 0,
+                                                          select new KitLinkGroupPropertiesDto
+														  {
+															  KitLocaleId = kl.KitLocaleId,
+															  KitLinkGroupLocaleId = klgl.KitLinkGroupLocaleId,
+															  KitLinkGroupItemLocaleId = 0,
+															  KitLinkGroupId = klg.KitLinkGroupId,
+                                                              KitLinkGroupItemId = 0,
                                                               Name = lg.GroupName,
                                                               Properties = klgl != null ? klgl.Properties : null,
                                                               Excluded = klgl != null ? klgl.Exclude : null,
                                                               MinimumCalories = klgl != null ? klgl.MinimumCalories : null,
                                                               MaximumCalories = klgl != null ? (int?)klgl.MaximumCalories: null,
                                                               DisplaySequence = klgl != null ? (int?)klgl.DisplaySequence : null,
-                                                          }).ToList();
+															  KitLinkGroupItemLocaleList = new HashSet<PropertiesDto>(),
+														  }).ToList();
 
 
-            List<PropertiesDto> KitLinkGroupItemLocaleList = (from klg in kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == kitId)
-                                                              join lgi in linkGroupItemRepository.GetAll() on klg.LinkGroupId equals lgi.LinkGroupId
-                                                              join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
-                                                              join klgi in kitLinkGroupItemRepository.GetAll() on lgi.LinkGroupItemId equals klgi.LinkGroupItemId
-                                                              join klr in kitLocaleRepository.GetAll() on kitId equals klr.KitId
-                                                              join klgil in kitLinkGroupItemLocaleRepository.GetAll()
-                                                              on new { klgi.KitLinkGroupItemId, klr.KitLocaleId } equals new { klgil.KitLinkGroupItemId, klgil.KitLocaleId } into kli
-                                                              from klgil in kli.DefaultIfEmpty()
+			List<PropertiesDto> KitLinkGroupItemLocaleList = (from klgl in KitLinkGroupLocaleList
+															  join klg in kitLinkGroupRepository.GetAll() on klgl.KitLinkGroupId equals klg.KitLinkGroupId
+															  join klgi in kitLinkGroupItemRepository.GetAll() on klgl.KitLinkGroupId equals klgi.KitLinkGroupId
+															  join lgi in linkGroupItemRepository.GetAll()
+															  on new { klg.LinkGroupId, klgi.LinkGroupItemId } equals new { lgi.LinkGroupId, lgi.LinkGroupItemId }
+															  join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+															  join klgil in kitLinkGroupItemLocaleRepository.GetAll()
+															  on new { klgi.KitLinkGroupItemId, klgl.KitLinkGroupLocaleId } equals new { klgil.KitLinkGroupItemId, klgil.KitLinkGroupLocaleId } into kli
+															  from klgil in kli.DefaultIfEmpty()
+															  select new PropertiesDto
+															  {
+																  KitLinkGroupLocaleId = klgil != null ? klgil.KitLinkGroupLocaleId : 0,
+																  KitLinkGroupItemLocaleId = klgil != null ? klgil.KitLinkGroupItemLocaleId : 0,
+																  KitLinkGroupId = klg.KitLinkGroupId,
+																  KitLinkGroupItemId = klgi.KitLinkGroupItemId,
+																  Name = i.ProductDesc,
+																  Properties = klgil != null ? klgil.Properties : null,
+																  Excluded = klgil != null ? klgil.Exclude : null,
+																  DisplaySequence = klgil != null ? (int?)klgil.DisplaySequence : null,
+															  }).ToList();
 
-                                                              where klr.LocaleId == localeIdWithKitLocaleRecord
-                                                              select new PropertiesDto
-                                                              {
-                                                                  LinkGroupId = klg.KitLinkGroupId,
-                                                                  LinkGroupItemId = klgi.KitLinkGroupItemId,
-                                                                  Name = i.ProductDesc,
-                                                                  Properties = klgil != null ? klgil.Properties : null,
-                                                                  Excluded = klgil != null ? klgil.Exclude : null,
-                                                                  DisplaySequence = klgil != null ? (int?)klgil.DisplaySequence: null,
-                                                              }).ToList();
+			foreach (KitLinkGroupPropertiesDto kitLinkGroupLocale in KitLinkGroupLocaleList)
+			{
+				List<PropertiesDto> kitLinkGroupItemLocales = KitLinkGroupItemLocaleList.Where(i => i.KitLinkGroupLocaleId == kitLinkGroupLocale.KitLinkGroupLocaleId).ToList();
+				kitLinkGroupLocale.KitLinkGroupItemLocaleList = kitLinkGroupItemLocales;
+			};
+			KitPropertiesDto.KitLinkGroupLocaleList = KitLinkGroupLocaleList;
+            //KitPropertiesDto.KitLinkGroupItemLocaleList = KitLinkGroupItemLocaleList;
 
-            KitPropertiesDto.KitLinkGroupLocaleList = KitLinkGroupLocaleList;
-            KitPropertiesDto.KitLinkGroupItemLocaleList = KitLinkGroupItemLocaleList;
+
+
 
             return KitPropertiesDto;
         }
@@ -643,30 +717,31 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
-        internal void ValidateKitSaveParameters(KitSaveParameters parameters)
+        internal void ValidateKitSaveParameters(KitDto parameters)
         {
             var errorFound = false;
             var message = string.Empty;
 
-            if (parameters.InstructionListIds == null)
+            if (parameters.KitInstructionList == null)
             {
                 errorFound = true;
                 message = "InstructionListIds cannot be null";
             }
 
-            if (parameters.LinkGroupIds == null)
+            if (parameters.KitLinkGroup == null)
             {
                 errorFound = true;
-                message = "LinkGroupIds cannot be null";
+                message = "LinkGroups cannot be null";
             }
 
-            if (parameters.LinkGroupItemIds == null)
-            {
-                errorFound = true;
-                message = "LinkGroupItemIds cannot be null";
-            }
+            if (parameters.KitLinkGroup != null)
+			if (parameters.KitLinkGroup.Select(i => i.KitLinkGroupItem) == null)
+			{
+				errorFound = true;
+				message = "LinkGroupItems cannot be null";
+			}
 
-            if (errorFound) throw new ValidationException(message);
+			if (errorFound) throw new ValidationException(message);
         }
     }
 }

@@ -322,4 +322,186 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="KitInstructionListId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c086bcdb-4a32-4220-9732-77343cd54eaa" ChangeDateTime="09/28/2018 15:31:05">
+    <Property Name="ElementName" Value="[dbo].[InstructionList].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InstructionList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="526c130f-e218-4165-8cad-6f037c4f7c4f" ChangeDateTime="09/28/2018 15:31:10">
+    <Property Name="ElementName" Value="[dbo].[InstructionList].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InstructionList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d48c3a2d-7657-456d-b8df-1ce99cc07e61" ChangeDateTime="09/28/2018 15:32:43">
+    <Property Name="ElementName" Value="[dbo].[InstructionListMember].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InstructionListMember]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2fce4507-223f-4941-bb08-fae6fda686fa" ChangeDateTime="09/28/2018 15:33:01">
+    <Property Name="ElementName" Value="[dbo].[InstructionListMember].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InstructionListMember]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="12b8483c-ca1c-4a60-9bad-ad85df7c08cb" ChangeDateTime="09/28/2018 15:33:47">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupItem].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f9ce686c-d28b-403f-ab06-7b62d6d4c9de" ChangeDateTime="09/28/2018 15:33:58">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupItem].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7b3fad6f-fe4d-4ce5-a475-38b7bba701a4" ChangeDateTime="09/28/2018 15:34:32">
+    <Property Name="ElementName" Value="[dbo].[Items].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Items]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="41611d8c-da61-4d27-bf0e-3c46bd6c87d4" ChangeDateTime="09/28/2018 15:34:45">
+    <Property Name="ElementName" Value="[dbo].[Items].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Items]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1b721788-797e-4346-97b9-a5e9e1138043" ChangeDateTime="09/28/2018 15:35:01">
+    <Property Name="ElementName" Value="[dbo].[Kit].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Kit]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="400fb799-cdb2-4b65-8e93-30141a1cca99" ChangeDateTime="09/28/2018 15:35:14">
+    <Property Name="ElementName" Value="[dbo].[Kit].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Kit]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b168bc70-32c3-496b-a038-489c3dfb47c5" ChangeDateTime="09/28/2018 15:35:30">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroup].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroup]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a7476877-b67f-4e68-9eb3-c25650eaf608" ChangeDateTime="09/28/2018 15:35:36">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroup].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroup]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2db60fee-4fef-42c0-a2bd-ece6d1a0d4f0" ChangeDateTime="09/28/2018 15:36:11">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupLocale].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="83df67cd-ce12-43d9-8548-2485a5aa2894" ChangeDateTime="09/28/2018 15:36:23">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupLocale].[LastModifiedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastModifiedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cdc5ca5a-7e8a-4479-b15a-d0f31f78c68a" ChangeDateTime="09/28/2018 15:36:34">
+    <Property Name="ElementName" Value="[dbo].[KitLocale].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d45a1ce2-a042-4add-bbd1-48ffa4abf733" ChangeDateTime="09/28/2018 15:37:12">
+    <Property Name="ElementName" Value="[dbo].[KitLocale].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="be76b8cb-aaad-44fa-a1d2-dbad29f408d3" ChangeDateTime="09/28/2018 15:37:40">
+    <Property Name="ElementName" Value="[dbo].[LinkGroup].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LinkGroup]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="20f65248-ecab-4787-8253-3c1166347fd3" ChangeDateTime="09/28/2018 15:37:44">
+    <Property Name="ElementName" Value="[dbo].[LinkGroup].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LinkGroup]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c15587ca-5b62-4168-a275-24d53a193a94" ChangeDateTime="09/28/2018 15:39:07">
+    <Property Name="ElementName" Value="[dbo].[LinkGroupItem].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LinkGroupItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4f1f6da8-611c-43f4-b7fc-70e0736ccd50" ChangeDateTime="09/28/2018 15:39:21">
+    <Property Name="ElementName" Value="[dbo].[LinkGroupItem].[LastUpdatedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LinkGroupItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bb3e2cbc-6d71-4c5a-b9ac-8cc9ac34654a" ChangeDateTime="09/28/2018 15:57:33">
+    <Property Name="ElementName" Value="[dbo].[AppLog].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AppLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ccbb34de-4403-43eb-aca5-9b93dc379e45" ChangeDateTime="09/28/2018 15:58:09">
+    <Property Name="ElementName" Value="[dbo].[AppLog].[LogDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AppLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LogDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e7e93915-b74b-452d-83ab-cdb478d2cb04" ChangeDateTime="09/28/2018 16:01:25">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupItemLocale].[InsertDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupItemLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="InsertDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8b0fd0e9-5052-4f58-8b33-1202cfc52c77" ChangeDateTime="09/28/2018 16:01:39">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupItemLocale].[LastModifiedDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupItemLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastModifiedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c29734f3-f088-4ccf-b81a-11773e6fbd97" ChangeDateTime="10/07/2018 15:44:27">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupLocale].[LastModifiedDateUtc]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="82d8c022-f058-48b8-8b12-4d8478635815" ChangeDateTime="10/07/2018 15:45:20">
+    <Property Name="ElementName" Value="[dbo].[KitLinkGroupItemLocale].[LastModifiedDateUtc]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitLinkGroupItemLocale]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedDateUtc" />
+  </Operation>
 </Operations>

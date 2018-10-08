@@ -5,13 +5,13 @@
 	Logger      nvarchar(255),
 	UserName    nvarchar(255),
 	MachineName nvarchar(255),
-	InsertDate  datetime2(3) not null default GetDate(),
-	LogDate     datetime2(3),
+	InsertDateUtc  datetime2(7) not null default SYSUTCDATETIME(),
+	LogDateUtc     datetime2(7),
   Thread      nvarchar(100),
 	Message     nvarchar(max),
   CallSite    nvarchar(max),
   Exception   nvarchar(max),
 	StackTrace  nvarchar(max),
 
-  index ix_InsertDate nonclustered(InsertDate),
+  index ix_InsertDate nonclustered([InsertDateUtc]),
 ) on [primary]

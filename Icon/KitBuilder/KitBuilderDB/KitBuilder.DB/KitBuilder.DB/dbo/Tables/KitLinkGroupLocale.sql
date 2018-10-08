@@ -8,8 +8,8 @@
     [MinimumCalories] INT NULL, 
     [MaximumCalories] INT NULL, 
     [Exclude] BIT NULL, 
-    [InsertDate] DATETIME2 NOT NULL DEFAULT getDate(), 
-    [LastModifiedDate] DATETIME2 NULL, 
+    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
+    [LastUpdatedDateUtc] DATETIME2 NULL, 
     [LastModifiedBy] NVARCHAR(100) NULL, 
     CONSTRAINT [FK_KitLinkGroupLocale_KitLinkGroup] FOREIGN KEY ([KitLinkGroupId]) REFERENCES [KitLinkGroup]([KitLinkGroupId]), 
     CONSTRAINT [FK_KitLinkGroupLocale_KitLocale] FOREIGN KEY ([KitLocaleId]) REFERENCES [KitLocale]([KitLocaleId])  ON DELETE CASCADE

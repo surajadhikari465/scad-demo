@@ -11,12 +11,13 @@ namespace KitBuilderWebApi.DatabaseModels
         }
 
         public int KitLinkGroupItemId { get; set; }
-        public int KitId { get; set; }
-        public int LinkGroupItemId { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
-        public Kit Kit { get; set; }
-        public LinkGroupItem LinkGroupItem { get; set; }
+		public int KitLinkGroupId { get; set; }
+		public int LinkGroupItemId { get; set; }
+		public DateTime InsertDateUtc { get; set; }
+		public DateTime? LastUpdatedDateUtc { get; set; }
+
+		public KitLinkGroup KitLinkGroup { get; set; }
+		public LinkGroupItem LinkGroupItem { get; set; }
         public ICollection<KitLinkGroupItemLocale> KitLinkGroupItemLocale { get; set; }
     }
 }
