@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using KitBuilderWebApi.Controllers;
-using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +9,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {

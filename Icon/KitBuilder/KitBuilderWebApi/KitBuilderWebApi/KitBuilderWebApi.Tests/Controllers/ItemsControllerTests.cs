@@ -1,7 +1,5 @@
 ﻿using System;
 using KitBuilderWebApi.Controllers;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +9,13 @@ using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using KitBuilderWebApi.DataAccess.Dto;
 using AutoMapper;
 using System.Linq.Dynamic.Core;
-using KitBuilderWebApi.DataAccess.UnitOfWork;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess.UnitOfWork;
+
 namespace KitBuilderWebApi.Tests.Controllers
 {
     [TestClass]

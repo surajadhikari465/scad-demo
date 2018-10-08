@@ -1,20 +1,18 @@
 ﻿using AutoMapper;
-using KitBuilderWebApi.Common;
-using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DatabaseModels;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Enums;
+using KitBuilder.DataAccess.Repository;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Rest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
-using Microsoft.Rest;
-using KitInstructionList = KitBuilderWebApi.DatabaseModels.KitInstructionList;
-using KitBuilderWebApi.DataAccess.Enums;
+using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
 
 namespace KitBuilderWebApi.Controllers
 {

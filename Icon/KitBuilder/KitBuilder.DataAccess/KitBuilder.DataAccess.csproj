@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Whole Foods Market IP. L.P.</Authors>
+    <Company>Whole Foods Market IP. L.P.</Company>
+    <Description>KitBuilder.DataAccess</Description>
+    <PackageReleaseNotes>KitBuilder.DataAccess Initial.</PackageReleaseNotes>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

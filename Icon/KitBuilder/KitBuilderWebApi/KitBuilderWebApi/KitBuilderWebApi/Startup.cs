@@ -1,8 +1,4 @@
-﻿using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DataAccess.UnitOfWork;
-using KitBuilderWebApi.DatabaseModels;
-using KitBuilderWebApi.Filters;
+﻿using KitBuilderWebApi.Filters;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +19,10 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess.UnitOfWork;
 
 namespace KitBuilderWebApi
 {
