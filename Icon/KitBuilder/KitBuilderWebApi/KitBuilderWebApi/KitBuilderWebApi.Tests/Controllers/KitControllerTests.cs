@@ -1,8 +1,8 @@
-﻿using KitBuilderWebApi.Controllers;
-using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DataAccess.UnitOfWork;
-using KitBuilderWebApi.DatabaseModels;
+﻿using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess.UnitOfWork;
+using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Http;
@@ -11,12 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {

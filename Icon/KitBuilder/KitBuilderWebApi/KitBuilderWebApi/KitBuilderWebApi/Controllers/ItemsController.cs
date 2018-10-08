@@ -1,14 +1,12 @@
 ﻿using System.Linq;
-using AutoMapper;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq.Dynamic.Core;
 using KitBuilderWebApi.QueryParameters;
-using KitBuilderWebApi.DataAccess.Dto;
 using System;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
 
 namespace KitBuilderWebApi.Controllers
 {

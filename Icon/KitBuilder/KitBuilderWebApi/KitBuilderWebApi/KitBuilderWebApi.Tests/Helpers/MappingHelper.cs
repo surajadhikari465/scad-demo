@@ -1,5 +1,5 @@
-﻿using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DatabaseModels;
+﻿using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
 
 namespace KitBuilderWebApi.Tests.Helper
 {

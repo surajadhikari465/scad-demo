@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using KitBuilderWebApi.DataAccess.Dto;
-using KitBuilderWebApi.DataAccess.Repository;
-using KitBuilderWebApi.DatabaseModels;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using KitBuilder.DataAccess.DatabaseModels;
+using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Repository;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace KitBuilderWebApi.Controllers
