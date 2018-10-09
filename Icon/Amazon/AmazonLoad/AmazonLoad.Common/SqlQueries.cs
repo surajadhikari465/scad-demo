@@ -71,7 +71,17 @@
                             @wicTraitId int,
                             @shelfLife int,
                             @itgTraitId int,
-		                    @hidTraitId int
+		                    @hidTraitId int,
+		                    @linTraitId int,
+		                    @skuTraitId int,
+		                    @plTraitId int,
+		                    @vsTraitId int,
+		                    @esnTraitId int,
+		                    @pneTraitId int,
+		                    @eseTraitId int,
+		                    @tseTraitId int,
+		                    @wfeTraitId int,
+		                    @oteTraitId int
 
 	                    SET @localeID					= (SELECT l.localeID FROM Locale l WHERE l.localeName = 'Whole Foods')
 	                    SET @productDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PRD')
@@ -110,6 +120,16 @@
                         SET @shelfLife				    = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SLF')
                         SET @itgTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ITG')
 	                    SET @hidTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HID')
+	                    SET @linTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LIN')
+	                    SET @skuTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'SKU')
+	                    SET @plTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PL')
+	                    SET @vsTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'VS')
+	                    SET @esnTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ESN')
+	                    SET @pneTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PNE')
+	                    SET @eseTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'ESE')
+	                    SET @tseTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TSE')
+	                    SET @wfeTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WFE')
+	                    SET @oteTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OTE')
 
 	                    SELECT {top query}
 		                    i.itemID							as ItemId,
@@ -201,6 +221,38 @@
 			                     WHEN wic.traitValue = 'True' THEN 1  
 			                     WHEN wic.traitValue = 'Yes'  THEN 1 
 			                     ELSE 0 END					AS WicEligible,
+                            lin.traitValue					AS Line,
+		                    sku.traitValue					AS SKU,
+		                    pl.traitValue					AS PriceLine,
+		                    vs.traitValue					AS VariantSize,
+		                    CASE 
+			                    WHEN esn.traitValue = 'Y' OR esn.traitValue = 'Yes'
+			                     OR esn.traitValue = '1' OR esn.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS EStoreNutritionRequired,
+		                    CASE 
+			                    WHEN pne.traitValue is null THEN NULL 
+			                    WHEN pne.traitValue = 'Y' OR pne.traitValue = 'Yes'
+			                     OR pne.traitValue = '1' OR pne.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS PrimeNowEligible,
+		                    CASE 
+			                    WHEN ese.traitValue = 'Y' OR ese.traitValue = 'Yes'
+			                     OR ese.traitValue = '1' OR ese.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS EstoreEligible,
+		                    CASE 
+			                    WHEN tse.traitValue is null THEN NULL 
+			                    WHEN tse.traitValue = 'Y' OR tse.traitValue = 'Yes'
+			                     OR tse.traitValue = '1' OR tse.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS TSFEligible,
+		                    CASE 
+			                    WHEN wfe.traitValue is null THEN NULL 
+			                    WHEN wfe.traitValue = 'Y' OR wfe.traitValue = 'Yes'
+			                     OR wfe.traitValue = '1' OR wfe.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS WFMEligilble,
+		                    CASE 
+			                    WHEN ote.traitValue is null THEN NULL 
+			                    WHEN ote.traitValue = 'Y' OR ote.traitValue = 'Yes'
+			                     OR ote.traitValue = '1' OR ote.traitValue = 'True'  
+			                    THEN 1 ELSE 0 END			AS Other3PEligible,
 		                    nathc.hierarchyClassID			AS NationalClassId,
 		                    nathc.hierarchyClassName		AS NationalClassName,
 		                    nathc.hierarchyLevel			AS NationalLevel,
@@ -351,7 +403,17 @@
 		                    LEFT JOIN ItemTrait				wic			ON wic.traitID					= @wicTraitId AND wic.itemID = i.itemID AND wic.localeID = @localeID
 		                    LEFT JOIN ItemTrait				slf			ON slf.traitID					= @shelfLife  AND slf.itemID = i.itemID AND slf.localeID = @localeID
 		                    LEFT JOIN ItemTrait				itg			ON itg.traitID					= @itgTraitId AND itg.itemID = i.itemID AND itg.localeID = @localeID	
-		                    LEFT JOIN ItemTrait				hid			ON	hid.traitID					= @hidTraitId AND hid.itemID = i.itemID AND hid.localeID = @localeID	
+		                    LEFT JOIN ItemTrait				hid			ON	hid.traitID					= @hidTraitId AND hid.itemID = i.itemID AND hid.localeID = @localeID
+                            LEFT JOIN ItemTrait				lin			ON	lin.traitID					= @linTraitId AND lin.itemID = i.itemID AND lin.localeID = @localeID
+		                    LEFT JOIN ItemTrait				sku			ON	sku.traitID					= @skuTraitId AND sku.itemID = i.itemID AND sku.localeID = @localeID
+		                    LEFT JOIN ItemTrait				pl			ON	pl.traitID					= @plTraitId  AND  pl.itemID = i.itemID AND  pl.localeID = @localeID
+		                    LEFT JOIN ItemTrait				vs			ON	vs.traitID					= @vsTraitId  AND  vs.itemID = i.itemID AND  vs.localeID = @localeID
+		                    LEFT JOIN ItemTrait				esn			ON	esn.traitID					= @esnTraitId AND esn.itemID = i.itemID AND esn.localeID = @localeID
+		                    LEFT JOIN ItemTrait				pne			ON	pne.traitID					= @pneTraitId AND pne.itemID = i.itemID AND pne.localeID = @localeID
+		                    LEFT JOIN ItemTrait				ese			ON	ese.traitID					= @eseTraitId AND ese.itemID = i.itemID AND ese.localeID = @localeID
+		                    LEFT JOIN ItemTrait				tse			ON	tse.traitID					= @tseTraitId AND tse.itemID = i.itemID AND tse.localeID = @localeID
+		                    LEFT JOIN ItemTrait				wfe			ON	wfe.traitID					= @wfeTraitId AND wfe.itemID = i.itemID AND wfe.localeID = @localeID
+		                    LEFT JOIN ItemTrait				ote			ON	hid.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
                             LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu	
 	                    WHERE
 		                    it.itemTypeID <> @couponItemTypeId

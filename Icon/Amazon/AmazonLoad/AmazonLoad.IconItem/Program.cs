@@ -26,8 +26,27 @@ namespace AmazonLoad.IconItem
 
         static void Main(string[] args)
         {
+            var startTime = DateTime.Now;
+            Console.WriteLine($"[{startTime}] beginning...");
+
             var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
             var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
+            var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
+            var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            
+            Console.WriteLine("Flags:");
+            Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
+            Console.WriteLine($"  SaveMessages: {saveMessages}");
+            Console.WriteLine($"  SaveMessagesDirectory: \"{saveMessagesDirectory}\"");
+            Console.WriteLine($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
+            Console.WriteLine($"  SendMessagesToEsb: {sendToEsb}");
+            if (!sendToEsb)
+            {
+                Console.WriteLine($"  \"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
+            }
+            Console.WriteLine("");
+
             if (saveMessages)
             {
                 if (!Directory.Exists(saveMessagesDirectory))
@@ -68,7 +87,9 @@ namespace AmazonLoad.IconItem
                             string message = BuildMessage(modelGroup);
                             string messageId = Guid.NewGuid().ToString();
 
-                            producer.Send(
+                            if (sendToEsb)
+                            {
+                                producer.Send(
                                 message,
                                 messageId,
                                 new Dictionary<string, string>
@@ -77,6 +98,7 @@ namespace AmazonLoad.IconItem
                                 { "Source", "Icon"},
                                 { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                                 });
+                            }
                             numberOfRecordsSent += modelGroup.Count();
                             numberOfMessagesSent += 1;
                             if (saveMessages)
@@ -88,6 +110,8 @@ namespace AmazonLoad.IconItem
                 }
                 Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
                 Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+                var endTime = DateTime.Now;
+                Console.WriteLine($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
                 Console.WriteLine("Press enter to exit.");
                 Console.ReadLine();
             }
@@ -257,8 +281,19 @@ namespace AmazonLoad.IconItem
                 BuildTrait(TraitCodes.WicEligible, TraitDescriptions.WicEligible, item.WicEligible),
                 BuildTrait(TraitCodes.ShelfLife, TraitDescriptions.ShelfLife, item.ShelfLife),
                 BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, item.SelfCheckoutItemTareGroup),
-                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, item.Hidden)
-            };
+                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, item.Hidden),
+                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, item.Hidden),
+                BuildTrait(TraitCodes.Line, TraitDescriptions.Line, item.Line),
+                BuildTrait(TraitCodes.Sku, TraitDescriptions.Sku, item.SKU),
+                BuildTrait(TraitCodes.PriceLine, TraitDescriptions.PriceLine, item.PriceLine),
+                BuildTrait(TraitCodes.VariantSize, TraitDescriptions.VariantSize, item.VariantSize),
+                BuildTrait(TraitCodes.EstoreNutritionRequired, TraitDescriptions.EstoreNutritionRequired, item.EStoreNutritionRequired),
+                BuildTrait(TraitCodes.EstoreEligible, TraitDescriptions.EstoreEligible, item.EstoreEligible),
+                BuildTraitBlankIfNull(TraitCodes.PrimeNowEligible, TraitDescriptions.PrimeNowEligible, item.PrimeNowEligible),
+                BuildTraitBlankIfNull(TraitCodes.Tsf365Eligible, "365 Eligible", item.TSFEligible),
+                BuildTraitBlankIfNull(TraitCodes.WfmEligilble, TraitDescriptions.WfmEligilble, item.WFMEligilble),
+                BuildTraitBlankIfNull(TraitCodes.Other3pEligible, TraitDescriptions.Other3pEligible, item.Other3PEligible),
+            };           
 
             if (ShouldSendPhysicalCharacteristicTraits(item))
             {
@@ -462,6 +497,13 @@ namespace AmazonLoad.IconItem
         private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, bool? value)
         {
             return BuildTrait(traitCode, traitDescription, value.GetValueOrDefault(false));
+        }
+
+        private static Contracts.TraitType BuildTraitBlankIfNull(string traitCode, string traitDescription, bool? value)
+        {
+            return BuildTrait(traitCode, traitDescription, value.HasValue 
+                ? value.Value ? "1" : "0"
+                : string.Empty);
         }
 
         private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, int? value)

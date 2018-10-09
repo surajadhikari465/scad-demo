@@ -22,8 +22,27 @@ namespace AmazonLoad.IconHierarchy
 
         static void Main(string[] args)
         {
+            var startTime = DateTime.Now;
+            Console.WriteLine($"[{startTime}] beginning...");
+
             var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
             var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+            var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
+            var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
+            var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            
+            Console.WriteLine("Flags:");
+            Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
+            Console.WriteLine($"  SaveMessages: {saveMessages}");
+            Console.WriteLine($"  SaveMessagesDirectory: \"{saveMessagesDirectory}\"");
+            Console.WriteLine($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
+            Console.WriteLine($"  SendMessagesToEsb: {sendToEsb}");
+            if (!sendToEsb)
+            {
+                Console.WriteLine($"  \"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
+            }
+            Console.WriteLine("");
+
             if (saveMessages)
             {
                 if (!Directory.Exists(saveMessagesDirectory))
@@ -31,6 +50,7 @@ namespace AmazonLoad.IconHierarchy
                     Directory.CreateDirectory(saveMessagesDirectory);
                 }
             }
+
             var producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
@@ -61,7 +81,9 @@ namespace AmazonLoad.IconHierarchy
                     string message = BuildMessage(modelGroup);
                     string messageId = Guid.NewGuid().ToString();
 
-                    producer.Send(
+                    if (sendToEsb)
+                    {
+                        producer.Send(
                         message,
                         messageId,
                         new Dictionary<string, string>
@@ -70,6 +92,7 @@ namespace AmazonLoad.IconHierarchy
                             { "Source", "Icon" },
                             { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
                         });
+                    }
                     numberOfRecordsSent += modelGroup.Count();
                     numberOfMessagesSent += 1;
                     if (saveMessages)
@@ -80,6 +103,8 @@ namespace AmazonLoad.IconHierarchy
             }
             Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
             Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
+            var endTime = DateTime.Now;
+            Console.WriteLine($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
             Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
         }

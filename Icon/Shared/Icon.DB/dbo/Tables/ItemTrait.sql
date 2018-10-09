@@ -10,18 +10,7 @@
     CONSTRAINT [Trait_ItemTrait_FK1] FOREIGN KEY ([traitID]) REFERENCES [dbo].[Trait] ([traitID])
 );
 
-
 GO
 
-GO
-
-GO
-
-GO
-
-GO
-
-GO
-
-
+CREATE NONCLUSTERED INDEX IX_ItemTrait_itemID_localeID ON dbo.ItemTrait (itemID, localeID) INCLUDE (traitValue);
 GO

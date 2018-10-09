@@ -149,5 +149,15 @@
         public decimal? TransfatWeight { get; set; }
         public int? HazardousMaterialFlag { get; set; }
         public string HazardousMaterialTypeCode { get; set; }
+        public string Line { get; set; }
+        public string SKU { get; set; }
+        public string PriceLine { get; set; }
+        public string VariantSize { get; set; }
+        public bool EStoreNutritionRequired { get; set; }
+        public bool? PrimeNowEligible { get; set; }
+        public bool EstoreEligible { get; set; }
+        public bool? TSFEligible { get; set; }
+        public bool? WFMEligilble { get; set; }
+        public bool? Other3PEligible { get; set; }
     }
 }
