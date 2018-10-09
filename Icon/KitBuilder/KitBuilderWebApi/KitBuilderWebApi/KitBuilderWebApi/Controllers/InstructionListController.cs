@@ -9,6 +9,8 @@ using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace KitBuilderWebApi.Controllers
 { 
@@ -18,6 +20,8 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<InstructionList> instructionListRepository;
         private IRepository<InstructionListMember> instructionListMemberRepository;
         private IRepository<InstructionType> instructionTypeRespository;
+        private IRepository<KitInstructionList> kitInstructionListRepository;
+        private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Status> statusRespository;
         private ILogger<InstructionListController> logger;
         private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
@@ -27,7 +31,9 @@ namespace KitBuilderWebApi.Controllers
                                          IRepository<InstructionType> instructionTypeRespository,
                                          IRepository<Status> statusRespository,
                                          ILogger<InstructionListController> logger,
-                                         IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper
+                                         IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper,
+                                         IRepository<KitInstructionList> kitInstructionListRepository,
+                                         IRepository<LinkGroupItem> linkGroupItemRepository
                                          )
         {
             this.instructionListRepository = instructionListRepository;
@@ -36,8 +42,9 @@ namespace KitBuilderWebApi.Controllers
             this.statusRespository = statusRespository;
             this.logger = logger;
             this.instructionListHelper = instructionListHelper;
+            this.kitInstructionListRepository = kitInstructionListRepository;
+            this.linkGroupItemRepository = linkGroupItemRepository;
         }
-
 
         // GET api/InstructionLists
         /// <summary>
@@ -99,6 +106,23 @@ namespace KitBuilderWebApi.Controllers
             return Ok(instructionListsAfterPaging.ShapeData(instructionListsParameters.Fields));
         }
 
+        [HttpGet("{id}", Name = "GetInstructionsListById")]
+        public IActionResult GetInstructionsListById(int id, bool loadChildObjects)
+        {
+            var instructionListQuery = BuildInstructionListByIdQuery(id, loadChildObjects);
+            var instructionList = instructionListQuery.FirstOrDefault();
+
+            if (instructionList == null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return NotFound();
+            }
+
+            InstructionListDto instructionListDto = Mapper.Map<InstructionListDto>(instructionList);
+
+            return Ok(instructionListDto);
+        }
+
         /// <summary>
         /// InstructionList - UPDATE
         /// </summary>
@@ -158,18 +182,24 @@ namespace KitBuilderWebApi.Controllers
 
             if (InstructionListHasMembers(list)) return NoContent();
 
-
-            try
+            if (!IsInstructionInUse(instructionListId))
             {
-                instructionListRepository.Delete(list);
-                instructionListRepository.UnitOfWork.Commit();
-                return Ok();
+               try
+                {
+                    instructionListRepository.Delete(list);
+                    instructionListRepository.UnitOfWork.Commit();
+                    return Ok();
 
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message);
+                    return StatusCode(500, "A problem happened while handling your request.");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                logger.LogError(ex.Message);
-                return StatusCode(500, "A problem happened while handling your request.");
+                return StatusCode(StatusCodes.Status409Conflict);
             }
         }
 
@@ -179,7 +209,7 @@ namespace KitBuilderWebApi.Controllers
         /// <param name="instructionListAddDto"></param>
         /// <response code="201">Created</response>
 
-     
+
         [SwaggerResponse(201, "Created")]
         [SwaggerResponse(400, "Bad Request")]
         [SwaggerResponse(500, "Server Error")]
@@ -239,6 +269,30 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
+        internal IQueryable<InstructionList> BuildInstructionListByIdQuery(int id, bool loadChildObjects)
+        {
+            if (loadChildObjects)
+            {
+                return instructionListRepository.UnitOfWork.Context.InstructionList
+                            .Where(l => l.InstructionListId == id)
+                            .Include(l => l.InstructionListMember);
+            }
+            else
+            {
+                return instructionListRepository.GetAll().Where(l => l.InstructionListId == id);
+            }
+        }
+
+        internal bool IsInstructionInUse(int instructionListId)
+        {
+            var query = from kl in kitInstructionListRepository.GetAll().Where(l => l.InstructionListId == instructionListId)
+                        select kl;
+
+            var linkGroupCheckQuery = from l in linkGroupItemRepository.GetAll().Where(l => l.InstructionListId == instructionListId)
+                                      select l;
+        
+            return query.Any() || linkGroupCheckQuery.Any();
+        }
     }
 
 }

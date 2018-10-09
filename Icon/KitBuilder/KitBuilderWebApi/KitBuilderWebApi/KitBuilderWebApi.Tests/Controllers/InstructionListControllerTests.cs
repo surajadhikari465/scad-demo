@@ -28,9 +28,11 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<Status>> mockStatusRespository;
         private Mock<IUrlHelper> mockUrlHelper;
         private Mock<IHelper<InstructionListDto, InstructionListsParameters>> mockLinkGroupHelper;
-        private List<InstructionList> instructionLists;
+         List<InstructionList> instructionLists;
         private List<InstructionType> instructionTypes;
         private List<Status> statuses;
+        private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
+        private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
 
         [TestInitialize]
         public void InitializeTest()
@@ -41,6 +43,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockInstructionListRepository = new Mock<IRepository<InstructionList>>();
             mockInstructionListMemberRepository = new Mock<IRepository<InstructionListMember>>();
             mockInstructionTypeRespository = new Mock<IRepository<InstructionType>>();
+            mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
+            mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
             mockStatusRespository = new Mock<IRepository<Status>>();
             mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
@@ -53,7 +57,9 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockInstructionTypeRespository.Object,
                 mockStatusRespository.Object,
                 mockLogger.Object,
-                mockLinkGroupHelper.Object);
+                mockLinkGroupHelper.Object,
+                mockKitInstructionListRepository.Object,
+                mockLinkGroupItemRepository.Object);
         }
 
         private void SetUpDataAndRepository()
@@ -118,6 +124,35 @@ namespace KitBuilderWebApi.Tests.Controllers
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
             Assert.IsNotNull(response, "The response is null");
         }
+
+        [TestMethod]
+        public void InstructionListController_GetInstructionsListByIdInstructionListNotExist_ReturnsNotFound()
+        {
+            // Given
+            int instructionListId = 999;
+
+            //When
+            var response = instructionListController.GetInstructionsListById(instructionListId, false);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
+        }
+
+        [TestMethod]
+        public void InstructionListController_GetInstructionsListByIdInstructionExist_ReturnsOk()
+        {
+            // Given
+            SetUpDataAndRepository();
+            int instructionListId = instructionLists.FirstOrDefault().InstructionListId;
+
+            //When
+            var response = instructionListController.GetInstructionsListById(instructionListId, false);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Result Expected");
+            Assert.IsNotNull(response, "The OkResult response is null.");
+        }
+
         [TestMethod]
         public void InstructionListController_UpdateInstructionsList_ListDoesntExist_Returns_NotFound()
         {
