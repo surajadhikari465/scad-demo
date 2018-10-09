@@ -413,7 +413,7 @@
 		                    LEFT JOIN ItemTrait				ese			ON	ese.traitID					= @eseTraitId AND ese.itemID = i.itemID AND ese.localeID = @localeID
 		                    LEFT JOIN ItemTrait				tse			ON	tse.traitID					= @tseTraitId AND tse.itemID = i.itemID AND tse.localeID = @localeID
 		                    LEFT JOIN ItemTrait				wfe			ON	wfe.traitID					= @wfeTraitId AND wfe.itemID = i.itemID AND wfe.localeID = @localeID
-		                    LEFT JOIN ItemTrait				ote			ON	hid.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
+		                    LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
                             LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu	
 	                    WHERE
 		                    it.itemTypeID <> @couponItemTypeId
