@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
-			<value>10000</value>
+			<value>300000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
