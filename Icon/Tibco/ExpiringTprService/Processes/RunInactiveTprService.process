@@ -371,7 +371,7 @@ ORDER BY  endingPrice.BusinessUnitId,  endingPrice.ItemId</statement>
                     <pd:indexSlot>Counter</pd:indexSlot>
                     <pd:outSlot>ExpiringTprPrices</pd:outSlot>
                     <pd:activityOutputName>Map Data</pd:activityOutputName>
-                    <pd:whileCondition>$Counter&lt;=ceiling((count($businessUnitIdFilter) div $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
+                    <pd:whileCondition>$Counter&lt;=ceiling((count($businessUnitIdFilter/pfx2:MammothPrices/pfx2:MammothPrice) div $_globalVariables/ns:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
                     <pd:accumulateOutput>true</pd:accumulateOutput>
                 </config>
                 <pd:inputBindings/>
