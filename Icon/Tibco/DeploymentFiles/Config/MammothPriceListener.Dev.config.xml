@@ -73,6 +73,10 @@
             <value>ProcessBOD</value>
         </NameValuePair>
         <NameValuePair>
+            <name>RewardPriceAttribute</name>
+            <value>RWD</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Application/ProcessBODLogicalID</name>
             <value>WFM</value>
         </NameValuePair>
