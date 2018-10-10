@@ -95,9 +95,6 @@
             <pfx3:items>
                 <xsl:for-each select="$HandleAddAndUpdateSameItem/pfx2:MammothPrices/pfx2:MammothPrice">
                     <pfx3:item>
-                        <xsl:attribute name="ns4:Action">
-                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
-                        </xsl:attribute>
                         <pfx3:id>
                             <xsl:value-of select="pfx2:ItemId"/>
                         </pfx3:id>
@@ -109,9 +106,6 @@
                             </ns5:type>
                         </pfx3:base>
                         <pfx3:locale>
-                            <xsl:attribute name="ns4:Action">
-                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ActionAddOrUpdate"/>
-                            </xsl:attribute>
                             <pfx5:id>
                                 <xsl:value-of select="pfx2:BusinessUnit"/>
                             </pfx5:id>
