@@ -542,7 +542,8 @@ namespace Icon.ApiController.Tests
                 ItemsAttached = itemsAttached,
                 MessageActionId = MessageActionTypes.AddOrUpdate,
                 MessageStatusId = MessageStatusTypes.Ready,
-                MessageTypeId = MessageTypes.Hierarchy
+                MessageTypeId = MessageTypes.Hierarchy,
+                NationalClassCode = String.Empty,
             };
         }
 

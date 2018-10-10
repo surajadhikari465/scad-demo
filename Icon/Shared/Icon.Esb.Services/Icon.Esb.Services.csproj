@@ -71,10 +71,12 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.3\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.3\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

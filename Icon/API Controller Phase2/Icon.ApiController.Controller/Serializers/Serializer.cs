@@ -12,35 +12,33 @@ namespace Icon.ApiController.Controller.Serializers
     public class Serializer<T> : ISerializer<T>
     {
         private XmlWriterSettings settings;
-        private XmlSerializerNamespaces namespaces;
+        private readonly XmlSerializerNamespaces namespaces;
         private ILogger<Serializer<T>> logger;
         private IEmailClient emailClient;
 
         public Serializer(ILogger<Serializer<T>> logger, IEmailClient emailClient)
         {
-            this.logger = logger;
-            this.emailClient = emailClient;
-            
-            settings = new XmlWriterSettings();
+          this.logger = logger;
+          this.emailClient = emailClient;
 
-            // These settings prevent things like tab and newline characters from appearing in the serialized string.
-            settings.NewLineHandling = NewLineHandling.None;
-            settings.Indent = false;
+          this.settings = new XmlWriterSettings
+          {
+            NewLineHandling = NewLineHandling.None, //prevent newline character from appearing in the serialized string.
+            Indent = false,                         //prevent tab from appearing in the serialized string.
+            Encoding = System.Text.Encoding.UTF8    // UTF-8 is the desired format for ESB.
+          };
 
-            // UTF-8 is the desired format for ESB.
-            settings.Encoding = System.Text.Encoding.UTF8;
-
-            namespaces = NamespaceHelper.SetupNamespaces(typeof(T));
+          this.namespaces = NamespaceHelper.SetupNamespaces(typeof(T));
         }
 
         public string Serialize(T miniBulk, TextWriter writer)
         {
-            XmlWriter xmlWriter = XmlWriter.Create(writer, settings);
+            XmlWriter xmlWriter = XmlWriter.Create(writer, this.settings);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
             try
             {
-                serializer.Serialize(xmlWriter, miniBulk, namespaces);
+                serializer.Serialize(xmlWriter, miniBulk, this.namespaces);
             }
             catch (Exception ex)
             {

@@ -7,7 +7,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public static class ControllerProvider
     {
-        private static IDictionary<string, Func<IControllerBuilder>> controllerMap = new Dictionary<string, Func<IControllerBuilder>>
+        private static IDictionary<string, Func<IControllerBuilder>> controllerMap = new Dictionary<string, Func<IControllerBuilder>>(StringComparer.InvariantCultureIgnoreCase)
         {
             // l locale
             // h hierarchy

@@ -39,14 +39,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
                     })
                     .ToTvp("@hierarchyClasses", "infor.HierarchyClassType");
 
-                string sqlCommand = "EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses";
                 try
                 {
                     using (var context = contextFactory.CreateContext())
                     {
-                        context.Database.ExecuteSqlCommand(
-                            sqlCommand,
-                            hierarchyClasses);
+                        context.Database.ExecuteSqlCommand("EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses", hierarchyClasses);
                     }
                 }
                 catch (Exception ex)

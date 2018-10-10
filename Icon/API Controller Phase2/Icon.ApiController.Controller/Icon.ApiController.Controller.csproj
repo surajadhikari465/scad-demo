@@ -85,13 +85,13 @@
       <HintPath>$(SolutionDir)\packages\Icon.Esb.2018.8.16.2\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.10.3.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.10.8.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Icon.Esb.Schemas.Wfm.PreGpm.2018.8.28.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.10.5.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.10.9.2\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -203,7 +203,9 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\Icon.Service.Responses.PublishLocaleResponse.datasource" />
   </ItemGroup>
   <ItemGroup>

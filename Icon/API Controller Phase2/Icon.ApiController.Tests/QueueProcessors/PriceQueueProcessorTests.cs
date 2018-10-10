@@ -83,7 +83,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
 
             mockGetNextAvailableBusinessUnitQueryHandler.SetupSequence(m => m.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>()))
                 .Returns(12345)
-                .Returns(null);
+                .Returns((int?)null);
         }
 
         [TestMethod]

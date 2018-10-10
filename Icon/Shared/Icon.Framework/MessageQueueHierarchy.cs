@@ -30,6 +30,7 @@ namespace Icon.Framework
         public Nullable<int> HierarchyParentClassId { get; set; }
         public Nullable<int> InProcessBy { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
+        public string NationalClassCode { get; set; }
     
         public virtual MessageAction MessageAction { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }

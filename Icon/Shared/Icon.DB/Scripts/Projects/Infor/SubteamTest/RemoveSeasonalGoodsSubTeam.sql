@@ -21,30 +21,32 @@ BEGIN
 	set @newSubTeamName = 'Seasonal Goods (7100)'
 	set @newSubteamHierarchyClassId = (select hierarchyClassID from HierarchyClass where hierarchyClassName = @newSubTeamName and hierarchyID = @financialHierarchyId)
 
-	insert into 
-		app.MessageQueueHierarchy
-	select
-		@HierarchyMessageId,
-		@ReadyStatusId,
-		null,
-		@DeleteActionId,
-		sysdatetime(),
-		h.hierarchyID,
-		h.hierarchyName,
-		hp.hierarchyLevelName,
-		hp.itemsAttached,
-		substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4),
-		hc.hierarchyClassName,
-		hc.hierarchyLevel,
-		hc.hierarchyParentClassID,
-		null,
-		null
-	from
-		Hierarchy h
+	insert into app.MessageQueueHierarchy(MessageTypeId,
+                                        MessageStatusId,
+                                        MessageActionId,
+                                        HierarchyId,
+                                        HierarchyName,
+                                        HierarchyLevelName,
+                                        ItemsAttached,
+                                        HierarchyClassId,
+                                        HierarchyClassName,
+                                        HierarchyLevel,
+                                        HierarchyParentClassId)
+	select @HierarchyMessageId,
+		     @ReadyStatusId,
+		     @DeleteActionId,
+		     h.hierarchyID,
+		     h.hierarchyName,
+		     hp.hierarchyLevelName,
+		     hp.itemsAttached,
+		     substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4),
+		     hc.hierarchyClassName,
+		     hc.hierarchyLevel,
+		     hc.hierarchyParentClassID
+	from Hierarchy h
 		join HierarchyClass hc on h.hierarchyID = hc.hierarchyID
 		join HierarchyPrototype hp on hc.hierarchyID = hp.hierarchyID and hc.hierarchyLevel = hp.hierarchyLevel
-    where
-		h.hierarchyName = 'Financial'
+    where h.hierarchyName = 'Financial'
 		and hc.hierarchyLevel = @financialHierarchyClassLevel
 		and hc.hierarchyClassName = @newSubTeamName
 

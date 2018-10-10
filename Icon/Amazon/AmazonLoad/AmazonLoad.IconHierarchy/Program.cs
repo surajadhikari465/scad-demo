@@ -123,7 +123,26 @@ namespace AmazonLoad.IconHierarchy
                     parentId = new Contracts.hierarchyParentClassType
                     {
                         Value = message.HierarchyParentClassId.HasValue ? message.HierarchyParentClassId.Value : 0
-                    }
+                    },
+
+                     //FYI: Add NationaClassCode if for The National Hierarchy messages only
+                    traits = String.IsNullOrEmpty(message.NationalClassCode) ? null : new Contracts.TraitType[]
+                      {
+                        new Contracts.TraitType
+                        {
+                          code = Icon.Framework.TraitCodes.NationalClassCode,
+                          type = new Contracts.TraitTypeType
+                          {
+                            description = String.Empty,
+                            value = new Contracts.TraitValueType[]
+                            {
+                              new Contracts.TraitValueType { value = message.NationalClassCode }
+                            }
+                          }
+                        }
+                      }
+
+
                 }).ToArray(),
                 Action = Contracts.ActionEnum.AddOrUpdate,
                 ActionSpecified = true,

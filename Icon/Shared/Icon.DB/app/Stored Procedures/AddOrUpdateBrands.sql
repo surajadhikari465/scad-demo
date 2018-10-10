@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [app].[AddOrUpdateBrands]
 	@brands app.BrandImportType READONLY
 AS
-	DECLARE @taskName nvarchar(32) = 'app.AddOrUpdateBrands',
+	DECLARE @taskName nvarchar(32) = object_name(@@PROCID),
 			@brandAbbreviationTraitId int = (select traitID from Trait where traitCode = 'BA'),
 			@brandId int = (select hierarchyID from Hierarchy where hierarchyName = 'Brands')
 	DECLARE @newBrands table (
@@ -87,23 +87,28 @@ AS
 			@brandsHierarchyLevel int = (select hierarchyLevel from HierarchyPrototype where hierarchyID = @brandId),
 			@brandsParentClassId int = null
 			
-	INSERT INTO
-		app.MessageQueueHierarchy
-	SELECT
-		MessageTypeId			= @hierarchyMessageTypeId,
-		MessageStatusId			= @readyStatusId,
-		MessageHistoryId		= null,
-		MessageActionId			= @messageActionId,
-		InsertDate				= sysdatetime(),
-		HierarchyId				= @brandsHierarchyId,
-		HierarchyName			= 'Brands',
-		HierarchyLevelName		= @brandsHierarchyLevelName,
-		ItemsAttached			= @brandsItemsAttached,
-		HierarchyClassId		= nb.HierarchyClassId,
-		HierarchyClassName		= nb.HierarchyClassName,
-		HierarchyLevel			= @brandsHierarchyLevel,
-		HierarchyParentClassId	= @brandsParentClassId,
-		null,
-		null
-	FROM
-		@newBrands nb
+	INSERT INTO	app.MessageQueueHierarchy(MessageTypeId,
+		                                    MessageStatusId,
+		                                    MessageActionId,
+		                                    InsertDate,
+		                                    HierarchyId,
+		                                    HierarchyName,
+		                                    HierarchyLevelName,
+		                                    ItemsAttached,
+		                                    HierarchyClassId,
+		                                    HierarchyClassName,
+		                                    HierarchyLevel,
+		                                    HierarchyParentClassId)
+	SELECT @hierarchyMessageTypeId,
+		     @readyStatusId,
+		     @messageActionId,
+		     sysdatetime(),
+		     @brandsHierarchyId,
+		     'Brands',
+		     @brandsHierarchyLevelName,
+		     @brandsItemsAttached,
+		     nb.HierarchyClassId,
+		     nb.HierarchyClassName,
+		     @brandsHierarchyLevel,
+		     @brandsParentClassId
+	FROM @newBrands nb

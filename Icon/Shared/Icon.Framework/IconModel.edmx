@@ -222,6 +222,7 @@
           <Property Name="HierarchyParentClassId" Type="int" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+          <Property Name="NationalClassCode" Type="nvarchar" MaxLength="255" Nullable="true" />
         </EntityType>
         <EntityType Name="MessageQueueItemLocale">
           <Key>
@@ -4557,6 +4558,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="HierarchyParentClassId" Type="Int32" />
           <Property Name="InProcessBy" Type="Int32" Nullable="true" ConcurrencyMode="Fixed" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <Property Name="NationalClassCode" Type="String" Nullable="true" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageAction" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageActionId" FromRole="MessageQueueHierarchy" ToRole="MessageAction" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageStatusId" FromRole="MessageQueueHierarchy" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageQueueHierarchy" ToRole="MessageType" />
@@ -6737,6 +6739,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueHierarchy">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueHierarchy">
               <MappingFragment StoreEntitySet="MessageQueueHierarchy">
+                <ScalarProperty Name="NationalClassCode" ColumnName="NationalClassCode" />
                 <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
                 <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
                 <ScalarProperty Name="HierarchyParentClassId" ColumnName="HierarchyParentClassId" />

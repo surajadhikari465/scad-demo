@@ -6,7 +6,7 @@
         {
             get
             {
-                return @"
+                return @"declare @nationalHierarchyId int = (select hierarchyID from dbo.Hierarchy where hierarchyName = 'National');
                     select {top query}
 		                h.hierarchyID as HierarchyId,
 		                h.hierarchyName as HierarchyName,
@@ -18,11 +18,13 @@
 		                end as HierarchyClassId,
 		                hc.hierarchyClassName as HierarchyClassName,		
 		                hc.hierarchyLevel as HierarchyLevel,
-		                hc.hierarchyParentClassID as HierarchyParentClassId
+		                hc.hierarchyParentClassID as HierarchyParentClassId,
+                    case when Isnull(hc.hierarchyID, 0) = @nationalHierarchyId then D.traitValue else null end NationalClassCode
 	                from
 		                Hierarchy h
 		                join HierarchyClass hc on h.hierarchyID = hc.hierarchyID
 		                join HierarchyPrototype hp on hc.hierarchyID = hp.hierarchyID and hc.hierarchyLevel = hp.hierarchyLevel
+                    left join dbo.HierarchyClassTrait D on D.hierarchyClassID = hc.HierarchyClassId
                     where
 		                h.hierarchyName = @HierarchyName
                     order by hc.hierarchyLevel";

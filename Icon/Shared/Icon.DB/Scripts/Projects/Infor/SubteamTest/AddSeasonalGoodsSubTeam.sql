@@ -76,32 +76,34 @@ END
 
 */ ------------------------------------------
 BEGIN
-	insert into 
-		app.MessageQueueHierarchy
-	select
-		@HierarchyMessageTypeId,
-		@ReadyStatusId,
-		null,
-		@ActionId,
-		sysdatetime(),
-		h.hierarchyID,
-		h.hierarchyName,
-		hp.hierarchyLevelName,
-		hp.itemsAttached,
-		substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4),
-		hc.hierarchyClassName,
-		hc.hierarchyLevel,
-		hc.hierarchyParentClassID,
-		null,
-		null
-	from
-		Hierarchy h
+	insert into app.MessageQueueHierarchy(MessageTypeId,
+                                        MessageStatusId,
+                                        MessageActionId,
+                                        HierarchyId,
+                                        HierarchyName,
+                                        HierarchyLevelName,
+                                        ItemsAttached,
+                                        HierarchyClassId,
+                                        HierarchyClassName,
+                                        HierarchyLevel,
+                                        HierarchyParentClassId)
+	select @HierarchyMessageTypeId,
+		     @ReadyStatusId,
+		     @ActionId,
+		     h.hierarchyID,
+		     h.hierarchyName,
+		     hp.hierarchyLevelName,
+		     hp.itemsAttached,
+		     substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4),
+		     hc.hierarchyClassName,
+		     hc.hierarchyLevel,
+		     hc.hierarchyParentClassID
+	from Hierarchy h
 		join HierarchyClass hc on h.hierarchyID = hc.hierarchyID
 		join HierarchyPrototype hp on hc.hierarchyID = hp.hierarchyID and hc.hierarchyLevel = hp.hierarchyLevel
-    where
-		h.hierarchyName = 'Financial'
-		and hc.hierarchyLevel = @financialHierarchyClassLevel
-		and hc.hierarchyClassName = @newSubTeamName
+    where h.hierarchyName = 'Financial'
+		  and hc.hierarchyLevel = @financialHierarchyClassLevel
+		  and hc.hierarchyClassName = @newSubTeamName
 
 	set @rowCount = @@ROWCOUNT
 	print 'Queued ' + CONVERT(nvarchar(8), @rowCount) + ' hierarchy messages for the Seasonal Goods subteam.'

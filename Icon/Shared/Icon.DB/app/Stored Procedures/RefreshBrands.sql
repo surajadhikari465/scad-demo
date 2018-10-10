@@ -16,22 +16,28 @@ BEGIN
 			@brandsHierarchyLevel int = (select hierarchyLevel from HierarchyPrototype where hierarchyID = @brandsHierarchyId),
 			@brandsParentClassId int = null
 			
-	INSERT INTO app.MessageQueueHierarchy
-	SELECT	MessageTypeId			= @hierarchyMessageTypeId,
-			MessageStatusId			= @readyStatusId,
-			MessageHistoryId		= null,
-			MessageActionId			= @messageActionId,
-			InsertDate				= sysdatetime(),
-			HierarchyId				= @brandsHierarchyId,
-			HierarchyName			= 'Brands',
-			HierarchyLevelName		= @brandsHierarchyLevelName,
-			ItemsAttached			= @brandsItemsAttached,
-			HierarchyClassId		= hc.HierarchyClassId,
-			HierarchyClassName		= hc.HierarchyClassName,
-			HierarchyLevel			= @brandsHierarchyLevel,
-			HierarchyParentClassId	= @brandsParentClassId,
-			null,
-			null
+	INSERT INTO app.MessageQueueHierarchy(MessageTypeId,
+                                        MessageStatusId,
+                                        MessageActionId,
+                                        HierarchyId,
+                                        HierarchyName,
+                                        HierarchyLevelName,
+                                        ItemsAttached,
+                                        HierarchyClassId,
+                                        HierarchyClassName,
+                                        HierarchyLevel,
+                                        HierarchyParentClassId)
+	SELECT	@hierarchyMessageTypeId,
+			    @readyStatusId,
+			    @messageActionId,
+			    @brandsHierarchyId,
+			    'Brands',
+			    @brandsHierarchyLevelName,
+			    @brandsItemsAttached,
+			    hc.HierarchyClassId,
+			    hc.HierarchyClassName,
+			    @brandsHierarchyLevel,
+			    @brandsParentClassId
 	FROM @ids ids
 	JOIN HierarchyClass hc on ids.I = hc.hierarchyClassID
 	WHERE hc.hierarchyID = @brandsHierarchyId

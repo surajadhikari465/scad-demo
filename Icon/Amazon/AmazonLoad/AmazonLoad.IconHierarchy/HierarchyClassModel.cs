@@ -10,5 +10,6 @@
         public string HierarchyClassName { get; set; }
         public int HierarchyLevel { get; set; }
         public int? HierarchyParentClassId { get; set; }
+        public string NationalClassCode { get; set; }
     }
 }

@@ -16,37 +16,37 @@ CREATE PROCEDURE [app].[InitialLoadHierarchy]
 AS
 BEGIN
 	declare
-		@HierarchyMessageId int = (select MessageTypeId from app.MessageType where MessageTypeName = 'Hierarchy'),
-		@ReadyStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Ready'),
-		@ActionId int = (select MessageActionId from app.MessageAction where MessageActionName = 'AddOrUpdate')
+		@messageTypeId int   = (select MessageTypeId from app.MessageType where MessageTypeName = 'Hierarchy'),
+		@messageStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Ready'),
+		@messageActionId int = (select MessageActionId from app.MessageAction where MessageActionName = 'AddOrUpdate')
 		
-	insert into 
-		app.MessageQueueHierarchy
-	select
-		@HierarchyMessageId,
-		@ReadyStatusId,
-		null,
-		@ActionId,
-		sysdatetime(),
-		h.hierarchyID,
-		h.hierarchyName,
-		hp.hierarchyLevelName,
-		hp.itemsAttached,
-		case
-			when @HierarchyName = 'Financial' then substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
-			else cast(hc.hierarchyClassID as nvarchar(32)) 
-		end,
-		hc.hierarchyClassName,		
-		hc.hierarchyLevel,
-		hc.hierarchyParentClassID,
-		null,
-		null
-	from
-		Hierarchy h
+	insert into app.MessageQueueHierarchy(MessageTypeId,
+                                        MessageStatusId,
+                                        MessageActionId,
+                                        HierarchyId,
+                                        HierarchyName,
+                                        HierarchyLevelName,
+                                        ItemsAttached,
+                                        HierarchyClassId,
+                                        HierarchyClassName,
+                                        HierarchyLevel,
+                                        HierarchyParentClassId)
+	select @messageTypeId,
+		     @messageStatusId,
+		     @messageActionId,
+		     h.hierarchyID,
+		     h.hierarchyName,
+		     hp.hierarchyLevelName,
+		     hp.itemsAttached,
+		     case when @HierarchyName = 'Financial' then substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
+			        else cast(hc.hierarchyClassID as nvarchar(32)) end,
+		     hc.hierarchyClassName,		
+		     hc.hierarchyLevel,
+		     hc.hierarchyParentClassID
+	from Hierarchy h
 		join HierarchyClass hc on h.hierarchyID = hc.hierarchyID
 		join HierarchyPrototype hp on hc.hierarchyID = hp.hierarchyID and hc.hierarchyLevel = hp.hierarchyLevel
-    where
-		h.hierarchyName = @HierarchyName
-		and hc.hierarchyLevel = @Level
+    where h.hierarchyName = @HierarchyName
+		  and hc.hierarchyLevel = @Level
 END
 GO
