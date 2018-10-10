@@ -9,8 +9,8 @@ Connections/JDBC/Mammoth/Username=Mammoth.tibco.prd
 Connections/JDBC/Mammoth/Password=#!b3EuEXTsqEzl6ESJkG6JPdkty7B0j1HwwBDpsgPcnywbB4+SAlJrig==
 
 Connections/JMS/ESB/JndiContextUrl=ssl://cerp1617.wfm.pvt:37293,ssl://cerp1616.wfm.pvt:37293,ssl://odrp1609.wfm.pvt:37293,ssl://odrp1610.wfm.pvt:37293
-Connections/JMS/ESB/JndiUsername=jndiMammothUser
-Connections/JMS/ESB/JndiPassword=#!PKLOrfsYCOv/BiBcxUmcUaHKskAwvDrd/XvwkobzioCLn9zXOZ+zDw==
+Connections/JMS/ESB/JndiUsername=jndiIconUser
+Connections/JMS/ESB/JndiPassword=#!ye6tH0jZLjYg7GpYoZu8kxszO7fG0PfaGqQcI9id/oA=
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
 Connections/JMS/ESB/Username=mammothUser
 Connections/JMS/ESB/Password=#!denAyqq/MC40pxM7afowc4760snwqM6Uuss6uYptfJ0=
