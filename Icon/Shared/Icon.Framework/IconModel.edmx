@@ -515,6 +515,10 @@
           <Property Name="TSFEligible" Type="bit" />
           <Property Name="WFMEligilble" Type="bit" />
           <Property Name="Other3PEligible" Type="bit" />
+          <Property Name="HospitalityItem" Type="bit" />
+          <Property Name="KitchenItem" Type="bit" />
+          <Property Name="KitchenDescription" Type="nvarchar" MaxLength="15" />
+          <Property Name="ImageURL" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -4898,6 +4902,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="TSFEligible" Type="Boolean" />
           <Property Name="WFMEligilble" Type="Boolean" />
           <Property Name="Other3PEligible" Type="Boolean" />
+          <Property Name="HospitalityItem" Type="Boolean" />
+          <Property Name="KitchenItem" Type="Boolean" />
+          <Property Name="KitchenDescription" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ImageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
          </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6791,6 +6799,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="KitchenDescription" ColumnName="KitchenDescription" />
+                <ScalarProperty Name="KitchenItem" ColumnName="KitchenItem" />
+                <ScalarProperty Name="HospitalityItem" ColumnName="HospitalityItem" />
                 <ScalarProperty Name="Other3PEligible" ColumnName="Other3PEligible" />
                 <ScalarProperty Name="WFMEligilble" ColumnName="WFMEligilble" />
                 <ScalarProperty Name="TSFEligible" ColumnName="TSFEligible" />

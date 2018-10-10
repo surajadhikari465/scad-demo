@@ -93,6 +93,10 @@
     TSFEligible 				BIT NULL,
     WFMEligilble 				BIT NULL,
     Other3PEligible 			BIT NULL,
+	HospitalityItem				BIT null,
+	KitchenItem					BIT null,
+	KitchenDescription			NVARCHAR(15) null,
+	ImageURL					NVARCHAR(255) null
     CONSTRAINT PK_MessageQueueProduct PRIMARY KEY CLUSTERED (MessageQueueId ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT FK_MessageQueueProduct_MessageHistoryId FOREIGN KEY (MessageHistoryId) REFERENCES app.MessageHistory (MessageHistoryId) ON DELETE CASCADE,
     CONSTRAINT FK_MessageQueueProduct_MessageStatusId FOREIGN KEY (MessageStatusId) REFERENCES app.MessageStatus (MessageStatusId),

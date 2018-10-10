@@ -113,6 +113,10 @@ namespace Icon.Framework
         public Nullable<bool> TSFEligible { get; set; }
         public Nullable<bool> WFMEligilble { get; set; }
         public Nullable<bool> Other3PEligible { get; set; }
+        public Nullable<bool> HospitalityItem { get; set; }
+        public Nullable<bool> KitchenItem { get; set; }
+        public string KitchenDescription { get; set; }
+        public string ImageURL { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
