@@ -26,6 +26,8 @@ AS
 --                          newly created tables, all starting with the name of 'Purged_'.
 --                   26995  Modify the way the RetentionPolicy records to be retrieved, so that more than one purge window can be opened daily for
 --                          order purge.
+-- 10/10/2018  MZ    29630  Disable OrderItemDelete trigger before OrderItem records are purged in this job. The trigger will be re-enabled after the 
+--                          mass delete of the OrderItem records. Wrap up with transaction when disabling and re-enabling triggers.
 --****************************************************************************************************************************************************
 BEGIN
 	DECLARE @RunTime INT
@@ -218,6 +220,15 @@ BEGIN
 			BEGIN
 				TRUNCATE TABLE SuspendedAvgCost
 			END
+			
+			-- Disable OrderItemDelete triger before purging OrderItem data
+			SELECT @LogMsg = 'Disabling trigger [dbo].[OrderItemDelete] and delete [dbo].[OrderItem] records ...'
+			SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			
+			BEGIN TRANSACTION;
+
+			BEGIN TRY
+			;DISABLE TRIGGER [dbo].[OrderItemDelete] ON [dbo].[OrderItem]
 
 			-- Purge OrderItem data
 			SELECT @Count = @batchVolume
@@ -231,10 +242,28 @@ BEGIN
 				SELECT @Count = @@rowcount
 				SELECT @RecordDeletedCount = @RecordDeletedCount + @Count
 			END
-			SELECT @CodeLocation = 'OrderItem Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderItem records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
-			SELECT @now = getdate(); 
-			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
-		
+			
+			;ENABLE TRIGGER [dbo].[OrderItemDelete] ON [dbo].[OrderItem]
+			END TRY
+			BEGIN CATCH
+				IF @@TRANCOUNT > 0
+					ROLLBACK TRANSACTION;
+				
+				SELECT @CodeLocation = 'OrderItem Purging encountered error. Transaction rolled back. '; SELECT @LogMsg = @CodeLocation + ERROR_MESSAGE();
+				SELECT @now = getdate(); 
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+				
+			END CATCH;
+
+			IF @@TRANCOUNT > 0
+			BEGIN
+				COMMIT TRANSACTION;
+			
+				SELECT @CodeLocation = 'Trigger [dbo].[OrderItemDelete] re-enabled. OrderItem Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderItem records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
+				SELECT @now = getdate(); 
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			END
+
 			-- Purge DeletedOrderItem data
 			SELECT @Count = @batchVolume, @RecordDeletedCount = 0
 			WHILE (@Count = @batchVolume)
@@ -439,7 +468,10 @@ BEGIN
 
 			SELECT @LogMsg = 'Disabling trigger [dbo].[OrderHeaderDel] and delete [dbo].[OrderHeader] records ...'
 			SELECT @now = getdate(); exec dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			
+			BEGIN TRANSACTION;
 
+			BEGIN TRY
 			;DISABLE TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader]
 
 			SELECT @RecordDeletedCount = 0
@@ -452,10 +484,25 @@ BEGIN
 			SELECT @RecordDeletedCount = @@rowcount
 
 			;ENABLE TRIGGER [dbo].[OrderHeaderDel] ON [dbo].[OrderHeader]
-		
-			SELECT @CodeLocation = 'Trigger [dbo].[OrderHeaderDel] re-enabled. OrderHeader Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderHeader records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
-			SELECT @now = getdate(); 
-			EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+
+			END TRY
+			BEGIN CATCH
+				IF @@TRANCOUNT > 0
+					ROLLBACK TRANSACTION;
+
+				SELECT @CodeLocation = 'OrderHeader Purging encountered error. Transaction rolled back. '; SELECT @LogMsg = @CodeLocation + ERROR_MESSAGE();
+				SELECT @now = getdate(); 
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			END CATCH;
+
+			IF @@TRANCOUNT > 0
+			BEGIN
+				COMMIT TRANSACTION;
+				
+				SELECT @CodeLocation = 'Trigger [dbo].[OrderHeaderDel] re-enabled. OrderHeader Purging Ends... '; SELECT @LogMsg = @CodeLocation + ' OrderHeader records deleted: ' + CAST(@RecordDeletedCount AS VARCHAR);
+				SELECT @now = getdate(); 
+				EXEC dbo.AppLogInsertEntry @now, @LogAppID, @LogThread, @LogLevel, @LogAppName, @LogMsg, @LogExceptionMsg;
+			END
 
 			UPDATE RetentionPolicy
 			   SET LastPurgedDateTime = getdate()
