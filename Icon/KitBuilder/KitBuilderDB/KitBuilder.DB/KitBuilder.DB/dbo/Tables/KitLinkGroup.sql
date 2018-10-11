@@ -1,13 +1,17 @@
-﻿CREATE TABLE [dbo].[KitLinkGroup]
-(
-	[KitLinkGroupId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [KitId] INT NOT NULL, 
-    [LinkGroupId] INT NOT NULL, 
-    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
-	[LastUpdatedDateUtc] DATETIME2 NULL , 
-    CONSTRAINT [FK_KitLinkGroup_LinkGroup] FOREIGN KEY ([LinkGroupId]) REFERENCES [LinkGroup]([LinkGroupId]), 
-    CONSTRAINT [FK_KitLinkGroup_Kit] FOREIGN KEY ([KitId]) REFERENCES [Kit]([KitId])
-)
+﻿CREATE TABLE [dbo].[KitLinkGroup] (
+    [KitLinkGroupId]     INT           IDENTITY (1, 1) NOT NULL,
+    [KitId]              INT           NOT NULL,
+    [LinkGroupId]        INT           NOT NULL,
+    [InsertDateUtc]      DATETIME2 (7) CONSTRAINT [DF_KitLinkGroup_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
+    [LastUpdatedDateUtc] DATETIME2 (7) NULL,
+    CONSTRAINT [PK_KitLinkGroup] PRIMARY KEY CLUSTERED ([KitLinkGroupId] ASC),
+    CONSTRAINT [FK_KitLinkGroup_Kit] FOREIGN KEY ([KitId]) REFERENCES [dbo].[Kit] ([KitId]),
+    CONSTRAINT [FK_KitLinkGroup_LinkGroup] FOREIGN KEY ([LinkGroupId]) REFERENCES [dbo].[LinkGroup] ([LinkGroupId])
+);
+
+
+
+
 
 GO
 

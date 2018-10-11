@@ -8,5 +8,5 @@
 	@MachineName nvarchar(255) = null)
 as
 
-insert into AppLog(AppID, UserName, LogDate, Level, Logger, Message, MachineName) 
-  values(1, @UserName, IsNull(@LogDate, GetDate()), @Level, @Source, @Message, IsNull(@MachineName, HOST_NAME()));
+insert into AppLog(AppID, UserName, LogDateUtc, Level, Logger, Message, MachineName) 
+  values(1, @UserName, IsNull(@LogDate, SYSDATETIME()), @Level, @Source, @Message, IsNull(@MachineName, HOST_NAME()));

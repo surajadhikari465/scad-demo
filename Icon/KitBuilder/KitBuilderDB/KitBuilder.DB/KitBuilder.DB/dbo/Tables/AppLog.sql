@@ -5,7 +5,8 @@
 	Logger      nvarchar(255),
 	UserName    nvarchar(255),
 	MachineName nvarchar(255),
-	InsertDateUtc  datetime2(7) not null default SYSUTCDATETIME(),
+	InsertDateUtc  datetime2(7) not NULL
+	CONSTRAINT DF_AppLog_InsertDateUtc DEFAULT SYSUTCDATETIME(),
 	LogDateUtc     datetime2(7),
   Thread      nvarchar(100),
 	Message     nvarchar(max),

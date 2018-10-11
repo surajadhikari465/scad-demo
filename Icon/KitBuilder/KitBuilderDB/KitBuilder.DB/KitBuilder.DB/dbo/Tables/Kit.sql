@@ -1,13 +1,16 @@
-﻿CREATE TABLE [dbo].[Kit]
-(
-	[KitId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [ItemId] INT NOT NULL, 
-    [Description] NVARCHAR(255) NULL, 
-    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
-	[LastUpdatedDateUtc] DATETIME2 NULL , 
-    CONSTRAINT [FK_Kit_Items] FOREIGN KEY ([ItemId]) REFERENCES [Items]([ItemId])
-   
-)
+﻿CREATE TABLE [dbo].[Kit] (
+    [KitId]              INT            IDENTITY (1, 1) NOT NULL,
+    [ItemId]             INT            NOT NULL,
+    [Description]        NVARCHAR (255) NULL,
+    [InsertDateUtc]      DATETIME2 (7)  CONSTRAINT [DF_Kit_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
+    [LastUpdatedDateUtc] DATETIME2 (7)  NULL,
+    CONSTRAINT [PK_Kit] PRIMARY KEY CLUSTERED ([KitId] ASC),
+    CONSTRAINT [FK_Kit_Items] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Items] ([ItemId])
+);
+
+
+
+
 
 GO
 

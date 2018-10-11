@@ -1,5 +1,9 @@
-﻿CREATE TABLE [dbo].[InstructionType]
-(
-	[InstructionTypeId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [Name] NVARCHAR(100) NOT NULL
-)
+﻿CREATE TABLE [dbo].[InstructionType] (
+    [InstructionTypeId] INT            IDENTITY (1, 1) NOT NULL,
+    [Name]              NVARCHAR (100) NOT NULL,
+    CONSTRAINT [PK_InstructionType] PRIMARY KEY CLUSTERED ([InstructionTypeId] ASC)
+);
+
+
+
+
