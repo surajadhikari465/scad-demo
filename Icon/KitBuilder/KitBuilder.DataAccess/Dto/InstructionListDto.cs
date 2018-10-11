@@ -6,7 +6,7 @@ namespace KitBuilder.DataAccess.Dto
     {
         public int InstructionListId { get; set; }
         [Required(ErrorMessage = "Name is required.")]
-        [StringLength(10, ErrorMessage = "Name can have maximum length of 10.")]
+        [StringLength(40, ErrorMessage = "Name can have maximum length of 40.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Instruction Type is required.")]
         public int InstructionTypeId { get; set; }
@@ -19,7 +19,7 @@ namespace KitBuilder.DataAccess.Dto
     public class InstructionListAddDto
     {
         [Required(ErrorMessage = "Name is required.")]
-        [StringLength(10, ErrorMessage = "Name can have maximum length of 10.")]
+        [StringLength(40, ErrorMessage = "Name can have maximum length of 40.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Instruction Type is required.")]
         public int InstructionTypeId { get; set; }
@@ -29,7 +29,7 @@ namespace KitBuilder.DataAccess.Dto
     public class InstructionListUpdateDto
     {
         [Required(ErrorMessage = "Name is required.")]
-        [StringLength(10, ErrorMessage = "Name can have maximum length of 10.")]
+        [StringLength(40, ErrorMessage = "Name can have maximum length of 40.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Instruction Type is required.")]
