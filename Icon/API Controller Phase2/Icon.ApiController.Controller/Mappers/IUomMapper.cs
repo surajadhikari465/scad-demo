@@ -1,4 +1,4 @@
-﻿using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+﻿using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 
 namespace Icon.ApiController.Controller.Mappers

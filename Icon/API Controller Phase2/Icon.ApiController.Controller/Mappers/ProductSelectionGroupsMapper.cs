@@ -6,7 +6,7 @@ using Icon.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Controller.Mappers
 {

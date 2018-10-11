@@ -3,6 +3,7 @@ using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using System;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Controller.QueueReaders
 {
@@ -219,7 +220,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                        id = ItemPriceTypes.Tpr.ToString()
+                                        id = (PriceTypeIdType)ItemPriceTypes.Tpr
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -335,7 +336,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                             description = ItemPriceDescriptions.RegularPrice,
-                                            id = ItemPriceTypes.Reg.ToString()
+                                            id = (PriceTypeIdType)ItemPriceTypes.Reg
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -409,7 +410,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.RegularPrice,
-                                            id = ItemPriceTypes.Reg.ToString()
+                                            id = (PriceTypeIdType)ItemPriceTypes.Reg
                                         },
                                         uom = new Contracts.UomType
                                         {
@@ -477,7 +478,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                            id = ItemPriceTypes.Tpr.ToString()
+                                            id = (PriceTypeIdType)ItemPriceTypes.Tpr
                                         },
                                         uom = new Contracts.UomType
                                         {
@@ -552,7 +553,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.RegularPrice,
-                                        id = ItemPriceTypes.Reg.ToString()
+                                        id = (PriceTypeIdType)ItemPriceTypes.Reg
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -621,7 +622,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                        id = ItemPriceTypes.Tpr.ToString()
+                                        id = (PriceTypeIdType)ItemPriceTypes.Tpr
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -703,7 +704,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                            id = ItemPriceTypes.Tpr.ToString()
+                                            id = (PriceTypeIdType)ItemPriceTypes.Tpr
                                         },
                                         uom = new Contracts.UomType
                                         {

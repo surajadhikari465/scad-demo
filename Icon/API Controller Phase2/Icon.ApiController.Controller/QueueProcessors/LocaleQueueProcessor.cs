@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Icon.ApiController.Controller.ControllerConstants;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using System.Linq;
 
 namespace Icon.ApiController.Controller.QueueProcessors

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Icon.ApiController.Controller.ControllerConstants;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.ApiController.DataAccess.Queries;
 using System.Configuration;
 

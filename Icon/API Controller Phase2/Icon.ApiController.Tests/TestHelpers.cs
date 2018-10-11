@@ -1,6 +1,6 @@
 ﻿using Icon.Framework;
 using System;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Tests
 {
@@ -56,8 +56,11 @@ namespace Icon.ApiController.Tests
                 NationalClassId = 2,
                 NationalClassName = "Test National",
                 NationalLevel = HierarchyLevels.NationalClass,
-                NationalParentId = 3
-            };
+                NationalParentId = 3,
+                HospitalityItem = true,
+                KitchenItem = true,
+                ImageURL= "TestUrL"
+        };
         }
         public static MessageQueueProduct GetFakeMessageQueueProductWithHospitalityAndEstoreData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
         {
@@ -73,9 +76,11 @@ namespace Icon.ApiController.Tests
             msgQProduct.WFMEligilble = true;
             msgQProduct.TSFEligible = false;
             msgQProduct.Other3PEligible = null;
+           
 
             return msgQProduct;
         }
+
 
         public static MessageQueueProduct GetFakeMessageQueueProductWithNutritionalData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
         {

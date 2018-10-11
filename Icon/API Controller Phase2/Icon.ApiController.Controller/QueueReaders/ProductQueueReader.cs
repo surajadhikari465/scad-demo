@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Controller.QueueReaders
 {
@@ -167,6 +167,16 @@ namespace Icon.ApiController.Controller.QueueReaders
                                             typeDescription = message.ScanCodeTypeDesc
                                         }
                                     },
+                                    kit = new Contracts.KitType
+                                    {
+                                       kitItem =  new Contracts.KitTypeKitItem
+                                        {
+                                            kitchenItem = (bool)message.KitchenItem,
+                                            kitchenDescription = message.KitchenDescription,
+                                            imageUrl = message.ImageURL,
+                                            hospitalityItem = (bool)message.HospitalityItem
+                                        }
+                                    },
                                     hierarchies = new Contracts.HierarchyType[]
                                     {
                                         BuildMerchandiseHierarchy(message),
@@ -247,6 +257,16 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     scanCodes = new Contracts.ScanCodeType[]
                                     {
                                         BuildScanCodeType(message)
+                                    },
+                                    kit = new Contracts.KitType
+                                    {
+                                       kitItem =  new Contracts.KitTypeKitItem
+                                        {
+                                            kitchenItem = (bool)message.KitchenItem,
+                                            kitchenDescription = message.KitchenDescription,
+                                            imageUrl = message.ImageURL,
+                                            hospitalityItem = (bool)message.HospitalityItem
+                                        }
                                     },
                                     hierarchies = settings.EnableNationalHierarchy ? 
                                         new Contracts.HierarchyType[]
