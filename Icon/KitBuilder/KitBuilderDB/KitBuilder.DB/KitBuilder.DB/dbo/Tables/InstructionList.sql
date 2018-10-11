@@ -1,18 +1,18 @@
-﻿CREATE TABLE [dbo].[InstructionList]
-(
-	[InstructionListId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [Name] NVARCHAR(10) NOT NULL, 
-    [InstructionTypeId] INT NOT NULL, 
-    [StatusId] INT NOT NULL, 
-	[InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
-	[LastUpdatedDateUtc] DATETIME2 NULL , 
-    CONSTRAINT [FK_InstructionList_InstructionType_InstructionTypeId] FOREIGN KEY ([InstructionTypeId]) REFERENCES [dbo].[InstructionType]([InstructionTypeId])
-				ON DELETE NO ACTION
-                ON UPDATE NO ACTION,
-    CONSTRAINT [FK_InstructionList_Status_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [Status]([StatusID])
-				ON DELETE NO ACTION
-                ON UPDATE NO ACTION
-)
+﻿CREATE TABLE [dbo].[InstructionList] (
+    [InstructionListId]  INT           IDENTITY (1, 1) NOT NULL,
+    [Name]               NVARCHAR (10) NOT NULL,
+    [InstructionTypeId]  INT           NOT NULL,
+    [StatusId]           INT           NOT NULL,
+    [InsertDateUtc]      DATETIME2 (7) CONSTRAINT [DF_InstructioniList_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
+    [LastUpdatedDateUtc] DATETIME2 (7) NULL,
+    CONSTRAINT [PK_InstructionList] PRIMARY KEY CLUSTERED ([InstructionListId] ASC),
+    CONSTRAINT [FK_InstructionList_InstructionType_InstructionTypeId] FOREIGN KEY ([InstructionTypeId]) REFERENCES [dbo].[InstructionType] ([InstructionTypeId]),
+    CONSTRAINT [FK_InstructionList_Status_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [dbo].[Status] ([StatusID])
+);
+
+
+
+
 
 GO
 

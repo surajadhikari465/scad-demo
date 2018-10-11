@@ -3,7 +3,7 @@
 	SchemaName            nvarchar(50) not null,
 	TableName             nvarchar(128) not null,
 	ReferenceColumn       nvarchar(50) not null,
-	DaysToKeep            smallint not null default 10,
+	DaysToKeep            smallint not null CONSTRAINT DF_PurgeTable_Info_DaysToKeep default 10,
 	TimeToStart           tinyint not null,
 	TimeToEnd             tinyint not null,
 	IsDailyPurge          bit not null,

@@ -1,17 +1,21 @@
-﻿CREATE TABLE [dbo].[KitLinkGroupItemLocale]
-(
-	[KitLinkGroupItemLocaleId] INT NOT NULL IDENTITY PRIMARY KEY, 
-    [KitLinkGroupItemId] INT NOT NULL, 
-    [KitLinkGroupLocaleId] INT NOT NULL, 
-    [Properties] NVARCHAR(MAX) NULL, 
-    [DisplaySequence] INT NOT NULL, 
-	[Exclude] BIT NULL, 
-    [InsertDateUtc] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(), 
-    [LastUpdatedDateUtc] DATETIME2 NULL, 
-    [LastModifiedBy] NVARCHAR(100) NOT NULL, 
-    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLinkGroupItem] FOREIGN KEY ([KitLinkGroupItemId]) REFERENCES [KitLinkGroupItem]([KitLinkGroupItemId]), 
-    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLocale] FOREIGN KEY ([KitLinkGroupLocaleId]) REFERENCES [KitLinkGroupLocale]([KitLinkGroupLocaleId]) ON DELETE CASCADE
-)
+﻿CREATE TABLE [dbo].[KitLinkGroupItemLocale] (
+    [KitLinkGroupItemLocaleId] INT            IDENTITY (1, 1) NOT NULL,
+    [KitLinkGroupItemId]       INT            NOT NULL,
+    [KitLinkGroupLocaleId]     INT            NOT NULL,
+    [Properties]               NVARCHAR (MAX) NULL,
+    [DisplaySequence]          INT            NOT NULL,
+    [Exclude]                  BIT            NULL,
+    [InsertDateUtc]            DATETIME2 (7)  CONSTRAINT [DF_KitLinkGroupItemLocale_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
+    [LastUpdatedDateUtc]       DATETIME2 (7)  NULL,
+    [LastModifiedBy]           NVARCHAR (100) NOT NULL,
+    CONSTRAINT [PK_KitLinkGroupItemLocale] PRIMARY KEY CLUSTERED ([KitLinkGroupItemLocaleId] ASC),
+    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLinkGroupItem] FOREIGN KEY ([KitLinkGroupItemId]) REFERENCES [dbo].[KitLinkGroupItem] ([KitLinkGroupItemId]),
+    CONSTRAINT [FK_KitLinkGroupItemLocale_KitLocale] FOREIGN KEY ([KitLinkGroupLocaleId]) REFERENCES [dbo].[KitLinkGroupLocale] ([KitLinkGroupLocaleId]) ON DELETE CASCADE
+);
+
+
+
+
 
 GO
 
