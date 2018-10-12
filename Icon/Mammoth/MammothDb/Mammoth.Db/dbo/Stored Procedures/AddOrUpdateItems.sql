@@ -30,7 +30,11 @@ BEGIN
 		i.ScanCode,
 		m.HierarchyMerchandiseID,
 		i.TaxClassHCID,
-		i.Desc_CustomerFriendly
+		i.Desc_CustomerFriendly, 
+		i.Desc_Kitchen, 
+		i.KitchenItem, 
+		i.HospitalityItem, 
+		i.ImageUrl
 	INTO #insertItems
 	FROM #items i
 	LEFT JOIN dbo.Hierarchy_Merchandise		m on i.SubBrickID = m.SubBrickHCID
@@ -57,7 +61,11 @@ BEGIN
 				i.RetailUOM = i2.RetailUOM,
 				i.TaxClassHCID = i2.TaxClassHCID,
 				i.Desc_CustomerFriendly = i2.Desc_CustomerFriendly,
-				i.ModifiedDate = @today
+				i.ModifiedDate = @today,		
+				i.Desc_Kitchen = i2.Desc_Kitchen, 
+				i.KitchenItem = i2.KitchenItem, 
+				i.HospitalityItem = i2.HospitalityItem, 
+				i.ImageUrl = i2.ImageUrl
 			FROM dbo.Items i
 			INNER JOIN #items i2 on i2.ItemID = i.ItemID
 			LEFT JOIN dbo.Hierarchy_Merchandise		m on i2.SubBrickID = m.SubBrickHCID
@@ -81,7 +89,11 @@ BEGIN
 				RetailUOM,
 				FoodStampEligible,
 				Desc_CustomerFriendly,
-				AddedDate
+				AddedDate, 
+				Desc_Kitchen, 
+				KitchenItem, 
+				HospitalityItem, 
+				ImageUrl
 			)
 			SELECT
 				i.ItemID,
@@ -99,7 +111,11 @@ BEGIN
 				i.RetailUOM,
 				i.FoodStampEligible,
 				i.Desc_CustomerFriendly,
-				@today
+				@today,
+				i.Desc_Kitchen,  
+				i.KitchenItem, 
+				i.HospitalityItem, 
+				i.ImageUrl
 			FROM #insertItems i
 
 		COMMIT TRAN

@@ -14,7 +14,11 @@
     [RetailUOM]						NVARCHAR (255)	NULL,
     [PSNumber]						NVARCHAR (255)	NULL,
 	[FoodStampEligible]				BIT				NULL,
-	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL
+	[Desc_CustomerFriendly]			NVARCHAR(255)	NULL,		
+	[KitchenItem]					BIT				NOT NULL DEFAULT(0),		
+	[HospitalityItem]				BIT				NOT NULL DEFAULT(0),
+	[ImageUrl]						NVARCHAR(255)	NULL,
+	[Desc_Kitchen]					NVARCHAR(15)	NULL
 )
 GO
 

@@ -16,6 +16,12 @@
 	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL,
     [AddedDate]						DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]					DATETIME       NULL,
+	[KitchenItem]					BIT			   NOT NULL
+		CONSTRAINT DF_Items_KitchenItem DEFAULT (0),
+	[HospitalityItem]				BIT				NOT NULL
+		CONSTRAINT DF_Items_HospitalityItem DEFAULT (0), 
+	[Desc_Kitchen]					NVARCHAR(15)	NULL,
+	[ImageUrl]						NVARCHAR(255)	NULL,
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100),
     UNIQUE NONCLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100)
 );

@@ -63,6 +63,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, globalAttributes);
+
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -72,6 +74,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 
             var extAttributes = ReadExtendedAttributesDynamic(itemId);
             AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
+
         }
         
         [TestMethod]
@@ -94,6 +97,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, globalAttributes);
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -439,6 +443,13 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     RefrigeratedOrShelfStable = "Test RefrigeratedOrShelfStable",
                     SmithsonianBirdFriendly = "Test SmithsonianBirdFriendly",
                     Wic = "Test Wic"
+                },
+                KitItemAttributes =  new KitItemAttributesModel
+                {
+                    HospitalityItem = false, 
+                    KitchenItem = true,
+                    ImageUrl = "http://wholefoods.com",
+                    KitchenDescription = "Description"
                 }
             };
         }
@@ -693,6 +704,16 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 new { ItemId = itemId },
                 dbProvider.Transaction)
                 .ToList();
+        }
+
+        private void AssertKitAttributesAsExpected(
+            KitItemAttributesModel expectedKitAttributes,
+            dynamic actualItemsRow)
+        {
+            Assert.AreEqual(expectedKitAttributes.KitchenDescription, actualItemsRow.Desc_Kitchen);
+            Assert.AreEqual(expectedKitAttributes.KitchenItem, actualItemsRow.KitchenItem);
+            Assert.AreEqual(expectedKitAttributes.HospitalityItem, actualItemsRow.HospitalityItem);
+            Assert.AreEqual(expectedKitAttributes.ImageUrl, actualItemsRow.ImageUrl);
         }
 
         private void AssertGlobalAttributesAsExpected(

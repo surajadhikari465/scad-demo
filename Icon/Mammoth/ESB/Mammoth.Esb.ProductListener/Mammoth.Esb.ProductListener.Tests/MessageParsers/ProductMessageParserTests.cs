@@ -135,6 +135,12 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             Assert.AreEqual("Smithsonian Bird Friendly Test", extAttributes.SmithsonianBirdFriendly);
             Assert.AreEqual("WIC Test", extAttributes.Wic);
             Assert.AreEqual("Global Pricing Program Test", extAttributes.GlobalPricingProgram);
+
+            var kitItemAttributes = item.KitItemAttributes;
+            Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
+            Assert.AreEqual(true, kitItemAttributes.KitchenItem);
+            Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
+            Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
         }
 
         [TestMethod]
@@ -195,6 +201,12 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 
             var nutritionAttributes = item.NutritionAttributes;
             Assert.IsNull(item.NutritionAttributes);
+
+            var kitItemAttributes = item.KitItemAttributes;
+            Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
+            Assert.AreEqual(true, kitItemAttributes.KitchenItem);
+            Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
+            Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
         }
     }
 }

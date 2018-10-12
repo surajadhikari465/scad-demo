@@ -25,6 +25,8 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesExtended(data);
         }
 
+    
+
         private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
         {
             string sql = @"dbo.AddOrUpdateItems";
@@ -49,7 +51,11 @@ namespace Mammoth.Esb.ProductListener.Commands
                             RetailUOM = i.GlobalAttributes.RetailUOM,
                             PSNumber = i.GlobalAttributes.PSNumber,
                             FoodStampEligible = i.GlobalAttributes.FoodStampEligible,
-                            CustomerFriendlyDescription = i.GlobalAttributes.Desc_CustomerFriendly
+                            CustomerFriendlyDescription = i.GlobalAttributes.Desc_CustomerFriendly, 
+                            KitchenItem=i.KitItemAttributes.KitchenItem, 
+                            HospitalityItem = i.KitItemAttributes.HospitalityItem, 
+                            ImageUrl = i.KitItemAttributes.ImageUrl, 
+                            KitchenDescription=i.KitItemAttributes.KitchenDescription
                         })
                     .ToList()
                     .ToDataTable()
