@@ -34,7 +34,8 @@
             controllerType = ConfigurationManager.AppSettings["ControllerType"].ToString();
             int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
 
-            if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out DateTime timeStamp))
+            DateTime timeStamp;
+            if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out timeStamp))
               throw new ArgumentException("Invalid or missing MaintenanceStartTime configuration setting");
             
             startTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
@@ -53,7 +54,8 @@
                 throw new Exception(string.Format("Invalid argument specified.  The valid arguments are: {0}", string.Join(",", StartupOptions.ValidArgs)));
 
             //Initilize timer if all settings have been validated
-            int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out int runInterval);
+            int runInterval;
+            int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
             this.timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
           }
           catch(Exception ex) { logger.Error(ex.Message); }
