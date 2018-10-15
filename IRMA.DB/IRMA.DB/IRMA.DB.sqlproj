@@ -3337,12 +3337,12 @@
     <None Include="SQL Agent Job\Amazon Vendor Lane Data Feed - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\VendorLaneExtract.sql" />
     <None Include="Scripts\PostDeploy\Archive\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PopulateAmzEventTypeTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
     <None Include="IRMA.DB.publish.xml" />
     <Build Include="Schema\amz\amz.sql" />
-    <None Include="Scripts\PostDeploy\PopulateAmzEventTypeTable.sql" />
     <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
     <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
   </ItemGroup>
