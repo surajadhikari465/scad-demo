@@ -118,6 +118,9 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var linkGroupPassed = Mapper.Map<LinkGroup>(linkGroup);
+            linkGroupPassed.InsertDateUtc = DateTime.UtcNow;
+            linkGroupPassed.LastUpdatedDateUtc = DateTime.UtcNow;
+
             linkGroupRepository.Add(linkGroupPassed);
 
             try

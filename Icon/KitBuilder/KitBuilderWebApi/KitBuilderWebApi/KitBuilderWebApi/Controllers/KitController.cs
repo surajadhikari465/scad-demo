@@ -348,6 +348,9 @@ namespace KitBuilderWebApi.Controllers
 				if (kitToSave.KitId <= 0) //brand new kit
 				{
 					var newKit = Mapper.Map<Kit>(kitToSave);
+                    newKit.LastUpdatedDateUtc = DateTime.UtcNow;
+                    newKit.InsertDateUtc=DateTime.UtcNow;
+
 					kitLocaleRepository.UnitOfWork.Context.Kit.Add(newKit);
 				}
 				else
@@ -383,7 +386,9 @@ namespace KitBuilderWebApi.Controllers
 										   {
 											   KitId = kitToSave.KitId,
 											   LinkGroupId = lg.LinkGroupId,
-											   KitLinkGroupItem = ConvertToLinkGroupItemList(kitToSave.KitLinkGroup.Where(l => l.LinkGroupId == lg.LinkGroupId).SelectMany(i => i.KitLinkGroupItem))
+											   KitLinkGroupItem = ConvertToLinkGroupItemList(kitToSave.KitLinkGroup.Where(l => l.LinkGroupId == lg.LinkGroupId).SelectMany(i => i.KitLinkGroupItem)),
+                                               LastUpdatedDateUtc = DateTime.UtcNow,
+                                               InsertDateUtc = DateTime.UtcNow
 										   };
 					var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
@@ -399,6 +404,10 @@ namespace KitBuilderWebApi.Controllers
 					List<KitLinkGroupItem> newKitLinkGroupItems = new List<KitLinkGroupItem>();
 					foreach(KitLinkGroupItemDto newLinkGroupItemDto in newKitLinkGroupItemDtos)
 					{
+					    var linkGroupItem = Mapper.Map<KitLinkGroupItem>(newLinkGroupItemDto);
+                        linkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
+					    linkGroupItem.InsertDateUtc = DateTime.UtcNow;
+
 						newKitLinkGroupItems.Add(Mapper.Map<KitLinkGroupItem>(newLinkGroupItemDto));
 					}
 
