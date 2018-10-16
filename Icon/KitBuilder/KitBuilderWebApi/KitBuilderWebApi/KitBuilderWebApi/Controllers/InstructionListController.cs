@@ -147,7 +147,7 @@ namespace KitBuilderWebApi.Controllers
             var instructionList = Mapper.Map<InstructionList>(list);
             instructionList.InstructionListId = existingList.InstructionListId;
             instructionList.InsertDateUtc = existingList.InsertDateUtc;
-            instructionList.LastUpdatedDateUtc = DateTime.Now;
+            instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
 
             try
             {
