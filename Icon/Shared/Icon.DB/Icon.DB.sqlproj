@@ -676,12 +676,12 @@
     <Build Include="dbo\Tables\LocaleSubType.sql" />
     <None Include="Scripts\PopulateData\Archive\AddMessageResponseR10TableToRetentionPolicy.sql" />
     <None Include="Scripts\PopulateData\Archive\DeleteR10MessageResponseTable.sql" />
-    <None Include="Scripts\PopulateData\Release\AddIrmaItemKeyTraitCodes.sql" />
     <None Include="Scripts\PopulateData\Archive\AddHospitalityToLocaleSubType.sql" />
     <None Include="Scripts\PopulateData\Archive\AddLocaleSubtypeTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\AddVenueCodeOccupantLocaleTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\AddVenueLocaleType.sql" />
-    <None Include="Scripts\PopulateData\AddHospitalityAndEstoreTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddIrmaItemKeyTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\Release\AddHospitalityAndEstoreTraitCodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
