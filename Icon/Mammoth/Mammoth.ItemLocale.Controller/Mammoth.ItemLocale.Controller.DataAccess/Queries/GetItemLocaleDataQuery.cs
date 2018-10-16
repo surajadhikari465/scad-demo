@@ -44,10 +44,9 @@ SELECT q.QueueID AS QueueId
 		ELSE NULL
 		END AS AgeRestriction
 	,CASE 
-		WHEN t.EventTypeName = 'ItemDelete'
-			THEN 0
+		WHEN t.EventTypeName in('ItemDelete', 'ItemDeauthorization') THEN 0
 		ELSE si.Authorized
-		END AS Authorized
+    END AS Authorized
 	,p.IBM_Discount AS CaseDiscount
 	,sa.UomRegulationChicagoBaby AS ChicagoBaby
 	,sa.ColorAdded AS ColorAdded
@@ -164,8 +163,7 @@ SELECT q.QueueID AS QueueId
 		ELSE NULL
 		END AS AgeRestriction
 	,CASE 
-		WHEN t.EventTypeName = 'ItemDelete'
-			THEN 0
+		WHEN t.EventTypeName in('ItemDelete', 'ItemDeauthorization') THEN 0
 		ELSE si.Authorized
 		END AS Authorized
 	,p.IBM_Discount AS CaseDiscount
