@@ -146,6 +146,8 @@ namespace KitBuilderWebApi.Controllers
 
             var instructionList = Mapper.Map<InstructionList>(list);
             instructionList.InstructionListId = existingList.InstructionListId;
+            instructionList.InsertDateUtc = existingList.InsertDateUtc;
+            instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
 
             try
             {
@@ -229,6 +231,8 @@ namespace KitBuilderWebApi.Controllers
 
             var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
             instructionList.StatusId = defaultStatus.StatusId;
+            instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+            instructionList.InsertDateUtc = DateTime.UtcNow;
 
             instructionListRepository.Add(instructionList);
 

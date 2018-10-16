@@ -148,6 +148,8 @@ namespace KitBuilderWebApi.Controllers
             {
                 var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
                 instructionListMember.InstructionListId = instructionListId;
+                instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
+                instructionListMember.InsertDateUtc = DateTime.UtcNow;
                 instructionList.InstructionListMember.Add(instructionListMember);
             }
 
@@ -256,7 +258,7 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
 
             var instructionList = instructionListRepository.Find(il => il.InstructionListId == instructionListId);
-
+            
             if (instructionList == null)
             {
                 logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
@@ -267,13 +269,19 @@ namespace KitBuilderWebApi.Controllers
 
             foreach (var instructionListMemberDto in InstructionListMembersDto)
             {
+
+                var existingInstructionListMemeber = instructionListMemberRepository.Find(ilm =>
+                    ilm.InstructionListMemberId == instructionListMemberDto.InstructionListMemberId);
+
                 var instructionListMember = new InstructionListMember()
                 {
                     InstructionListMemberId = instructionListMemberDto.InstructionListMemberId,
-                    InstructionListId = instructionListMemberDto.InstructionListId,
+                    InstructionListId = instructionList.InstructionListId,
                     Group = instructionListMemberDto.Group,
                     Member = instructionListMemberDto.Member,
-                    Sequence = instructionListMemberDto.Sequence
+                    Sequence = instructionListMemberDto.Sequence,
+                    LastUpdatedDateUtc = DateTime.UtcNow, 
+                    InsertDateUtc = existingInstructionListMemeber.InsertDateUtc
                 };
 
                 instructionListMemberRepository.Update(instructionListMember, instructionListMemberDto.InstructionListMemberId);

@@ -26,7 +26,7 @@ namespace KitBuilderWebApi.Controllers
             this.itemHelper = itemHelper;
         }
 
-        // GET api/GetLinkGroups
+        
         [HttpGet(Name = "GetItems")]
         public IActionResult GetItems(ItemsParameters itemsParameters)
         {
