@@ -12,12 +12,12 @@
 	</appSettings>
 
 	<connectionStrings>
-		<!-- Server: idd-na   Database: ItemCatalog_Test -->
+		<!-- Server: idd-na   Database: ItemCatalog -->
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-ne\ned;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=Bl@ckLab;" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=xx-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=*UPU*6DReLy*;" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idd-ne\ned;Database=ItemCatalog_Test;UID=IRSUser;PWD=Bl@ckLab;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idd-ne\ned;Database=ItemCatalog_Test;UID=IRMAReports;PWD=Bu11d0G;"/>
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=*UPU*6DReLy*;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=*UPU*6DReLy*;"/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -36,7 +36,7 @@
 			</layout>
 		</appender>
 		<appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-			<file value="C:\IRMA\Test\logs\ClientLog.txt" />
+			<file value="C:\temp\IRMAClient.NE.Dev.log" />
 			<appendToFile value="true" />
 			<rollingStyle value="Composite" />
 			<datePattern value="yyyyMMdd" />

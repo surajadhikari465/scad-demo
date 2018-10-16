@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
-**************************************************************************************
-File: 	\v3\TST\IRMA.exe.config.PN
-Author: unknown
-Date: 	unknown
-      
-Description:
-
-
-Change History:
-Date        Init	Description
-02/03/2009	BBB	  	Added ApplicationGUID, EnvironmentGUID, encryptedConnectingStrings
-02/04/2009	BBB		Removed extraneous appSettings keys
-**************************************************************************************
--->
 <configuration>
   <configSections>
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net"/>
@@ -28,11 +13,11 @@ Date        Init	Description
   </appSettings>
   <connectionStrings>
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-pn\pnd;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=pm2Beta;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=xx-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=PerjXwWHrs$3;" />
     
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-	<add name="ODBC" connectionString ="Driver={SQL Server};Server=idd-pn\pnd;Database=ItemCatalog_Test;UID=IRSUser;PWD=pm2Beta;APP="/>
-	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idd-pn\pnd;Database=ItemCatalog_Test;UID=IRMAReports;PWD=pm4Epsilon;"/>		
+	<add name="ODBC" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=PerjXwWHrs$3;APP="/>
+	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=PerjXwWHrs$3;"/>		
   </connectionStrings>
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
   <log4net>
@@ -49,7 +34,7 @@ Date        Init	Description
       </layout>
     </appender>
     <appender name="RollingFile" type="log4net.Appender.RollingFileAppender">
-      <file value="C:\IRMA\DEV\logs\IRMAClient.txt" />
+      <file value="C:\temp\IRMAClient.PN.Dev.log" />
 		<appendToFile value="true" />
 		<rollingStyle value="Size" />
 		<maxSizeRollBackups value="5" />

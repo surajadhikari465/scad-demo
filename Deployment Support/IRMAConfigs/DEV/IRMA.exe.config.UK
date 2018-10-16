@@ -13,13 +13,13 @@
 
 	<connectionStrings>
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<!--UK Test Database: idd-uk.ItemCatalog_Test using IRMA Client account-->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-uk\ukd;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=H@staLaV1sta;" />
+		<!--UK Test Database: idd-uk.ItemCatalog using IRMA Client account-->
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=uk-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=$HLvBgOK^y#R;" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<!--UK Test Database: idd-uk.ItemCatalog_Test using IRMA Client account-->
-		<add name="ODBC" connectionString="Driver={SQL Server};Server=idd-uk\ukd;Database=ItemCatalog_Test;UID=IRSUser;PWD=H@staLaV1sta;APP=" />
-		<!--UK Test Database: idT-uk.ItemCatalog_Test using IRMA Reporting account-->
-		<add name="ODBCCrystal" connectionString="Server};Server=idd-uk\ukd;Database=ItemCatalog_Test;UID=IRMAReports;PWD=jUstthef@ct$!;APP=C.Report" />
+		<!--UK Test Database: idd-uk.ItemCatalog using IRMA Client account-->
+		<add name="ODBC" connectionString="Driver={SQL Server};Server=uk-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=$HLvBgOK^y#R;APP=" />
+		<!--UK Test Database: idT-uk.ItemCatalog using IRMA Reporting account-->
+		<add name="ODBCCrystal" connectionString="Server};Server=uk-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=$HLvBgOK^y#R;APP=C.Report" />
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -38,7 +38,7 @@
 			</layout>
 		</appender>
 		<appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-			<file value="C:\IRMA\Test\logs\IRMAClient.txt" />
+			<file value="C:\temp\IRMAClient.UK.Dev.log" />
 			<appendToFile value="true" />
 			<rollingStyle value="Composite" />
 			<datePattern value="yyyyMMdd" />

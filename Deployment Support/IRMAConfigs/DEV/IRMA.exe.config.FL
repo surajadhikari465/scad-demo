@@ -14,9 +14,9 @@
 	</appSettings>
 
 	<connectionStrings>
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-fl\fld;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=Sup#rm@n!;" />
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idd-fl\fld;Database=ItemCatalog_Test;UID=IRSUser;PWD=Sup#rm@n!;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idd-fl\fld;Database=ItemCatalog_Test;UID=IRMAReports;PWD=TheWh0leTruth.;"/>
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=fl-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=prBOu&BCU$ZM;" />
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=fl-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=prBOu&BCU$ZM;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=fl-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=prBOu&BCU$ZM;"/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -37,7 +37,7 @@
     		</appender>
 
 		<appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-			<file value="C:\IRMA\Test\logs\IRMAClient.txt" />
+			<file value="C:\temp\IRMAClient.FL.Dev.log" />
 			<appendToFile value="true" />
 			<rollingStyle value="Composite" />
 			<datePattern value="yyyyMMdd" />
