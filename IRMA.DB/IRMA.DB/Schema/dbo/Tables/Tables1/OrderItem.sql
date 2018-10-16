@@ -653,47 +653,6 @@ BEGIN
 		and Not(OH.OrderType_Id = 2 and OH.CloseDate is not null and OH.Return_Order=0)
 	END 	 
 
-	----
-	-- Amazon Events
-	----
-	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
-	BEGIN
-		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-		DECLARE @poLineDeletionEventTypeId INT = (
-				SELECT TOP 1 EventTypeID
-				FROM amz.EventType
-				WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
-				);
-		DECLARE @transferLineDeletionEventTypeId INT = (
-				SELECT TOP 1 EventTypeID
-				FROM amz.EventType
-				WHERE EventTypeDescription = 'Transfer Line Item Deletion'
-				);
-
-		INSERT INTO amz.OrderQueue (EventTypeID, KeyID,SecondaryKeyID, Status, InsertDate, MessageTimestampUtc)
-		SELECT CASE
-				 WHEN oh.OrderType_ID = 3 THEN @transferLineDeletionEventTypeId
-				 ELSE @poLineDeletionEventTypeId 
-			   END
-				,oh.OrderHeader_ID
-				,d.OrderItem_ID
-				,@unprocessedStatusCode
-				,SYSDATETIME()
-				,SYSUTCDATETIME()
-		  FROM deleted d
-		  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = d.OrderHeader_ID
-	WHERE NOT EXISTS
-		(
-			SELECT 1 
-			  FROM amz.OrderQueue q
-			 WHERE q.KeyID = oh.OrderHeader_ID
-	           AND q.SecondaryKeyID = d.OrderItem_ID
-		       AND (q.EventTypeID = @poLineDeletionEventTypeId
-		        OR  q.EventTypeID = @transferLineDeletionEventTypeId)
-			   AND q.Status = @unprocessedStatusCode
-		) 
-	   AND oh.Sent = 1
-	END
     END TRY
     BEGIN CATCH
         DECLARE @err_no int, @err_sev int, @err_msg nvarchar(4000)
