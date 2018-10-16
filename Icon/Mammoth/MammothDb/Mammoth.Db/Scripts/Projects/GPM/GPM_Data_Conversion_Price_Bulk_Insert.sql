@@ -19,12 +19,13 @@ CREATE TABLE #gpmPrices
 	END_DATE DATETIME2(0) NULL,
 	CREATED_DATE DATETIME2(0),
 	REGION_CODE NVARCHAR(2),
-	SCAN_CODE NVARCHAR(13)
+	SCAN_CODE NVARCHAR(13),
+	REWARDS_PERCENT_OFF DECIMAL(5,2) NULL
 )
 
 print 'Inserting GPM prices into temp GPM Prices table...'
 bulk insert #gpmPrices
-from ''
+from ''  --left blank intentionally: needs to be specified and updated when this script is used in an ECC
 with 
 (
 	FIRSTROW = 2,
@@ -49,7 +50,8 @@ INSERT INTO stage.GpmDataConversion
 	SellableUOM,
 	CurrencyCode,
 	Multiple,
-	NewTagExpiration
+	NewTagExpiration,
+	PercentOff
 )
 SELECT 
 	t.REGION_CODE,
@@ -64,7 +66,8 @@ SELECT
 	t.SELLING_UOM,
 	'USD',
 	t.MULTIPLE,
-	t.TAG_EXPIRATION_DATE
+	t.TAG_EXPIRATION_DATE,
+	t.REWARDS_PERCENT_OFF
 FROM #gpmPrices t
 go
 

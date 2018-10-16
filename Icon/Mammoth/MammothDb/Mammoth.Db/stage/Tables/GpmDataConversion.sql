@@ -14,7 +14,8 @@
     [CurrencyCode] [nvarchar](3) NOT NULL,
     [Multiple] [tinyint] NOT NULL,
     [NewTagExpiration] [datetime2](0) NULL,
-    [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME())
+    [InsertDateUtc] [datetime2](7) NOT NULL DEFAULT (SYSUTCDATETIME()),
+	[PercentOff] [decimal](5,2) NULL
 )
 GO
 
@@ -34,7 +35,8 @@ CREATE NONCLUSTERED INDEX [CIX_StageGpmDataConversion]
 		CurrencyCode,
 		Multiple,
 		NewTagExpiration,
-		InsertDateUtc
+		InsertDateUtc,
+		PercentOff
 	) WITH (FILLFACTOR = 100);
 GO
 
