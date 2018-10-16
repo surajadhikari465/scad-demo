@@ -1,0 +1,43 @@
+ChangeTicketNum	Change ticket number	CHG0032918
+ReleaseOwner	Change owner	Tom Lux
+SprintsIncluded	Sprint numbers covered	127-128
+TargetEnv	Target environment	QA
+TargetEnvShort		QA
+DeployDate	Deploy date	Tuesday, October 16, 2018
+IrmaClientUpdated		y
+IrmaDbUpdated		y
+IrmaLegacyUpdated		n
+IconJobUpdated		y
+IconDbUpdated		y
+MammothJobUpdated		y
+MammothDbUpdated		y
+TibcoUpdated		n
+FullSvrList	Servers receiving updates	.
+ReleaseNotesURL	Link to release notes	.
+IconDbScriptLink	Icon DB script	N/A -- Auto deploy via VSTS
+MammothDbTarget		QA-01-Mammoth02\Mammoth02.Mammoth (Other QA DB is auto-deploy via VSTS)
+IconReleaseBranchName	Icon release branch name	RELEASE_Icon98_Mammoth37_Sprints127-128
+IconBuildNum	Icon release build number	coming_soon
+IconBuildId	Icon release build ID	.
+IrmaReleaseBranchName	IRMA release branch name	RELEASE_IRMA106_Sprints127-128
+IrmaBuildNum	IRMA release build number	coming_soon
+IrmaBuildId	IRMA release build ID	.
+IrmaVer	IRMA version number	10.6
+IrmaLongVer		10.6.0
+IconVer	Icon version number	9.8
+MammothVer	Mammoth version number	3.7
+TibcoVer	TIBCO version number	(No Updates)
+FullDbList	List of DBs receiving updates?	.
+IrmaDbUpdateRegionList		FL, MA, MW, NA, NC, NE, PN, RM, SO, SP, SW, UK
+IrmaDbServer		IDQ-xx\xxQ
+IconDbServer		IDQ-Icon\SqlShared3Q
+MammothDbServer		Mammoth-DB01-QA\Mammoth
+AppSuitesBeingDeployed	This should be dynamic	IRMA, Icon, Mammoth, TIBCO
+IrmaServersAffected	This should be dynamic	IRMAQAApp[1-4]
+IconServersAffected	This should be dynamic	VM-Icon-QA[1-4]
+MammothServersAffected	This should be dynamic	Mammoth-App01-QA
+TibcoServersAffected	This should be dynamic	*NONE*
+TibcoAppsUpdated		*NONE*
+IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
+IrmaSuitePreviousVersion		10.5.0
+MammothManualDeploy		Manually deploy updated apps to Perf instances on Mammoth job server
