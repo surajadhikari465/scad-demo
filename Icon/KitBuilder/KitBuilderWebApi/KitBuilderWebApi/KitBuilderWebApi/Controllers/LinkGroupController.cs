@@ -136,6 +136,47 @@ namespace KitBuilderWebApi.Controllers
             { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult UpdateLinkGroup(
+            [FromBody] LinkGroupDto linkGroup)
+        {
+            if (linkGroup == null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var linkGroupPassed = Mapper.Map<LinkGroup>(linkGroup);
+
+            var existingLinkGroup = linkGroupRepository.GetAll()
+                                    .Where(l => l.LinkGroupId == linkGroupPassed.LinkGroupId).FirstOrDefault();
+
+            if (existingLinkGroup == null)
+            {
+                logger.LogWarning("The object does not exists in the database.");
+                return BadRequest();
+            }
+
+            try
+            {
+                existingLinkGroup.GroupName = linkGroupPassed.GroupName;
+                existingLinkGroup.GroupDescription = linkGroupPassed.GroupDescription;
+                linkGroupRepository.UnitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         [HttpDelete("{id}", Name = "DeleteLinkGroup")]
         public IActionResult DeleteLinkGroup(int id)
         {

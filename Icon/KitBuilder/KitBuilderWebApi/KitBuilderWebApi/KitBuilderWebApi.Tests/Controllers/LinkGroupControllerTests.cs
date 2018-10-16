@@ -229,6 +229,22 @@ namespace KitBuilderWebApi.Tests.Controllers
             _mockUnitWork.Verify(m => m.Commit(), Times.Once);
         }
 
+
+        [TestMethod]
+        public void LinkGroupController_UpdateLinkGroupValidLinkGroupPassed_ReturnsStatus204NoContent()
+        {
+            // Given
+            LinkGroupDto linkGroupDto = new LinkGroupDto { LinkGroupId = 1, GroupName = "Taco2", GroupDescription = "Cheese taco2" };
+            mockLinkGroupRepository.SetupGet(s => s.UnitOfWork).Returns(_mockUnitWork.Object);
+
+            //When
+            var response = linkGroupController.UpdateLinkGroup(linkGroupDto);
+
+            // Then
+            Assert.IsInstanceOfType(response, typeof(StatusCodeResult), "Create At Expected");
+            _mockUnitWork.Verify(m => m.Commit(), Times.Once);
+        }
+
         [TestMethod]
         public void LinkGroupController_DeleteLinkGroupInvalidIdPassed_ReturnsNotFound()
         {  
