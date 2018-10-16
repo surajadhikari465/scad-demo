@@ -26,14 +26,8 @@ BEGIN
 	-- ===============================================
 	-- Insert TVP into Temp Table
 	-- ===============================================
-	IF OBJECT_ID('tempdb..#Identifiers') IS NOT NULL
-		TRUNCATE TABLE #Identifiers
-	ELSE
-	BEGIN
-		CREATE TABLE #Identifiers (Identifier nvarchar(13));
-	END
-
-	INSERT INTO #Identifiers SELECT * FROM @IdentifiersType;
+	IF OBJECT_ID('tempdb..#Identifiers') IS NOT NULL drop table #Identifiers;
+	select Identifier INTO #Identifiers FROM @IdentifiersType;
 
 	-- ===============================================
 	-- Check configuration values based on EventTypeID

@@ -3,10 +3,9 @@
 AS 
 
 BEGIN
-    DECLARE @Error_No int
-    SELECT @Error_No = 0
-	DECLARE @Item_Key int
-	DECLARE @Identifier varchar(50)
+  DECLARE @Error_No int = 0,
+          @Item_Key int,
+          @Identifier varchar(13);
 	
 	SELECT 
 		@Item_Key = Item_Key,  
@@ -14,23 +13,18 @@ BEGIN
 	FROM ItemIdentifier 
 	WHERE Identifier_ID = @Identifier_ID
 
-    BEGIN TRAN
-
-	--Send Mammoth Events first because if the Add_Identifier = 1 then the Identifier will be 
-	--deleted and the no event will be generated
-    IF @Error_No = 0
-    BEGIN
-		EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
+  BEGIN TRAN
+	  --Send Mammoth Events first because if the Add_Identifier = 1 then the Identifier will be 
+	  --deleted and the no event will be generated
+    --18-10-16: Seems like the the query below has been obsoleted but let's keep it here for awhile just in case
+		--EXEC [mammoth].[InsertItemLocaleChangeQueue] @Item_Key, NULL, 'ItemDelete', @Identifier
 			
-	DECLARE @IdentifiersType dbo.IdentifiersType
-
-	INSERT INTO  @IdentifiersType(Identifier)
-	SELECT @Identifier
+	    DECLARE @IdentifiersType dbo.IdentifiersType
+	    INSERT INTO  @IdentifiersType(Identifier) values(@Identifier)
 	
-	EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization'
+	    EXEC [mammoth].[GenerateEvents] @IdentifiersType, 'ItemDeauthorization'
 
-		SELECT @Error_No = @@ERROR
-    END
+		  SELECT @Error_No = @@ERROR
     
 	IF @Error_No = 0
 	BEGIN
@@ -55,11 +49,9 @@ BEGIN
     ELSE
     BEGIN
         ROLLBACK TRAN
-        DECLARE @Severity smallint
-        SELECT @Severity = ISNULL((SELECT severity FROM master.dbo.sysmessages WHERE error = @Error_No), 16)
+        DECLARE @Severity smallint = (SELECT ISNULL((SELECT severity FROM master.dbo.sysmessages WHERE error = @Error_No), 16));
         RAISERROR ('DeleteItemIdentifier failed with @@ERROR: %d', @Severity, 1, @Error_No)
     END
-
 END
 
 GO
@@ -67,15 +59,12 @@ GRANT EXECUTE
     ON OBJECT::[dbo].[DeleteItemIdentifier] TO [IRMAClientRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[DeleteItemIdentifier] TO [IRMASchedJobsRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[DeleteItemIdentifier] TO [IRMAReportsRole]
     AS [dbo];
-
