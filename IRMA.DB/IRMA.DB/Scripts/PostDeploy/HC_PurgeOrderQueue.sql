@@ -9,139 +9,65 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-DECLARE @Region AS VARCHAR(2)
-SELECT @Region = RegionCode FROM [dbo].[Region]
+
+DECLARE @Region AS VARCHAR(2),
+@TimeToStart AS INT = null,
+@TimeToEnd AS INT = null
+SELECT Top 1 @Region =LTrim(RTrim(RegionCode)) FROM [dbo].[Region]
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[RetentionPolicy] WHERE [Table] = 'OrderQueue')
 BEGIN
 	IF @Region = 'RM'
 	BEGIN
-	INSERT INTO [dbo].[RetentionPolicy]
-			   ([Schema]
-			   ,[Table]
-			   ,[ReferenceColumn]
-			   ,[DaysToKeep]
-			   ,[TimeToStart]
-			   ,[TimeToEnd]
-			   ,[IncludedInDailyPurge]
-			   ,[DailyPurgeCompleted]
-			   ,[PurgeJobName]
-			   ,[LastPurgedDateTime])
-		 VALUES
-			   ('amz'
-			   ,'OrderQueue'
-			   ,'InsertedDate'
-			   ,30
-			   ,20
-			   ,24
-			   ,1
-			   ,0
-			   ,'StraightPurge'
-			   ,NULL)  
+		SET @TimeToStart = 20
+		SET @TimeToEnd = 24
 	END
 
-	IF @Region = 'NC' Or @Region = 'NA' Or @Region = 'MW' Or @Region = 'MA' Or @Region = 'FL' Or @Region = 'SW' Or @Region = 'SP' Or @Region = 'SO'
+	IF @Region in ('NC','NA','MW','MA','FL','SW','SP','SO')
 	BEGIN
-	INSERT INTO [dbo].[RetentionPolicy]
-			   ([Schema]
-			   ,[Table]
-			   ,[ReferenceColumn]
-			   ,[DaysToKeep]
-			   ,[TimeToStart]
-			   ,[TimeToEnd]
-			   ,[IncludedInDailyPurge]
-			   ,[DailyPurgeCompleted]
-			   ,[PurgeJobName]
-			   ,[LastPurgedDateTime])
-		 VALUES
-			   ('amz'
-			   ,'OrderQueue'
-			   ,'InsertedDate'
-			   ,30
-			   ,21
-			   ,24
-			   ,1
-			   ,0
-			   ,'StraightPurge'
-			   ,NULL)
+		SET @TimeToStart = 21
+		SET @TimeToEnd = 24
 	END
 
 	IF @Region = 'NE'
 	BEGIN
-	INSERT INTO [dbo].[RetentionPolicy]
-			   ([Schema]
-			   ,[Table]
-			   ,[ReferenceColumn]
-			   ,[DaysToKeep]
-			   ,[TimeToStart]
-			   ,[TimeToEnd]
-			   ,[IncludedInDailyPurge]
-			   ,[DailyPurgeCompleted]
-			   ,[PurgeJobName]
-			   ,[LastPurgedDateTime])
-		 VALUES
-			   ('amz'
-			   ,'OrderQueue'
-			   ,'InsertedDate'
-			   ,30
-			   ,18
-			   ,21
-			   ,1
-			   ,0
-			   ,'StraightPurge'
-			   ,NULL)
+		SET @TimeToStart = 18
+		SET @TimeToEnd = 21
 	END
 
 	IF @Region = 'PN'
 	BEGIN
-	INSERT INTO [dbo].[RetentionPolicy]
-			   ([Schema]
-			   ,[Table]
-			   ,[ReferenceColumn]
-			   ,[DaysToKeep]
-			   ,[TimeToStart]
-			   ,[TimeToEnd]
-			   ,[IncludedInDailyPurge]
-			   ,[DailyPurgeCompleted]
-			   ,[PurgeJobName]
-			   ,[LastPurgedDateTime])
-		 VALUES
-			   ('amz'
-			   ,'OrderQueue'
-			   ,'InsertedDate'
-			   ,30
-			   ,20
-			   ,23
-			   ,1
-			   ,0
-			   ,'StraightPurge'
-			   ,NULL)
+		SET @TimeToStart = 20
+		SET @TimeToEnd = 23
 	END
 
 	IF @Region = 'EU'
 	BEGIN
-	INSERT INTO [dbo].[RetentionPolicy]
-			   ([Schema]
-			   ,[Table]
-			   ,[ReferenceColumn]
-			   ,[DaysToKeep]
-			   ,[TimeToStart]
-			   ,[TimeToEnd]
-			   ,[IncludedInDailyPurge]
-			   ,[DailyPurgeCompleted]
-			   ,[PurgeJobName]
-			   ,[LastPurgedDateTime])
-		 VALUES
-			   ('amz'
-			   ,'OrderQueue'
-			   ,'InsertedDate'
-			   ,30
-			   ,15
-			   ,18
-			   ,1
-			   ,0
-			   ,'StraightPurge'
-			   ,NULL)
+		SET @TimeToStart = 15
+		SET @TimeToEnd = 18
+	END
+IF (@TimeToStart != null OR @TimeToEnd != null)
+	BEGIN
+		INSERT INTO [dbo].[RetentionPolicy]
+				   ([Schema]
+				   ,[Table]
+				   ,[ReferenceColumn]
+				   ,[DaysToKeep]
+				   ,[TimeToStart]
+				   ,[TimeToEnd]
+				   ,[IncludedInDailyPurge]
+				   ,[DailyPurgeCompleted]
+				   ,[PurgeJobName])
+			 VALUES
+				   ('amz'
+				   ,'OrderQueue'
+				   ,'InsertedDate'
+				   ,30
+				   ,@TimeToStart
+				   ,@TimeToEnd
+				   ,1
+				   ,0
+				   ,'StraightPurge')
 	END
 END
 GO
