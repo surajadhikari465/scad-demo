@@ -689,12 +689,7 @@
                             <xsl:value-of select="&quot;Fatal&quot;"/>
                         </pfx8:ErrorSeverity>
                     </xsl:when>
-                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Invalid object name&quot;)">
-                        <pfx8:ErrorSeverity>
-                            <xsl:value-of select="&quot;Fatal&quot;"/>
-                        </pfx8:ErrorSeverity>
-                    </xsl:when>
-                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database&quot;)">
+                    <xsl:when test="contains($_error/pfx4:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException:&quot;)">
                         <pfx8:ErrorSeverity>
                             <xsl:value-of select="&quot;Fatal&quot;"/>
                         </pfx8:ErrorSeverity>
