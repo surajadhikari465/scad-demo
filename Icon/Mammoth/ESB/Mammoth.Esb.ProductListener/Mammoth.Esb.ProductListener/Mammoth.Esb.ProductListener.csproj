@@ -89,7 +89,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.7.25.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.10.8.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.PreGpm.2018.8.28.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
@@ -184,6 +184,7 @@
     <Compile Include="Models\ItemIdBusinessUnitIdModel.cs" />
     <Compile Include="Models\ItemIdSubTeamNumberModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\KitItemAttributesModel.cs" />
     <Compile Include="Models\NutritionAttributesModel.cs" />
     <Compile Include="Models\PrimeAffinityItemStoreModel.cs" />
     <Compile Include="Models\SignAttributesModel.cs" />

@@ -30,6 +30,8 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 var traits = enterpriseItemAttributes.traits;
                 var hierarchyClasses = enterpriseItemAttributes.hierarchies;
                 var consumerInformation = item.@base.consumerInformation;
+                var hospitalityInformation = enterpriseItemAttributes.kit;
+
 
                 var itemModel = new ItemModel();
 
@@ -60,10 +62,31 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 // Extended Attributes
                 itemModel.ExtendedAttributes = ParseExtendedAttributes(item, traits);
 
+                // Hospitality Attributes
+                itemModel.KitItemAttributes = ParseHospitalityElements(hospitalityInformation);
+
                 itemModelCollection.Add(itemModel);
             }
 
             return itemModelCollection;
+        }
+
+        private KitItemAttributesModel ParseHospitalityElements(Contracts.KitType hospitalityInformation)
+        {
+
+            var hospitalityModel = new KitItemAttributesModel();
+            if (hospitalityInformation == null) return hospitalityModel;
+
+            var kitItem = hospitalityInformation.kitItem;
+            if (kitItem == null) return hospitalityModel;
+
+            hospitalityModel.KitchenDescription = kitItem.kitchenDescription;
+            hospitalityModel.HospitalityItem = kitItem.hospitalityItemSpecified && kitItem.hospitalityItem;
+            hospitalityModel.KitchenItem = kitItem.kitchenItemSpecified && kitItem.kitchenItem;
+            hospitalityModel.ImageUrl = kitItem.imageUrl;
+
+            return hospitalityModel;
+
         }
 
         private SignAttributesModel ParseSignAttributes(Contracts.ItemType item, Contracts.TraitType[] traits)

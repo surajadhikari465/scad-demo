@@ -30,7 +30,7 @@ BEGIN
 		i.ScanCode,
 		m.HierarchyMerchandiseID,
 		i.TaxClassHCID,
-		i.Desc_CustomerFriendly
+		i.Desc_CustomerFriendly 
 	INTO #insertItems
 	FROM #items i
 	LEFT JOIN dbo.Hierarchy_Merchandise		m on i.SubBrickID = m.SubBrickHCID
@@ -81,7 +81,7 @@ BEGIN
 				RetailUOM,
 				FoodStampEligible,
 				Desc_CustomerFriendly,
-				AddedDate
+				AddedDate		
 			)
 			SELECT
 				i.ItemID,

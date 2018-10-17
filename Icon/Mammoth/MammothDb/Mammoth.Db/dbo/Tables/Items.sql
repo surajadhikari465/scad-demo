@@ -15,7 +15,7 @@
     [FoodStampEligible]				BIT            NULL,
 	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL,
     [AddedDate]						DATETIME       DEFAULT (getdate()) NOT NULL,
-    [ModifiedDate]					DATETIME       NULL,
+    [ModifiedDate]					DATETIME       NULL
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100),
     UNIQUE NONCLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100)
 );

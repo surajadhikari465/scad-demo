@@ -23,7 +23,10 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesSign(data);
             AddOrUpdateItemAttributesNutrition(data);
             AddOrUpdateItemAttributesExtended(data);
+            AddOrUpdateItemAttributesKit(data);
         }
+
+    
 
         private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
         {
@@ -56,6 +59,25 @@ namespace Mammoth.Esb.ProductListener.Commands
                 },
                 transaction: this.db.Transaction,
                 commandType: CommandType.StoredProcedure);
+        }
+
+        private void AddOrUpdateItemAttributesKit(AddOrUpdateProductsCommand data)
+        {
+            var itemKitAttributes = (from i in data.Items
+                select new
+                {
+                    ItemID = i.GlobalAttributes.ItemID,
+                    KitchenItem = i.KitItemAttributes.KitchenItem,
+                    HospitalityItem = i.KitItemAttributes.HospitalityItem,
+                    ImageUrl = i.KitItemAttributes.ImageUrl,
+                    KitchenDescription = i.KitItemAttributes.KitchenDescription
+                }).ToDataTable();
+
+
+            if (itemKitAttributes.Rows.Count == 0) return;            ;
+
+            string sql = "dbo.AddOrUpdateItemAttributesKit";
+            int rowCount = this.db.Connection.Execute(sql, new { kitAttributes = itemKitAttributes }, transaction: this.db.Transaction,commandType: CommandType.StoredProcedure);
         }
 
         private void AddOrUpdateItemAttributesSign(AddOrUpdateProductsCommand data)

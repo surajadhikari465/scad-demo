@@ -14,7 +14,7 @@
     [RetailUOM]						NVARCHAR (255)	NULL,
     [PSNumber]						NVARCHAR (255)	NULL,
 	[FoodStampEligible]				BIT				NULL,
-	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL
+	[Desc_CustomerFriendly]			NVARCHAR(255)	NULL		
 )
 GO
 

@@ -6,5 +6,6 @@
         public SignAttributesModel SignAttributes { get; set; }
         public NutritionAttributesModel NutritionAttributes { get; set; }
         public ExtendedAttributesModel ExtendedAttributes { get; set; }
+        public KitItemAttributesModel KitItemAttributes { get; set; }
     }
 }
