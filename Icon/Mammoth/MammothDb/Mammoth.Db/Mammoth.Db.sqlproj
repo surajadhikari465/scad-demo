@@ -830,7 +830,4 @@
       <DatabaseVariableLiteralValue>Staging</DatabaseVariableLiteralValue>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Mammoth.Db.refactorlog" />
-  </ItemGroup>
 </Project>
