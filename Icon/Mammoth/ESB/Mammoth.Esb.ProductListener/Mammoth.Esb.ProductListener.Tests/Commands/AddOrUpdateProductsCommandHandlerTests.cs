@@ -63,8 +63,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
-            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, globalAttributes);
 
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -97,7 +98,10 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
-            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, globalAttributes);
+         
+
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -598,6 +602,11 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             const string wic = "Test";
             #endregion
 
+            #region kit attributes
+            const string kitchenDescription = "Test";
+            const string imageURL = "wholefoods.com";
+            #endregion
+
             var sqlToRun = $@"
                 DECLARE @itemId INT = {itemId};
                 INSERT INTO dbo.Items(
@@ -609,6 +618,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     {brandHCID}, {taxClassHCID}, {pSNumber}, '{desc_Product}', '{desc_POS}',
                     '{packageUnit}', '{retailSize}', '{retailUOM}', {foodStampEligible}, '{desc_CustomerFriendly}'
                 )
+
+                INSERT INTO dbo.ItemAttributes_Kit(ItemId,KitchenItem,HospitalityItem,Desc_Kitchen,ImageUrl)
+                VALUES (@itemID,0,1, '{kitchenDescription}','{imageURL}')
 
                 INSERT INTO dbo.ItemAttributes_Sign(
                     ItemID,
@@ -686,6 +698,15 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                   new { ItemId = itemId },
                   dbProvider.Transaction);
             return signAttributes.Single();
+        }
+
+        private dynamic ReadKitAttributesDynamic(int itemId)
+        {
+            var kitAttributes = dbProvider.Connection.Query<dynamic>(
+                "select * from dbo.ItemAttributes_Kit WHERE ItemID = @itemId",
+                new {ItemId = itemId},
+                dbProvider.Transaction);
+            return kitAttributes.Single();
         }
 
         private dynamic ReadNutritionAttributesDynamic(int itemId)
