@@ -11,5 +11,5 @@
 	[ProcessTimes] SMALLINT NULL,
 	[LastProcessedTime] DATETIME2(7) NULL,
 	[MessageTimestampUtc] DATETIME2(7) NOT NULL CONSTRAINT [DF_OrderQueue_MessageTimestampUtc] DEFAULT (SYSUTCDATETIME()),
-	CONSTRAINT [CK_OrderQueue_Status] CHECK ([Status] IN ('U', 'I', 'P', 'F'))
+	CONSTRAINT [CK_OrderQueue_Status] CHECK ([Status] IN ('U', 'I', 'P', 'F', 'R'))
 )

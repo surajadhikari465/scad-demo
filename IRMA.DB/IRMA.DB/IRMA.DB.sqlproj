@@ -142,6 +142,7 @@
     <Folder Include="Scripts\Other" />
     <Folder Include="Schema\amz" />
     <Folder Include="Schema\amz\Tables" />
+    <Folder Include="Schema\amz\StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3343,6 +3344,7 @@
     <None Include="Scripts\PostDeploy\HC_PurgeMessageArchive.sql" />
     <None Include="Scripts\PostDeploy\HC_PurgeOrderQueue.sql" />
     <None Include="Scripts\PostDeploy\HC_PurgeReceiptQueue.sql" />
+    <Build Include="Schema\amz\StoredProcedures\LockReceiptEvents.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
