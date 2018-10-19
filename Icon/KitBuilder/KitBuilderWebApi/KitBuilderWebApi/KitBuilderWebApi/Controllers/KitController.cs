@@ -641,7 +641,7 @@ namespace KitBuilderWebApi.Controllers
                                                           select new KitLinkGroupPropertiesDto
 														  {
 															  KitLocaleId = kl.KitLocaleId,
-															  KitLinkGroupLocaleId = klgl.KitLinkGroupLocaleId,
+															  KitLinkGroupLocaleId = klgl != null ? klgl.KitLinkGroupLocaleId : 0,
 															  KitLinkGroupItemLocaleId = 0,
 															  KitLinkGroupId = klg.KitLinkGroupId,
                                                               KitLinkGroupItemId = 0,
