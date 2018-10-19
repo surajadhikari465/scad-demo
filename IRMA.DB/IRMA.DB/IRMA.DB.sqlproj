@@ -3345,6 +3345,7 @@
     <None Include="Scripts\PostDeploy\HC_PurgeOrderQueue.sql" />
     <None Include="Scripts\PostDeploy\HC_PurgeReceiptQueue.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockReceiptEvents.sql" />
+    <None Include="Scripts\PostDeploy\GrantPermissionsToTibcoDataWriter.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

@@ -22,3 +22,4 @@ Post-Deployment Script Template
 
 -- *This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
+:r GrantPermissionsToTibcoDataWriter.sql
