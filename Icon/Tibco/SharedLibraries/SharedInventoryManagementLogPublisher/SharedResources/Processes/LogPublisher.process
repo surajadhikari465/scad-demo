@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns03="www.tibco.com/plugin/Sleep">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd"/>
+    <pd:name>SharedResources/Processes/LogPublisher.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="LogElement">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="LogDate" type="xsd:dateTime"/>
+                    <xsd:element name="ApplicationID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="HostName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="UserName" type="xsd:string"/>
+                    <xsd:element name="Thread" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="Level" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Logger" type="xsd:string"/>
+                    <xsd:element name="Message" type="xsd:string"/>
+                    <xsd:element name="Exception" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="InsertedDate" type="xsd:dateTime"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>348</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>836</pd:endX>
+    <pd:endY>165</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1505404454239</pd:targetNamespace>
+    <pd:activity name="ErrorLog Update AppLog">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>610</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO dbo.AppLog
+(
+	[LogDate],
+        [ApplicationID]
+           ,[HostName]
+           ,[UserName]
+           ,[Thread]
+           ,[Level]
+           ,[Logger]
+           ,[Message]
+           ,[Exception]
+           ,[InsertDate]
+)
+VALUES
+(?,?,?,?,?,?,?,?,?,?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>LogDate</parameterName>
+                    <dataType>TIMESTAMP</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ApplicationID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>HostName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>UserName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Thread</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Level</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Logger</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Message</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Exception</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>InsertDate</parameterName>
+                    <dataType>TIMESTAMP</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <LogDate>
+                    <xsl:value-of select="$Start/LogElement/LogDate"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/LogElement/ApplicationID)">
+                            <xsl:value-of select="$Start/LogElement/ApplicationID"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ApplicationID>
+                <HostName>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/LogElement/HostName)">
+                            <xsl:value-of select="$Start/LogElement/HostName"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="$Start/LogElement/UserName"/>
+                </UserName>
+                <Thread>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/LogElement/Thread)">
+                            <xsl:value-of select="$Start/LogElement/Thread"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Thread>
+                <Level>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/LogElement/Level)">
+                            <xsl:value-of select="$Start/LogElement/Level"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$Start/LogElement/Logger"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="$Start/LogElement/Message"/>
+                </Message>
+                <Exception>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/LogElement/Exception)">
+                            <xsl:value-of select="$Start/LogElement/Exception"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Exception>
+                <InsertDate>
+                    <xsl:value-of select="$Start/LogElement/InsertedDate"/>
+                </InsertDate>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ErrorLog Update AppLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorLog Update AppLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

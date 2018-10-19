@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.3">
+	<!--	<xs:complexType name="StoreGroupsType"/> -->
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="kits">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="kit" type="KitType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="kit" type="KitType"/>
+	<xs:complexType name="KitType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:ItemIdType"/>
+			<xs:element name="displaySequence" type="crf:IdStrType"/>
+			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="detailedDescription" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="properties" type="crf:DescriptionType" minOccurs="0"/>
+			<xs:element name="minimumCalories" type="crf:WfmIntType" minOccurs="0"/>
+			<xs:element name="maximumCalories" type="crf:WfmIntType" minOccurs="0"/>
+			<xs:element name="exclude" type="crf:WfmIntType" minOccurs="0"/>
+			<xs:element name="insertDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+			<xs:element name="lastModifiedDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+			<xs:element name="lastModifiedBy" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="Groups" type="GroupsType" minOccurs="0"/>
+			<xs:element name="Lists" type="ListsType" minOccurs="0"/>
+			<xs:element name="kitItem" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element name="kitchenItem" type="crf:WfmBoolType" minOccurs="0"/>
+						<xs:element name="kitchenDescription" type="crf:WfmStrType" minOccurs="0"/>
+						<xs:element name="imageUrl" type="crf:WfmStrType" minOccurs="0"/>
+						<xs:element name="hospitalityItem" type="crf:WfmBoolType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+		<xs:attribute name="TypeId" type="xs:string"/>
+		<xs:attribute name="IsAvailable" type="xs:boolean"/>
+		<xs:attribute name="IsKit" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="ListsType">
+		<xs:sequence>
+			<xs:element name="list" type="ListType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ListType">
+		<xs:choice minOccurs="0">
+			<xs:element name="genericInstructions" type="InstructionListType">
+				<xs:annotation>
+					<xs:documentation>Generic instructions concerning an item kit. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cookingInstructions" type="InstructionListType">
+				<xs:annotation>
+					<xs:documentation>Cooking instructions concerning an item kit. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="InstructionListType">
+		<xs:sequence>
+			<xs:element name="instructionListId" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="name" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="instructionListMember" type="InstructionMemberType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="InstructionTypeId" type="xs:string"/>
+		<xs:attribute name="StatusId" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="InstructionMemberType">
+		<xs:sequence>
+			<xs:element name="instructionListMemberId" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="name" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="member" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="group" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="sequence" type="crf:WfmStrType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="DisplayIndex" type="xs:string"/>
+		<xs:attribute name="isVisible" type="xs:boolean"/>
+		<xs:attribute name="IngredientProductId" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="GroupsType">
+		<xs:sequence>
+			<xs:element name="group" type="GroupType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupType">
+		<xs:sequence>
+			<xs:element name="groupId" type="crf:IdStrType"/>
+			<xs:element name="Ingredients" type="IngredientsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+		<xs:attribute name="DisplayIndex" type="xs:string"/>
+		<xs:attribute name="LinkGroupId" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="IngredientsType">
+		<xs:sequence>
+			<xs:element name="Ingredient" type="IngredientType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IngredientType">
+		<xs:sequence>
+			<xs:element name="ingredient" type="itm:ItemType"/>
+			<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="DisplayIndex" type="xs:string"/>
+		<xs:attribute name="isVisible" type="xs:boolean"/>
+		<xs:attribute name="IngredientProductId" type="xs:string"/>
+		<xs:attribute name="isKit" type="xs:boolean"/>
+		<xs:attribute name="IsAvailable" type="xs:boolean"/>
+	</xs:complexType>
+</xs:schema>

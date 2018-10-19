@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ConnectionString</name>
+			<value>jdbc:sqlserver://idd-ma\mad;DatabaseName=ItemCatalog_Test;</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1538593716707</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!HLRIcIJLfCtnFO4scQYR4W/PSrecETToU7J6G5W8/N6coeaYqOB+Bg==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1538593716670</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SqlDBDriver</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1538593716662</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>TibcoDataWriter</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1538593716740</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

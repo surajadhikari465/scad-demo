@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd" xmlns:pfx="http://schema.infor.com/InforOAGIS/2" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd" xmlns:pfx5="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:Mammoth="java://WfmSharedFunctions" xmlns:ns14="http://www.tibco.com/namespaces/tnt/plugins/json">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1"/>
+    <xsd:import namespace="http://schema.infor.com/InforOAGIS/2"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPricesWithError.xsd"/>
+    <pd:name>SharedResources/Processes/ArchiveInventoryManagementMessage.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageBody" type="xsd:string"/>
+                    <xsd:element name="EventType" type="xsd:string"/>
+                    <xsd:element name="KeyID" type="xsd:int"/>
+                    <xsd:element name="SecondaryKeyID" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="Status" type="xsd:string"/>
+                    <xsd:element name="ErrorDescription" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="LastProcessedTime" type="xsd:time" minOccurs="0"/>
+                    <xsd:element name="MessageNumber" type="xsd:int"/>
+                    <xsd:element name="LastReprocess" type="xsd:time" minOccurs="0"/>
+                    <xsd:element name="LastReprocessID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="QueueID" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>54</pd:startX>
+    <pd:startY>56</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1035</pd:endX>
+    <pd:endY>56</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1507744635415</pd:targetNamespace>
+    <pd:activity name="Archive Inventory Record Message Details">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>714</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <batchUpdate>true</batchUpdate>
+            <statement>  INSERT INTO amz.MessageArchive(
+	    [Message]
+	  ,EventType
+      ,KeyID
+      ,SecondaryKeyID
+      ,InsertDate
+      ,[Status]
+      ,ErrorDescription
+      ,LastProcessedTime
+      ,MessageNumber
+      ,LastReprocess
+      ,LastReprocessID,
+      QueueID)
+VALUES(?, ?,?, ?, ?, ?, ?,?,?,?,?,?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageBody</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>EventType</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>KeyId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SecondaryKeyID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>InsertDate</parameterName>
+                    <dataType>TIMESTAMP</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Status</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ErrorDescription</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>LastProcessedTime</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MessageNumber</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>LastReprocess</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>LastReprocessID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>QueueID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <Record>
+                    <MessageBody>
+                        <xsl:value-of select="$Start/Input/MessageBody"/>
+                    </MessageBody>
+                    <EventType>
+                        <xsl:value-of select="$Start/Input/EventType"/>
+                    </EventType>
+                    <KeyId>
+                        <xsl:value-of select="$Start/Input/KeyID"/>
+                    </KeyId>
+                    <SecondaryKeyID>
+                        <xsl:value-of select="$Start/Input/SecondaryKeyID"/>
+                    </SecondaryKeyID>
+                    <InsertDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertDate>
+                    <Status>
+                        <xsl:value-of select="$Start/Input/Status"/>
+                    </Status>
+                    <ErrorDescription>
+                        <xsl:value-of select="$Start/Input/ErrorDescription"/>
+                    </ErrorDescription>
+                    <LastProcessedTime>
+                        <xsl:value-of select="$Start/Input/LastProcessedTime"/>
+                    </LastProcessedTime>
+                    <MessageNumber>
+                        <xsl:value-of select="$Start/Input/MessageNumber"/>
+                    </MessageNumber>
+                    <LastReprocess>
+                        <xsl:value-of select="$Start/Input/LastReprocess"/>
+                    </LastReprocess>
+                    <LastReprocessID>
+                        <xsl:value-of select="$Start/Input/LastReprocessID"/>
+                    </LastReprocessID>
+                    <QueueID>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/QueueID)">
+                                <xsl:value-of select="$Start/Input/QueueID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </QueueID>
+                </Record>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Inventory Record JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="MessageBody" type="xsd:anyType"/>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns14:ActivityInputClass>
+                <MessageBody>
+                    <xsl:value-of select="$Start/Input/MessageBody"/>
+                </MessageBody>
+            </ns14:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Archive Inventory Record Message Details</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render Inventory Record JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Inventory Record JSON</pd:from>
+        <pd:to>Archive Inventory Record Message Details</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
