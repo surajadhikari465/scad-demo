@@ -63,6 +63,8 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var linkGroupItem = Mapper.Map<LinkGroupItem>(linkGroupItemDto);
+            linkGroupItem.InsertDateUtc = DateTime.UtcNow;
+            linkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
             linkGroup.LinkGroupItem.Add(linkGroupItem);
 
             try
@@ -97,6 +99,8 @@ namespace KitBuilderWebApi.Controllers
             foreach (var linkGroupItemDto in linkGroupItemsDto)
             {
                 var linkGroupItem = Mapper.Map<LinkGroupItem>(linkGroupItemDto);
+                linkGroupItem.InsertDateUtc = DateTime.UtcNow;
+                linkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
                 linkGroup.LinkGroupItem.Add(linkGroupItem);
             }
 
