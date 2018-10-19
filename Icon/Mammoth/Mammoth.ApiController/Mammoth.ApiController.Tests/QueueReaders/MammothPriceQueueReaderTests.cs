@@ -13,7 +13,7 @@ using Moq;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.Testing.Builders;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Mammoth.ApiController.Tests.QueueReaders
 {
@@ -201,11 +201,11 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             Assert.AreEqual(messageQueue.Price, price.priceAmount.amount);
             Assert.AreEqual(messageQueue.Multiple, price.priceMultiple);
             Assert.AreEqual(messageQueue.StartDate, price.priceStartDate);
-            if (price.type.id == ItemPriceTypes.Codes.RegularPrice)
+            if (price.type.id.ToString() == ItemPriceTypes.Codes.RegularPrice)
             {
                 Assert.IsFalse(price.priceEndDateSpecified);
             }
-            else if(price.type.id == ItemPriceTypes.Codes.TemporaryPriceReduction)
+            else if(price.type.id.ToString() == ItemPriceTypes.Codes.TemporaryPriceReduction)
             {
                 Assert.IsTrue(price.priceEndDateSpecified);
                 Assert.AreEqual(messageQueue.SubPriceTypeCode, price.type.type.id);
@@ -215,7 +215,7 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             {
                 throw new Exception("No accepted Item Price Code for price. Item Price code is " + price.type.id);
             }
-            Assert.AreEqual(ItemPriceTypes.Descriptions.ByCode[price.type.id], price.type.description);
+            Assert.AreEqual(ItemPriceTypes.Descriptions.ByCode[price.type.id.ToString()], price.type.description);
             Assert.AreEqual(Enum.Parse(typeof(Contracts.CurrencyTypeCodeEnum), messageQueue.CurrencyCode), price.currencyTypeCode);
             Assert.IsTrue(price.uom.codeSpecified);
             Assert.IsTrue(price.uom.nameSpecified);

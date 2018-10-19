@@ -13,7 +13,7 @@ using Icon.Logging;
 using Moq;
 using Mammoth.Common.Testing.Builders;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using Mammoth.Common.DataAccess;
 using System.Globalization;
 

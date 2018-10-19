@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Mammoth.ApiController.QueueProcessors
 {

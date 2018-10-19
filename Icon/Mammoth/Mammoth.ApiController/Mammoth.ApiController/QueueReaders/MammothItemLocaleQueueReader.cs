@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Mammoth.ApiController.QueueReaders
 {
