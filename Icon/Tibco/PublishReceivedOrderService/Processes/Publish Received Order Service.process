@@ -1080,6 +1080,38 @@ And STATUS = 'I'
             <jdbcQueryActivityInput/>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Update Message to Error Status">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>508</pd:x>
+        <pd:y>613</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE [amz].[ReceiptQueue]
+SET Status ='E',
+	ProcessTimes = IsNull(ProcessTimes, 0) +1,
+	LastProcessedTime = getdate(),
+ WHERE InProcessBy = ?
+And STATUS = 'I'
+</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>InProcessBy</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <InProcessBy>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
+                </InProcessBy>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>LockReceiptQueueEvents</pd:to>
@@ -1109,13 +1141,6 @@ And STATUS = 'I'
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch-All</pd:from>
-        <pd:to>Log-AllErrors</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Log-AllErrors</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1140,6 +1165,20 @@ And STATUS = 'I'
     <pd:transition>
         <pd:from>Get ApplicationID</pd:from>
         <pd:to>UniqueKeyID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-All</pd:from>
+        <pd:to>Update Message to Error Status</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Message to Error Status</pd:from>
+        <pd:to>Log-AllErrors</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
