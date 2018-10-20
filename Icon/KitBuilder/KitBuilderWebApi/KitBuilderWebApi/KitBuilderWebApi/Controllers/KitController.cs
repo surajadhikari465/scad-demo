@@ -225,6 +225,8 @@ namespace KitBuilderWebApi.Controllers
             foreach (var kitLocaleDto in kitLocaleDtoList)
             {
                 var kitLocale = Mapper.Map<KitLocale>(kitLocaleDto);
+                kitLocale.InsertDateUtc = DateTime.UtcNow;
+                kitLocale.LastUpdatedDateUtc = DateTime.UtcNow;
                 kitLocaleListPassed.Add(kitLocale);
             }
 
@@ -232,7 +234,12 @@ namespace KitBuilderWebApi.Controllers
             var kitLocaleRecordsToDelete = kitLocaleDbList.Where(t => !kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
 
             // records that are in list passed but not in database
-            var kitLocaleRecordsToAdd = kitLocaleListPassed.Where(t => !kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId));
+            var kitLocaleRecordsToAdd = kitLocaleListPassed.Where(t => !kitLocaleDbList.Select(l => l.LocaleId).Contains(t.LocaleId)).ToList();
+            foreach (var kitLocale in kitLocaleRecordsToAdd)
+            {
+                kitLocale.InsertDateUtc = DateTime.UtcNow;
+                kitLocale.LastUpdatedDateUtc = DateTime.Now;
+            }
 
             var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
 
@@ -282,10 +289,6 @@ namespace KitBuilderWebApi.Controllers
 											 join klg in kitPropertiesDto.KitLinkGroupLocaleList on klgl.KitLocaleId equals klg.KitLocaleId
 											 select klgl;
 
-			//var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
-			//									 join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupItemLocaleId equals klg.KitLinkGroupItemLocaleId 
-			//									 select klgl;
-
 			var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
 												 join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupLocaleId equals klg.KitLinkGroupLocaleId
 												 select klgl;
@@ -295,10 +298,15 @@ namespace KitBuilderWebApi.Controllers
 			var kitLinkGroupLocalesToUpdate = existingKitLinkGroupLocals.Where(t => kitPropertiesDto.KitLinkGroupLocaleList.Select(l => l.KitLinkGroupLocaleId).Contains(t.KitLinkGroupLocaleId));
 			var kitLinkGroupLocalesToRemove = existingKitLinkGroupLocals.Where(t => !kitPropertiesDto.KitLinkGroupLocaleList.Select(l => l.KitLinkGroupLocaleId).Contains(t.KitLinkGroupLocaleId));
 
-			IEnumerable<KitLinkGroupLocale> KitLinkGroupLocales = ConvertPropertiesToLinkGroupLocale(kitLinkGroupLocaleRecordsToAdd, kitPropertiesDto.KitLocaleId);
+			IEnumerable<KitLinkGroupLocale> kitLinkGroupLocalesToAdd = ConvertPropertiesToLinkGroupLocale(kitLinkGroupLocaleRecordsToAdd, kitPropertiesDto.KitLocaleId);
+            foreach (var kitLinkGroupLocale in kitLinkGroupLocalesToAdd)
+            {
+                kitLinkGroupLocale.InsertDateUtc = DateTime.UtcNow;
+                kitLinkGroupLocale.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
 
 			//Add brand new KitLinkGroupLocale records and their corresponding kids (KitLinkGroupItemLocale) records
-			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.AddRange(KitLinkGroupLocales);
+			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.AddRange(kitLinkGroupLocalesToAdd);
 			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupLocale.RemoveRange(kitLinkGroupLocalesToRemove);
 
 			UpdateKitLinkGroupLocale(kitLinkGroupLocalesToUpdate, kitPropertiesDto);
@@ -307,9 +315,14 @@ namespace KitBuilderWebApi.Controllers
 			var kitLinkGroupItemLocalesToUpdate = existingKitLinkGroupItemLocals.Where(t => kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(i => i.KitLinkGroupItemLocaleList).Select(l => l.KitLinkGroupItemLocaleId).Contains(t.KitLinkGroupItemLocaleId));
 			var kitLinkGroupItemLocalesToRemove = existingKitLinkGroupItemLocals.Where(t => !kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(i => i.KitLinkGroupItemLocaleList).Select(l => l.KitLinkGroupItemLocaleId).Contains(t.KitLinkGroupItemLocaleId));
 
-			IEnumerable<KitLinkGroupItemLocale> KitLinkGroupItemLocales = ConvertPropertiesToLinkGroupItemLocale(kitLinkGroupItemLocalesToAdd);
+			IEnumerable<KitLinkGroupItemLocale> kitLinkGroupItemLocales = ConvertPropertiesToLinkGroupItemLocale(kitLinkGroupItemLocalesToAdd).ToList();
+            foreach (var kitLinkGroupItemLocale in kitLinkGroupItemLocales)
+            {
+                kitLinkGroupItemLocale.InsertDateUtc = DateTime.UtcNow;
+                kitLinkGroupItemLocale.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
 
-            kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.AddRange(KitLinkGroupItemLocales);
+            kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.AddRange(kitLinkGroupItemLocales);
 			kitLinkGroupLocaleRepository.UnitOfWork.Context.KitLinkGroupItemLocale.RemoveRange(kitLinkGroupItemLocalesToRemove);
 
 			UpdateKitLinkGroupItemLocale(kitLinkGroupItemLocalesToUpdate, kitPropertiesDto);

@@ -101,7 +101,7 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(linkGroupDto);
         }
-
+            
         [HttpPost()]
         public IActionResult CreateLinkGroup(
             [FromBody] LinkGroupDto linkGroup)
@@ -169,6 +169,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 existingLinkGroup.GroupName = linkGroupPassed.GroupName;
                 existingLinkGroup.GroupDescription = linkGroupPassed.GroupDescription;
+                existingLinkGroup.LastUpdatedDateUtc = DateTime.UtcNow;
                 linkGroupRepository.UnitOfWork.Commit();
             }
             catch (Exception ex)

@@ -107,7 +107,10 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
-            instructionList.InstructionListId = instructionListId;
+            instructionListMember.InstructionListId = instructionListId;
+            instructionListMember.InsertDateUtc = DateTime.UtcNow;
+            instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
+            
             instructionList.InstructionListMember.Add(instructionListMember);
 
             try
