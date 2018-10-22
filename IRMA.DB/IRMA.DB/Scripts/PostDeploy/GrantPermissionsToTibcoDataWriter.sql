@@ -1,13 +1,22 @@
 ﻿GRANT SELECT ON ItemVendor  TO TibcoDataWriter
-GRANT SELECT ON USERS  TO TibcoDataWriter
+GRANT SELECT ON Users  TO TibcoDataWriter
 GRANT SELECT ON SubTeam  TO TibcoDataWriter
-GRANT SELECT ON amz.EVENTTYPE  TO TibcoDataWriter
-GRANT SELECT ON OrderItem  TO TibcoDataWriter
+GRANT SELECT ON Team     TO TibcoDataWriter
+GRANT SELECT ON amz.EventType  TO TibcoDataWriter
+GRANT SELECT ON OrderItem      TO TibcoDataWriter
+GRANT SELECT ON Item           TO TibcoDataWriter
+GRANT SELECT ON ItemIdentifier TO TibcoDataWriter
+GRANT SELECT ON ItemUnit       TO TibcoDataWriter
 GRANT SELECT ON Vendor  TO TibcoDataWriter
+GRANT SELECT ON Store   TO TibcoDataWriter
 GRANT SELECT ON OrderHeader  TO TibcoDataWriter
+GRANT SELECT ON ExternalOrderInformation TO TibcoDataWriter
+GRANT SELECT ON OrderExternalSource      TO TibcoDataWriter
 GRANT SELECT ON AppConfigApp  TO TibcoDataWriter
 GRANT SELECT ON Version  TO TibcoDataWriter
 GRANT SELECT ON AppConfigEnv  TO TibcoDataWriter
 GRANT SELECT ON AppConfigApp  TO TibcoDataWriter
 GRANT INSERT,Update,SELECT ON amz.MessageArchive  TO TibcoDataWriter
 GRANT SELECT,UPDATE ON amz.ReceiptQueue TO TibcoDataWriter
+GRANT SELECT,UPDATE ON amz.OrderQueue TO TibcoDataWriter
+
