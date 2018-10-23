@@ -3354,6 +3354,7 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
     <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
+    <None Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
