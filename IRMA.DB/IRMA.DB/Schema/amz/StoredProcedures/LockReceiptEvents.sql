@@ -17,7 +17,10 @@ SET @ReceiptCreateEventID = (SELECT EventTypeId from amz.EventType WHERE EventTy
 SET @ReceiptModifiedEventId = (SELECT EventTypeId from amz.EventType WHERE EventTypeCode = 'RCPT_MOD')
 
 UPDATE rq
-	SET rq.InProcessBy = NULL 
+	SET	rq.InProcessBy = NULL, 
+		rq.Status = 'F',
+		rq.ProcessTimes = ISNULL(rq.ProcessTimes, 0) + 1,
+		rq.LastProcessedTime = ISNULL(rq.LastProcessedTime, @CurrentDateTime)
 	FROM [amz].[ReceiptQueue] rq WITH (ROWLOCK, UPDLOCK, READPAST)
 	WHERE rq.InProcessBy = @Instance
 
@@ -34,7 +37,7 @@ UPDATE rq
 			[amz].[ReceiptQueue]		rq	WITH (ROWLOCK, UPDLOCK, READPAST) -- force row locking for concurrency purposes
 			JOIN amz.EventType			et	on rq.EventTypeID = et.EventTypeID
 		WHERE 
-			rq.InProcessBy IS NULL  AND rq.Status IN ('U', 'E') AND DATEDIFF(minute, rq.InsertDate, @CurrentDateTime) >= @ProcessDelayTimeInMinutes
+			rq.InProcessBy IS NULL  AND rq.Status IN ('U', 'F') AND DATEDIFF(minute, rq.InsertDate, @CurrentDateTime) >= @ProcessDelayTimeInMinutes
 		GROUP BY KeyID, InProcessBy
 		HAVING ( MIN(ISNull(ProcessTimes,0)) <= 2 OR  
 			   ( MIN(ProcessTimes) = 3 AND  DATEDIFF(minute, MIN(LastProcessedTime) , @CurrentDateTime) >= @WaitTimeForRecordsProcessedThreetimes) OR
@@ -55,7 +58,7 @@ UPDATE rq
 	FROM  [amz].[ReceiptQueue] rq
 	JOIN eventQueue_cte eq ON rq.KeyID = eq.KeyID
 	WHERE 
-			rq.InProcessBy IS NULL  AND rq.Status IN ('U', 'E') 
+			rq.InProcessBy IS NULL  AND rq.Status IN ('U', 'F') 
 	
 	-- change status for reduntant events
 
