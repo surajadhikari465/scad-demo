@@ -11,6 +11,15 @@ BEGIN
           @hierarchyMessageTypeId INT	= (select MessageTypeId FROM app.MessageType WHERE MessageTypeName = 'Hierarchy'),
           @deleteMessageActionId INT  = (select MessageActionId FROM app.MessageAction WHERE MessageActionName = 'Delete')
 
+  declare @nationalClassCode table(HierarchyClassId int, NationalClassCode nvarchar(255));
+  ;with cte as(select B.HierarchyClassId, B.traitValue, row_number()over(partition by A.HierarchyClassId order by A.HierarchyClassId) rowID from @hierarchyClasses A
+             join HierarchyClassTrait B on B.hierarchyClassID = A.HierarchyClassId
+             join HierarchyClass C on C.hierarchyClassID = A.HierarchyClassId
+             where A.hierarchyID = @nationalHierarchyId)
+
+  insert into @nationalClassCode(HierarchyClassId, NationalClassCode)
+    select HierarchyClassId, traitValue from cte where rowID = 1;
+
 	insert into app.MessageQueueHierarchy(MessageTypeId,
                                         MessageStatusId,
                                         MessageActionId,
@@ -35,11 +44,11 @@ BEGIN
            hc.HierarchyClassName,
            hp.hierarchyLevel,
            hc.ParentHierarchyClassId,
-           case when Isnull(hc.hierarchyID, 0) = @nationalHierarchyId then D.traitValue else null end NationalClassCode
+           D.NationalClassCode
 	  from @hierarchyClasses hc
 		join dbo.Hierarchy h on hc.HierarchyId = h.hierarchyID
 		join dbo.HierarchyPrototype hp on hp.hierarchyID = hc.HierarchyId and hp.hierarchyLevelName = hc.hierarchyLevelName
-    left join dbo.HierarchyClassTrait D on D.hierarchyClassID = hc.HierarchyClassId
+    left join @nationalClassCode D on D.hierarchyClassID = hc.HierarchyClassId
 	WHERE h.HierarchyId in (@brandHierarchyId, @merchHierarchyId, @financialHierarchyId, @nationalHierarchyId)
 END
 GO
