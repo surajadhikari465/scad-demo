@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Published Inventory Spoilage Service Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>2172690</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Published Inventory Spoilage Service Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>2172690</authorProperty>
+            <processProperty>/Processes/PublishInventorySpoilageService.process</processProperty>
+        </processArchive>
+        <versionProperty>7</versionProperty>
+        <authorProperty>2172690</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>PublishInventorySpoilageService</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\DevRepo\Icon\Icon\Tibco\DeploymentFiles\PublishInventorySpoilageService.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>
