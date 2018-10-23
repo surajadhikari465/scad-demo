@@ -208,7 +208,7 @@ namespace Mammoth.ApiController.Tests.QueueReaders
             else if(price.type.id.ToString() == ItemPriceTypes.Codes.TemporaryPriceReduction)
             {
                 Assert.IsTrue(price.priceEndDateSpecified);
-                Assert.AreEqual(messageQueue.SubPriceTypeCode, price.type.type.id);
+                Assert.AreEqual(messageQueue.SubPriceTypeCode, price.type.type.id.ToString());
                 Assert.AreEqual(messageQueue.SubPriceTypeCode, price.type.type.description);
             }
             else

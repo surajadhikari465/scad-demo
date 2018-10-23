@@ -232,70 +232,70 @@ namespace Icon.ApiController.Controller.QueueReaders
                         Action = Contracts.ActionEnum.AddOrUpdate,
                         ActionSpecified = true,
                         id = message.ItemId,
-                        @base = new Contracts.BaseItemType
+                      @base = new Contracts.BaseItemType
+                      {
+                        type = new Contracts.ItemTypeType
                         {
-                            type = new Contracts.ItemTypeType
-                            {
-                                code = message.ItemTypeCode,
-                                description = message.ItemTypeDesc
-                            },
-                            consumerInformation = BuildConsumerInformation(message)
+                          code = message.ItemTypeCode,
+                          description = message.ItemTypeDesc
                         },
-                        locale = new Contracts.LocaleType[]
-                        {
-                            new Contracts.LocaleType
-                            {
-                                id = Locales.WholeFoods.ToString(),
-                                name = "Whole Foods Market",
-                                type = new Contracts.LocaleTypeType
-                                {
-                                    code = Contracts.LocaleCodeType.CHN,
-                                    description = Contracts.LocaleDescType.Chain
-                                },
-                                Item = new Contracts.EnterpriseItemAttributesType
-                                {
-                                    scanCodes = new Contracts.ScanCodeType[]
-                                    {
-                                        BuildScanCodeType(message)
-                                    },
-                                    kit = new Contracts.KitType
-                                    {
-                                       kitItem =  new Contracts.KitTypeKitItem
-                                        {
-                                            kitchenItem = (bool)message.KitchenItem,
-                                            kitchenDescription = message.KitchenDescription,
-                                            imageUrl = message.ImageURL,
-                                            hospitalityItem = (bool)message.HospitalityItem
-                                        }
-                                    },
-                                    hierarchies = settings.EnableNationalHierarchy ? 
-                                        new Contracts.HierarchyType[]
-                                        {
-                                            BuildMerchandiseHierarchy(message),
-                                            BuildBrandHierarchy(message),
-                                            BuildTaxHierarchy(message),
-                                            BuildFinancialHierarchy(message),
-                                            BuildNationalHierarchy(message)
-                                        } :
-                                        new Contracts.HierarchyType[]
-                                        {
-                                            BuildMerchandiseHierarchy(message),
-                                            BuildBrandHierarchy(message),
-                                            BuildTaxHierarchy(message),
-                                            BuildFinancialHierarchy(message)
-                                        },
-                                    traits = BuildItemTraits(message),
-                                    selectionGroups = productSelectionGroupMapper.GetProductSelectionGroups(message)
-                                }
-                            }
-                        }
+                        consumerInformation = BuildConsumerInformation(message)
+                      },
+                      locale = new Contracts.LocaleType[]
+                      {
+                          new Contracts.LocaleType
+                          {
+                              id = Locales.WholeFoods.ToString(),
+                              name = "Whole Foods Market",
+                              type = new Contracts.LocaleTypeType
+                              {
+                                  code = Contracts.LocaleCodeType.CHN,
+                                  description = Contracts.LocaleDescType.Chain
+                              },
+                              Item = new Contracts.EnterpriseItemAttributesType
+                              {
+                                  scanCodes = new Contracts.ScanCodeType[]
+                                  {
+                                      BuildScanCodeType(message)
+                                  },
+                                  kit = new Contracts.KitType
+                                  {
+                                     kitItem =  new Contracts.KitTypeKitItem
+                                      {
+                                          kitchenItem = message.KitchenItem == null ? false : message.KitchenItem.Value,
+                                          kitchenDescription = message.KitchenDescription,
+                                          imageUrl = message.ImageURL,
+                                          hospitalityItem = message.HospitalityItem == null ? false : message.HospitalityItem.Value 
+                                      }
+                                  },
+                                  hierarchies = settings.EnableNationalHierarchy ?
+                                      new Contracts.HierarchyType[]
+                                      {
+                                          BuildMerchandiseHierarchy(message),
+                                          BuildBrandHierarchy(message),
+                                          BuildTaxHierarchy(message),
+                                          BuildFinancialHierarchy(message),
+                                          BuildNationalHierarchy(message)
+                                      } :
+                                      new Contracts.HierarchyType[]
+                                      {
+                                          BuildMerchandiseHierarchy(message),
+                                          BuildBrandHierarchy(message),
+                                          BuildTaxHierarchy(message),
+                                          BuildFinancialHierarchy(message)
+                                      },
+                                  traits = BuildItemTraits(message),
+                                  selectionGroups = productSelectionGroupMapper.GetProductSelectionGroups(message)
+                              }
+                          }
+                      }
                     };
 
                     miniBulk.item[currentMiniBulkIndex++] = miniBulkEntry;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    HandleMiniBulkException(message, ex);
+                  HandleMiniBulkException(message, ex);
                 }
             }
 
