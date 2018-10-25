@@ -630,7 +630,7 @@ WHERE p.Region = ?
                     <pd:indexSlot>Counter</pd:indexSlot>
                     <pd:outSlot>Prices</pd:outSlot>
                     <pd:activityOutputName>Map Data</pd:activityOutputName>
-                    <pd:whileCondition>$Counter&lt;=ceiling((count($GetActivePrices/resultSet/Record) div $_globalVariables/ns1:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
+                    <pd:whileCondition>$Counter&lt;=ceiling((count($businessUnitIdFilter/pfx3:MammothPrices/pfx3:MammothPrice) div $_globalVariables/ns1:GlobalVariables/Application/EMSPriceBatchsize))</pd:whileCondition>
                     <pd:accumulateOutput>true</pd:accumulateOutput>
                 </config>
                 <pd:inputBindings/>
@@ -722,7 +722,7 @@ WHERE p.Region = ?
                                 <xsl:value-of select="current-dateTime()"/>
                             </ns3:LogDate>
                             <ns3:Message>
-                                <xsl:value-of select="concat('Region: ', $Parse-XML/pfx4:JobSchedule/pfx4:Region,&quot;. Number of Records Send to EMS: &quot;, $_globalVariables/ns1:GlobalVariables/Application/EMSPriceBatchsize)"/>
+                                <xsl:value-of select="concat('Region: ', $Parse-XML/pfx4:JobSchedule/pfx4:Region,&quot; | BusinessUnitID &quot;,$currentBusinessUnit/BusinessUnitId ,&quot; | Number of records sent to EMS: &quot;, count($Map-Data/pfx3:MammothPrices/pfx3:MammothPrice))"/>
                             </ns3:Message>
                         </ns3:AppLog>
                     </pd:inputBindings>
