@@ -21,302 +21,11 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1478</pd:endX>
-    <pd:endY>319</pd:endY>
+    <pd:endX>1407</pd:endX>
+    <pd:endY>38</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1538071349052</pd:targetNamespace>
-    <pd:activity name="LockReceiptQueueEvents">
-        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>155</pd:x>
-        <pd:y>243</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <maxRows>20000</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <schema>amz</schema>
-            <ProcedureName>LockReceiptEvents</ProcedureName>
-            <catalog/>
-            <useSchema>false</useSchema>
-            <parameterTypes>
-                <parameter>
-                    <colName>@RETURN_VALUE</colName>
-                    <colType>5</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@NumberOfOrdersToProcess</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@Instance</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@ProcessDelayTimeInMinutes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedThreetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFourtimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFivetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-            </parameterTypes>
-        </config>
-        <pd:inputBindings>
-            <inputs>
-                <inputSet>
-                    <NumberOfOrdersToProcess>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
-                    </NumberOfOrdersToProcess>
-                    <Instance>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Instance>
-                    <ProcessDelayTimeInMinutes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessDelayTimeInMinutes"/>
-                    </ProcessDelayTimeInMinutes>
-                    <WaitTimeForRecordsProcessedThreetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedThreetimes"/>
-                    </WaitTimeForRecordsProcessedThreetimes>
-                    <WaitTimeForRecordsProcessedFourtimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFourtimes"/>
-                    </WaitTimeForRecordsProcessedFourtimes>
-                    <WaitTimeForRecordsProcessedFivetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFivetimes"/>
-                    </WaitTimeForRecordsProcessedFivetimes>
-                </inputSet>
-            </inputs>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="GetEvents">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>156</pd:x>
-        <pd:y>35</pd:y>
-        <config>
-            <timeout>120</timeout>
-            <commit>false</commit>
-            <maxRows>0</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT  
-	QueueID,
-	et.[EventTypeCode] as EventTypeCode,
-	et.EventTypeID as EventTypeID,
-	KeyID as OrderHeader_ID,
-	SecondaryKeyID as OrderItem_ID,
-	--id.Identifier as Identifier,
-	1  as Identifier,
-	id.Item_Key as ItemKey,
-	st.SubTeam_Name as HostSubTeam,
-	st.SubTeam_No as HostSubTeamNumber,
-	sth.SubTeam_Name as SubTeam,
-	sth.SubTeam_No as SubTeamNumber,
-	oi.DateReceived as DateReceived,
-	CAST(oi.QuantityReceived as int) as QuantityReceived,
-	CAST(oi.QuantityOrdered as int) as QuantityOrdered,
-	oi.Package_Desc1 as Package_Desc1,
-	oi.Package_Desc2 as Package_Desc2,
-	Oh.RecvLogUser_ID as RecvLogUser_ID,
-	IsNull(u.UserName, '') as RecvUserName,
-	IsNull(u.User_ID, 0)  as RecvUSerID,
-	iu.Unit_Abbreviation as OrderUom,
-	iui.Unit_Abbreviation as ReceiptUom,
-	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered Then 'Received'  when oh.PartialShipment = 0 then 'Received' else 'Partially Received' END AS ReceiptStatus,
-	iv.item_id as VIN,
-	s.BusinessUnit_ID as StoreNumber,
-    s.Store_Name as StoreName,
-	cast(Datediff(s, rq.MessageTimestampUtc, GETUTCDATE()) AS bigint)*1000 as MessageNumber
-
-	FROM [amz].[ReceiptQueue] as rq
-	JOIN dbo.OrderHeader as oh on rq.KeyID = oh.OrderHeader_ID
-	join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-	join Store s on s.Store_No = psl.Store_no 
-	JOIN dbo.OrderItem as oi on rq.SecondaryKeyId = oi.OrderItem_ID
-	JOIN amz.EventType et on et.EventTypeID = rq.EventTypeID
-	JOIN ItemIdentifier id on id.Item_Key = oi.Item_Key
-	JOIN item i on i.Item_key = id.Item_Key
-	JOIN SubTeam st on st.SubTeam_No = i.SubTeam_No
-	join SubTeam sth on sth.Subteam_No = oh.Transfer_To_SubTeam
-	LEFT JOIN dbo.Users u on oh.ApprovedBy = u.User_ID
-	JOIN ItemUnit iu on iu.Unit_ID = oi.QuantityUnit
-	LEFT JOIN ItemUnit iui on iui.Unit_ID = oi.InvoiceQuantityUnit
-	join Vendor v on  v.Vendor_ID = oh.Vendor_ID
-	JOIN ItemVendor iv on iv.Vendor_ID = v.Vendor_ID And iv.Item_Key = id.Item_Key 
-	WHERE rq.Status in ('I') AND InProcessBy = ?
-       ORDER BY KeyID desc
-</statement>
-            <wizardData/>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <processInSubsets>false</processInSubsets>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>QueueID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventTypeCode</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventTypeID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderItem_ID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>Identifier</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ItemKey</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>HostSubTeam</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>HostSubTeamNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>SubTeam</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>DateReceived</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>QuantityReceived</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>Package_Desc1</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>Package_Desc2</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>RecvLogUser_ID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>RecvUserName</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>RecvUSerID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderUom</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ReceiptUom</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ReceiptStatus</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>VIN</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>StoreNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>StoreName</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput>
-                <InProcessBy>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy>
-            </jdbcQueryActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="UniqueKeyID">
-        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>583</pd:x>
-        <pd:y>39</pd:y>
-        <config>
-            <element>
-                <xsd:element name="root">
-                    <xsd:complexType>
-                        <xsd:sequence maxOccurs="unbounded">
-                            <xsd:element name="OrderHeaderId" type="xsd:int"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </element>
-        </config>
-        <pd:inputBindings>
-            <root>
-                <xsl:for-each-group select="$GetEvents/resultSet/Record" group-by="OrderHeader_ID">
-                    <OrderHeaderId>
-                        <xsl:value-of select="OrderHeader_ID"/>
-                    </OrderHeaderId>
-                </xsl:for-each-group>
-            </root>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:group name="GroupAndSendReceiptData">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
@@ -402,7 +111,7 @@
                     <pfx2:orderReceipts>
                         <pfx2:orderReceipt>
                             <pfx2:receiptNumber>
-                                <xsl:value-of select="1"/>
+                                <xsl:value-of select="OrderHeader_ID"/>
                             </pfx2:receiptNumber>
                             <pfx2:purchaseOrderNumber>
                                 <xsl:value-of select="OrderHeader_ID"/>
@@ -511,14 +220,14 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Archive Message</pd:from>
+                <pd:from>Update Receipt Queue Table</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Archive Message On Error</pd:from>
+                <pd:from>Update Receipt Queue Table With Error</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -532,29 +241,15 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Log Error Inside Group</pd:from>
-                <pd:to>Update Receipt Queue Table With Error</pd:to>
+                <pd:from>ConvertToJSon</pd:from>
+                <pd:to>Archive Message On Error</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
                 <pd:from>SendDataToESB</pd:from>
-                <pd:to>Update Receipt Queue Table</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Receipt Queue Table</pd:from>
                 <pd:to>Convert Message to JSON</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Receipt Queue Table With Error</pd:from>
-                <pd:to>ConvertToJSon</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -567,8 +262,22 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>ConvertToJSon</pd:from>
-                <pd:to>Archive Message On Error</pd:to>
+                <pd:from>Archive Message</pd:from>
+                <pd:to>Update Receipt Queue Table</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Log Error Inside Group</pd:from>
+                <pd:to>ConvertToJSon</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Archive Message On Error</pd:from>
+                <pd:to>Update Receipt Queue Table With Error</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -577,7 +286,7 @@
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
                 <pd:x>656</pd:x>
-                <pd:y>212</pd:y>
+                <pd:y>214</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -624,7 +333,7 @@
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
                 <pd:x>648</pd:x>
-                <pd:y>376</pd:y>
+                <pd:y>361</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -635,7 +344,7 @@
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>774</pd:x>
-                <pd:y>385</pd:y>
+                <pd:y>369</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -679,62 +388,18 @@
                     </LogElement>
                 </pd:inputBindings>
             </pd:activity>
-            <pd:activity name="Update Receipt Queue Table">
-                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>781</pd:x>
-                <pd:y>221</pd:y>
-                <config>
-                    <timeout>10</timeout>
-                    <commit>false</commit>
-                    <emptyStrAsNil>false</emptyStrAsNil>
-                    <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='P',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription =''
- WHERE keyId =?
-AND InProcessBy = ?
-And STATUS = 'I'
-
-
-
-</statement>
-                    <Prepared_Param_DataType>
-                        <parameter>
-                            <parameterName>KeyId</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>InProcessBy</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                    </Prepared_Param_DataType>
-                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                </config>
-                <pd:inputBindings>
-                    <jdbcUpdateActivityInput>
-                        <KeyId>
-                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                        </KeyId>
-                        <InProcessBy>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </InProcessBy>
-                    </jdbcUpdateActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
             <pd:activity name="Update Receipt Queue Table With Error">
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>901</pd:x>
-                <pd:y>391</pd:y>
+                <pd:x>1133</pd:x>
+                <pd:y>376</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
                     <emptyStrAsNil>false</emptyStrAsNil>
                     <statement>UPDATE [amz].[ReceiptQueue]
 SET InProcessBy = NULL,
-    Status ='P',
+        Status ='P',
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
 	LastProcessedTime = getdate(),
 	ErrorDescription = ?
@@ -784,8 +449,8 @@ And STATUS = 'I'
             <pd:activity name="Archive Message">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1166</pd:x>
-                <pd:y>211</pd:y>
+                <pd:x>945</pd:x>
+                <pd:y>214</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -822,8 +487,8 @@ And STATUS = 'I'
             <pd:activity name="Convert Message to JSON">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>947</pd:x>
-                <pd:y>219</pd:y>
+                <pd:x>796</pd:x>
+                <pd:y>222</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -838,8 +503,8 @@ And STATUS = 'I'
             <pd:activity name="ConvertToJSon">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>1030</pd:x>
-                <pd:y>374</pd:y>
+                <pd:x>874</pd:x>
+                <pd:y>361</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -854,8 +519,8 @@ And STATUS = 'I'
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1156</pd:x>
-                <pd:y>383</pd:y>
+                <pd:x>999</pd:x>
+                <pd:y>369</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -884,6 +549,47 @@ And STATUS = 'I'
                             <xsl:value-of select="$Map-First-Queue-ID/QueueID"/>
                         </QueueID>
                     </Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Update Receipt Queue Table">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1098</pd:x>
+                <pd:y>222</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <statement>UPDATE [amz].[ReceiptQueue]
+SET Status ='P',
+        InProcessBy = NULL,
+	ProcessTimes = IsNull(ProcessTimes, 0) +1,
+	LastProcessedTime = getdate(),
+	ErrorDescription =''
+ WHERE keyId =?
+AND InProcessBy = ?
+And STATUS = 'I'</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>KeyId</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>InProcessBy</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <KeyId>
+                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
+                        </KeyId>
+                        <InProcessBy>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
+                        </InProcessBy>
+                    </jdbcUpdateActivityInput>
                 </pd:inputBindings>
             </pd:activity>
         </pd:group>
@@ -950,14 +656,20 @@ And STATUS = 'I'
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='E',
+SET Status ='F',
+        InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
 	LastProcessedTime = getdate(),
+        ErrorDescription = ?
  WHERE keyId =?
 AND InProcessBy = ?
 And STATUS = 'I'
 </statement>
                 <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>ErrorDescription</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
                     <parameter>
                         <parameterName>KeyId</parameterName>
                         <dataType>INTEGER</dataType>
@@ -970,6 +682,16 @@ And STATUS = 'I'
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
+                    <ErrorDescription>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns2:ErrorReport/Msg)">
+                                <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ErrorDescription>
                     <KeyId>
                         <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
                     </KeyId>
@@ -1000,18 +722,313 @@ And STATUS = 'I'
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
         <pd:x>155</pd:x>
-        <pd:y>622</pd:y>
+        <pd:y>619</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
+    <pd:activity name="Get ApplicationID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>274</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT	 TOP 1 ApplicationID
+		FROM
+		AppConfigApp
+		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
+			  AND NAME ='IRMA CLIENT'</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetEvents">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>156</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <timeout>120</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT  
+	QueueID,
+	et.[EventTypeCode] as EventTypeCode,
+	et.EventTypeID as EventTypeID,
+	KeyID as OrderHeader_ID,
+	SecondaryKeyID as OrderItem_ID,
+	id.Identifier as Identifier,
+	id.Item_Key as ItemKey,
+	st.SubTeam_Name as HostSubTeam,
+	st.SubTeam_No as HostSubTeamNumber,
+	sth.SubTeam_Name as SubTeam,
+	sth.SubTeam_No as SubTeamNumber,
+	oi.DateReceived as DateReceived,
+	CAST(oi.QuantityReceived as int) as QuantityReceived,
+	CAST(oi.QuantityOrdered as int) as QuantityOrdered,
+	oi.Package_Desc1 as Package_Desc1,
+	oi.Package_Desc2 as Package_Desc2,
+	Oh.RecvLogUser_ID as RecvLogUser_ID,
+	IsNull(u.UserName, '') as RecvUserName,
+	IsNull(u.User_ID, 0)  as RecvUSerID,
+	iu.Unit_Abbreviation as OrderUom,
+	iui.Unit_Abbreviation as ReceiptUom,
+	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered Then 'Received'  when oh.PartialShipment = 0 then 'Received' else 'Partially Received' END AS ReceiptStatus,
+	iv.item_id as VIN,
+	s.BusinessUnit_ID as StoreNumber,
+    s.Store_Name as StoreName,
+	cast(Datediff(s, '1970-01-01', rq.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber
+	FROM amz.ReceiptQueue as rq
+	JOIN dbo.OrderHeader as oh on rq.KeyID = oh.OrderHeader_ID
+	JOIN Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
+	JOIN Store s on s.Store_No = psl.Store_no 
+	JOIN dbo.OrderItem as oi on rq.SecondaryKeyId = oi.OrderItem_ID
+	JOIN amz.EventType et on et.EventTypeID = rq.EventTypeID
+	JOIN ItemIdentifier id on id.Item_Key = oi.Item_Key
+	JOIN item i on i.Item_key = id.Item_Key
+	JOIN SubTeam st on st.SubTeam_No = i.SubTeam_No
+	JOIN SubTeam sth on sth.Subteam_No = oh.Transfer_To_SubTeam
+	LEFT JOIN dbo.Users u on oh.ApprovedBy = u.User_ID
+	JOIN ItemUnit iu on iu.Unit_ID = oi.QuantityUnit
+	LEFT JOIN ItemUnit iui on iui.Unit_ID = oi.InvoiceQuantityUnit
+	JOIN Vendor v on  v.Vendor_ID = oh.Vendor_ID
+	JOIN StoreItemVendor siv on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
+	JOIN ItemVendor iv on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
+						case 
+							when oh.OrderType_ID = 1
+							then v.Vendor_ID
+						else siv.Vendor_ID
+						end
+	WHERE rq.Status in ('I') AND InProcessBy = ?
+       ORDER BY KeyID desc</statement>
+            <wizardData/>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>InProcessBy</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <processInSubsets>false</processInSubsets>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>QueueID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EventTypeCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EventTypeID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>OrderItem_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Identifier</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ItemKey</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>HostSubTeam</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>HostSubTeamNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SubTeam</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DateReceived</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>QuantityReceived</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Package_Desc1</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Package_Desc2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecvLogUser_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecvUserName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecvUSerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>OrderUom</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ReceiptUom</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ReceiptStatus</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>VIN</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>StoreNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>StoreName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <InProcessBy>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
+                </InProcessBy>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LockReceiptQueueEvents">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>155</pd:x>
+        <pd:y>243</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>20000</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <schema>amz</schema>
+            <ProcedureName>LockReceiptEvents</ProcedureName>
+            <catalog/>
+            <useSchema>false</useSchema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@NumberOfOrdersToProcess</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@Instance</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ProcessDelayTimeInMinutes</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@WaitTimeForRecordsProcessedThreetimes</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@WaitTimeForRecordsProcessedFourtimes</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@WaitTimeForRecordsProcessedFivetimes</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <NumberOfOrdersToProcess>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
+                    </NumberOfOrdersToProcess>
+                    <Instance>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
+                    </Instance>
+                    <ProcessDelayTimeInMinutes>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessDelayTimeInMinutes"/>
+                    </ProcessDelayTimeInMinutes>
+                    <WaitTimeForRecordsProcessedThreetimes>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedThreetimes"/>
+                    </WaitTimeForRecordsProcessedThreetimes>
+                    <WaitTimeForRecordsProcessedFourtimes>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFourtimes"/>
+                    </WaitTimeForRecordsProcessedFourtimes>
+                    <WaitTimeForRecordsProcessedFivetimes>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFivetimes"/>
+                    </WaitTimeForRecordsProcessedFivetimes>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="Log-AllErrors">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1411</pd:x>
-        <pd:y>621</pd:y>
+        <pd:x>815</pd:x>
+        <pd:y>619</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -1053,47 +1070,47 @@ And STATUS = 'I'
             </LogElement>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Get ApplicationID">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>416</pd:x>
-        <pd:y>35</pd:y>
+    <pd:activity name="UniqueKeyID">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>304</pd:y>
         <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>100</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT	 TOP 1 ApplicationID
-		FROM
-		AppConfigApp
-		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
-			  AND NAME ='IRMA CLIENT'</statement>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence maxOccurs="unbounded">
+                            <xsd:element name="OrderHeaderId" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
         </config>
         <pd:inputBindings>
-            <jdbcQueryActivityInput/>
+            <root>
+                <xsl:for-each-group select="$GetEvents/resultSet/Record" group-by="OrderHeader_ID">
+                    <OrderHeaderId>
+                        <xsl:value-of select="OrderHeader_ID"/>
+                    </OrderHeaderId>
+                </xsl:for-each-group>
+            </root>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Update Message to Error Status">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>508</pd:x>
-        <pd:y>613</pd:y>
+        <pd:x>1418</pd:x>
+        <pd:y>627</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='E',
+SET Status ='F',
+        InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
+	LastProcessedTime = getdate()
  WHERE InProcessBy = ?
 And STATUS = 'I'
 </statement>
@@ -1141,13 +1158,6 @@ And STATUS = 'I'
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log-AllErrors</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>GetEvents</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1171,6 +1181,13 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>Catch-All</pd:from>
+        <pd:to>Log-AllErrors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-AllErrors</pd:from>
         <pd:to>Update Message to Error Status</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -1178,7 +1195,7 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>Update Message to Error Status</pd:from>
-        <pd:to>Log-AllErrors</pd:to>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

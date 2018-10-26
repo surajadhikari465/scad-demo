@@ -800,7 +800,7 @@ And STATUS = 'I'
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>ErrorDescription</parameterName>
-                        <dataType>INTEGER</dataType>
+                        <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
                         <parameterName>QueueId</parameterName>
@@ -1369,11 +1369,16 @@ WHERE et.EventTypeCode = 'PO_LINE_DEL'
 SET Status ='F',
         InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate()
+	LastProcessedTime = getdate(),
+        ErrorDescription = ?
  WHERE InProcessBy = ?
 And STATUS = 'I'
 </statement>
             <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>ErrorDescription</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
                 <parameter>
                     <parameterName>InProcessBy</parameterName>
                     <dataType>INTEGER</dataType>
@@ -1382,6 +1387,16 @@ And STATUS = 'I'
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
+                <ErrorDescription>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns3:ErrorReport/Msg)">
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ErrorDescription>
                 <InProcessBy>
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                 </InProcessBy>
