@@ -417,9 +417,11 @@ BEGIN
 					i.OrderHeader_ID
 		FROM		INSERTED	i	
 		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
-		WHERE			((i.Sent = 1 AND d.Sent = 0) --Order is Sent
+		WHERE	i.Sent = 1 
+		AND		((i.Sent = 1 AND d.Sent = 0) --Order is Sent
 						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
-						OR	((i.ApprovedDate IS NULL AND i.CloseDate IS NOT NULL)
+						OR	((i.ApprovedDate IS NULL 
+							AND i.CloseDate IS NOT NULL)
 							AND d.CloseDate IS NULL) --Order is suspended
 						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
 					)
