@@ -16,5 +16,7 @@ namespace Mammoth.Common.DataAccess
         public const int PrimePsg = 3;
         public const int Processbod = 4;
         public const int Confirmbod = 5;
+        public const int IrmaPrice = 6;
+        public const int CheckpointRequest = 7;
 	}
 }

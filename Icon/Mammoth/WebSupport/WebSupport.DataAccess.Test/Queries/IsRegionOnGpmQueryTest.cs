@@ -64,7 +64,7 @@ namespace WebSupport.DataAccess.Test.Queries
         public void IsRegionOnGpmQuery_RegionNotOnGpmAndRecordoesNotExistInRegionGpmStatus_ReturnsFalse()
         {
             //Given
-            parameters.Region = "FL";
+            parameters.Region = "XY";
 
             //When
             var isRegionOnGpm = isRegionOnGpmQuery.Search(parameters);
@@ -72,6 +72,7 @@ namespace WebSupport.DataAccess.Test.Queries
             //Then
             Assert.AreEqual(isRegionOnGpm, false);
         }
+
         private void InsertOrUpdateRegionGpmStatus(string region, bool regionGpmStatus)
         {
             connection.Execute(

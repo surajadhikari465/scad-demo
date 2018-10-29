@@ -15,7 +15,7 @@ Post-Deployment Script Template
 :r AddIrmaItemKeyAttributes.sql --PBI 28239 Aug. 15, 2018
 :r UpdateAppLogRetention.sql -- PBI 28749 8/27/2018
 :r AddNumberOfDigitsForCFSItems.sql -- PBI 28686 09/13/2018
-
+:r AddEsbMessageTypeForCheckpointRequest.sql --PBI 29872 10/22/2018
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

@@ -1,16 +1,22 @@
 ﻿@using WebSupport.Helpers
-@using WebSupport.Models
+@using WebSupport.Controllers
+
 @model WebSupport.ViewModels.CheckPointRequestViewModel
 @{
     ViewBag.Title = "Send Checkpoint Request to GPM";
+    var scanCodeListDelimiter = new string[] { Environment.NewLine };
+    int scanCodeCount = string.IsNullOrWhiteSpace(Model.ScanCodes)
+        ? 0
+        : Model.ScanCodes.Split(scanCodeListDelimiter, StringSplitOptions.RemoveEmptyEntries).Length;
 }
 <h3 class="text-center">@ViewBag.Title</h3>
 
-    <div class="row container-fluid">
-        @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
-        {
+<div class="row container-fluid">
+    @using (Html.BeginForm("Index", "CheckPointRequest", null, FormMethod.Post, new { @class = "" }))
+    {
+        <div class="row">
             <div class="form-group">
-                <div class="col-sm-offset-0 col-sm-2">
+                <div class="col-sm-offset-3 col-sm-2">
                     @Html.LabelFor(m => m.RegionIndex, new { @class = "control-label" })
                 </div>
                 <div class="col-sm-4">
@@ -18,57 +24,70 @@
                     @Html.ValidationMessageFor(model => model.RegionIndex, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
+        <hr />
 
-            <div class="form-group">
-                <div class="col-sm-offset-0 col-sm-2">
-                    @Html.LabelFor(m => m.Store, new { @class = "control-label" })
-                </div>
-                <div class="col-sm-4">
-                    <div id="storesDiv" class="hidden">
-                        <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
-                    </div>
-
-                    @Html.DropDownListFor(m => m.Store, Model.OptionsForStores, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Store, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.Stores, new { @class = "control-label" })
             </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-0 col-sm-2">
-                    @Html.LabelFor(m => m.ScanCode, new { @class = "control-label" })
+            <div class="col-sm-4">
+                <div id="storesDiv" class="hidden">
+                    <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
                 </div>
-                <div class="col-sm-6" style="margin-top:10px">
-
-                    @Html.TextBoxFor(model => Model.ScanCode, new { style = "height:25px;" })
-                    @Html.ValidationMessageFor(model => model.ScanCode, "", new { @class = "text-danger" })
-                </div>
+                @{
+                    int storeBoxSize = 20;
+                    if (Model.OptionsForStores != null && Model.OptionsForStores.Count() > 1)
+                    {
+                        storeBoxSize = (Model.OptionsForStores.Count() <= 40) ? Model.OptionsForStores.Count() : 40;
+                    }
+                }
+                @Html.ListBoxFor(m => m.Stores, Model.OptionsForStores, new { @class = "form-control", size = storeBoxSize })
+                @Html.ValidationMessageFor(model => model.Stores, "", new { @class = "text-danger" })
             </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.ScanCodes, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4" style="margin-top:10px">
+                @Html.TextAreaFor(expression: model => Model.ScanCodes,
+                        rows: TextAreaHelper.GetRowsByListCount(scanCodeCount),
+                        columns: TextAreaHelper.DefaultCols,
+                        htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ScanCodes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
             <div class="form-group">
-                <div class="col-sm-offset-7 col-sm-2">
+                <div class="col-sm-offset-5 col-sm-2">
                     <input type="submit" value="Send Request" class="btn btn-danger form-submit col-md-offset-7" id="search-button" />
                 </div>
             </div>
+        </div>
 
-            <div class="row"></div>
-            if (TempData["Error"] != null)
-            {
-                <div class="form-group">
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>@TempData["Error"]</strong>
-                    </div>
+        <div class="row"></div>
+        if (TempData[CheckPointRequestController.tempDataErrors] != null)
+        {
+            <div class="form-group">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>@TempData[CheckPointRequestController.tempDataErrors]</strong>
                 </div>
-            }
+            </div>
         }
-    </div>
+    }
+</div>
 
-    @section Scripts {
-        <script type="text/javascript">
+@section Scripts {
+    <script type="text/javascript">
 
     var getStoresSuccessCallback = function (data, textStatus, xhr) {
-        var storesControl = $("#Store");
+        var storesControl = $("#Stores");
         storesControl.empty();
         $.each(data,
             function (index, store) {
@@ -79,13 +98,18 @@
                             text: store.BusinessUnit + ": " + store.Name
                         }))
             });
+        //set stores select box height
+        if (data) {
+            var size = data.length > 1 && data.length < 41 ? data.length : 40;
+            $(storesControl).attr("size", size);
+        }
     }
 
     var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
         responseHTML = $.parseHTML(xhr.responseText);
 
         var errorInfo = "Error attempting to load store data for region.\n"
-            + "url: \"@(Url.Action("Stores", "CheckPointRequest"))\"\n"
+            + "url: \"@(Url.Action("Stores", "PriceReset"))\"\n"
             + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
             + "call state: \"" + xhr.state() + "\".\n"
             + "response: \"" + errorThrown + "\" (" + xhr.status + ")\n"
@@ -94,14 +118,14 @@
         console.log(xhr.responseText);
         alert(errorInfo)
 
-        $("#Store").empty();
+        $("#Stores").empty();
     }
 
     $("#RegionIndex").change(function () {
-        var url = "@(Url.Action("Stores", "CheckPointRequest"))";
+        var url = "@(Url.Action("Stores", "PriceReset"))";
         var data = { regionCode: $(this).val() };
 
-        var storesControl = $("#Store");
+        var storesControl = $("#Stores");
         var loadingDiv = $("#storesDiv");
 
         storesControl.fadeOut();
@@ -115,5 +139,5 @@
         storesControl.removeClass("hidden");
         storesControl.fadeIn();
     });
-        </script>
-    }
+            </script>
+}

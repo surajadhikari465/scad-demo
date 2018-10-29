@@ -1,12 +1,13 @@
 ﻿using Icon.Common.DataAccess;
+using System.Collections.Generic;
 using WebSupport.DataAccess.Models;
 
 namespace WebSupport.DataAccess.Queries
 {
-    public class GetCheckPointMessageParameters: IQuery<CheckPointMessageModel>
+    public class GetCheckPointMessageParameters: IQuery<IEnumerable<CheckPointMessageModel>>
     {
         public string Region { get; set; }
-        public string BusinessUnitId { get; set; }
-        public string ScanCode { get; set; }
+        public List<int> BusinessUnitIds { get; set; }
+        public List<string> ScanCodes { get; set; }
     }
 }

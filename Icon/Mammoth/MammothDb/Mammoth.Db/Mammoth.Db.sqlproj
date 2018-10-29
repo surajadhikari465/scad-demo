@@ -790,7 +790,7 @@
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddEsbMessageTypeForCheckpointRequest.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
     <Build Include="dbo\Tables\ItemAttributes_Kit.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesKit.sql" />
