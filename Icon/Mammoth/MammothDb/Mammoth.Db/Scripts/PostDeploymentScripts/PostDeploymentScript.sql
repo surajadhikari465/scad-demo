@@ -15,6 +15,7 @@ Post-Deployment Script Template
 
 :r AddNumberOfDigitsForCFSItems.sql -- PBI 28686 09/13/2018
 :r AddEsbMessageTypeForCheckpointRequest.sql --PBI 29872 10/22/2018
+:r PopulateRewardItemPriceType.sql -- PBI 29949 10/24/2018
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

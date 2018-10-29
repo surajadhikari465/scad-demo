@@ -108,6 +108,8 @@ namespace Esb.Core.Serializer
             namespaces.Add("isa", NamespaceConstants.XmlNamespaces.EnterpriseItemMgmtItemAttributesStore);
             namespaces.Add("prc", NamespaceConstants.XmlNamespaces.EnterprisePriceMgmtPrice);
             namespaces.Add("pry", NamespaceConstants.XmlNamespaces.EnterprisePriceMgmtPriceType);
+            namespaces.Add("rwd", NamespaceConstants.XmlNamespaces.EnterpriseRewardMgmtReward);
+            namespaces.Add("rwt", NamespaceConstants.XmlNamespaces.EnterpriseRewardMgmtRewardType);
             namespaces.Add("uom", NamespaceConstants.XmlNamespaces.EnterpriseUnitOfMeasureMgmtUnitOfMeasure);
             namespaces.Add("ama", NamespaceConstants.XmlNamespaces.EnterpriseAmountMgmtAmount);
             namespaces.Add("grp", NamespaceConstants.XmlNamespaces.EnterpriseRetailMgmtGroupType);
