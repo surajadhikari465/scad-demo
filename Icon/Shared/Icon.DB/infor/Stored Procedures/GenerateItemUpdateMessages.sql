@@ -251,11 +251,12 @@ BEGIN
 			WHEN ote.traitValue = 'Y' OR ote.traitValue = 'Yes'
 			 OR ote.traitValue = '1' OR ote.traitValue = 'True'  
 			THEN 1 ELSE 0 END															AS Other3PEligible,
-			i.HospitalityItem															AS HospitalityItem,
-			i.KitchenItem																AS KitchenItem,
-			i.KitchenDescription														AS KitchenDescription,
-			i.ImageURL																	AS ImageURL
-			from 
+		i.HospitalityItem																AS HospitalityItem,
+		i.KitchenItem																	AS KitchenItem,
+		i.KitchenDescription															AS KitchenDescription,
+		i.ImageURL																		AS ImageURL
+
+	from 
 		@updatedItemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
 		JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID

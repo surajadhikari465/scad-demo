@@ -93,7 +93,7 @@
     TSFEligible 				BIT NULL,
     WFMEligilble 				BIT NULL,
     Other3PEligible 			BIT NULL,
-	HospitalityItem				BIT null,
+    HospitalityItem				BIT null,
 	KitchenItem					BIT null,
 	KitchenDescription			NVARCHAR(15) null,
 	ImageURL					NVARCHAR(255) null

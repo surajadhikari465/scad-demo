@@ -791,10 +791,15 @@
     <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEsbMessageTypeForCheckpointRequest.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
     <Build Include="dbo\Tables\ItemAttributes_Kit.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesKit.sql" />
     <Build Include="dbo\User Defined Types\ItemKitAttributesType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
