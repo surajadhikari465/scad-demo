@@ -3346,6 +3346,8 @@
     <None Include="Scripts\PostDeploy\HC_PurgeReceiptQueue.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockReceiptEvents.sql" />
     <None Include="Scripts\PostDeploy\GrantPermissionsToTibcoDataWriter.sql" />
+    <None Include="Scripts\Other\Gpm765Conversion_PriceUpdate.sql" />
+    <Build Include="Schema\infor\Tables\GpmConversionTprCancellations.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockPurchaseOrderEvents.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -3355,6 +3357,7 @@
     <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
     <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
     <None Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
+    <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
