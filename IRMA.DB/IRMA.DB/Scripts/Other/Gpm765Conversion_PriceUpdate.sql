@@ -1,4 +1,5 @@
-﻿DECLARE @RegPriceTypeID INT = (SELECT TOP 1 PriceChgTypeID FROM PriceChgType WHERE PriceChgTypeDesc = 'REG');
+﻿DECLARE @SaleEndDate date = DateAdd(d, -1, GetDate());
+DECLARE @RegPriceTypeID INT = (SELECT TOP 1 PriceChgTypeID FROM PriceChgType WHERE PriceChgTypeDesc = 'REG');
 DECLARE @RegularPromoPricingMethodId INT = (SELECT TOP 1 PricingMethod_ID FROM PricingMethod WHERE PricingMethod_Name = 'Regular Promo')
 
 IF OBJECT_ID('tempdb..#pricesUpdated') IS NOT NULL
@@ -41,11 +42,12 @@ CREATE NONCLUSTERED INDEX IX_ItemKey_StoreNo on #pricesUpdated (Store_No ASC, It
 
 UPDATE dbo.Price
 SET
-	PriceChgTypeId = u.PriceChgTypeID,
-	Price = u.Price,
-	POSPrice = u.Price,
-	Multiple = u.Multiple,
-	PricingMethod_ID = u.PricingMethod_ID
+  PriceChgTypeId = u.PriceChgTypeID,
+  Price = u.Price,
+  POSPrice = u.Price,
+  Multiple = u.Multiple,
+  PricingMethod_ID = u.PricingMethod_ID,
+  Sale_End_Date = @SaleEndDate
 FROM dbo.Price p
 INNER JOIN #pricesUpdated u on p.Item_Key = u.Item_Key
 	AND p.Store_No = u.Store_No
