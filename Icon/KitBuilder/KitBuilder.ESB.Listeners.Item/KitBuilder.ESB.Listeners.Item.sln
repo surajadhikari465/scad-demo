@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBuilder.ESB.Listeners.Item.Service", "KitBuilder.ESB.Listeners.Item.Service\KitBuilder.ESB.Listeners.Item.Service.csproj", "{F10509F8-9E66-4E3E-B2F7-57753DB16079}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Debug|x64.ActiveCfg = Debug|x64
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Debug|x64.Build.0 = Debug|x64
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|x64.ActiveCfg = Debug|x64
+		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C64ECF8-AC62-4EA3-9DC9-D834FB45C129}
+	EndGlobalSection
+EndGlobal
