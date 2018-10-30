@@ -42,7 +42,6 @@ DECLARE @tagUomId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeC
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
 DECLARE @Today datetime = CAST(CAST(GETDATE() as date) as datetime);
 DECLARE @BeginningOfToday DATETIME2 = CAST(CAST(GETDATE() AS DATE) AS datetime2);
-DECLARE @EndOfToday DATETIME2 = CAST(DATEADD(ms, -3, DATEADD(dd, 1, DATEDIFF(dd, 0, GETDATE()))) AS datetime2);
 
 -- Put ItemIDs we need into a temp table
 -- Optional Attributes to avoid a left join on main global item query
@@ -678,7 +677,7 @@ BEGIN
 		AND p.BusinessUnitID = sal.BusinessUnitID
 	WHERE sal.Region = @Region
 		AND sal.StartDate <= @BeginningOfToday
-		AND sal.EndDate >= @EndOfToday
+		AND sal.EndDate > @BeginningOfToday
 		AND (sal.PriceType = 'TPR' OR sal.PriceType = 'RWD')
 	OPTION (RECOMPILE)
 
@@ -739,7 +738,7 @@ BEGIN
 	WHERE
 		p.Region = @Region
 		AND p.StartDate <= @BeginningOfToday
-		AND p.EndDate >= @EndOfToday
+		AND p.EndDate > @BeginningOfToday
 		AND p.PriceType <> 'REG'
 	GROUP BY
 		p.Region,

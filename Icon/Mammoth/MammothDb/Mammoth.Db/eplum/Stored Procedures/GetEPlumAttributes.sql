@@ -26,7 +26,6 @@ DECLARE @originId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeC
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
 DECLARE @BeginningOfToday DATETIME2 = CAST(CAST(GETDATE() AS DATE) AS datetime2);
-DECLARE @EndOfToday DATETIME2 = CAST(DATEADD(ms, -3, DATEADD(dd, 1, DATEDIFF(dd, 0, GETDATE()))) AS datetime2);
 
 -- Put ItemIDs we need into a temp table
 -- Optional Attributes to avoid a left join on main global item query
@@ -551,7 +550,7 @@ INNER JOIN gpm.Prices sal on p.ItemID = sal.ItemID
 	AND p.BusinessUnitID = sal.BusinessUnitID
 WHERE sal.Region = @Region
 	AND sal.StartDate <= @BeginningOfToday
-	AND sal.EndDate >= @EndOfToday
+	AND sal.EndDate > @BeginningOfToday
 	AND (sal.PriceType = 'TPR' OR sal.PriceType = 'RWD')
 OPTION (RECOMPILE)
 
