@@ -679,6 +679,7 @@ Module Global_Renamed
     Public stopwatch As New System.Diagnostics.Stopwatch
 
     Private m_dtDatabaseDateTime As Date = System.DateTime.MinValue
+    Private isReceivingInProgress As Boolean = False
 
     Public Function ConvertQuotes(ByRef sIn As String) As String
         Return sIn.Replace("'", "''")
@@ -4684,6 +4685,47 @@ me_err:
         Else
             Return FormatDateTime(m_dtDatabaseDateTime, DateFormat.ShortDate)
         End If
+    End Function
+
+    Public Function CheckReceivingInProgress(ByVal StoreNumber As Int64, ByVal UserId As Int64) As Boolean
+
+        logger.Debug("CheckReceivingInProgress Entry")
+
+        Dim cmd As SqlClient.SqlCommand
+        Dim prm As SqlClient.SqlParameter
+
+        cmd = New SqlClient.SqlCommand
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.CommandText = "CheckReceivingInProgress"
+
+        'add input parameter
+        prm = New SqlClient.SqlParameter("@Store_No", SqlDbType.Int)
+        prm.Direction = ParameterDirection.Input
+        prm.Value = System.Math.Abs(CInt(StoreNumber))
+        cmd.Parameters.Add(prm)
+
+        prm = New SqlClient.SqlParameter("@User_Id", SqlDbType.Int)
+        prm.Direction = ParameterDirection.Input
+        prm.Value = System.Math.Abs(CInt(UserId))
+        cmd.Parameters.Add(prm)
+
+        'set the database connection
+        cmd.Connection = GetAdoNetConnection()
+
+        Try
+            isReceivingInProgress = cmd.ExecuteScalar()
+
+        Catch ex As Exception
+            'use the date/time from the computer as the fallback
+            logger.Error(ex.Message)
+        Finally
+            prm = Nothing
+            cmd.Dispose()
+        End Try
+
+        logger.Debug("CheckReceivingInProgress Exit")
+
+        Return isReceivingInProgress
     End Function
 
     Public Function SystemDateTime(Optional ByRef bDateOnly As Boolean = False) As Date

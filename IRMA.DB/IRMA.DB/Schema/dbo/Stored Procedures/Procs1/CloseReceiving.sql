@@ -40,7 +40,6 @@ BEGIN
     UPDATE Store
     SET RecvLogUser_ID = @User_ID
     WHERE Store_No = @Store_No
-    AND ISNULL(RecvLogUser_ID, @User_ID) = @User_ID
     AND DATEDIFF(d, LastRecvLogDate, GETDATE()) > 0
     
     SELECT @Affected = @@ROWCOUNT, @Error_No = @@ERROR
@@ -49,19 +48,7 @@ BEGIN
     
     IF (@Affected = 0) AND (@Error_No = 0)
     BEGIN
-        -- Get the UserName of who has the process locked to report back
-        DECLARE @LoggingUserName varchar(25)
-    
-        SELECT @LoggingUserName = UserName 
-        FROM Users (NOLOCK)
-        INNER JOIN Store ON Store.RecvLogUser_ID = Users.User_ID
-        WHERE Store_No = @Store_No
-        
-        IF @LoggingUserName IS NOT NULL
-            RAISERROR ('Close Receiving in progress for store: %d by user: %s', 16, 1, @Store_No, @LoggingUserName)
-        ELSE
             RAISERROR ('Close Receiving has been completed for store: %d today', 16, 1, @Store_No)
-
         RETURN
     END
     

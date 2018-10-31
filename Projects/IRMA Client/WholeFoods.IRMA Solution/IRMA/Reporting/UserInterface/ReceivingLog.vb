@@ -107,11 +107,20 @@ Friend Class frmReceivingLog
 
     Private Sub cmdClose_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdClose.Click
 
-        If MessageBox.Show("Are you sure you want to close receiving for " & cmbStore.Text & "?", "Close Receiving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
+        Dim storeNumber As Integer = VB6.GetItemData(cmbStore, cmbStore.SelectedIndex)
+
+        Dim isReceivingInProgress As Boolean = CheckReceivingInProgress(storeNumber, giUserID)
+
+        If (isReceivingInProgress) Then
+            If MessageBox.Show("Close receiving is in progress by other user. Do you still want to proceed and close receiving for " & cmbStore.Text.TrimEnd & "?", "Close Receiving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
+        Else
+            If MessageBox.Show("Are you sure you want to close receiving for " & cmbStore.Text & "?", "Close Receiving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
+        End If
 
         On Error GoTo me_err
 
-        SQLExecute2("EXEC CloseReceiving " & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & ", " & CStr(giUserID), DAO.RecordsetOptionEnum.dbSQLPassThrough, True)
+
+        SQLExecute2("EXEC CloseReceiving " & storeNumber & ", " & CStr(giUserID), DAO.RecordsetOptionEnum.dbSQLPassThrough, True)
 
         RefreshData()
 
@@ -143,7 +152,7 @@ me_err:
             cmbFromDate.Focus()
             Exit Sub
         End If
-        
+
         '' Satisfy TFS#7320 and UN-comment-out this to restore functionality to original design
         '-- Data validation
         If cmbToDate.Value.ToString = String.Empty Then
@@ -161,8 +170,8 @@ me_err:
 
         reportUrlBuilder = New StringBuilder()
 
-        reportUrlBuilder.AppendFormat("ReceivingLog&rs:Command=Render&rc:Parameters=False&Begin={0}&End={1}", _
-                    VB6.Format(cmbFromDate.Value.ToString, "YYYY-MM-DD"), _
+        reportUrlBuilder.AppendFormat("ReceivingLog&rs:Command=Render&rc:Parameters=False&Begin={0}&End={1}",
+                    VB6.Format(cmbFromDate.Value.ToString, "YYYY-MM-DD"),
                     VB6.Format(cmbToDate.Value.ToString, "YYYY-MM-DD"))
 
         If (cmbStore.SelectedIndex > -1) Then
