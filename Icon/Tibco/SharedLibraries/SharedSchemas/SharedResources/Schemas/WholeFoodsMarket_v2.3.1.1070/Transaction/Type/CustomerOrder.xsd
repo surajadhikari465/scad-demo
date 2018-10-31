@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CustomerOrder/V1" xmlns:rrf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CustomerOrder/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" schemaLocation="Retail.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="customerOrderTransactionType" type="CustomerOrderTransactionType"/>
+	<xs:complexType name="CustomerOrderTransactionType">
+		<xs:sequence>
+			<xs:element name="specialOrderNumber" type="tpf:SpecialOrderNumber" minOccurs="0"/>
+			<xs:element name="itemCount" type="tpf:ItemCount" minOccurs="0"/>
+			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
+			<xs:element name="customerOrderTransactionBase" type="rrf:RetailTransactionType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
