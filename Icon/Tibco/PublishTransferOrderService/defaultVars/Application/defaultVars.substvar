@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationId</name>
-			<value>HC1</value>
+			<value>HC2</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540935178641</modTime>
+			<modTime>1540935284475</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>BatchSize</name>
@@ -27,11 +27,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>InstanceId</name>
-			<value>101</value>
+			<value>201</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1540935178694</modTime>
+			<modTime>1540935284541</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
@@ -67,11 +67,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionType</name>
-			<value>PurchaseOrders</value>
+			<value>TransferOrders</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539887072890</modTime>
+			<modTime>1540934552482</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFivetimes</name>
@@ -79,7 +79,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1540935178746</modTime>
+			<modTime>1540935284606</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFourtimes</name>
@@ -87,7 +87,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1540935178794</modTime>
+			<modTime>1540935284676</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedThreetimes</name>
@@ -95,7 +95,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1540935178846</modTime>
+			<modTime>1540935284744</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
