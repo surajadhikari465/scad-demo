@@ -29,6 +29,7 @@
 			<xs:element name="rewardPercentage" type="rrf:RewardPercent" minOccurs="0"/>
 			<xs:element name="rewardStartDate" type="crf:WfmDateTimeType" minOccurs="0"/>
 			<xs:element name="rewardEndDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+			<xs:element name="traits" type="crf:TraitsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
 		<xs:attribute ref="crf:Id"/>

@@ -13,6 +13,7 @@
 		<xs:sequence>
 			<xs:element name="id" type="rrf:RewardTypeIdType"/>
 			<xs:element name="description" type="rrf:RewardDescType"/>
+			<xs:element name="type" type="RewardTypeType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

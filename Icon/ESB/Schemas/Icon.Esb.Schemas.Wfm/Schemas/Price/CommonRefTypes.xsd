@@ -11,7 +11,6 @@
 	<xs:simpleType name="PriceDescType">
 		<xs:annotation>
 			<xs:documentation>
-				<!--are there enumerations available for price types?-->
 			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType"/>
@@ -45,6 +44,8 @@
 			<xs:enumeration value="TPR"/>
 			<xs:enumeration value="RWD"/>
 			<xs:enumeration value="GSP"/>
+			<xs:enumeration value="PMI"/>
+			<xs:enumeration value="PMD"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="PriceTypeDescTypeEnum">
@@ -62,6 +63,8 @@
 			<xs:enumeration value="In Store Special"/>
 			<xs:enumeration value="Temporary Price Reduction"/>
 			<xs:enumeration value="Reward"/>
+			<xs:enumeration value="Prime Incremental"/>
+			<xs:enumeration value="Prime Member Deal"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="BreakPointStartQty">

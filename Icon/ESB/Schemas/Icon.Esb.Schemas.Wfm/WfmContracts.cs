@@ -9697,6 +9697,12 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         GSP,
+
+        /// <remarks/>
+        PMI,
+
+        /// <remarks/>
+        PMD,
     }
 
     /// <remarks/>
@@ -10181,7 +10187,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     public partial class GroupType
     {
 
-        private int groupIdField;
+        private string groupIdField;
 
         private IngredientType[] ingredientsField;
 
@@ -10194,7 +10200,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string linkGroupIdField;
 
         /// <remarks/>
-        public int groupId
+        public string groupId
         {
             get
             {
@@ -12133,6 +12139,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         private bool rewardEndDateFieldSpecified;
 
+        private TraitType[] traitsField;
+
         private ActionEnum actionField;
 
         private bool actionFieldSpecified;
@@ -12291,6 +12299,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("trait", Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public TraitType[] traits
+        {
+            get
+            {
+                return this.traitsField;
+            }
+            set
+            {
+                this.traitsField = value;
+            }
+        }
+
+        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1")]
         public ActionEnum Action
         {
@@ -12343,12 +12365,14 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     public partial class RewardTypeType
     {
 
-        private string idField;
+        private PriceTypeIdType idField;
 
         private string descriptionField;
 
+        private RewardTypeType typeField;
+
         /// <remarks/>
-        public string id
+        public PriceTypeIdType id
         {
             get
             {
@@ -12370,6 +12394,19 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.descriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public RewardTypeType type
+        {
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
             }
         }
     }
@@ -12684,8 +12721,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         private string subTeamNumberField;
 
-        private string subTeamNumber1Field;
-
         private string subTeamNameField;
 
         private string hostSubTeamNumberField;
@@ -12693,7 +12728,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string hostSubTeamNameField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public string subTeamNumber
         {
             get
@@ -12707,21 +12741,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("subTeamNumber", Order = 1)]
-        public string subTeamNumber1
-        {
-            get
-            {
-                return this.subTeamNumber1Field;
-            }
-            set
-            {
-                this.subTeamNumber1Field = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
         public string subTeamName
         {
             get
@@ -12735,7 +12754,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
         public string hostSubTeamNumber
         {
             get
@@ -12749,7 +12767,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public string hostSubTeamName
         {
             get
@@ -12809,38 +12826,24 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("inventoryType", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1", IsNullable = false)]
-    public partial class InventoryTypeType
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1", IsNullable = false)]
+    public partial class inventoryAdjustments
     {
 
-        private string codeField;
-
-        private string descriptionField;
+        private inventoryAdjustmentsInventoryAdjustment[] inventoryAdjustmentField;
 
         /// <remarks/>
-        public string code
+        [System.Xml.Serialization.XmlElementAttribute("inventoryAdjustment")]
+        public inventoryAdjustmentsInventoryAdjustment[] inventoryAdjustment
         {
             get
             {
-                return this.codeField;
+                return this.inventoryAdjustmentField;
             }
             set
             {
-                this.codeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string description
-        {
-            get
-            {
-                return this.descriptionField;
-            }
-            set
-            {
-                this.descriptionField = value;
+                this.inventoryAdjustmentField = value;
             }
         }
     }
@@ -12850,23 +12853,113 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1")]
-    [System.Xml.Serialization.XmlRootAttribute("transactionInventory", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1", IsNullable = false)]
-    public partial class TransactionInventoryType
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1")]
+    public partial class inventoryAdjustmentsInventoryAdjustment
     {
 
-        private InventoryType inventoryItemField;
+        private int adjustmentNumberField;
+
+        private string eventTypeField;
+
+        private int messageNumberField;
+
+        private int locationNumberField;
+
+        private string locationNameField;
+
+        private string invAdjustmentSourceField;
+
+        private inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetail[] inventoryAdjustmentDetailField;
 
         /// <remarks/>
-        public InventoryType inventoryItem
+        public int adjustmentNumber
         {
             get
             {
-                return this.inventoryItemField;
+                return this.adjustmentNumberField;
             }
             set
             {
-                this.inventoryItemField = value;
+                this.adjustmentNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string eventType
+        {
+            get
+            {
+                return this.eventTypeField;
+            }
+            set
+            {
+                this.eventTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int messageNumber
+        {
+            get
+            {
+                return this.messageNumberField;
+            }
+            set
+            {
+                this.messageNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int locationNumber
+        {
+            get
+            {
+                return this.locationNumberField;
+            }
+            set
+            {
+                this.locationNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string locationName
+        {
+            get
+            {
+                return this.locationNameField;
+            }
+            set
+            {
+                this.locationNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string invAdjustmentSource
+        {
+            get
+            {
+                return this.invAdjustmentSourceField;
+            }
+            set
+            {
+                this.invAdjustmentSourceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("inventoryAdjustmentDetail")]
+        public inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetail[] inventoryAdjustmentDetail
+        {
+            get
+            {
+                return this.inventoryAdjustmentDetailField;
+            }
+            set
+            {
+                this.inventoryAdjustmentDetailField = value;
             }
         }
     }
@@ -12876,211 +12969,189 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class AdjustmentInvoiceType
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1")]
+    public partial class inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetail
     {
 
-        private ulong sequenceNumberField;
+        private int adjustmentDetailNumberField;
 
-        private int invoiceLineNumberField;
+        private ItemType itemField;
 
-        private AdjustmentTypeType adjustmentTypeField;
+        private SubTeamType subTeamField;
 
-        private AdjustmentsReason adjustmentReasonField;
+        private string serialNumberField;
 
-        private System.DateTime adjustDateTimeField;
+        private int batchNumberField;
 
-        private int adjustItemQuantityField;
+        private bool batchNumberFieldSpecified;
 
-        private bool adjustItemQuantityFieldSpecified;
+        private QuantityType[] quantitiesField;
 
-        private AmountType adjustAmountField;
+        private inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetailInventoryStatus inventoryStatusField;
+
+        private PartyType partyField;
+
+        private System.DateTime createDateTimeField;
+
+        private string documentNumberField;
+
+        private string documentTypeField;
 
         /// <remarks/>
-        public ulong sequenceNumber
+        public int adjustmentDetailNumber
         {
             get
             {
-                return this.sequenceNumberField;
+                return this.adjustmentDetailNumberField;
             }
             set
             {
-                this.sequenceNumberField = value;
+                this.adjustmentDetailNumberField = value;
             }
         }
 
         /// <remarks/>
-        public int invoiceLineNumber
+        public ItemType Item
         {
             get
             {
-                return this.invoiceLineNumberField;
+                return this.itemField;
             }
             set
             {
-                this.invoiceLineNumberField = value;
+                this.itemField = value;
             }
         }
 
         /// <remarks/>
-        public AdjustmentTypeType adjustmentType
+        public SubTeamType SubTeam
         {
             get
             {
-                return this.adjustmentTypeField;
+                return this.subTeamField;
             }
             set
             {
-                this.adjustmentTypeField = value;
+                this.subTeamField = value;
             }
         }
 
         /// <remarks/>
-        public AdjustmentsReason adjustmentReason
+        public string serialNumber
         {
             get
             {
-                return this.adjustmentReasonField;
+                return this.serialNumberField;
             }
             set
             {
-                this.adjustmentReasonField = value;
+                this.serialNumberField = value;
             }
         }
 
         /// <remarks/>
-        public System.DateTime adjustDateTime
+        public int batchNumber
         {
             get
             {
-                return this.adjustDateTimeField;
+                return this.batchNumberField;
             }
             set
             {
-                this.adjustDateTimeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public int adjustItemQuantity
-        {
-            get
-            {
-                return this.adjustItemQuantityField;
-            }
-            set
-            {
-                this.adjustItemQuantityField = value;
+                this.batchNumberField = value;
             }
         }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool adjustItemQuantitySpecified
+        public bool batchNumberSpecified
         {
             get
             {
-                return this.adjustItemQuantityFieldSpecified;
+                return this.batchNumberFieldSpecified;
             }
             set
             {
-                this.adjustItemQuantityFieldSpecified = value;
+                this.batchNumberFieldSpecified = value;
             }
         }
 
         /// <remarks/>
-        public AmountType adjustAmount
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public QuantityType[] quantities
         {
             get
             {
-                return this.adjustAmountField;
+                return this.quantitiesField;
             }
             set
             {
-                this.adjustAmountField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class AdjustmentTypeType
-    {
-
-        private string adjustmentTypeCodeField;
-
-        private string adjustmentTypeDescriptionField;
-
-        /// <remarks/>
-        public string adjustmentTypeCode
-        {
-            get
-            {
-                return this.adjustmentTypeCodeField;
-            }
-            set
-            {
-                this.adjustmentTypeCodeField = value;
+                this.quantitiesField = value;
             }
         }
 
         /// <remarks/>
-        public string adjustmentTypeDescription
+        public inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetailInventoryStatus inventoryStatus
         {
             get
             {
-                return this.adjustmentTypeDescriptionField;
+                return this.inventoryStatusField;
             }
             set
             {
-                this.adjustmentTypeDescriptionField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class AdjustmentsReason
-    {
-
-        private string adjustmentReasonCodeField;
-
-        private string adjustmentReasonDescriptionField;
-
-        /// <remarks/>
-        public string adjustmentReasonCode
-        {
-            get
-            {
-                return this.adjustmentReasonCodeField;
-            }
-            set
-            {
-                this.adjustmentReasonCodeField = value;
+                this.inventoryStatusField = value;
             }
         }
 
         /// <remarks/>
-        public string adjustmentReasonDescription
+        public PartyType Party
         {
             get
             {
-                return this.adjustmentReasonDescriptionField;
+                return this.partyField;
             }
             set
             {
-                this.adjustmentReasonDescriptionField = value;
+                this.partyField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime createDateTime
+        {
+            get
+            {
+                return this.createDateTimeField;
+            }
+            set
+            {
+                this.createDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentNumber
+        {
+            get
+            {
+                return this.documentNumberField;
+            }
+            set
+            {
+                this.documentNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentType
+        {
+            get
+            {
+                return this.documentTypeField;
+            }
+            set
+            {
+                this.documentTypeField = value;
             }
         }
     }
@@ -13090,68 +13161,37 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
-    public partial class ApprovalBase
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1")]
+    public partial class inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetailInventoryStatus
     {
 
-        private PartyType approverField;
+        private string currentField;
 
-        private LineApprovalCode lineApprovalCodeField;
-
-        private DescriptionCommonData descriptionField;
-
-        private DateTimezoneType approvalDateTimeField;
+        private string changeToField;
 
         /// <remarks/>
-        public PartyType approver
+        public string current
         {
             get
             {
-                return this.approverField;
+                return this.currentField;
             }
             set
             {
-                this.approverField = value;
+                this.currentField = value;
             }
         }
 
         /// <remarks/>
-        public LineApprovalCode lineApprovalCode
+        public string changeTo
         {
             get
             {
-                return this.lineApprovalCodeField;
+                return this.changeToField;
             }
             set
             {
-                this.lineApprovalCodeField = value;
-            }
-        }
-
-        /// <remarks/>
-        public DescriptionCommonData description
-        {
-            get
-            {
-                return this.descriptionField;
-            }
-            set
-            {
-                this.descriptionField = value;
-            }
-        }
-
-        /// <remarks/>
-        public DateTimezoneType approvalDateTime
-        {
-            get
-            {
-                return this.approvalDateTimeField;
-            }
-            set
-            {
-                this.approvalDateTimeField = value;
+                this.changeToField = value;
             }
         }
     }
@@ -13455,6 +13495,2360 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         Organization,
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("inventoryType", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryType/V1", IsNullable = false)]
+    public partial class InventoryTypeType
+    {
+
+        private string codeField;
+
+        private string descriptionField;
+
+        /// <remarks/>
+        public string code
+        {
+            get
+            {
+                return this.codeField;
+            }
+            set
+            {
+                this.codeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1", IsNullable = false)]
+    public partial class orderReceipts
+    {
+
+        private orderReceiptsOrderReceipt[] orderReceiptField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("orderReceipt")]
+        public orderReceiptsOrderReceipt[] orderReceipt
+        {
+            get
+            {
+                return this.orderReceiptField;
+            }
+            set
+            {
+                this.orderReceiptField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1")]
+    public partial class orderReceiptsOrderReceipt
+    {
+
+        private int receiptNumberField;
+
+        private int purchaseOrderNumberField;
+
+        private int locationNumberField;
+
+        private string locationNameField;
+
+        private string eventTypeField;
+
+        private int messageNumberField;
+
+        private string aSNField;
+
+        private string receiptCommentsField;
+
+        private string receiptStatusField;
+
+        private orderReceiptsOrderReceiptReceiptDetail[] receiptDetailField;
+
+        /// <remarks/>
+        public int receiptNumber
+        {
+            get
+            {
+                return this.receiptNumberField;
+            }
+            set
+            {
+                this.receiptNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int purchaseOrderNumber
+        {
+            get
+            {
+                return this.purchaseOrderNumberField;
+            }
+            set
+            {
+                this.purchaseOrderNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int locationNumber
+        {
+            get
+            {
+                return this.locationNumberField;
+            }
+            set
+            {
+                this.locationNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string locationName
+        {
+            get
+            {
+                return this.locationNameField;
+            }
+            set
+            {
+                this.locationNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string eventType
+        {
+            get
+            {
+                return this.eventTypeField;
+            }
+            set
+            {
+                this.eventTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int messageNumber
+        {
+            get
+            {
+                return this.messageNumberField;
+            }
+            set
+            {
+                this.messageNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string ASN
+        {
+            get
+            {
+                return this.aSNField;
+            }
+            set
+            {
+                this.aSNField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string receiptComments
+        {
+            get
+            {
+                return this.receiptCommentsField;
+            }
+            set
+            {
+                this.receiptCommentsField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string receiptStatus
+        {
+            get
+            {
+                return this.receiptStatusField;
+            }
+            set
+            {
+                this.receiptStatusField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("receiptDetail")]
+        public orderReceiptsOrderReceiptReceiptDetail[] receiptDetail
+        {
+            get
+            {
+                return this.receiptDetailField;
+            }
+            set
+            {
+                this.receiptDetailField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1")]
+    public partial class orderReceiptsOrderReceiptReceiptDetail
+    {
+
+        private int receiptDetailNumberField;
+
+        private int purchaseOrderDetailNumberField;
+
+        private ItemType itemField;
+
+        private SubTeamType subTeamField;
+
+        private string serialNumberField;
+
+        private string itemVINField;
+
+        private string batchNumberField;
+
+        private int quantityOrderedField;
+
+        private int quantityReceivedField;
+
+        private string receiptStatusField;
+
+        private QuantityType[] quantitiesField;
+
+        private int cartonNumberField;
+
+        private bool cartonNumberFieldSpecified;
+
+        private string conversionRetailUoMField;
+
+        private string receiptItemCostField;
+
+        private string dispositionCodeField;
+
+        private PartyType partyField;
+
+        private System.DateTime createDateTimeField;
+
+        private int documentNumberField;
+
+        private bool documentNumberFieldSpecified;
+
+        private string documentTypeField;
+
+        /// <remarks/>
+        public int receiptDetailNumber
+        {
+            get
+            {
+                return this.receiptDetailNumberField;
+            }
+            set
+            {
+                this.receiptDetailNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int purchaseOrderDetailNumber
+        {
+            get
+            {
+                return this.purchaseOrderDetailNumberField;
+            }
+            set
+            {
+                this.purchaseOrderDetailNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public ItemType Item
+        {
+            get
+            {
+                return this.itemField;
+            }
+            set
+            {
+                this.itemField = value;
+            }
+        }
+
+        /// <remarks/>
+        public SubTeamType SubTeam
+        {
+            get
+            {
+                return this.subTeamField;
+            }
+            set
+            {
+                this.subTeamField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string serialNumber
+        {
+            get
+            {
+                return this.serialNumberField;
+            }
+            set
+            {
+                this.serialNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string itemVIN
+        {
+            get
+            {
+                return this.itemVINField;
+            }
+            set
+            {
+                this.itemVINField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string batchNumber
+        {
+            get
+            {
+                return this.batchNumberField;
+            }
+            set
+            {
+                this.batchNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int quantityOrdered
+        {
+            get
+            {
+                return this.quantityOrderedField;
+            }
+            set
+            {
+                this.quantityOrderedField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int quantityReceived
+        {
+            get
+            {
+                return this.quantityReceivedField;
+            }
+            set
+            {
+                this.quantityReceivedField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string receiptStatus
+        {
+            get
+            {
+                return this.receiptStatusField;
+            }
+            set
+            {
+                this.receiptStatusField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public QuantityType[] quantities
+        {
+            get
+            {
+                return this.quantitiesField;
+            }
+            set
+            {
+                this.quantitiesField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int cartonNumber
+        {
+            get
+            {
+                return this.cartonNumberField;
+            }
+            set
+            {
+                this.cartonNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cartonNumberSpecified
+        {
+            get
+            {
+                return this.cartonNumberFieldSpecified;
+            }
+            set
+            {
+                this.cartonNumberFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string conversionRetailUoM
+        {
+            get
+            {
+                return this.conversionRetailUoMField;
+            }
+            set
+            {
+                this.conversionRetailUoMField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string receiptItemCost
+        {
+            get
+            {
+                return this.receiptItemCostField;
+            }
+            set
+            {
+                this.receiptItemCostField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string dispositionCode
+        {
+            get
+            {
+                return this.dispositionCodeField;
+            }
+            set
+            {
+                this.dispositionCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public PartyType Party
+        {
+            get
+            {
+                return this.partyField;
+            }
+            set
+            {
+                this.partyField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime createDateTime
+        {
+            get
+            {
+                return this.createDateTimeField;
+            }
+            set
+            {
+                this.createDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int documentNumber
+        {
+            get
+            {
+                return this.documentNumberField;
+            }
+            set
+            {
+                this.documentNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool documentNumberSpecified
+        {
+            get
+            {
+                return this.documentNumberFieldSpecified;
+            }
+            set
+            {
+                this.documentNumberFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentType
+        {
+            get
+            {
+                return this.documentTypeField;
+            }
+            set
+            {
+                this.documentTypeField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1", IsNullable = false)]
+    public partial class PurchaseOrders
+    {
+
+        private PurchaseOrdersPurchaseOrder[] purchaseOrderField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("PurchaseOrder")]
+        public PurchaseOrdersPurchaseOrder[] PurchaseOrder
+        {
+            get
+            {
+                return this.purchaseOrderField;
+            }
+            set
+            {
+                this.purchaseOrderField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1")]
+    public partial class PurchaseOrdersPurchaseOrder
+    {
+
+        private int purchaseOrderNumberField;
+
+        private string eventTypeField;
+
+        private int messageNumberField;
+
+        private string purchaseTypeField;
+
+        private int supplierNumberField;
+
+        private int locationNumberField;
+
+        private string locationNameField;
+
+        private string prePackedField;
+
+        private OrderSubTeamType orderSubTeamField;
+
+        private string statusField;
+
+        private PartyType userInfoField;
+
+        private PartyType approverField;
+
+        private System.DateTime createDateTimeField;
+
+        private System.DateTime approveDateTimeField;
+
+        private bool approveDateTimeFieldSpecified;
+
+        private System.DateTime closeDateTimeField;
+
+        private bool closeDateTimeFieldSpecified;
+
+        private string purchaseOrderTermsCodeField;
+
+        private string freightTermsCodeField;
+
+        private string purchaseOrderCommentsField;
+
+        private PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] purchaseOrderDetailField;
+
+        /// <remarks/>
+        public int purchaseOrderNumber
+        {
+            get
+            {
+                return this.purchaseOrderNumberField;
+            }
+            set
+            {
+                this.purchaseOrderNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string eventType
+        {
+            get
+            {
+                return this.eventTypeField;
+            }
+            set
+            {
+                this.eventTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int messageNumber
+        {
+            get
+            {
+                return this.messageNumberField;
+            }
+            set
+            {
+                this.messageNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string purchaseType
+        {
+            get
+            {
+                return this.purchaseTypeField;
+            }
+            set
+            {
+                this.purchaseTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int supplierNumber
+        {
+            get
+            {
+                return this.supplierNumberField;
+            }
+            set
+            {
+                this.supplierNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int locationNumber
+        {
+            get
+            {
+                return this.locationNumberField;
+            }
+            set
+            {
+                this.locationNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string locationName
+        {
+            get
+            {
+                return this.locationNameField;
+            }
+            set
+            {
+                this.locationNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string prePacked
+        {
+            get
+            {
+                return this.prePackedField;
+            }
+            set
+            {
+                this.prePackedField = value;
+            }
+        }
+
+        /// <remarks/>
+        public OrderSubTeamType OrderSubTeam
+        {
+            get
+            {
+                return this.orderSubTeamField;
+            }
+            set
+            {
+                this.orderSubTeamField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string status
+        {
+            get
+            {
+                return this.statusField;
+            }
+            set
+            {
+                this.statusField = value;
+            }
+        }
+
+        /// <remarks/>
+        public PartyType userInfo
+        {
+            get
+            {
+                return this.userInfoField;
+            }
+            set
+            {
+                this.userInfoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public PartyType approver
+        {
+            get
+            {
+                return this.approverField;
+            }
+            set
+            {
+                this.approverField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime createDateTime
+        {
+            get
+            {
+                return this.createDateTimeField;
+            }
+            set
+            {
+                this.createDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime approveDateTime
+        {
+            get
+            {
+                return this.approveDateTimeField;
+            }
+            set
+            {
+                this.approveDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool approveDateTimeSpecified
+        {
+            get
+            {
+                return this.approveDateTimeFieldSpecified;
+            }
+            set
+            {
+                this.approveDateTimeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime closeDateTime
+        {
+            get
+            {
+                return this.closeDateTimeField;
+            }
+            set
+            {
+                this.closeDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool closeDateTimeSpecified
+        {
+            get
+            {
+                return this.closeDateTimeFieldSpecified;
+            }
+            set
+            {
+                this.closeDateTimeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string purchaseOrderTermsCode
+        {
+            get
+            {
+                return this.purchaseOrderTermsCodeField;
+            }
+            set
+            {
+                this.purchaseOrderTermsCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string freightTermsCode
+        {
+            get
+            {
+                return this.freightTermsCodeField;
+            }
+            set
+            {
+                this.freightTermsCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string purchaseOrderComments
+        {
+            get
+            {
+                return this.purchaseOrderCommentsField;
+            }
+            set
+            {
+                this.purchaseOrderCommentsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("PurchaseOrderDetail")]
+        public PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] PurchaseOrderDetail
+        {
+            get
+            {
+                return this.purchaseOrderDetailField;
+            }
+            set
+            {
+                this.purchaseOrderDetailField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1", IsNullable = true)]
+    public partial class OrderSubTeamType
+    {
+
+        private string orderSubTeamNumberField;
+
+        private string orderSubTeamNameField;
+
+        private string orderTeamNumberField;
+
+        private string orderTeamNameField;
+
+        /// <remarks/>
+        public string orderSubTeamNumber
+        {
+            get
+            {
+                return this.orderSubTeamNumberField;
+            }
+            set
+            {
+                this.orderSubTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string orderSubTeamName
+        {
+            get
+            {
+                return this.orderSubTeamNameField;
+            }
+            set
+            {
+                this.orderSubTeamNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string orderTeamNumber
+        {
+            get
+            {
+                return this.orderTeamNumberField;
+            }
+            set
+            {
+                this.orderTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string orderTeamName
+        {
+            get
+            {
+                return this.orderTeamNameField;
+            }
+            set
+            {
+                this.orderTeamNameField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1")]
+    public partial class PurchaseOrdersPurchaseOrderPurchaseOrderDetail
+    {
+
+        private int purchaseOrderDetailNumberField;
+
+        private ItemType itemField;
+
+        private SubTeamType subTeamField;
+
+        private int defaultScanCodeField;
+
+        private string serialNumberField;
+
+        private int batchNumberField;
+
+        private bool batchNumberFieldSpecified;
+
+        private QuantityType[] quantitiesField;
+
+        private int packSize1Field;
+
+        private int packSize2Field;
+
+        private string uomConvRetailUomField;
+
+        private string itemCostField;
+
+        private string costTypeField;
+
+        private System.DateTime earliestArrivalDateField;
+
+        private bool earliestArrivalDateFieldSpecified;
+
+        private System.DateTime latestArrivalDateField;
+
+        private bool latestArrivalDateFieldSpecified;
+
+        private System.DateTime expectedArrivalDateField;
+
+        private string carrierSCACField;
+
+        private string shipmentTypeField;
+
+        private string documentNumberField;
+
+        private string documentTypeField;
+
+        /// <remarks/>
+        public int PurchaseOrderDetailNumber
+        {
+            get
+            {
+                return this.purchaseOrderDetailNumberField;
+            }
+            set
+            {
+                this.purchaseOrderDetailNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public ItemType Item
+        {
+            get
+            {
+                return this.itemField;
+            }
+            set
+            {
+                this.itemField = value;
+            }
+        }
+
+        /// <remarks/>
+        public SubTeamType SubTeam
+        {
+            get
+            {
+                return this.subTeamField;
+            }
+            set
+            {
+                this.subTeamField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int defaultScanCode
+        {
+            get
+            {
+                return this.defaultScanCodeField;
+            }
+            set
+            {
+                this.defaultScanCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string serialNumber
+        {
+            get
+            {
+                return this.serialNumberField;
+            }
+            set
+            {
+                this.serialNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int batchNumber
+        {
+            get
+            {
+                return this.batchNumberField;
+            }
+            set
+            {
+                this.batchNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool batchNumberSpecified
+        {
+            get
+            {
+                return this.batchNumberFieldSpecified;
+            }
+            set
+            {
+                this.batchNumberFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public QuantityType[] quantities
+        {
+            get
+            {
+                return this.quantitiesField;
+            }
+            set
+            {
+                this.quantitiesField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int packSize1
+        {
+            get
+            {
+                return this.packSize1Field;
+            }
+            set
+            {
+                this.packSize1Field = value;
+            }
+        }
+
+        /// <remarks/>
+        public int packSize2
+        {
+            get
+            {
+                return this.packSize2Field;
+            }
+            set
+            {
+                this.packSize2Field = value;
+            }
+        }
+
+        /// <remarks/>
+        public string uomConvRetailUom
+        {
+            get
+            {
+                return this.uomConvRetailUomField;
+            }
+            set
+            {
+                this.uomConvRetailUomField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string itemCost
+        {
+            get
+            {
+                return this.itemCostField;
+            }
+            set
+            {
+                this.itemCostField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string costType
+        {
+            get
+            {
+                return this.costTypeField;
+            }
+            set
+            {
+                this.costTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime earliestArrivalDate
+        {
+            get
+            {
+                return this.earliestArrivalDateField;
+            }
+            set
+            {
+                this.earliestArrivalDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool earliestArrivalDateSpecified
+        {
+            get
+            {
+                return this.earliestArrivalDateFieldSpecified;
+            }
+            set
+            {
+                this.earliestArrivalDateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime latestArrivalDate
+        {
+            get
+            {
+                return this.latestArrivalDateField;
+            }
+            set
+            {
+                this.latestArrivalDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool latestArrivalDateSpecified
+        {
+            get
+            {
+                return this.latestArrivalDateFieldSpecified;
+            }
+            set
+            {
+                this.latestArrivalDateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime expectedArrivalDate
+        {
+            get
+            {
+                return this.expectedArrivalDateField;
+            }
+            set
+            {
+                this.expectedArrivalDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string carrierSCAC
+        {
+            get
+            {
+                return this.carrierSCACField;
+            }
+            set
+            {
+                this.carrierSCACField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string shipmentType
+        {
+            get
+            {
+                return this.shipmentTypeField;
+            }
+            set
+            {
+                this.shipmentTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentNumber
+        {
+            get
+            {
+                return this.documentNumberField;
+            }
+            set
+            {
+                this.documentNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentType
+        {
+            get
+            {
+                return this.documentTypeField;
+            }
+            set
+            {
+                this.documentTypeField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1")]
+    [System.Xml.Serialization.XmlRootAttribute("transactionInventory", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/TransactionInventory/V1", IsNullable = false)]
+    public partial class TransactionInventoryType
+    {
+
+        private InventoryType inventoryItemField;
+
+        /// <remarks/>
+        public InventoryType inventoryItem
+        {
+            get
+            {
+                return this.inventoryItemField;
+            }
+            set
+            {
+                this.inventoryItemField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1", IsNullable = false)]
+    public partial class transferOrders
+    {
+
+        private transferOrdersTransferOrder[] transferOrderField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("transferOrder")]
+        public transferOrdersTransferOrder[] transferOrder
+        {
+            get
+            {
+                return this.transferOrderField;
+            }
+            set
+            {
+                this.transferOrderField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    public partial class transferOrdersTransferOrder
+    {
+
+        private int transferNumberField;
+
+        private int purchaseOrderNumberField;
+
+        private string eventTypeField;
+
+        private int messageNumberField;
+
+        private LocationChangeType locationChangeField;
+
+        private SubTeamChangeType subTeamChangeField;
+
+        private PartyType userInfoField;
+
+        private System.DateTime createDateTimeField;
+
+        private System.DateTime approveDateTimeField;
+
+        private bool approveDateTimeFieldSpecified;
+
+        private string logicalTransferField;
+
+        private string transferReasonCodeField;
+
+        private PartyType approverField;
+
+        private transferOrdersTransferOrderTransferOrderDetail[] transferOrderDetailField;
+
+        /// <remarks/>
+        public int transferNumber
+        {
+            get
+            {
+                return this.transferNumberField;
+            }
+            set
+            {
+                this.transferNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int purchaseOrderNumber
+        {
+            get
+            {
+                return this.purchaseOrderNumberField;
+            }
+            set
+            {
+                this.purchaseOrderNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string eventType
+        {
+            get
+            {
+                return this.eventTypeField;
+            }
+            set
+            {
+                this.eventTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int messageNumber
+        {
+            get
+            {
+                return this.messageNumberField;
+            }
+            set
+            {
+                this.messageNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public LocationChangeType locationChange
+        {
+            get
+            {
+                return this.locationChangeField;
+            }
+            set
+            {
+                this.locationChangeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public SubTeamChangeType subTeamChange
+        {
+            get
+            {
+                return this.subTeamChangeField;
+            }
+            set
+            {
+                this.subTeamChangeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public PartyType userInfo
+        {
+            get
+            {
+                return this.userInfoField;
+            }
+            set
+            {
+                this.userInfoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime createDateTime
+        {
+            get
+            {
+                return this.createDateTimeField;
+            }
+            set
+            {
+                this.createDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime approveDateTime
+        {
+            get
+            {
+                return this.approveDateTimeField;
+            }
+            set
+            {
+                this.approveDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool approveDateTimeSpecified
+        {
+            get
+            {
+                return this.approveDateTimeFieldSpecified;
+            }
+            set
+            {
+                this.approveDateTimeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string logicalTransfer
+        {
+            get
+            {
+                return this.logicalTransferField;
+            }
+            set
+            {
+                this.logicalTransferField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string transferReasonCode
+        {
+            get
+            {
+                return this.transferReasonCodeField;
+            }
+            set
+            {
+                this.transferReasonCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public PartyType approver
+        {
+            get
+            {
+                return this.approverField;
+            }
+            set
+            {
+                this.approverField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("transferOrderDetail")]
+        public transferOrdersTransferOrderTransferOrderDetail[] transferOrderDetail
+        {
+            get
+            {
+                return this.transferOrderDetailField;
+            }
+            set
+            {
+                this.transferOrderDetailField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1", IsNullable = true)]
+    public partial class LocationChangeType
+    {
+
+        private string fromLocationNumberField;
+
+        private string fromLocationNameField;
+
+        private string toLocationNumberField;
+
+        private string toLocationNameField;
+
+        /// <remarks/>
+        public string fromLocationNumber
+        {
+            get
+            {
+                return this.fromLocationNumberField;
+            }
+            set
+            {
+                this.fromLocationNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string fromLocationName
+        {
+            get
+            {
+                return this.fromLocationNameField;
+            }
+            set
+            {
+                this.fromLocationNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string toLocationNumber
+        {
+            get
+            {
+                return this.toLocationNumberField;
+            }
+            set
+            {
+                this.toLocationNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string toLocationName
+        {
+            get
+            {
+                return this.toLocationNameField;
+            }
+            set
+            {
+                this.toLocationNameField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1", IsNullable = true)]
+    public partial class SubTeamChangeType
+    {
+
+        private string fromSubTeamNumberField;
+
+        private string fromSubTeamNameField;
+
+        private string toSubTeamNumberField;
+
+        private string toSubTeamNameField;
+
+        /// <remarks/>
+        public string fromSubTeamNumber
+        {
+            get
+            {
+                return this.fromSubTeamNumberField;
+            }
+            set
+            {
+                this.fromSubTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string fromSubTeamName
+        {
+            get
+            {
+                return this.fromSubTeamNameField;
+            }
+            set
+            {
+                this.fromSubTeamNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string toSubTeamNumber
+        {
+            get
+            {
+                return this.toSubTeamNumberField;
+            }
+            set
+            {
+                this.toSubTeamNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string toSubTeamName
+        {
+            get
+            {
+                return this.toSubTeamNameField;
+            }
+            set
+            {
+                this.toSubTeamNameField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    public partial class transferOrdersTransferOrderTransferOrderDetail
+    {
+
+        private int transferOrderDetailNumberField;
+
+        private ItemType itemField;
+
+        private SubTeamType subTeamField;
+
+        private int defaultScanCodeField;
+
+        private string serialNumberField;
+
+        private int batchNumberField;
+
+        private bool batchNumberFieldSpecified;
+
+        private QuantityType[] quantitiesField;
+
+        private string tsfStatusField;
+
+        private InvStatusChangeType invStatusChangeField;
+
+        private System.DateTime expectedArrivalDateField;
+
+        private string carrierSCACField;
+
+        private int cartonQuantityField;
+
+        private bool cartonQuantityFieldSpecified;
+
+        private string shipmentTypeField;
+
+        private int documentNumberField;
+
+        private bool documentNumberFieldSpecified;
+
+        private string documentTypeField;
+
+        /// <remarks/>
+        public int transferOrderDetailNumber
+        {
+            get
+            {
+                return this.transferOrderDetailNumberField;
+            }
+            set
+            {
+                this.transferOrderDetailNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public ItemType Item
+        {
+            get
+            {
+                return this.itemField;
+            }
+            set
+            {
+                this.itemField = value;
+            }
+        }
+
+        /// <remarks/>
+        public SubTeamType SubTeam
+        {
+            get
+            {
+                return this.subTeamField;
+            }
+            set
+            {
+                this.subTeamField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int defaultScanCode
+        {
+            get
+            {
+                return this.defaultScanCodeField;
+            }
+            set
+            {
+                this.defaultScanCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string serialNumber
+        {
+            get
+            {
+                return this.serialNumberField;
+            }
+            set
+            {
+                this.serialNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int batchNumber
+        {
+            get
+            {
+                return this.batchNumberField;
+            }
+            set
+            {
+                this.batchNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool batchNumberSpecified
+        {
+            get
+            {
+                return this.batchNumberFieldSpecified;
+            }
+            set
+            {
+                this.batchNumberFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable = false)]
+        public QuantityType[] quantities
+        {
+            get
+            {
+                return this.quantitiesField;
+            }
+            set
+            {
+                this.quantitiesField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string tsfStatus
+        {
+            get
+            {
+                return this.tsfStatusField;
+            }
+            set
+            {
+                this.tsfStatusField = value;
+            }
+        }
+
+        /// <remarks/>
+        public InvStatusChangeType invStatusChange
+        {
+            get
+            {
+                return this.invStatusChangeField;
+            }
+            set
+            {
+                this.invStatusChangeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime expectedArrivalDate
+        {
+            get
+            {
+                return this.expectedArrivalDateField;
+            }
+            set
+            {
+                this.expectedArrivalDateField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string carrierSCAC
+        {
+            get
+            {
+                return this.carrierSCACField;
+            }
+            set
+            {
+                this.carrierSCACField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int cartonQuantity
+        {
+            get
+            {
+                return this.cartonQuantityField;
+            }
+            set
+            {
+                this.cartonQuantityField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cartonQuantitySpecified
+        {
+            get
+            {
+                return this.cartonQuantityFieldSpecified;
+            }
+            set
+            {
+                this.cartonQuantityFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string shipmentType
+        {
+            get
+            {
+                return this.shipmentTypeField;
+            }
+            set
+            {
+                this.shipmentTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int documentNumber
+        {
+            get
+            {
+                return this.documentNumberField;
+            }
+            set
+            {
+                this.documentNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool documentNumberSpecified
+        {
+            get
+            {
+                return this.documentNumberFieldSpecified;
+            }
+            set
+            {
+                this.documentNumberFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public string documentType
+        {
+            get
+            {
+                return this.documentTypeField;
+            }
+            set
+            {
+                this.documentTypeField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1", IsNullable = true)]
+    public partial class InvStatusChangeType
+    {
+
+        private string fromInvStatusField;
+
+        private string toInvStatusField;
+
+        /// <remarks/>
+        public string fromInvStatus
+        {
+            get
+            {
+                return this.fromInvStatusField;
+            }
+            set
+            {
+                this.fromInvStatusField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string toInvStatus
+        {
+            get
+            {
+                return this.toInvStatusField;
+            }
+            set
+            {
+                this.toInvStatusField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class AdjustmentInvoiceType
+    {
+
+        private ulong sequenceNumberField;
+
+        private int invoiceLineNumberField;
+
+        private AdjustmentTypeType adjustmentTypeField;
+
+        private AdjustmentsReason adjustmentReasonField;
+
+        private System.DateTime adjustDateTimeField;
+
+        private int adjustItemQuantityField;
+
+        private bool adjustItemQuantityFieldSpecified;
+
+        private AmountType adjustAmountField;
+
+        /// <remarks/>
+        public ulong sequenceNumber
+        {
+            get
+            {
+                return this.sequenceNumberField;
+            }
+            set
+            {
+                this.sequenceNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int invoiceLineNumber
+        {
+            get
+            {
+                return this.invoiceLineNumberField;
+            }
+            set
+            {
+                this.invoiceLineNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        public AdjustmentTypeType adjustmentType
+        {
+            get
+            {
+                return this.adjustmentTypeField;
+            }
+            set
+            {
+                this.adjustmentTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public AdjustmentsReason adjustmentReason
+        {
+            get
+            {
+                return this.adjustmentReasonField;
+            }
+            set
+            {
+                this.adjustmentReasonField = value;
+            }
+        }
+
+        /// <remarks/>
+        public System.DateTime adjustDateTime
+        {
+            get
+            {
+                return this.adjustDateTimeField;
+            }
+            set
+            {
+                this.adjustDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public int adjustItemQuantity
+        {
+            get
+            {
+                return this.adjustItemQuantityField;
+            }
+            set
+            {
+                this.adjustItemQuantityField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool adjustItemQuantitySpecified
+        {
+            get
+            {
+                return this.adjustItemQuantityFieldSpecified;
+            }
+            set
+            {
+                this.adjustItemQuantityFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        public AmountType adjustAmount
+        {
+            get
+            {
+                return this.adjustAmountField;
+            }
+            set
+            {
+                this.adjustAmountField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class AdjustmentTypeType
+    {
+
+        private string adjustmentTypeCodeField;
+
+        private string adjustmentTypeDescriptionField;
+
+        /// <remarks/>
+        public string adjustmentTypeCode
+        {
+            get
+            {
+                return this.adjustmentTypeCodeField;
+            }
+            set
+            {
+                this.adjustmentTypeCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string adjustmentTypeDescription
+        {
+            get
+            {
+                return this.adjustmentTypeDescriptionField;
+            }
+            set
+            {
+                this.adjustmentTypeDescriptionField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class AdjustmentsReason
+    {
+
+        private string adjustmentReasonCodeField;
+
+        private string adjustmentReasonDescriptionField;
+
+        /// <remarks/>
+        public string adjustmentReasonCode
+        {
+            get
+            {
+                return this.adjustmentReasonCodeField;
+            }
+            set
+            {
+                this.adjustmentReasonCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string adjustmentReasonDescription
+        {
+            get
+            {
+                return this.adjustmentReasonDescriptionField;
+            }
+            set
+            {
+                this.adjustmentReasonDescriptionField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.169+g1ccb72aefa")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InvoiceMgmt/CommonRefTypes/V1", IsNullable = true)]
+    public partial class ApprovalBase
+    {
+
+        private PartyType approverField;
+
+        private LineApprovalCode lineApprovalCodeField;
+
+        private DescriptionCommonData descriptionField;
+
+        private DateTimezoneType approvalDateTimeField;
+
+        /// <remarks/>
+        public PartyType approver
+        {
+            get
+            {
+                return this.approverField;
+            }
+            set
+            {
+                this.approverField = value;
+            }
+        }
+
+        /// <remarks/>
+        public LineApprovalCode lineApprovalCode
+        {
+            get
+            {
+                return this.lineApprovalCodeField;
+            }
+            set
+            {
+                this.lineApprovalCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public DescriptionCommonData description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
+            }
+        }
+
+        /// <remarks/>
+        public DateTimezoneType approvalDateTime
+        {
+            get
+            {
+                return this.approvalDateTimeField;
+            }
+            set
+            {
+                this.approvalDateTimeField = value;
+            }
+        }
     }
 
     /// <remarks/>
@@ -18491,6 +20885,14 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
 
         /// <remarks/>
         Reward,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("Prime Incremental")]
+        PrimeIncremental,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("Prime Member Deal")]
+        PrimeMemberDeal,
     }
 
     /// <remarks/>
