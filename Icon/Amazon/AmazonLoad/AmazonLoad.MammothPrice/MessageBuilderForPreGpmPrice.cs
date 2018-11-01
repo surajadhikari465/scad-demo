@@ -2,11 +2,7 @@
 using Mammoth.Common.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Schemas.Wfm.PreGpm;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.MammothPrice
 {
@@ -76,12 +72,12 @@ namespace AmazonLoad.MammothPrice
             {
                 type = new Contracts.PriceTypeType
                 {
-                    id = priceModel.PriceTypeCode,
+                    id = (Contracts.PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), priceModel.PriceTypeCode, true),
                     description = ItemPriceTypes.Descriptions.ByCode[priceModel.PriceTypeCode],
                     type = string.IsNullOrWhiteSpace(priceModel.SubPriceTypeCode) ? null
                         : new Contracts.PriceTypeType
                         {
-                            id = priceModel.SubPriceTypeCode,
+                            id = (Contracts.PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), priceModel.SubPriceTypeCode, true),
                             description = priceModel.SubPriceTypeDesc,
                         }
                 },
