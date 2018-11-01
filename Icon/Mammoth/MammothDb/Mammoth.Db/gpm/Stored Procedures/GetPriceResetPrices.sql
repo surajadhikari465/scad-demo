@@ -56,7 +56,8 @@ BEGIN
 		ms.PatchFamilySequenceID AS SequenceId,
 		ms.PatchFamilyID AS PatchFamilyId,
 		p.StartDate AS StartDate,
-		p.EndDate AS EndDate
+		p.EndDate AS EndDate,
+		p.PercentOff AS PercentOff
 	FROM #TempPrices temp 
 	JOIN gpm.Prices p ON p.Region = @Region
 		AND temp.ItemId = p.ItemID

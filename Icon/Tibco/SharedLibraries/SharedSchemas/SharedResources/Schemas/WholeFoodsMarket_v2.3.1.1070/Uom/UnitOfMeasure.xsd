@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:urf="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2" targetNamespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.2">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/CommonRefType/V2" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="uom" type="UomType"/>
+	<xs:complexType name="UomType">
+		<xs:sequence>
+			<xs:element name="code" type="urf:WfmUomCodeEnumType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>abbreviated unit of measure</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="urf:WfmUomDescEnumType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>full unit of measure name/description</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -4,58 +4,59 @@
 		<globalVariable>
 			<name>JndiContextUrl</name>
 			<value>ssl://cerd1617.wfm.pvt:17293</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540241259486</modTime>
+			<modTime>1540917729709</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>jndiIconUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>#!Sp77ANYc3FhVctyEABIcsQMFINQd5B08r05WcqlWBy1eYPkthbPdQg==</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540241259550</modTime>
+			<type>Password</type>
+			<modTime>1540917729756</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
 			<value>jndiIconUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540241345261</modTime>
+			<modTime>1540917729798</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>Pjetuc9M7Kmi</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>#!mx901fQdWybqsV7+dkgGhXSzA8ShINuJuPDHBvAlXn+6MWNT08X+0g==</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540241345333</modTime>
+			<type>Password</type>
+			<modTime>1540917729841</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>esb</value>
-			<deploymentSettable>false</deploymentSettable>
+			<value>#!fCCTxa7JeRB0AAw4e/4fcQ==</value>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540241345418</modTime>
+			<type>Password</type>
+			<modTime>1540917729888</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
 			<value>OrderTopicConnectionFactory</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540241156578</modTime>
+			<modTime>1540917729933</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
 			<value>iconUser</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540241370062</modTime>
+			<constraint></constraint>
+			<modTime>1540917729978</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

@@ -20,6 +20,8 @@ namespace Esb.Core.Constants
             public const string EnterpriseItemMgmtItemAttributesStore = "http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2";
             public const string EnterprisePriceMgmtPrice = "http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2";
             public const string EnterprisePriceMgmtPriceType = "http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1";
+            public const string EnterpriseRewardMgmtReward = "http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2";
+            public const string EnterpriseRewardMgmtRewardType = "http://schemas.wfm.com/Enterprise/RewardMgmt/RewardType/V1";
             public const string EnterpriseUnitOfMeasureMgmtUnitOfMeasure = "http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2";
             public const string EnterpriseAmountMgmtAmount = "http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1";
             public const string EnterpriseLocaleMgmtLocale = "http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2";

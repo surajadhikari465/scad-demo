@@ -28,15 +28,17 @@ namespace WebSupport.Tests.MessageBuilders
         }
 
         [TestMethod]
-        public void BuildMessage_OnePriceWithNoGpmID_ReturnsPriceMessage()
+        public void BuildMessage_OnePriceWithGpmID_ReturnsPriceMessage()
         {
             //Given
+            var expectedMessage = File.ReadAllText(@"TestMessages\PriceResetMessageOnePrice.xml");
             PriceResetMessageBuilderModel request = new PriceResetMessageBuilderModel
             {
                 PriceResetPrices = new List<PriceResetPrice>
                 {
                     new PriceResetPrice
                     {
+                        GpmId = new Guid("8f06087a-621e-4a2d-8441-01a1f5d01d8f"),
                         BusinessUnitId = 10654,
                         ItemId = 1,
                         ScanCode = "4011",
@@ -59,13 +61,110 @@ namespace WebSupport.Tests.MessageBuilders
             var message = builder.BuildMessage(request);
 
             //Then
-            Assert.AreEqual(File.ReadAllText(@"TestMessages\PriceResetMessageNoGpmID.xml"), message);
+            Assert.AreEqual(expectedMessage, message);
             var a = JsonConvert.SerializeObject(new { Message = message });
             Console.WriteLine(a);
         }
 
         [TestMethod]
-        public void BuildMessage_OnePriceWithGpmID_ReturnsPriceMessage()
+        public void BuildMessage_TwoPrices_ReturnsPriceMessage()
+        {
+            //Given
+            var expectedMessage = File.ReadAllText(@"TestMessages\PriceResetMessageWithGpmID.xml");
+            PriceResetMessageBuilderModel request = new PriceResetMessageBuilderModel
+            {
+                PriceResetPrices = new List<PriceResetPrice>
+                {
+                    new PriceResetPrice
+                    {
+                        GpmId = new Guid("8f06087a-621e-4a2d-8441-01a1f5d01d8f"),
+                        BusinessUnitId = 10654,
+                        ItemId = 1,
+                        ScanCode = "4011",
+                        ItemTypeCode = "RTL",
+                        StoreName = "Lake Oswego",
+                        PriceType = "REG",
+                        PriceTypeAttribute = "REG",
+                        SellableUom = "EA",
+                        CurrencyCode = "USD",
+                        Price = 5.00M,
+                        Multiple = 1,
+                        SequenceId = "1",
+                        PatchFamilyId = "1-10654",
+                        StartDate = new DateTime(2018, 5, 24)
+                    },
+                    new PriceResetPrice
+                    {
+                        GpmId = new Guid("8f06087a-621e-4a2d-8441-01a1f5d01d8f"),
+                        BusinessUnitId = 10654,
+                        ItemId = 1,
+                        ScanCode = "4011",
+                        ItemTypeCode = "RTL",
+                        StoreName = "Lake Oswego",
+                        PriceType = "TPR",
+                        PriceTypeAttribute = "ISS",
+                        SellableUom = "EA",
+                        CurrencyCode = "USD",
+                        Price = 5.00M,
+                        Multiple = 1,
+                        SequenceId = "1",
+                        PatchFamilyId = "1-10654",
+                        StartDate = new DateTime(2018, 5, 24),
+                        EndDate = new DateTime(2018, 5, 24).AddDays(15)
+                    }
+                }
+            };
+
+            //When
+            var message = builder.BuildMessage(request);
+
+            //Then
+            Assert.AreEqual(expectedMessage, message);
+            var a = JsonConvert.SerializeObject(new { Message = message });
+            Console.WriteLine(a);
+        }
+
+        [TestMethod]
+        public void BuildMessage_TwoRewardPrices_ReturnsPriceMessage()
+        {
+            //Given
+            var expectedMessage = File.ReadAllText(@"TestMessages\PriceResetMessageWithGpmID.xml");
+            PriceResetMessageBuilderModel request = new PriceResetMessageBuilderModel
+            {
+                PriceResetPrices = new List<PriceResetPrice>
+                {
+                    new PriceResetPrice
+                    {
+                        GpmId = new Guid("8f06087a-621e-4a2d-8441-01a1f5d01d8f"),
+                        BusinessUnitId = 10654,
+                        ItemId = 1,
+                        ScanCode = "4011",
+                        ItemTypeCode = "RTL",
+                        StoreName = "Lake Oswego",
+                        PriceType = "REG",
+                        PriceTypeAttribute = "REG",
+                        SellableUom = "EA",
+                        CurrencyCode = "USD",
+                        Price = 5.00M,
+                        Multiple = 1,
+                        SequenceId = "1",
+                        PatchFamilyId = "1-10654",
+                        StartDate = new DateTime(2018, 5, 24)
+                    }
+                }
+            };
+
+            //When
+            var message = builder.BuildMessage(request);
+
+            //Then
+            Assert.AreEqual(expectedMessage, message);
+            var a = JsonConvert.SerializeObject(new { Message = message });
+            Console.WriteLine(a);
+        }
+
+        [TestMethod]
+        public void BuildMessage_PriceAndRewards_ReturnsPriceMessage()
         {
             //Given
             var expectedMessage = File.ReadAllText(@"TestMessages\PriceResetMessageWithGpmID.xml");

@@ -26,5 +26,6 @@ namespace WebSupport.DataAccess.Models
         public string PatchFamilyId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public decimal? PercentOff { get; set; }
     }
 }

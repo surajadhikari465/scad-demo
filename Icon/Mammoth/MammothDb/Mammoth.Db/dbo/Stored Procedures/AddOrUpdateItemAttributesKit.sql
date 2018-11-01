@@ -48,11 +48,11 @@ BEGIN
 				InsertUTCDate
 			)
 			SELECT 
-				ka.ItemID, 
-				ka.HospitalityItem, 
-				ka.KitchenItem, 
-				ka.KitchenDescription, 
-				ka.ImageUrl, 
+				ItemID, 
+				HospitalityItem, 
+				KitchenItem, 
+				KitchenDescription, 
+				ImageUrl, 
 				@todayutc
 			FROM #insertKitAttributes
 

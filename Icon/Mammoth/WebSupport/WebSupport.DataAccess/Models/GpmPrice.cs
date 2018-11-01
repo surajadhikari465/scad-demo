@@ -29,5 +29,6 @@ namespace WebSupport.DataAccess.Models
         public string ScanCode { get; set; }
         public string PatchFamilyId { get; set; }
         public string SequenceId { get; set; }
+        public decimal? PercentOff { get; set; }
     }
 }

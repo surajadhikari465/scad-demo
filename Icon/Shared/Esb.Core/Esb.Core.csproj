@@ -63,11 +63,8 @@
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.10.8.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
-    <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.PreGpm.2018.8.28.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
-    </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.10.5.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.10.11.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -111,6 +108,7 @@
     <Compile Include="EsbServices\EsbServiceMessage.cs" />
     <Compile Include="EsbServices\EsbServiceResponse.cs" />
     <Compile Include="EsbServices\EsbServiceResponseStatus.cs" />
+    <Compile Include="EsbServices\IEsbMultipleMessageService .cs" />
     <Compile Include="EsbServices\IEsbService.cs" />
     <Compile Include="Mappers\IUomMapper.cs" />
     <Compile Include="Mappers\UomMapper.cs" />

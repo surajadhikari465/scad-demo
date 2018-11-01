@@ -33,12 +33,12 @@ namespace WebSupport.Tests.Models
         {   //Given
             request.CheckPointRequestViewModel = new CheckPointRequestViewModel
             {
-              Store = "10001",
-              ScanCode = "4282342774",
+              Stores = new string[] { "10001" },
+              ScanCodes = "4282342774",
               RegionIndex = 0
             };
 
-           request.getCurrentPriceInfo = new CheckPointMessageModel
+           request.CheckpointMessage = new CheckPointMessageModel
            {
              BusinessUnitID = 1234,           
              ItemId = 1,
@@ -58,8 +58,8 @@ namespace WebSupport.Tests.Models
             Contracts.PriceChangeMaster priceChangeMaster = xmlSerializer.Deserialize(stream) as Contracts.PriceChangeMaster;
 
             Assert.IsNotNull(priceChangeMaster);
-            Assert.AreEqual(priceChangeMaster.PriceChangeHeader[0].PatchFamilyID, request.getCurrentPriceInfo.PatchFamilyId);
-            Assert.AreEqual(priceChangeMaster.PriceChangeHeader[0].PatchNum, request.getCurrentPriceInfo.SequenceId.ToString());
+            Assert.AreEqual(priceChangeMaster.PriceChangeHeader[0].PatchFamilyID, request.CheckpointMessage.PatchFamilyId);
+            Assert.AreEqual(priceChangeMaster.PriceChangeHeader[0].PatchNum, request.CheckpointMessage.SequenceId.ToString());
             Assert.AreEqual(priceChangeMaster.PriceChangeHeader[0].isCheckPoint, true);
         }
     }
