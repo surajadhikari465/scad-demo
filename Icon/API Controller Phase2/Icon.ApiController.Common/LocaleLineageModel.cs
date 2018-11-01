@@ -9,7 +9,9 @@ namespace Icon.ApiController.Common
         public string LocaleName { get; set; }
         public string StoreAbbreviation { get; set; }
         public string BusinessUnitId { get; set; }
-        public string PhoneNumber { get; set; }
+		public string VenueCode { get; set; }
+		public string VenueOccupant { get; set; }
+		public string PhoneNumber { get; set; }
         public int AddressId { get; set; }
         public string AddressUsageCode { get; set; }
         public string AddressLine1 { get; set; }

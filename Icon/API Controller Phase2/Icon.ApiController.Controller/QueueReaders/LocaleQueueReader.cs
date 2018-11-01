@@ -175,8 +175,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 						name = region.DescendantLocales[venueIndex].DescendantLocales[storeIndex].LocaleName,
 						type = new Contracts.LocaleTypeType
 						{
-							code = Contracts.LocaleCodeType.STR,
-							description = Contracts.LocaleDescType.Store
+							code = Contracts.LocaleCodeType.VNC,
+							description = Contracts.LocaleDescType.Venue
 						},
 						addresses = new Contracts.AddressType[]
 						{
@@ -198,63 +198,6 @@ namespace Icon.ApiController.Controller.QueueReaders
 				}
 			}
 		}
-
-
-		//private void BuildMetroAndStoreElements(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
-  //      {
-  //          var region = localeLineage.DescendantLocales[0];
-  //          var regionMiniBulk = miniBulk.locales[0].locales[0];
-
-  //          for (int metroIndex = 0; metroIndex < region.DescendantLocales.Count; metroIndex++)
-  //          {
-  //              regionMiniBulk.locales[metroIndex] = new Contracts.LocaleType
-  //              {
-  //                  Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
-  //                  ActionSpecified = true,
-  //                  id = region.DescendantLocales[metroIndex].LocaleId.ToString(),
-  //                  name = region.DescendantLocales[metroIndex].LocaleName,
-  //                  type = new Contracts.LocaleTypeType
-  //                  {
-  //                      code = Contracts.LocaleCodeType.MTR,
-  //                      description = Contracts.LocaleDescType.Metro
-  //                  },
-  //                  locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales.Count]
-  //              };
-
-  //              for (int storeIndex = 0; storeIndex < region.DescendantLocales[metroIndex].DescendantLocales.Count; storeIndex++)
-  //              {
-  //                  var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
-  //                  var storeLocaleType = new Contracts.LocaleType
-  //                  {
-  //                      Action = Contracts.ActionEnum.AddOrUpdate,
-  //                      ActionSpecified = true,
-  //                      id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString(),
-  //                      name = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleName,
-  //                      type = new Contracts.LocaleTypeType
-  //                      {
-  //                          code = Contracts.LocaleCodeType.STR,
-  //                          description = Contracts.LocaleDescType.Store
-  //                      },
-  //                      addresses = new Contracts.AddressType[]
-  //                      {
-  //                          CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
-  //                      },
-  //                      traits = CreateLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]),
-  //                  };
-  //                  if(storeLocaleLineage.LocaleOpenDate.HasValue)
-  //                  {
-  //                      storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
-  //                      storeLocaleType.openDateSpecified = true;
-  //                  }
-  //                  if(storeLocaleLineage.LocaleCloseDate.HasValue)
-  //                  {
-  //                      storeLocaleType.closeDate = storeLocaleLineage.LocaleCloseDate.Value;
-  //                      storeLocaleType.closeDateSpecified = true;
-  //                  }
-  //                  regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
-  //              }
-  //          }
-  //      }
 
 		private void BuildMetroAndStoreElements(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
 		{
@@ -332,8 +275,8 @@ namespace Icon.ApiController.Controller.QueueReaders
         private Contracts.TraitType[] CreateLocaleTraits(LocaleLineageModel localeLineage)
         {
             return new Contracts.TraitType[] 
-            { 
-                new Contracts.TraitType
+            {
+				new Contracts.TraitType
                 {
                     code = TraitCodes.StoreAbbreviation,
                     type = new Contracts.TraitTypeType
