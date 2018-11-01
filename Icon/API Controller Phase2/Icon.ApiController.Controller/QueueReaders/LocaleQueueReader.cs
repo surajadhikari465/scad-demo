@@ -100,7 +100,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildMetroAndStoreElements(localeLineage, miniBulk, message.LocaleTypeId);
 
 				// venue to this messages. add venue code and r10 element(confirm with Dan)
-				//BuildVenueElements(localeLineage,miniBulk,message.LocaleTypeId);
+				BuildVenueElements(localeLineage,miniBulk,message.LocaleTypeId);
             }
             catch (Exception ex)
             {
@@ -158,8 +158,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 					name = region.DescendantLocales[venueIndex].LocaleName,
 					type = new Contracts.LocaleTypeType
 					{
-						code = Contracts.LocaleCodeType.MTR,
-						description = Contracts.LocaleDescType.Metro
+						code = Contracts.LocaleCodeType.STR,
+						description = Contracts.LocaleDescType.Store
 					},
 					locales = new Contracts.LocaleType[region.DescendantLocales[venueIndex].DescendantLocales.Count]
 				};
@@ -373,37 +373,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						{
 							new Contracts.TraitValueType
 							{
-								value = localeLineage.VenueCode, // adds the venue code
-							}
-						}
-					}
-				},
-				new Contracts.TraitType
-				{
-					code = TraitCodes.VenueName,
-					type = new Contracts.TraitTypeType
-					{
-						description = TraitDescriptions.VenueName,
-						value = new Contracts.TraitValueType[]
-						{
-							new Contracts.TraitValueType
-							{
-								value = localeLineage.VenueName,
-							}
-						}
-					}
-				},
-				new Contracts.TraitType
-				{
-					code = TraitCodes.VenueOpenDate,
-					type = new Contracts.TraitTypeType
-					{
-						description = TraitDescriptions.VenueOpenDate,
-						value = new Contracts.TraitValueType[]
-						{
-							new Contracts.TraitValueType
-							{
-								value = localeLineage.VenueOpenDate,
+								value = localeLineage.VenueCode,
 							}
 						}
 					}
@@ -422,22 +392,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 							}
 						}
 					}
-				},
-				new Contracts.TraitType
-				{
-					code = TraitCodes.LocaleSubtype,
-					type = new Contracts.TraitTypeType
-					{
-						description = TraitDescriptions.LocaleSubtype,
-						value = new Contracts.TraitValueType[]
-						{
-							new Contracts.TraitValueType
-							{
-								value = localeLineage.LocaleSubtype,
-							}
-						}
-					}
-				},
+				}
 			};
         }
 
