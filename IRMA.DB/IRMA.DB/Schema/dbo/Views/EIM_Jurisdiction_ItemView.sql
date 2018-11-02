@@ -10,6 +10,8 @@ KM		2013-01-008	9251	Select the new 4.8 ItemOverride columns in the ItemOverride
 							portion of the UNION;
 MZ      2017-07-21  22360   Added two alternate jurisdiction fields Sign Romance Short and Sign Romance Long 
                             to EIM
+EM      2018-11-01  28101   Disregard non-1 Average_Unit_Weight values (Average_Unit_Weight
+                            value should always be 1.0000 and any other values can be ignored)
 ***********************************************************************************************/
 
 SELECT
@@ -25,7 +27,10 @@ SELECT
                 ,itm.Min_Temperature As Min_Temperature
                 ,itm.Max_Temperature As Max_Temperature
                 ,itm.Units_Per_Pallet As Units_Per_Pallet
-                ,itm.Average_Unit_Weight As Average_Unit_Weight
+                ,CASE WHEN IsNull(itm.Average_Unit_Weight, 0) <> 1.0000
+				   THEN Convert(decimal(9,4), 1)
+				   ELSE itm.Average_Unit_Weight
+				 END As Average_Unit_Weight
                 ,itm.Tie As Tie
                 ,itm.High As High
                 ,itm.Yield As Yield
@@ -124,7 +129,10 @@ SELECT
                 ,itm.Min_Temperature As Min_Temperature
                 ,itm.Max_Temperature As Max_Temperature
                 ,itm.Units_Per_Pallet As Units_Per_Pallet
-                ,itm.Average_Unit_Weight As Average_Unit_Weight
+                ,CASE WHEN IsNull(itm.Average_Unit_Weight, 0) <> 1.0000
+				   THEN Convert(decimal(9,4), 1)
+				   ELSE itm.Average_Unit_Weight
+				 END As Average_Unit_Weight
                 ,itm.Tie As Tie
                 ,itm.High As High
                 ,itm.Yield As Yield

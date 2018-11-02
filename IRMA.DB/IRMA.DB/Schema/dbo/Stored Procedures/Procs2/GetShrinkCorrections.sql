@@ -22,6 +22,8 @@
 --                              Added 'AND IsNull(i.Average_Unit_Weight,0)>0' to Qty CASE statement 
 -- 02/01/2018   EM      22815   Retrieving inventory adjustment code ID in addition to 'wType' description.
 --                              Also added shrink subtype id and description to query
+-- 11/01/2018   EM      28101   Ignoring item Average_Unit_Weight when calculating the Qty. (Average_Unit_Weight
+--                              value should always be 1.0000 and any other values can be ignored)
 -- ***********************************************************************************************
 
 CREATE Procedure dbo.GetShrinkCorrections
@@ -45,29 +47,16 @@ SELECT
     , OriginalDateStamp       = ih.DateStamp
     , DateStamp               = DATEADD(HOUR, @CentralTimeZoneOffset, ih.DateStamp) -- TFS 4602, Faisal Ahmed 
     , SubTeam_No              = ih.SubTeam_No
-    , Qty                     = CASE
-                                WHEN i.CostedByWeight = 0 THEN
-                                    SUM(Quantity) + SUM(Weight)
-                                ELSE
-                                    CASE
-                                        WHEN dbo.fn_IsRetailUnitNotCostedByWeight(ih.Item_key) = 1 
-                                            AND IsNull(i.Average_Unit_Weight,0)>0 THEN
-                                            (SUM(Quantity) + SUM(Weight))/i.Average_Unit_Weight
-                                        ELSE
-                                            SUM(Quantity) + SUM(Weight)
-                                    END
-                              END
-    ,wType                   = ISNULL(iac.Abbreviation, 'SP') 
-    ,CostedByWeight          = CASE 
-                                WHEN dbo.fn_IsRetailUnitNotCostedByWeight(ih.Item_key) = 1 THEN
-                                    0
-                                ELSE
-                                    i.CostedByWeight
-                              END
+    , Qty                     = SUM(ih.Quantity) + SUM(ih.[Weight])
+    , wType                   = ISNULL(iac.Abbreviation, 'SP') 
+    , CostedByWeight          = CASE WHEN dbo.fn_IsRetailUnitNotCostedByWeight(ih.Item_key) = 1
+								  THEN 0
+								  ELSE i.CostedByWeight
+                                END
     , UnitCost                = dbo.fn_GetUnitCostForSpoilage(ih.Item_Key, ih.Store_No, ih.SubTeam_No, ih.DateStamp)
-    , InventoryAdjustment_ID = iac.InventoryAdjustmentCode_ID
-    , ShrinkSubtype_ID       = sst.ShrinkSubType_ID
-    , ShrinkSubtype_Desc	 = sst.ReasonCodeDescription
+    , InventoryAdjustment_ID  = iac.InventoryAdjustmentCode_ID
+    , ShrinkSubtype_ID        = sst.ShrinkSubType_ID
+    , ShrinkSubtype_Desc	  = sst.ReasonCodeDescription
     , UserName                = u.UserName
 FROM 
     dbo.ItemHistory ih
