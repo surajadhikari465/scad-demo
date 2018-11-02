@@ -788,8 +788,6 @@
     <Build Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
     <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddIrmaItemKeyAttributes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\UpdateAppLogRetention.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEsbMessageTypeForCheckpointRequest.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
@@ -800,6 +798,7 @@
     <Build Include="dbo\User Defined Types\ItemKitAttributesType.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulatePromoRewardItemPriceTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

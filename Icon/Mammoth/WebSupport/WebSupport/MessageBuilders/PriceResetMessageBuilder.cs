@@ -3,7 +3,6 @@ using Esb.Core.Serializer;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Mammoth.Common.DataAccess;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WebSupport.DataAccess.Models;
@@ -99,8 +98,14 @@ namespace WebSupport.MessageBuilders
                 ActionSpecified = true,
                 type = new RewardTypeType
                 {
-                    id = Enum.Parse(typeof(Contracts.PriceTypeIdType), price.PriceType).ToString(),
+                    id = (PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), price.PriceType),
                     description = ItemPriceTypes.Descriptions.ByCode[price.PriceType],
+                    type = new RewardTypeType
+                    {
+                        id = (PriceTypeIdType)Enum.Parse(typeof(PriceTypeIdType), price.PriceTypeAttribute),
+                        description = ItemPriceTypes.Descriptions.ByCode[price.PriceType]
+                    }
+                    
                 },
                 uom = new UomType
                 {

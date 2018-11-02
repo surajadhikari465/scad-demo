@@ -23,6 +23,8 @@ namespace Mammoth.Common.DataAccess
 		public const int InStoreSpecial = 9;
 		public const int GloballySetPrice = 10;
 		public const int Rewards = 11;
+		public const int PrimeIncremental = 12;
+		public const int PrimeMemberDeal = 13;
 		
 		public class Descriptions
 		{
@@ -37,6 +39,8 @@ namespace Mammoth.Common.DataAccess
 			public const string InStoreSpecial = "In Store Special";
 			public const string GloballySetPrice = "Globally Set Price";
 			public const string Rewards = "Rewards";
+			public const string PrimeIncremental = "Prime Incremental";
+			public const string PrimeMemberDeal = "Prime Member Deal";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -50,7 +54,9 @@ namespace Mammoth.Common.DataAccess
 				{ "SSAL", "Special Sale" },
 				{ "ISS", "In Store Special" },
 				{ "GSP", "Globally Set Price" },
-				{ "RWD", "Rewards" }
+				{ "RWD", "Rewards" },
+				{ "PMI", "Prime Incremental" },
+				{ "PMD", "Prime Member Deal" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -68,6 +74,8 @@ namespace Mammoth.Common.DataAccess
 			public const string InStoreSpecial = "ISS";
 			public const string GloballySetPrice = "GSP";
 			public const string Rewards = "RWD";
+			public const string PrimeIncremental = "PMI";
+			public const string PrimeMemberDeal = "PMD";
 		}
 	}
 }
