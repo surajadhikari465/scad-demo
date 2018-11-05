@@ -394,7 +394,7 @@ BEGIN
 	-- Amazon event 
 	--
 	IF @Error_No = 0
-	BEGIN
+BEGIN
 	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
 		DECLARE @po_creEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'PO_CRE')
@@ -403,36 +403,31 @@ BEGIN
 		DECLARE @tsf_modEventTypeID INT = (SELECT TOP 1 EventTypeID FROM amz.EventType WHERE EventTypeCode = 'TSF_MOD')
 		DECLARE @unprocessedStatus NCHAR(1) = 'U'
 
-		CREATE TABLE #tempOrders (EventTypeID INT, KeyID INT)
-
-		INSERT INTO #tempOrders(EventTypeID, KeyID)
+		IF(object_ID ('tempdb..#tempOrders') IS NOT NULL) DROP TABLE #tempOrders;
 		SELECT		CASE
-						WHEN (i.Sent = 1 AND d.Sent = 0 AND i.OrderType_ID <> 3) THEN @po_creEventTypeID
-						WHEN (i.Sent = 1 AND d.Sent = 0 AND i.OrderType_ID = 3) THEN @tsf_creEventTypeID
-						ELSE CASE 
+						WHEN (d.Sent = 0 AND i.OrderType_ID <> 3) THEN @po_creEventTypeID
+						WHEN (d.Sent = 0 AND i.OrderType_ID = 3) THEN @tsf_creEventTypeID
+						ELSE 
+						CASE 
 								WHEN i.OrderType_ID = 3 THEN @tsf_modEventTypeID
 								ELSE @po_modEventTypeID
 							 END	
-					END AS EventTypeID,
-					i.OrderHeader_ID
+					END EventTypeID,
+					i.OrderHeader_ID KeyID
+		INTO	#tempOrders
 		FROM		INSERTED	i	
 		INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
 		WHERE	i.Sent = 1 
-		AND		((i.Sent = 1 AND d.Sent = 0) --Order is Sent
-						OR	ISNULL(i.Expected_Date, 0) <> ISNULL(d.Expected_Date, 0) --Expected date changed
-						OR	((i.ApprovedDate IS NULL 
-							AND i.CloseDate IS NOT NULL)
-							AND d.CloseDate IS NULL) --Order is suspended
-						OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
-					)
+		AND		(d.Sent = 0 --Order is Sent
+				OR	CAST(ISNULL(i.Expected_Date, GETDATE()) AS DATE) <> CAST(ISNULL(d.Expected_Date, GETDATE()) AS DATE) --Expected date changed
+				OR	(i.CloseDate IS NOT NULL AND d.CloseDate IS NULL) --Order is closed
+				)
 
-		INSERT INTO amz.OrderQueue (EventTypeID, KeyID, Status, InsertDate, MessageTimestampUtc)
+		INSERT INTO amz.OrderQueue (EventTypeID, KeyID, Status)
 		SELECT 
 			EventTypeID,
 			KeyID,
-			@unprocessedStatus,
-			SYSDATETIME(),
-			SYSUTCDATETIME()
+			@unprocessedStatus
 		FROM #tempOrders o
 		WHERE NOT EXISTS
 		(
@@ -442,6 +437,7 @@ BEGIN
 				AND o.KeyID = q.KeyID
 				AND q.Status = @unprocessedStatus
 		)
+		ORDER BY EventTypeID 
 
 		SELECT @Error_No = @@ERROR
 	END
@@ -453,6 +449,8 @@ BEGIN
 		SELECT @Severity = ISNULL((SELECT severity FROM master.dbo.sysmessages WHERE error = @Error_No), 16)
 		RAISERROR ('OrderHeaderUpdate trigger failed with @@ERROR: %d', @Severity, 1, @Error_No)
 	END
+
+	IF(object_ID ('tempdb..#tempOrders') is Not null) drop table #tempOrders;
 END
 
 GO
