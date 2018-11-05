@@ -4,6 +4,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Models
 {
     public class ItemModel
     {
+        
         public string ErrorCode { get; set; }
         public string ErrorDetails { get; set; }
         public int ItemId { get; set; }
@@ -12,6 +13,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Models
         public string ScanCodeType { get; set; }
         public string MerchandiseHierarchyClassId { get; set; }
         public string BrandsHierarchyClassId { get; set; }
+        public string BrandsHierarchyName { get; set; }
         public string TaxHierarchyClassId { get; set; }
         public string FinancialHierarchyClassId { get; set; }
         public string NationalHierarchyClassId { get; set; }

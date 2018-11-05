@@ -29,6 +29,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
                 ScanCodeType = GetScanCodeTypeCode(enterpriseAttributes.scanCodes.First().code),
                 MerchandiseHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.Merchandise),
                 BrandsHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.Brands),
+                BrandsHierarchyName = GetHierarchyClassName(enterpriseAttributes, HierarchyNames.Brands),
                 TaxHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.Tax),
                 FinancialHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.Financial),
                 NationalHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.National),
@@ -207,6 +208,19 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
                 {
                     return hierarchyClassId;
                 }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string GetHierarchyClassName(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
+        {
+            try
+            {
+                var hierarchyClassName = enterpriseAttributes.hierarchies.FirstOrDefault(i => i.name == hierarchyName).@class.FirstOrDefault().name;
+                return string.IsNullOrEmpty(hierarchyClassName) ? string.Empty : hierarchyClassName;
             }
             catch (Exception)
             {

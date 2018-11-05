@@ -217,7 +217,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     OrganicPersonalCare = "0",
                     Paleo = "0",
                     ProductFlavorType = "0",
-                    CustomerFriendlyDescription = "Test Customer Friendly Description"
+                    CustomerFriendlyDescription = "Test Customer Friendly Description",
+                    BrandsHierarchyName = "365"
                 },
                 new ItemModel
                 {
@@ -272,7 +273,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     OrganicPersonalCare = "1",
                     Paleo = "1",
                     ProductFlavorType = "1",
-                    CustomerFriendlyDescription = "Test Customer Friendly Description"
+                    CustomerFriendlyDescription = "Test Customer Friendly Description",
+                    BrandsHierarchyName = "365"
                 },
                 new ItemModel
                 {
@@ -327,7 +329,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     OrganicPersonalCare = "0",
                     Paleo = "0",
                     ProductFlavorType = "0",
-                    CustomerFriendlyDescription = ""
+                    CustomerFriendlyDescription = "",
+                    BrandsHierarchyName = "Test"
                 }
             };
             var listItems = items.ToList();
@@ -387,6 +390,7 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                 Assert.AreEqual(messageItems[i].ProductFlavorType, listItems[i].ProductFlavorType);
                 Assert.AreEqual(sequenceId, listItems[i].SequenceId);
                 Assert.AreEqual(messageItems[i].CustomerFriendlyDescription, listItems[i].CustomerFriendlyDescription);
+                Assert.AreEqual(messageItems[i].BrandsHierarchyName, listItems[i].BrandsHierarchyName);
             }
         }
 

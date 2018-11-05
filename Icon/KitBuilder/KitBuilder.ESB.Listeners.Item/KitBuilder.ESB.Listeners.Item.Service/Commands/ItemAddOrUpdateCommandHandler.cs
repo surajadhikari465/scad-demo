@@ -51,7 +51,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
                     ProductDesc = i.ProductDescription,
                     CustomerFriendlyDesc = i.CustomerFriendlyDescription,
                     KitchenDesc = i.KitchenDescription,
-                    BrandName = "", // tbd
+                    BrandName = i.BrandsHierarchyName,
                     ImageUrl = i.ImageUrl
                 }).ToTvp("items", "dbo.ItemAddOrUpdateType");
 

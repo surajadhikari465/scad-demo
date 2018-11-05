@@ -957,7 +957,7 @@
             <ihy:name>Brands</ihy:name>
             <ihy:class>
               <hcl:id>41674</hcl:id>
-              <hcl:name>365</hcl:name>
+              <hcl:name>Test</hcl:name>
               <hcl:parentId>0</hcl:parentId>
             </ihy:class>
           </crf:hierarchy>
