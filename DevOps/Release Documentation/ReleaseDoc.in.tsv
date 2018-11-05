@@ -1,43 +1,52 @@
-ChangeTicketNum	Change ticket number	CHG0032918
+ChangeTicketNum	Change ticket number	CHG0033369
 ReleaseOwner	Change owner	Tom Lux
 SprintsIncluded	Sprint numbers covered	127-128
-TargetEnv	Target environment	QA
-TargetEnvShort		QA
-DeployDate	Deploy date	Tuesday, October 16, 2018
+TargetEnv	Target environment	Production
+TargetEnvShort		PRD
+DeployDate	Deploy date	Thursday, November 1, 2018
+ReleaseYear		2018
+ReleaseId		11
 IrmaClientUpdated		y
 IrmaDbUpdated		y
-IrmaLegacyUpdated		n
+IrmaLegacyUpdated		y
 IconJobUpdated		y
 IconDbUpdated		y
 MammothJobUpdated		y
 MammothDbUpdated		y
-TibcoUpdated		n
+TibcoUpdated		y
 FullSvrList	Servers receiving updates	.
 ReleaseNotesURL	Link to release notes	.
-IconDbScriptLink	Icon DB script	N/A -- Auto deploy via VSTS
-MammothDbTarget		QA-01-Mammoth02\Mammoth02.Mammoth (Other QA DB is auto-deploy via VSTS)
+MammothDbTarget		Mammoth-DB01-Prd\Mammoth
 IconReleaseBranchName	Icon release branch name	RELEASE_Icon98_Mammoth37_Sprints127-128
-IconBuildNum	Icon release build number	coming_soon
-IconBuildId	Icon release build ID	.
+IconBuildNum	Icon release build number	20181016.1
+IconBuildId	Icon release build ID	3263
 IrmaReleaseBranchName	IRMA release branch name	RELEASE_IRMA106_Sprints127-128
-IrmaBuildNum	IRMA release build number	coming_soon
-IrmaBuildId	IRMA release build ID	.
+IrmaBuildNum	IRMA release build number	20181016.2
+IrmaBuildId	IRMA release build ID	3265
 IrmaVer	IRMA version number	10.6
 IrmaLongVer		10.6.0
 IconVer	Icon version number	9.8
 MammothVer	Mammoth version number	3.7
-TibcoVer	TIBCO version number	(No Updates)
+TibcoVer	TIBCO version number	1.9
 FullDbList	List of DBs receiving updates?	.
+IconDbScriptLink	Icon DB script	<a href="file://irmaqafile/e$/IRMA/Staging/iCon/__IconVer__/DB/Icon%20__IconVer__%20Updates.sql">Icon __IconVer__ DB Updates</a>
 IrmaDbUpdateRegionList		FL, MA, MW, NA, NC, NE, PN, RM, SO, SP, SW, UK
-IrmaDbServer		IDQ-xx\xxQ
-IconDbServer		IDQ-Icon\SqlShared3Q
-MammothDbServer		Mammoth-DB01-QA\Mammoth
+IrmaDbServer		IDP-xx\xxP
+IconDbServer		IDP-Icon\Shared3P
+MammothDbServer		Mammoth-DB01-Prd\Mammoth
 AppSuitesBeingDeployed	This should be dynamic	IRMA, Icon, Mammoth, TIBCO
-IrmaServersAffected	This should be dynamic	IRMAQAApp[1-4]
-IconServersAffected	This should be dynamic	VM-Icon-QA[1-4]
-MammothServersAffected	This should be dynamic	Mammoth-App01-QA
-TibcoServersAffected	This should be dynamic	*NONE*
-TibcoAppsUpdated		*NONE*
+IrmaServersAffected	This should be dynamic	IRMAPrdApp[1-8]
+IconServersAffected	This should be dynamic	VM-Icon-Prd[1-6]
+MammothServersAffected	This should be dynamic	Mammoth-App01-QA, IRMAPrdApp[9-10]
+TibcoServersAffected	This should be dynamic	Prod: cerp1643, cerp1644, odrp1634, odrp1635
+TibcoAppsUpdated		MammothActivePriceService
 IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
 IrmaSuitePreviousVersion		10.5.0
-MammothManualDeploy		Manually deploy updated apps to Perf instances on Mammoth job server
+MammothManualDeploy		After main Mammoth VSTS release, run release: 'RELEASE_FastTrack_Sprints127-128' branch, deploy: Mammoth Web Support
+IrmaReleaseLauncherVersionRef		106
+AdditionalIrmaDeployImplementerRef		SysMgmt, Apps/Tools
+AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	Open folder <a href="\\irmaqafile\e$\irma\Staging\Release\Launcher">Release Launcher Folder</a>.  Right-click script "IRMA Release Launcher.__IrmaReleaseLauncherVersionRef__.__TargetEnvShort__.ps1" > Run with PowerShell<br>__AdditionalIrmaComponentList__
+AdditionalIrmaComponentList		**Components**: IRMA Mobile Plugin (FL-Region Only), WFMUHS
+SpecialIrmaReleaseDetails		<hr>
+SpecialIconReleaseDetails		<hr>Additional special-fixes build, 'RELEASE_FastTrack_Sprints127-128' branch, build=20181030.1
+IrmaPostDbUpdateTask		None, continue
