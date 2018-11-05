@@ -1,0 +1,1364 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/29/2018 10:47:42 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN-2RT9HM2"
+  DTS:CreatorName="WFM\2096654"
+  DTS:DTSID="{87F509AD-4FAF-4E2F-9164-E2884B3A2A65}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.0900.30"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="LoadLocaleDataFromIcon"
+  DTS:PackageType="5"
+  DTS:VersionBuild="33"
+  DTS:VersionGUID="{7CF4C94C-CC7C-48DC-9F2D-42AF1907CB8D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Icon]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{349468D8-84DF-4EEF-9D54-3096915C77AD}"
+      DTS:ObjectName="Icon">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::Icon_ConnectionString]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=CEWD1815\SQLSHARED2012D;Initial Catalog=iCONDev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[KitBuilder]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B7D88ECA-06CA-4E51-9AA6-A8955473D4FC}"
+      DTS:ObjectName="KitBuilder">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::KitBuilder_ConnectionString]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=rds-kitbuilder-dev-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;User ID=KitBuilderWebApi;Initial Catalog=KitBuilder; password=D4ng3R##$Z0n3;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{43E156FD-900B-450D-B7C1-A2A8D5A3B003}"
+      DTS:ObjectName="Icon_ConnectionString">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Data Source=CEWD1815\SQLSHARED2012D;Initial Catalog=iCONDev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{9DB20508-F4C6-4924-8EE5-FEED325813D0}"
+      DTS:ObjectName="KitBuilder_ConnectionString">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Data Source=rds-kitbuilder-dev-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;User ID=KitBuilderWebApi; password=D4ng3R##$Z0n3;Initial Catalog=KitBuilder;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Locale Related Tables"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{83C41A0D-3932-4A9A-A065-B1AAEB52618D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Locale Related Tables"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B7D88ECA-06CA-4E51-9AA6-A8955473D4FC}"
+          SQLTask:SqlStatementSource="DELETE FROM [dbo].[KitLocale]&#xA;DELETE FROM [dbo].[KitLinkGroupLocale]&#xA;DELETE FROM [dbo].[Locale]&#xA;DELETE FROM[dbo].[LocaleType]&#xA;&#xA;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Locale"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Update Locale"
+      DTS:DTSID="{8BB281B0-5F0D-4181-AFF8-B3AA05535755}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Locale"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Update Locale\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Locale]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update Locale\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[KitBuilder]"
+                  connectionManagerRefId="Package.ConnectionManagers[KitBuilder]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[localeID]"
+                      cachedDataType="i4"
+                      cachedName="localeID"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeID]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[localeName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="localeName"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleName]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeName]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[localeOpenDate]"
+                      cachedDataType="dbDate"
+                      cachedName="localeOpenDate"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleOpenDate]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeOpenDate]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[localeCloseDate]"
+                      cachedDataType="dbDate"
+                      cachedName="localeCloseDate"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleCloseDate]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeCloseDate]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[localeTypeID]"
+                      cachedDataType="i4"
+                      cachedName="localeTypeID"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleTypeId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeTypeID]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[storeId]"
+                      cachedDataType="i4"
+                      cachedName="storeId"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StoreId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[storeId]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MetroId]"
+                      cachedDataType="i4"
+                      cachedName="MetroId"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MetroId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[MetroId]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegionId]"
+                      cachedDataType="i4"
+                      cachedName="RegionId"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionId]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ChainId]"
+                      cachedDataType="i4"
+                      cachedName="ChainId"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ChainId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[ChainId]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegionCode]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="RegionCode"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionCode]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionCode]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BusinessUnitId]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="BusinessUnitId"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[BusinessUnitId]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[StoreAbbreviation]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StoreAbbreviation"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StoreAbbreviation]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[StoreAbbreviation]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CurrencyCode]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CurrencyCode"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyCode]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[CurrencyCode]" />
+                    <inputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Hospitality]"
+                      cachedDataType="i4"
+                      cachedName="Hospitality"
+                      externalMetadataColumnId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Hospitality]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[Hospitality]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleId]"
+                      dataType="i4"
+                      name="LocaleId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleName]"
+                      dataType="wstr"
+                      length="255"
+                      name="LocaleName" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleTypeId]"
+                      dataType="i4"
+                      name="LocaleTypeId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StoreId]"
+                      dataType="i4"
+                      name="StoreId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MetroId]"
+                      dataType="i4"
+                      name="MetroId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionId]"
+                      dataType="i4"
+                      name="RegionId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ChainId]"
+                      dataType="i4"
+                      name="ChainId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleOpenDate]"
+                      dataType="dbTimeStamp2"
+                      name="LocaleOpenDate"
+                      scale="7" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LocaleCloseDate]"
+                      dataType="dbTimeStamp2"
+                      name="LocaleCloseDate"
+                      scale="7" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegionCode]"
+                      dataType="wstr"
+                      length="2"
+                      name="RegionCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitId]"
+                      dataType="i4"
+                      name="BusinessUnitId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StoreAbbreviation]"
+                      dataType="wstr"
+                      length="5"
+                      name="StoreAbbreviation" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyCode]"
+                      dataType="wstr"
+                      length="5"
+                      name="CurrencyCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Hospitality]"
+                      dataType="bool"
+                      name="Hospitality" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Update Locale\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update Locale\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Update Locale\Read Locales"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Read Locales"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">DECLARE @RegionTraitID INT = (SELECT TraitID FROM Trait WHERE TraitGroupId = 5 AND TraitCode = 'ABB')
+DECLARE @BusinessUnitID INT = (SELECT TraitID FROM Trait WHERE TraitGroupId = 5 AND TraitCode = 'BU')
+DECLARE @StoreAbbreviationID INT = (SELECT TraitID FROM Trait WHERE TraitGroupId = 5 AND TraitCode = 'SAB')
+DECLARE @CurrencyTraitId INT = (SELECT TraitID FROM Trait WHERE TraitCode = 'CUR')
+
+SELECT localeID,
+	   localeName,
+       localeTypeID,
+       NULL AS storeId,
+	   NULL AS MetroId,
+       NULL AS RegionId,
+       NULL AS ChainId,
+       localeOpenDate,
+       localeCloseDate,
+	   Null AS RegionCode,
+	   NULL AS BusinessUnitId,
+       NULL AS StoreAbbreviation,
+       NULL AS CurrencyCode,
+      0 AS Hospitality
+
+  FROM [iCON].[dbo].[Locale] l
+  WHERE LocaleTypeID=1
+
+UNION
+
+SELECT l.localeID,
+	   l.localeName,
+       l.localeTypeID,
+       NULL AS storeId,
+	   NULL AS MetroId,
+       NULL AS RegionId,
+       c.localeID AS ChainId,
+       l.localeOpenDate,
+       l.localeCloseDate,
+	   lt.traitValue AS RegionCode,
+	   NULL AS BusinessUnitId,
+       NULL AS StoreAbbreviation,
+       NULL AS CurrencyCode,
+       0 AS Hospitality
+
+  FROM [iCON].[dbo].[Locale] l
+  inner join LocaleTrait lt ON lt.localeID = l.localeID and lt.traitID = @RegionTraitID
+  Inner Join Locale c on l.parentLocaleID = c.localeID
+  WHERE l.LocaleTypeID=2
+
+UNION
+
+SELECT l.localeID,
+	   l.localeName,
+       l.localeTypeID,
+       NULL AS storeId,
+	   NULL AS MetroId,
+       rg.localeID AS RegionId,
+       c.localeID AS ChainId,
+       l.localeOpenDate,
+       l.localeCloseDate,
+	   NULL AS RegionCode,
+	   NULL AS BusinessUnitId,
+       NULL AS StoreAbbreviation,
+       NULL AS CurrencyCode,
+       0 AS Hospitality
+
+  FROM [iCON].[dbo].[Locale] l
+   Inner Join Locale rg on l.parentLocaleID = rg.localeID
+   Inner Join Locale c on rg.parentLocaleID = c.localeID
+  WHERE l.LocaleTypeID=3
+ 
+UNION
+
+SELECT l.localeID,
+	   l.localeName,
+       l.localeTypeID,
+       NULL AS storeId,
+	   mt.localeID AS MetroId,
+       rg.localeID AS RegionId,
+       c.localeID AS ChainId,
+       l.localeOpenDate,
+       l.localeCloseDate,
+	   NULL AS RegionCode,
+	   Bu.traitValue AS BusinessUnitId,
+       s.traitValue AS StoreAbbreviation,
+       cur.traitValue AS CurrencyCode,
+       0 AS Hospitality
+
+  FROM [iCON].[dbo].[Locale] l
+  	Inner Join Locale mt on l.parentLocaleID = mt.localeID
+    Inner Join Locale rg on mt.parentLocaleID = rg.localeID
+	Inner Join Locale c on rg.parentLocaleID = c.localeID
+	Inner join LocaleTrait Bu ON Bu.localeID = l.localeID and Bu.traitID = @BusinessUnitID
+	Inner join LocaleTrait s ON s.localeID = l.localeID and s.traitID = @StoreAbbreviationID
+	left join LocaleTrait cur ON cur.localeID = l.localeID and cur.traitID = @CurrencyTraitId
+
+  WHERE l.LocaleTypeID=4
+  
+UNION
+
+SELECT l.localeID,
+	   l.localeName,
+       l.localeTypeID,
+       s.localeID AS storeId,
+	   mt.localeID AS MetroId,
+       rg.localeID AS RegionId,
+       c.localeID AS ChainId,
+       l.localeOpenDate,
+       l.localeCloseDate,
+	   NULL AS RegionCode,
+	   NULL AS BusinessUnitId,
+       NULL AS StoreAbbreviation,
+       NULL AS CurrencyCode,
+       1 AS Hospitality
+
+FROM [iCON].[dbo].[Locale] l
+	Inner Join Locale s on l.parentLocaleID =  s.localeID
+  	Inner Join Locale mt on s.parentLocaleID = mt.localeID
+    Inner Join Locale rg on mt.parentLocaleID = rg.localeID
+	Inner Join Locale c on rg.parentLocaleID = c.localeID
+  
+  WHERE l.LocaleTypeID=5</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update Locale\Read Locales.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Icon]"
+                  connectionManagerRefId="Package.ConnectionManagers[Icon]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeID]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeID]"
+                      name="localeID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeName]"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeName]"
+                      name="localeName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeOpenDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeOpenDate]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeOpenDate]"
+                      name="localeOpenDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeCloseDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeCloseDate]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeCloseDate]"
+                      name="localeCloseDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeTypeID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeTypeID]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[localeTypeID]"
+                      name="localeTypeID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[storeId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[storeId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[storeId]"
+                      name="storeId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[MetroId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[MetroId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[MetroId]"
+                      name="MetroId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[RegionId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionId]"
+                      name="RegionId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[ChainId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[ChainId]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[ChainId]"
+                      name="ChainId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[RegionCode]"
+                      name="RegionCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[BusinessUnitId]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitId]"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[BusinessUnitId]"
+                      name="BusinessUnitId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[StoreAbbreviation]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[StoreAbbreviation]"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[StoreAbbreviation]"
+                      name="StoreAbbreviation"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[CurrencyCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[CurrencyCode]"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[CurrencyCode]"
+                      name="CurrencyCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[Hospitality]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[Hospitality]"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].Columns[Hospitality]"
+                      name="Hospitality"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeID]"
+                      dataType="i4"
+                      name="localeID" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeName]"
+                      dataType="wstr"
+                      length="255"
+                      name="localeName" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeOpenDate]"
+                      dataType="dbDate"
+                      name="localeOpenDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeCloseDate]"
+                      dataType="dbDate"
+                      name="localeCloseDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[localeTypeID]"
+                      dataType="i4"
+                      name="localeTypeID" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[storeId]"
+                      dataType="i4"
+                      name="storeId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[MetroId]"
+                      dataType="i4"
+                      name="MetroId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[RegionId]"
+                      dataType="i4"
+                      name="RegionId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[ChainId]"
+                      dataType="i4"
+                      name="ChainId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[RegionCode]"
+                      dataType="wstr"
+                      length="255"
+                      name="RegionCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitId]"
+                      dataType="wstr"
+                      length="255"
+                      name="BusinessUnitId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[StoreAbbreviation]"
+                      dataType="wstr"
+                      length="255"
+                      name="StoreAbbreviation" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[CurrencyCode]"
+                      dataType="wstr"
+                      length="255"
+                      name="CurrencyCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output].ExternalColumns[Hospitality]"
+                      dataType="i4"
+                      name="Hospitality" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeID]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeID]"
+                      name="localeID" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeName]"
+                      name="localeName" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeOpenDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeOpenDate]"
+                      name="localeOpenDate" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[storeId]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[storeId]"
+                      name="storeId" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[MetroId]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[MetroId]"
+                      name="MetroId" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[RegionId]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[RegionId]"
+                      name="RegionId" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ChainId]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ChainId]"
+                      name="ChainId" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeCloseDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeCloseDate]"
+                      name="localeCloseDate" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeTypeID]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[localeTypeID]"
+                      name="localeTypeID" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[RegionCode]"
+                      name="RegionCode" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[BusinessUnitId]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[BusinessUnitId]"
+                      name="BusinessUnitId" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[StoreAbbreviation]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[StoreAbbreviation]"
+                      name="StoreAbbreviation" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[CurrencyCode]"
+                      name="CurrencyCode" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[Hospitality]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[Hospitality]"
+                      name="Hospitality" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Update Locale.Paths[OLE DB Source Output]"
+              endId="Package\Update Locale\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Update Locale\Read Locales.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Locale Types"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Update Locale Types"
+      DTS:DTSID="{A34F0F31-5B6E-4DA5-9E03-2C47B513FC25}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Locale Types"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Update Locale Types\Insert into Kb Locale Type"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Insert into Kb Locale Type"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LocaleType]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update Locale Types\Insert into Kb Locale Type.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[KitBuilder]"
+                  connectionManagerRefId="Package.ConnectionManagers[KitBuilder]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].Columns[localeTypeID]"
+                      cachedDataType="i4"
+                      cachedName="localeTypeID"
+                      externalMetadataColumnId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeId]"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeID]" />
+                    <inputColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].Columns[localeTypeCode]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="localeTypeCode"
+                      externalMetadataColumnId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeCode]"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeCode]" />
+                    <inputColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].Columns[localeTypeDesc]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="localeTypeDesc"
+                      externalMetadataColumnId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeDesc]"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeDesc]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeId]"
+                      dataType="i4"
+                      name="localeTypeId" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeCode]"
+                      dataType="wstr"
+                      length="3"
+                      name="localeTypeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input].ExternalColumns[localeTypeDesc]"
+                      dataType="wstr"
+                      length="255"
+                      name="localeTypeDesc" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Update Locale Types\Insert into Kb Locale Type.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale Types\Insert into Kb Locale Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Insert into Kb Locale Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale Types\Insert into Kb Locale Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Update Locale Types\Read Locale Types"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Read Locale Types"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select localeTypeID,localeTypeCode, localeTypeDesc from [dbo].[LocaleType]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update Locale Types\Read Locale Types.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Icon]"
+                  connectionManagerRefId="Package.ConnectionManagers[Icon]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeID]"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeID]"
+                      name="localeTypeID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeCode]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeCode]"
+                      length="3"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeCode]"
+                      name="localeTypeCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeDesc]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeDesc]"
+                      length="255"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].Columns[localeTypeDesc]"
+                      name="localeTypeDesc"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeID]"
+                      dataType="i4"
+                      name="localeTypeID" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeCode]"
+                      dataType="wstr"
+                      length="3"
+                      name="localeTypeCode" />
+                    <externalMetadataColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output].ExternalColumns[localeTypeDesc]"
+                      dataType="wstr"
+                      length="255"
+                      name="localeTypeDesc" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeID]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeID]"
+                      name="localeTypeID" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeCode]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeCode]"
+                      name="localeTypeCode" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeDesc]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[localeTypeDesc]"
+                      name="localeTypeDesc" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Update Locale Types.Paths[OLE DB Source Output]"
+              endId="Package\Update Locale Types\Insert into Kb Locale Type.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Update Locale Types\Read Locale Types.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{3574710E-2718-4932-B4FF-3AF518FA0312}"
+      DTS:From="Package\Truncate Locale Related Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Update Locale Types" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{01352868-4CB5-4195-80D4-F695DE0D1E8A}"
+      DTS:From="Package\Update Locale Types"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Update Locale" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="225.6,41.6"
+          Id="Package\Truncate Locale Related Tables"
+          TopLeft="113.714287650828,53.2235301582046" />
+        <NodeLayout
+          Size="176,41.6"
+          Id="Package\Update Locale Types"
+          TopLeft="141.714288127666,145.600002041985" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="228.114287889247,94.8235301582046">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,50.7764718837804"
+              Start="0,0"
+              End="0,43.2764718837804">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,43.2764718837804" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="144.8,41.6"
+          Id="Package\Update Locale"
+          TopLeft="157.714288400144,236.752944496841" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="231.314288263905,187.200002041985">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,49.5529424548563"
+              Start="0,0"
+              End="0,42.0529424548563">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.0529424548563" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Update Locale Types">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="149.6,41.6"
+          Id="Package\Update Locale Types\Read Locale Types"
+          TopLeft="127.428573598667,14.6823531470909" />
+        <NodeLayout
+          Size="202.4,41.6"
+          Id="Package\Update Locale Types\Insert into Kb Locale Type"
+          TopLeft="134.285716572586,123.576472321349" />
+        <EdgeLayout
+          Id="Package\Update Locale Types.Paths[OLE DB Source Output]"
+          TopLeft="202.228573598667,56.2823531470909">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17.2571429739194,67.2941191742577"
+              Start="0,0"
+              End="17.2571429739194,59.7941191742577">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.6470595871289" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.6470595871289"
+                    Point2="0,33.6470595871289"
+                    Point3="4,33.6470595871289" />
+                  <mssgle:LineSegment
+                    End="13.2571429739194,33.6470595871289" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13.2571429739194,33.6470595871289"
+                    Point2="17.2571429739194,33.6470595871289"
+                    Point3="17.2571429739194,37.6470595871289" />
+                  <mssgle:LineSegment
+                    End="17.2571429739194,59.7941191742577" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update Locale Types\Read Locale Types">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update Locale Types\Insert into Kb Locale Type">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Update Locale">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="254.4,41.6"
+          Id="Package\Update Locale\Read Locales"
+          TopLeft="176,24" />
+        <NodeLayout
+          Size="216.8,49.6"
+          Id="Package\Update Locale\OLE DB Destination"
+          TopLeft="189.6,135.2" />
+        <EdgeLayout
+          Id="Package\Update Locale.Paths[OLE DB Source Output]"
+          TopLeft="300.6,65.6">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,69.6"
+              Start="0,0"
+              End="0,62.1">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.1" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update Locale\Read Locales">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update Locale\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
