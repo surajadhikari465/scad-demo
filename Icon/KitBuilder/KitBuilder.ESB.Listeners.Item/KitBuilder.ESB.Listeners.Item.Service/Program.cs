@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Icon.Common;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using ServiceStack.Text;
 using Topshelf;
-using Topshelf.SimpleInjector;
-
 
 namespace KitBuilder.ESB.Listeners.Item.Service
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var container = SimpleInjectorInitializer.InitializeContainer();
             container.GetInstance<EsbConnectionSettings>().PrintDump();
@@ -24,13 +22,10 @@ namespace KitBuilder.ESB.Listeners.Item.Service
                     s.WhenStopped(c => c.Close());
                 });
 
-                r.SetDescription("Processes HospitalityItems from Global Product Messages to be used with KitBuilder");
-                r.SetDisplayName("KitBuilder Item Listener");
-                r.SetServiceName("KitBuilder.Item.Listener");
+                r.SetDescription(AppSettingsAccessor.GetStringSetting("ServiceDescription"));
+                r.SetDisplayName(AppSettingsAccessor.GetStringSetting("ServiceDisplayName"));
+                r.SetServiceName(AppSettingsAccessor.GetStringSetting("ServiceName"));
             });
-
-
-
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Icon.Common;
 using Icon.Common.DataAccess;
-using Icon.Framework;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.ESB.Listeners.Item.Service.Constants;
@@ -25,7 +24,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
         {
             // get hospitality items.
             var itemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null 
-                                                           && (i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false))).ToList();
+                    && (i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false))).ToList();
             try
             {
                 AddOrUpdateItems(itemRpository, itemsWithoutErrors);
@@ -43,24 +42,20 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
 
         private void AddOrUpdateItems(IRepository<Items> repo, IEnumerable<ItemModel> data)
         {
-            // todo: fix values for items.
+            
             var items = data
                 .Select(i => new
                 {
                     ItemId = i.ItemId,
-                    ItemTypeId = ItemTypes.Ids[i.ItemTypeCode],
                     ScanCode = i.ScanCode,
-                    ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
-                    InforMessageId = i.InforMessageId,
-                    SequenceId = i.SequenceId,
-                    HospitalityItem = i.HospitalityItem,
-                    KitchenItem = i.KitchenItem,
-                    KitchenDescription = i.KitchenDescription,
-                    ImageUrl = i.ImageUrl,
-                   
+                    ProductDesc = i.ProductDescription,
+                    CustomerFriendlyDesc = i.CustomerFriendlyDescription,
+                    KitchenDesc = i.KitchenDescription,
+                    BrandName = "", // tbd
+                    ImageUrl = i.ImageUrl
                 }).ToTvp("items", "dbo.ItemAddOrUpdateType");
 
-            repo.UnitOfWork.Context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
+            repo.UnitOfWork.Context.Database.ExecuteSqlCommand("exec dbo.ItemAddOrUpdate @items", items);
         }
 
     }

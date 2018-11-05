@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Icon.Common.Email;
+﻿using Icon.Common.Email;
 using Icon.Esb.Subscriber;
-using KitBuilder.ESB.Listeners.Item.Service.Constants;
 using KitBuilder.ESB.Listeners.Item.Service.Models;
+using System.Collections.Generic;
+using System.Text;
 
 namespace KitBuilder.ESB.Listeners.Item.Service.Notifiers
 {
@@ -12,18 +11,11 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Notifiers
         private const string WfmTenantId = "WFM";
         private IEmailClient emailClient;
         private ItemListenerSettings settings;
-      //  private IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService;
 
-        public ItemListenerNotifier(
-            IEmailClient emailClient,
-            ItemListenerSettings settings
-            //   IEsbService<ConfirmationBodEsbRequest> confirmationBodeEsbService
-            )
-
+        public ItemListenerNotifier(IEmailClient emailClient,ItemListenerSettings settings)
         {
             this.emailClient = emailClient;
             this.settings = settings;
-         //   this.confirmationBodeEsbService = confirmationBodeEsbService;
         }
 
         public void NotifyOfItemError(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> itemModelsWithErrors)
@@ -54,59 +46,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Notifiers
             }
         }
 
-        //private void SendConfirmationBod(IEsbMessage message, bool schemaErrorOccurred, List<ItemModel> itemModelsWithErrors)
-        //{
-        //    var messageId = message.GetProperty("IconMessageID");
-        //    if (schemaErrorOccurred)
-        //    {
-        //        ConfirmationBodEsbRequest request = new ConfirmationBodEsbRequest
-        //        {
-        //            BodId = messageId,
-        //            ErrorDescription = ApplicationErrors.Messages.UnableToParseMessage,
-        //            ErrorReasonCode = ApplicationErrors.Codes.UnableToParseMessage,
-        //            ErrorType = ConfirmationBodEsbErrorTypes.Schema,
-        //            EsbMessageProperties = new Dictionary<string, string>
-        //            {
-        //                { "IconMessageID", messageId }
-        //            },
-        //            OriginalMessage = message.MessageText,
-        //            TenantId = WfmTenantId
-        //        };
-        //        confirmationBodeEsbService.Send(request);
-        //    }
-        //    else
-        //    {
-        //        foreach (var item in itemModelsWithErrors)
-        //        {
-        //            ConfirmationBodEsbRequest request = new ConfirmationBodEsbRequest
-        //            {
-        //                BodId = messageId,
-        //                ErrorDescription = item.ErrorDetails,
-        //                ErrorReasonCode = item.ErrorCode,
-        //                ErrorType = GetErrorType(item),
-        //                EsbMessageProperties = new Dictionary<string, string>
-        //                {
-        //                    { "IconMessageID", messageId }
-        //                },
-        //                OriginalMessage = message.MessageText,
-        //                TenantId = WfmTenantId
-        //            };
-        //            confirmationBodeEsbService.Send(request);
-        //        }
-        //    }
-        //}
-
-        //private ConfirmationBodEsbErrorTypes GetErrorType(ItemModel item)
-        //{
-        //    if(item.ErrorCode == ApplicationErrors.Codes.ItemAddOrUpdateError 
-        //        || item.ErrorCode == ApplicationErrors.Codes.GenerateItemMessagesError)
-        //    {
-        //        return ConfirmationBodEsbErrorTypes.DatabaseConstraint;
-        //    }
-        //    else
-        //    {
-        //        return ConfirmationBodEsbErrorTypes.Data;
-        //    }
-        //}
+       
     }
 }

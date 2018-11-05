@@ -13,8 +13,7 @@ BEGIN
 				,TARGET.CustomerFriendlyDesc = Source.CustomerFriendlyDesc
 				,TARGET.KitchenDesc = Source.KitchenDesc
 				,TARGET.BrandName = Source.BrandName
-				,TARGET.LargeImageUrl = Source.LargeImageUrl
-				,TARGET.SmallImageUrl = Source.SmallImageUrl
+				,TARGET.ImageUrl = Source.ImageUrl
 				,TARGET.InsertDateUtc = Source.InsertDateUtc
 				,TARGET.LastUpdatedDateUtc = Source.LastUpdatedDateUtc
 	WHEN NOT MATCHED BY TARGET
@@ -26,8 +25,7 @@ BEGIN
 				,CustomerFriendlyDesc
 				,KitchenDesc
 				,BrandName
-				,LargeImageUrl
-				,SmallImageUrl
+				,ImageUrl
 				)
 			VALUES (
 				Source.ItemId
@@ -36,8 +34,7 @@ BEGIN
 				,Source.CustomerFriendlyDesc
 				,Source.KitchenDesc
 				,Source.BrandName
-				,Source.LargeImageUrl
-				,Source.SmallImageUrl
+				,Source.ImageUrl
 				);
 END
 
