@@ -41,6 +41,7 @@ namespace WebSupport.DataAccess.Queries
                           ,i.ScanCode
                           ,ms.PatchFamilyID AS PatchFamilyId
                           ,ms.PatchFamilySequenceID AS SequenceId
+                          ,p.PercentOff
                       FROM gpm.Price_{parameters.Region} p
                       JOIN dbo.Items i ON p.ItemID = i.ItemID
                       JOIN dbo.ItemTypes it ON i.itemTypeID = it.ItemTypeID

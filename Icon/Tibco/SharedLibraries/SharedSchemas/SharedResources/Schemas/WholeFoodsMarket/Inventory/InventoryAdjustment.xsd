@@ -21,9 +21,9 @@
 				<xs:element name="inventoryAdjustment" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="adjustmentNumber" type="crf:IdIntType"/>
+							<xs:element name="adjustmentNumber" type="crf:IdIntType" minOccurs="0"/>
 							<xs:element name="eventType" type="crf:WfmStrType"/>
-							<xs:element name="messageNumber" type="crf:IdIntType">
+							<xs:element name="messageNumber" type="crf:WfmStrType">
 								<xs:annotation>
 									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 								</xs:annotation>
@@ -35,15 +35,15 @@
 								<xs:element name="inventoryAdjustmentDetail" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="adjustmentDetailNumber" type="crf:IdIntType"/>
+											<xs:element name="adjustmentDetailNumber" type="crf:IdIntType" minOccurs="0"/>
 											<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
 											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
 											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
-											<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
-											<xs:element name="defaultScanCode" type="crf:ScanCodeIdType"/>
+											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="reasonCode" type="crf:WfmStrType" minOccurs="1"/>
 											<xs:element name="adjustmentQuantity" type="txf:QuantitiesType" minOccurs="0"/>
-											<xs:element name="disposition">
+											<xs:element name="disposition" minOccurs="0">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="current" type="crf:WfmStrType" minOccurs="0"/>

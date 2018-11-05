@@ -27,14 +27,61 @@ namespace WebSupport.ViewModels
         public int RegionIndex { get; set; }
 
         [Required]
-        [Display(Name = "Business Unit")]
+        [Display(Name = "Business Unit(s)")]
         [DataType(DataType.MultilineText)]
-        public string Store { get; set; }
+        public string[] Stores { get; set; }
 
         [Required]
-        [Display(Name = "Scan Code")]
+        [Display(Name = "Scan Codes(s) (one per line)")]
+        [DataType(DataType.MultilineText)]
         [RegularExpression(ValidationConstants.RegExForValidScanCode, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCode)]
-        public string ScanCode { get; set; }
+        public string ScanCodes { get; set; }
+
+        public List<string> ScanCodesList
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(ScanCodes))
+                {
+                    return new List<string>();
+                }
+                else
+                {
+                    return ScanCodes.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+            }
+            set
+            {
+                if (value == null || value.Count < 1)
+                {
+                    ScanCodes = string.Empty;
+                }
+                else
+                {
+                    ScanCodes = string.Join(Environment.NewLine, value);
+                }
+            }
+        }
+
+        public List<int> StoresAsIntList
+        {
+            get
+            {
+                int eachBusinessUnit = 0;
+                var businessUnitIDs = new List<int>(Stores.Length);
+                foreach ( var store in Stores)
+                {
+                    if (int.TryParse(store, out eachBusinessUnit))
+                    {
+                        businessUnitIDs.Add(eachBusinessUnit);
+                    }
+                }
+
+                return businessUnitIDs;
+            }
+   
+        }
+
         public void SetRegions(IEnumerable<string> regionSelections)
         {
             if (regionSelections != null)
@@ -47,5 +94,8 @@ namespace WebSupport.ViewModels
         {
             OptionsForStores = SelectListHelper.StoreArrayToSelectList(storeSelections.ToArray());
         }
+
+        public List<string> Errors { get; set; }
+        public bool? Success { get; set; }
     }
 }

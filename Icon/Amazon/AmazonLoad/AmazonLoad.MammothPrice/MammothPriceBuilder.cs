@@ -1,6 +1,5 @@
 ﻿using AmazonLoad.Common;
 using Dapper;
-using Icon.Common;
 using Icon.Esb.Producer;
 using MoreLinq;
 using System;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AmazonLoad.MammothPrice
 {

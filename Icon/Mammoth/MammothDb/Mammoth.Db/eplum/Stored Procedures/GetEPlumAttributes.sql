@@ -26,7 +26,6 @@ DECLARE @originId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeC
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
 DECLARE @BeginningOfToday DATETIME2 = CAST(CAST(GETDATE() AS DATE) AS datetime2);
-DECLARE @EndOfToday DATETIME2 = CAST(DATEADD(ms, -3, DATEADD(dd, 1, DATEDIFF(dd, 0, GETDATE()))) AS datetime2);
 
 -- Put ItemIDs we need into a temp table
 -- Optional Attributes to avoid a left join on main global item query
@@ -536,23 +535,23 @@ JOIN gpm.Prices reg ON pr.Region = reg.Region
 WHERE reg.Region = @Region
 OPTION (RECOMPILE)
 
--- Sale Prices (TPR and RWD)
+-- Sale Prices TPR (Rewards will remain NULL as of now)
 UPDATE p
 SET
-	p.TprMultiple = CASE WHEN sal.PriceType = 'TPR' THEN sal.Multiple ELSE NULL END,     
-	p.TprPrice = CASE WHEN sal.PriceType = 'TPR' THEN sal.Price ELSE NULL END,    
-	p.TprPriceType = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceType ELSE NULL END,
-	p.TprPriceTypeAttribute = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceTypeAttribute ELSE NULL END,
-	p.TprSellableUOM = CASE WHEN sal.PriceType = 'TPR' THEN sal.SellableUOM ELSE NULL END,
-	p.TprStartDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.StartDate ELSE NULL END,
-	p.TprEndDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.EndDate ELSE NULL END
+	p.TprMultiple = sal.Multiple,     
+	p.TprPrice = sal.Price,    
+	p.TprPriceType = sal.PriceType,
+	p.TprPriceTypeAttribute = sal.PriceTypeAttribute,
+	p.TprSellableUOM = sal.SellableUOM,
+	p.TprStartDate = sal.StartDate,
+	p.TprEndDate = sal.EndDate
 FROM #prices p
 INNER JOIN gpm.Prices sal on p.ItemID = sal.ItemID
 	AND p.BusinessUnitID = sal.BusinessUnitID
 WHERE sal.Region = @Region
 	AND sal.StartDate <= @BeginningOfToday
-	AND sal.EndDate >= @EndOfToday
-	AND (sal.PriceType = 'TPR' OR sal.PriceType = 'RWD')
+	AND sal.EndDate > @BeginningOfToday
+	AND sal.PriceType = 'TPR'
 OPTION (RECOMPILE)
 
 -- Linked ScanCode Price

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Esb.Schemas.Infor.ContractTypes;
+﻿using System.Collections.Generic;
 
 namespace Icon.Esb.Services.ConfirmationBod
 {
-    public class ConfirmationBodEsbRequest
+  public class ConfirmationBodEsbRequest
     {
         public string BodId { get; set; }
         public string OriginalMessage { get; set; }

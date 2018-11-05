@@ -19,7 +19,7 @@
                     <xsd:element name="Status" type="xsd:string"/>
                     <xsd:element name="ErrorDescription" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="LastProcessedTime" type="xsd:time" minOccurs="0"/>
-                    <xsd:element name="MessageNumber" type="xsd:int"/>
+                    <xsd:element name="MessageNumber" type="xsd:string"/>
                     <xsd:element name="LastReprocess" type="xsd:time" minOccurs="0"/>
                     <xsd:element name="LastReprocessID" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="QueueID" type="xsd:int" minOccurs="0"/>
@@ -27,7 +27,7 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>54</pd:startX>
+    <pd:startX>55</pd:startX>
     <pd:startY>56</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>

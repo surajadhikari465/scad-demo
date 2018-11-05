@@ -33,8 +33,8 @@ namespace WebSupport.MessageBuilders
                     {
                         isCheckPointSpecified = true,
                         isCheckPoint = true,
-                        PatchFamilyID = request.getCurrentPriceInfo.PatchFamilyId,
-                        PatchNum = request.getCurrentPriceInfo.SequenceId.ToString(),
+                        PatchFamilyID = request.CheckpointMessage.PatchFamilyId,
+                        PatchNum = request.CheckpointMessage.SequenceId.ToString(),
                         TimeStampSpecified = true,
                         TimeStamp = Convert.ToDateTime(DateTime.Now.ToString(DateTimeFormat))
                     }

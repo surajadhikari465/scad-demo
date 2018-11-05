@@ -301,7 +301,7 @@ namespace WebSupport.DataAccess.Test.Queries
                             ,[SellableUOM]
                             ,[CurrencyCode]
                             ,[Multiple]
-                            ,[NewTagExpiration])
+                            ,[TagExpirationDate])
                         VALUES
                             ('FL'
                             ,NEWID()

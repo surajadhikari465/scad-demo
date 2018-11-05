@@ -93,6 +93,7 @@
         {
             public const string Reg = "REG";
             public const string Tpr = "TPR";
+            public const string Rwd = "RWD";
         }
     }
 

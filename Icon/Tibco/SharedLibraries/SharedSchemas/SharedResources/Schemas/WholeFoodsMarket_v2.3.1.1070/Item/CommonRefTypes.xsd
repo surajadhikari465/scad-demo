@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="10.7">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="ConsumerLabelTypeCodeType">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HazardousMaterialTypeCodeType">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:length value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ItemTypeCodeType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ItemTypeDescType">
+		<xs:annotation>
+			<xs:documentation>Ways that a transaction calculation interprets item: retail sale, deposit, tare  (deposit and tare are link group tags in R10) - the list may be expanded from iCon but bottle deposit and tare will be r10 types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="NutritionalDescType">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="scanCodeType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ScanCodeTypeDescType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="StockProductLabelDecimalType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:Decimal9.2Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="StockProductLabelPercentType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:Decimal7.4Type"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!--  Complex Types              -->
+	<!-- ================== -->
+	<xs:complexType name="StockProductLabelType">
+		<xs:sequence>
+			<xs:element name="consumerLabelTypeCode" type="ConsumerLabelTypeCodeType" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Defines the type of information to be carried on the label. Examples include nutritional information, hazard warnings, OSHA warnings, handling warnings, laundering instructions, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="servingSizeUom" type="uom:UomType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The unit of measure assigned to the item for serving size counts.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="servingSizeUomCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The count or number of serving unit of measures in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="servingsInRetailSaleUnitCount" type="uom:UomType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of servings in a retail sale unit for the item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="caloriesCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>A count of the number of calories in the serving unit.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="caloriesFromFatCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The number of calories derived from fat for the serving unit of the item</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalFatGramsAmount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>Total fat weight in grams for the serving of the item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalFatDailyIntakePercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The input percentage of fat based on the total-fat-grams amount.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="saturatedFatGramsAmount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>Total saturated fat weight in grams for the serving of the item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="saturatedFatPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The input percentage of saturated fat based on the total-fat-grams amount.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cholesterolMilligramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight (in milligrams) of cholesterol found in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cholesterolPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percent of daily recommended allowance for cholesterol in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sodiumMilligramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight (in milligrams) of sodium found in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sodiumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percent of daily recommended allowance for sodium in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalCarbohydrateMilligramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight (in milligrams) of carbohydrate found in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalCarbohydratePercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percent of daily recommended allowance for carbohydrate in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dietaryFiberGramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight in grams of the dietary fiber contained in a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sugarsGramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight in grams of sugars for a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="proteinGramsCount" type="StockProductLabelDecimalType" default="0">
+				<xs:annotation>
+					<xs:documentation>The weight of protein, in grams, for a serving.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vitaminADailyMinimumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percentage of minimum daily requirement for Vitamin A.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vitaminBDailyMinimumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percentage of minimum daily requirement for Vitamin B.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vitaminCDailyMinimumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percentage of minimum daily requirement for Vitamin C.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="calciumDailyMinimumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percentage of minimum daily requirement for Calcium.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ironDailyMinimumPercent" type="StockProductLabelPercentType" default="0">
+				<xs:annotation>
+					<xs:documentation>The percentage of minimum daily requirement for Iron.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nutritionalDescriptionText" type="NutritionalDescType"  minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>General text description for nutritional information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isHazardousMaterial" type="crf:WfmBoolType" default="false">
+				<xs:annotation>
+					<xs:documentation>A flag to denote whether this product is classified as a hazardous item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hazardousMaterialTypeCode" type="HazardousMaterialTypeCodeType" nillable="true">
+				<xs:annotation>
+					<xs:documentation>A code to denote the type of hazardous material, eg fireworks.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action" use="optional"/>
+	</xs:complexType>
+</xs:schema>

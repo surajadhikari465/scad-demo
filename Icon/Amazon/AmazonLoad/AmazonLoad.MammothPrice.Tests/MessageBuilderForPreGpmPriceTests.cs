@@ -1,8 +1,6 @@
-using Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.MammothPrice.Tests
 {
@@ -28,7 +26,7 @@ namespace AmazonLoad.MammothPrice.Tests
             Assert.AreEqual(testPrice.CurrencyCode, priceType.currencyTypeCode.ToString());
 
             Contracts.PriceTypeType priceTypeType = priceType.type;
-            Assert.AreEqual(testPrice.PriceTypeCode, priceTypeType.id);
+            Assert.AreEqual(testPrice.PriceTypeCode, priceTypeType.id.ToString());
             Assert.AreEqual(testPrice.PriceTypeDesc, priceTypeType.description);
 
             Contracts.PriceTypeType priceTypeSubtypeType = priceType.type.type;
@@ -59,7 +57,7 @@ namespace AmazonLoad.MammothPrice.Tests
             Assert.AreEqual(testPrice.CurrencyCode, priceType.currencyTypeCode.ToString());
 
             Contracts.PriceTypeType priceTypeType = priceType.type;
-            Assert.AreEqual(testPrice.PriceTypeCode, priceTypeType.id);
+            Assert.AreEqual(testPrice.PriceTypeCode, priceTypeType.id.ToString());
             Assert.AreEqual(testPrice.PriceTypeDesc, priceTypeType.description);
 
             Contracts.PriceTypeType priceTypeSubtypeType = priceType.type.type;
@@ -95,7 +93,7 @@ namespace AmazonLoad.MammothPrice.Tests
             Contracts.LocaleType localeType = itemType.locale[0];
             Assert.AreEqual(testPrice.BusinessUnitId.ToString(), localeType.id);
             Assert.AreEqual(testPrice.LocaleName, localeType.name);
-            Assert.AreEqual(ActionEnum.AddOrUpdate, localeType.Action);
+            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, localeType.Action);
 
             Contracts.LocaleTypeType localeTypeType = localeType.type;
             Assert.AreEqual("STR", localeTypeType.code.ToString());

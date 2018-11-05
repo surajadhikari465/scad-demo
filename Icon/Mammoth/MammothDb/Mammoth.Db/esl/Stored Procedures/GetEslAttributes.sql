@@ -42,7 +42,6 @@ DECLARE @tagUomId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeC
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
 DECLARE @Today datetime = CAST(CAST(GETDATE() as date) as datetime);
 DECLARE @BeginningOfToday DATETIME2 = CAST(CAST(GETDATE() AS DATE) AS datetime2);
-DECLARE @EndOfToday DATETIME2 = CAST(DATEADD(ms, -3, DATEADD(dd, 1, DATEDIFF(dd, 0, GETDATE()))) AS datetime2);
 
 -- Put ItemIDs we need into a temp table
 -- Optional Attributes to avoid a left join on main global item query
@@ -656,30 +655,42 @@ BEGIN
 	WHERE reg.Region = @Region
 	OPTION (RECOMPILE)
 
-	-- Sales (TPRs and RWDs)
+	-- TPRs
 	UPDATE p
 	SET
-		p.TprMultiple = CASE WHEN sal.PriceType = 'TPR' THEN sal.Multiple ELSE NULL END,     
-		p.TprPrice = CASE WHEN sal.PriceType = 'TPR' THEN sal.Price ELSE NULL END,    
-		p.TprPriceType = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceType ELSE NULL END,
-		p.TprPriceTypeAttribute = CASE WHEN sal.PriceType = 'TPR' THEN sal.PriceTypeAttribute ELSE NULL END,
-		p.TprSellableUOM = CASE WHEN sal.PriceType = 'TPR' THEN sal.SellableUOM ELSE NULL END,
-		p.TprStartDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.StartDate ELSE NULL END,
-		p.TprEndDate = CASE WHEN sal.PriceType = 'TPR' THEN sal.EndDate ELSE NULL END,
-		p.RewardPrice = CASE WHEN sal.PriceType = 'RWD' THEN sal.Price ELSE NULL END,
-		p.RewardPriceType =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceType ELSE NULL END,
-		p.RewardPriceTypeAttribute =  CASE WHEN sal.PriceType = 'RWD' THEN sal.PriceTypeAttribute ELSE NULL END,
-		p.RewardPriceMultiple =  CASE WHEN sal.PriceType = 'RWD' THEN sal.Multiple ELSE NULL END,
-		p.RewardPriceSellableUOM =  CASE WHEN sal.PriceType = 'RWD' THEN sal.SellableUOM ELSE NULL END,
-		p.RewardPriceStartDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.StartDate ELSE NULL END,
-		p.RewardPriceEndDate = CASE WHEN sal.PriceType = 'RWD' THEN sal.EndDate ELSE NULL END
+		p.TprMultiple = sal.Multiple,     
+		p.TprPrice = sal.Price,    
+		p.TprPriceType = sal.PriceType,
+		p.TprPriceTypeAttribute = sal.PriceTypeAttribute,
+		p.TprSellableUOM = sal.SellableUOM,
+		p.TprStartDate = sal.StartDate,
+		p.TprEndDate = sal.EndDate
 	FROM #prices p
 	INNER JOIN gpm.Prices sal on p.ItemID = sal.ItemID
 		AND p.BusinessUnitID = sal.BusinessUnitID
 	WHERE sal.Region = @Region
 		AND sal.StartDate <= @BeginningOfToday
-		AND sal.EndDate >= @EndOfToday
-		AND (sal.PriceType = 'TPR' OR sal.PriceType = 'RWD')
+		AND sal.EndDate > @BeginningOfToday
+		AND sal.PriceType = 'TPR' 
+	OPTION (RECOMPILE)
+
+		-- RWDs)
+	UPDATE p
+	SET
+		p.RewardPrice = rwd.Price,
+		p.RewardPriceType = rwd.PriceType,
+		p.RewardPriceTypeAttribute = rwd.PriceTypeAttribute,
+		p.RewardPriceMultiple = rwd.Multiple,
+		p.RewardPriceSellableUOM =  rwd.SellableUOM,
+		p.RewardPriceStartDate = rwd.StartDate,
+		p.RewardPriceEndDate = rwd.EndDate
+	FROM #prices p
+	INNER JOIN gpm.Prices rwd on p.ItemID = rwd.ItemID
+		ANd p.BusinessUnitID = rwd.BusinessUnitID
+	WHERE rwd.Region = @Region
+		AND rwd.StartDate <= @BeginningOfToday
+		AND rwd.EndDate > @BeginningOfToday
+		AND rwd.PriceType = 'RWD'
 	OPTION (RECOMPILE)
 
 	-- Linked ScanCode Price
@@ -739,7 +750,7 @@ BEGIN
 	WHERE
 		p.Region = @Region
 		AND p.StartDate <= @BeginningOfToday
-		AND p.EndDate >= @EndOfToday
+		AND p.EndDate > @BeginningOfToday
 		AND p.PriceType <> 'REG'
 	GROUP BY
 		p.Region,

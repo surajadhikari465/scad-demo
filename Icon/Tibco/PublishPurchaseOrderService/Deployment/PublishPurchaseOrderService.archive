@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Publish Purchase Order Service Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Min.Zhao</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Publish Purchase Order Service Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Min.Zhao</authorProperty>
+            <processProperty>/Processes/PublishPurchaseOrderService.process</processProperty>
+        </processArchive>
+        <versionProperty>8</versionProperty>
+        <authorProperty>Min.Zhao</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>PublishPurchaseOrderService</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Users\min.zhao\source\repos\Icon\Icon\Tibco\DeploymentFiles\PublishPurchaseOrderService.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

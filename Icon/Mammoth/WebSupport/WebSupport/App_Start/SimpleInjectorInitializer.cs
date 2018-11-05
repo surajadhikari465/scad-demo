@@ -67,7 +67,7 @@ namespace WebSupport.App_Start
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
             container.Register<IEsbService<JobScheduleModel>>(() => CreateJobScheduleMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PriceResetRequestViewModel>>(() => CreatePriceResetMessageService(container), Lifestyle.Scoped);
-            container.Register<IEsbService<CheckPointRequestViewModel>>(() => CreateCheckPointRequestMessageService(container), Lifestyle.Scoped);
+            container.Register<IEsbMultipleMessageService<CheckPointRequestViewModel>>(() => CreateCheckPointRequestMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Scoped);
             container.Register<MammothContext>(Lifestyle.Scoped);
             container.Register<IMessageBuilder<PriceResetMessageBuilderModel>, PriceResetMessageBuilder>(Lifestyle.Scoped);
@@ -106,10 +106,13 @@ namespace WebSupport.App_Start
         private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
         {
             return new WebSupportCheckPointRequestMessageService(
+                container.GetInstance<ILogger>(),
                 container.GetInstance<IEsbConnectionFactory>(),
                 EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsCheckPointRequestConnection"),
                 container.GetInstance<IMessageBuilder<CheckPointRequestBuilderModel>>(),
-                container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, CheckPointMessageModel>>());
+                container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>(),
+                container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>()
+                );
         }
 
         private static WebSupportJobScheduleMessageService CreateJobScheduleMessageService(Container container)

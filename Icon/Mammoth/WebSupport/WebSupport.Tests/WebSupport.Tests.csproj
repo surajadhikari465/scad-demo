@@ -51,19 +51,19 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Esb.Core.2017.10.18.1\lib\net46\Esb.Core.dll</HintPath>
+      <HintPath>..\packages\Esb.Core.2018.11.1.1\lib\net46\Esb.Core.dll</HintPath>
     </Reference>
     <Reference Include="FastMember, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastMember.1.3.0\lib\net45\FastMember.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2018.8.16.2\lib\net46\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2017.10.9.1\lib\net45\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2018.8.16.2\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Infor.2017.12.13.1\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
@@ -72,10 +72,10 @@
       <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.12.27.2\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.7.25.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2018.11.1.3\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.10.11.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -84,16 +84,16 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
+      <HintPath>..\packages\Irma.Framework.2018.8.16.1\lib\net46\Irma.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.7.25.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2018.11.1.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Framework.2018.5.10.1\lib\net46\Mammoth.Framework.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Framework.2018.8.16.1\lib\net46\Mammoth.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.5.21.2\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
+      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.9.25.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -112,10 +112,10 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.4\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.4\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -178,6 +178,7 @@
     <Compile Include="Controllers\EPlumESLLoadControllerTest.cs" />
     <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactoryTests.cs" />
     <Compile Include="Helpers\ItemPriceTypes.cs" />
+    <Compile Include="Helpers\TextAreaHelperTests.cs" />
     <Compile Include="Helpers\SelectListHelperTest.cs" />
     <Compile Include="Helpers\ValidationHelperTest.cs" />
     <Compile Include="MessageBuilders\PriceRefreshMessageBuilderFactoryTests.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="RouteTests\MvcRoutingTestHelper.cs" />
     <Compile Include="RouteTests\WebSupportRouteTest.cs" />
+    <Compile Include="Services\WebSupportCheckPointRequestMessageServiceTests.cs" />
     <Compile Include="Services\RefreshPriceServiceTests.cs" />
     <Compile Include="TestData\PriceResetTestData.cs" />
     <Compile Include="ViewModels\ViewModelTests.cs" />
@@ -198,11 +200,21 @@
     <Content Include="App.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TestMessages\PriceResetMessageWithGpmID.xml">
+    <Content Include="TestMessages\PriceResetMessageRegTprPrices.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestMessages\PriceResetMessageNoGpmID.xml">
+    <Content Include="TestMessages\PriceResetMessageRegAndRewards.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\PriceResetRegTprAndRewardPrice.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\PriceResetMessageRegTprAndRewardsPercentOff.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\PriceResetMessageRegPrice.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TestMessages\PriceRefreshMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

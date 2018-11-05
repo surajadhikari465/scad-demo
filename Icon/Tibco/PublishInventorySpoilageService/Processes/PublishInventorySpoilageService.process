@@ -28,8 +28,8 @@
     <pd:group name="GroupAndSendSpoilageData">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>494</pd:x>
-        <pd:y>82</pd:y>
+        <pd:x>446</pd:x>
+        <pd:y>74</pd:y>
         <pd:width>886</pd:width>
         <pd:height>471</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -39,8 +39,8 @@
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
-            <pd:over>$GetShrinkData/resultSet/Record</pd:over>
-            <pd:iterationElementSlot>Records</pd:iterationElementSlot>
+            <pd:over>$GetShrinkData/resultSet/Record/QueueId</pd:over>
+            <pd:iterationElementSlot>CurrentQueueId</pd:iterationElementSlot>
             <pd:indexSlot>i</pd:indexSlot>
             <pd:activityOutputName/>
             <pd:accumulateOutput>false</pd:accumulateOutput>
@@ -92,108 +92,111 @@
         <pd:activity name="ShrinkDataMapper">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>573</pd:x>
-            <pd:y>179</pd:y>
+            <pd:x>525</pd:x>
+            <pd:y>170</pd:y>
             <config>
                 <element ref="pfx:inventoryAdjustments"/>
             </config>
             <pd:inputBindings>
-                <pfx:inventoryAdjustments>
-                    <pfx:inventoryAdjustment>
-                        <pfx:adjustmentNumber>
-                            <xsl:value-of select="$Records/Record/AdjustmentNumber"/>
-                        </pfx:adjustmentNumber>
-                        <pfx:eventType>
-                            <xsl:value-of select="$Records/Record/EventType"/>
-                        </pfx:eventType>
-                        <pfx:messageNumber>
-                            <xsl:value-of select="$Records/Record/MessageNumber"/>
-                        </pfx:messageNumber>
-                        <pfx:locationNumber>
-                            <xsl:value-of select="$Records/Record/LocationNumber"/>
-                        </pfx:locationNumber>
-                        <pfx:locationName>
-                            <xsl:value-of select="$Records/Record/LocationName"/>
-                        </pfx:locationName>
-                        <pfx:invAdjustmentSource>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InventoryAdjustmentSource"/>
-                        </pfx:invAdjustmentSource>
-                        <pfx:inventoryAdjustmentDetail>
-                            <pfx:adjustmentDetailNumber>
-                                <xsl:value-of select="$Records/Record/AdjustmentNumber"/>
-                            </pfx:adjustmentDetailNumber>
-                            <pfx:sourceItemKey>
-                                <xsl:value-of select="$Records/Record/SourceItemKey"/>
-                            </pfx:sourceItemKey>
-                            <pfx:SubTeam>
-                                <ns0:subTeamNumber>
-                                    <xsl:value-of select="$Records/Record/SubTeamNumber"/>
-                                </ns0:subTeamNumber>
-                                <xsl:if test="$Records/Record/SubTeamName">
-                                    <ns0:subTeamName>
-                                        <xsl:value-of select="$Records/Record/SubTeamName"/>
-                                    </ns0:subTeamName>
-                                </xsl:if>
-                                <ns0:hostSubTeamNumber>
-                                    <xsl:value-of select="$Records/Record/HostSubTeamNumber"/>
-                                </ns0:hostSubTeamNumber>
-                                <xsl:if test="$Records/Record/HostSubTeamName">
-                                    <ns0:hostSubTeamName>
-                                        <xsl:value-of select="$Records/Record/HostSubTeamName"/>
-                                    </ns0:hostSubTeamName>
-                                </xsl:if>
-                            </pfx:SubTeam>
-                            <pfx:defaultScanCode>
-                                <xsl:value-of select="1"/>
-                            </pfx:defaultScanCode>
-                            <pfx:reasonCode>
-                                <xsl:value-of select="$Records/Record/ReasonCode"/>
-                            </pfx:reasonCode>
-                            <pfx:adjustmentQuantity>
-                                <ns2:quantity>
-                                    <xsl:if test="$Records/Record/AdjustmentQuantity">
-                                        <ns2:value>
-                                            <xsl:value-of select="$Records/Record/AdjustmentQuantity"/>
-                                        </ns2:value>
+                <xsl:for-each select="$GetShrinkData/resultSet/Record[QueueId = $CurrentQueueId/QueueId][1]">
+                    <pfx:inventoryAdjustments>
+                        <pfx:inventoryAdjustment>
+                            <pfx:adjustmentNumber>
+                                <xsl:value-of select="AdjustmentNumber"/>
+                            </pfx:adjustmentNumber>
+                            <pfx:eventType>
+                                <xsl:value-of select="EventType"/>
+                            </pfx:eventType>
+                            <pfx:messageNumber>
+                                <xsl:value-of select="MessageNumber"/>
+                            </pfx:messageNumber>
+                            <pfx:locationNumber>
+                                <xsl:value-of select="LocationNumber"/>
+                            </pfx:locationNumber>
+                            <pfx:locationName>
+                                <xsl:value-of select="LocationName"/>
+                            </pfx:locationName>
+                            <pfx:invAdjustmentSource>
+                                <xsl:value-of select="&quot;IRMA&quot;"/>
+                            </pfx:invAdjustmentSource>
+                            <pfx:inventoryAdjustmentDetail>
+                                <pfx:adjustmentDetailNumber>
+                                    <xsl:value-of select="AdjustmentNumber"/>
+                                </pfx:adjustmentDetailNumber>
+                                <pfx:sourceItemKey>
+                                    <xsl:value-of select="SourceItemKey"/>
+                                </pfx:sourceItemKey>
+                                <pfx:SubTeam>
+                                    <ns0:subTeamNumber>
+                                        <xsl:value-of select="SubTeamNumber"/>
+                                    </ns0:subTeamNumber>
+                                    <xsl:if test="SubTeamName">
+                                        <ns0:subTeamName>
+                                            <xsl:value-of select="SubTeamName"/>
+                                        </ns0:subTeamName>
                                     </xsl:if>
-                                    <ns2:units>
-                                        <ns2:uom>
-                                            <xsl:if test="$Records/Record/AdjustmentQuantityUOMCode">
-                                                <ns5:code xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
-                                                    <xsl:value-of select="$Records/Record/AdjustmentQuantityUOMCode"/>
-                                                </ns5:code>
-                                            </xsl:if>
-                                            <ns5:name xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
-                                                <xsl:value-of select="$Records/Record/AdjustmentQuantityUOMName"/>
-                                            </ns5:name>
-                                        </ns2:uom>
-                                    </ns2:units>
-                                </ns2:quantity>
-                            </pfx:adjustmentQuantity>
-                            <pfx:disposition/>
-                            <pfx:userInfo>
-                                <ns0:idNumber>
-                                    <xsl:value-of select="$Records/Record/UserID"/>
-                                </ns0:idNumber>
-                                <xsl:if test="$Records/Record/UserName">
-                                    <ns0:name>
-                                        <xsl:value-of select="$Records/Record/UserName"/>
-                                    </ns0:name>
-                                </xsl:if>
-                            </pfx:userInfo>
-                            <pfx:createDateTime>
-                                <xsl:value-of select="$Records/Record/CurrentDateTime"/>
-                            </pfx:createDateTime>
-                        </pfx:inventoryAdjustmentDetail>
-                    </pfx:inventoryAdjustment>
-                </pfx:inventoryAdjustments>
+                                    <ns0:hostSubTeamNumber>
+                                        <xsl:value-of select="HostSubTeamNumber"/>
+                                    </ns0:hostSubTeamNumber>
+                                    <xsl:if test="HostSubTeamName">
+                                        <ns0:hostSubTeamName>
+                                            <xsl:value-of select="HostSubTeamName"/>
+                                        </ns0:hostSubTeamName>
+                                    </xsl:if>
+                                </pfx:SubTeam>
+                                <pfx:defaultScanCode>
+                                    <xsl:value-of select="DefaultScanCode"/>
+                                </pfx:defaultScanCode>
+                                <pfx:reasonCode>
+                                    <xsl:value-of select="ReasonCode"/>
+                                </pfx:reasonCode>
+                                <pfx:adjustmentQuantity>
+                                    <ns2:quantity>
+                                        <xsl:if test="AdjustmentQuantity">
+                                            <ns2:value>
+                                                <xsl:value-of select="AdjustmentQuantity"/>
+                                            </ns2:value>
+                                        </xsl:if>
+                                        <ns2:units>
+                                            <ns2:uom>
+                                                <xsl:if test="AdjustmentQuantityUOMCode">
+                                                    <ns5:code xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
+                                                        <xsl:value-of select="AdjustmentQuantityUOMCode"/>
+                                                    </ns5:code>
+                                                </xsl:if>
+                                                <xsl:if test="AdjustmentQuantityUOMName">
+                                                    <ns5:name xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
+                                                        <xsl:value-of select="AdjustmentQuantityUOMName"/>
+                                                    </ns5:name>
+                                                </xsl:if>
+                                            </ns2:uom>
+                                        </ns2:units>
+                                    </ns2:quantity>
+                                </pfx:adjustmentQuantity>
+                                <pfx:userInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="UserID"/>
+                                    </ns0:idNumber>
+                                    <xsl:if test="UserName">
+                                        <ns0:name>
+                                            <xsl:value-of select="UserName"/>
+                                        </ns0:name>
+                                    </xsl:if>
+                                </pfx:userInfo>
+                                <pfx:createDateTime>
+                                    <xsl:value-of select="CurrentDateTime"/>
+                                </pfx:createDateTime>
+                            </pfx:inventoryAdjustmentDetail>
+                        </pfx:inventoryAdjustment>
+                    </pfx:inventoryAdjustments>
+                </xsl:for-each>
             </pd:inputBindings>
         </pd:activity>
         <pd:group name="Group">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>644</pd:x>
-            <pd:y>116</pd:y>
+            <pd:x>596</pd:x>
+            <pd:y>108</pd:y>
             <pd:width>692</pd:width>
             <pd:height>277</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -214,14 +217,14 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Archive Message</pd:from>
+                <pd:from>Update Inventory Queue Table</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Archive Message On Error</pd:from>
+                <pd:from>Update Queue Table With Error</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -229,13 +232,6 @@
             </pd:transition>
             <pd:transition>
                 <pd:from>SendDataToESB</pd:from>
-                <pd:to>Update Inventory Queue Table</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Inventory Queue Table</pd:from>
                 <pd:to>Convert Message to JSON</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -249,21 +245,21 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>ESB Catch</pd:from>
-                <pd:to>Log ESB Error</pd:to>
+                <pd:from>Archive Message</pd:from>
+                <pd:to>Update Inventory Queue Table</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Log ESB Error</pd:from>
-                <pd:to>Update Queue Table With Error</pd:to>
+                <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>Log Error Inside Group</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Update Queue Table With Error</pd:from>
+                <pd:from>Log Error Inside Group</pd:from>
                 <pd:to>ConvertToJSon</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -276,11 +272,18 @@
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
+            <pd:transition>
+                <pd:from>Archive Message On Error</pd:from>
+                <pd:to>Update Queue Table With Error</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
             <pd:activity name="SendDataToESB">
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-                <pd:x>742</pd:x>
-                <pd:y>187</pd:y>
+                <pd:x>694</pd:x>
+                <pd:y>178</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -326,8 +329,8 @@
             <pd:activity name="Archive Message">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1188</pd:x>
-                <pd:y>187</pd:y>
+                <pd:x>973</pd:x>
+                <pd:y>178</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -338,10 +341,10 @@
                             <xsl:value-of select="$Convert-Message-to-JSON/ns3:ActivityOutputClass/jsonString"/>
                         </MessageBody>
                         <EventType>
-                            <xsl:value-of select="$Records/Record/EventType"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:eventType"/>
                         </EventType>
                         <KeyID>
-                            <xsl:value-of select="$Records/Record/SourceItemKey"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:adjustmentNumber"/>
                         </KeyID>
                         <SecondaryKeyID>
                             <xsl:value-of select="0"/>
@@ -350,27 +353,32 @@
                             <xsl:value-of select="&quot;P&quot;"/>
                         </Status>
                         <MessageNumber>
-                            <xsl:value-of select="$Records/Record/MessageNumber"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                         </MessageNumber>
                         <LastReprocessID>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                         </LastReprocessID>
+                        <QueueID>
+                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
+                        </QueueID>
                     </Input>
                 </pd:inputBindings>
             </pd:activity>
             <pd:activity name="Update Inventory Queue Table">
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>875</pd:x>
-                <pd:y>195</pd:y>
+                <pd:x>1128</pd:x>
+                <pd:y>186</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
                     <emptyStrAsNil>false</emptyStrAsNil>
                     <statement>UPDATE [amz].[InventoryQueue]
 SET Status ='P',
+	 InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate()
+	LastProcessedTime = getdate(),
+        ErrorDescription =''
  WHERE QueueId =?
 AND InProcessBy = ?
 And STATUS = 'I'</statement>
@@ -389,14 +397,7 @@ And STATUS = 'I'</statement>
                 <pd:inputBindings>
                     <jdbcUpdateActivityInput>
                         <QueueId>
-                            <xsl:choose>
-                                <xsl:when test="exists(1)">
-                                    <xsl:value-of select="1"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueId>
                         <InProcessBy>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
@@ -407,8 +408,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="Convert Message to JSON">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>1024</pd:x>
-                <pd:y>195</pd:y>
+                <pd:x>829</pd:x>
+                <pd:y>186</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -420,11 +421,11 @@ And STATUS = 'I'</statement>
                     </ns3:ActivityInputClass>
                 </pd:inputBindings>
             </pd:activity>
-            <pd:activity name="ESB Catch">
+            <pd:activity name="CatchSendingToEsbException">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>709</pd:x>
-                <pd:y>291</pd:y>
+                <pd:x>662</pd:x>
+                <pd:y>292</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <fault>localname=JMSSendException namespace=http://schemas.tibco.com/bw/plugins/jms/5.0/jmsExceptions</fault>
@@ -432,11 +433,11 @@ And STATUS = 'I'</statement>
                 </config>
                 <pd:inputBindings/>
             </pd:activity>
-            <pd:activity name="Log ESB Error">
+            <pd:activity name="Log Error Inside Group">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>834</pd:x>
-                <pd:y>291</pd:y>
+                <pd:x>789</pd:x>
+                <pd:y>300</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/LogPublisher.process</processName>
                     <spawn>true</spawn>
@@ -467,11 +468,9 @@ And STATUS = 'I'</statement>
                         <Message>
                             <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
                         </Message>
-                        <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
-                            <Exception>
-                                <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
-                            </Exception>
-                        </xsl:if>
+                        <Exception>
+                            <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                        </Exception>
                         <InsertedDate>
                             <xsl:value-of select="current-dateTime()"/>
                         </InsertedDate>
@@ -481,8 +480,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="Update Queue Table With Error">
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>948</pd:x>
-                <pd:y>299</pd:y>
+                <pd:x>1180</pd:x>
+                <pd:y>300</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
@@ -490,7 +489,7 @@ And STATUS = 'I'</statement>
                     <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                     <statement>UPDATE [amz].[InventoryQueue]
 SET InProcessBy = NULL,
-    Status ='P',
+        Status ='P',
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
 	LastProcessedTime = getdate(),
 	ErrorDescription = ?
@@ -543,8 +542,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="ConvertToJSon">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>1071</pd:x>
-                <pd:y>291</pd:y>
+                <pd:x>902</pd:x>
+                <pd:y>292</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -559,8 +558,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1199</pd:x>
-                <pd:y>299</pd:y>
+                <pd:x>1042</pd:x>
+                <pd:y>300</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -571,10 +570,10 @@ And STATUS = 'I'</statement>
                             <xsl:value-of select="$ConvertToJSon/ns3:ActivityOutputClass/jsonString"/>
                         </MessageBody>
                         <EventType>
-                            <xsl:value-of select="$Records/Record/EventType"/>
+                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/EventType"/>
                         </EventType>
                         <KeyID>
-                            <xsl:value-of select="$Records/Record/SourceItemKey"/>
+                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/AdjustmentNumber"/>
                         </KeyID>
                         <SecondaryKeyID>
                             <xsl:value-of select="0"/>
@@ -583,11 +582,14 @@ And STATUS = 'I'</statement>
                             <xsl:value-of select="&quot;U&quot;"/>
                         </Status>
                         <MessageNumber>
-                            <xsl:value-of select="$Records/Record/MessageNumber"/>
+                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/MessageNumber"/>
                         </MessageNumber>
                         <LastReprocessID>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                         </LastReprocessID>
+                        <QueueID>
+                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
+                        </QueueID>
                     </Input>
                 </pd:inputBindings>
             </pd:activity>
@@ -595,8 +597,8 @@ And STATUS = 'I'</statement>
         <pd:activity name="Mapper Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>578</pd:x>
-            <pd:y>441</pd:y>
+            <pd:x>530</pd:x>
+            <pd:y>432</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -606,8 +608,8 @@ And STATUS = 'I'</statement>
         <pd:activity name="Log Mapper Error">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>943</pd:x>
-            <pd:y>445</pd:y>
+            <pd:x>895</pd:x>
+            <pd:y>436</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
             </config>
@@ -651,21 +653,27 @@ And STATUS = 'I'</statement>
         <pd:activity name="Update Queue Table With Mapping Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1297</pd:x>
-            <pd:y>455</pd:y>
+            <pd:x>1249</pd:x>
+            <pd:y>446</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <statement>UPDATE [amz].[InventoryQueue]
 SET Status ='F',
+	 InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
 	LastProcessedTime = getdate(),
+        ErrorDescription = ?
  WHERE QueueID =?
 AND InProcessBy = ?
 And STATUS = 'I'</statement>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>ErrorDescription</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
                     <parameter>
                         <parameterName>QueueID</parameterName>
                         <dataType>INTEGER</dataType>
@@ -679,14 +687,7 @@ And STATUS = 'I'</statement>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
                     <QueueID>
-                        <xsl:choose>
-                            <xsl:when test="exists(1)">
-                                <xsl:value-of select="1"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                        <xsl:value-of select="$CurrentQueueId/QueueId"/>
                     </QueueID>
                     <InProcessBy>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
@@ -699,12 +700,39 @@ And STATUS = 'I'</statement>
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
         <pd:x>124</pd:x>
-        <pd:y>594</pd:y>
+        <pd:y>602</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get ApplicationID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>363</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT	 TOP 1 ApplicationID
+		FROM
+		AppConfigApp
+		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
+			  AND NAME ='IRMA CLIENT'</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="GetShrinkData">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
@@ -719,19 +747,20 @@ And STATUS = 'I'</statement>
             <processInSubsets>false</processInSubsets>
             <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <statement>SELECT
+	iq.QueueID as QueueId,
 	ih.ItemHistoryID as AdjustmentNumber,
 	et.EventTypeCode as EventType,
-	1000 AS MessageNumber,
+	cast(Datediff(s, '1970-01-01', iq.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber,
 	s.BusinessUnit_ID LocationNumber, 
 	s.Store_Name as LocationName,
 	i.SubTeam_No as HostSubTeamNumber,
 	st.SubTeam_Name as HostSubTeamName,
 	ih.SubTeam_No as SubTeamNumber,
-        ss.SubTeam_Name as SubTeamName,
+    ss.SubTeam_Name as SubTeamName,
 	ii.Identifier as DefaultScanCode,
 	ih.AdjustmentReason as ReasonCode,
 	case 
-        when ih.Quantity = 0
+        when IsNull(ih.Quantity, 0) = 0
         then ih.Weight
         else ih.Quantity
     End as AdjustmentQuantity,
@@ -765,6 +794,10 @@ ORDER BY KeyID
             </Prepared_Param_DataType>
             <oraObjects/>
             <oraTables/>
+            <QueryOutputCachedSchemaColumns>QueueId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>AdjustmentNumber</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -774,9 +807,9 @@ ORDER BY KeyID
             <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>LocationNumber</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -849,8 +882,8 @@ ORDER BY KeyID
     <pd:activity name="Log DB Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1467</pd:x>
-        <pd:y>594</pd:y>
+        <pd:x>830</pd:x>
+        <pd:y>602</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -895,8 +928,8 @@ ORDER BY KeyID
     <pd:activity name="Update Errors">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>794</pd:x>
-        <pd:y>594</pd:y>
+        <pd:x>1481</pd:x>
+        <pd:y>602</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -912,8 +945,8 @@ And STATUS = 'I'</statement>
             <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <Prepared_Param_DataType>
                 <parameter>
-                    <parameterName>QueueID</parameterName>
-                    <dataType>INTEGER</dataType>
+                    <parameterName>ErrorDescription</parameterName>
+                    <dataType>VARCHAR</dataType>
                 </parameter>
                 <parameter>
                     <parameterName>InProcessBy</parameterName>
@@ -923,16 +956,16 @@ And STATUS = 'I'</statement>
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
-                <QueueID>
+                <ErrorDescription>
                     <xsl:choose>
-                        <xsl:when test="exists(1)">
-                            <xsl:value-of select="1"/>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/Msg)">
+                            <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="xsi:nil">true</xsl:attribute>
                         </xsl:otherwise>
                     </xsl:choose>
-                </QueueID>
+                </ErrorDescription>
                 <InProcessBy>
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                 </InProcessBy>
@@ -951,7 +984,7 @@ And STATUS = 'I'</statement>
             <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <schema>amz</schema>
             <catalog/>
-            <ProcedureName>LockSpoilageEvents;1</ProcedureName>
+            <ProcedureName>LockInventorySpoilage</ProcedureName>
             <parameterTypes>
                 <parameter>
                     <colName>@RETURN_VALUE</colName>
@@ -960,7 +993,7 @@ And STATUS = 'I'</statement>
                     <typeName>int</typeName>
                 </parameter>
                 <parameter>
-                    <colName>@NumberOfOrdersToProcess</colName>
+                    <colName>@NumberOfEntriesToProcess</colName>
                     <colType>1</colType>
                     <dataType>4</dataType>
                     <typeName>int</typeName>
@@ -1000,9 +1033,9 @@ And STATUS = 'I'</statement>
         <pd:inputBindings>
             <inputs>
                 <inputSet>
-                    <NumberOfOrdersToProcess>
+                    <NumberOfEntriesToProcess>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
-                    </NumberOfOrdersToProcess>
+                    </NumberOfEntriesToProcess>
                     <Instance>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                     </Instance>
@@ -1022,33 +1055,6 @@ And STATUS = 'I'</statement>
             </inputs>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Get ApplicationID">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>363</pd:x>
-        <pd:y>326</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>100</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT	 TOP 1 ApplicationID
-		FROM
-		AppConfigApp
-		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
-			  AND NAME ='IRMA CLIENT'</statement>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput/>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>UpdateInventorySpoilageEvents</pd:to>
@@ -1059,13 +1065,6 @@ And STATUS = 'I'</statement>
     <pd:transition>
         <pd:from>UpdateInventorySpoilageEvents</pd:from>
         <pd:to>GetShrinkData</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log DB Error</pd:from>
-        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -1085,20 +1084,6 @@ And STATUS = 'I'</statement>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>DB Catch</pd:from>
-        <pd:to>Update Errors</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Update Errors</pd:from>
-        <pd:to>Log DB Error</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>GetShrinkData</pd:from>
         <pd:to>Get ApplicationID</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1109,6 +1094,27 @@ And STATUS = 'I'</statement>
     <pd:transition>
         <pd:from>Get ApplicationID</pd:from>
         <pd:to>GroupAndSendSpoilageData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Errors</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log DB Error</pd:from>
+        <pd:to>Update Errors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>DB Catch</pd:from>
+        <pd:to>Log DB Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

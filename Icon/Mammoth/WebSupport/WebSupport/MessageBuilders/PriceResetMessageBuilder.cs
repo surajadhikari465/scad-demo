@@ -21,59 +21,108 @@ namespace WebSupport.MessageBuilders
             this.serializer = serializer;
         }
 
+        /// <summary>
+        /// Builds Price message for specific item/store combination.
+        /// Also, assumes that one message is for only one item/store relationship
+        /// </summary>
+        /// <param name="request">List of prices for a specific item-store combination</param>
+        /// <returns></returns>
         public string BuildMessage(PriceResetMessageBuilderModel request)
         {
             Contracts.items items = new Contracts.items();
-            items.item = request.PriceResetPrices
-                .Select(p => CreatePriceMessageType(p))
-                .ToArray();
+            var basePrice = request.PriceResetPrices.First(); // for assigning item specific attributes to items object
 
-            return serializer.Serialize(items, new Utf8StringWriter());
-        }
+            var prices = request.PriceResetPrices.Where(p => !p.PercentOff.HasValue).Select(p => CreatePriceType(p)).ToArray();
+            var rewards = request.PriceResetPrices.Where(p => p.PercentOff.HasValue && p.PriceType == ItemPriceTypes.Codes.Rewards).Select(p => CreateRewardType(p)).ToArray();
 
-        private ItemType CreatePriceMessageType(PriceResetPrice price)
-        {
-            ItemType item = new ItemType
+            var storeItemAttributes = new StoreItemAttributesType
             {
-                id = price.ItemId,
-                @base = new Contracts.BaseItemType
+                scanCode = new Contracts.ScanCodeType[]
                 {
-                    type = new Contracts.ItemTypeType
+                    new Contracts.ScanCodeType
                     {
-                        code = price.ItemTypeCode,
-                        description = price.ItemTypeDesc
+                        code = basePrice.ScanCode
                     }
-                },
-                locale = new Contracts.LocaleType[]
+                }
+            };
+
+            if (prices.Any())
+            {
+                storeItemAttributes.prices = prices;
+            }
+
+            if (rewards.Any())
+            {
+                storeItemAttributes.rewards = rewards;
+            }
+            
+            items.item = new ItemType[]
+            {
+                new ItemType
                 {
-                    new Contracts.LocaleType
+                    id = basePrice.ItemId,
+                    @base = new Contracts.BaseItemType
                     {
-                        id = price.BusinessUnitId.ToString(),
-                        name = price.StoreName,
-                        type = new Contracts.LocaleTypeType
+                        type = new Contracts.ItemTypeType
                         {
-                            code = Contracts.LocaleCodeType.STR,
-                            description = Contracts.LocaleDescType.Store
-                        },
-                        Item = new Contracts.StoreItemAttributesType
+                            code = basePrice.ItemTypeCode,
+                            description = basePrice.ItemTypeDesc
+                        }
+                    },
+                    locale = new LocaleType[]
+                    {
+                        new Contracts.LocaleType
                         {
-                            scanCode = new Contracts.ScanCodeType[]
+                            id = basePrice.BusinessUnitId.ToString(),
+                            name = basePrice.StoreName,
+                            type = new Contracts.LocaleTypeType
                             {
-                                new Contracts.ScanCodeType
-                                {
-                                    code = price.ScanCode,
-                                }
+                                code = Contracts.LocaleCodeType.STR,
+                                description = Contracts.LocaleDescType.Store
                             },
-                            prices = new Contracts.PriceType[]
-                            {
-                                CreatePriceType(price)
-                            }
+                            Item = storeItemAttributes // contains all the price data
                         }
                     }
                 }
             };
 
-            return item;
+            return serializer.Serialize(items, new Utf8StringWriter());
+        }
+
+        private RewardType CreateRewardType(PriceResetPrice price)
+        {
+            var rewardType = new Contracts.RewardType
+            {
+                Id = price.GpmId?.ToString(),
+                Action = ActionEnum.Add,
+                ActionSpecified = true,
+                type = new RewardTypeType
+                {
+                    id = (PriceTypeIdType)Enum.Parse(typeof(Contracts.PriceTypeIdType), price.PriceType),
+                    description = ItemPriceTypes.Descriptions.ByCode[price.PriceType],
+                    type = new RewardTypeType
+                    {
+                        id = (PriceTypeIdType)Enum.Parse(typeof(PriceTypeIdType), price.PriceTypeAttribute),
+                        description = ItemPriceTypes.Descriptions.ByCode[price.PriceType]
+                    }
+                    
+                },
+                uom = new UomType
+                {
+                    codeSpecified = true,
+                    nameSpecified = false,
+                    code = GetEsbUomCode(price.SellableUom)
+                },
+                rewardMultiple = price.Multiple,
+                rewardPercentageSpecified = true,
+                rewardPercentage = price.PercentOff.Value,
+                rewardStartDateSpecified = true,
+                rewardStartDate = price.StartDate,
+                rewardEndDateSpecified = true,
+                rewardEndDate = price.EndDate.Value
+            };
+
+            return rewardType;
         }
 
         private Contracts.PriceType CreatePriceType(PriceResetPrice price)

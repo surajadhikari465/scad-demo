@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ApplicationId</name>
-			<value>13</value>
+			<value>HC4</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539795833409</modTime>
+			<modTime>1540934860845</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>BatchSize</name>
@@ -27,11 +27,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>InstanceId</name>
-			<value>1</value>
+			<value>401</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1539804109876</modTime>
+			<modTime>1540934860909</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
@@ -91,11 +91,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionType</name>
-			<value>Inventory Spoilage</value>
+			<value>InventorySpoilage</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1538598045847</modTime>
+			<modTime>1540934703825</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFivetimes</name>
@@ -107,19 +107,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>30</value>
+			<value>20</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539795833492</modTime>
+			<modTime>1540934905685</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedThreetimes</name>
-			<value>30</value>
+			<value>10</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539795833558</modTime>
+			<modTime>1540934905749</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
