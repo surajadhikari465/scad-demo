@@ -33,7 +33,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.MessageParsers
                 var items = DeserializeMessage(message);
                 var messageId = message.GetProperty("IconMessageID");
                 var sequenceId = GetSequenceId(message);
-                var messageParseTime = DateTime.Now;
+                var messageParseTime = DateTime.UtcNow;
 
                 List<ItemModel> models = new List<ItemModel>();
                 foreach (var item in items.item)
