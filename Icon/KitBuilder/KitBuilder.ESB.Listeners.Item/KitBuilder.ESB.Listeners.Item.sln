@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBuilder.ESB.Listeners.Item.Service", "KitBuilder.ESB.Listeners.Item.Service\KitBuilder.ESB.Listeners.Item.Service.csproj", "{F10509F8-9E66-4E3E-B2F7-57753DB16079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBuilder.ESB.Listeners.Item.Tests", "KitBuilder.ESB.Listeners.Item.Tests\KitBuilder.ESB.Listeners.Item.Tests.csproj", "{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|x64.ActiveCfg = Debug|x64
 		{F10509F8-9E66-4E3E-B2F7-57753DB16079}.Release|x64.Build.0 = Debug|x64
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{5DB9CECE-1CB8-4924-9DC7-9EC072C7C3A4}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

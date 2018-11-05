@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.Esb;
@@ -21,13 +22,13 @@ using SimpleInjector.Lifestyles;
 
 namespace KitBuilder.ESB.Listeners.Item.Service
 {
-    internal static class SimpleInjectorInitializer
+    public static class SimpleInjectorInitializer
     {
         public static Container InitializeContainer()
         {
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<KitBuilderContext>();
-            dbContextOptionsBuilder.UseSqlServer("Server=rds-kitbuilder-dev-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder;User Id=KitBuilderWebApi;Password=D4ng3R##$Z0n3;Application Name=KitBuilderAPI");
+            dbContextOptionsBuilder.UseSqlServer(AppSettingsAccessor.GetStringSetting("KitBuliderDb"));
 
             ItemListenerSettings itemListenerSettings = ItemListenerSettings.CreateFromConfig();
 
@@ -36,13 +37,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service
 
 
             container.Register(typeof(IRepository<>), typeof(Repository<>));
-
-
             container.Register<ICommandHandler<ItemAddOrUpdateCommand>, ItemAddOrUpdateCommandHandler>();
-            //container.Register<ICommandHandler<GenerateItemMessagesCommand>, GenerateItemMessagesCommandHandler>();
-            //container.Register<ICommandHandler<ArchiveItemsCommand>, ArchiveItemsCommandHandler>();
-            //container.Register<ICommandHandler<ArchiveMessageCommand>, ArchiveMessageCommandHandler>();
-
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("KitBuidler Item Listener"));
             container.Register(EsbConnectionSettings.CreateSettingsFromConfig);
             container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()));

@@ -13,20 +13,12 @@ namespace KitBuilder.ESB.Listeners.Item.Service
         static void Main(string[] args)
         {
             var container = SimpleInjectorInitializer.InitializeContainer();
-
             container.GetInstance<EsbConnectionSettings>().PrintDump();
 
-            
-            
-            //Register services
             HostFactory.Run(r =>
             {
-
-                //r.UseSimpleInjector(container);
-
                 r.Service<IListenerApplication>(s =>
                 {
-                    //s.ConstructUsingSimpleInjector();
                     s.ConstructUsing(c => container.GetInstance<IListenerApplication>());
                     s.WhenStarted(c => c.Run());
                     s.WhenStopped(c => c.Close());
@@ -36,6 +28,9 @@ namespace KitBuilder.ESB.Listeners.Item.Service
                 r.SetDisplayName("KitBuilder Item Listener");
                 r.SetServiceName("KitBuilder.Item.Listener");
             });
+
+
+
         }
     }
 }

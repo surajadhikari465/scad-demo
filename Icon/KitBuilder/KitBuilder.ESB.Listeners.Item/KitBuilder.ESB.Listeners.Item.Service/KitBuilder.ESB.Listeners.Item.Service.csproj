@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>KitBuilder.ESB.Listeners.Item.Service</RootNamespace>
     <AssemblyName>KitBuilder.ESB.Listeners.Item.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -30,6 +30,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -229,12 +230,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ArchiveItemsCommand.cs" />
-    <Compile Include="Commands\ArchiveItemsCommandHandler.cs" />
-    <Compile Include="Commands\ArchiveMessageCommand.cs" />
-    <Compile Include="Commands\ArchiveMessageCommandHandler.cs" />
-    <Compile Include="Commands\GenerateItemMessagesCommand.cs" />
-    <Compile Include="Commands\GenerateItemMessagesCommandHandler.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommand.cs" />
     <Compile Include="Commands\ItemAddOrUpdateCommandHandler.cs" />
     <Compile Include="Constants\ApplicationErrors.cs" />
