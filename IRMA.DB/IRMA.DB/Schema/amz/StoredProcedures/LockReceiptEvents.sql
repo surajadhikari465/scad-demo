@@ -63,7 +63,8 @@ UPDATE rq
 	-- change status for reduntant events
 
 	UPDATE rq
-	SET  Status = 'R'
+	SET  rq.InProcessBy = NULL,
+		 rq.Status = 'R'
 	FROM  [amz].[ReceiptQueue] rq
 	WHERE InProcessBy = @Instance  
 		AND rq.Status IN ('I') 

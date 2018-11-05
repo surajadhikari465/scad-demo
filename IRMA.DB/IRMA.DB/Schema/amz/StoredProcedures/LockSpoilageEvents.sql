@@ -47,7 +47,7 @@ UPDATE iq
 	FROM  [amz].[InventoryQueue] iq
 	JOIN eventQueue_cte eq ON iq.QueueID = eq.QueueID
 	WHERE 
-			iq.InProcessBy IS NULL  AND iq.Status IN ('U', 'E') 
+			iq.InProcessBy IS NULL  AND iq.Status IN ('U', 'F') 
 	
 END
 
