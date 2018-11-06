@@ -541,7 +541,8 @@ BEGIN
 				   AND q.EventTypeID IN (@poLineAddEventTypeId, @transferLineAddEventTypeId, @poLineModificationEventTypeId, @transferLineModificationEventTypeId)
 				   AND q.Status = @unprocessedStatusCode
 			)
-		  AND i.QuantityOrdered <> d.QuantityOrdered
+		  AND ISNULL(i.QuantityOrdered, 0) <>  ISNULL(d.QuantityOrdered, 0)
+		  AND OH.Sent =  1
 
 			INSERT INTO amz.ReceiptQueue (
 				EventTypeID
