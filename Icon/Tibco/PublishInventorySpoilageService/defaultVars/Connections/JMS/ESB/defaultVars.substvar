@@ -7,15 +7,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540917729709</modTime>
+			<modTime>1541353677924</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>#!Sp77ANYc3FhVctyEABIcsQMFINQd5B08r05WcqlWBy1eYPkthbPdQg==</value>
+			<value>#!fUGSktKxCPXUo6VfBtU67lynwytyNi7s4vT7cM5t54kJT2HGlh0jKQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1540917729756</modTime>
+			<modTime>1541353677998</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
@@ -23,31 +23,23 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540917729798</modTime>
+			<modTime>1541353728246</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!mx901fQdWybqsV7+dkgGhXSzA8ShINuJuPDHBvAlXn+6MWNT08X+0g==</value>
+			<value>#!xu6sAMrNt30Ue5oDiA2JcfeTcNVk7JjrsDBuwVfPLDduHedzeup1Ig==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1540917729841</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SslPassword</name>
-			<value>#!fCCTxa7JeRB0AAw4e/4fcQ==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1540917729888</modTime>
+			<modTime>1541353885270</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
 			<value>OrderTopicConnectionFactory</value>
-			<deploymentSettable>true</deploymentSettable>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540917729933</modTime>
+			<modTime>1541362639149</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
@@ -55,8 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<constraint></constraint>
-			<modTime>1540917729978</modTime>
+			<modTime>1541353810050</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

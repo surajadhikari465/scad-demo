@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns4="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns4="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/OrderReceipt.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/TransferOrder.xsd"/>
@@ -250,16 +250,12 @@
                                                     </xsl:if>
                                                     <ns02:units>
                                                         <ns02:uom>
-                                                            <xsl:if test="OrderedUnitCode">
-                                                                <ns1:code>
-                                                                    <xsl:value-of select="OrderedUnitCode"/>
-                                                                </ns1:code>
-                                                            </xsl:if>
-                                                            <xsl:if test="OrderedUnit">
-                                                                <ns1:name>
-                                                                    <xsl:value-of select="OrderedUnit"/>
-                                                                </ns1:name>
-                                                            </xsl:if>
+                                                            <ns1:code>
+                                                                <xsl:value-of select="tib:trim(OrderedUnitCode)"/>
+                                                            </ns1:code>
+                                                            <ns1:name>
+                                                                <xsl:value-of select="tib:trim(OrderedUnit)"/>
+                                                            </ns1:name>
                                                         </ns02:uom>
                                                     </ns02:units>
                                                 </ns02:quantity>
@@ -802,7 +798,7 @@ And STATUS = 'I'
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>ErrorDescription</parameterName>
-                        <dataType>INTEGER</dataType>
+                        <dataType>VARCHAR</dataType>
                     </parameter>
                     <parameter>
                         <parameterName>QueueId</parameterName>

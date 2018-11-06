@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
     <pd:name>Processes/PublishInventorySpoilageService.process</pd:name>
     <pd:startName>Timer</pd:startName>
@@ -98,7 +98,8 @@
                 <element ref="pfx:inventoryAdjustments"/>
             </config>
             <pd:inputBindings>
-                <xsl:for-each select="$GetShrinkData/resultSet/Record[QueueId = $CurrentQueueId/QueueId][1]">
+                <xsl:variable name="var" select="$CurrentQueueId/QueueId"/>
+                <xsl:for-each select="$GetShrinkData/resultSet/Record[QueueId = $var][1]">
                     <pfx:inventoryAdjustments>
                         <pfx:inventoryAdjustment>
                             <pfx:adjustmentNumber>
@@ -159,16 +160,12 @@
                                         </xsl:if>
                                         <ns2:units>
                                             <ns2:uom>
-                                                <xsl:if test="AdjustmentQuantityUOMCode">
-                                                    <ns5:code xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
-                                                        <xsl:value-of select="AdjustmentQuantityUOMCode"/>
-                                                    </ns5:code>
-                                                </xsl:if>
-                                                <xsl:if test="AdjustmentQuantityUOMName">
-                                                    <ns5:name xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2">
-                                                        <xsl:value-of select="AdjustmentQuantityUOMName"/>
-                                                    </ns5:name>
-                                                </xsl:if>
+                                                <ns5:code>
+                                                    <xsl:value-of select="tib:trim(AdjustmentQuantityUOMCode)"/>
+                                                </ns5:code>
+                                                <ns5:name>
+                                                    <xsl:value-of select="tib:trim(AdjustmentQuantityUOMName)"/>
+                                                </ns5:name>
                                             </ns2:uom>
                                         </ns2:units>
                                     </ns2:quantity>
@@ -447,9 +444,11 @@ And STATUS = 'I'</statement>
                         <LogDate>
                             <xsl:value-of select="current-dateTime()"/>
                         </LogDate>
-                        <ApplicationID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationId"/>
-                        </ApplicationID>
+                        <xsl:if test="$Get-ApplicationID/resultSet/Record/ApplicationID">
+                            <ApplicationID>
+                                <xsl:value-of select="$Get-ApplicationID/resultSet/Record[1]/ApplicationID"/>
+                            </ApplicationID>
+                        </xsl:if>
                         <HostName>
                             <xsl:value-of select="BW:getHostName()"/>
                         </HostName>
@@ -524,14 +523,7 @@ And STATUS = 'I'</statement>
                             </xsl:choose>
                         </ErrorDescription>
                         <QueueID>
-                            <xsl:choose>
-                                <xsl:when test="exists(1)">
-                                    <xsl:value-of select="1"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueID>
                         <InProcessBy>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
@@ -686,6 +678,16 @@ And STATUS = 'I'</statement>
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
+                    <ErrorDescription>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/Msg)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ErrorDescription>
                     <QueueID>
                         <xsl:value-of select="$CurrentQueueId/QueueId"/>
                     </QueueID>
