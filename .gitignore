@@ -252,5 +252,4 @@ paket-files/
 .idea/
 *.sln.iml
 *.transformed
-/IRMA
 *.jfm
