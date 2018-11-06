@@ -96,6 +96,7 @@
 			<xs:enumeration value="STR"/>
 			<xs:enumeration value="OFF"/>
 			<xs:enumeration value="MTR"/>
+			<xs:enumeration value="VNU"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="LocaleDescTypeEnum">
@@ -109,6 +110,7 @@
 			<xs:enumeration value="Metro"/>
 			<xs:enumeration value="Store"/>
 			<xs:enumeration value="Office"/>
+			<xs:enumeration value="Venue"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- ================== -->
