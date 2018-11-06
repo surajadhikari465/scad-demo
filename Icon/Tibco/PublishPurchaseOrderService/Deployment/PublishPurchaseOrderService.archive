@@ -13,7 +13,7 @@
             <authorProperty>Min.Zhao</authorProperty>
             <processProperty>/Processes/PublishPurchaseOrderService.process</processProperty>
         </processArchive>
-        <versionProperty>8</versionProperty>
+        <versionProperty>9</versionProperty>
         <authorProperty>Min.Zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishPurchaseOrderService</name>
