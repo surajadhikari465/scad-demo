@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "LoadLocaleDataFromIcon", "LoadLocaleDataFromIcon.dtproj", "{1BD40305-565C-41E5-B07B-318E814D7AA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BD40305-565C-41E5-B07B-318E814D7AA8}.Development|Default.ActiveCfg = Development
+		{1BD40305-565C-41E5-B07B-318E814D7AA8}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7A86F5F-FD08-4921-B3DC-5020EFE1EE57}
+	EndGlobalSection
+EndGlobal

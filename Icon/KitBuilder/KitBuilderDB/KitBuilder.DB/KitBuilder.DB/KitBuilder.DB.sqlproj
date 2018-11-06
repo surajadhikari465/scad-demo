@@ -92,6 +92,8 @@
     <Build Include="dbo\Tables\PurgeTableInfo.sql" />
     <Build Include="dbo\Stored Procedures\AddLogEvent.sql" />
     <Build Include="dbo\Stored Procedures\PurgeData.sql" />
+    <None Include="Jobs\Kitbuilder_LoadHospitalityItems.sql" />
+    <None Include="Jobs\KitBuilder_LoadLocaleDataFromIcon.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />

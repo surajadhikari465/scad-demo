@@ -14,7 +14,7 @@ IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 END
 
 DECLARE @jobId BINARY(16)
-EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'KitBuilder_LoadHospitalityItems', 
+EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'KitBuilder_LoadLocaleDataFromIcon', 
 		@enabled=1, 
 		@notify_level_eventlog=0, 
 		@notify_level_email=0, 
@@ -36,7 +36,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Run SSIS
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'SSIS', 
-		@command=N'/ISSERVER "\"\SSISDB\KBLoadHospitalityItems\LoadHospitalityItems\LoadHospitalityItems.dtsx\"" /SERVER "\"MAMMOTH-DB01-DEV\MAMMOTH\"" /Par "\"$ServerOption::LOGGING_LEVEL(Int16)\"";1 /Par "\"$ServerOption::SYNCHRONIZED(Boolean)\"";True /CALLERINFO SQLAGENT /REPORTING E', 
+		@command=N'/ISSERVER "\"\SSISDB\KBLoadLocaleDataFromIcon\LoadLocaleDataFromIcon\LoadLocaleDataFromIcon.dtsx\"" /SERVER "\"MAMMOTH-DB01-DEV\MAMMOTH\"" /Par "\"$ServerOption::LOGGING_LEVEL(Int16)\"";1 /Par "\"$ServerOption::SYNCHRONIZED(Boolean)\"";True /CALLERINFO SQLAGENT /REPORTING E', 
 		@database_name=N'master', 
 		@flags=0
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
