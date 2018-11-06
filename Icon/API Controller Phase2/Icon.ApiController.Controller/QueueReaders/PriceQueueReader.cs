@@ -220,7 +220,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                        id = (PriceTypeIdType)ItemPriceTypes.Tpr
+                                        id =  PriceTypeIdType.TPR
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -478,7 +478,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                            id = (PriceTypeIdType)ItemPriceTypes.Tpr
+                                            id = PriceTypeIdType.TPR
                                         },
                                         uom = new Contracts.UomType
                                         {
@@ -622,7 +622,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                        id = (PriceTypeIdType)ItemPriceTypes.Tpr
+                                        id =  PriceTypeIdType.TPR
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -704,7 +704,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.TemporaryPriceReduction,
-                                            id = (PriceTypeIdType)ItemPriceTypes.Tpr
+                                            id = PriceTypeIdType.TPR
                                         },
                                         uom = new Contracts.UomType
                                         {
