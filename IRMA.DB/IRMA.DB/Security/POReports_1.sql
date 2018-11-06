@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [POReports]
-    WITH PASSWORD = N'Atu{fksj`wicllzppakkgglvmsFT7_&#$!~<&kBosfDHugwx', SID = 0x374BF3CDA8CB734B917FA5DF48529FA9, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
-

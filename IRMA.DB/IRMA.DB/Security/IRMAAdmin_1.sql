@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [IRMAAdmin]
-    WITH PASSWORD = N'u{fKUsjwiQCcallJpPpakkglmsFT7_&#$!~<pvkosfrgwcxf', SID = 0x03509E13A652494FB67AEA27C0B2106D, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english];
-

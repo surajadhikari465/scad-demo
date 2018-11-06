@@ -1,4 +1,0 @@
-DBRefFolders found in your dbp file
-Connect String: Data Source=iad-ce;Initial Catalog=MultiPOTool;Integrated Security=True
-Provider: Microsoft SQL Server
-

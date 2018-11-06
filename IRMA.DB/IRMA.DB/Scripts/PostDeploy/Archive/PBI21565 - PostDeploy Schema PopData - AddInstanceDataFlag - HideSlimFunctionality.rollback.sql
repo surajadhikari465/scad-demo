@@ -1,1 +1,0 @@
-﻿DELETE [dbo].[InstanceDataFlags] WHERE FlagKey = 'HideSlimFunctionality'

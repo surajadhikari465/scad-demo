@@ -1,2 +1,0 @@
-﻿CREATE USER [WFM\IRMA Support FL] FOR LOGIN [WFM\IRMA Support FL];
-

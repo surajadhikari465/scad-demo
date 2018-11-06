@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [IMHA_User]
-    WITH PASSWORD = N'u{fsjwicmllphpa~kkglvkosmsFT7_&#$!~<@fpgw~$cx_fu', SID = 0x1E35A53121A8A348A877C398D02783DA, DEFAULT_DATABASE = [IMHA], DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
-

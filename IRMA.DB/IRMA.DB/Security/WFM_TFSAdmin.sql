@@ -1,3 +1,0 @@
-﻿CREATE USER [WFM\TFSAdmin] FOR LOGIN [WFM\tfsadmin]
-    WITH DEFAULT_SCHEMA = [WFM\TFSAdmin];
-

@@ -1,6 +1,0 @@
--- let them back in
-
-ALTER DATABASE ItemCatalog_Test
-SET MULTI_USER WITH ROLLBACK IMMEDIATE
-
-GO

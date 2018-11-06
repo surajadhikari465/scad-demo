@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [LS.ICON02]
-    WITH PASSWORD = N'u{fsjw|iWkc?llV1o ppNSakmsFT7_&#$!~<QkQgElvkosfg', SID = 0x334A8B88B296E24991EB13D09B326C15, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english];
-

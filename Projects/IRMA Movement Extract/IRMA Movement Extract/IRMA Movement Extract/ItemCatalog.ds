@@ -1,9 +1,0 @@
-﻿<DataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" xsi:type="RelationalDataSource" dwd:design-time-name="866a3f01-f8e7-4d30-b6de-78126ac55984" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <ID>ItemCatalog</ID>
-  <Name>ItemCatalog</Name>
-  <CreatedTimestamp>0001-01-01T05:00:00Z</CreatedTimestamp>
-  <LastSchemaUpdate>0001-01-01T05:00:00Z</LastSchemaUpdate>
-  <ConnectionString>Provider=SQLNCLI.1;Data Source=idp-na;Persist Security Info=True;Password=;User ID=;Initial Catalog=ItemCatalog</ConnectionString>
-  <ConnectionStringSecurity>PasswordRemoved</ConnectionStringSecurity>
-  <Timeout>PT0S</Timeout>
-</DataSource>

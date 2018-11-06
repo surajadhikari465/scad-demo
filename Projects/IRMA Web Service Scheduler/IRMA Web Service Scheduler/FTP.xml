@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!--Add new FTP settings by web service supported method types-->
-<config>
-	<task name="ITEM_FILE" ftpHost="iad-mw" ftpPort="21" ftpUser="irmaftp" ftpPwd="irmaftp" ftpDir="/WIMP" delim="|" secure="false"/>
-	<task name="COST_FILE" ftpHost="iad-mw" ftpPort="21" ftpUser="irmaftp" ftpPwd="irmaftp" ftpDir="/WIMP" delim="|" secure="false"/>
-	<task name="PLANO_FILE" ftpHost="iad-mw" ftpPort="21" ftpUser="irmaftp" ftpPwd="irmaftp" ftpDir="/WIMP" delim="|" secure="false"/>
-	<task name="INVENTORY_SERVICE_FILE" ftpHost="iad-mw" ftpPort="21" ftpUser="irmaftp" ftpPwd="irmaftp" ftpDir="/Inventory" delim="|" secure="false"/>
-	<task name="VIM_SUPPLEMENT_EXTRACT" ftpHost="iad-mw" ftpPort="21" ftpUser="irmaftp" ftpPwd="irmaftp" ftpDir="/VIM" delim="|" secure="false"/>
-</config>

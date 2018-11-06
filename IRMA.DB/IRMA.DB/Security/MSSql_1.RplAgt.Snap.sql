@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [MSSql.RplAgt.Snap]
-    WITH PASSWORD = N'iuF{HfTszjrwic|<fllZp!p9msFT7_&#$!~<agigkkglvkvL', SID = 0xF2704315D7477C43AEE2D08883F924E4, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
-

@@ -1,2 +1,0 @@
-﻿CREATE USER [WFM\IConWebPrd] FOR LOGIN [WFM\IConWebPrd];
-

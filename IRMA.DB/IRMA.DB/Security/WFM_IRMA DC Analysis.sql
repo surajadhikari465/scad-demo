@@ -1,2 +1,0 @@
-﻿CREATE USER [WFM\IRMA DC Analysis] FOR LOGIN [WFM\IRMA DC Analysis];
-

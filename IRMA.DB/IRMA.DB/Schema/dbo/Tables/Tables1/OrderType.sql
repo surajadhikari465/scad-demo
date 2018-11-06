@@ -1,5 +1,0 @@
-﻿CREATE TABLE dbo.OrderType
-(
-	OrderType_ID INT PRIMARY KEY IDENTITY(1, 1),
-	OrderType_Desc NVARCHAR(20) NOT NULL
-)

@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [WFM\IRMA DC Analysis]
-    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
-

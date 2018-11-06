@@ -1,9 +1,0 @@
-CREATE TABLE [dbo].[Purged_OrderHeader](
-	[OrderHeader_ID] [int] NOT NULL,
-    [InsertDate] datetime NOT NULL,
- CONSTRAINT [PK_PurgedOrderHeader_OrderHeader_ID] PRIMARY KEY CLUSTERED 
-(
-	[OrderHeader_ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
-) ON [PRIMARY]
-GO

@@ -1,2 +1,0 @@
-﻿CREATE USER [IRMA_Refresh] FOR LOGIN [IRMA_Refresh];
-

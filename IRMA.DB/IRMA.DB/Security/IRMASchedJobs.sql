@@ -1,2 +1,0 @@
-﻿CREATE USER [IRMASchedJobs] FOR LOGIN [IRMASchedJobs];
-

@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [MSSql.RplAgt.Log]
-    WITH PASSWORD = N'u{fD%:Cpsjwicll%ppaYkkglmsFT7_&#$!~<jQvkdosfgwhB', SID = 0xE3640A1EFFF1CF4B8B3F0413E9E044EE, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
-

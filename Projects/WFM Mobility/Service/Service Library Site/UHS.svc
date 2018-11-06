@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="VB" Debug="true" Service="UniversalHandheldServiceLibrary.UniversalHandheldService" Factory="UniversalHandheldServiceLibrary.CustomServiceFactory"%>

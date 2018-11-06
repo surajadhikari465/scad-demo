@@ -1,1 +1,0 @@
-<%@ WebService Language="VB" CodeBehind="Reports.asmx.vb" Class="IRMA_WebServices___Reports.Reports" %>

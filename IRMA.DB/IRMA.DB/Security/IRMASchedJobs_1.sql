@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [IRMASchedJobs]
-    WITH PASSWORD = N'uL{fEshj5fwicqzElldpvUp7msFT7_&#$!~<akkglPvskosf', SID = 0x0A1DA782C03A2548AA932A3100452598, DEFAULT_DATABASE = [ItemCatalog], DEFAULT_LANGUAGE = [us_english];
-

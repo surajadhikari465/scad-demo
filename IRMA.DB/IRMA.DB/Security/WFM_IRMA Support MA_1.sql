@@ -1,3 +1,0 @@
-﻿CREATE SCHEMA [WFM\IRMA Support MA]
-    AUTHORIZATION [WFM\IRMA Support MA];
-

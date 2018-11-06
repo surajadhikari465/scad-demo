@@ -1,2 +1,0 @@
-﻿CREATE USER [IRSUser] FOR LOGIN [IRSUser];
-

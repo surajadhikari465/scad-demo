@@ -1,2 +1,0 @@
-  <add name=DataFactory.ItemCatalog connectionString="Data Source=sprco-pc69;Initial Catalog=master;Integrated Security=True"
-   providerName="System.Data.SqlClient" />

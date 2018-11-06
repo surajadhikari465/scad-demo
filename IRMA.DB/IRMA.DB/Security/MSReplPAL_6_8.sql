@@ -1,3 +1,0 @@
-﻿CREATE ROLE [MSReplPAL_6_8]
-    AUTHORIZATION [dbo];
-
