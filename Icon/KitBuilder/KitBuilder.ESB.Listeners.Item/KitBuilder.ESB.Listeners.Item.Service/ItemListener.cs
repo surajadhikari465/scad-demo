@@ -55,9 +55,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service
             finally
             {
                 ArchiveMessage(args.Message);
-                //ArchiveItems(models);
-                //NotifyItemErrors(args.Message, schemaErrorOccurred, models);
-                //AcknowledgeMessage(args);
                 models.Clear();
             }
         }
