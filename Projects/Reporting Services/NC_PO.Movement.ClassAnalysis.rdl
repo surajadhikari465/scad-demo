@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <rd:DataSourceID>5f9a5a3c-05e0-4258-852e-b64ff33a4d64</rd:DataSourceID>
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <Description>Purchase Order Value Class Analysis</Description>
+  <ReportParameters>
+    <ReportParameter Name="SubTeam_No">
+      <DataType>String</DataType>
+      <Prompt>PO Subteam:</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Subteams</DataSetName>
+          <ValueField>Subteam_No</ValueField>
+          <LabelField>Subteam_Name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="StartDate">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=Today</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Received Start Date:</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="EndDate">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=Today</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Received End Date:</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="OmitExtraIdentifiers">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>True</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Omit Items on POs assigned to other Subteams:</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>1in</RightMargin>
+  <LeftMargin>1in</LeftMargin>
+  <PageHeader>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <ReportItems>
+      <Textbox Name="textbox7">
+        <Top>0.375in</Top>
+        <Style>
+          <FontFamily>Calibri</FontFamily>
+          <FontSize>8pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Value>="Subteam: " &amp; Parameters!SubTeam_No.Value &amp; "                            Received Dates: " &amp; Parameters!StartDate.Value &amp; " thru " &amp; Parameters!EndDate.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox1">
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Style>
+          <Color>#365838</Color>
+          <FontFamily>Times New Roman</FontFamily>
+          <FontSize>18pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.33in</Height>
+        <Value>Purchase Order Value Class Analysis</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>0.625in</Height>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageHeader>
+  <BottomMargin>1in</BottomMargin>
+  <rd:ReportID>135be629-d887-4d06-96e3-f665890318cd</rd:ReportID>
+  <DataSets>
+    <DataSet Name="ItemCatalog">
+      <Fields>
+        <Field Name="Class">
+          <DataField>Class</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Store">
+          <DataField>Store</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cost">
+          <DataField>Cost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Pct">
+          <DataField>Pct</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="RegPct">
+          <DataField>RegPct</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Low">
+          <DataField>Low</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Hi">
+          <DataField>Hi</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Color">
+          <DataField>Color</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>DECLARE @Ordered TABLE  (
+
+                                          Store_No    int,
+                                          StoreAbbr   varchar(10),
+                                          Item_Key    int,
+                                          Cost        money
+                                    )
+DECLARE @TransferToSubteam int
+SET @TransferToSubteam = @Subteam_No
+
+INSERT @Ordered
+      SELECT
+            S.Store_No,
+            S.StoreAbbr,
+            OI.Item_Key,
+            SUM(OI.ReceivedItemCost)      AS Cost
+      FROM
+            OrderItem   OI                      (NOLOCK)
+            INNER JOIN OrderHeader  OH    (NOLOCK)    ON OI.OrderHeader_ID          = OH.OrderHeader_ID
+            INNER JOIN Vendor       SV    (NOLOCK)    ON OH.ReceiveLocation_ID      = SV.Vendor_ID
+            INNER JOIN Store        S     (NOLOCK)    ON SV.Store_no                      = S.Store_No
+      WHERE
+            OH.Transfer_To_SubTeam                    =     @TransferToSubteam 
+            AND OI.DateReceived                 IS NOT NULL
+            AND OI.DateReceived                 &gt;=    CONVERT(nvarchar(30), @StartDate, 101)
+            AND OI.DateReceived                 &lt;=    CONVERT(nvarchar(30), @EndDate, 101)
+      GROUP BY
+            S.Store_No,
+            S.StoreAbbr,
+            OI.Item_Key
+UNION
+      SELECT
+            0 AS Store_No,
+            'ZNC' AS StoreAbbr,
+            OI.Item_Key AS Item_Key,
+            SUM(OI.ReceivedItemCost)      AS Cost
+      FROM
+            OrderItem   OI                      (NOLOCK)
+            INNER JOIN OrderHeader  OH    (NOLOCK)    ON OI.OrderHeader_ID          = OH.OrderHeader_ID
+            INNER JOIN Vendor       SV    (NOLOCK)    ON OH.ReceiveLocation_ID      = SV.Vendor_ID
+            INNER JOIN Store        S     (NOLOCK)    ON SV.Store_no                      = S.Store_No
+      WHERE
+            OH.Transfer_To_SubTeam                    =     @TransferToSubteam 
+            AND OI.DateReceived                 IS NOT NULL
+            AND OI.DateReceived                 &gt;=    CONVERT(nvarchar(30), @StartDate, 101)
+            AND OI.DateReceived                 &lt;=    CONVERT(nvarchar(30), @EndDate, 101)
+      GROUP BY
+            OI.Item_Key
+
+DECLARE @Output TABLE
+      (
+      Class varchar(max),
+      Store varchar(3),
+      Cost  money,
+      Pct         decimal(6,4)
+      )
+
+INSERT INTO @Output
+      SELECT DISTINCT
+            IC.Category_Name  AS Class,
+            O.StoreAbbr             AS Store,
+            SUM(O.Cost)             AS Cost,
+            (SUM(O.Cost) / (SELECT SUM(Cost) FROM @Ordered WHERE StoreAbbr = O.StoreAbbr)) AS PctPurchases
+      FROM
+            Item                                      I     (NOLOCK)
+            INNER JOIN  ItemCategory            IC    (NOLOCK)    ON I.Category_ID              = IC.Category_ID
+            INNER JOIN  @Ordered                O                       ON I.Item_Key                       = O.Item_Key
+      WHERE  
+            I.Subteam_No = (CASE WHEN @OmitExtraIdentifiers = 1 THEN @TransferToSubteam ELSE I.Subteam_No END)
+      GROUP BY
+            IC.Category_Name,
+            O.StoreAbbr
+
+DECLARE @Regional TABLE
+      (
+      Class varchar(max),
+      RegPct      decimal(6,4)
+      )
+
+INSERT INTO @Regional
+      SELECT DISTINCT
+            IC.Category_Name  AS Class,
+            (SUM(O.Cost) / (SELECT SUM(Cost) FROM @Ordered))                      AS PctCost
+      FROM
+            Item                                      I     (NOLOCK)
+            INNER JOIN  ItemCategory            IC    (NOLOCK)    ON I.Category_ID              = IC.Category_ID
+            INNER JOIN  @Ordered                O                       ON I.Item_Key                       = O.Item_Key
+      WHERE  I.Subteam_No = (CASE WHEN @OmitExtraIdentifiers = 1 THEN @TransferToSubteam ELSE I.Subteam_No END)
+      GROUP BY
+            IC.Category_Name
+
+SELECT
+      op.*,
+      rr.RegPct,
+      rr.RegPct / 1.15 AS 'Low',
+      rr.RegPct * 1.15 AS 'Hi',
+      CASE 
+            WHEN op.Pct &lt; (rr.RegPct / 1.15) THEN
+                  'LightGreen'
+            WHEN op.Pct &gt; (rr.RegPct * 1.15) THEN
+                  'MistyRose'
+            WHEN op.Store = 'ZNC' THEN
+                  'blank'
+            ELSE
+                  'LemonChiffon'
+      END AS 'Color'
+FROM
+      @Output op
+      JOIN @Regional rr ON op.Class = rr.Class</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Subteam_No">
+            <Value>=Parameters!SubTeam_No.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@OmitExtraIdentifiers">
+            <Value>=Parameters!OmitExtraIdentifiers.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="Subteams">
+      <Fields>
+        <Field Name="Subteam_No">
+          <DataField>Subteam_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Subteam_Name">
+          <DataField>Subteam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>SELECT Subteam_No, Subteam_Name FROM Subteam
+WHERE Subteam_Name NOT LIKE ('INACTIVE%')
+ ORDER BY Subteam_Name</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="RegionTotal">
+      <Fields>
+        <Field Name="Class">
+          <DataField>Class</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Region">
+          <DataField>Region</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cost">
+          <DataField>Cost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PctCost">
+          <DataField>PctCost</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>DECLARE @Ordered TABLE	(
+							Store_No	int,
+							StoreAbbr	varchar(10),
+							Item_Key	int,
+							Cost		money
+						)
+DECLARE @TransferToSubteam int
+SET @TransferToSubteam = @Subteam_No
+
+INSERT @Ordered
+	SELECT
+		0 AS Store_No,
+		'NC' AS StoreAbbr,
+		OI.Item_Key AS Item_Key,
+		SUM(OI.ReceivedItemCost)	AS Cost
+	FROM
+		OrderItem	OI				(NOLOCK)
+		INNER JOIN OrderHeader	OH	(NOLOCK)	ON OI.OrderHeader_ID		= OH.OrderHeader_ID
+		INNER JOIN Vendor		SV	(NOLOCK)	ON OH.ReceiveLocation_ID	= SV.Vendor_ID
+		INNER JOIN Store		S	(NOLOCK)	ON SV.Store_no				= S.Store_No
+	WHERE
+		OH.Transfer_To_SubTeam				=	@TransferToSubteam 
+		AND OI.DateReceived			IS NOT NULL
+		AND OI.DateReceived			&gt;=	CONVERT(nvarchar(30), @StartDate, 101)
+		AND OI.DateReceived			&lt;=	CONVERT(nvarchar(30), @EndDate, 101)
+	GROUP BY
+		OI.Item_Key
+
+SELECT DISTINCT
+	IC.Category_Name	AS Class,
+	O.StoreAbbr			AS Region,
+	SUM(O.Cost)			                AS Cost,
+                (SUM(O.Cost) / (SELECT SUM(Cost) FROM @Ordered)) * 100                        AS PctCost
+FROM
+	Item							I	(NOLOCK)
+	INNER JOIN	ItemCategory		IC	(NOLOCK)	ON I.Category_ID			= IC.Category_ID
+	INNER JOIN	@Ordered			O				ON I.Item_Key				= O.Item_Key
+WHERE  I.Subteam_No = (CASE WHEN @OmitExtraIdentifiers = 1 THEN @TransferToSubteam ELSE I.Subteam_No END)
+GROUP BY
+	IC.Category_Name,
+	O.StoreAbbr</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Subteam_No">
+            <Value>=Parameters!SubTeam_No.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@OmitExtraIdentifiers">
+            <Value>=Parameters!OmitExtraIdentifiers.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <Width>16.75in</Width>
+  <Body>
+    <ReportItems>
+      <Matrix Name="matrix1">
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>0.875in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.875in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <DataSetName>ItemCatalog</DataSetName>
+        <RowGroupings>
+          <RowGrouping>
+            <Width>0.625in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Store">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Store.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Store.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Store">
+                  <rd:DefaultName>Store</rd:DefaultName>
+                  <Style>
+                    <Color>White</Color>
+                    <BackgroundColor>#4a7349</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>2</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=IIF(Fields!Store.Value = "ZNC", "NC", Fields!Store.Value)</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+        </RowGroupings>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <Height>0.21in</Height>
+            <DynamicColumns>
+              <Grouping Name="matrix1_Class">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Class.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Class.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Class">
+                  <rd:DefaultName>Class</rd:DefaultName>
+                  <Style>
+                    <Color>White</Color>
+                    <BackgroundColor>#4a7349</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>5</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Class.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicColumns>
+          </ColumnGrouping>
+          <ColumnGrouping>
+            <Height>0.21in</Height>
+            <StaticColumns>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox5">
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <Style>
+                      <BackgroundColor>#a3cba3</BackgroundColor>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <ZIndex>4</ZIndex>
+                    <CanGrow>true</CanGrow>
+                    <Value>Cost</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox6">
+                    <rd:DefaultName>textbox6</rd:DefaultName>
+                    <Style>
+                      <BackgroundColor>#a3cba3</BackgroundColor>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <ZIndex>3</ZIndex>
+                    <CanGrow>true</CanGrow>
+                    <Value>% of Tot</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+            </StaticColumns>
+          </ColumnGrouping>
+        </ColumnGroupings>
+        <Width>2.375in</Width>
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox4">
+              <rd:DefaultName>textbox4</rd:DefaultName>
+              <Style>
+                <BorderColor>
+                  <Default>DarkGray</Default>
+                </BorderColor>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <FontFamily>Times New Roman</FontFamily>
+                <FontSize>9pt</FontSize>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+              <ZIndex>6</ZIndex>
+              <CanGrow>true</CanGrow>
+              <Value>
+              </Value>
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <MatrixRows>
+          <MatrixRow>
+            <Height>0.21in</Height>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Style>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <FontSize>9pt</FontSize>
+                      <Format>C0</Format>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <ZIndex>1</ZIndex>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Fields!Cost.Value</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <Style>
+                      <BackgroundColor>=Fields!Color.Value</BackgroundColor>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <FontSize>9pt</FontSize>
+                      <Format>P1</Format>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Fields!Pct.Value</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+          </MatrixRow>
+        </MatrixRows>
+      </Matrix>
+    </ReportItems>
+    <Height>0.63in</Height>
+  </Body>
+  <Language>en-US</Language>
+  <TopMargin>1in</TopMargin>
+</Report>

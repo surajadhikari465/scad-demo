@@ -1,0 +1,28 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_GetRegFacID]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_GetRegFacID]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE  FUNCTION fn_GetRegFacID
+	(
+    )
+RETURNS int
+AS
+BEGIN
+    DECLARE @Result int
+
+    SELECT @Result = Store_no from Store where regional = 1
+
+    RETURN @Result
+END
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

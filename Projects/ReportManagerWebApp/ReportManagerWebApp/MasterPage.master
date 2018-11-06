@@ -1,0 +1,29 @@
+<%@ Master Language="VB" Inherits="ReportManagerWebApp.MasterPage" Codebehind="MasterPage.master.vb" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Report Manager</title>
+    <link rel="stylesheet" type="text/css" href="Styles/Base.css" media="all"/>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="header" style="text-align: center">
+            <center><img id="irmalogo" src="Images/irmanet.jpg" runat="server" alt="IRMA Logo" style="color: #330033" />&nbsp;</center>
+            <center>
+                &nbsp;</center>
+            <span style="font-size: 16pt; color: #330033"><strong>Report Manager</strong></span></div>
+        <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+        </asp:contentplaceholder>
+        <div id="footer">
+            <h5>
+                <asp:Label ID="ServerLabel" runat="server"></asp:Label><br />
+                <asp:Label ID="lblVersion" runat="server" Text="lblVersion (from web.config file)"></asp:Label>
+            </h5>
+        </div>
+        
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://iad-so/IRMAService/IRMA.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" />
+  <xs:import schemaLocation="http://iad-so/IRMAService/IRMA.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA.Security" />
+  <xs:import schemaLocation="http://iad-so/IRMAService/IRMA.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://iad-so/IRMAService/IRMA.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA.Inventory" />
+  <xs:element name="ReceiveOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q1:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReceiveOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="ReceiveOrderResult" nillable="true" type="q2:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CloseOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iOrderHeader_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="iUser_ID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CloseOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="CloseOrderResult" nillable="true" type="q3:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q4:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteOrderResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StoreSubTeamRelationshipExists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sStore_No" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sTransfer_To_SubTeam" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StoreSubTeamRelationshipExistsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StoreSubTeamRelationshipExistsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderHeaderByIdentifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UPC" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="storeNumber" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderHeaderByIdentifierResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetOrderHeaderByIdentifierResult" nillable="true" type="q5:ArrayOfOrder" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReceivingListEinvoiceExceptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iOrderHeader_ID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReceivingListEinvoiceExceptionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetReceivingListEinvoiceExceptionsResult" nillable="true" type="q6:ArrayOfOrderItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateReceivingDiscrepancyCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iReasonCodeList" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="iSeparator1" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="iSeparator2" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateReceivingDiscrepancyCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="UpdateReceivingDiscrepancyCodeResult" nillable="true" type="q7:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderInvoiceCharges">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderInvoiceChargesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetOrderInvoiceChargesResult" nillable="true" type="q8:ArrayOfInvoiceCharge" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsDSDStoreVendorByUPC">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UPC" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Store_No" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsDSDStoreVendorByUPCResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsDSDStoreVendorByUPCResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateOrderBeforeClose">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OrderHeader_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="InvoiceDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="InvoiceCost" type="xs:decimal" />
+        <xs:element minOccurs="0" name="VendorDoc_ID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="VendorDocDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="SubTeam_No" type="xs:int" />
+        <xs:element minOccurs="0" name="PartialShipment" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateOrderBeforeCloseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="UpdateOrderBeforeCloseResult" nillable="true" type="q9:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddInvoiceCharge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+        <xs:element minOccurs="0" name="SACTypeID" type="xs:int" />
+        <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="subteamNumber" type="xs:int" />
+        <xs:element minOccurs="0" name="allowance" type="xs:boolean" />
+        <xs:element minOccurs="0" name="amount" type="xs:decimal" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddInvoiceChargeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="AddInvoiceChargeResult" nillable="true" type="q10:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveInvoiceCharge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chargeID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveInvoiceChargeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="RemoveInvoiceChargeResult" nillable="true" type="q11:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckInvoiceNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iVendor_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="iInvoiceNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="iOrderHeader_ID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckInvoiceNumberResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="CheckInvoiceNumberResult" nillable="true" type="q12:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReOpenOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OrderHeader_ID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReOpenOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="ReOpenOrderResult" nillable="true" type="q13:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RefuseReceiving">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+        <xs:element minOccurs="0" name="userID" type="xs:int" />
+        <xs:element minOccurs="0" name="refuseReceivingReasonCodeID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RefuseReceivingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="RefuseReceivingResult" nillable="true" type="q14:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateOrderHeaderCosts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateOrderHeaderCostsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="UpdateOrderHeaderCostsResult" nillable="true" type="q15:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCycleCount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lStoreNo" type="xs:long" />
+        <xs:element minOccurs="0" name="lSubTeamNo" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCycleCountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetCycleCountResult" nillable="true" type="q16:CycleCount" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateCycleCountHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lMasterCountID" type="xs:long" />
+        <xs:element minOccurs="0" name="dStartScan" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="lInventoryLocationId" type="xs:long" />
+        <xs:element minOccurs="0" name="bExternal" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateCycleCountHeaderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CreateCycleCountHeaderResult" nillable="true" type="xs:anyType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddCycleCountItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lItemKey" type="xs:long" />
+        <xs:element minOccurs="0" name="dQuantity" type="xs:decimal" />
+        <xs:element minOccurs="0" name="dWeight" type="xs:decimal" />
+        <xs:element minOccurs="0" name="dPackSize" type="xs:decimal" />
+        <xs:element minOccurs="0" name="bIsCaseCnt" type="xs:boolean" />
+        <xs:element minOccurs="0" name="lCycleCountID" type="xs:long" />
+        <xs:element minOccurs="0" name="lInvLocID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddCycleCountItemResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RunPOSPush">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sAppPath" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sRegion" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sConnectionString" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sEmailAddress" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RunPOSPushResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="RunPOSPushResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReturnServiceConnectionString">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReturnServiceConnectionStringResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ReturnServiceConnectionStringResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoggerTest">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoggerTestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LoggerTestResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserRole">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserRoleResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA.Security" minOccurs="0" name="GetUserRoleResult" nillable="true" type="q17:ArrayOfUserRole" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServerName">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServerNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetServerNameResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetApplicationConfig">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EnvironmentGUID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ApplicationGUID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetApplicationConfigResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetApplicationConfigResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreFtpConfigByStoreAndWriterType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Store_No" type="xs:int" />
+        <xs:element minOccurs="0" name="FileWriterType" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreFtpConfigByStoreAndWriterTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoreFtpConfigByStoreAndWriterTypeResult" nillable="true" type="q18:ArrayOfLists.StoreFTPConfig" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreFtpConfigDataForWriterType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="fileWriterType" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreFtpConfigDataForWriterTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoreFtpConfigDataForWriterTypeResult" nillable="true" type="q19:ArrayOfLists.StoreFTPConfig" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemUnits">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemUnitsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetItemUnitsResult" nillable="true" type="q20:ArrayOfLists.ItemUnit" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetShrinkAdjustmentReasons">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetShrinkAdjustmentReasonsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetShrinkAdjustmentReasonsResult" nillable="true" type="q21:ArrayOfLists.ShrinkAdjustmentReason" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Item_Key" type="xs:int" />
+        <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetItemResult" nillable="true" type="q22:ArrayOfLists.GetItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstanceDataFlag">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="FlagKey" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Store_No" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstanceDataFlagResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetInstanceDataFlagResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDiscountReasonCodes">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDiscountReasonCodesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetDiscountReasonCodesResult" nillable="true" type="q23:ArrayOfLists.ReasonCode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSubteams">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSubteamsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetSubteamsResult" nillable="true" type="q24:ArrayOfLists.Subteam" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSubteamByProductType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ProductType_ID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSubteamByProductTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetSubteamByProductTypeResult" nillable="true" type="q25:ArrayOfLists.Subteam" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStores">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="isVendorIDUsed" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoresResult" nillable="true" type="q26:ArrayOfLists.Store" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInventorylocations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lStoreNo" type="xs:long" />
+        <xs:element minOccurs="0" name="lSubTeamNo" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInventorylocationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetInventorylocationsResult" nillable="true" type="q27:ArrayOfInventoryLocation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemMovement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lstoreNo" type="xs:int" />
+        <xs:element minOccurs="0" name="iTransferToSubteam_To" type="xs:int" />
+        <xs:element minOccurs="0" name="sIdentifier" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="adjustmentID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemMovementResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetItemMovementResult" nillable="true" type="q28:ArrayOfLists.ItemMovement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemBilledQuantity">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lstoreNo" type="xs:int" />
+        <xs:element minOccurs="0" name="iTransferToSubteam_To" type="xs:int" />
+        <xs:element minOccurs="0" name="sIdentifier" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemBilledQuantityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetItemBilledQuantityResult" nillable="true" type="q29:ArrayOfLists.ItemBilledQty" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorPackage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lstoreNo" type="xs:int" />
+        <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+        <xs:element minOccurs="0" name="sIdentifier" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorPackageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetVendorPackageResult" type="xs:decimal" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDSDVendors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iStoreNo" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDSDVendorsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetDSDVendorsResult" nillable="true" type="q30:ArrayOfDSDVendor" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReasonCodesByType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="reasonCodeType" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReasonCodesByTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetReasonCodesByTypeResult" nillable="true" type="q31:ArrayOfReasonCode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGLAccountSubteams">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGLAccountSubteamsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetGLAccountSubteamsResult" nillable="true" type="q32:ArrayOfLists.Subteam" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllocatedCharges">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllocatedChargesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetAllocatedChargesResult" nillable="true" type="q33:ArrayOfInvoiceCharge" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReparseEinvoice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="eInvoiceID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReparseEinvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="ReparseEinvoiceResult" nillable="true" type="q34:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrencies">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrenciesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetCurrenciesResult" nillable="true" type="q35:ArrayOfCurrency" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountSustainabilityRankingRequiredItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderHeaderID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountSustainabilityRankingRequiredItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CountSustainabilityRankingRequiredItemsResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSystemDate">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSystemDateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetSystemDateResult" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CalculateConversion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InUnit" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="OutUnit" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Amount" type="xs:decimal" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CalculateConversionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CalculateConversionResult" type="xs:decimal" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInUnits">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInUnitsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q36="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetInUnitsResult" nillable="true" type="q36:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOutUnits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InUnit" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOutUnitsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q37="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetOutUnitsResult" nillable="true" type="q37:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddShrinkAdjustment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA.Inventory" minOccurs="0" name="Adjustment" nillable="true" type="q38:Shrink" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddShrinkAdjustmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AddShrinkAdjustmentResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iStoreNo" type="xs:int" />
+        <xs:element minOccurs="0" name="iTransferToSubteam_To" type="xs:int" />
+        <xs:element minOccurs="0" name="iUser_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="iItem_Key" type="xs:int" />
+        <xs:element minOccurs="0" name="sIdentifier" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoreItemResult" nillable="true" type="q39:StoreItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddToReprintSignQueue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lUser_ID" type="xs:long" />
+        <xs:element minOccurs="0" name="iSourceType" type="xs:int" />
+        <xs:element minOccurs="0" name="sItemList" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sItemListSeperator" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="iStoreNo" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddToReprintSignQueueResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AddToReprintSignQueueResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddToOrderQueue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsTransfer" type="xs:boolean" />
+        <xs:element minOccurs="0" name="IsCredit" type="xs:boolean" />
+        <xs:element minOccurs="0" name="Quantity" type="xs:decimal" />
+        <xs:element minOccurs="0" name="UnitID" type="xs:int" />
+        <xs:element minOccurs="0" name="iUser_ID" type="xs:int" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="si" nillable="true" type="q40:StoreItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddToOrderQueueResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AddToOrderQueueResult" type="xs:boolean" />
+        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="si" nillable="true" type="q41:StoreItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReceiveOrderItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="dQuantity" type="xs:decimal" />
+        <xs:element minOccurs="0" name="dWeight" type="xs:decimal" />
+        <xs:element minOccurs="0" name="dtDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="bCorrection" type="xs:boolean" />
+        <xs:element minOccurs="0" name="iOrderItem_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="reasonCodeID" type="xs:int" />
+        <xs:element minOccurs="0" name="dPackSize" type="xs:decimal" />
+        <xs:element minOccurs="0" name="UserID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReceiveOrderItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="ReceiveOrderItemResult" nillable="true" type="q42:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lOrderID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetOrderResult" nillable="true" type="q43:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExternalOrders">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lExternalSourceOrderID" type="xs:int" />
+        <xs:element minOccurs="0" name="iStore_No" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExternalOrdersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetExternalOrdersResult" nillable="true" type="q44:ArrayOfLists.ExternalOrder" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItemOrderInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iStoreNo" type="xs:int" />
+        <xs:element minOccurs="0" name="iTransferToSubteamNo" type="xs:int" />
+        <xs:element minOccurs="0" name="iItemKey" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItemOrderInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoreItemOrderInfoResult" nillable="true" type="q45:StoreItemOrderInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItemCycleCountInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="si" nillable="true" type="q46:StoreItem" />
+        <xs:element minOccurs="0" name="lInventoryLocationID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStoreItemCycleCountInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetStoreItemCycleCountInfoResult" nillable="true" type="q47:CycleCountInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTransferItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iItem_Key" type="xs:int" />
+        <xs:element minOccurs="0" name="sIdentifier" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="iProductType_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="iVendorStore_No" type="xs:int" />
+        <xs:element minOccurs="0" name="iVendor_ID" type="xs:int" />
+        <xs:element minOccurs="0" name="iTransfer_SubTeam" type="xs:int" />
+        <xs:element minOccurs="0" name="iSupplySubTeam_No" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTransferItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="GetTransferItemResult" nillable="true" type="q48:StoreItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateDSDOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q49:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateDSDOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="CreateDSDOrderResult" nillable="true" type="q50:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateTransferOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q51:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateTransferOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q52="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="CreateTransferOrderResult" nillable="true" type="q52:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q53:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q54="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="CreateOrderResult" nillable="true" type="q54:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q55="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="O" nillable="true" type="q55:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q56="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA" minOccurs="0" name="SendOrderResult" nillable="true" type="q56:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

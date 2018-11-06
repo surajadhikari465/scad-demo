@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{D183A3D8-5FD8-494B-B014-37F57B35E655}") = "IRMA Movement Extract", "IRMA Movement Extract\IRMA Movement Extract.dtproj", "{604377A0-04E5-4B4E-AF1E-AB9E6709BF14}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cen-irmadev2:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = IRMA\u0020Movement\u0020Extract\\IRMA\u0020Movement\u0020Extract.dtproj
+		SccProjectName1 = IRMA\u0020Movement\u0020Extract
+		SccLocalPath1 = IRMA\u0020Movement\u0020Extract
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{604377A0-04E5-4B4E-AF1E-AB9E6709BF14}.Development|Default.ActiveCfg = Development
+		{604377A0-04E5-4B4E-AF1E-AB9E6709BF14}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

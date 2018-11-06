@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <rd:DataSourceID>fa08f80e-233f-4930-9ae3-14cf25633d21</rd:DataSourceID>
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <Description>Items exempt from price stickers by store and statute</Description>
+  <ReportParameters>
+    <ReportParameter Name="Store_No">
+      <DataType>Integer</DataType>
+      <Prompt>Store</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>dsStores</DataSetName>
+          <ValueField>Store_No</ValueField>
+          <LabelField>Store_Name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="IncludeExemptByStore">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>True</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Include Exempt By Store?</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="IncludeExemptByStatute">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>True</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Include Exempt By Statute?</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>0.5in</RightMargin>
+  <LeftMargin>0.5in</LeftMargin>
+  <PageHeader>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <ReportItems>
+      <Textbox Name="textbox8">
+        <Width>2.125in</Width>
+        <Style>
+          <FontSize>8pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>3</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Height>0.2in</Height>
+        <Value>= "Report run: " &amp; FormatDateTime(Now)</Value>
+      </Textbox>
+      <Textbox Name="txtPageNo">
+        <Style>
+          <FontSize>8pt</FontSize>
+          <TextAlign>Right</TextAlign>
+          <VerticalAlign>Bottom</VerticalAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>2</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>5.5in</Left>
+        <Height>0.2in</Height>
+        <Value>="Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+      </Textbox>
+      <Textbox Name="textbox1">
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Width>3.125in</Width>
+        <Style>
+          <Color>SteelBlue</Color>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>12pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.25in</Left>
+        <Height>0.25in</Height>
+        <Value>Massachusetts Exempt List Report</Value>
+      </Textbox>
+      <Textbox Name="textbox7">
+        <Top>0.25in</Top>
+        <Width>3.125in</Width>
+        <Style>
+          <Color>SteelBlue</Color>
+          <FontFamily>Tahoma</FontFamily>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Left>2.25in</Left>
+        <Value>=Parameters!Store_No.Label</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>0.475in</Height>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageHeader>
+  <BottomMargin>0.5in</BottomMargin>
+  <rd:ReportID>0ac5fcfe-2276-44c5-bf79-89402d0efffe</rd:ReportID>
+  <DataSets>
+    <DataSet Name="dsStores">
+      <Fields>
+        <Field Name="Store_No">
+          <DataField>Store_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Store_Name">
+          <DataField>Store_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>SELECT     S.Store_No, S.Store_Name
+FROM         Store AS S WITH (nolock) INNER JOIN
+                      Vendor AS V WITH (nolock) ON S.Store_No = V.Store_no
+WHERE     (V.State = 'MA')
+ORDER BY S.Store_Name</CommandText>
+      </Query>
+    </DataSet>
+    <DataSet Name="dsExempt">
+      <Fields>
+        <Field Name="Store_No">
+          <DataField>Store_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Store_Name">
+          <DataField>Store_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SubTeam_Name">
+          <DataField>SubTeam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Identifier">
+          <DataField>Identifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Brand_Name">
+          <DataField>Brand_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Item_Key">
+          <DataField>Item_Key</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Item_Description">
+          <DataField>Item_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc2">
+          <DataField>Package_Desc2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="UOM">
+          <DataField>UOM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CurrentRetail">
+          <DataField>CurrentRetail</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrentMultiple">
+          <DataField>CurrentMultiple</DataField>
+          <rd:TypeName>System.Byte</rd:TypeName>
+        </Field>
+        <Field Name="On_Sale">
+          <DataField>On_Sale</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="AlternateUPC">
+          <DataField>AlternateUPC</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>/*----------------------------------------------------
+ Exempt Items by Store
+----------------------------------------------------
+----------------------------------------------------
+ Exempt Items by Store*/
+SELECT DISTINCT 
+                      S.Store_No, RTRIM(S.Store_Name) AS Store_Name, RTRIM(ST.SubTeam_Name) AS SubTeam_Name, II.Identifier, RTRIM(B.Brand_Name) 
+                      AS Brand_Name, II.Item_Key, RTRIM(I.Item_Description) AS Item_Description, I.Package_Desc2, RTRIM(IU.Unit_Name) AS UOM, 
+                      CASE WHEN PCT.On_Sale = 1 THEN P.POSSale_Price ELSE P.POSPrice END AS CurrentRetail, 
+                      CASE WHEN PCT.On_Sale = 1 THEN P.Sale_Multiple ELSE P.Multiple END AS CurrentMultiple, PCT.On_Sale, dbo.fn_GetAlternateUPC(SIA.Item_Key) 
+                      AS AlternateUPC
+FROM         Store AS S WITH (NOLOCK) INNER JOIN
+                      StoreItemAttribute AS SIA WITH (NOLOCK) ON S.Store_No = SIA.Store_No INNER JOIN
+                      ItemIdentifier AS II WITH (NOLOCK) ON SIA.Item_Key = II.Item_Key INNER JOIN
+                      Item AS I WITH (NOLOCK) ON SIA.Item_Key = I.Item_Key INNER JOIN
+                      Vendor AS V WITH (NOLOCK) ON S.Store_No = V.Store_no INNER JOIN
+                      Price AS P WITH (NOLOCK) ON S.Store_No = P.Store_No AND P.Item_Key = I.Item_Key INNER JOIN
+                      StoreItem AS SI WITH (NOLOCK) ON SI.Store_No = P.Store_No AND SI.Item_Key = P.Item_Key INNER JOIN
+                      PriceChgType AS PCT WITH (NOLOCK) ON PCT.PriceChgTypeID = P.PriceChgTypeId LEFT OUTER JOIN
+                      SubTeam AS ST WITH (NOLOCK) ON I.SubTeam_No = ST.SubTeam_No LEFT OUTER JOIN
+                      ItemBrand AS B WITH (NOLOCK) ON B.Brand_ID = I.Brand_ID LEFT OUTER JOIN
+                      ItemUnit AS IU WITH (NOLOCK) ON IU.Unit_ID = I.Package_Unit_ID
+WHERE     (SIA.Exempt = 1) AND (@IncludeExemptByStore = 1) AND (S.Store_No = @Store_No) AND (SI.Authorized = 1) AND (II.Default_Identifier = 1) AND 
+                      (I.Deleted_Item = 0) AND (dbo.fn_GetDiscontinueStatus(I.Item_Key, NULL, NULL) = 0)
+UNION
+SELECT     0 AS Store_No, '&lt; STATUTE &gt;' AS Store_Name, RTRIM(ST.SubTeam_Name) AS SubTeam_Name, II.Identifier, RTRIM(B.Brand_Name) AS Brand_Name, 
+                      II.Item_Key, RTRIM(I.Item_Description) AS Item_Description, I.Package_Desc2, RTRIM(IU.Unit_Name) AS UOM, 
+                      CASE WHEN PCT.On_Sale = 1 THEN P.POSSale_Price ELSE P.POSPrice END AS CurrentRetail, 
+                      CASE WHEN PCT.On_Sale = 1 THEN P.Sale_Multiple ELSE P.Multiple END AS CurrentMultiple, PCT.On_Sale, dbo.fn_GetAlternateUPC(II.Item_Key) 
+                      AS AlternateUPC
+FROM         ItemIdentifier AS II WITH (NOLOCK) INNER JOIN
+                      Item AS I WITH (NOLOCK) ON I.Item_Key = II.Item_Key INNER JOIN
+                      ItemAttribute AS IA WITH (NOLOCK) ON IA.Item_Key = II.Item_Key INNER JOIN
+                      Price AS P WITH (NOLOCK) ON P.Item_Key = I.Item_Key INNER JOIN
+                      StoreItem AS SI WITH (NOLOCK) ON SI.Store_No = P.Store_No AND SI.Item_Key = P.Item_Key INNER JOIN
+                      PriceChgType AS PCT WITH (NOLOCK) ON PCT.PriceChgTypeID = P.PriceChgTypeId LEFT OUTER JOIN
+                      SubTeam AS ST WITH (NOLOCK) ON I.SubTeam_No = ST.SubTeam_No LEFT OUTER JOIN
+                      ItemBrand AS B WITH (NOLOCK) ON B.Brand_ID = I.Brand_ID LEFT OUTER JOIN
+                      ItemUnit AS IU WITH (NOLOCK) ON IU.Unit_ID = I.Package_Unit_ID
+WHERE     (IA.Check_Box_3 = 1) AND (@IncludeExemptByStatute = 1) AND (P.Store_No = @Store_No) AND (SI.Authorized = 1) AND (II.Default_Identifier = 1) AND 
+                      (I.Deleted_Item = 0) AND (dbo.fn_GetDiscontinueStatus(I.Item_Key, NULL, NULL) = 0)
+ORDER BY S.Store_No DESC, SubTeam_Name, II.Identifier</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Store_No">
+            <Value>=Parameters!Store_No.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@IncludeExemptByStore">
+            <Value>=Parameters!IncludeExemptByStore.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@IncludeExemptByStatute">
+            <Value>=Parameters!IncludeExemptByStatute.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+    </DataSet>
+    <DataSet Name="dsExemptByStore">
+      <Fields>
+        <Field Name="ExemptCount">
+          <DataField>ExemptCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>/*----------------------------------------------------
+ Exempt Items by Store
+----------------------------------------------------
+----------------------------------------------------
+ Exempt Items by Store*/
+SELECT     COUNT(*) AS ExemptCount
+FROM         Store AS S WITH (NOLOCK) INNER JOIN
+                      StoreItemAttribute AS SIA WITH (NOLOCK) ON S.Store_No = SIA.Store_No INNER JOIN
+                      ItemIdentifier AS II WITH (NOLOCK) ON SIA.Item_Key = II.Item_Key INNER JOIN
+                      Item AS I WITH (NOLOCK) ON SIA.Item_Key = I.Item_Key INNER JOIN
+                      Vendor AS V WITH (NOLOCK) ON S.Store_No = V.Store_no INNER JOIN
+                      Price AS P WITH (NOLOCK) ON S.Store_No = P.Store_No AND P.Item_Key = I.Item_Key INNER JOIN
+                      StoreItem AS SI WITH (NOLOCK) ON SI.Store_No = P.Store_No AND SI.Item_Key = P.Item_Key INNER JOIN
+                      PriceChgType AS PCT WITH (NOLOCK) ON PCT.PriceChgTypeID = P.PriceChgTypeId LEFT OUTER JOIN
+                      SubTeam AS ST WITH (NOLOCK) ON I.SubTeam_No = ST.SubTeam_No LEFT OUTER JOIN
+                      ItemBrand AS B WITH (NOLOCK) ON B.Brand_ID = I.Brand_ID LEFT OUTER JOIN
+                      ItemUnit AS IU WITH (NOLOCK) ON IU.Unit_ID = I.Package_Unit_ID
+WHERE     (SIA.Exempt = 1) AND (S.Store_No = @Store_No) AND (SI.Authorized = 1) AND (@IncludeExemptByStore = 1) AND (II.Default_Identifier = 1) AND 
+                      (I.Deleted_Item = 0) AND (dbo.fn_GetDiscontinueStatus(I.Item_Key, NULL, NULL) = 0)</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Store_No">
+            <Value>=Parameters!Store_No.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@IncludeExemptByStore">
+            <Value>=Parameters!IncludeExemptByStore.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <Author>tim.pope</Author>
+  <Code>'---------------------------------------------------------------------------------------------------------------------------
+Public Shared Function FormatPackageSize(ByVal package_desc2 As Double) As String
+
+    Dim sPackageSize As String
+    
+    'only display non-zero digits after decimal 
+    If package_desc2 = Int(package_desc2) Then
+        'remove any trailing decimal digits
+        sPackageSize = String.Format("{0}", FormatNumber(package_desc2, 0))
+    Else
+        sPackageSize = String.Format("{0}", package_desc2)
+    End If
+
+    Return package_desc2
+
+End Function
+</Code>
+  <Width>7.5in</Width>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox2">
+        <RepeatWith>tblExemptByStore</RepeatWith>
+        <Top>0.0125in</Top>
+        <Width>2in</Width>
+        <Style>
+          <Color>SteelBlue</Color>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>8pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>2</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Height>0.2in</Height>
+        <Value>   * indicates a store-level exemption</Value>
+      </Textbox>
+      <Textbox Name="txtRowCount">
+        <RepeatWith>tblExemptByStore</RepeatWith>
+        <Width>3.75in</Width>
+        <Style>
+          <Color>SteelBlue</Color>
+          <FontFamily>Tahoma</FontFamily>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.125in</Left>
+        <Height>0.225in</Height>
+        <Value>=CountRows("dsExempt") &amp; " items (" &amp; IIf(Parameters!IncludeExemptByStore.Value, "including ", "excluding ") &amp; Sum(Fields!ExemptCount.Value, "dsExemptByStore") &amp; " store-level items)"</Value>
+      </Textbox>
+      <Table Name="tblExemptByStore">
+        <DataSetName>dsExempt</DataSetName>
+        <Top>0.25in</Top>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox6">
+                      <rd:DefaultName>textbox6</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>8</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=RowNumber("dsExempt") &amp; IIf(Fields!Store_No.Value=0, " ", "*")</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="DEPT">
+                      <rd:DefaultName>DEPT</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>7</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!SubTeam_Name.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="UPC">
+                      <rd:DefaultName>UPC</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>6</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Identifier.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Brand_Name">
+                      <rd:DefaultName>Brand_Name</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>5</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Brand_Name.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Description">
+                      <rd:DefaultName>Description</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>4</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Item_Description.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox21">
+                      <rd:DefaultName>textbox21</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>3</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Code.FormatPackageSize(Fields!Package_Desc2.Value)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="UOM">
+                      <rd:DefaultName>UOM</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>2</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!UOM.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Current_Retail">
+                      <rd:DefaultName>Current_Retail</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <Format>C</Format>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>1</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Iif(Fields!CurrentMultiple.Value &gt; 1, Fields!CurrentMultiple.Value &amp; " / ", "") &amp; FormatCurrency(Fields!CurrentRetail.Value, 2)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Alternate_UPC">
+                      <rd:DefaultName>Alternate_UPC</rd:DefaultName>
+                      <Style>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontSize>7pt</FontSize>
+                        <Format>C</Format>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!AlternateUPC.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.175in</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Style>
+          <BorderColor>
+            <Default>LightGrey</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Header>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox5">
+                      <rd:DefaultName>textbox5</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Center</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>17</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>No.</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox3">
+                      <rd:DefaultName>textbox3</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>16</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Department</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox9">
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Center</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>15</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <UserSort>
+                        <SortExpression>=Val(Fields!Identifier.Value)</SortExpression>
+                      </UserSort>
+                      <Value>UPC</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox11">
+                      <rd:DefaultName>textbox11</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>14</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Brand</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox23">
+                      <rd:DefaultName>textbox23</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>13</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Description</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox14">
+                      <rd:DefaultName>textbox14</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Center</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>12</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Size</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox20">
+                      <rd:DefaultName>textbox20</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>11</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>UOM</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox17">
+                      <rd:DefaultName>textbox17</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>10</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Retail</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox12">
+                      <rd:DefaultName>textbox12</rd:DefaultName>
+                      <Style>
+                        <Color>White</Color>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>9</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Alternate UPC</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.2in</Height>
+            </TableRow>
+          </TableRows>
+          <RepeatOnNewPage>true</RepeatOnNewPage>
+        </Header>
+        <TableColumns>
+          <TableColumn>
+            <Width>0.35in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>1.125in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.725in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>1.3in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>1.875in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.375in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.6in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.425in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.725in</Width>
+          </TableColumn>
+        </TableColumns>
+      </Table>
+    </ReportItems>
+    <Height>0.625in</Height>
+  </Body>
+  <Language>en-US</Language>
+  <TopMargin>0.5in</TopMargin>
+</Report>

@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [BizTalk]
+    WITH PASSWORD = N'u{fszjNwTiclAlppakkz=gl msFT7_&#$!~<vkosQIfgPwxM', SID = 0xBE684145CB477144855EF48B74C61C7A, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

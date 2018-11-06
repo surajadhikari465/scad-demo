@@ -1,0 +1,113 @@
+<html>
+	<head>
+        <style type="text/css">
+            .style1
+            {
+                height: 14px;
+            }
+        </style>
+    </head>
+	<div>
+		<table style="color: green;">
+			<tr><td>Invoice: %InvoiceNumber%</td></tr>
+		    <tr><td>Invoice Date: %InvoiceDate%</td></tr>
+		</table>
+		<br/>
+		<br/>
+
+		<TABLE style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px;" width="100%" cellSpacing=0 cellPadding=0>
+		<TBODY>
+			<TR vAlign=top>
+				<TH style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none" 
+                    width="20%" class="style1">Vendor:<BR></TH>
+				<TH style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none" 
+                    width="20%" class="style1">Ship To:</TH>
+				<TH style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none" 
+                    width="20%" class="style1">Bill To:</TH>
+				<TH style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none" 
+                    width="20%" class="style1">Buyer:</TH>
+				<TH style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none" 
+                    width="20%" class="style1">Purchase Order:<BR></TH>
+			</TR>
+
+		    <TR vAlign=top>
+		        <TD style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+		        	%VendorData%
+		        </TD> 
+
+		    	<TD style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+		   			%ShipToData%
+		     	</TD> 
+
+		   		<TD style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+		   		   	%BillToData%
+		     	</TD> 
+
+		    	<TD style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;" 
+                    rowspan="1">%Buyer%
+		   				 
+		   			<table align=right width=100%>
+		       			<tr valign="top">
+		       				<th style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none;">Business Unit:</th>
+		       			</tr>
+		       			<tr>
+		       				<td style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">%Business_Unit%</td>
+
+		       			</tr>
+		    		</table>
+		    	         </TD>
+
+    	<td style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+%PurchaseOrder%
+			<table align=right width=100%>  
+       		<tr valign="top"><th style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none;">Sent On:</th></tr>
+
+       		<tr>
+       			<td style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+       				%Sent_On%
+       			</td>
+       		</tr>
+       		<tr valign="top"><th style="font-size: 70%; text-align: left; color: #009900; font-weight: normal;  background-color: #CCCCCC; border-style: none;">Customer ID:</th></tr>
+       		<tr>
+       			<td style="font-size: 70%; font-weight: normal ; background-position: left top; border: 1px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+       			%CustomerID%
+       			</td>
+       		</tr>
+			</table>
+	  	</td>
+	</tr>
+</tbody>
+</table>
+<br/>
+<br/>
+<table style="BORDER-RIGHT: black 1px solid; BORDER-TOP: #000000 1px solid; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: #333333 1px solid; BACKGROUND-COLOR: #336633;" width="100%" border="0" cellSpacing=0 cellPadding=0>
+	<tr>
+	    <td colspan='100%'>
+	        <table style="BORDER-RIGHT: #000000 1px solid;BORDER-TOP: #000000 1px solid;FONT-SIZE: 9px;BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 0px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff;" width="100%" border="0" cellSpacing=0 cellPadding=0>
+	            <tr>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" colspan="3">
+	            		Description
+	            	</td>
+
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" colspan="1">
+	            		Brand
+	            	</td>
+
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">Unit<br>Cost</td>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">Inv Qty</td>
+                    <td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">Weight</td>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">Case<br>Size</td>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">Total<br>Eaches</td>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left" rowspan="2">
+	            		Inv Total
+	            	</td>
+	            </tr>
+	            <tr>
+	            	<td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left">
+	            		UPC
+	            	</td>
+	                <td colspan="2" style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left">
+	                	Vendor Item #
+	                </td>
+	                <td style="FONT-WEIGHT: normal;COLOR: #EEEEEE;BACKGROUND-COLOR: #447744;TEXT-DECORATION: none;border-top-width: 1px;border-right-width: 1px;border-top-style: solid;border-right-style: solid;border-top-color: #669966;border-right-color: #669966;PADDING-LEFT: 5px;" align="left">Size</td>
+	            </tr>

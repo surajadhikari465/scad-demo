@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [SOXAudit_User]
+    WITH PASSWORD = N'u{fsj:bw{icl0lplp,WtakkgmsFT7_&#$!~<Ulv}hkoRsfgw', SID = 0xACF3FFE5ADF7AD4A81BB6A49E788B6B0, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

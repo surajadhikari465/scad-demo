@@ -1,0 +1,32 @@
+ /****** Object:  UserDefinedFunction [dbo].[fn_GetStoreItemVendorID]    Script Date: 10/10/2006 09:25:48 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_GetStoreItemVendorID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_GetStoreItemVendorID]
+
+
+/****** Object:  UserDefinedFunction [dbo].[fn_GetStoreItemVendorID]    Script Date: 10/10/2006 09:25:56 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+create function [dbo].[fn_GetStoreItemVendorID]
+	(@Item_Key int, @Store_No int)
+returns int
+as
+begin
+	declare @SIV_ID int
+
+	select @SIV_ID = (
+		select 
+			top 1 siv.storeitemvendorid
+		from
+			storeitemvendor siv (nolock)
+		where
+			siv.item_key = @Item_Key
+			and siv.store_no = @Store_No
+			and siv.primaryvendor = 1
+	)
+	return @SIV_ID
+end
+
+GO

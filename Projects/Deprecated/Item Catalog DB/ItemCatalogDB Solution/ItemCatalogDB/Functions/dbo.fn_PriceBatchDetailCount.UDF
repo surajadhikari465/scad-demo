@@ -1,0 +1,20 @@
+IF EXISTS (SELECT * 
+	   FROM   sysobjects 
+	   WHERE  name = N'fn_PriceBatchDetailCount')
+	DROP FUNCTION fn_PriceBatchDetailCount
+GO
+
+CREATE FUNCTION dbo.fn_PriceBatchDetailCount 
+	(@PriceBatchHeaderID int)
+RETURNS int
+AS
+BEGIN
+    DECLARE @Cnt int
+
+    SELECT @Cnt = COUNT(*)
+    FROM (SELECT Item_Key FROM PriceBatchDetail WHERE PriceBatchHeaderID = @PriceBatchHeaderID GROUP BY Item_Key) T
+
+    RETURN @Cnt
+END
+
+GO

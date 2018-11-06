@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="VB" CodeBehind="Hierarchy.asmx.vb" Class="SLIM.Hierarchy" %>

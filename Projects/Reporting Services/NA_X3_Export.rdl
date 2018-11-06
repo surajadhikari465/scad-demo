@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Tablix Name="table1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>3.625in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.21in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Header">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Header.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Header</rd:DefaultName>
+                      <ZIndex>1</ZIndex>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.21in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Line.Value
+                      </Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox3</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <Group Name="table1_Header">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Header.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!Header.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="table1_Details_Group">
+                    <DataElementName>Detail</DataElementName>
+                  </Group>
+                  <TablixMembers>
+                    <TablixMember />
+                  </TablixMembers>
+                  <DataElementName>Detail_Collection</DataElementName>
+                  <DataElementOutput>Output</DataElementOutput>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+              </TablixMembers>
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <NoRowsMessage>No Results Meet that Criteria</NoRowsMessage>
+        <DataSetName>ItemCatalog</DataSetName>
+        <Height>0.42in</Height>
+        <Width>3.625in</Width>
+        <Style />
+      </Tablix>
+    </ReportItems>
+    <Height>0.42in</Height>
+    <Style />
+  </Body>
+  <Width>3.625in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>cac9bb0e-0b08-417c-866b-8bbbfd5bac14</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="ItemCatalog">
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ExpectedDate">
+            <Value>=Parameters!ExpectedDate.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT
+	'E,STO,' 
+		+	
+			CASE OH.Transfer_To_SubTeam
+				WHEN 4110 THEN CAST(S.BusinessUnit_ID as varchar(10)) + '-B' -- Bakery
+				WHEN 4320 THEN CAST(S.BusinessUnit_ID as varchar(10)) + '-F' -- Frozen
+				WHEN 4120 THEN CAST(S.BusinessUnit_ID as varchar(10)) + '-D' -- Prep Foods
+				ELSE CAST(S.BusinessUnit_ID as varchar(10)) + '-M' -- All Others
+			END 
+		+ 
+			',' 
+		+ 
+			CONVERT(nvarchar(30), OH.OrderDate, 112)
+		+
+			',' 
+		+
+			CONVERT(nvarchar(30), OH.Expected_Date, 112)
+		+	
+			','
+		+
+			CAST(OH.OrderHeader_ID as varchar(10))									AS Header,
+	'L,' 
+		+ 
+			REPLACE(LTRIM(REPLACE(IV.Item_ID , '0', ' ')), ' ', '0')
+		+ 
+			','
+		+
+			CAST(CAST(OI.QuantityOrdered AS int) as varchar(10))	AS Line
+FROM         
+	OrderItem OI					(NOLOCK)
+	INNER JOIN OrderHeader OH		(NOLOCK) ON OI.OrderHeader_ID		= OH.OrderHeader_ID
+	INNER JOIN Vendor V				(NOLOCK) ON OH.ReceiveLocation_ID	= V.Vendor_ID
+	INNER JOIN ItemVendor IV		(NOLOCK) ON OH.Vendor_ID			= IV.Vendor_ID
+											 AND OI.Item_Key			= IV.Item_Key
+	INNER JOIN Store S				(NOLOCK) ON V.Store_No				= S.Store_No
+WHERE
+	OH.Vendor_ID			=	473
+	AND OH.Expected_Date	=	@ExpectedDate
+                AND OH.Return_Order = 0
+GROUP BY
+	OH.Transfer_To_SubTeam,
+	S.BusinessUnit_ID,
+	OH.OrderHeader_ID,
+	OH.Expected_Date,
+	OH.OrderDate,
+	OI.OrderItem_ID,
+	OI.QuantityOrdered,
+	IV.Item_ID
+ORDER BY
+	S.BusinessUnit_ID,
+	OH.OrderHeader_ID,
+	--OI.OrderItem_ID
+                IV.Item_ID</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="Header">
+          <DataField>Header</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Line">
+          <DataField>Line</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="ExpectedDate">
+      <DataType>DateTime</DataType>
+      <Prompt>Expected Date:</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Language>en-US</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>6120f755-16c4-4bf4-ae9c-3cddecde3086</rd:ReportID>
+</Report>

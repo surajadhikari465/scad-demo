@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PromoPlanner", "PromoPlanner.vbproj", "{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cewp1605:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PromoPlanner.vbproj
+		SccLocalPath1 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DEV|Any CPU = DEV|Any CPU
+		Production|Any CPU = Production|Any CPU
+		QA|Any CPU = QA|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.DEV|Any CPU.ActiveCfg = DEV|Any CPU
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.DEV|Any CPU.Build.0 = DEV|Any CPU
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.Production|Any CPU.Build.0 = Production|Any CPU
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{CCF9D5F7-AE89-413C-A11A-D0F9588AD449}.QA|Any CPU.Build.0 = QA|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

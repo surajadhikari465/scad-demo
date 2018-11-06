@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{4F174C21-8C12-11D0-8340-0000F80270F8}") = "MultiPOTool_DB", "MultiPOTool_DB.dbp", "{AE767435-C912-416F-A5A0-D5E3C0B668E6}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cen-irmadev2:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MultiPOTool_DB.dbp
+		SccLocalPath1 = .
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

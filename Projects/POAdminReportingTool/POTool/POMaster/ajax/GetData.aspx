@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="ajax_GetData" CodeFile="GetData.aspx.cs" %>

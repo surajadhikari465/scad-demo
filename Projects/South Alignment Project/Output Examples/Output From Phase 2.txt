@@ -1,0 +1,2173 @@
+Status: BEGIN FL [dbo].[Date] ChangeSteps (takes about 1 minute in TEST): ---  [dbo].[Date] --- Mar 23 2018  8:15:50.3362702AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[Date] --- Mar 23 2018  8:16:50.3450596AM
+Status: 1. Disable SO Change Tracking --- [dbo].[Date] --- Mar 23 2018  8:15:50.3489660AM
+No Change Tracking. (This Step is N/A)
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[Date] --- Mar 23 2018  8:15:50.3567788AM
+No Defaults. (This Step is N/A)
+Status: 3. Drop SO Extended Properties --- [dbo].[Date] --- Mar 23 2018  8:15:50.3636150AM
+Status: 4. Drop SO Triggers --- [dbo].[Date] --- Mar 23 2018  8:15:50.8343362AM
+No Triggers. (This Step is N/A)
+Status: 5. Drop SO Foreign Keys --- [dbo].[Date] --- Mar 23 2018  8:15:50.8401958AM
+No Foreign Keys. (This Step is N/A)
+Status: 6. Drop SO Indexes --- [dbo].[Date] --- Mar 23 2018  8:15:50.8460554AM
+Status: 7. Rename SO PK  --- [dbo].[Date] --- Mar 23 2018  8:15:50.9251600AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[Date] --- Mar 23 2018  8:15:51.0980182AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[Date] --- Mar 23 2018  8:15:51.1175502AM
+Status: 10. Populate FL Table (not enough rows to do this in batches) --- [dbo].[Date] --- Mar 23 2018  8:15:51.1634504AM
+Status: 11. Enable FL Change Tracking --- [dbo].[Date] --- Mar 23 2018  8:15:51.2591572AM
+No Change Tracking. (This Step is N/A)
+Status: 12. Create FL Indexes --- [dbo].[Date] --- Mar 23 2018  8:15:51.2650168AM
+Status: 13. Create FL Foreign Keys --- [dbo].[Date] --- Mar 23 2018  8:15:51.3050574AM
+No Foreign Keys. (This Step is N/A)
+Status: 14. Create FL Triggers --- [dbo].[Date] --- Mar 23 2018  8:15:51.3109170AM
+No Triggers. (This Step is N/A)
+Status: 15. Grant SO Perms --- [dbo].[Date] --- Mar 23 2018  8:15:51.3158000AM
+Status: 16. Check FL Checks --- [dbo].[Date] --- Mar 23 2018  8:15:51.3734194AM
+No Defaults. (This Step is N/A)
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[Date] --- Mar 23 2018  8:15:51.3919748AM
+[dbo].[Date_Unaligned] Row Count:	10324
+[dbo].[Date] Aligned Row Count:	10324
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[Date] --- Mar 23 2018  8:15:51.4173664AM
+
+Status: Begin [dbo].[Item]  Rebuild --- [dbo].[Item] --- Mar 23 2018  8:17:41.2653344AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[Item] --- Mar 23 2018  8:22:41.2702174AM
+Status: 1. Disable SO Change Tracking --- [dbo].[Item] --- Mar 23 2018  8:17:41.2731472AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[Item] --- Mar 23 2018  8:17:42.0319654AM
+Status: 3. Drop SO Extended Properties --- [dbo].[Item] --- Mar 23 2018  8:17:42.9011394AM
+Status: 4. Drop SO Triggers --- [dbo].[Item] --- Mar 23 2018  8:17:43.3845564AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[Item] --- Mar 23 2018  8:17:43.7068344AM
+Status: 6. Drop SO Indexes --- [dbo].[Item] --- Mar 23 2018  8:17:44.1326320AM
+Status: 7. Rename SO PK  --- [dbo].[Item] --- Mar 23 2018  8:17:44.9412568AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[Item] --- Mar 23 2018  8:17:44.9568824AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[Item] --- Mar 23 2018  8:17:44.9666484AM
+Status: 10. Populate FL Table in Batches (takes about 15 seconds in TEST for batches of 5000): --- [dbo].[Item] --- Mar 23 2018  8:17:45.2459560AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[Item] --- Mar 23 2018  8:18:45.2488858AM
+Status: 11. Enable FL Change Tracking --- [dbo].[Item] --- Mar 23 2018  8:17:59.5863504AM
+Status: 12. Create FL Indexes --- [dbo].[Item] --- Mar 23 2018  8:17:59.6117420AM
+Status: 13. Create FL Foreign Keys --- [dbo].[Item] --- Mar 23 2018  8:18:16.3213680AM
+Status: 14. Create FL Triggers --- [dbo].[Item] --- Mar 23 2018  8:18:20.0324480AM
+Status: 15. Grant SO Perms --- [dbo].[Item] --- Mar 23 2018  8:18:20.2306978AM
+Status: 16. Check FL Checks --- [dbo].[Item] --- Mar 23 2018  8:18:20.4719180AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[Item] --- Mar 23 2018  8:18:22.8030622AM
+[dbo].[Item]_Unaligned Row Count:	587890
+[dbo].[Item] Aligned Row Count:	587890
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[Item] --- Mar 23 2018  8:18:23.4075776AM
+
+Status: Begin ItemChangeHistory Rebuild (Takes 5 minutes in TEST) --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.6382358AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:24:44.6411656AM
+Status: 1. Disable SO Change Tracking --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.6440954AM
+No Change Tracking. (This Step is N/A)
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.6480018AM
+Status: 3. Drop SO Extended Properties --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.6948786AM
+No Extended Properties. (This Step is N/A)
+Status: 4. Drop SO Triggers --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.6987850AM
+No Triggers. (This Step is N/A)
+Status: 5. Drop SO Foreign Keys --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.7026914AM
+Status: 6. Drop SO Indexes --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:44.7583576AM
+Status: 7. Rename SO PK  --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:49.0104740AM
+No PK on ItemChangeHistory (This Step is N/A)
+Status: 8. Rename SO Table --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:49.0182868AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:49.0300060AM
+Status: 10. Populate FL Table (Takes 15 seconds in TEST for 2 million rows): --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:19:49.1862620AM
+Status: 11. Enable FL Change Tracking --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:11.2173814AM
+(This Step is N/A)
+Status: 12. Create FL Indexes --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:11.2232410AM
+Status: 13. Create FL Foreign Keys --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:13.3004692AM
+Status: 14. Create FL Triggers --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:14.1178834AM
+No Triggers. (This Step is N/A)
+Status: 15. Grant SO Perms --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:14.1247196AM
+Status: 16. Check FL Checks --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:14.1481580AM
+Status: 17. Compare SO and FL Tables --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:14.6169260AM
+itemchangehistory_Unaligned Row Count:	2886195
+itemchangehistory Aligned Row Count:	2886195
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[ItemChangeHistory] --- Mar 23 2018  8:20:15.3151950AM
+
+Status: BEGIN FL [dbo].[ItemIdentifier] ChangeSteps (takes about 5 minutes in TEST): ---  [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:49.4776396AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:25:49.4844758AM
+Status: 1. Disable SO Change Tracking --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:49.4883822AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:50.0137930AM
+Status: 3. Drop SO Extended Properties --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:50.0889912AM
+Status: 4. Drop SO Triggers --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:50.0997338AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:50.1827448AM
+Status: 6. Drop SO Indexes --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:50.2110662AM
+Status: 7. Rename SO PK  --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:51.5919786AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:52.2375112AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:52.6174086AM
+Status: 10. Populate FL Table in Batches (takes about 5 minutes in TEST for batches of 10000): --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:20:53.0910596AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:25:53.0949660AM
+Status: 11. Enable FL Change Tracking --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:07.5877100AM
+Status: 12. Create FL Indexes --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:07.6394698AM
+Status: 13. Create FL Foreign Keys --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:19.9641618AM
+Status: 14. Create FL Triggers --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:20.8304060AM
+Status: 15. Grant SO Perms --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:20.9016978AM
+Status: 16. Check FL Checks --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:21.0354920AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:21.6214520AM
+[dbo].[ItemIdentifier_Unaligned] Row Count:	597887
+[dbo].[ItemIdentifier] Aligned Row Count:	597887
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[ItemIdentifier] --- Mar 23 2018  8:21:21.7806378AM
+
+Status: BEGIN FL [dbo].[ItemUnit] ChangeSteps (takes about 1 minute in TEST): ---  [dbo].[ItemUnit] --- Mar 23 2018  8:21:58.6394750AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[ItemUnit] --- Mar 23 2018  8:22:58.6482644AM
+Status: 1. Disable SO Change Tracking --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:58.6521708AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:58.7029540AM
+Status: 3. Drop SO Extended Properties --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:58.7967076AM
+Status: 4. Drop SO Triggers --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:58.8885080AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.0437874AM
+Status: 6. Drop SO Indexes --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.0965238AM
+No Indexes in South (This Step is N/A)
+Status: 7. Rename SO PK  --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.1092196AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.1414474AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.1531666AM
+Status: 10. Populate FL Table (not enough rows to perform batch operations) --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.1863710AM
+Status: 11. Enable FL Change Tracking --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.1961370AM
+Status: 12. Create FL Indexes --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.2234818AM
+Status: 13. Create FL Foreign Keys --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.2586394AM
+Status: 14. Create FL Triggers --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.3211418AM
+Status: 15. Grant SO Perms --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.3416504AM
+Status: 16. Check FL Checks --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.4734914AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.4940000AM
+[dbo].[ItemUnit_Unaligned] Row Count:	50
+[dbo].[ItemUnit] Aligned Row Count:	50
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[ItemUnit] --- Mar 23 2018  8:21:59.4998596AM
+
+Status: BEGIN FL [dbo].[OrderHeader] ChangeSteps (takes about 7 minutes in TEST): ---  [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.0750604AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[OrderHeader] --- Mar 23 2018  8:29:25.0848264AM
+Status: 1. Disable SO Change Tracking --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.0887328AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.2283866AM
+Status: 3. Drop SO Extended Properties --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.4559344AM
+Status: 4. Drop SO Triggers --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.6922716AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:25.7840720AM
+Status: 6. Drop SO Indexes --- [dbo].[OrderHeader] --- Mar 23 2018  8:22:26.1542034AM
+Status: 7. Rename SO PK  --- [dbo].[OrderHeader] --- Mar 23 2018  8:23:09.1480418AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[OrderHeader] --- Mar 23 2018  8:23:09.1626908AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[OrderHeader] --- Mar 23 2018  8:23:09.1734334AM
+Status: 10. Populate FL Table in Batches (takes about 6 minutes in TEST) --- [dbo].[OrderHeader] --- Mar 23 2018  8:23:09.2759764AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[OrderHeader] --- Mar 23 2018  8:29:09.2808594AM
+Status: 11. Enable FL Change Tracking --- [dbo].[OrderHeader] --- Mar 23 2018  8:29:19.7892270AM
+Status: 12. Create FL Indexes --- [dbo].[OrderHeader] --- Mar 23 2018  8:29:19.8028994AM
+Status: 13. Create FL Foreign Keys --- [dbo].[OrderHeader] --- Mar 23 2018  8:29:45.7941318AM
+Status: 14. Create FL Triggers --- [dbo].[OrderHeader] --- Mar 23 2018  8:30:02.9070936AM
+Status: 15. Grant SO Perms --- [dbo].[OrderHeader] --- Mar 23 2018  8:30:02.9930344AM
+Status: 16. Check FL Checks --- [dbo].[OrderHeader] --- Mar 23 2018  8:30:03.0721390AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[OrderHeader] --- Mar 23 2018  8:30:03.8934596AM
+[table here]_Unaligned] Row Count:	6915964
+[table here] Aligned Row Count:	6915964
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[OrderHeader] --- Mar 23 2018  8:30:05.1054202AM
+
+Status: BEGIN FL [dbo].[OrderHeaderHistory] ChangeSteps (takes about 15 minutes in TEST): ---  [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.6860468AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:46:35.6889766AM
+Status: 1. Disable SO Change Tracking --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.6919064AM
+No Change Tracking on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.6958128AM
+Status: 3. Drop SO Extended Properties --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.7417130AM
+No Extended Properties on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 4. Drop SO Triggers --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.7465960AM
+No Triggers on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 5. Drop SO Foreign Keys --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.7505024AM
+No Foreign Keys on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 6. Drop SO Indexes --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:35.7534322AM
+Status: 7. Rename SO PK  --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:43.8260078AM
+No Primary Key on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 8. Rename SO Table --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:43.8347972AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:43.8445632AM
+Status: 10. Populate FL Table in Batches (takes about 3 minutes in TEST for batches of 10000): --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:31:43.8777676AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:34:43.8826506AM
+Status: 11. Enable FL Change Tracking --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:51.4532344AM
+No Change Tracking on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 12. Create FL Indexes --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:51.4659302AM
+Status: 13. Create FL Foreign Keys --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:53.8693428AM
+No Foreign Keys on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 14. Create FL Triggers --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:53.8771556AM
+No Triggers on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 15. Grant SO Perms --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:53.8976642AM
+Status: 16. Check FL Checks --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:53.9416112AM
+No Check/Checks were generated on [dbo].[OrderHeaderHistory].  This Step is N/A
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:53.9757922AM
+[dbo].[OrderHeaderHistory]_Unaligned Row Count:	6806135
+[dbo].[OrderHeaderHistory] Aligned Row Count:	6806135
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[OrderHeaderHistory] --- Mar 23 2018  8:56:55.6448016AM
+
+Status: Begin [dbo].[SignQueue]  - Rebuild (takes about 45 minutes in TEST): --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.1946390AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[SignQueue] --- Mar 23 2018  9:56:21.1975688AM
+Status: 1. Disable SO Change Tracking --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.2004986AM
+(This Step is N/A)
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.2044050AM
+Status: 3. Drop SO Extended Properties --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.2639776AM
+Status: 4. Drop SO Triggers --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.2747202AM
+(This Step is N/A)
+Status: 5. Drop SO Foreign Keys --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.2835096AM
+Status: 6. Drop SO Indexes --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.3342928AM
+Status: 7. Rename SO PK  --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.3518716AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.3704270AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.3811696AM
+Status: 10. Populate FL Table in Batches (takes about 45 minutes in TEST for batches of 10000): --- [dbo].[SignQueue] --- Mar 23 2018  9:11:21.4192570AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[SignQueue] --- Mar 23 2018  9:56:21.4241400AM
+Status: 11. Enable FL Change Tracking --- [dbo].[SignQueue] --- Mar 23 2018  9:43:38.0619806AM
+(This Step is N/A)
+Status: 12. Create FL Indexes --- [dbo].[SignQueue] --- Mar 23 2018  9:43:38.0707700AM
+Status: 13. Create FL Foreign Keys --- [dbo].[SignQueue] --- Mar 23 2018  9:43:59.2649432AM
+Status: 14. Create FL Triggers --- [dbo].[SignQueue] --- Mar 23 2018  9:44:05.9937172AM
+(This Step is N/A)
+Status: 15. Grant SO Perms --- [dbo].[SignQueue] --- Mar 23 2018  9:44:06.0005534AM
+Status: 16. Check FL Checks --- [dbo].[SignQueue] --- Mar 23 2018  9:44:06.0659856AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[SignQueue] --- Mar 23 2018  9:44:11.7878850AM
+SignQueue_Unaligned Row Count:	17749870
+SignQueue Aligned Row Count:	17749870
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[SignQueue] --- Mar 23 2018  9:44:16.7753812AM
+
+Status: BEGIN FL [dbo].[StoreSubTeam] ChangeSteps (takes about 1 minute in TEST): ---  [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.1341674AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:15:07.1419802AM
+Status: 1. Disable SO Change Tracking --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.1576058AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.2591722AM
+Status: 3. Drop SO Extended Properties --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.3216746AM
+No Extended Properties in SO.  (This Step is N/A)
+Status: 4. Drop SO Triggers --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.3304640AM
+There are no SO Triggers. (This Step is N/A.)
+Status: 5. Drop SO Foreign Keys --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.3363236AM
+Status: 6. Drop SO Indexes --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.4847668AM
+Status: 7. Rename SO PK  --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.5541054AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.5814502AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.6009822AM
+Status: 10. Populate FL Table in Batches --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.6556718AM
+Status: 11. Enable FL Change Tracking --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.7259870AM
+Status: 12. Create FL Indexes --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.7611446AM
+No Indexes in FL.  This Step is N/A
+Status: 13. Create FL Foreign Keys --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.7660276AM
+Status: 14. Create FL Triggers --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.9916222AM
+There are no FL Triggers. (This Step is N/A.)
+Status: 15. Grant SO Perms --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:07.9955286AM
+Status: 16. Check FL Checks --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:08.2191700AM
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:08.2933916AM
+[dbo].[StoreSubTeam_Unaligned] Row Count:	5738
+[dbo].[StoreSubTeam] Aligned Row Count:	5738
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[StoreSubTeam] --- Mar 23 2018 10:14:08.3344088AM
+
+Status: BEGIN FL [dbo].[SubTeam] ChangeSteps (takes about 1.5 hours in TEST): ---  [dbo].[SubTeam] --- Mar 23 2018 10:14:32.1800510AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[SubTeam] --- Mar 23 2018 10:44:32.1868872AM
+Status: 1. Disable SO Change Tracking --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.1907936AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.2298576AM
+Status: 3. Drop SO Extended Properties --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.3382602AM
+Status: 4. Drop SO Triggers --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.3753710AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.4525224AM
+No Foreign Keys on SubTeam (This Step is N/A).
+Status: 6. Drop SO Indexes --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.4574054AM
+No Indexes on SubTeam (This Step is N/A).
+Status: 7. Rename SO PK  --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.4603352AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.4818204AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.4896332AM
+Status: 10. Populate FL Table --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.5892464AM
+Status: 11. Enable FL Change Tracking --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.5999890AM
+Status: 12. Create FL Indexes --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.7513620AM
+No Indexes on SubTeam (This Step is N/A).
+Status: 13. Create FL Foreign Keys --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.7591748AM
+No Foreign Keys on SubTeam (This Step is N/A).
+Status: 14. Create FL Triggers --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.7650344AM
+Status: 15. Grant SO Perms --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.7943324AM
+Status: 16. Check FL Checks --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.9134776AM
+No Check Checks generated from schema compare
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.9281266AM
+[dbo].[SubTeam_Unaligned] Row Count:	93
+[dbo].[SubTeam] Aligned Row Count:	93
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[SubTeam] --- Mar 23 2018 10:14:32.9496118AM
+
+Status: BEGIN FL [dbo].[Vendor] ChangeSteps (takes about 1.5 hours in TEST): ---  [dbo].[Vendor] --- Mar 23 2018 10:14:51.9190902AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[Vendor] --- Mar 23 2018 10:44:51.9269030AM
+Status: 1. Disable SO Change Tracking --- [dbo].[Vendor] --- Mar 23 2018 10:14:51.9308094AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[Vendor] --- Mar 23 2018 10:14:52.0372588AM
+Status: 3. Drop SO Extended Properties --- [dbo].[Vendor] --- Mar 23 2018 10:14:52.3986008AM
+Status: 4. Drop SO Triggers --- [dbo].[Vendor] --- Mar 23 2018 10:14:52.6056400AM
+Status: 5. Drop SO Foreign Keys --- [dbo].[Vendor] --- Mar 23 2018 10:14:52.6759552AM
+Status: 6. Drop SO Indexes --- [dbo].[Vendor] --- Mar 23 2018 10:14:52.7618960AM
+Status: 7. Rename SO PK  --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.2482428AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 8. Rename SO Table --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.2726578AM
+Caution: Changing any part of an object name could break scripts and stored procedures.
+Status: 9. Create FL Table --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.2824238AM
+Status: 10. Populate FL Table in Batches --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.4152414AM
+Status: 11. Enable FL Change Tracking --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.6466956AM
+Status: 12. Create FL Indexes --- [dbo].[Vendor] --- Mar 23 2018 10:14:53.6662276AM
+Status: 13. Create FL Foreign Keys --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.1887086AM
+Status: 14. Create FL Triggers --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.3732860AM
+Status: 15. Grant SO Perms --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.4416480AM
+Status: 16. Check FL Checks --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.5734890AM
+No CHECK CHECKS on FL Vendor (This Step is N/A)
+Status: 17. Compare SO and FL Tables (takes about 5 minutes in TEST): --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.5773954AM
+[dbo].[Vendor_Unaligned] Row Count:	8155
+[dbo].[Vendor] Aligned Row Count:	8155
+**** SUCCESS!!**** New Table Row Count Matches Old Row Count. --- [dbo].[Vendor] --- Mar 23 2018 10:14:54.6848214AM
+
+Status: 1. Rebuild Price Table and Drop Extraneous Columns --- [dbo].[Price] --- Mar 23 2018 10:15:42.5196660AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[Price] --- Mar 23 2018 10:16:42.5284554AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[Price] --- Mar 23 2018 10:15:42.5333384AM
+Status: 3. Drop Foreign Keys on SO Price --- [dbo].[Price] --- Mar 23 2018 10:15:43.0069894AM
+Status: 4. Drop Indexes on SO Price --- [dbo].[Price] --- Mar 23 2018 10:15:43.1378538AM
+Status: 5. Drop Columns on SO Price --- [dbo].[Price] --- Mar 23 2018 10:15:43.1993796AM
+Status: 6. Create Indexes on FL Price --- [dbo].[Price] --- Mar 23 2018 10:15:43.2296542AM
+Status: 7. Create Foreign Keys on FL Price --- [dbo].[Price] --- Mar 23 2018 10:15:53.1860912AM
+Status: 8. Create FL Defaults (manually generated) --- [dbo].[Price] --- Mar 23 2018 10:15:58.5935254AM
+Status: 9. Operation Complete... Mar 23 2018 10:15:58.8523244AM
+
+Status: 1. Rebuild PriceBatchDetail Table and Drop Extraneous Columns --- [dbo].[PriceBatchDetail] --- Mar 23 2018 10:16:26.1434114AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[PriceBatchDetail] --- Mar 23 2018 10:21:26.1512242AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[PriceBatchDetail] --- Mar 23 2018 10:16:26.1551306AM
+Status: 3. Drop Foreign Keys on SO PriceBatchDetail... Mar 23 2018 10:16:26.3631464AM
+Status: 4. Drop Indexes on SO PriceBatchDetail... Mar 23 2018 10:16:26.6463604AM
+Status: 5. Drop Columns on SO PriceBatchDetail... Mar 23 2018 10:16:26.7567162AM
+Status: 6. Create Indexes from FL PriceBatchDetail... Mar 23 2018 10:16:26.8104292AM
+Status: 7. Create Foreign Keys from FL PriceBatchDetail... Mar 23 2018 10:17:00.3869138AM
+Status: 8. Create FL Defaults (manually generated) --- [dbo].[PriceBatchDetail] --- Mar 23 2018 10:17:12.6813312AM
+Status: 9. Operation Complete... Mar 23 2018 10:17:12.7955934AM
+
+Status: 1. Rebuild Users Table and Drop Extraneous Columns --- [dbo].[Users] --- Mar 23 2018 10:17:46.3134820AM
+Status: Approximate Target End Time for Script to Complete: --- [dbo].[OrderItem] --- Mar 23 2018 10:18:46.3232480AM
+Status: 2. Drop SO Defaults (Manually Generated) --- [dbo].[Users] --- Mar 23 2018 10:17:46.3271544AM
+Status: 3. Drop Foreign Keys from SO Users... Mar 23 2018 10:17:47.0830428AM
+Status: 4. Drop Indexes from SO Users... Mar 23 2018 10:17:47.1826560AM
+Status: 5. Drop Columns from SO Users... Mar 23 2018 10:17:47.2178136AM
+Status: 6. Add Indexes From FL Users... Mar 23 2018 10:17:47.2617606AM
+Status: 7. Add Foreign Keys From FL Users... Mar 23 2018 10:17:47.4717296AM
+Status: 8. Add Constraints From FL Users... Mar 23 2018 10:17:47.6504474AM
+Status: 9. Operation Complete... Mar 23 2018 10:17:48.0948004AM
+
+Dropping Columns on 6 SO Tables... Mar 23 2018 10:18:25.9400036AM
+Status: Approximate Target End Time for Script to Complete: Mar 23 2018 10:19:25.9468398AM
+Altering [dbo].[DeletedOrder]... Mar 23 2018 10:18:25.9507462AM
+Altering [dbo].[PriceBatchDetailArchive]... Mar 23 2018 10:18:25.9888336AM
+Altering [dbo].[PriceHistory]... Mar 23 2018 10:18:26.0103188AM
+Altering [dbo].[Store]... Mar 23 2018 10:18:26.1861068AM
+Altering [dbo].[StoreItemVendor]... Mar 23 2018 10:18:26.2349368AM
+Altering [dbo].[VendorCostHistory]... Mar 23 2018 10:18:26.2632582AM
+Status: Operation Complete... Mar 23 2018 10:18:26.3394330AM
+
+/******************************************************************************
+-- This output is generated to be run as part of the rollback process.
+Status: SO - Point FKs to Aligned Tables (takes about 15 minutes in TEST): --- Mar 23 2018 10:19:12.3861230AM
+Status: Approximate Target End Time for Script to Complete: --- Mar 23 2018 10:34:12.4007720AM
+Status: 1. Manually Handle FKs with Mulitple Columns --- Mar 23 2018 10:19:12.4066316AM
+******************************************************************************/
+/******************************************************************************
+		Altering Table #164 --- Mar 23 2018 10:19:13.4623362AM
+******************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue] DROP CONSTRAINT [FK_OrderItemQueue_StoreSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueue_StoreSubTeam] FOREIGN KEY([Store_No], [TransferToSubTeam_No])
+REFERENCES [dbo].[StoreSubTeam] ([Store_No], [SubTeam_No])
+
+GO
+/******************************************************************************
+		Altering Table #163 --- Mar 23 2018 10:19:13.7103926AM
+******************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak] DROP CONSTRAINT [FK_OrderItemQueueBak_StoreSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueueBak_StoreSubTeam] FOREIGN KEY([Store_No], [TransferToSubTeam_No])
+REFERENCES [dbo].[StoreSubTeam] ([Store_No], [SubTeam_No])
+
+GO
+/******************************************************************************
+		Altering Table #162 --- Mar 23 2018 10:19:13.8666486AM
+******************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ScanGunStoreSubTeam_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ScanGunStoreSubTeam]'))
+ALTER TABLE [dbo].[ScanGunStoreSubTeam] DROP CONSTRAINT [FK_ScanGunStoreSubTeam_StoreSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ScanGunStoreSubTeam_StoreSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ScanGunStoreSubTeam]'))
+ALTER TABLE [dbo].[ScanGunStoreSubTeam]  WITH CHECK ADD  CONSTRAINT [FK_ScanGunStoreSubTeam_StoreSubTeam] FOREIGN KEY([Store_No], [SubTeam_No])
+REFERENCES [dbo].[StoreSubTeam] ([Store_No], [SubTeam_No])
+
+GO
+/******************************************************************************
+Status: 2. Dynamically Generate SQL to Point to Aligned Tables --- Mar 23 2018 10:19:14.0092322AM
+Status: Approximate Target End Time for this Step to Complete: --- [dbo].[OrderItem] --- Mar 23 2018 11:05:14.0219280AM
+******************************************************************************/
+/******************************************************************************
+		Altering Table #161 --- Mar 23 2018 10:19:14.4985088AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DSDVendorStore_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[DSDVendorStore]'))
+ALTER TABLE [dbo].[DSDVendorStore] DROP CONSTRAINT [FK_DSDVendorStore_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DSDVendorStore_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[DSDVendorStore]'))
+ALTER TABLE [dbo].[DSDVendorStore]  WITH CHECK ADD  CONSTRAINT [FK_DSDVendorStore_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #160 --- Mar 23 2018 10:19:14.5785900AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Purch]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK__DeletedOrder__Purch]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Purch]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrder__Purch] FOREIGN KEY([PurchaseLocation_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #159 --- Mar 23 2018 10:19:14.6440222AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Recei]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK__DeletedOrder__Recei]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Recei]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrder__Recei] FOREIGN KEY([ReceiveLocation_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #158 --- Mar 23 2018 10:19:14.7055480AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Vendo]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK__DeletedOrder__Vendo]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrder__Vendo]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrder__Vendo] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #157 --- Mar 23 2018 10:19:14.7670738AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemVendor_3__16]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemVendor]'))
+ALTER TABLE [dbo].[ItemVendor] DROP CONSTRAINT [FK_ItemVendor_3__16]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemVendor_3__16]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemVendor]'))
+ALTER TABLE [dbo].[ItemVendor]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemVendor_3__16] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #156 --- Mar 23 2018 10:19:14.8334826AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorDocTransfer_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorDocTransfer]'))
+ALTER TABLE [dbo].[VendorDocTransfer] DROP CONSTRAINT [FK_VendorDocTransfer_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorDocTransfer_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorDocTransfer]'))
+ALTER TABLE [dbo].[VendorDocTransfer]  WITH CHECK ADD  CONSTRAINT [FK_VendorDocTransfer_Vendor] FOREIGN KEY([VendorID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #155 --- Mar 23 2018 10:19:14.9204000AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Purch__025D5595]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK__OrderHead__Purch__025D5595]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Purch__025D5595]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH CHECK ADD  CONSTRAINT [FK__OrderHead__Purch__025D5595] FOREIGN KEY([PurchaseLocation_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #154 --- Mar 23 2018 10:19:16.2895932AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Recei__04459E07]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK__OrderHead__Recei__04459E07]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Recei__04459E07]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH CHECK ADD  CONSTRAINT [FK__OrderHead__Recei__04459E07] FOREIGN KEY([ReceiveLocation_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #153 --- Mar 23 2018 10:19:16.9527046AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreVendor_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreVendor]'))
+ALTER TABLE [dbo].[StoreVendor] DROP CONSTRAINT [FK_StoreVendor_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreVendor_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreVendor]'))
+ALTER TABLE [dbo].[StoreVendor]  WITH CHECK ADD  CONSTRAINT [FK_StoreVendor_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #152 --- Mar 23 2018 10:19:16.9976282AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Vendo__07220AB2]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK__OrderHead__Vendo__07220AB2]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderHead__Vendo__07220AB2]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderHead__Vendo__07220AB2] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #151 --- Mar 23 2018 10:19:17.0405986AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_Freight3Party_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_Freight3Party]'))
+ALTER TABLE [dbo].[OrderInvoice_Freight3Party] DROP CONSTRAINT [FK_OrderInvoice_Freight3Party_Vendor_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_Freight3Party_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_Freight3Party]'))
+ALTER TABLE [dbo].[OrderInvoice_Freight3Party]  WITH CHECK ADD  CONSTRAINT [FK_OrderInvoice_Freight3Party_Vendor_ID] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #150 --- Mar 23 2018 10:19:17.1031010AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PayOrderedCost_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[PayOrderedCost]'))
+ALTER TABLE [dbo].[PayOrderedCost] DROP CONSTRAINT [FK_PayOrderedCost_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PayOrderedCost_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[PayOrderedCost]'))
+ALTER TABLE [dbo].[PayOrderedCost]  WITH CHECK ADD  CONSTRAINT [FK_PayOrderedCost_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #149 --- Mar 23 2018 10:19:17.1665800AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_ControlGroupInvoice_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_ControlGroupInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice_ControlGroupInvoice] DROP CONSTRAINT [FK_OrderInvoice_ControlGroupInvoice_Vendor_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_ControlGroupInvoice_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_ControlGroupInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice_ControlGroupInvoice]  WITH CHECK ADD  CONSTRAINT [FK_OrderInvoice_ControlGroupInvoice_Vendor_ID] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #148 --- Mar 23 2018 10:19:17.2300590AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_ControlGroupLog_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_ControlGroupLog]'))
+ALTER TABLE [dbo].[OrderInvoice_ControlGroupLog] DROP CONSTRAINT [FK_OrderInvoice_ControlGroupLog_Vendor_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_ControlGroupLog_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_ControlGroupLog]'))
+ALTER TABLE [dbo].[OrderInvoice_ControlGroupLog]  WITH CHECK ADD  CONSTRAINT [FK_OrderInvoice_ControlGroupLog_Vendor_ID] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #147 --- Mar 23 2018 10:19:17.3033040AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InvoiceMatchingTolerance_VendorOverride_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[InvoiceMatchingTolerance_VendorOverride]'))
+ALTER TABLE [dbo].[InvoiceMatchingTolerance_VendorOverride] DROP CONSTRAINT [FK_InvoiceMatchingTolerance_VendorOverride_Vendor_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InvoiceMatchingTolerance_VendorOverride_Vendor_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[InvoiceMatchingTolerance_VendorOverride]'))
+ALTER TABLE [dbo].[InvoiceMatchingTolerance_VendorOverride]  WITH CHECK ADD  CONSTRAINT [FK_InvoiceMatchingTolerance_VendorOverride_Vendor_ID] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #146 --- Mar 23 2018 10:19:17.3794788AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemManger_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemManager]'))
+ALTER TABLE [dbo].[ItemManager] DROP CONSTRAINT [FK_ItemManger_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemManger_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemManager]'))
+ALTER TABLE [dbo].[ItemManager]  WITH CHECK ADD  CONSTRAINT [FK_ItemManger_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #145 --- Mar 23 2018 10:19:17.4400280AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorItemDiscrepancyQueue_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorItemDiscrepancyQueue]'))
+ALTER TABLE [dbo].[VendorItemDiscrepancyQueue] DROP CONSTRAINT [FK_VendorItemDiscrepancyQueue_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorItemDiscrepancyQueue_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorItemDiscrepancyQueue]'))
+ALTER TABLE [dbo].[VendorItemDiscrepancyQueue]  WITH CHECK ADD  CONSTRAINT [FK_VendorItemDiscrepancyQueue_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #144 --- Mar 23 2018 10:19:17.5152262AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_WarehouseVendorChange_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[WarehouseVendorChange]'))
+ALTER TABLE [dbo].[WarehouseVendorChange] DROP CONSTRAINT [FK_WarehouseVendorChange_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_WarehouseVendorChange_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[WarehouseVendorChange]'))
+ALTER TABLE [dbo].[WarehouseVendorChange]  WITH CHECK ADD  CONSTRAINT [FK_WarehouseVendorChange_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #143 --- Mar 23 2018 10:19:17.5826116AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Contact_1__16]') AND parent_object_id = OBJECT_ID(N'[dbo].[Contact]'))
+ALTER TABLE [dbo].[Contact] DROP CONSTRAINT [FK_Contact_1__16]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Contact_1__16]') AND parent_object_id = OBJECT_ID(N'[dbo].[Contact]'))
+ALTER TABLE [dbo].[Contact]  WITH CHECK ADD  CONSTRAINT [FK_Contact_1__16] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #142 --- Mar 23 2018 10:19:17.6558566AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadHeaderVendor_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadHeaderVendor]'))
+ALTER TABLE [dbo].[ItemUploadHeaderVendor] DROP CONSTRAINT [FK_ItemUploadHeaderVendor_Vendor]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadHeaderVendor_Vendor]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadHeaderVendor]'))
+ALTER TABLE [dbo].[ItemUploadHeaderVendor]  WITH CHECK ADD  CONSTRAINT [FK_ItemUploadHeaderVendor_Vendor] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #141 --- Mar 23 2018 10:19:17.7212888AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__LastVendo__Vendo__7CA47C3F]') AND parent_object_id = OBJECT_ID(N'[dbo].[LastVendor]'))
+ALTER TABLE [dbo].[LastVendor] DROP CONSTRAINT [FK__LastVendo__Vendo__7CA47C3F]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__LastVendo__Vendo__7CA47C3F]') AND parent_object_id = OBJECT_ID(N'[dbo].[LastVendor]'))
+ALTER TABLE [dbo].[LastVendor]  WITH NOCHECK ADD  CONSTRAINT [FK__LastVendo__Vendo__7CA47C3F] FOREIGN KEY([Vendor_ID])
+REFERENCES [dbo].[Vendor] ([Vendor_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #140 --- Mar 23 2018 10:19:17.7857444AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumBySubDept_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumBySubDept]'))
+ALTER TABLE [dbo].[Sales_SumBySubDept] DROP CONSTRAINT [FK_Sales_SumBySubDept_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumBySubDept_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumBySubDept]'))
+ALTER TABLE [dbo].[Sales_SumBySubDept]  WITH NOCHECK ADD  CONSTRAINT [FK_Sales_SumBySubDept_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #139 --- Mar 23 2018 10:19:17.8541064AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem] DROP CONSTRAINT [FK_Sales_SumByItem_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem]  WITH NOCHECK ADD  CONSTRAINT [FK_Sales_SumByItem_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #138 --- Mar 23 2018 10:19:17.9263748AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Date_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly] DROP CONSTRAINT [FK_Sales_SumByItem_Date_Wkly]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Date_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly]  WITH CHECK ADD  CONSTRAINT [FK_Sales_SumByItem_Date_Wkly] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #137 --- Mar 23 2018 10:19:17.9869240AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TlogReprocessRequest_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[TlogReprocessRequest]'))
+ALTER TABLE [dbo].[TlogReprocessRequest] DROP CONSTRAINT [FK_TlogReprocessRequest_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TlogReprocessRequest_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[TlogReprocessRequest]'))
+ALTER TABLE [dbo].[TlogReprocessRequest]  WITH CHECK ADD  CONSTRAINT [FK_TlogReprocessRequest_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #136 --- Mar 23 2018 10:19:18.0728648AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Payment_SumByRegister_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Payment_SumByRegister]'))
+ALTER TABLE [dbo].[Payment_SumByRegister] DROP CONSTRAINT [FK_Payment_SumByRegister_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Payment_SumByRegister_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Payment_SumByRegister]'))
+ALTER TABLE [dbo].[Payment_SumByRegister]  WITH CHECK ADD  CONSTRAINT [FK_Payment_SumByRegister_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #135 --- Mar 23 2018 10:19:19.4010408AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Buggy_SumByRegister_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Buggy_SumByRegister]'))
+ALTER TABLE [dbo].[Buggy_SumByRegister] DROP CONSTRAINT [FK_Buggy_SumByRegister_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Buggy_SumByRegister_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Buggy_SumByRegister]'))
+ALTER TABLE [dbo].[Buggy_SumByRegister]  WITH CHECK ADD  CONSTRAINT [FK_Buggy_SumByRegister_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #134 --- Mar 23 2018 10:19:19.7741020AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Buggy_SumByCashier_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Buggy_SumByCashier]'))
+ALTER TABLE [dbo].[Buggy_SumByCashier] DROP CONSTRAINT [FK_Buggy_SumByCashier_Date]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Buggy_SumByCashier_Date]') AND parent_object_id = OBJECT_ID(N'[dbo].[Buggy_SumByCashier]'))
+ALTER TABLE [dbo].[Buggy_SumByCashier]  WITH CHECK ADD  CONSTRAINT [FK_Buggy_SumByCashier_Date] FOREIGN KEY([Date_Key])
+REFERENCES [dbo].[Date] ([Date_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #133 --- Mar 23 2018 10:19:20.1481398AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue] DROP CONSTRAINT [FK_OrderItemQueue_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueue_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #132 --- Mar 23 2018 10:19:20.5612416AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[mammoth].[FK_ItemLocaleChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[mammoth].[ItemLocaleChangeQueue]'))
+ALTER TABLE [mammoth].[ItemLocaleChangeQueue] DROP CONSTRAINT [FK_ItemLocaleChangeQueue_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[mammoth].[FK_ItemLocaleChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[mammoth].[ItemLocaleChangeQueue]'))
+ALTER TABLE [mammoth].[ItemLocaleChangeQueue]  WITH CHECK ADD  CONSTRAINT [FK_ItemLocaleChangeQueue_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #131 --- Mar 23 2018 10:19:20.6696442AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak] DROP CONSTRAINT [FK_OrderItemQueueBak_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueueBak_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #130 --- Mar 23 2018 10:19:20.7868362AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemSignAttribute_Item_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemSignAttribute]'))
+ALTER TABLE [dbo].[ItemSignAttribute] DROP CONSTRAINT [FK_ItemSignAttribute_Item_Item_Key]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemSignAttribute_Item_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemSignAttribute]'))
+ALTER TABLE [dbo].[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_Item_Item_Key] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #129 --- Mar 23 2018 10:19:21.2458382AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_IRISKeyToIRMAKey_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[IRISKeyToIRMAKey]'))
+ALTER TABLE [dbo].[IRISKeyToIRMAKey] DROP CONSTRAINT [FK_IRISKeyToIRMAKey_Item_Key]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_IRISKeyToIRMAKey_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[IRISKeyToIRMAKey]'))
+ALTER TABLE [dbo].[IRISKeyToIRMAKey]  WITH CHECK ADD  CONSTRAINT [FK_IRISKeyToIRMAKey_Item_Key] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #128 --- Mar 23 2018 10:19:21.3268960AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost] DROP CONSTRAINT [FK_SuspendedAvgCost_Item_Key]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost]  WITH CHECK ADD  CONSTRAINT [FK_SuspendedAvgCost_Item_Key] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #127 --- Mar 23 2018 10:19:21.4157666AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[mammoth].[FK_PriceChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[mammoth].[PriceChangeQueue]'))
+ALTER TABLE [mammoth].[PriceChangeQueue] DROP CONSTRAINT [FK_PriceChangeQueue_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[mammoth].[FK_PriceChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[mammoth].[PriceChangeQueue]'))
+ALTER TABLE [mammoth].[PriceChangeQueue]  WITH CHECK ADD  CONSTRAINT [FK_PriceChangeQueue_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #126 --- Mar 23 2018 10:19:21.5026840AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadDetail_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadDetail]'))
+ALTER TABLE [dbo].[ItemUploadDetail] DROP CONSTRAINT [FK_ItemUploadDetail_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadDetail_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadDetail]'))
+ALTER TABLE [dbo].[ItemUploadDetail]  WITH CHECK ADD  CONSTRAINT [FK_ItemUploadDetail_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #125 --- Mar 23 2018 10:19:21.5866716AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnHand_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OnHand]'))
+ALTER TABLE [dbo].[OnHand] DROP CONSTRAINT [FK_OnHand_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnHand_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OnHand]'))
+ALTER TABLE [dbo].[OnHand]  WITH CHECK ADD  CONSTRAINT [FK_OnHand_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #124 --- Mar 23 2018 10:19:23.0027416AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_WarehouseItemChange_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[WarehouseItemChange]'))
+ALTER TABLE [dbo].[WarehouseItemChange] DROP CONSTRAINT [FK_WarehouseItemChange_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_WarehouseItemChange_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[WarehouseItemChange]'))
+ALTER TABLE [dbo].[WarehouseItemChange]  WITH NOCHECK ADD  CONSTRAINT [FK_WarehouseItemChange_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #123 --- Mar 23 2018 10:19:23.0896590AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemVendor_Item1]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemVendor]'))
+ALTER TABLE [dbo].[ItemVendor] DROP CONSTRAINT [FK_ItemVendor_Item1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemVendor_Item1]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemVendor]'))
+ALTER TABLE [dbo].[ItemVendor]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemVendor_Item1] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #122 --- Mar 23 2018 10:19:23.1697402AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_IconItemChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[IconItemChangeQueue]'))
+ALTER TABLE [dbo].[IconItemChangeQueue] DROP CONSTRAINT [FK_IconItemChangeQueue_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_IconItemChangeQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[IconItemChangeQueue]'))
+ALTER TABLE [dbo].[IconItemChangeQueue]  WITH CHECK ADD  CONSTRAINT [FK_IconItemChangeQueue_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #121 --- Mar 23 2018 10:19:23.2830258AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PMExcludedItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[PMExcludedItem]'))
+ALTER TABLE [dbo].[PMExcludedItem] DROP CONSTRAINT [FK_PMExcludedItem_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PMExcludedItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[PMExcludedItem]'))
+ALTER TABLE [dbo].[PMExcludedItem]  WITH NOCHECK ADD  CONSTRAINT [FK_PMExcludedItem_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #120 --- Mar 23 2018 10:19:23.4929948AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Planogram_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Planogram]'))
+ALTER TABLE [dbo].[Planogram] DROP CONSTRAINT [FK_Planogram_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Planogram_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Planogram]'))
+ALTER TABLE [dbo].[Planogram]  WITH CHECK ADD  CONSTRAINT [FK_Planogram_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #119 --- Mar 23 2018 10:19:24.0281716AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOnOrder_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOnOrder]'))
+ALTER TABLE [dbo].[ItemOnOrder] DROP CONSTRAINT [FK_ItemOnOrder_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOnOrder_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOnOrder]'))
+ALTER TABLE [dbo].[ItemOnOrder]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemOnOrder_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #118 --- Mar 23 2018 10:19:24.1170422AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Shipper_Item2]') AND parent_object_id = OBJECT_ID(N'[dbo].[Shipper]'))
+ALTER TABLE [dbo].[Shipper] DROP CONSTRAINT [FK_Shipper_Item2]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Shipper_Item2]') AND parent_object_id = OBJECT_ID(N'[dbo].[Shipper]'))
+ALTER TABLE [dbo].[Shipper]  WITH NOCHECK ADD  CONSTRAINT [FK_Shipper_Item2] FOREIGN KEY([Shipper_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #117 --- Mar 23 2018 10:19:24.1678254AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Shipper_Item3]') AND parent_object_id = OBJECT_ID(N'[dbo].[Shipper]'))
+ALTER TABLE [dbo].[Shipper] DROP CONSTRAINT [FK_Shipper_Item3]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Shipper_Item3]') AND parent_object_id = OBJECT_ID(N'[dbo].[Shipper]'))
+ALTER TABLE [dbo].[Shipper]  WITH NOCHECK ADD  CONSTRAINT [FK_Shipper_Item3] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #116 --- Mar 23 2018 10:19:24.2049362AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK_DeletedOrderItem_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK_DeletedOrderItem_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #115 --- Mar 23 2018 10:19:24.2430236AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LastVendor_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[LastVendor]'))
+ALTER TABLE [dbo].[LastVendor] DROP CONSTRAINT [FK_LastVendor_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LastVendor_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[LastVendor]'))
+ALTER TABLE [dbo].[LastVendor]  WITH NOCHECK ADD  CONSTRAINT [FK_LastVendor_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #114 --- Mar 23 2018 10:19:24.3045494AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK_OrderItem_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK_OrderItem_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #113 --- Mar 23 2018 10:19:51.6659516AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_Item__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK_OrderItem_Item__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_Item__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItem_Item__OLD__] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #112 --- Mar 23 2018 10:19:51.7079454AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem] DROP CONSTRAINT [FK_Sales_SumByItem_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem]  WITH NOCHECK ADD  CONSTRAINT [FK_Sales_SumByItem_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #111 --- Mar 23 2018 10:19:51.7890032AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorStoreItemIdentifier_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorStoreItemIdentifier]'))
+ALTER TABLE [dbo].[CompetitorStoreItemIdentifier] DROP CONSTRAINT [FK_CompetitorStoreItemIdentifier_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorStoreItemIdentifier_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorStoreItemIdentifier]'))
+ALTER TABLE [dbo].[CompetitorStoreItemIdentifier]  WITH CHECK ADD  CONSTRAINT [FK_CompetitorStoreItemIdentifier_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #110 --- Mar 23 2018 10:19:51.8700610AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Item_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly] DROP CONSTRAINT [FK_Sales_SumByItem_Item_Wkly]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_Item_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly]  WITH CHECK ADD  CONSTRAINT [FK_Sales_SumByItem_Item_Wkly] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #109 --- Mar 23 2018 10:19:51.9520954AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride] DROP CONSTRAINT [FK_ItemUomOverride_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemUomOverride_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #108 --- Mar 23 2018 10:19:52.0370596AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorPrice_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorPrice]'))
+ALTER TABLE [dbo].[CompetitorPrice] DROP CONSTRAINT [FK_CompetitorPrice_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorPrice_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorPrice]'))
+ALTER TABLE [dbo].[CompetitorPrice]  WITH CHECK ADD  CONSTRAINT [FK_CompetitorPrice_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #107 --- Mar 23 2018 10:19:52.1532750AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Item_Key]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Item_Key] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #106 --- Mar 23 2018 10:19:52.2411690AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemNutrition_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemNutrition]'))
+ALTER TABLE [dbo].[ItemNutrition] DROP CONSTRAINT [FK_ItemNutrition_ItemKey]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemNutrition_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemNutrition]'))
+ALTER TABLE [dbo].[ItemNutrition]  WITH CHECK ADD  CONSTRAINT [FK_ItemNutrition_ItemKey] FOREIGN KEY([ItemKey])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #105 --- Mar 23 2018 10:19:52.5097340AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreItemExtended_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreItemExtended]'))
+ALTER TABLE [dbo].[StoreItemExtended] DROP CONSTRAINT [FK_StoreItemExtended_ItemKey]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreItemExtended_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreItemExtended]'))
+ALTER TABLE [dbo].[StoreItemExtended]  WITH CHECK ADD  CONSTRAINT [FK_StoreItemExtended_ItemKey] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #104 --- Mar 23 2018 10:19:52.8046672AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorImportInfo_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorImportInfo]'))
+ALTER TABLE [dbo].[CompetitorImportInfo] DROP CONSTRAINT [FK_CompetitorImportInfo_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorImportInfo_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorImportInfo]'))
+ALTER TABLE [dbo].[CompetitorImportInfo]  WITH CHECK ADD  CONSTRAINT [FK_CompetitorImportInfo_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #103 --- Mar 23 2018 10:19:53.1122962AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScaleOverride_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScaleOverride]'))
+ALTER TABLE [dbo].[ItemScaleOverride] DROP CONSTRAINT [FK_ItemScaleOverride_Item_Key]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScaleOverride_Item_Key]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScaleOverride]'))
+ALTER TABLE [dbo].[ItemScaleOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemScaleOverride_Item_Key] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #102 --- Mar 23 2018 10:19:53.2089796AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemChainItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemChainItem]'))
+ALTER TABLE [dbo].[ItemChainItem] DROP CONSTRAINT [FK_ItemChainItem_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemChainItem_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemChainItem]'))
+ALTER TABLE [dbo].[ItemChainItem]  WITH CHECK ADD  CONSTRAINT [FK_ItemChainItem_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #101 --- Mar 23 2018 10:19:53.3095694AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScale_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScale]'))
+ALTER TABLE [dbo].[ItemScale] DROP CONSTRAINT [FK_ItemScale_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScale_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScale]'))
+ALTER TABLE [dbo].[ItemScale]  WITH CHECK ADD  CONSTRAINT [FK_ItemScale_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #100 --- Mar 23 2018 10:19:53.6054792AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemAttribute_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemAttribute]'))
+ALTER TABLE [dbo].[ItemAttribute] DROP CONSTRAINT [FK_ItemAttribute_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemAttribute_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemAttribute]'))
+ALTER TABLE [dbo].[ItemAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemAttribute_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #99 --- Mar 23 2018 10:19:54.0039320AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_RIFIrmaRla_Item1]') AND parent_object_id = OBJECT_ID(N'[dbo].[PIFI_ItemRla]'))
+ALTER TABLE [dbo].[PIFI_ItemRla] DROP CONSTRAINT [FK_RIFIrmaRla_Item1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_RIFIrmaRla_Item1]') AND parent_object_id = OBJECT_ID(N'[dbo].[PIFI_ItemRla]'))
+ALTER TABLE [dbo].[PIFI_ItemRla]  WITH CHECK ADD  CONSTRAINT [FK_RIFIrmaRla_Item1] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #98 --- Mar 23 2018 10:19:54.2793332AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Item_AllergenRla_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item_AllergenRla]'))
+ALTER TABLE [dbo].[Item_AllergenRla] DROP CONSTRAINT [FK_Item_AllergenRla_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Item_AllergenRla_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item_AllergenRla]'))
+ALTER TABLE [dbo].[Item_AllergenRla]  WITH CHECK ADD  CONSTRAINT [FK_Item_AllergenRla_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #97 --- Mar 23 2018 10:19:54.3633208AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__StoreItem_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreItem]'))
+ALTER TABLE [dbo].[StoreItem] DROP CONSTRAINT [FK__StoreItem_ItemKey]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__StoreItem_ItemKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreItem]'))
+ALTER TABLE [dbo].[StoreItem]  WITH CHECK ADD  CONSTRAINT [FK__StoreItem_ItemKey] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #96 --- Mar 23 2018 10:19:56.3858594AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InventoryLocationItems_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[InventoryLocationItems]'))
+ALTER TABLE [dbo].[InventoryLocationItems] DROP CONSTRAINT [FK_InventoryLocationItems_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InventoryLocationItems_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[InventoryLocationItems]'))
+ALTER TABLE [dbo].[InventoryLocationItems]  WITH CHECK ADD  CONSTRAINT [FK_InventoryLocationItems_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #95 --- Mar 23 2018 10:19:57.2374546AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TaxOverride_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[TaxOverride]'))
+ALTER TABLE [dbo].[TaxOverride] DROP CONSTRAINT [FK_TaxOverride_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TaxOverride_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[TaxOverride]'))
+ALTER TABLE [dbo].[TaxOverride]  WITH CHECK ADD  CONSTRAINT [FK_TaxOverride_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #94 --- Mar 23 2018 10:19:57.3282784AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorItemDiscrepancyQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorItemDiscrepancyQueue]'))
+ALTER TABLE [dbo].[VendorItemDiscrepancyQueue] DROP CONSTRAINT [FK_VendorItemDiscrepancyQueue_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorItemDiscrepancyQueue_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorItemDiscrepancyQueue]'))
+ALTER TABLE [dbo].[VendorItemDiscrepancyQueue]  WITH CHECK ADD  CONSTRAINT [FK_VendorItemDiscrepancyQueue_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #93 --- Mar 23 2018 10:19:57.4171490AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Item_Key_365]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride365]'))
+ALTER TABLE [dbo].[ItemOverride365] DROP CONSTRAINT [FK_ItemOverride_Item_Key_365]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Item_Key_365]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride365]'))
+ALTER TABLE [dbo].[ItemOverride365]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Item_Key_365] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #92 --- Mar 23 2018 10:19:57.4903940AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_EInvoicing_Item_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[EInvoicing_Item]'))
+ALTER TABLE [dbo].[EInvoicing_Item] DROP CONSTRAINT [FK_EInvoicing_Item_Item]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_EInvoicing_Item_Item]') AND parent_object_id = OBJECT_ID(N'[dbo].[EInvoicing_Item]'))
+ALTER TABLE [dbo].[EInvoicing_Item]  WITH CHECK ADD  CONSTRAINT [FK_EInvoicing_Item_Item] FOREIGN KEY([Item_Key])
+REFERENCES [dbo].[Item] ([Item_Key])
+
+
+GO
+/******************************************************************************
+		Altering Table #91 --- Mar 23 2018 10:20:36.2907120AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_UserRoleSubTeamRla_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[UserRoleSubTeamRla]'))
+ALTER TABLE [dbo].[UserRoleSubTeamRla] DROP CONSTRAINT [FK_UserRoleSubTeamRla_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_UserRoleSubTeamRla_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[UserRoleSubTeamRla]'))
+ALTER TABLE [dbo].[UserRoleSubTeamRla]  WITH CHECK ADD  CONSTRAINT [FK_UserRoleSubTeamRla_SubTeam] FOREIGN KEY([SubTeamID])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #90 --- Mar 23 2018 10:20:36.3668868AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__SubTeam_No__0BAD2365]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__SubTeam_No__0BAD2365]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__SubTeam_No__0BAD2365]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__SubTeam_No__0BAD2365] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #89 --- Mar 23 2018 10:20:37.1530498AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistory_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistory]'))
+ALTER TABLE [dbo].[ItemHistory] DROP CONSTRAINT [FK_ItemHistory_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistory_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistory]'))
+ALTER TABLE [dbo].[ItemHistory]  WITH CHECK ADD  CONSTRAINT [FK_ItemHistory_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #88 --- Mar 23 2018 10:21:53.4372290AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Item_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK_Item_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Item_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK_Item_SubTeam] FOREIGN KEY([DistSubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #87 --- Mar 23 2018 10:21:54.1540534AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ZoneSubTe__SubTe__0ACBABC0]') AND parent_object_id = OBJECT_ID(N'[dbo].[ZoneSubTeam]'))
+ALTER TABLE [dbo].[ZoneSubTeam] DROP CONSTRAINT [FK__ZoneSubTe__SubTe__0ACBABC0]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ZoneSubTe__SubTe__0ACBABC0]') AND parent_object_id = OBJECT_ID(N'[dbo].[ZoneSubTeam]'))
+ALTER TABLE [dbo].[ZoneSubTeam]  WITH CHECK ADD  CONSTRAINT [FK__ZoneSubTe__SubTe__0ACBABC0] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #86 --- Mar 23 2018 10:21:54.2439006AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PromotionalOffer_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[PromotionalOffer]'))
+ALTER TABLE [dbo].[PromotionalOffer] DROP CONSTRAINT [FK_PromotionalOffer_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PromotionalOffer_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[PromotionalOffer]'))
+ALTER TABLE [dbo].[PromotionalOffer]  WITH CHECK ADD  CONSTRAINT [FK_PromotionalOffer_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #85 --- Mar 23 2018 10:21:54.3220286AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_SubTeam_No]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost] DROP CONSTRAINT [FK_SuspendedAvgCost_SubTeam_No]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_SubTeam_No]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost]  WITH CHECK ADD  CONSTRAINT [FK_SuspendedAvgCost_SubTeam_No] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #84 --- Mar 23 2018 10:21:54.4001566AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__UsersSubT__SubTe__0F353234]') AND parent_object_id = OBJECT_ID(N'[dbo].[UsersSubTeam]'))
+ALTER TABLE [dbo].[UsersSubTeam] DROP CONSTRAINT [FK__UsersSubT__SubTe__0F353234]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__UsersSubT__SubTe__0F353234]') AND parent_object_id = OBJECT_ID(N'[dbo].[UsersSubTeam]'))
+ALTER TABLE [dbo].[UsersSubTeam]  WITH CHECK ADD  CONSTRAINT [FK__UsersSubT__SubTe__0F353234] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #83 --- Mar 23 2018 10:21:54.5163720AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ExceptionSubTeam_SubTeam_Hist]') AND parent_object_id = OBJECT_ID(N'[dbo].[PriceHistory]'))
+ALTER TABLE [dbo].[PriceHistory] DROP CONSTRAINT [FK_ExceptionSubTeam_SubTeam_Hist]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ExceptionSubTeam_SubTeam_Hist]') AND parent_object_id = OBJECT_ID(N'[dbo].[PriceHistory]'))
+ALTER TABLE [dbo].[PriceHistory]  WITH CHECK ADD  CONSTRAINT [FK_ExceptionSubTeam_SubTeam_Hist] FOREIGN KEY([ExceptionSubteam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #82 --- Mar 23 2018 10:23:31.7613170AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistoryOther_Hist_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistoryQueue]'))
+ALTER TABLE [dbo].[ItemHistoryQueue] DROP CONSTRAINT [FK_ItemHistoryOther_Hist_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemHistoryOther_Hist_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemHistoryQueue]'))
+ALTER TABLE [dbo].[ItemHistoryQueue]  WITH CHECK ADD  CONSTRAINT [FK_ItemHistoryOther_Hist_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #81 --- Mar 23 2018 10:23:31.9156198AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadDetail_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadDetail]'))
+ALTER TABLE [dbo].[ItemUploadDetail] DROP CONSTRAINT [FK_ItemUploadDetail_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUploadDetail_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUploadDetail]'))
+ALTER TABLE [dbo].[ItemUploadDetail]  WITH CHECK ADD  CONSTRAINT [FK_ItemUploadDetail_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #80 --- Mar 23 2018 10:23:32.0660162AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DistSubTeam_DistSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DistSubTeam]'))
+ALTER TABLE [dbo].[DistSubTeam] DROP CONSTRAINT [FK_DistSubTeam_DistSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DistSubTeam_DistSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DistSubTeam]'))
+ALTER TABLE [dbo].[DistSubTeam]  WITH CHECK ADD  CONSTRAINT [FK_DistSubTeam_DistSubTeam] FOREIGN KEY([DistSubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #79 --- Mar 23 2018 10:23:32.2017636AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DistSubTeam_RetailSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DistSubTeam]'))
+ALTER TABLE [dbo].[DistSubTeam] DROP CONSTRAINT [FK_DistSubTeam_RetailSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DistSubTeam_RetailSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DistSubTeam]'))
+ALTER TABLE [dbo].[DistSubTeam]  WITH CHECK ADD  CONSTRAINT [FK_DistSubTeam_RetailSubTeam] FOREIGN KEY([RetailSubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #78 --- Mar 23 2018 10:23:32.3277450AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnHand_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OnHand]'))
+ALTER TABLE [dbo].[OnHand] DROP CONSTRAINT [FK_OnHand_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnHand_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OnHand]'))
+ALTER TABLE [dbo].[OnHand]  WITH CHECK ADD  CONSTRAINT [FK_OnHand_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #77 --- Mar 23 2018 10:23:33.7154936AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderInvo__SubTe__248EAB1F]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice] DROP CONSTRAINT [FK__OrderInvo__SubTe__248EAB1F]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderInvo__SubTe__248EAB1F]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice]  WITH CHECK ADD  CONSTRAINT [FK__OrderInvo__SubTe__248EAB1F] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #76 --- Mar 23 2018 10:23:35.0973826AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ZoneSuppl__SubTe__2827047D]') AND parent_object_id = OBJECT_ID(N'[dbo].[ZoneSupply]'))
+ALTER TABLE [dbo].[ZoneSupply] DROP CONSTRAINT [FK__ZoneSuppl__SubTe__2827047D]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ZoneSuppl__SubTe__2827047D]') AND parent_object_id = OBJECT_ID(N'[dbo].[ZoneSupply]'))
+ALTER TABLE [dbo].[ZoneSupply]  WITH CHECK ADD  CONSTRAINT [FK__ZoneSuppl__SubTe__2827047D] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #75 --- Mar 23 2018 10:23:35.1882064AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK_DeletedOrder_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH NOCHECK ADD  CONSTRAINT [FK_DeletedOrder_SubTeam] FOREIGN KEY([Transfer_SubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #74 --- Mar 23 2018 10:23:35.2741472AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SubTeam1]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK_DeletedOrder_SubTeam1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SubTeam1]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH NOCHECK ADD  CONSTRAINT [FK_DeletedOrder_SubTeam1] FOREIGN KEY([Transfer_To_SubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #73 --- Mar 23 2018 10:23:35.3473922AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SupplyTransferToSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder] DROP CONSTRAINT [FK_DeletedOrder_SupplyTransferToSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrder_SupplyTransferToSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrder]'))
+ALTER TABLE [dbo].[DeletedOrder]  WITH CHECK ADD  CONSTRAINT [FK_DeletedOrder_SupplyTransferToSubTeam] FOREIGN KEY([SupplyTransferToSubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #72 --- Mar 23 2018 10:23:36.3073900AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_NoTagThresholdSubteamOverride_SubteamNumber]') AND parent_object_id = OBJECT_ID(N'[dbo].[NoTagThresholdSubteamOverride]'))
+ALTER TABLE [dbo].[NoTagThresholdSubteamOverride] DROP CONSTRAINT [FK_NoTagThresholdSubteamOverride_SubteamNumber]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_NoTagThresholdSubteamOverride_SubteamNumber]') AND parent_object_id = OBJECT_ID(N'[dbo].[NoTagThresholdSubteamOverride]'))
+ALTER TABLE [dbo].[NoTagThresholdSubteamOverride]  WITH CHECK ADD  CONSTRAINT [FK_NoTagThresholdSubteamOverride_SubteamNumber] FOREIGN KEY([SubteamNumber])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #71 --- Mar 23 2018 10:23:36.4714588AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PMSubTeamInclude_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[PMSubTeamInclude]'))
+ALTER TABLE [dbo].[PMSubTeamInclude] DROP CONSTRAINT [FK_PMSubTeamInclude_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_PMSubTeamInclude_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[PMSubTeamInclude]'))
+ALTER TABLE [dbo].[PMSubTeamInclude]  WITH CHECK ADD  CONSTRAINT [FK_PMSubTeamInclude_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #70 --- Mar 23 2018 10:23:36.6120892AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumBySubDept_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumBySubDept]'))
+ALTER TABLE [dbo].[Sales_SumBySubDept] DROP CONSTRAINT [FK_Sales_SumBySubDept_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumBySubDept_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumBySubDept]'))
+ALTER TABLE [dbo].[Sales_SumBySubDept]  WITH CHECK ADD  CONSTRAINT [FK_Sales_SumBySubDept_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #69 --- Mar 23 2018 10:23:36.9343672AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem] DROP CONSTRAINT [FK_Sales_SumByItem_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItem]'))
+ALTER TABLE [dbo].[Sales_SumByItem]  WITH NOCHECK ADD  CONSTRAINT [FK_Sales_SumByItem_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #68 --- Mar 23 2018 10:23:37.0662082AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_Fact_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_Fact]'))
+ALTER TABLE [dbo].[Sales_Fact] DROP CONSTRAINT [FK_Sales_Fact_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_Fact_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_Fact]'))
+ALTER TABLE [dbo].[Sales_Fact]  WITH CHECK ADD  CONSTRAINT [FK_Sales_Fact_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #67 --- Mar 23 2018 10:25:04.8801270AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_SubTeam_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly] DROP CONSTRAINT [FK_Sales_SumByItem_SubTeam_Wkly]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Sales_SumByItem_SubTeam_Wkly]') AND parent_object_id = OBJECT_ID(N'[dbo].[Sales_SumByItemWkly]'))
+ALTER TABLE [dbo].[Sales_SumByItemWkly]  WITH CHECK ADD  CONSTRAINT [FK_Sales_SumByItem_SubTeam_Wkly] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #66 --- Mar 23 2018 10:25:05.0363830AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemCategory_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemCategory]'))
+ALTER TABLE [dbo].[ItemCategory] DROP CONSTRAINT [FK_ItemCategory_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemCategory_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemCategory]'))
+ALTER TABLE [dbo].[ItemCategory]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemCategory_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #65 --- Mar 23 2018 10:25:05.1731070AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK_OrderHeader_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH CHECK ADD  CONSTRAINT [FK_OrderHeader_SubTeam] FOREIGN KEY([Transfer_SubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #64 --- Mar 23 2018 10:25:11.5454220AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SubTeam1]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK_OrderHeader_SubTeam1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SubTeam1]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH CHECK ADD  CONSTRAINT [FK_OrderHeader_SubTeam1] FOREIGN KEY([Transfer_To_SubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #63 --- Mar 23 2018 10:25:12.0307922AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SupplyTransferToSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader] DROP CONSTRAINT [FK_OrderHeader_SupplyTransferToSubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderHeader_SupplyTransferToSubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderHeader]'))
+ALTER TABLE [dbo].[OrderHeader]  WITH CHECK ADD  CONSTRAINT [FK_OrderHeader_SupplyTransferToSubTeam] FOREIGN KEY([SupplyTransferToSubTeam])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #62 --- Mar 23 2018 10:25:12.4897942AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ShelfTagRule_Subteam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ShelfTagRule]'))
+ALTER TABLE [dbo].[ShelfTagRule] DROP CONSTRAINT [FK_ShelfTagRule_Subteam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ShelfTagRule_Subteam]') AND parent_object_id = OBJECT_ID(N'[dbo].[ShelfTagRule]'))
+ALTER TABLE [dbo].[ShelfTagRule]  WITH CHECK ADD  CONSTRAINT [FK_ShelfTagRule_Subteam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #61 --- Mar 23 2018 10:25:12.5347178AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__SignQueue__SubTe__7D29F9E4]') AND parent_object_id = OBJECT_ID(N'[dbo].[SignQueue]'))
+ALTER TABLE [dbo].[SignQueue] DROP CONSTRAINT [FK__SignQueue__SubTe__7D29F9E4]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__SignQueue__SubTe__7D29F9E4]') AND parent_object_id = OBJECT_ID(N'[dbo].[SignQueue]'))
+ALTER TABLE [dbo].[SignQueue]  WITH CHECK ADD  CONSTRAINT [FK__SignQueue__SubTe__7D29F9E4] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #60 --- Mar 23 2018 10:25:13.7388656AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InventoryLocation_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[InventoryLocation]'))
+ALTER TABLE [dbo].[InventoryLocation] DROP CONSTRAINT [FK_InventoryLocation_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_InventoryLocation_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[InventoryLocation]'))
+ALTER TABLE [dbo].[InventoryLocation]  WITH CHECK ADD  CONSTRAINT [FK_InventoryLocation_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #59 --- Mar 23 2018 10:25:13.7925786AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreSubTeam_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreSubTeam]'))
+ALTER TABLE [dbo].[StoreSubTeam] DROP CONSTRAINT [FK_StoreSubTeam_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_StoreSubTeam_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreSubTeam]'))
+ALTER TABLE [dbo].[StoreSubTeam]  WITH CHECK ADD  CONSTRAINT [FK_StoreSubTeam_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #58 --- Mar 23 2018 10:25:13.8326192AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Recipe_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Recipe]'))
+ALTER TABLE [dbo].[Recipe] DROP CONSTRAINT [FK_Recipe_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Recipe_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[Recipe]'))
+ALTER TABLE [dbo].[Recipe]  WITH CHECK ADD  CONSTRAINT [FK_Recipe_SubTeam] FOREIGN KEY([SubTeamID])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #57 --- Mar 23 2018 10:25:13.9205132AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_MasterCycleCount_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[CycleCountMaster]'))
+ALTER TABLE [dbo].[CycleCountMaster] DROP CONSTRAINT [FK_MasterCycleCount_SubTeam]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_MasterCycleCount_SubTeam]') AND parent_object_id = OBJECT_ID(N'[dbo].[CycleCountMaster]'))
+ALTER TABLE [dbo].[CycleCountMaster]  WITH CHECK ADD  CONSTRAINT [FK_MasterCycleCount_SubTeam] FOREIGN KEY([SubTeam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #56 --- Mar 23 2018 10:25:14.1138800AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SubTeam_CatalogSchedule]') AND parent_object_id = OBJECT_ID(N'[dbo].[CatalogSchedule]'))
+ALTER TABLE [dbo].[CatalogSchedule] DROP CONSTRAINT [FK_SubTeam_CatalogSchedule]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SubTeam_CatalogSchedule]') AND parent_object_id = OBJECT_ID(N'[dbo].[CatalogSchedule]'))
+ALTER TABLE [dbo].[CatalogSchedule]  WITH CHECK ADD  CONSTRAINT [FK_SubTeam_CatalogSchedule] FOREIGN KEY([SubTeamNo])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #55 --- Mar 23 2018 10:25:14.2193528AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__StoreSubteamDiscountException_SubteamNo]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreSubteamDiscountException]'))
+ALTER TABLE [dbo].[StoreSubteamDiscountException] DROP CONSTRAINT [FK__StoreSubteamDiscountException_SubteamNo]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__StoreSubteamDiscountException_SubteamNo]') AND parent_object_id = OBJECT_ID(N'[dbo].[StoreSubteamDiscountException]'))
+ALTER TABLE [dbo].[StoreSubteamDiscountException]  WITH CHECK ADD  CONSTRAINT [FK__StoreSubteamDiscountException_SubteamNo] FOREIGN KEY([Subteam_No])
+REFERENCES [dbo].[SubTeam] ([SubTeam_No])
+
+
+GO
+/******************************************************************************
+		Altering Table #54 --- Mar 23 2018 10:25:14.3170128AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost] DROP CONSTRAINT [FK_SuspendedAvgCost_OrderHeader_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_SuspendedAvgCost_OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[SuspendedAvgCost]'))
+ALTER TABLE [dbo].[SuspendedAvgCost]  WITH CHECK ADD  CONSTRAINT [FK_SuspendedAvgCost_OrderHeader_ID] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #53 --- Mar 23 2018 10:25:14.4019770AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK__DeletedOrderItem__OrderHeader_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrderItem__OrderHeader_ID] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #52 --- Mar 23 2018 10:25:14.5035434AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Order__1FEDB87C]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK__OrderItem__Order__1FEDB87C]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Order__1FEDB87C]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__Order__1FEDB87C] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #51 --- Mar 23 2018 10:25:14.5972970AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_Freight3Party_OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_Freight3Party]'))
+ALTER TABLE [dbo].[OrderInvoice_Freight3Party] DROP CONSTRAINT [FK_OrderInvoice_Freight3Party_OrderHeader_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderInvoice_Freight3Party_OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice_Freight3Party]'))
+ALTER TABLE [dbo].[OrderInvoice_Freight3Party]  WITH CHECK ADD  CONSTRAINT [FK_OrderInvoice_Freight3Party_OrderHeader_ID] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #50 --- Mar 23 2018 10:25:14.6959336AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderInvo__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice] DROP CONSTRAINT [FK__OrderInvo__OrderHeader_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderInvo__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderInvoice]'))
+ALTER TABLE [dbo].[OrderInvoice]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderInvo__OrderHeader_ID] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #49 --- Mar 23 2018 10:25:14.7935936AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__OrderHeader_ID__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK__OrderItem__OrderHeader_ID__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__OrderHeader_ID__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__OrderHeader_ID__OLD__] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #48 --- Mar 23 2018 10:25:14.8785578AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ReturnOrd__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ReturnOrderList]'))
+ALTER TABLE [dbo].[ReturnOrderList] DROP CONSTRAINT [FK__ReturnOrd__OrderHeader_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ReturnOrd__OrderHeader_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ReturnOrderList]'))
+ALTER TABLE [dbo].[ReturnOrderList]  WITH NOCHECK ADD  CONSTRAINT [FK__ReturnOrd__OrderHeader_ID] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #47 --- Mar 23 2018 10:25:15.0836438AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ReturnOrd__Retur__0731BBB4]') AND parent_object_id = OBJECT_ID(N'[dbo].[ReturnOrderList]'))
+ALTER TABLE [dbo].[ReturnOrderList] DROP CONSTRAINT [FK__ReturnOrd__Retur__0731BBB4]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__ReturnOrd__Retur__0731BBB4]') AND parent_object_id = OBJECT_ID(N'[dbo].[ReturnOrderList]'))
+ALTER TABLE [dbo].[ReturnOrderList]  WITH NOCHECK ADD  CONSTRAINT [FK__ReturnOrd__Retur__0731BBB4] FOREIGN KEY([ReturnOrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #46 --- Mar 23 2018 10:25:15.1764208AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderTransmissionOverride_OrderHeader]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderTransmissionOverride]'))
+ALTER TABLE [dbo].[OrderTransmissionOverride] DROP CONSTRAINT [FK_OrderTransmissionOverride_OrderHeader]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderTransmissionOverride_OrderHeader]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderTransmissionOverride]'))
+ALTER TABLE [dbo].[OrderTransmissionOverride]  WITH CHECK ADD  CONSTRAINT [FK_OrderTransmissionOverride_OrderHeader] FOREIGN KEY([OrderHeader_ID])
+REFERENCES [dbo].[OrderHeader] ([OrderHeader_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #45 --- Mar 23 2018 10:25:17.2233744AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Vendor_Uni__1DCBD3A0]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Vendor_Uni__1DCBD3A0]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Vendor_Uni__1DCBD3A0]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Vendor_Uni__1DCBD3A0] FOREIGN KEY([Vendor_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #44 --- Mar 23 2018 10:25:17.4880330AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue] DROP CONSTRAINT [FK_OrderItemQueue_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueue_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueue]'))
+ALTER TABLE [dbo].[OrderItemQueue]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueue_ItemUnit] FOREIGN KEY([Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #43 --- Mar 23 2018 10:25:17.7097212AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak] DROP CONSTRAINT [FK_OrderItemQueueBak_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItemQueueBak_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItemQueueBak]'))
+ALTER TABLE [dbo].[OrderItemQueueBak]  WITH CHECK ADD  CONSTRAINT [FK_OrderItemQueueBak_ItemUnit] FOREIGN KEY([Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #42 --- Mar 23 2018 10:25:17.8278898AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__CostU__1A34DF26__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK__OrderItem__CostU__1A34DF26__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__CostU__1A34DF26__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__CostU__1A34DF26__OLD__] FOREIGN KEY([CostUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #41 --- Mar 23 2018 10:25:17.9265264AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Freig__1B29035F__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK__OrderItem__Freig__1B29035F__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Freig__1B29035F__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__Freig__1B29035F__OLD__] FOREIGN KEY([FreightUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #40 --- Mar 23 2018 10:25:18.0280928AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Handl__1C1D2798__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK__OrderItem__Handl__1C1D2798__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Handl__1C1D2798__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__Handl__1C1D2798__OLD__] FOREIGN KEY([HandlingUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #39 --- Mar 23 2018 10:25:18.1267294AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Quant__21D600EE__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK__OrderItem__Quant__21D600EE__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Quant__21D600EE__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__Quant__21D600EE__OLD__] FOREIGN KEY([QuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #38 --- Mar 23 2018 10:25:18.2282958AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK_OrderItem_ItemUnit__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit__OLD__] FOREIGN KEY([Package_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #37 --- Mar 23 2018 10:25:18.3308388AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_RipeItemUnitExt_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[RipeItemUnitExt]'))
+ALTER TABLE [dbo].[RipeItemUnitExt] DROP CONSTRAINT [FK_RipeItemUnitExt_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_RipeItemUnitExt_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[RipeItemUnitExt]'))
+ALTER TABLE [dbo].[RipeItemUnitExt]  WITH CHECK ADD  CONSTRAINT [FK_RipeItemUnitExt_ItemUnit] FOREIGN KEY([ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #36 --- Mar 23 2018 10:25:18.4343584AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit1__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK_OrderItem_ItemUnit1__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit1__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit1__OLD__] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #35 --- Mar 23 2018 10:25:18.5329950AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__CostU]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK__DeletedOrderItem__CostU]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__CostU]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrderItem__CostU] FOREIGN KEY([CostUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #34 --- Mar 23 2018 10:25:18.6247954AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Freig]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK__DeletedOrderItem__Freig]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Freig]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrderItem__Freig] FOREIGN KEY([FreightUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #33 --- Mar 23 2018 10:25:18.7195256AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Handl]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK__DeletedOrderItem__Handl]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Handl]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrderItem__Handl] FOREIGN KEY([HandlingUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #32 --- Mar 23 2018 10:25:18.8103494AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__CostU__1A34DF26]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK__OrderItem__CostU__1A34DF26]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__CostU__1A34DF26]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__CostU__1A34DF26] FOREIGN KEY([CostUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #31 --- Mar 23 2018 10:25:18.9158222AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Freig__1B29035F]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK__OrderItem__Freig__1B29035F]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Freig__1B29035F]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK__OrderItem__Freig__1B29035F] FOREIGN KEY([FreightUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #30 --- Mar 23 2018 10:27:35.9669832AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Quant]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK__DeletedOrderItem__Quant]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__DeletedOrderItem__Quant]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__DeletedOrderItem__Quant] FOREIGN KEY([QuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #29 --- Mar 23 2018 10:27:36.1173796AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Handl__1C1D2798]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK__OrderItem__Handl__1C1D2798]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Handl__1C1D2798]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK__OrderItem__Handl__1C1D2798] FOREIGN KEY([HandlingUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #28 --- Mar 23 2018 10:30:03.4355364AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Quant__21D600EE]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK__OrderItem__Quant__21D600EE]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__OrderItem__Quant__21D600EE]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK__OrderItem__Quant__21D600EE] FOREIGN KEY([QuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #27 --- Mar 23 2018 10:30:04.7246484AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK_DeletedOrderItem_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK_DeletedOrderItem_ItemUnit] FOREIGN KEY([Package_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #26 --- Mar 23 2018 10:30:04.8535596AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit1]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK_DeletedOrderItem_ItemUnit1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit1]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK_DeletedOrderItem_ItemUnit1] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #25 --- Mar 23 2018 10:30:04.9941900AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit2]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem] DROP CONSTRAINT [FK_DeletedOrderItem_ItemUnit2]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_DeletedOrderItem_ItemUnit2]') AND parent_object_id = OBJECT_ID(N'[dbo].[DeletedOrderItem]'))
+ALTER TABLE [dbo].[DeletedOrderItem]  WITH CHECK ADD  CONSTRAINT [FK_DeletedOrderItem_ItemUnit2] FOREIGN KEY([InvoiceQuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #24 --- Mar 23 2018 10:30:07.8273066AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK_OrderItem_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit] FOREIGN KEY([Package_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #23 --- Mar 23 2018 10:30:07.9630540AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit1]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK_OrderItem_ItemUnit1]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit1]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH NOCHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit1] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #22 --- Mar 23 2018 10:30:08.1075908AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit2]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT [FK_OrderItem_ItemUnit2]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit2]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem]'))
+ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit2] FOREIGN KEY([InvoiceQuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #21 --- Mar 23 2018 10:32:33.4754774AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorCostHistory_ItemUnit_CostUnitID]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorCostHistory]'))
+ALTER TABLE [dbo].[VendorCostHistory] DROP CONSTRAINT [FK_VendorCostHistory_ItemUnit_CostUnitID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorCostHistory_ItemUnit_CostUnitID]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorCostHistory]'))
+ALTER TABLE [dbo].[VendorCostHistory]  WITH CHECK ADD  CONSTRAINT [FK_VendorCostHistory_ItemUnit_CostUnitID] FOREIGN KEY([CostUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #20 --- Mar 23 2018 10:34:14.0076580AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorCostHistory_ItemUnit_FreightUnitID]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorCostHistory]'))
+ALTER TABLE [dbo].[VendorCostHistory] DROP CONSTRAINT [FK_VendorCostHistory_ItemUnit_FreightUnitID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_VendorCostHistory_ItemUnit_FreightUnitID]') AND parent_object_id = OBJECT_ID(N'[dbo].[VendorCostHistory]'))
+ALTER TABLE [dbo].[VendorCostHistory]  WITH CHECK ADD  CONSTRAINT [FK_VendorCostHistory_ItemUnit_FreightUnitID] FOREIGN KEY([FreightUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #19 --- Mar 23 2018 10:36:03.3800218AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_RetailItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride] DROP CONSTRAINT [FK_ItemUomOverride_RetailItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_RetailItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemUomOverride_RetailItemUnit] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #18 --- Mar 23 2018 10:36:03.4727988AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_ScaleItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride] DROP CONSTRAINT [FK_ItemUomOverride_ScaleItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemUomOverride_ScaleItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemUomOverride]'))
+ALTER TABLE [dbo].[ItemUomOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemUomOverride_ScaleItemUnit] FOREIGN KEY([Scale_ScaleUomUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #17 --- Mar 23 2018 10:36:03.5626460AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Distribution_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Distribution_Unit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Distribution_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Distribution_Unit_ID] FOREIGN KEY([Distribution_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #16 --- Mar 23 2018 10:36:03.6612826AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Package_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Package_Unit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Package_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Package_Unit_ID] FOREIGN KEY([Package_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #15 --- Mar 23 2018 10:36:03.7491766AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Retail_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Retail_Unit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Retail_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Retail_Unit_ID] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #14 --- Mar 23 2018 10:36:03.8400004AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Vendor_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Vendor_Unit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Vendor_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Vendor_Unit_ID] FOREIGN KEY([Vendor_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #13 --- Mar 23 2018 10:36:03.9298476AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Manufacturing_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride] DROP CONSTRAINT [FK_ItemOverride_Manufacturing_Unit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemOverride_Manufacturing_Unit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemOverride]'))
+ALTER TABLE [dbo].[ItemOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemOverride_Manufacturing_Unit_ID] FOREIGN KEY([Manufacturing_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #12 --- Mar 23 2018 10:36:04.0167650AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScaleOverride_ScaleUOMUnit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScaleOverride]'))
+ALTER TABLE [dbo].[ItemScaleOverride] DROP CONSTRAINT [FK_ItemScaleOverride_ScaleUOMUnit_ID]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScaleOverride_ScaleUOMUnit_ID]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScaleOverride]'))
+ALTER TABLE [dbo].[ItemScaleOverride]  WITH CHECK ADD  CONSTRAINT [FK_ItemScaleOverride_ScaleUOMUnit_ID] FOREIGN KEY([Scale_ScaleUOMUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #11 --- Mar 23 2018 10:36:04.1017292AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScale_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScale]'))
+ALTER TABLE [dbo].[ItemScale] DROP CONSTRAINT [FK_ItemScale_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemScale_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemScale]'))
+ALTER TABLE [dbo].[ItemScale]  WITH CHECK ADD  CONSTRAINT [FK_ItemScale_ItemUnit] FOREIGN KEY([Scale_ScaleUOMUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #10 --- Mar 23 2018 10:36:04.2325936AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemConversion_1__33]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemConversion]'))
+ALTER TABLE [dbo].[ItemConversion] DROP CONSTRAINT [FK_ItemConversion_1__33]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemConversion_1__33]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemConversion]'))
+ALTER TABLE [dbo].[ItemConversion]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemConversion_1__33] FOREIGN KEY([FromUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #9 --- Mar 23 2018 10:36:04.3156046AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemConversion_2__33]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemConversion]'))
+ALTER TABLE [dbo].[ItemConversion] DROP CONSTRAINT [FK_ItemConversion_2__33]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_ItemConversion_2__33]') AND parent_object_id = OBJECT_ID(N'[dbo].[ItemConversion]'))
+ALTER TABLE [dbo].[ItemConversion]  WITH NOCHECK ADD  CONSTRAINT [FK_ItemConversion_2__33] FOREIGN KEY([ToUnit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #8 --- Mar 23 2018 10:36:04.4044752AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorImportInfo_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorImportInfo]'))
+ALTER TABLE [dbo].[CompetitorImportInfo] DROP CONSTRAINT [FK_CompetitorImportInfo_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorImportInfo_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorImportInfo]'))
+ALTER TABLE [dbo].[CompetitorImportInfo]  WITH CHECK ADD  CONSTRAINT [FK_CompetitorImportInfo_ItemUnit] FOREIGN KEY([Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #7 --- Mar 23 2018 10:36:04.5177608AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorPrice_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorPrice]'))
+ALTER TABLE [dbo].[CompetitorPrice] DROP CONSTRAINT [FK_CompetitorPrice_ItemUnit]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CompetitorPrice_ItemUnit]') AND parent_object_id = OBJECT_ID(N'[dbo].[CompetitorPrice]'))
+ALTER TABLE [dbo].[CompetitorPrice]  WITH CHECK ADD  CONSTRAINT [FK_CompetitorPrice_ItemUnit] FOREIGN KEY([Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #6 --- Mar 23 2018 10:36:04.6095612AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Cost_Unit___1FB41C12]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Cost_Unit___1FB41C12]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Cost_Unit___1FB41C12]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Cost_Unit___1FB41C12] FOREIGN KEY([Cost_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #5 --- Mar 23 2018 10:36:04.8937518AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Distributi__1EBFF7D9]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Distributi__1EBFF7D9]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Distributi__1EBFF7D9]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Distributi__1EBFF7D9] FOREIGN KEY([Distribution_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #4 --- Mar 23 2018 10:36:05.2775556AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Freight_Un__20A8404B]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Freight_Un__20A8404B]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Freight_Un__20A8404B]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Freight_Un__20A8404B] FOREIGN KEY([Freight_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #3 --- Mar 23 2018 10:36:05.5461206AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Package_Un__0E899010]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Package_Un__0E899010]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Package_Un__0E899010]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Package_Un__0E899010] FOREIGN KEY([Package_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #2 --- Mar 23 2018 10:36:05.7971068AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Retail_Uni__1BE38B2E]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT [FK__Item__Retail_Uni__1BE38B2E]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Item__Retail_Uni__1BE38B2E]') AND parent_object_id = OBJECT_ID(N'[dbo].[Item]'))
+ALTER TABLE [dbo].[Item]  WITH CHECK ADD  CONSTRAINT [FK__Item__Retail_Uni__1BE38B2E] FOREIGN KEY([Retail_Unit_ID])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO
+/******************************************************************************
+		Altering Table #1 --- Mar 23 2018 10:36:06.0373504AM
+******************************************************************************/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit2__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__] DROP CONSTRAINT [FK_OrderItem_ItemUnit2__OLD__]
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_OrderItem_ItemUnit2__OLD__]') AND parent_object_id = OBJECT_ID(N'[dbo].[OrderItem__OLD__]'))
+ALTER TABLE [dbo].[OrderItem__OLD__]  WITH CHECK ADD  CONSTRAINT [FK_OrderItem_ItemUnit2__OLD__] FOREIGN KEY([InvoiceQuantityUnit])
+REFERENCES [dbo].[ItemUnit] ([Unit_ID])
+
+
+GO

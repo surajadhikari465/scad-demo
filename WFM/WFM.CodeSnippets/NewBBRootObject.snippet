@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Create a CSLA Root Business Object</Title>      
+      <Description>Creates the base structure for a new Root Object that inherits from CSLA.BusinessBase.</Description>      
+      <Shortcut>NewBBRoot</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations> 
+        <Literal>
+          <ID>NameSpace</ID>          
+          <ToolTip>Replace with the Name Space your new class lives in.</ToolTip>
+          <Default>NameSpace</Default>
+        </Literal>
+        
+        <Literal>
+          <ID>NewBOClass</ID>
+          <ToolTip>Replace with the Name of your new class.</ToolTip>
+          <Default>Class1</Default>
+        </Literal>        
+        
+      </Declarations>
+      <Code Language ="VB " Kind ="Any" >
+        <![CDATA[Namespace $NameSpace$
+
+
+    ''' <summary>
+    ''' Replace this with a summary of your classes responsibility
+    ''' </summary>
+    ''' <remarks>
+    ''' (Feel free to replace this remarks section with remarks specific to your class)
+    ''' 
+    ''' This BO inherits from BusinessBase.  All objects that inherit from BusinessBase 
+    ''' must have the Serializable() attribute.
+    ''' </remarks>
+    <Serializable()> _
+    Public Class $NewBOClass$
+        Inherits Csla.BusinessBase(Of $NewBOClass$)
+        ''' <summary>
+        ''' this value is used for concurrency checking.
+        ''' </summary>
+        ''' <remarks>
+        ''' any database updates should check to see if this value is the current value in the database.
+        ''' if it isn't then someone else has updated your data before you.
+        ''' 
+        ''' Note the csla.NotUndoable() attribute.  This tells the n-level undo process not to include this 
+        ''' field in the "object graph" stored in the n-level undo stack.  Any values that will not change
+        ''' throughout the life of the object should be marked as NotUndoable
+        ''' </remarks>
+        <Csla.NotUndoable()> Private mTimeStamp(7) As Byte
+
+#Region " Events"
+        'put any events defined for your object here. 
+
+        'If your event needs to be "Serialization safe" use the code snippit AddSerializableEvent. 
+        'Your event needs to be "Serialization Safe" if your object is a Serializable object and you
+        'know the event will be handled from a non-serializable object (I.E. a WinForm)
+
+#End Region
+
+#Region " Authorization Rules "
+
+        ''' <summary>
+        ''' Per Type, Property\Method level Authorization Rules.
+        ''' </summary>
+        ''' <remarks>
+        ''' This sub is called from the base class the first time an object of this type is instanced.
+        ''' See the constructor of <see cref=" Csla.BusinessBase(Of T) "></see>
+        ''' If you want to add Per Instance Authorization rules, you must override the 
+        ''' AddInstanceAuthorizationRules Sub
+        ''' </remarks>
+        Protected Overrides Sub AddAuthorizationRules()
+
+            'TODO: Replace this line with a comment for a CodeSnipit to add Authorization rules some day...
+            ' AuthorizationRules.AllowWrite("PropertyName1", New String() {"Role1", "SuperUser"})
+        End Sub
+
+#Region "Object level authorization (CanAddObject, CanDeleteObject, CanGetObject, Etc.)"
+
+        Public Shared Function CanAddObject() As Boolean
+            'TODO: Replace this line with a comment for a CodeSnipit to add Authorization rules some day...
+            'Return Csla.ApplicationContext.User.IsInRole("Role1") OrElse Csla.ApplicationContext.User.IsInRole("SuperUser")
+        End Function
+
+        Public Shared Function CanGetObject() As Boolean
+
+            'CODE REVIEW NOTE: Usually Our Whole Foods position is that any role should be able to view any data,
+            '                   but this may not be the case for all objects...we may want to do an IsInRole("IrmaUser") 
+            '                   depending on how the identity is implemented?
+            Return True
+
+        End Function
+
+        Public Shared Function CanDeleteObject() As Boolean
+            Return Csla.ApplicationContext.User.IsInRole("Role1") OrElse Csla.ApplicationContext.User.IsInRole("SuperUser")
+        End Function
+
+        Public Shared Function CanEditObject() As Boolean
+            Return Csla.ApplicationContext.User.IsInRole("Role1") OrElse Csla.ApplicationContext.User.IsInRole("SuperUser")
+        End Function
+
+#End Region
+
+#End Region
+
+#Region " Validation Rules "
+        'CODE REVIEW NOTE: Should we put a comment in the remarks like "Read page blah of the book to see how to implement your own valadation rule?"
+        '                  in the Remarks section of the AddBusinessRules xml documentation
+
+        ''' <summary>
+        ''' This overrideable sub is where you set up your Per Type Validation rules.
+        ''' </summary>
+        ''' <remarks>
+        ''' the following is an example of how to use a common Validation rule provided with CSLA:
+        ''' ValidationRules.AddRule(AddressOf Csla.Validation.CommonRules.StringRequired, "Identifier")
+        ''' </remarks>
+        Protected Overrides Sub AddBusinessRules()
+
+        End Sub
+
+#End Region
+
+#Region "Business Methods"
+
+#Region "Properties"
+        'put your property accessors\mutators here (I.E. Property Get\Set)
+        'you can use the code snippit AddReadWriteProp to create a read write property
+        'you can use the code snippit AddReadOnlyProp to create a Read Only Property
+        'you can use the code snippit AddWriteOnlyProp to create a Write Only Property
+
+        Private mID As Guid
+        ''' <summary>
+        ''' This is the ID of your object.  This value must be unique.
+        ''' </summary>
+        ''' <remarks>
+        ''' For some objects the unique ID of your object may not be a GUID (for instance, the unique ID 
+        ''' for an Item is Item_Key which is an integer.
+        ''' 
+        ''' If this is the case you may want to create a sperate property for it
+        '''     Private mItem_Key as integer
+        '''     Public ReadOnly Property() Item_Key as integer
+        ''' 
+        ''' and "box" that value inside of the mID GUID variable when returning it from this property:
+        ''' Public ReadonlyProperty ID() as GUID
+        '''     Get
+        '''         if mID is nothing then mID = New Guid(mItem_Key, 0, 0, New Byte() {0, 0, 0, 0, 0, 0, 0, 0})
+        '''         Return mID
+        '''     End Get
+        ''' End Property
+        ''' 
+        ''' To "unbox" an integer contained in a GUID you would use this code:
+        '''     messagebox.show("The embeded integer value is: "  BitConverter.ToInt32(mID.ToByteArray, 0))
+        ''' 
+        ''' The reason for doing this would be for consistency (I.E. if you want your object to implement 
+        ''' an IInfo interface).
+        ''' </remarks>
+        <System.ComponentModel.Browsable(False)> _
+        Public ReadOnly Property ID() As Guid
+            Get
+                Return mID
+            End Get
+        End Property
+
+#End Region
+
+        ''' <summary>
+        ''' Function used by the System.Object overrides to retrieve the *unique* ID of your object.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' CSLA's BusinessBase class overrides the following overrideable System.Object functions:
+        '''   System.Object.Equals
+        '''   System.Object.GetHashCode
+        '''   System.Object.ToString
+        ''' 
+        ''' The above overrides use this function in their implementation.  Note that the default implementation of this
+        ''' function uses Me.ID for its value.  If you do not use a standard implementation for the ID property, then you 
+        ''' may need to modify this code.  The important thing here is that this value be unique.
+        ''' </remarks>
+        Protected Overrides Function GetIdValue() As Object
+            Return Me.ID
+        End Function
+
+#End Region
+
+#Region "Factory Methods"
+
+        ''' <summary>
+        ''' Private constructor for your object.
+        ''' </summary>
+        ''' <remarks>
+        ''' CSLA uses the Factory Design pattern to create a Business Base object.
+        ''' </remarks>
+        Private Sub New()
+            'Must Use Factory Method
+        End Sub
+
+        ''' <summary>
+        ''' Used to create a new instance of $NewBOClass$
+        ''' </summary>
+        ''' <param name="CreateParam1">
+        ''' 
+        ''' </param>
+        ''' <returns>
+        ''' 
+        ''' </returns>
+        ''' <remarks>
+        ''' (feel free to replace this remarks section with remarks specific to your class)
+        ''' 
+        ''' Initialization of data coming from the database should be done in the Dataportal_Create any initialization
+        ''' that does not require database activity should\can be done after the call to Dataportal.Create, or instead
+        ''' of a call to Dataportal.Create.
+        ''' </remarks>
+        Public Shared Function New$NewBOClass$(ByVal CreateParam1 As Object) As $NewBOClass$
+            'CODE REVIEW NOTE: Should we check $NewBOClass$.CanAdd and throw a security exception if false?
+            Dim ReturnResult As $NewBOClass$
+            ReturnResult = DataPortal.Create(Of $NewBOClass$)(New CreateCriteria(CreateParam1))
+            ReturnResult.ValidationRules.CheckRules()
+            Return ReturnResult
+        End Function
+
+        ''' <summary>
+        ''' Used to create an instance of an existing $NewBOClass$
+        ''' </summary>
+        ''' <param name="FetchParam1">
+        ''' 
+        ''' </param>
+        ''' <returns>
+        ''' 
+        ''' </returns>
+        ''' <remarks>
+        ''' </remarks>
+        Public Shared Function Get$NewBOClass$(ByVal FetchParam1 As Object) As $NewBOClass$
+            If $NewBOClass$.CanGetObject Then
+                Dim ReturnResult As $NewBOClass$
+                ReturnResult = DataPortal.Fetch(Of $NewBOClass$)(New FetchCriteria(FetchParam1))
+                Return ReturnResult
+            Else
+                Throw New System.Security.SecurityException("User not authorized to Fetch a NewClassName")
+            End If
+
+        End Function
+
+#End Region
+
+#Region "Data Access"
+        'This region contains all your CRUD opperations.  Note that not all of your busienss objects may have need for some of these.
+
+        ''' <summary>
+        ''' Saves this instance of $NewBOClass$.
+        ''' </summary>
+        ''' <returns>
+        ''' Returns a new instance of $NewBOClass$. THIS MEANS YOUR OLD REFERENCE POINTS TO THE OLD INSTANCE IF THE OBJECT.
+        ''' </returns>
+        ''' <remarks>
+        ''' Don't forget the caller of this method must reset any references to the old object.
+        ''' </remarks>
+        Public Overrides Function Save() As $NewBOClass$
+
+            If Me.IsDeleted AndAlso Not CanDeleteObject() Then
+                Throw New System.Security.SecurityException("User not authorized to Delete a $NewBOClass$")
+
+            ElseIf Me.IsNew AndAlso Not CanAddObject() Then
+                Throw New System.Security.SecurityException("User not authorized to Create a new $NewBOClass$")
+
+            ElseIf Not CanEditObject() Then
+                Throw New System.Security.SecurityException("User not authorized to Update a $NewBOClass$")
+            End If
+
+            Dim ReturnItem As $NewBOClass$ = MyBase.Save
+
+            Return ReturnItem
+        End Function
+
+#Region "Create (and Insert, since they are logicaly paired)"
+
+
+        'CODE REVIEW NOTE: You can debate that the Insert stuff belongs in the update region...I am not sure which is best.
+
+        ''' <summary>
+        ''' This is the criteria class you would use to make a DataPortal.Create call
+        ''' </summary>
+        ''' <remarks>
+        ''' You may find that your Create, Fetch, Update, and or Delete dataportal calls have the same criteria paramaters.  
+        ''' It is your call whether you want to use the same criteria object for the calls that share the same paramaters.
+        ''' 
+        ''' You may also find that your "New" factory method doesn't need to get data from the database to create a new
+        ''' $NewBOClass$, in which case you don't need a CreateCriteria as you won't be making a call to Dataportal.Create
+        ''' </remarks>
+        Private Class CreateCriteria
+            Private mCriteriaParam1 As Object
+            Private Sub New()
+                'must use paramaterized constructor
+            End Sub
+            Public Sub New(ByVal CriteriaParam1 As Object)
+                'Add paramaters, backing fields, and ReadOnly properties as required
+                mCriteriaParam1 = CriteriaParam1
+            End Sub
+            Public ReadOnly Property CriteriaParam1() As Object
+                Get
+                    Return mCriteriaParam1
+                End Get
+            End Property
+        End Class
+
+        ''' <summary>
+        ''' This code is executed if a DataPortal.Create(of $NewBOClass$)(new CreateCriteria(...))was invoked.
+        ''' </summary>
+        ''' <param name="criteria">
+        ''' object containing all the data needed to create an instance of $NewBOClass$
+        ''' </param>
+        ''' <remarks>
+        ''' Note the CSLA.RunLocal() attribute.  This is used to ensure that this code 
+        ''' is executed on the local machine.  Normaly, all DataPortal_xyz calls will execute 
+        ''' on the application server (If the remote portal is on).
+        ''' 
+        ''' You may also need to use the CSLA.Transactional(TransactionScope) attrtibute if your
+        ''' creation process modifies multiple databases or executes multiple sprocs. Be careful 
+        ''' with transactions as they can cause deadlocks if your sproc takes a while to execute.
+        ''' </remarks>
+        <Csla.RunLocal()> _
+           Private Overloads Sub DataPortal_Create(ByVal criteria As CreateCriteria)
+            'This code would change if you are not using GUIDs as your objects unique ID.
+            mID = Guid.NewGuid
+
+            Using cn As New SqlConnection(Database.IRMAConnection)
+                cn.Open()
+                Using cm As SqlCommand = cn.CreateCommand
+                    cm.CommandType = CommandType.StoredProcedure
+
+                    'Discussion: We may want to come up with a standard nameing convention for all create sprocs
+                    '            and change this accordingly
+                    cm.CommandText = "SP_Create$NewBOClass$"
+                    'add any paramaters specific to the create sproc for your object here
+                    'cm.Parameters.AddWithValue("@", [value])
+
+                    Using dr As SafeDataReader = New SafeDataReader(cm.ExecuteReader())
+                        If dr.Read() Then
+                            'populate your backing fields
+                            'mField = dr.GetInt32("Field")
+                        Else
+                            'Discussion: discuss whether this should throw an exception
+                            'for now Leave Default Values.
+
+                            'the bigest problem with throwing an exception:
+                            'Throw New Exception("unabel to item")
+                            'is its a hellova performance hit...especialy if this is running on the application server.
+                        End If
+                    End Using
+                End Using
+            End Using
+
+            ValidationRules.CheckRules()
+        End Sub
+
+        ''' <summary>
+        ''' This code is executed if a mybase.save was invoked and your object's IsNew = true and IsDirty = true.
+        ''' </summary>
+        ''' <remarks>
+        ''' Note the CSLA.Transactional(csla.TransactionalTypes.TransactionScope) attribute.  This should
+        ''' be used if your insert process calls multiple sprocs or modifies multiple databases.  be careful
+        ''' with transactions as they can cause deadlocks if your sproc(s) take a while to execute.
+        ''' </remarks>
+        <Csla.Transactional(Csla.TransactionalTypes.TransactionScope)> _
+        Protected Overrides Sub DataPortal_Insert()
+            'There is no need to continue if we are not dirty...
+            If Not Me.IsDirty Then Exit Sub
+
+            Using cn As New SqlClient.SqlConnection(Database.RipeConnection)
+                cn.Open()
+                Using cm As SqlClient.SqlCommand = cn.CreateCommand()
+                    cm.CommandType = CommandType.StoredProcedure
+
+                    'Discussion: We may want to come up with a standard nameing convention for all insert sprocs
+                    '            and change this accordingly
+                    cm.CommandText = "SP_Insert$NewBOClass$"
+                    'add any paramaters specific to the create sproc for your object here
+                    'cm.Parameters.AddWithValue("@", [value])
+
+                    mTimeStamp = DoAddUpdate(cm)
+                    'I think the next version of CSLA will do this MarkOld automaticaly
+                    MarkOld()
+                End Using
+
+                'Update all child objects\lists if they are dirty.
+                'we pass in the connection because you can only have one connection
+                'open per transaction.
+                '-------------------------------------------------
+                'If [ChildObject].IsDirty Then [ChildObject].Update(cn)
+            End Using
+        End Sub
+
+#End Region
+
+#Region "Retrieve"
+
+        ''' <summary>
+        ''' This is the criteria class you would use to make a DataPortal.Fetch call
+        ''' </summary>
+        ''' <remarks>
+        ''' You may find that your Create, Fetch, Update, and\or Delete dataportal calls have the same criteria paramaters.  
+        ''' It is your call whether you want to use the same criteria object for the calls that have the same paramaters.
+        ''' </remarks>
+        Private Class FetchCriteria
+            Private mCriteriaParam1 As Object
+            Private Sub New()
+                'must use paramaterized constructor
+            End Sub
+            Public Sub New(ByVal CriteriaParam1 As Object)
+                'Add paramaters, backing fields, and ReadOnly properties as required
+                mCriteriaParam1 = CriteriaParam1
+            End Sub
+            Public ReadOnly Property CriteriaParam1() As Object
+                Get
+                    Return mCriteriaParam1
+                End Get
+            End Property
+        End Class
+
+        ''' <summary>
+        ''' This code is executed if a DataPortal.Fetch(of $NewBOClass$)(new FetchCriteria(...))was invoked.
+        '''</summary>
+        ''' <param name="criteria">
+        ''' object containing all the data needed to Fetch an instance of $NewBOClass$
+        ''' </param>
+        ''' <remarks>
+        ''' This code is executed on the server unless you adorn the sub with the CSLA.RunLocal() attribute
+        ''' or the remoting portal is turned off.
+        ''' </remarks>
+        Private Overloads Sub DataPortal_Fetch(ByVal criteria As FetchCriteria)
+
+            Using cn As New SqlClient.SqlConnection(Database.RipeConnection)
+                cn.Open()
+                Using cm As SqlClient.SqlCommand = cn.CreateCommand
+                    'Discussion: We may want to come up with a standard nameing convention for all fetch sprocs
+                    '            and change this accordingly
+                    cm.CommandText = "SP_Get$NewBOClass$"
+                    'add any paramaters specific to the create sproc for your object here
+                    'cm.Parameters.AddWithValue("@", [value])
+                    Using dr As Csla.Data.SafeDataReader = New Csla.Data.SafeDataReader(cm.ExecuteReader())
+                        If dr.Read() Then
+                            mID = dr.GetGuid("ID")
+                            dr.GetBytes("LastUpdate", 0, mTimeStamp, 0, 8)
+
+                            'populate the rest of your backing fields
+
+                            MyBase.MarkOld()
+                        Else
+                            'Discussion: discuss whether this should throw an exception
+                            'for now Leave Default Values
+                        End If
+                    End Using
+                End Using
+            End Using
+            ValidationRules.CheckRules()
+        End Sub
+
+#End Region
+
+#Region "Update "
+
+        ''' <summary>
+        ''' This code is executed if a mybase.save was invoked and your IsNew = false and IsDirty = true.
+        ''' </summary>
+        ''' <remarks>
+        ''' Note the CSLA.Transactional(csla.TransactionalTypes.TransactionScope) attribute.  This should
+        ''' be used if your update process calls multiple sprocs or modifies multiple databases.  Be careful
+        ''' with transactions as they can cause deadlocks if your sproc(s) take a while to execute.
+        ''' </remarks>
+        <Csla.Transactional(Csla.TransactionalTypes.TransactionScope)> _
+        Protected Overrides Sub DataPortal_Update()
+
+            If Not Me.IsDirty Then Exit Sub
+
+            Using cn As New SqlClient.SqlConnection(Database.RipeConnection)
+                cn.Open()
+                Using cm As SqlClient.SqlCommand = cn.CreateCommand()
+
+                    cm.CommandType = CommandType.StoredProcedure
+                    'Discussion: We may want to come up with a standard nameing convention for all insert sprocs
+                    '            and change this accordingly
+                    cm.CommandText = "SP_Update$NewBOClass$"
+                    'add any paramaters specific to the create sproc for your object here
+                    'cm.Parameters.AddWithValue("@", [value])
+                    cm.Parameters.AddWithValue("@lastUpdate", mTimeStamp)
+                    mTimeStamp = DoAddUpdate(cm)
+                    MarkOld()
+                End Using
+
+                'Update all child objects if they are dirty.
+                'we pass in the connection because you can only have one connection
+                'open per transaction.
+                '-------------------------------------------------
+                'If [ChildObject].IsDirty Then
+                '   [ChildObject].Update(cn)
+                'End If
+            End Using
+
+        End Sub
+
+#End Region
+
+        ''' <summary>
+        ''' This is shared by the Dataportal_update and the dataportal_Insert
+        ''' </summary>
+        ''' <param name="cm"></param>
+        ''' <returns>
+        ''' The new timestamp of the object
+        ''' </returns>
+        ''' <remarks>
+        ''' We found that more often than not, an update and an insert share many paramaters 
+        ''' so we created a sub to share this functionality
+        ''' </remarks>
+        Private Function DoAddUpdate(ByVal cm As SqlClient.SqlCommand) As Byte()
+            'add any paramaters common to Adding and Updating here
+            cm.Parameters.AddWithValue("@ID", mID)
+
+            '------------------------------------------------------------------------------
+            '--------------------------For Concurrency checking----------------------------
+            '------------------------------------------------------------------------------
+            cm.Parameters.AddWithValue("@LastUpdateUserID", Ripe.Library.GetCurrentIdentity.UserID)
+            Dim param As New SqlClient.SqlParameter("@newLastUpdate", SqlDbType.Timestamp)
+            param.Direction = ParameterDirection.Output
+            cm.Parameters.Add(param)
+            '---------------------------------------------------------------------------------
+            cm.ExecuteNonQuery()
+
+            Return CType(cm.Parameters("@newLastUpdate").Value, Byte())
+
+            'we have been succesfully updated in the Database, so we are now old
+            MarkOld()
+        End Function
+
+#Region "Delete"
+        ''' <summary>
+        ''' This method would be used if you do not have an instance of the object you want to delete.
+        ''' </summary>
+        ''' <param name="ID"></param>
+        ''' <remarks></remarks>
+        Public Overloads Shared Sub Delete(ByVal ID As Guid, ByVal tst As Integer)
+            If CanDeleteObject() Then
+                Csla.DataPortal.Delete(New DeleteCriteria(ID))
+            Else
+                Throw New System.Security.SecurityException("You are not authorized to delete a $NewBOClass$")
+            End If
+
+        End Sub
+
+        ''' <summary>
+        ''' This is the criteria class you would use to make a DataPortal.Delete call
+        ''' </summary>
+        ''' <remarks>
+        ''' You may find that your Create, Fetch, Update, and or Delete dataportal calls can have the same criteria paramaters.  
+        ''' It is your call whether you want to use the same criteria object for the calls that share the same paramaters
+        ''' </remarks>
+        Private Class DeleteCriteria
+            Private mCriteriaParam1 As Object
+            Private Sub New()
+                'must use paramaterized constructor
+            End Sub
+            Public Sub New(ByVal CriteriaParam1 As Object)
+                'Add paramaters, backing fields, and ReadOnly properties as required
+                mCriteriaParam1 = CriteriaParam1
+            End Sub
+            Public ReadOnly Property CriteriaParam1() As Object
+                Get
+                    Return mCriteriaParam1
+                End Get
+            End Property
+        End Class
+
+        ''' <summary>
+        ''' This code is executed if either a DataPortal.Delete(of $NewBOClass$)(new DeleteCriteria(...))was invoked
+        ''' or MyBase saved was invoked and the objects IsDeleted = true.
+        ''' </summary>
+        ''' <remarks>
+        ''' Note the CSLA.Transactional(csla.TransactionalTypes.TransactionScope) attribute.  This should
+        ''' be used if your update process calls multiple sprocs or modifies multiple databases.  Be careful
+        ''' with transactions as they can cause deadlocks if your sproc(s) take a while to execute.
+        ''' </remarks>
+        <Csla.Transactional(Csla.TransactionalTypes.TransactionScope)> _
+        Private Overloads Sub DataPortal_Delete(ByVal criteria As DeleteCriteria)
+
+            Using cn As New SqlClient.SqlConnection(Database.RipeConnection)
+                cn.Open()
+                Using cm As SqlClient.SqlCommand = cn.CreateCommand
+                    With cm
+                        .CommandType = CommandType.StoredProcedure
+                        'Discussion: We may want to come up with a standard nameing convention for all create sprocs
+                        '            and change this accordingly
+                        .CommandText = "SP_Delete$NewBOClass$"
+                        'add any paramaters specific to the create sproc for your object here
+                        'cm.Parameters.AddWithValue("@", [value])
+                        .ExecuteNonQuery()
+                    End With
+                End Using
+
+            End Using
+        End Sub
+
+#End Region
+
+#End Region
+
+#Region "Nested Types"
+        'Put any Nested Types in here (I.E. Enums, classes, structs)
+#End Region
+
+    End Class
+
+End Namespace
+]]>
+      </Code>
+  </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

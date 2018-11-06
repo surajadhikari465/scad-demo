@@ -1,0 +1,89 @@
+How to use the wfmmobile_update.cmd script
+
+The syntax of the wfmmobile_update.cmd script is:
+
+   wfmmobile_update.cmd [AppServer] [AppName] [AppVersion] [AppFileName]
+
+   AppServer   - Used to generate server names (i.e. IRMA[AppServer]Appx) (Test,QA,Prd)
+   AppName     - Used to generate the PluginUpdates folder (i.e. E:\WebApps\WFM-Mobile\Configuration\Updates\PluginUpdates\[AppName]\)
+   AppVersion  - Used to generate the version folder (i.e. E:\WebApps\WFM-Mobile\Configuration\Updates\PluginUpdates\[AppName]\[AppVersion]\)
+   AppFileName - Used to specify the file to go in the version folder (i.e. DVO-TST.CAB )
+
+   for example:
+
+   wfmmobile_update  Test  DVO  4.1.0.0  DVO-TST.CAB
+   
+What the script does:
+
+   1. It checks to see if it got all 4 command line arguments
+
+   2. It checks for the first server path, as a server name check (IRMATestApp1\E$\WebApps\WFM-Mobile\Configuration\Updates\PluginUpdates)
+
+   3. It displays the command line information for the implementer to verify:
+   
+*********************************************************************
+        WFM Mobile App Installation Script
+       Script: WfmMobile_update.cmd
+   App Server: test
+     App Name: DVO
+  App Version: 4.1.0.0
+     App File: DVO-TST.CAB
+*********************************************************************
+If the information above is correct, press [enter] otherwise press Ctrl-C to exit.
+Press any key to continue . . .
+
+   4. It sets the server number list, if "prd" sets it to 1,2,3,4,5,6,7,8 otherwise to 1,2,3,4
+   
+   5. Then it loops through the server number list:
+
+      5a. Creates the new version number folder: \\IRMATestApp1\E$\WebApps\WFM-Mobile\Configuration\Updates\PluginUpdates\DVO\4.1.0.0
+      
+      5b. Copies the app file to that folder
+      
+      5c. Copies the WFMUHS.xml file to the configuration folder: \\IRMATestApp1\E$\WebApps\WFM-Mobile\Configuration\
+      
+
+      
+For deployment, set up a staging folder (I use \\cewd6503\buildshare mapped to the B: drive) 
+with sub-folders for deploying to Test, QA, and Prod:
+
+B:\WFMMobile
+   .\tst
+   .\qa
+   .\prd
+
+In each folder put a copy of the wfmmobile_update.cmd script and your .CAB or .DLL file
+for that environment.
+Wait until deployment to put a copy of the WFMUHS.xml file in the folder 
+(pulled freshly from the TFS changeset).
+
+Create a command file specifically for your ECC (i.e. ECC_xxxxx.cmd) containing the
+call to wfmmobile_update with the correct command line parameters:
+
+   ECC_73468.cmd:
+   CALL wfmmobile_update  QA  DVO  4.1.0.0  DVO-QA.CAB
+
+   
+The change instructions for the ECC would look like this:
+
+      1.	Mount the \\cewd6503\buildshare as a drive letter (i.e. B: )
+
+      2.	Open a command window and navigate to the B:\WFMMobile\QA staging folder on that drive
+
+      3.	Go to TFS site for QA, get WFMUHS.xml from change-set 27244 and save in the staging folder (B:\WFMMobile\QA)
+      (http://cewp1605:8080/tfs/web/UI/Pages/Scc/Explorer.aspx#path=%24%2FIRMA%2FConfigs%2FWFMUHS)
+
+      4.	Run the ECC_73468.cmd file
+
+      5.	Verify the information displayed and press [enter] if correct.
+
+      *********************************************************************
+              WFM Mobile App Installation Script
+             Script: WfmMobile_update.cmd
+         App Server: QA
+           App Name: DVO
+        App Version: 4.1.0.0
+           App File: DVO-QA.CAB
+      *********************************************************************
+      If the information above is correct, press [enter] otherwise press Ctrl-C to exit.
+      Press any key to continue . . .

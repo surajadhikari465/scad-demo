@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9040C552-7ECD-4201-8965-1CB32F598A73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>WholeFoods.Mobile.IRMA</RootNamespace>
+    <AssemblyName>WholeFoods.Mobile.IRMA</AssemblyName>
+    <ProjectTypeGuids>{68B1623D-7FB9-47D8-8664-7ECEA3297D4F};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>b2c48bd2-963d-4549-9169-1fa021dce484</PlatformID>
+    <OSVersion>5.02</OSVersion>
+    <MyType>Windows</MyType>
+    <DeployDirSuffix>Wholefoods.IRMA.Main</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <NativePlatformName>Windows Mobile 6 Professional SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(PlatformFamilyName)=TRUE</DefineConstants>
+    <DocumentationFile>WholeFoods.Mobile.IRMA.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <FileAlignment>512</FileAlignment>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>$(PlatformFamilyName)=TRUE</DefineConstants>
+    <DocumentationFile>WholeFoods.Mobile.IRMA.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <FileAlignment>512</FileAlignment>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsCE.Forms" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WholeFoods.Mobile.Interop.Scanner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\WholeFoods.Mobile.Interop.Scanner.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="HandheldHardware" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="WholeFoods.Mobile.IRMA" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\Common.vb" />
+    <Compile Include="Code\Enums.vb" />
+    <Compile Include="Code\Exceptions.vb" />
+    <Compile Include="Code\ErrorHandler.vb" />
+    <Compile Include="Code\ReceiveDocumentFileWriter.vb" />
+    <Compile Include="Code\TransferFileWriter.vb" />
+    <Compile Include="Exceptions\ParsedCFFaultException.vb" />
+    <Compile Include="Forms\AddInvoiceCharge.Designer.vb">
+      <DependentUpon>AddInvoiceCharge.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddInvoiceCharge.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddRefusedItem.Designer.vb">
+      <DependentUpon>AddRefusedItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddRefusedItem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShrinkType.Designer.vb">
+      <DependentUpon>ShrinkType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShrinkType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgQuestion.Designer.vb">
+      <DependentUpon>dlgQuestion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgQuestion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OrderInformation.Designer.vb">
+      <DependentUpon>OrderInformation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OrderInformation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OrderItemsRefused.Designer.vb">
+      <DependentUpon>OrderItemsRefused.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OrderItemsRefused.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReasonCodeSelection.Designer.vb">
+      <DependentUpon>ReasonCodeSelection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReasonCodeSelection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InvoiceData.Designer.vb">
+      <DependentUpon>InvoiceData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InvoiceData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemDiscount.Designer.vb">
+      <DependentUpon>ItemDiscount.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemDiscount.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgBilledQuantity.Designer.vb">
+      <DependentUpon>dlgBilledQuantity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgBilledQuantity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgReturnOrReceive.Designer.vb">
+      <DependentUpon>dlgReturnOrReceive.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgReturnOrReceive.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgItemMovements.Designer.vb">
+      <DependentUpon>dlgItemMovements.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgItemMovements.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgReceivingDocument.Designer.vb">
+      <DependentUpon>dlgReceivingDocument.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgReceivingDocument.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReasonCodeDescription.Designer.vb">
+      <DependentUpon>ReasonCodeDescription.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReasonCodeDescription.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentMain.Designer.vb">
+      <DependentUpon>ReceiveDocumentMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentScan.Designer.vb">
+      <DependentUpon>ReceiveDocumentScan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentScan.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentReview.Designer.vb">
+      <DependentUpon>ReceiveDocumentReview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceiveDocumentReview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FindOrderByItem.Designer.vb">
+      <DependentUpon>FindOrderByItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FindOrderByItem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceivingList.Designer.vb">
+      <DependentUpon>ReceivingList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceivingList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TransferMain.Designer.vb">
+      <DependentUpon>TransferMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TransferMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TransferReview.Designer.vb">
+      <DependentUpon>TransferReview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TransferReview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TransferScan.Designer.vb">
+      <DependentUpon>TransferScan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TransferScan.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateShrink.Designer.vb">
+      <DependentUpon>UpdateShrink.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateShrink.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CycleCountTeam.Designer.vb">
+      <DependentUpon>CycleCountTeam.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CycleCountTeam.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\dlgMultiplePOSelector.Designer.vb">
+      <DependentUpon>dlgMultiplePOSelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\dlgMultiplePOSelector.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemScan.Designer.vb">
+      <DependentUpon>ItemScan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemScan.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceiveOrder.Designer.vb">
+      <DependentUpon>ReceiveOrder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceiveOrder.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewError.Designer.vb">
+      <DependentUpon>ViewError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewError.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Service Proxy\CFClientBase.vb" />
+    <Compile Include="Service Proxy\GatewayService.vb" />
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Code\Messages.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Code\Session.vb" />
+    <Compile Include="Code\SessionUtility.vb" />
+    <Compile Include="Code\ShrinkFileWriter.vb" />
+    <Compile Include="Code\ShrinkItem.vb" />
+    <Compile Include="Forms\ShrinkMain.Designer.vb">
+      <DependentUpon>ShrinkMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShrinkMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShrinkReview.Designer.vb">
+      <DependentUpon>ShrinkReview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShrinkReview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShrinkScan.Designer.vb">
+      <DependentUpon>ShrinkScan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShrinkScan.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AddInvoiceCharge.resx">
+      <DependentUpon>AddInvoiceCharge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddRefusedItem.resx">
+      <DependentUpon>AddRefusedItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShrinkType.resx">
+      <DependentUpon>ShrinkType.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgQuestion.resx">
+      <DependentUpon>dlgQuestion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OrderInformation.resx">
+      <DependentUpon>OrderInformation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OrderItemsRefused.resx">
+      <DependentUpon>OrderItemsRefused.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReasonCodeSelection.resx">
+      <DependentUpon>ReasonCodeSelection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InvoiceData.resx">
+      <DependentUpon>InvoiceData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemDiscount.resx">
+      <DependentUpon>ItemDiscount.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgBilledQuantity.resx">
+      <DependentUpon>dlgBilledQuantity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgReturnOrReceive.resx">
+      <DependentUpon>dlgReturnOrReceive.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgItemMovements.resx">
+      <DependentUpon>dlgItemMovements.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgReceivingDocument.resx">
+      <DependentUpon>dlgReceivingDocument.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReasonCodeDescription.resx">
+      <DependentUpon>ReasonCodeDescription.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceiveDocumentMain.resx">
+      <DependentUpon>ReceiveDocumentMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceiveDocumentScan.resx">
+      <DependentUpon>ReceiveDocumentScan.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceiveDocumentReview.resx">
+      <DependentUpon>ReceiveDocumentReview.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FindOrderByItem.resx">
+      <DependentUpon>FindOrderByItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceivingList.resx">
+      <DependentUpon>ReceivingList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TransferMain.resx">
+      <DependentUpon>TransferMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TransferReview.resx">
+      <DependentUpon>TransferReview.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TransferScan.resx">
+      <DependentUpon>TransferScan.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateShrink.resx">
+      <DependentUpon>UpdateShrink.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CycleCountTeam.resx">
+      <DependentUpon>CycleCountTeam.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\dlgMultiplePOSelector.resx">
+      <DependentUpon>dlgMultiplePOSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemScan.resx">
+      <DependentUpon>ItemScan.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceiveOrder.resx">
+      <DependentUpon>ReceiveOrder.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewError.resx">
+      <DependentUpon>ViewError.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShrinkMain.resx">
+      <DependentUpon>ShrinkMain.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShrinkReview.resx">
+      <DependentUpon>ShrinkReview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShrinkScan.resx">
+      <DependentUpon>ShrinkScan.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PtxSdkCommon.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\DataSources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.VisualBasic.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{F184B08F-C81C-45F6-A57F-5ABD9991F28F}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

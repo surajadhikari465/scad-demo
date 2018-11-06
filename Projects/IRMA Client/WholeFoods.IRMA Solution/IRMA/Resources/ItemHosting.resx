@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AllExceptionTypes" xml:space="preserve">
+    <value>All Exception Types</value>
+  </data>
+  <data name="AllSeverityLevels" xml:space="preserve">
+    <value>All Severity Levels</value>
+  </data>
+  <data name="AllStatusTypes" xml:space="preserve">
+    <value>All Status Types</value>
+  </data>
+  <data name="AllSubTeams" xml:space="preserve">
+    <value>All Subteams for your Team(s)</value>
+  </data>
+  <data name="Applied" xml:space="preserve">
+    <value>Applied</value>
+  </data>
+  <data name="AssignNewPrimaryVendor" xml:space="preserve">
+    <value>There are still some Stores that have some Items that use this vendor as Primary Vendor.  You can not delete this vendor until you assign a new Primary Vendor for these items.</value>
+  </data>
+  <data name="BothDateRequiredPromotions" xml:space="preserve">
+    <value>Both Start and End Dates required for promotions</value>
+  </data>
+  <data name="BrandEDLP" xml:space="preserve">
+    <value>365 Brand or EDLP (infrequent price changes) - change anyway?</value>
+  </data>
+  <data name="CalculatedCheckDigit" xml:space="preserve">
+    <value>Calculated Check Digit is not equal to the Check Digit entered</value>
+  </data>
+  <data name="NonRetailIngredientItem" xml:space="preserve">
+    <value>Identifier indicates a non-retail Ingredient item. It can't be added as an alternate identifier to a retail-sale item.</value>
+  </data>
+  <data name="CategoryRequired" xml:space="preserve">
+    <value>Class is required for all items.  Enter class now?</value>
+  </data>
+  <data name="ChangePrimaryVendor" xml:space="preserve">
+    <value>Change Primary Vendor</value>
+  </data>
+  <data name="ChangesNotMade" xml:space="preserve">
+    <value>Changes will NOT be made if {1} is left blank. {0} Enter {1}?</value>
+    <comment>0 = carriage return, 1 = field label</comment>
+  </data>
+  <data name="CheckDigitRequired" xml:space="preserve">
+    <value>Check Digit is required for Barcodes</value>
+  </data>
+  <data name="ContactsForTitle" xml:space="preserve">
+    <value>Contacts for {0}</value>
+    <comment>0 = Company name</comment>
+  </data>
+  <data name="CostEqualPkg" xml:space="preserve">
+    <value>Cost Unit, when not 'Box', must equal the Package Unit of the Store's Jurisdiction you are applying the cost to.  Correct the Cost Unit.</value>
+  </data>
+  <data name="CostFromVendor" xml:space="preserve">
+    <value>Cost came directly from the vendor</value>
+  </data>
+  <data name="CostPromotionTitle" xml:space="preserve">
+    <value>Cost Promotion</value>
+  </data>
+  <data name="CostUnit" xml:space="preserve">
+    <value>Cost Unit</value>
+    <comment>label</comment>
+  </data>
+  <data name="CouldNotDeleteMessage" xml:space="preserve">
+    <value>At least one cost could not be deleted because: </value>
+  </data>
+  <data name="CurrentPrices" xml:space="preserve">
+    <value>Current Prices for {0}</value>
+    <comment>0 = Item Description</comment>
+  </data>
+  <data name="CurrentUnits" xml:space="preserve">
+    <value>Current On Hand Units For</value>
+  </data>
+  <data name="DCOnHand" xml:space="preserve">
+    <value>This item cannot have EXE Distributed unchecked because there is a DC Balance On Hand.</value>
+  </data>
+  <data name="DeleteContact" xml:space="preserve">
+    <value>Really delete contact "{0}"?</value>
+    <comment>0 = contact name</comment>
+  </data>
+  <data name="DeleteContactError" xml:space="preserve">
+    <value>Unable to delete contact.</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="DeleteDateRequired" xml:space="preserve">
+    <value>Delete date is required</value>
+  </data>
+  <data name="DeletedIdentifierNotDefault" xml:space="preserve">
+    <value>You can not mark a deleted identifer as default.</value>
+  </data>
+  <data name="DeletedIdentifierNotNationalID" xml:space="preserve">
+    <value>You can not mark a deleted identifer as National ID.</value>
+  </data>
+  <data name="DeleteIdentifier" xml:space="preserve">
+    <value>Delete Identifier {0}</value>
+    <comment>0 = Identifier value</comment>
+  </data>
+  <data name="DeleteSelectedCosts" xml:space="preserve">
+    <value>Delete all selected costs?</value>
+  </data>
+  <data name="DeleteVendor" xml:space="preserve">
+    <value>Delete Vendor {0}?</value>
+    <comment>0 = Company Name</comment>
+  </data>
+  <data name="DuplicateCompany" xml:space="preserve">
+    <value>Duplicate Company Name and/or PS Vendor and Address</value>
+  </data>
+  <data name="DuplicateCompanyModify" xml:space="preserve">
+    <value>Duplicate Company Name and/or PS Vendor and Address; changes cannot be saved.{0}Modify?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="EarnedSaleLimitNotZero" xml:space="preserve">
+    <value>Earned Discount Sale Limit must not be zero</value>
+  </data>
+  <data name="EnterDateItemRemove" xml:space="preserve">
+    <value>Enter the date you want this item to be removed from the allowable item list for this Vendor.</value>
+  </data>
+  <data name="EnterDateStoreRemove" xml:space="preserve">
+    <value>Enter the date you want the Store to be removed from the allowable buyers list for this Item and Vendor.</value>
+  </data>
+  <data name="EnterDateVendorRemove" xml:space="preserve">
+    <value>Enter the date you want the Vendor to be removed from the allowable vendor list for this Item.</value>
+  </data>
+  <data name="EnterExceptionType" xml:space="preserve">
+    <value>You must enter an Exception Type.</value>
+  </data>
+  <data name="Exceptions" xml:space="preserve">
+    <value>Exceptions</value>
+  </data>
+  <data name="Exists" xml:space="preserve">
+    <value>{0} already exists.{1}Add anyway?</value>
+    <comment>0 = field label, 1 = carriage return</comment>
+  </data>
+  <data name="FreightUnit" xml:space="preserve">
+    <value>Freight Unit</value>
+    <comment>label</comment>
+  </data>
+  <data name="HighlightItemDelete" xml:space="preserve">
+    <value>At least one Item must be highlighted to be deleted.</value>
+  </data>
+  <data name="IdentifierExists" xml:space="preserve">
+    <value>That Identifier already for exists for another Item.</value>
+  </data>
+  <data name="IdentifierNumeric" xml:space="preserve">
+    <value>Identifier must be numeric</value>
+  </data>
+  <data name="IdentifiersTitle" xml:space="preserve">
+    <value>Identifiers of</value>
+  </data>
+  <data name="IdentifierZero" xml:space="preserve">
+    <value>The Identifier that was entered{0}cannot contain a leading zero.</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="IngredientError" xml:space="preserve">
+    <value>Ingredients Zoom failed:</value>
+  </data>
+  <data name="Ingredients" xml:space="preserve">
+    <value>Ingredients</value>
+  </data>
+  <data name="ItemComparison" xml:space="preserve">
+    <value>Item On Hand Comparison Between {0} And {1}{2}For {3}</value>
+    <comment>0 = store name, 1 = store name, 2 = return, 3 = subteam name</comment>
+  </data>
+  <data name="ItemDeleted" xml:space="preserve">
+    <value>Item {0} is a deleted Item, and a deleted item cannot be used.</value>
+    <comment>0 = Item Description</comment>
+  </data>
+  <data name="ItemID" xml:space="preserve">
+    <value>Item ID</value>
+  </data>
+  <data name="ItemInShipper" xml:space="preserve">
+    <value>This item already is contained in a shipper.</value>
+  </data>
+  <data name="ItemIsShipper" xml:space="preserve">
+    <value>This item cannot be added because it is a shipper.</value>
+  </data>
+  <data name="ItemLocked" xml:space="preserve">
+    <value>Item was locked by {0} on {1}</value>
+    <comment>0 = User, 1 = DateTime</comment>
+  </data>
+  <data name="ItemOrderHistory" xml:space="preserve">
+    <value>Item Order History For</value>
+  </data>
+  <data name="ItemPriceReportTitle" xml:space="preserve">
+    <value>Item Price Report</value>
+  </data>
+  <data name="ItemsToAssign" xml:space="preserve">
+    <value>Items To Assign</value>
+  </data>
+  <data name="ItemSuppliedTitle" xml:space="preserve">
+    <value>Items supplied by {0}</value>
+    <comment>0 = Vendor company name</comment>
+  </data>
+  <data name="label_header_vendorDealType" xml:space="preserve">
+    <value>Deal Type</value>
+    <comment>column header</comment>
+  </data>
+  <data name="LastPack" xml:space="preserve">
+    <value>Last Pack</value>
+  </data>
+  <data name="msg_confirm_negativeNetCost" xml:space="preserve">
+    <value>The Cost Promotion that you have entered will result in a Net Cost &lt;= $0.00 for the following store(s).  Save this record anyway?</value>
+  </data>
+  <data name="msg_optionText_PluConflictCancelSave" xml:space="preserve">
+    <value>Cancel changes to this Identifier</value>
+    <comment>alternate msg when IdentifierList screen calls ItemAdd_ScalePluConflict form</comment>
+  </data>
+  <data name="msg_warning_InvalidSmallMoneyValue" xml:space="preserve">
+    <value>You have entered an invalid {0} value.  Please enter a numeric value under 214,748.36.</value>
+    <comment>{0} = Cost/MSRP/Freight</comment>
+  </data>
+  <data name="msg_warning_ItemWithNoVendor_part1" xml:space="preserve">
+    <value>Warning! This item has no vendor association for the following stores:</value>
+    <comment>informs user when current item does not have a primary vendor assigned</comment>
+  </data>
+  <data name="msg_warning_ItemWithNoVendor_part2" xml:space="preserve">
+    <value>Items without vendor associations can NOT be batched.</value>
+    <comment>informs user when current item does not have a primary vendor assigned</comment>
+  </data>
+  <data name="msg_warning_ItemWithNoVendor_part3" xml:space="preserve">
+    <value>Create vendor association?</value>
+    <comment>informs user when current item does not have a primary vendor assigned</comment>
+  </data>
+  <data name="msg_warning_QtyReqAndProhibit" xml:space="preserve">
+    <value>{0} and {1} can not both be checked.</value>
+    <comment>{0} = Qty Prohibited; {1} = Qty Required</comment>
+  </data>
+  <data name="msg_warning_StoreExeWarehouseInvalid" xml:space="preserve">
+    <value>You have entered an invalid {0} value.  Please enter a numeric value under 32,767.</value>
+    <comment>0 = Store.vb EXE Warehouse No.</comment>
+  </data>
+  <data name="msg_warning_vendorDealStackConflict" xml:space="preserve">
+    <value>Warning! There are conflicting non-stackable deals with the start and end dates provided.  Adjust the start and end date OR make this deal stackable.</value>
+  </data>
+  <data name="MSRPMultipleNotZero" xml:space="preserve">
+    <value>MSRP Multiple may not be zero.</value>
+  </data>
+  <data name="MSRPRequired" xml:space="preserve">
+    <value>MSRP is required this Price Type</value>
+  </data>
+  <data name="MustSelectCost" xml:space="preserve">
+    <value>You must select a cost from the grid.</value>
+  </data>
+  <data name="NewPack" xml:space="preserve">
+    <value>New Pack</value>
+  </data>
+  <data name="NewPrimaryVendorInstructions" xml:space="preserve">
+    <value>The current vendor is listed as primary vendor for {0} item(s).  To choose a new Primary Vendor for these items, you must select the vendor you want to make Primary Vendor and click the submit button.  Not all items may fall under the Vendor you selected, so you may have to repeat the process until there are no more Items that use the current vendor for Primary Vendor.</value>
+    <comment>0 = number of items</comment>
+  </data>
+  <data name="NewPrimaryVendorInstructions2" xml:space="preserve">
+    <value>Select the new Primary Vendor for this item.</value>
+  </data>
+  <data name="NewPrimaryVendorInstructions3" xml:space="preserve">
+    <value>Select the new Primary Vendor for this item and store.</value>
+  </data>
+  <data name="NoContactsFound" xml:space="preserve">
+    <value>No contacts were found for this vendor in the database.{0}Would you like to add one?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="NoCurrentRecordDelete" xml:space="preserve">
+    <value>There is not a current record to delete.</value>
+  </data>
+  <data name="NoItemsFound" xml:space="preserve">
+    <value>No Items found in the database.{0}Would you like to add one?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="NoMatchingVendorCost" xml:space="preserve">
+    <value>No Vendor Cost information matches search criteria</value>
+  </data>
+  <data name="NoNutrifact" xml:space="preserve">
+    <value>There is no nutrifact information associated to the selected item.</value>
+  </data>
+  <data name="NoScaleExtraText" xml:space="preserve">
+    <value>There is no scale extra text information associated to the selected item.</value>
+  </data>
+  <data name="NotYourSubTeam" xml:space="preserve">
+    <value>This Item's Sub-Team is not in your list of item administration Sub-Teams</value>
+  </data>
+  <data name="NoVendorsFound" xml:space="preserve">
+    <value>No Vendors found in the database.{0}Would you like to add one?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="OnSale" xml:space="preserve">
+    <value>Currently on sale</value>
+  </data>
+  <data name="OpenOrder" xml:space="preserve">
+    <value>This item cannot have EXE Distributed unchecked because it is contained in at least one open order.</value>
+  </data>
+  <data name="OverlappingCostHistory" xml:space="preserve">
+    <value>There is overlap with existing Cost History.  Add anyway?</value>
+  </data>
+  <data name="OverlappingPromoPrices" xml:space="preserve">
+    <value>Overlapping pending promo price changes</value>
+  </data>
+  <data name="OverlappingSamePromoPrices" xml:space="preserve">
+    <value>Same start date as an existing sale of the same Price Type</value>
+  </data>
+  <data name="OverlappingRegularPrices" xml:space="preserve">
+    <value>Overlapping pending regular price changes</value>
+  </data>
+  <data name="IsBatchedSale" xml:space="preserve">
+    <value>There is an unprocessed batch that must be completed first</value>
+  </data>
+  <data name="IsBatchedReg" xml:space="preserve">
+    <value>There is an unprocessed batch </value>
+  </data>
+  <data name="NoRegularPrice" xml:space="preserve">
+    <value>No regular price exists - it will be set to the Regular POS Price</value>
+  </data>
+  <data name="PastCost" xml:space="preserve">
+    <value>Past cost</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="PendingPriceChanges" xml:space="preserve">
+    <value>Pending Price Changes - [{0}]</value>
+    <comment>0 = Item Description</comment>
+  </data>
+  <data name="PkgDesc1" xml:space="preserve">
+    <value>Pack</value>
+  </data>
+  <data name="PkgDesc2" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="PkgDescNotZero" xml:space="preserve">
+    <value>Package Description {0} cannot be zero.  Correct Package Description {0}?</value>
+    <comment>0 = "1" or "2"</comment>
+  </data>
+  <data name="PkgDescUnit" xml:space="preserve">
+    <value>Package Description Unit</value>
+  </data>
+  <data name="PricingMethodRequired" xml:space="preserve">
+    <value>Pricing Method is required</value>
+  </data>
+  <data name="QuantityRegularPriceNotZero" xml:space="preserve">
+    <value>Quantity at regular price must not be zero</value>
+  </data>
+  <data name="ReallyDeleteShipper" xml:space="preserve">
+    <value>Really delete this shipper item?</value>
+  </data>
+  <data name="RegularMultipleNotZero" xml:space="preserve">
+    <value>Regular Multiple must be greater than zero</value>
+  </data>
+  <data name="RegularPriceNotZero" xml:space="preserve">
+    <value>Regular Price must greater than zero</value>
+  </data>
+  <data name="RemoveDefaultIdentifier" xml:space="preserve">
+    <value>You can not remove the default identifier.</value>
+  </data>
+  <data name="ReplaceSaleInfo" xml:space="preserve">
+    <value>Replace with this sale info</value>
+  </data>
+  <data name="ResetPackage" xml:space="preserve">
+    <value>This will reset the package description.{0}Continue?</value>
+    <comment>0 = carriage return</comment>
+  </data>
+  <data name="RetailNotVendor" xml:space="preserve">
+    <value>Retail stores cannot be vendors.</value>
+  </data>
+  <data name="SaleEndDateGreaterThanStart" xml:space="preserve">
+    <value>Sale End Date must be greater than or equal to Start Date.</value>
+  </data>
+  <data name="SaleEndDateRequired" xml:space="preserve">
+    <value>Sale End Date is required</value>
+  </data>
+  <data name="SaleMultipleNotZero" xml:space="preserve">
+    <value>Sale Multiple must be greater than zero</value>
+  </data>
+  <data name="SalePriceMethodNotZero" xml:space="preserve">
+    <value>Sale Price must be zero for this Pricing Method</value>
+  </data>
+  <data name="SalePriceNotZero" xml:space="preserve">
+    <value>Sale Price must greater than zero</value>
+  </data>
+  <data name="SaleStartDateRequired" xml:space="preserve">
+    <value>Sale Start Date is required</value>
+  </data>
+  <data name="ScaleDescriptionRequired" xml:space="preserve">
+    <value>Scale Description 1 is required for all Scale Items</value>
+  </data>
+  <data name="SearchVendorByCompany" xml:space="preserve">
+    <value>Search for Vendor by Company Name</value>
+  </data>
+  <data name="SelectExceptionDelete" xml:space="preserve">
+    <value>You must select an Exception to Delete.</value>
+  </data>
+  <data name="SelectItem" xml:space="preserve">
+    <value>An item from the list must be selected.</value>
+  </data>
+  <data name="SelectNewPrimaryVendor" xml:space="preserve">
+    <value>You did not select a new Primary Vendor for this item.  You can not delete this vendor until you assign the item a new primary vendor.</value>
+  </data>
+  <data name="SelectOneStoreTaxOverride" xml:space="preserve">
+    <value>You may only select 1 store to add tax override data to.</value>
+  </data>
+  <data name="SelectPrice" xml:space="preserve">
+    <value>A price from the list must be selected.</value>
+  </data>
+  <data name="SelectPrimaryVendor" xml:space="preserve">
+    <value>You did not select a new Primary Vendor for this item.  You can not remove this item from this vendor until you assign the item a new primary vendor.</value>
+  </data>
+  <data name="SelectRetailStore" xml:space="preserve">
+    <value>Please select a retail store.</value>
+  </data>
+  <data name="SelectShipperDelete" xml:space="preserve">
+    <value>You must select a shipper item to delete.</value>
+  </data>
+  <data name="SelectShipperEdit" xml:space="preserve">
+    <value>You must select a shipper item to edit.</value>
+  </data>
+  <data name="SelectState" xml:space="preserve">
+    <value>Select a state</value>
+  </data>
+  <data name="SelectStore" xml:space="preserve">
+    <value>You must select a store.</value>
+  </data>
+  <data name="SelectStoreAllow" xml:space="preserve">
+    <value>You must select a store to Add to the allowable list.</value>
+  </data>
+  <data name="SelectStoreRemove" xml:space="preserve">
+    <value>You must select a store to remove.</value>
+  </data>
+  <data name="SelectStoreTaxOverride" xml:space="preserve">
+    <value>You must select a store to add tax override data.</value>
+  </data>
+  <data name="SelectVendor" xml:space="preserve">
+    <value>You must select a vendor for which to display items.</value>
+  </data>
+  <data name="SelectVendorAsPrimary" xml:space="preserve">
+    <value>You must select a vendor to set as Primary vendor.</value>
+  </data>
+  <data name="SelectVendorCost" xml:space="preserve">
+    <value>You must select a record to Apply to Vendor Cost.</value>
+  </data>
+  <data name="SelectVendorManage" xml:space="preserve">
+    <value>You must select a vendor to manage its exceptions.</value>
+  </data>
+  <data name="SelectZone" xml:space="preserve">
+    <value>Select a zone</value>
+  </data>
+  <data name="ShipperContainsItems" xml:space="preserve">
+    <value>This shipper still contains items.</value>
+  </data>
+  <data name="ShipperItemsTitle" xml:space="preserve">
+    <value>Shipper Items for</value>
+  </data>
+  <data name="StorePrimaryAlready" xml:space="preserve">
+    <value>The store you selected is already primary for this vendor.</value>
+  </data>
+  <data name="StoresPrimaryAlready" xml:space="preserve">
+    <value>The stores you selected are already primary for this vendor.</value>
+  </data>
+  <data name="TaxClassRequired" xml:space="preserve">
+    <value>Tax Classification is required for a 'Retail Sale' item.</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="Teams" xml:space="preserve">
+    <value>Teams</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>{0} Unit</value>
+    <comment>0 = Cost or Freight or Vendor, etc.</comment>
+  </data>
+  <data name="UserNoTeams" xml:space="preserve">
+    <value>Your User ID is not associated with any teams.  Please contact Help Desk and have your user ID set up.</value>
+  </data>
+  <data name="UseShipperButton" xml:space="preserve">
+    <value>This shipper does not have any items.  Please add the shipper items using the Shipper Items button.</value>
+  </data>
+  <data name="VCAIExID" xml:space="preserve">
+    <value>VCAI_ExID</value>
+  </data>
+  <data name="VendorHighlight" xml:space="preserve">
+    <value>A Vendor must be highlighted</value>
+  </data>
+  <data name="VendorIdChangedForSave" xml:space="preserve">
+    <value>You have made changes to the vendor item ID.  </value>
+  </data>
+  <data name="VendorInList" xml:space="preserve">
+    <value>Vendor is already in the list.</value>
+  </data>
+  <data name="VendorItemID" xml:space="preserve">
+    <value>Vendor Item ID</value>
+  </data>
+  <data name="VendorLinksExist" xml:space="preserve">
+    <value>Vendor has links to other tables.</value>
+  </data>
+  <data name="VendorTitle" xml:space="preserve">
+    <value>Vendors for</value>
+  </data>
+  <data name="msg_error_RetailCasePack_Missing" xml:space="preserve">
+    <value>Retail Case Pack must be specified when the Ignore Vendor Pack flag is set.</value>
+  </data>
+  <data name="label_header_netUnitCost" xml:space="preserve">
+    <value>Net Unit Cost</value>
+  </data>
+  <data name="label_header_regUnitCost" xml:space="preserve">
+    <value>Reg Unit Cost</value>
+  </data>
+  <data name="SendExemptChanges" xml:space="preserve">
+    <value>Are you sure you want to send exempt shelf tag changes?</value>
+  </data>
+  <data name="OverlappingSamePromoPriceUploaded" xml:space="preserve">
+    <value>Same start date as a pending upload sale of the same Price Type</value>
+  </data>
+  <data name="msg_confirm_CancelAllSales" xml:space="preserve">
+    <value>You are about to cancel all sales for the selected store(s), including stacked promotions.  Are you sure you want to proceed?</value>
+  </data>
+  <data name="msg_error_AdjustSale_UnprocessedBatches" xml:space="preserve">
+    <value>There are pending batches for this item in the following statuses: Packaged, Ready, Printed, Sent.  You are unable to {0} for the selected store(s) until these batches are in the 'Processed' state.</value>
+    <comment>{0} = 'cancel all sales' OR 'end a sale early'</comment>
+  </data>
+  <data name="msg_warning_CancelSales_BatchesInBuildingStatus" xml:space="preserve">
+    <value>WARNING: There are pending batches in the 'Building' state.  If you choose to proceed this item will be removed from those batches.</value>
+  </data>
+  <data name="SelectStoreEndSaleEarly" xml:space="preserve">
+    <value>You must select a store to end a sale early for.</value>
+  </data>
+  <data name="msg_confirm_EndSaleEarly" xml:space="preserve">
+    <value>You are about to end this sale early.  Are you sure you want to proceed?</value>
+  </data>
+  <data name="msg_error_SelectSaleToEndEarly" xml:space="preserve">
+    <value>Please select a sale to end early</value>
+  </data>
+  <data name="msg_text_CancelAllSales" xml:space="preserve">
+    <value>cancel all sales</value>
+  </data>
+  <data name="msg_text_EndSaleEarly" xml:space="preserve">
+    <value>end a sale early</value>
+  </data>
+  <data name="msg_warning_EndSaleEarlyNotPossible" xml:space="preserve">
+    <value>This item is not currently on sale at the selected store.</value>
+  </data>
+  <data name="msg_validation_startDateAfterSaleEndDate" xml:space="preserve">
+    <value>The {0} must occur on or before the Sale End Date.</value>
+    <comment>{0} = effective date (new sale end date)</comment>
+  </data>
+  <data name="msg_confirm_AddVendorStore_AuthMsg1" xml:space="preserve">
+    <value>You are adding a vendor to the following store(s), which have not authorized this item:</value>
+    <comment>msg part 1</comment>
+  </data>
+  <data name="msg_confirm_AddVendorStore_AuthMsg2" xml:space="preserve">
+    <value>Do you want to authorize this item for these stores?</value>
+    <comment>msg part 2</comment>
+  </data>
+  <data name="msg_warning_DeleteVendor_DeAuthMsg1" xml:space="preserve">
+    <value>You are de-authorizing the following items because they will no longer have a vendor association:</value>
+    <comment>msg part 1 </comment>
+  </data>
+  <data name="msg_warning_DeleteVendor_DeAuthMsg2" xml:space="preserve">
+    <value>The de-authorization will be communicated to the stores on the next run of POS Push.</value>
+    <comment>msg part 2</comment>
+  </data>
+  <data name="msg_error_NoVendorForAuthStore" xml:space="preserve">
+    <value>This item does not have a vendor association for the following stores: {0}{1}{0}Updates were not saved for these stores.</value>
+    <comment>0 = carriage return; 1 = store list</comment>
+  </data>
+  <data name="msg_error_PriceChgPreventsDeAuth" xml:space="preserve">
+    <value>There are pending batches for this item in the following statuses: Building, Packaged, Ready, Printed, Sent.  You are unable to de-authorize the item for the following stores until these batches are in the 'Processed' state:{0}{1}.{0}Updates were not saved for these stores.</value>
+    <comment>0 = carriage return; 1 = store list</comment>
+  </data>
+  <data name="msg_warning_DeleteVendor_DeAuthMsg1_Alt" xml:space="preserve">
+    <value>You are de-authorizing this item for the following stores because they will no longer have a vendor association:</value>
+    <comment>msg part 1 (alternate verbiage)</comment>
+  </data>
+  <data name="RegularPriceNotNull" xml:space="preserve">
+    <value>Regular Price must greater than or equal to zero</value>
+  </data>
+  <data name="SalePriceNotNull" xml:space="preserve">
+    <value>Sale Price must greater than or equal to zero</value>
+  </data>
+  <data name="InvalidPsiStoreNo" xml:space="preserve">
+    <value>PSI Store Number must be numeric</value>
+  </data>
+  <data name="msg_error_ChgStoreJurisdictionWhenBatchPending" xml:space="preserve">
+    <value>There are pending batches for this store that have not been processed.  You are unable to change the Store Jurisdiction until all of these batches are in the 'Processed' state.</value>
+  </data>
+  <data name="msg_confirm_refreshOverrideData" xml:space="preserve">
+    <value>Do you want to replace the store override values on the {0} tab with the values from the default jurisdiction for this item?</value>
+    <comment>{0} = Item Information or POS Settings</comment>
+  </data>
+  <data name="msg_confirm_refreshOverrideScaleData" xml:space="preserve">
+    <value>Do you want to replace the store override scale data with the values from the default jurisdiction for this item?</value>
+  </data>
+  <data name="msg_warning_CancelSales_NotOnSaleOrPendingSale" xml:space="preserve">
+    <value>This item is not currently on sale and there are not any pending sales for store {0}.  This store will not be updated.</value>
+    <comment>0 = store</comment>
+  </data>
+  <data name="PSVendorNumericValue" xml:space="preserve">
+    <value>{0} must contain a numeric value. Alpha characters are not allowed. i.e. 0003726</value>
+    <comment>0 = field label</comment>
+  </data>
+  <data name="msg_warning_PSVendorChanged" xml:space="preserve">
+    <value>PS Vendor ID ({0}):  Used for integration with reporting systems as well as DVO.</value>
+    <comment>0 = new value</comment>
+  </data>
+  <data name="msg_warning_PSVendorExportChanged" xml:space="preserve">
+    <value>PS Vendor Export ID ({0}):  Used for integration with Peoplesoft for invoice and credit uploads.</value>
+    <comment>0 = new value</comment>
+  </data>
+  <data name="msg_warning_VendorKeyChanged" xml:space="preserve">
+    <value>Vendor Key ({0}): Used for integration with some point of sale systems as well as cost file subscriptions.</value>
+    <comment>0 = new value</comment>
+  </data>
+  <data name="IsPackNumeric" xml:space="preserve">
+    <value>Pack must be numeric.</value>
+  </data>
+  <data name="isSizeNumeric" xml:space="preserve">
+    <value>Size must be numeric.</value>
+  </data>
+  <data name="msg_wanring_RemoveVendorItem" xml:space="preserve">
+    <value>This item will be de-authorized for all stores because the vendor/item relationship is being removed.  The de-authorization will be communicated to the stores on the next run of POS push. Do you want to continue?</value>
+  </data>
+  <data name="msg_configureVendor_ExternalVendor" xml:space="preserve">
+    <value>External Vendor (Non-WFM)</value>
+  </data>
+  <data name="msg_configureVendor_NonRegionalWFMFacility" xml:space="preserve">
+    <value>Non-Regional WFM Facility</value>
+  </data>
+  <data name="msg_configureVendor_NotSupported" xml:space="preserve">
+    <value>This is an unsupported vendor configuration and may cause errors in IRMA!!</value>
+  </data>
+  <data name="msg_configureVendor_RegionalCustomerVendor" xml:space="preserve">
+    <value>Regional Store/DC or External Vendor/Customer</value>
+  </data>
+  <data name="msg_validation_startDateGreaterThanEndDate" xml:space="preserve">
+    <value>The End Date must be greater than the Start Date.</value>
+  </data>
+  <data name="msg_question_VendorIsWFMBusinessUnit" xml:space="preserve">
+    <value>Is this Vendor a Whole Foods Market Business Unit? (Store, DC, Bakehouse, etc.)</value>
+  </data>
+  <data name="msg_warning_VendorInfoChanged" xml:space="preserve">
+    <value>ALERT: Changes were made to the following values that may affect internal systems:</value>
+  </data>
+  <data name="msg_warning_VendorInfoChangedInstruction" xml:space="preserve">
+    <value>Confirm that the new values match those expected by these systems to avoid errors, or else cancel this change.</value>
+  </data>
+  <data name="msg_WarningSetExtraText" xml:space="preserve">
+    <value>This action will link the Scale Extra text record to the current item.</value>
+  </data>
+  <data name="msg_warning_FaxNumberRequired" xml:space="preserve">
+    <value>A valid fax number is required.</value>
+  </data>
+  <data name="msg_warning_EmailRequired" xml:space="preserve">
+    <value>A valid email is required.</value>
+  </data>
+  <data name="label_header_netCost" xml:space="preserve">
+    <value>Net Cost</value>
+  </data>
+  <data name="label_header_regCost" xml:space="preserve">
+    <value>Reg Cost</value>
+  </data>
+  <data name="msgCBWVendorCostUpdate" xml:space="preserve">
+    <value>This item is a Costed By Weight item and the cost can only be updated by selecting the 'Box' Cost Unit unless it is overridden. Please change the Cost Unit and try again.</value>
+    <comment>used in VendorCostDetail.vb</comment>
+  </data>
+  <data name="msg_error_RetailCasePack_NotInteger" xml:space="preserve">
+    <value>Retail Case Pack must be an integer.</value>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="msg_confirm_CancelAllSalesForAllItems" xml:space="preserve">
+    <value>You are about to cancel all sales for all the items you entered and stores you selected, including stacked promotions.  Are you sure you want to proceed?</value>
+  </data>
+</root>

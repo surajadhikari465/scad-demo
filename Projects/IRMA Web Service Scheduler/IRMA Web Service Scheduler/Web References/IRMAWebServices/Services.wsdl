@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://wholefoodsmarket.com/IRMA/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://wholefoodsmarket.com/IRMA/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Available IRMA Web Service Methods</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://wholefoodsmarket.com/IRMA/">
+      <s:element name="GetVIMExtracts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FTPParams" type="tns:FTPBO" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FTPBO">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FTP_IP" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FTP_DIR" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FTP_UID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FTP_PWD" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FTP_SECURE" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="FTP_DELIM" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FTP_PORT" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVIMExtractsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVIMExtractsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ServiceResponse">
+        <s:restriction base="s:string">
+          <s:enumeration value="Success" />
+          <s:enumeration value="FTPError" />
+          <s:enumeration value="ADOError" />
+          <s:enumeration value="FileBuilderError" />
+          <s:enumeration value="MailError" />
+          <s:enumeration value="ShareAccessError" />
+          <s:enumeration value="ValidationError" />
+          <s:enumeration value="FileNotFound" />
+          <s:enumeration value="RecipientError" />
+          <s:enumeration value="NotSupported" />
+          <s:enumeration value="UnknownError" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetWIMPExtract">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FTPParams" type="tns:FTPBO" />
+            <s:element minOccurs="1" maxOccurs="1" name="WIMPType" type="tns:SupportedMethod" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="SupportedMethod">
+        <s:restriction base="s:string">
+          <s:enumeration value="COST_FILE" />
+          <s:enumeration value="ITEM_FILE" />
+          <s:enumeration value="PLANO_FILE" />
+          <s:enumeration value="INVENTORY_SERVICE_FILE" />
+          <s:enumeration value="AUTO_PUSH_LOGS" />
+          <s:enumeration value="WEEKLY_ROLLUP" />
+          <s:enumeration value="TLOG_ERROR_PULL" />
+          <s:enumeration value="VIM_SUPPLEMENT_EXTRACT" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetWIMPExtractResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetWIMPExtractResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryFileExtract">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FTPParams" type="tns:FTPBO" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryFileExtractResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetInventoryFileExtractResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPOSPushLogs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Recipient" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPOSPushLogsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetPOSPushLogsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSalesSubByWeekly">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateSalesSubByWeeklyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateSalesSubByWeeklyResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateStringText">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strToValidate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateStringTextResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ValidateStringTextResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTlogErrors">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Recipient" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTlogErrorsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTlogErrorsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetVIMExtractsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVIMExtracts" />
+  </wsdl:message>
+  <wsdl:message name="GetVIMExtractsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVIMExtractsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWIMPExtractSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWIMPExtract" />
+  </wsdl:message>
+  <wsdl:message name="GetWIMPExtractSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWIMPExtractResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryFileExtractSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventoryFileExtract" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryFileExtractSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryFileExtractResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPOSPushLogsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPOSPushLogs" />
+  </wsdl:message>
+  <wsdl:message name="GetPOSPushLogsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPOSPushLogsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSalesSubByWeeklySoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateSalesSubByWeekly" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSalesSubByWeeklySoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateSalesSubByWeeklyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateStringTextSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateStringText" />
+  </wsdl:message>
+  <wsdl:message name="ValidateStringTextSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateStringTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTlogErrorsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTlogErrors" />
+  </wsdl:message>
+  <wsdl:message name="GetTlogErrorsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTlogErrorsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IRMA_x0020_ServicesSoap">
+    <wsdl:operation name="GetVIMExtracts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates VIM Supplemental Item and Cost Data Extract files and FTPs them to the location specified in the FTPBO object.</wsdl:documentation>
+      <wsdl:input message="tns:GetVIMExtractsSoapIn" />
+      <wsdl:output message="tns:GetVIMExtractsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWIMPExtract">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generates a WIMP Data Extract File and sends the file via FTP to the location specified.</wsdl:documentation>
+      <wsdl:input message="tns:GetWIMPExtractSoapIn" />
+      <wsdl:output message="tns:GetWIMPExtractSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryFileExtract">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generates a full inventory service file extract and sends the file via FTP to the location specified.</wsdl:documentation>
+      <wsdl:input message="tns:GetInventoryFileExtractSoapIn" />
+      <wsdl:output message="tns:GetInventoryFileExtractSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPOSPushLogs">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the Automated POS Push logs and emails them to the specified recipient.</wsdl:documentation>
+      <wsdl:input message="tns:GetPOSPushLogsSoapIn" />
+      <wsdl:output message="tns:GetPOSPushLogsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSalesSubByWeekly">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Updates the Sales_SumByItemWkly rollup table in IRMA from the Sales_SumByItem table.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateSalesSubByWeeklySoapIn" />
+      <wsdl:output message="tns:UpdateSalesSubByWeeklySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateStringText">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">A test to validate a string is free of special characters. A True result indicates that an invalid character was found in the string.</wsdl:documentation>
+      <wsdl:input message="tns:ValidateStringTextSoapIn" />
+      <wsdl:output message="tns:ValidateStringTextSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTlogErrors">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method can be called to pull any errors and the error message from the tlog parser logs. Format date string as ddmmyyyy.</wsdl:documentation>
+      <wsdl:input message="tns:GetTlogErrorsSoapIn" />
+      <wsdl:output message="tns:GetTlogErrorsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IRMA_x0020_ServicesSoap" type="tns:IRMA_x0020_ServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVIMExtracts">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/GetVIMExtracts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWIMPExtract">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/GetWIMPExtract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryFileExtract">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/GetInventoryFileExtract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPOSPushLogs">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/GetPOSPushLogs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSalesSubByWeekly">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/UpdateSalesSubByWeekly" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateStringText">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/ValidateStringText" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTlogErrors">
+      <soap:operation soapAction="http://wholefoodsmarket.com/IRMA/GetTlogErrors" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="IRMA_x0020_ServicesSoap12" type="tns:IRMA_x0020_ServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVIMExtracts">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/GetVIMExtracts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWIMPExtract">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/GetWIMPExtract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryFileExtract">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/GetInventoryFileExtract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPOSPushLogs">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/GetPOSPushLogs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSalesSubByWeekly">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/UpdateSalesSubByWeekly" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateStringText">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/ValidateStringText" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTlogErrors">
+      <soap12:operation soapAction="http://wholefoodsmarket.com/IRMA/GetTlogErrors" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IRMA_x0020_Services">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Available IRMA Web Service Methods</wsdl:documentation>
+    <wsdl:port name="IRMA_x0020_ServicesSoap" binding="tns:IRMA_x0020_ServicesSoap">
+      <soap:address location="http://iad-mw/IRMAWebServices/Services.asmx" />
+    </wsdl:port>
+    <wsdl:port name="IRMA_x0020_ServicesSoap12" binding="tns:IRMA_x0020_ServicesSoap12">
+      <soap12:address location="http://iad-mw/IRMAWebServices/Services.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

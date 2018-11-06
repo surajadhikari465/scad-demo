@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceLibrary", "IRMA Service Library\ServiceLibrary.vbproj", "{FE069608-B2BF-40DF-917D-6478609D4664}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "IRMAServiceSite", "IRMA Service Site\IRMAServiceSite.vbproj", "{961AF799-A987-4DF6-9015-086DCE28A85E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceLibraryTests", "ServiceLibraryTests\ServiceLibraryTests.vbproj", "{DAA3530D-4895-4DE7-8028-80FF836FEC33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFCD9F29-256A-45B2-B4C4-8E8B8C87D160}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		Service Library.vsmdi = Service Library.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cewp1605:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = IRMA\u0020Service\u0020Library\\ServiceLibrary.vbproj
+		SccProjectName1 = IRMA\u0020Service\u0020Library
+		SccLocalPath1 = IRMA\u0020Service\u0020Library
+		SccProjectUniqueName2 = IRMA\u0020Service\u0020Site\\IRMAServiceSite.vbproj
+		SccProjectName2 = IRMA\u0020Service\u0020Site
+		SccLocalPath2 = IRMA\u0020Service\u0020Site
+		SccProjectUniqueName3 = ServiceLibraryTests\\ServiceLibraryTests.vbproj
+		SccProjectName3 = ServiceLibraryTests
+		SccLocalPath3 = ServiceLibraryTests
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Service Library.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE069608-B2BF-40DF-917D-6478609D4664}.Release|x86.ActiveCfg = Release|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961AF799-A987-4DF6-9015-086DCE28A85E}.Release|x86.ActiveCfg = Release|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA3530D-4895-4DE7-8028-80FF836FEC33}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

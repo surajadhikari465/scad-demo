@@ -1,0 +1,11 @@
+CREATE TABLE [dbo].[Purged_OrderInvoice](
+	[OrderHeader_ID] [int] NOT NULL,
+	[SubTeam_No] [int] NOT NULL,
+	[InsertDate] [datetime] NOT NULL,
+ PRIMARY KEY NONCLUSTERED 
+(
+	[OrderHeader_ID] ASC,
+	[SubTeam_No] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
+) ON [PRIMARY]
+GO

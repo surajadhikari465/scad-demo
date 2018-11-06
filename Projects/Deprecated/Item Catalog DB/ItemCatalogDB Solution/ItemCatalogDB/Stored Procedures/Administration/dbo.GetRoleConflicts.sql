@@ -1,0 +1,18 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[GetRoleConflicts]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE [dbo].[GetRoleConflicts]
+GO
+
+CREATE PROCEDURE dbo.GetRoleConflicts
+AS 
+	SELECT * FROM dbo.RoleConflicts
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO   

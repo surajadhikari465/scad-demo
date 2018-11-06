@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WFMUHS version="1.1">
+  <Update name="WFM Mobile" enabled="1" version="1.0.0.0">
+    <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
+    <Location>http://irmadevfile:8080/Updates/ApplicationUpdates/WFMMobile/1.0.0.0/</Location>
+    <File>WFMMobile.CAB</File>
+  </Update>
+  <Update name="WFM Mobile AutoUpdate" enabled="1" version="1.0.0.0">
+    <DevicePath>\Program Files\WFM Mobile\Update.exe</DevicePath>
+    <Location>http://irmadevfile:8080/Updates/ApplicationUpdates/WFMMobileAutoUpdate/1.0.0.0/</Location>
+    <File>WFMMobileAutoUpdate.CAB</File>
+  </Update>
+  <AppSettings>
+    <add key="OverwriteConfigOnLoad" value="1" />
+    <add key="ServiceURI" value="http://irmadevfile:8080/UHS.svc/basic" />
+    <add key="Environment" value="TEST" />
+  </AppSettings>
+  <Region id="NC">
+    <SecurityGroup/>
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="120"/>
+      <add key="ShowServiceURI" value="1"/>
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup/>
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="3.6.0.0">http://iad-ce:8089/IRMA/Service.svc/</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="3.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm"/>
+      <AppSettings/>
+      <Update enabled="1" version="3.6.0.0">
+        <Location>http://irmadevfile:8080/Updates/PluginUpdates/IRMA/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="1.0.0.1">\\Programs\\DVO Handheld\\DVO.exe</ExePath>
+      <Update enabled="1" version="1.0.0.1">
+        <Location>http://irmadevfile:8080/Updates/PluginUpdates/DVO/</Location>
+        <File>DVO.CAB</File>
+      </Update>
+    </Application>
+  </Region>
+</WFMUHS>

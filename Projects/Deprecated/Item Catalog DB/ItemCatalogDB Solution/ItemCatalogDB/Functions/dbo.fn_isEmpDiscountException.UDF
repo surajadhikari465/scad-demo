@@ -1,0 +1,46 @@
+/****** Object:  StoredProcedure [dbo].[fn_isEmpDiscountException]    Script Date: 05/31/2007  ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_isEmpDiscountException]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_isEmpDiscountException]
+
+GO
+
+CREATE FUNCTION [dbo].[fn_isEmpDiscountException]
+
+    (@Store_No  int,
+     @Subteam_No int,
+     @Discountable bit)
+
+RETURNS bit
+AS
+BEGIN
+
+      DECLARE @isNoDiscount BIT
+      DECLARE @empDiscount BIT
+
+      SET @empDiscount = @Discountable
+
+      If @Discountable = 1
+
+         BEGIN
+
+         	SELECT @isNoDiscount = ISNULL((SELECT store_no
+                FROM StoreSubteamDiscountException
+		WHERE
+			Store_No = @Store_No
+	  	  AND
+                        Subteam_No = @Subteam_No),0)
+
+ 		IF @isNoDiscount = 1
+
+        	BEGIN
+
+           	   SET @empDiscount = 0
+
+        	END                    
+       END       
+
+    RETURN @empDiscount
+
+END
+
+GO

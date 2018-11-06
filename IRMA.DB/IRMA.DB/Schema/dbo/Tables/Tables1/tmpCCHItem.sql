@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[tmpCCHItem] (
+    [Item_Key]      INT NOT NULL,
+    [OLDTaxClassID] INT NULL,
+    CONSTRAINT [PK__Item__0AB8FF2C_TEMP] PRIMARY KEY CLUSTERED ([Item_Key] ASC) WITH (FILLFACTOR = 80)
+);
+
