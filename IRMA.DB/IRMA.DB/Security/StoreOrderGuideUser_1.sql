@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [StoreOrderGuideUser]
+    WITH PASSWORD = N'u{f~VY{sWjwicllp_p6ak3kgmsFT7_&#$!~<oW`lbvIkoQsf', SID = 0xBF87A04C4CBA1D479CD06A0BC0F8178F, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

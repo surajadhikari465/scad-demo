@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F5992D8-9B81-4167-9821-08B66E7FD39A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MultiPOTool</RootNamespace>
+    <AssemblyName>MultiPOTool</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <OptionStrict>Off</OptionStrict>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TEST|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PackageAsSingleFile>true</PackageAsSingleFile>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>0</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\MultiPOTool.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TEST|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\TEST\</OutputPath>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\MultiPOTool.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\MultiPOTool.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\QA\</OutputPath>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\MultiPOTool.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AD_Access, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\AD_Access.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxControlToolkit, Version=3.5.40412.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="dao, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Libraries\dao.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.Documents.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.Documents.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.Excel.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.Excel.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.Shared.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.Shared.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.UltraWebGrid.DocumentExport.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.UltraWebGrid.DocumentExport.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.UltraWebGrid.ExcelExport.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.UltraWebGrid.ExcelExport.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.UltraWebGrid.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.UltraWebGrid.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics35.WebUI.UltraWebNavigator.v10.1">
+      <HintPath>..\..\..\Libraries\Infragistics35.WebUI.UltraWebNavigator.v10.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.Vbe.Interop, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Libraries\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="office, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Libraries\office.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WFM.UserAuthentication">
+      <HintPath>..\..\Utility\WholeFoods.Utility Solution\WFM.UserAuthentication\bin\WFM.UserAuthentication.dll</HintPath>
+    </Reference>
+    <Reference Include="WholeFoods.Utility">
+      <HintPath>..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\bin\WholeFoods.Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Theme1\Images\1-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\10-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\11-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\12-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\13-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\14-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\2-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\3-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\4-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\5-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\6-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\7-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\8-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\9-hover.png" />
+    <Content Include="App_Themes\Theme1\Images\ajax-loader.gif" />
+    <Content Include="App_Themes\Theme1\Images\arrow_down.gif" />
+    <Content Include="App_Themes\Theme1\Images\arrow_over.gif" />
+    <Content Include="App_Themes\Theme1\Images\create-button-BigLong.png" />
+    <Content Include="App_Themes\Theme1\Images\create-button-lg.png" />
+    <Content Include="App_Themes\Theme1\Images\create-button.png" />
+    <Content Include="App_Themes\Theme1\Images\create-button250x30.png" />
+    <Content Include="App_Themes\Theme1\Images\date.png" />
+    <Content Include="App_Themes\Theme1\Images\footerbg_06.jpg" />
+    <Content Include="App_Themes\Theme1\Images\fp-to-datetable_03.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headerbg.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headercon-bg_01.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headercon-bg_03.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headermidd-sec_04.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headermidd-sec_05.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headermidd-sec_06_07.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headermidd-sec_logo.jpg" />
+    <Content Include="App_Themes\Theme1\Images\headermidd-sec_storeops.jpg" />
+    <Content Include="App_Themes\Theme1\Images\inve2-calculated_24.jpg" />
+    <Content Include="App_Themes\Theme1\Images\left-navrollover_03.jpg" />
+    <Content Include="App_Themes\Theme1\Images\line.gif" />
+    <Content Include="App_Themes\Theme1\Images\list_bg.jpg" />
+    <Content Include="App_Themes\Theme1\Images\loginBG.JPG" />
+    <Content Include="App_Themes\Theme1\Images\logo-1.PNG" />
+    <Content Include="App_Themes\Theme1\Images\logo.png" />
+    <Content Include="App_Themes\Theme1\Images\MenuFull.png" />
+    <Content Include="App_Themes\Theme1\Images\number_17.jpg" />
+    <Content Include="App_Themes\Theme1\Images\number_21.jpg" />
+    <Content Include="App_Themes\Theme1\Images\number_25.jpg" />
+    <Content Include="App_Themes\Theme1\Images\POET.jpg" />
+    <Content Include="App_Themes\Theme1\Images\refresh2.jpg" />
+    <Content Include="App_Themes\Theme1\Images\right-navrollover_09.jpg" />
+    <Content Include="App_Themes\Theme1\Images\rowseparator.gif" />
+    <Content Include="App_Themes\Theme1\Images\separator.gif" />
+    <Content Include="App_Themes\Theme1\Images\sss_40.png" />
+    <Content Include="App_Themes\Theme1\Images\table-devider_10.jpg" />
+    <Content Include="App_Themes\Theme1\Images\table-header-slice.jpg" />
+    <Content Include="App_Themes\Theme1\Images\table-header-slice.png" />
+    <Content Include="App_Themes\Theme1\Images\temp.JPG" />
+    <Content Include="App_Themes\Theme1\Images\topnav-line.jpg" />
+    <Content Include="App_Themes\Theme1\Images\totals-tabbg_06.jpg" />
+    <Content Include="App_Themes\Theme1\Images\totals-tabbg_08.jpg" />
+    <Content Include="App_Themes\Theme1\Images\week-tablebg-2_41.jpg" />
+    <Content Include="App_Themes\Theme1\Images\week-tablebg_14.jpg" />
+    <Content Include="App_Themes\Theme1\menu.css" />
+    <Content Include="App_Themes\Theme1\Site.css" />
+    <Content Include="App_Themes\Theme1\wfmTheme01.css" />
+    <Content Include="Controls\ProgressLoader.ascx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppSettings\BusineessObjects\BOAppSettings.vb" />
+    <Compile Include="AppSettings\DataAccess\DAOAppSettings.vb" />
+    <Compile Include="Controls\ProgressLoader.ascx.designer.vb">
+      <DependentUpon>ProgressLoader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProgressLoader.ascx.vb">
+      <DependentUpon>ProgressLoader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.designer.vb">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExcelImport\BusinessObjects\BOSpreadsheetUpload.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\BOSpreadsheetValidation.vb" />
+    <Compile Include="ExcelImport\DataAccess\DALSpreadSheetUpload.vb" />
+    <Compile Include="ExcelImport\DataAccess\DALSpreadsheetValidation.vb" />
+    <Compile Include="Exceptions\BusinessObjects\BOExceptions.vb">
+    </Compile>
+    <Compile Include="Exceptions\DataAccess\DAOExceptions.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\OrderObject.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\PONumberObject.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\OrderItemObject.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\OrderList.vb" />
+    <Compile Include="HelpLinks\BusinessObjects\BOHelpLinks.vb" />
+    <Compile Include="HelpLinks\DataAccess\DAOHelpLinks.vb" />
+    <Compile Include="PONumbers\BusinessObjects\BOPONumbers.vb" />
+    <Compile Include="PONumbers\DataAccess\DAOPONumbers.vb" />
+    <Compile Include="ExcelImport\DataAccess\DALSpreadsheetImport.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\FileType.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\IExceptions.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\IImport.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\IUploadSpreadSheet.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\IValidateSpreadSheet.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\BOSpreadsheetImport.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\StoreObject.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\StoreList.vb" />
+    <Compile Include="MainMaster.Master.designer.vb">
+      <DependentUpon>MainMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MainMaster.Master.vb">
+      <DependentUpon>MainMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TypedDataSets\POHeaderItems.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POHeaderItems.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TypedDataSets\POHeaderItems.vb">
+      <DependentUpon>POHeaderItems.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Users\DataAccess\ManageUsers.vb" />
+    <Compile Include="Default.aspx.vb">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Exceptions.aspx.designer.vb">
+      <DependentUpon>Exceptions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Exceptions.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>Exceptions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HelpLinks.aspx.designer.vb">
+      <DependentUpon>HelpLinks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HelpLinks.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>HelpLinks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.designer.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Users\BusinessObjects\ManageUsers.vb" />
+    <Compile Include="MultiPOTool.Master.designer.vb">
+      <DependentUpon>MultiPOTool.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MultiPOTool.Master.vb">
+      <DependentUpon>MultiPOTool.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PushedToIRMA.aspx.designer.vb">
+      <DependentUpon>PushedToIRMA.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PushedToIRMA.aspx.vb">
+      <DependentUpon>PushedToIRMA.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReadyToCreatePOs.aspx.designer.vb">
+      <DependentUpon>ReadyToCreatePOs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ReadyToCreatePOs.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>ReadyToCreatePOs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUpPONumbers.aspx.designer.vb">
+      <DependentUpon>SetUpPONumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUpPONumbers.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>SetUpPONumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUpUsers.aspx.designer.vb">
+      <DependentUpon>SetUpUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUpUsers.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>SetUpUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Upload.aspx.designer.vb">
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Upload.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Users\BusinessObjects\UserLogin.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users\DataAccess\GetValidUser.vb" />
+    <Compile Include="Utility.vb" />
+    <Compile Include="ValidatedPOs\BusinessObjects\BOValidatedPOs.vb" />
+    <Compile Include="ValidatedPOs\DataAccess\DAOValidatedPOs.vb" />
+    <Compile Include="ExcelImport\BusinessObjects\PO_Objects\VendorObject.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ErrorPage.aspx" />
+    <Content Include="Exceptions.aspx" />
+    <Content Include="HelpLinks.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="MultiPOTool.Master" />
+    <Content Include="PushedToIRMA.aspx" />
+    <Content Include="ReadyToCreatePOs.aspx" />
+    <Content Include="SetUpPONumbers.aspx" />
+    <Content Include="SetUpUsers.aspx" />
+    <Content Include="StyleSheet.css" />
+    <Content Include="Upload.aspx" />
+    <None Include="ClassDiagrams\HelpLinks.cd" />
+    <None Include="ClassDiagrams\PushedToIRMA.cd" />
+    <None Include="ClassDiagrams\ReadyToCreatePOs.cd" />
+    <None Include="ClassDiagrams\SetUpPONumbers.cd" />
+    <None Include="ClassDiagrams\Exceptions.cd" />
+    <None Include="ClassDiagrams\OrderAndItems.cd" />
+    <None Include="ClassDiagrams\SpreadSheetUpload.cd" />
+    <None Include="ClassDiagrams\User.cd" />
+    <None Include="ClassDiagrams\Utility.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="MainMaster.Master" />
+    <None Include="TypedDataSets\POHeaderItems.xsc">
+      <DependentUpon>POHeaderItems.xsd</DependentUpon>
+    </None>
+    <None Include="TypedDataSets\POHeaderItems.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>POHeaderItems.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="TypedDataSets\POHeaderItems.xss">
+      <DependentUpon>POHeaderItems.xsd</DependentUpon>
+    </None>
+    <Content Include="Web.sitemap">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.TEST.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.QA.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="SpreadSheetImport\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5717</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

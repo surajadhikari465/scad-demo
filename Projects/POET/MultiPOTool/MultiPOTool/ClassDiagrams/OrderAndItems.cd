@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="MultiPOTool.OrderObject">
+    <Position X="4" Y="4.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\OrderObject.vb</FileName>
+      <HashCode>kAAwCIAAAAUAAwAAAIAAAACAAAAAAABAAAAQAQQABBA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PONumber" />
+      <Property Name="Store" />
+      <Property Name="Vendor" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrderItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MultiPOTool.StoreObject">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\StoreObject.vb</FileName>
+      <HashCode>AAABAAEAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.VendorObject">
+    <Position X="8" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\VendorObject.vb</FileName>
+      <HashCode>BACAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAgAAAAAAI=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.PONumberObject">
+    <Position X="4" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\PONumberObject.vb</FileName>
+      <HashCode>AAAAAAAAAAAAQAAAAMAAAAAAAAQAAAAAEAAAAAAEBAI=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.OrderItemObject">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\OrderItemObject.vb</FileName>
+      <HashCode>AAAAAAAAgAQAAIABAKAEAAAAgAICAAABAAAwAAAgAgI=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MultiPOTool.StoreList">
+    <Position X="7" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\StoreList.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAQAAABAAAAAAAAAABAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="StoreList" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MultiPOTool.OrderList">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExcelImport\BusinessObjects\PO_Objects\OrderList.vb</FileName>
+      <HashCode>QAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Orders" />
+    </ShowAsCollectionAssociation>
+  </Class>
+</ClassDiagram>

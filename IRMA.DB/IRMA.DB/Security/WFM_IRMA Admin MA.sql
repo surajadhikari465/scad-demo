@@ -1,0 +1,2 @@
+﻿CREATE USER [WFM\IRMA Admin MA];
+

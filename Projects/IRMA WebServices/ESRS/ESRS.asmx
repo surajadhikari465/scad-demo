@@ -1,0 +1,1 @@
+<%@ WebService Language="VB" CodeBehind="ESRS.asmx.vb" Class="IRMA_WebServices.ESRS" %>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1d7930cb-ab8f-4eb1-80cf-153814054819" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://iad-so/IRMAService/IRMA.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="IRMA5.xsd" MetadataType="Schema" ID="2369306d-c68b-43ea-8e6e-c691b6cd5685" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd1" />
+    <MetadataFile FileName="IRMA51.xsd" MetadataType="Schema" ID="ef0d9bec-a626-49d4-9c14-0a3c89b93c3a" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd4" />
+    <MetadataFile FileName="IRMA52.xsd" MetadataType="Schema" ID="c6313349-fc95-4fb5-9856-b8a7147807a2" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd2" />
+    <MetadataFile FileName="GatewayService1.wsdl" MetadataType="Wsdl" ID="4ff2cf38-2802-48be-89a2-180f1f404612" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?wsdl" />
+    <MetadataFile FileName="IRMA53.xsd" MetadataType="Schema" ID="4c4df978-a4d2-4327-8fc0-749dd844dd71" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd5" />
+    <MetadataFile FileName="IRMA54.xsd" MetadataType="Schema" ID="0b3ccf2e-3848-4977-8deb-513b528cc486" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd0" />
+    <MetadataFile FileName="IRMA1.disco" MetadataType="Disco" ID="b1d49af0-9be0-4ae3-affe-ad213f398525" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?disco" />
+    <MetadataFile FileName="IRMA55.xsd" MetadataType="Schema" ID="116ee646-60b5-4e36-97b5-22ea8c22082c" SourceId="1" SourceUrl="http://iad-so/IRMAService/IRMA.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

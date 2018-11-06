@@ -1,0 +1,2 @@
+﻿IRMA.Library uses a version CLSA which is not supported in VS2010 and .NET 4.0
+This will not compile right now. All CSLA functionality needs to be rewritten to work properly.

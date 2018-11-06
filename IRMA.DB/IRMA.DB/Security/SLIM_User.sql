@@ -1,0 +1,2 @@
+﻿CREATE USER [SLIM_User] FOR LOGIN [SLIM_User];
+

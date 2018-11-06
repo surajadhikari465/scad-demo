@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+      <rd:DataSourceID>142950b0-7891-4036-bcaa-74ba29403d80</rd:DataSourceID>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="PrintSigns">
+      <Fields>
+        <Field Name="Origin_Name">
+          <DataField>Origin_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Brand_Name">
+          <DataField>Brand_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Identifier">
+          <DataField>Identifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CheckDigit">
+          <DataField>CheckDigit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sign_Description">
+          <DataField>Sign_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Ingredients">
+          <DataField>Ingredients</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Multiple">
+          <DataField>Multiple</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Price">
+          <DataField>Price</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MSRPPrice">
+          <DataField>MSRPPrice</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Sale_Multiple">
+          <DataField>Sale_Multiple</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Sale_Price">
+          <DataField>Sale_Price</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Sale_Start_Date">
+          <DataField>Sale_Start_Date</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Sale_End_Date">
+          <DataField>Sale_End_Date</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Retail_Unit_Abbr">
+          <DataField>Retail_Unit_Abbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Retail_Unit_Full">
+          <DataField>Retail_Unit_Full</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sold_By_weight">
+          <DataField>Sold_By_weight</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Organic">
+          <DataField>Organic</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc2">
+          <DataField>Package_Desc2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Package_Unit">
+          <DataField>Package_Unit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SubTeam_Name">
+          <DataField>SubTeam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PricingMethod_ID">
+          <DataField>PricingMethod_ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc1">
+          <DataField>Package_Desc1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Case_Price">
+          <DataField>Case_Price</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Vendor_ID">
+          <DataField>Vendor_ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Vendor_Key">
+          <DataField>Vendor_Key</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Item_Key">
+          <DataField>Item_Key</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PLU">
+          <DataField>PLU</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LabelType_ID">
+          <DataField>LabelType_ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurrentPrice">
+          <DataField>CurrentPrice</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="POSPrice">
+          <DataField>POSPrice</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="POSSale_Price">
+          <DataField>POSSale_Price</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="category_ID">
+          <DataField>category_ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>GetPriceBatchSign</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@ItemList">
+            <Value>=Parameters!ItemList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ItemListSeparator">
+            <Value>=Parameters!ItemListSeparator.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@PriceBatchHeaderID">
+            <Value>=Parameters!PriceBatchHeaderID.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StartLabelPosition">
+            <Value>=Parameters!StartLabelPosition.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!LabelType_ID.Value</FilterExpression>
+          <Operator>In</Operator>
+          <FilterValues>
+            <FilterValue>=2</FilterValue>
+            <FilterValue>=0</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
+    </DataSet>
+  </DataSets>
+  <Body>
+    <ReportItems>
+      <Tablix Name="listSigns">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>1.875in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>1.3125in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Rectangle Name="listSigns_Contents">
+                      <ReportItems>
+                        <Textbox Name="Sign_Description">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Mid(Fields!Sign_Description.Value,1,35)</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Sign_Description</rd:DefaultName>
+                          <Left>0.0625in</Left>
+                          <Height>0.25in</Height>
+                          <Width>1.8125in</Width>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="Price">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=FormatCurrency(Fields!CurrentPrice.Value,2)</Value>
+                                  <Style>
+                                    <FontSize>18pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Price</rd:DefaultName>
+                          <Top>0.3125in</Top>
+                          <Left>0.9375in</Left>
+                          <Height>0.3125in</Height>
+                          <Width>0.9375in</Width>
+                          <ZIndex>1</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <CustomReportItem Name="neodynamicBarcodeControl1">
+                          <Type>NeodynamicBarcodeControl</Type>
+                          <Top>0.75in</Top>
+                          <Left>0.0625in</Left>
+                          <Height>0.3125in</Height>
+                          <Width>1.25in</Width>
+                          <ZIndex>2</ZIndex>
+                          <CustomProperties>
+                            <CustomProperty>
+                              <Name>LicenseOwner</Name>
+                              <Value>Whole Foods Market Inc.-Enterprise License </Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>LicenseKey</Name>
+                              <Value>71F407609989AB49</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>AutoSize</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BarHeight</Name>
+                              <Value>0.5in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BarWidth</Name>
+                              <Value>0.01in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BarRatio</Name>
+                              <Value>2</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Rotate</Name>
+                              <Value>None</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>CodabarStartChar</Name>
+                              <Value>A</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>CodabarStopChar</Name>
+                              <Value>B</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DisplayStartStopChar</Name>
+                              <Value>True</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>AddChecksum</Name>
+                              <Value>True</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>GuardBar</Name>
+                              <Value>True</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>GuardBarHeight</Name>
+                              <Value>0.55in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Code128CharSet</Name>
+                              <Value>Auto</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>PostnetHeightTallBar</Name>
+                              <Value>0.135in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>PostnetHeightShortBar</Name>
+                              <Value>0.06in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>PlanetHeightTallBar</Name>
+                              <Value>0.135in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>PlanetHeightShortBar</Name>
+                              <Value>0.06in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Symbology</Name>
+                              <Value>Ean13</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>QuietZoneWidth</Name>
+                              <Value>0.1in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DisplayCode</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>TopMargin</Name>
+                              <Value>0in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BottomMargin</Name>
+                              <Value>0in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Code16kMode</Name>
+                              <Value>Mode0</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Extended</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DataMatrixModuleSize</Name>
+                              <Value>0.04in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DataMatrixFormat</Name>
+                              <Value>Auto</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DataMatrixEncoding</Name>
+                              <Value>Auto</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>EanUpcSupplement</Name>
+                              <Value>None</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>EanUpcSupplementCode</Name>
+                              <Value />
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>EanUpcSupplementSeparation</Name>
+                              <Value>0.01pt</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>EanUpcSupplementTopMargin</Name>
+                              <Value>0.01pt</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>UpcESystem</Name>
+                              <Value>System0</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Pdf417Columns</Name>
+                              <Value>5</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Pdf417Rows</Name>
+                              <Value>0</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Pdf417CompactionType</Name>
+                              <Value>Binary</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Pdf417ErrorCorrectionLevel</Name>
+                              <Value>Level2</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Code</Name>
+                              <Value>=Code.FormatIdentifier(Fields!Identifier.Value, Fields!CheckDigit.Value)</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>AntiAlias</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Text</Name>
+                              <Value />
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DisplayChecksum</Name>
+                              <Value>True</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Pdf417Truncated</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DataMatrixProcessTilde</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>ImageFormat</Name>
+                              <Value>Png</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>FitBarsAreaToSizeWidth</Name>
+                              <Value>0in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>FitBarsAreaToSizeHeight</Name>
+                              <Value>0in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BearerBarStyle</Name>
+                              <Value>None</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BearerBarWidth</Name>
+                              <Value>0.05in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>DisplayLightMarginIndicator</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Dpi</Name>
+                              <Value>300</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Monochrome</Name>
+                              <Value>False</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Postal4StateAddStartStopChar</Name>
+                              <Value>True</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Postal4StateBarsSpacing</Name>
+                              <Value>0.03in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Postal4StateTrackerBarHeight</Name>
+                              <Value>0.08in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>Postal4StateTrackerBarWidth</Name>
+                              <Value>0.02in</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>BarColor</Name>
+                              <Value>Black</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>CodeVerticalAlign</Name>
+                              <Value>Bottom</Value>
+                            </CustomProperty>
+                            <CustomProperty>
+                              <Name>CodeAlign</Name>
+                              <Value>Center</Value>
+                            </CustomProperty>
+                          </CustomProperties>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <BackgroundColor>White</BackgroundColor>
+                            <FontSize>6pt</FontSize>
+                            <TextAlign>Left</TextAlign>
+                            <VerticalAlign>Bottom</VerticalAlign>
+                          </Style>
+                        </CustomReportItem>
+                        <Textbox Name="identifier">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Code.FormatIdentifier(Fields!Identifier.Value, Fields!CheckDigit.Value)</Value>
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>identifier</rd:DefaultName>
+                          <Top>1.0625in</Top>
+                          <Left>0.0625in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.8125in</Width>
+                          <ZIndex>3</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="Package_Desc2">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=FormatNumber(Fields!Package_Desc2.Value,0).ToString + " " + Fields!Package_Unit.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Package_Desc2</rd:DefaultName>
+                          <Top>0.25in</Top>
+                          <Left>0.0625in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.6875in</Width>
+                          <ZIndex>4</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="Vendor_Key">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Vendor_Key.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Vendor_Key</rd:DefaultName>
+                          <Top>0.6875in</Top>
+                          <Left>1.3125in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.5625in</Width>
+                          <ZIndex>5</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="txtDate">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=FormatDateTime(Now(), DateFormat.ShortDate)</Value>
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Top>0.875in</Top>
+                          <Left>1.3125in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.5625in</Width>
+                          <ZIndex>6</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Line Name="lineBlack">
+                          <Top>0.6875in</Top>
+                          <Left>1.875in</Left>
+                          <Height>0in</Height>
+                          <Width>-1.8125in</Width>
+                          <ZIndex>7</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                          </Style>
+                        </Line>
+                        <Textbox Name="textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Code.FormatPricePerUOM(Fields!CurrentPrice.Value, Fields!Package_Desc2.Value, Fields!Package_Unit.Value)</Value>
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Top>0.4375in</Top>
+                          <Left>0.0625in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.875in</Width>
+                          <ZIndex>8</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="Item_Key">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Code.FormatItemKey(Fields!Item_Key.Value)</Value>
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Item_Key</rd:DefaultName>
+                          <Top>1.0625in</Top>
+                          <Left>0.875in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.75in</Width>
+                          <ZIndex>9</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Textbox Name="Package_Desc1">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=FormatNumber(Fields!Package_Desc1.Value,0)</Value>
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Package_Desc1</rd:DefaultName>
+                          <Top>1.0625in</Top>
+                          <Left>1.625in</Left>
+                          <Height>0.1875in</Height>
+                          <Width>0.25in</Width>
+                          <ZIndex>10</ZIndex>
+                          <Visibility>
+                            <Hidden>=IIf(Fields!LabelType_ID.Value=0, True, False)</Hidden>
+                          </Visibility>
+                          <DataElementOutput>NoOutput</DataElementOutput>
+                          <Style>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <Line Name="lineWhite">
+                          <Height>1.3125in</Height>
+                          <Width>0in</Width>
+                          <ZIndex>11</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                          </Style>
+                        </Line>
+                      </ReportItems>
+                      <KeepTogether>true</KeepTogether>
+                      <Style />
+                    </Rectangle>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <Group Name="listSigns_Details_Group">
+                <DataElementName>Item</DataElementName>
+              </Group>
+              <DataElementName>Item_Collection</DataElementName>
+              <DataElementOutput>Output</DataElementOutput>
+              <KeepTogether>true</KeepTogether>
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>PrintSigns</DataSetName>
+        <Top>0.0625in</Top>
+        <Left>0.0625in</Left>
+        <Height>1.3125in</Height>
+        <Width>1.875in</Width>
+        <Style />
+      </Tablix>
+    </ReportItems>
+    <Height>1.375in</Height>
+    <Style />
+  </Body>
+  <ReportParameters>
+    <ReportParameter Name="ItemList">
+      <DataType>String</DataType>
+      <Prompt>ItemList</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ItemListSeparator">
+      <DataType>String</DataType>
+      <Prompt>ItemListSeparator</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="PriceBatchHeaderID">
+      <DataType>Integer</DataType>
+      <Prompt>PriceBatchHeaderID</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="StartLabelPosition">
+      <DataType>Integer</DataType>
+      <Prompt>StartLabelPosition</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>    Public Shared Function FormatIdentifier(ByVal identifier As String, ByVal checkdigit as String) _
+    As String
+        Dim result As String
+
+        If identifier.Length &gt;= 12 Then
+            result = identifier.Substring(0, 12) + checkdigit
+        Else
+            result = identifier.PadLeft(12, "0") + checkdigit
+        End If
+
+        Return result
+
+    End Function
+
+    Public Shared Function FormatItemKey(ByVal item_key As Integer) _
+    As String
+        Dim strItemKey as String
+        Dim result As String
+        
+        strItemKey = CType(item_key, String)
+
+        If strItemKey.Length &gt;= 12 Then
+            result = strItemKey.Substring(0, 12)
+        Else
+            result = strItemKey.PadLeft(12, "0")
+        End If
+
+        Return result
+
+    End Function
+
+    Public Shared Function FormatPricePerUOM( _
+        ByVal price As Double, _
+        ByVal package_desc2 As Double, _
+        ByVal package_unit As String) As String
+
+        Dim result As String
+        Dim multiplier As Double
+        Dim new_price As Double
+        Dim new_package_desc2 As String
+        multiplier = 1.0
+
+        If price &lt;&gt; Nothing And price &gt; 0.0 Then
+            If package_desc2 &lt;&gt; Nothing And package_desc2 &gt; 0.0 Then
+                Select Case Trim(package_unit)
+                    Case "g"
+                        multiplier = 100.0 / package_desc2
+                        new_package_desc2 = "100 "
+                    Case "ml"
+                        multiplier = 100.0 / package_desc2
+                        new_package_desc2 = "100 "
+                    Case Else
+                        multiplier = 1.0
+                        new_package_desc2 = FormatNumber(package_desc2, 0).ToString + " "
+                End Select
+
+                new_price = multiplier * price
+                result = FormatCurrency(new_price, 2).ToString + " per " + new_package_desc2 + package_unit
+
+            Else
+                result = FormatCurrency(price, 2).ToString + " per " + "unknown " + package_unit
+            End If
+        Else
+            If package_desc2 &lt;&gt; Nothing And package_desc2 &gt; 0.0 Then
+                new_package_desc2 = FormatNumber(package_desc2, 0).ToString + " "
+                result = "Unknown " + " per " + new_package_desc2 + package_unit
+            Else
+                result = "Unknown " + " per " + "unknown " + package_unit
+            End If
+        End If
+
+        Return result
+
+    End Function</Code>
+  <Width>2in</Width>
+  <Page>
+    <PageHeight>11.69291in</PageHeight>
+    <PageWidth>8.26772in</PageWidth>
+    <TopMargin>0.1177in</TopMargin>
+    <Columns>4</Columns>
+    <ColumnSpacing>0in</ColumnSpacing>
+    <Style />
+  </Page>
+  <Language>en-GB</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportID>f67f5821-c8bd-405a-81ba-e000e5058278</rd:ReportID>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+</Report>

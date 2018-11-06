@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Icon">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=cewd1815\SQLSHARED2012D;Initial Catalog=iCON;Connect Timeout=45</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>2325c639-99b5-4252-8a66-6cc66725608c</DataSourceID>
+</RptDataSource>

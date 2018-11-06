@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdExit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="cmdExit.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="cmdExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAP1JREFUWEfdlwsK
+        AyEMRD26N/NodseaNmbFjb9YKgRdEOftJIo6p2/xmroy9Mp5ZvTeT4eLkX7CFiAJI0KwBSiEIW4FUBW2
+        AGgK7wRQCe8A6BIeBbjKNlVubRt+KpsW1/Tv9fQNAIjjADWIaQeyvfAk2UJ/2+q5E0cAuBPHAEKuiSMA
+        JI5UTANgMeSe9xjz4PXAxSVA+sZ6T1txdBtKcQ6AMdo2gJp44QDVxA4HcnqeDyK6Ma1OQetGNF2E+gP5
+        4FH8Mw7IW/GSc6AnBXLu3wD0PDYKE4YcuD9uOpIgpnYBfIXHBYdqYIcwgTQd2CncBLAQrgJYCotaGH5s
+        Yp0XjJFUgW1fJYcAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>769, 420</value>
+  </data>
+  <data name="cmdExit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="cmdExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 41</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdExit.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="cmdExit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="cmdExit.ToolTip" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="&gt;&gt;cmdExit.Name" xml:space="preserve">
+    <value>cmdExit</value>
+  </data>
+  <data name="&gt;&gt;cmdExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdExit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmdExit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmdCost.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="cmdCost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="cmdCost.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAdFJREFUWEe9Vwuy
+        wyAIzNFztNzMVgRF5DfWNJ1O5r1JugssK1xX7irfx+jrvVHu+67PHb3K8zz9i0Q0gHKVAiRPkwDwetW7
+        QaCB1+hfIBFloIHWTyVwgIRWb0sDI/IvMGToRxIQS0t5KDqW9vYOlIcIbGQCQNs17nHNEbSCY/13SfTI
+        KQOG6KbIAYzAWdQ7JDIZsMEVEW6TMDSg15zaD6JfO0F2RcYj9C7ofc4EJ/+HApadQOaUAbcdDiPsumDg
+        LUokZpD4L/ghEn7Nqd5K5JAl+mwaU9BqKDYHvLsiEBmHVKYUOXDmeBSxvO91gBTXZDLSajHRdA6wjBjg
+        7lwxnWqm2rnX895PgHtzxXqqaZEz4U0uxzLgpD2cKwYJA3wW1kg/+UBQ82iuAA8SB4ut9tnn6blQ7eFs
+        uXaAbDXl7x2125aLdfZba9juWXBU+EvgPP3q6L52wtJa9sglHE7WehKgM12jbWqZGIvJmP1wB5Dgcq6k
+        /sd5L9wxVE+oIPRDCAgLiAbO58raWXyvSOwY2I580sEfkS8rB8syV2oEKBBnyxIklCisaZlP1FRrXoLk
+        mte7dDpKZQmMDVTbLdIidJdOtiFHG3C0XUXvLzyOb7yE8AGxDZCCeQrTUwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="cmdCost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>720, 420</value>
+  </data>
+  <data name="cmdCost.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="cmdCost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 41</value>
+  </data>
+  <data name="cmdCost.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="cmdCost.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="cmdCost.ToolTip" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="&gt;&gt;cmdCost.Name" xml:space="preserve">
+    <value>cmdCost</value>
+  </data>
+  <data name="&gt;&gt;cmdCost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdCost.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmdCost.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="cmdDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="cmdDelete.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="cmdDelete.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAeNJREFUWEe1VluS
+        wzAIy9F7tJxpt//b+IEtQNik3WbGkzZxLCEE9nF89/rj13E9biMDXya9NXbgGQIV+DzPIJIA4vomA74j
+        UNe4S6DMz4KvCIw1hIAsjHdJjUy+Cx4RUAEgAQRk4Dz4aTgx3rg3b6nLqZdJQSPTPtUk1uBWAZo6pgBK
+        zcAbiT14YSvhL8usVAGWIua8PP95/joFQhL1xTWu++MBBArIalh5hgf6eikSBlwpICVnjSbPkYAFF7U9
+        idbAJGKM3ClgCdjuZ2UfKTbpniQmOJIosgu4U2DX7lzkg5X2XCMxen19Wf4T8GlClJoZbrwXcwfgOh2T
+        RDfcINExRg/oNew3HdXlkuCNhFTHcLu4HitKE1iloEqaJiBzOTj4zSvAqoHKH/YZAK+kJwnSytcpwG1Y
+        KXAHvJPA7hkqkKmCuMOSyAPwZQqEKXZFakSlQg48lQKR3bblmMQ9cAmQluEuBZ5EDpytSwnY6MuHLBW6
+        Ki6Xi9tJzlF20ux0FTDZ2Q5p94XdvsHef5SCbKp2jW2Ez5yP6cBU2N9RfrGh2d9hGUYHEuuFKFVWalJ2
+        fZdsx32nwH9Im10jrALWB1g1iAps74gix3a8JJA5H8qchcPDg+7be0FW3sw8p0BkoC8/P16YBcMSqQde
+        /gAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="cmdDelete.Location" type="System.Drawing.Point, System.Drawing">
+    <value>671, 420</value>
+  </data>
+  <data name="cmdDelete.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="cmdDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 41</value>
+  </data>
+  <data name="cmdDelete.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="cmdDelete.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="cmdDelete.ToolTip" xml:space="preserve">
+    <value>Remove Vendor</value>
+  </data>
+  <data name="&gt;&gt;cmdDelete.Name" xml:space="preserve">
+    <value>cmdDelete</value>
+  </data>
+  <data name="&gt;&gt;cmdDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdDelete.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmdDelete.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cmdEditItem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="cmdEditItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="cmdEditItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAYFJREFUWEfFVwsW
+        wyAI69F7tN6sGwoVKWrQrvO9vq37mEAC0m17d51fOH29in7SSgTodd+FyEXil8wccCbD8IVVYWbTNX1/
+        HIeJ3IITqKSF3jOJRFst2iiyKN33tNfglIAM6BAgwNWr1jyD7zlApb0lwEZ5IgPFcBU4QIDTNyvBFflG
+        0RZwjn5AQIxIsqgrmcl85t5XpVZHHiIwo39LcwHGCEx6wAOXIKQacAJBD4zAYwSiHnA0T6Ut1SW+KSWI
+        mRDxQE9z+3/VA4AydFqe7YRI2vU2MQIDD0TBn/UAqrntGU94IKL54x64ajhVSe5wus5HJ+WyB0p/z2NV
+        BHzZA6qD5ePU1jh4RmCdkBuR1lDSRxsg/cH7TUwCJSiB0kInIjP5VqMclgEenWcHEhnFhPRNvrx/ZyKK
+        ngVOvVvw2HHseCCiu1SIBpXJGJcAOAtada/Npk3bN2H9yOTuHTWhrZg2ARnNDYmem2e/a0uwqDvqEUVc
+        FwI/nLyQgRYBYvOXR+cPVWJflGa0euEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdEditItem.Location" type="System.Drawing.Point, System.Drawing">
+    <value>622, 420</value>
+  </data>
+  <data name="cmdEditItem.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="cmdEditItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 41</value>
+  </data>
+  <data name="cmdEditItem.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="cmdEditItem.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="cmdEditItem.ToolTip" xml:space="preserve">
+    <value>Edit Store Association For the Selected Item and Vendor</value>
+  </data>
+  <data name="&gt;&gt;cmdEditItem.Name" xml:space="preserve">
+    <value>cmdEditItem</value>
+  </data>
+  <data name="&gt;&gt;cmdEditItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdEditItem.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmdEditItem.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="cmdAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="cmdAdd.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="cmdAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAANtJREFUWEftV+EK
+        xiAI9NF7tN6sD2Hui1DPNmyMNYj9kOo87tSIiNrDi9oTXylFEl8PgC9XAdRa24p1GYBs9P6RBG4BQIJl
+        PSEQtwFoouVLGdwyAGOWIqoN4P0MIKtZQhMNsDasM0Q3rgu6CmX2CI3mmX0hAKg/aF639owWDQNABSUa
+        Hy26AbyDgYideg3M2DfEgNf1Um3IWUXtNDIgRcqzcM/skeR/JEO28jre7obfYsCy6LKRbNai2vh2+V2A
+        umTqRIRsGo2rlRCV0oz4WYgyDo+ceQJAr53M+A+d2iNyEmkh8wAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="cmdAdd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>573, 420</value>
+  </data>
+  <data name="cmdAdd.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="cmdAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 41</value>
+  </data>
+  <data name="cmdAdd.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="cmdAdd.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="cmdAdd.ToolTip" xml:space="preserve">
+    <value>Add Vendor</value>
+  </data>
+  <data name="&gt;&gt;cmdAdd.Name" xml:space="preserve">
+    <value>cmdAdd</value>
+  </data>
+  <data name="&gt;&gt;cmdAdd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdAdd.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cmdAdd.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="ugrdVend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="Appearance18.TextHAlignAsString" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="Appearance19.TextHAlignAsString" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="resource.Caption" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="resource.Caption1" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="resource.Caption2" xml:space="preserve">
+    <value>Vendor Item ID</value>
+  </data>
+  <data name="resource.Caption3" xml:space="preserve">
+    <value>Retail Pack</value>
+  </data>
+  <data name="resource.Caption4" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="resource.Caption5" xml:space="preserve">
+    <value>Vendor Item Description</value>
+  </data>
+  <data name="resource.Caption6" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Appearance20.FontData.BoldAsString" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="Appearance26.FontData.BoldAsString" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="Appearance27.FontData.BoldAsString" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="Appearance29.FontData.BoldAsString" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="Appearance29.TextHAlignAsString" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="ugrdVend.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="ugrdVend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="ugrdVend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>800, 394</value>
+  </data>
+  <data name="ugrdVend.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;ugrdVend.Name" xml:space="preserve">
+    <value>ugrdVend</value>
+  </data>
+  <data name="&gt;&gt;ugrdVend.Type" xml:space="preserve">
+    <value>Infragistics.Win.UltraWinGrid.UltraGrid, Infragistics2.Win.UltraWinGrid.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
+  </data>
+  <data name="&gt;&gt;ugrdVend.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ugrdVend.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 14</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>824, 473</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="$this.Location" type="System.Drawing.Point, System.Drawing">
+    <value>354, 250</value>
+  </data>
+  <data name="$this.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="&gt;&gt;ToolTip1.Name" xml:space="preserve">
+    <value>ToolTip1</value>
+  </data>
+  <data name="&gt;&gt;ToolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>frmItemVendors</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

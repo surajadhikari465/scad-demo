@@ -1,0 +1,758 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+      <rd:DataSourceID>fae0602b-849d-4b04-86f5-3e72f151fab6</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>0.75in</BottomMargin>
+  <RightMargin>0.75in</RightMargin>
+  <PageWidth>11in</PageWidth>
+  <ReportParameters>
+    <ReportParameter Name="Discontinue_Item">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Discontinue_Item</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="EXEDistributed">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>EXEDistributed</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Full_Pallet_Only">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Full_Pallet_Only</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Keep_Frozen">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Keep_Frozen</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Recall_Flag">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Recall_Flag</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="NoDistMarkup">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>NoDistMarkup</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Organic">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Organic</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Pre_Order">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Pre_Order</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Refrigerated">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Refrigerated</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="LockAuth">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>LockAuth</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Retail_Sale">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Retail_Sale</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Shipper_Item">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Shipper_Item</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="HFM_Item">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>HFM_Item</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="WFM_Item">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>WFM_Item</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Not_Available">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Not_Available</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Default_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Default_Identifier</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Deleted_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Deleted_Identifier</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Add_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Add_Identifier</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Remove_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Remove_Identifier</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="National_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>National_Identifier</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Scale_Identifier">
+      <DataType>Boolean</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Scale_Identifier</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ReportItems>
+      <Table Name="table1">
+        <Footer>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox30">
+                      <rd:DefaultName>textbox30</rd:DefaultName>
+                      <ZIndex>9</ZIndex>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox31">
+                      <rd:DefaultName>textbox31</rd:DefaultName>
+                      <ZIndex>8</ZIndex>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox3">
+                      <rd:DefaultName>textbox3</rd:DefaultName>
+                      <ZIndex>7</ZIndex>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox32">
+                      <rd:DefaultName>textbox32</rd:DefaultName>
+                      <ZIndex>6</ZIndex>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox35">
+                      <rd:DefaultName>textbox35</rd:DefaultName>
+                      <ZIndex>5</ZIndex>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.25in</Height>
+            </TableRow>
+          </TableRows>
+        </Footer>
+        <DataSetName>ItemStatusList</DataSetName>
+        <Top>0.125in</Top>
+        <Width>7.375in</Width>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="SubTeam_No">
+                      <rd:DefaultName>SubTeam_No</rd:DefaultName>
+                      <ZIndex>4</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!SubTeam_No.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Identifier">
+                      <rd:DefaultName>Identifier</rd:DefaultName>
+                      <ZIndex>3</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Identifier.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Item_Description_1">
+                      <rd:DefaultName>Item_Description_1</rd:DefaultName>
+                      <ZIndex>2</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Item_Description.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Package_Desc2">
+                      <rd:DefaultName>Package_Desc2</rd:DefaultName>
+                      <ZIndex>1</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Package_Desc2.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Unit_Name">
+                      <rd:DefaultName>Unit_Name</rd:DefaultName>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Unit_Name.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.25in</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Header>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox33">
+                      <ZIndex>14</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <TextAlign>Center</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontWeight>700</FontWeight>
+                        <FontSize>11pt</FontSize>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <Color>White</Color>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <UserSort>
+                        <SortExpression>=Fields!SubTeam_No.Value</SortExpression>
+                      </UserSort>
+                      <Value>Department</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox24">
+                      <ZIndex>13</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <TextAlign>Center</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontWeight>700</FontWeight>
+                        <FontSize>11pt</FontSize>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <Color>White</Color>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <UserSort>
+                        <SortExpression>=Fields!Identifier.Value</SortExpression>
+                      </UserSort>
+                      <Value>UPC</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox1">
+                      <rd:DefaultName>textbox1</rd:DefaultName>
+                      <ZIndex>12</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontWeight>700</FontWeight>
+                        <FontSize>11pt</FontSize>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <Color>White</Color>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <UserSort>
+                        <SortExpression>=Fields!Item_Description.Value</SortExpression>
+                      </UserSort>
+                      <Value>Description</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox25">
+                      <ZIndex>11</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontWeight>700</FontWeight>
+                        <FontSize>11pt</FontSize>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <Color>White</Color>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>Size</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox36">
+                      <ZIndex>10</ZIndex>
+                      <Style>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontFamily>Tahoma</FontFamily>
+                        <FontWeight>700</FontWeight>
+                        <FontSize>11pt</FontSize>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <BackgroundColor>SteelBlue</BackgroundColor>
+                        <Color>White</Color>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>UOM</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.25in</Height>
+            </TableRow>
+          </TableRows>
+        </Header>
+        <TableColumns>
+          <TableColumn>
+            <Width>1.5in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>1.125in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>3.25in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.75in</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>0.75in</Width>
+          </TableColumn>
+        </TableColumns>
+        <Height>0.75in</Height>
+      </Table>
+    </ReportItems>
+    <Height>2.5in</Height>
+  </Body>
+  <PageHeader>
+    <ReportItems>
+      <Rectangle Name="rectangle1">
+        <ReportItems>
+          <Textbox Name="textbox4">
+            <Top>0.375in</Top>
+            <ZIndex>2</ZIndex>
+            <Width>2.125in</Width>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>2pt</PaddingBottom>
+              <FontSize>8pt</FontSize>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Value>= "Report run: " &amp; FormatDateTime(Now)</Value>
+          </Textbox>
+          <Textbox Name="txtPageNo">
+            <Left>5.375in</Left>
+            <Top>0.375in</Top>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <TextAlign>Right</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>2pt</PaddingBottom>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Bottom</VerticalAlign>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Value>="Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+          </Textbox>
+          <Textbox Name="rptReportTitle">
+            <Style>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>2pt</PaddingBottom>
+              <FontFamily>Tahoma</FontFamily>
+              <FontWeight>700</FontWeight>
+              <FontSize>14pt</FontSize>
+              <Color>SteelBlue</Color>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Height>0.375in</Height>
+            <Value>Item Status List Report</Value>
+          </Textbox>
+        </ReportItems>
+        <Width>7.375in</Width>
+      </Rectangle>
+    </ReportItems>
+    <Height>0.575in</Height>
+    <PrintOnLastPage>true</PrintOnLastPage>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+  </PageHeader>
+  <rd:ReportID>8e57a996-ccbc-443b-9c44-ed7d15857e1c</rd:ReportID>
+  <LeftMargin>0.75in</LeftMargin>
+  <DataSets>
+    <DataSet Name="ItemStatusList">
+      <Query>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>ItemStatusList</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Discontinue_Item">
+            <Value>=Parameters!Discontinue_Item.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EXEDistributed">
+            <Value>=Parameters!EXEDistributed.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Full_Pallet_Only">
+            <Value>=Parameters!Full_Pallet_Only.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Keep_Frozen">
+            <Value>=Parameters!Keep_Frozen.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Recall_Flag">
+            <Value>=Parameters!Recall_Flag.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@NoDistMarkup">
+            <Value>=Parameters!NoDistMarkup.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Organic">
+            <Value>=Parameters!Organic.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Pre_Order">
+            <Value>=Parameters!Pre_Order.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Refrigerated">
+            <Value>=Parameters!Refrigerated.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@LockAuth">
+            <Value>=Parameters!LockAuth.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Retail_Sale">
+            <Value>=Parameters!Retail_Sale.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Shipper_Item">
+            <Value>=Parameters!Shipper_Item.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@HFM_Item">
+            <Value>=Parameters!HFM_Item.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@WFM_Item">
+            <Value>=Parameters!WFM_Item.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Not_Available">
+            <Value>=Parameters!Not_Available.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Default_Identifier">
+            <Value>=Parameters!Default_Identifier.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Deleted_Identifier">
+            <Value>=Parameters!Deleted_Identifier.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Add_Identifier">
+            <Value>=Parameters!Add_Identifier.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Remove_Identifier">
+            <Value>=Parameters!Remove_Identifier.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@National_Identifier">
+            <Value>=Parameters!National_Identifier.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Scale_Identifier">
+            <Value>=Parameters!Scale_Identifier.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <DataSourceName>ItemCatalog</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="SubTeam_No">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>SubTeam_No</DataField>
+        </Field>
+        <Field Name="Identifier">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Identifier</DataField>
+        </Field>
+        <Field Name="Item_Description">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Item_Description</DataField>
+        </Field>
+        <Field Name="Package_Desc2">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>Package_Desc2</DataField>
+        </Field>
+        <Field Name="Unit_Name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Unit_Name</DataField>
+        </Field>
+        <Field Name="Discontinue_Item">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Discontinue_Item</DataField>
+        </Field>
+        <Field Name="EXEDistributed">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>EXEDistributed</DataField>
+        </Field>
+        <Field Name="Full_Pallet_Only">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Full_Pallet_Only</DataField>
+        </Field>
+        <Field Name="Keep_Frozen">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Keep_Frozen</DataField>
+        </Field>
+        <Field Name="Recall_Flag">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Recall_Flag</DataField>
+        </Field>
+        <Field Name="NoDistMarkup">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>NoDistMarkup</DataField>
+        </Field>
+        <Field Name="Organic">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Organic</DataField>
+        </Field>
+        <Field Name="Pre_Order">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Pre_Order</DataField>
+        </Field>
+        <Field Name="Refrigerated">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Refrigerated</DataField>
+        </Field>
+        <Field Name="LockAuth">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>LockAuth</DataField>
+        </Field>
+        <Field Name="Retail_Sale">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Retail_Sale</DataField>
+        </Field>
+        <Field Name="Shipper_Item">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Shipper_Item</DataField>
+        </Field>
+        <Field Name="HFM_Item">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>HFM_Item</DataField>
+        </Field>
+        <Field Name="WFM_Item">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>WFM_Item</DataField>
+        </Field>
+        <Field Name="Not_Available">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Not_Available</DataField>
+        </Field>
+        <Field Name="Default_Identifier">
+          <rd:TypeName>System.Byte</rd:TypeName>
+          <DataField>Default_Identifier</DataField>
+        </Field>
+        <Field Name="Deleted_Identifier">
+          <rd:TypeName>System.Byte</rd:TypeName>
+          <DataField>Deleted_Identifier</DataField>
+        </Field>
+        <Field Name="Add_Identifier">
+          <rd:TypeName>System.Byte</rd:TypeName>
+          <DataField>Add_Identifier</DataField>
+        </Field>
+        <Field Name="Remove_Identifier">
+          <rd:TypeName>System.Byte</rd:TypeName>
+          <DataField>Remove_Identifier</DataField>
+        </Field>
+        <Field Name="National_Identifier">
+          <rd:TypeName>System.Byte</rd:TypeName>
+          <DataField>National_Identifier</DataField>
+        </Field>
+        <Field Name="Scale_Identifier">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>Scale_Identifier</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Author>tim.pope</Author>
+  <Code />
+  <Width>10.5in</Width>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <Language>en-US</Language>
+  <TopMargin>0.75in</TopMargin>
+  <PageHeight>8.5in</PageHeight>
+</Report>

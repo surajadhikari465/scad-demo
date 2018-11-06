@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PIRISTlogParser", "PirisTlogParser\PIRISTlogParser.vbproj", "{03983F61-A15E-4638-B749-7A8EB69B0B38}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 1
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cewp1605:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = PirisTlogParser\\PIRISTlogParser.vbproj
+		SccProjectName0 = PirisTlogParser
+		SccAuxPath0 = http://cewp1605:8080/tfs/defaultcollection
+		SccLocalPath0 = PirisTlogParser
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03983F61-A15E-4638-B749-7A8EB69B0B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03983F61-A15E-4638-B749-7A8EB69B0B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03983F61-A15E-4638-B749-7A8EB69B0B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03983F61-A15E-4638-B749-7A8EB69B0B38}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

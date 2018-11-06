@@ -1,0 +1,41 @@
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+SkinId="gridViewSkin"
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+<asp:GridView runat="server" BorderColor="#DEDFDE" 
+BorderStyle="None" BorderWidth="1px" BackColor="White" Font-Size="Small" CellPadding="2" CellSpacing="2">
+<FooterStyle BackColor="#CCCC99" />
+            <RowStyle BackColor="#C0FFC0" />
+            <SelectedRowStyle BackColor="LightGray" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#F7F7DE" ForeColor="Black" HorizontalAlign="Right" />
+            <HeaderStyle BackColor="Green" Font-Bold="True" ForeColor="White" />
+            <AlternatingRowStyle BackColor="WhiteSmoke" />
+   <HeaderStyle BackColor="Green" Font-Bold="True" ForeColor="White" />
+</asp:GridView>
+<asp:DetailsView runat="server" BorderColor="#DEDFDE" 
+BorderStyle="None" BorderWidth="1px" BackColor="White" Font-Size="Medium">
+<FooterStyle BackColor="#CCCC99" />
+            <RowStyle BackColor="#C0FFC0" />
+            <EditRowStyle BackColor="LightGray" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#F7F7DE" ForeColor="Black" HorizontalAlign="Right" />
+            <HeaderStyle BackColor="Green" Font-Bold="True" ForeColor="White" />
+            <AlternatingRowStyle BackColor="WhiteSmoke" />
+   <HeaderStyle BackColor="Green" Font-Bold="True" ForeColor="White" />
+</asp:DetailsView>
+<asp:Label SkinID="MessageLabelLarge" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Navy" Height="200px"  Width="200px"></asp:Label>
+<asp:Label SkinID="SumLabel" runat="server" Font-Bold="True" Font-Size="X-small" ForeColor="Navy" Width="80px"></asp:Label>
+<asp:Label SkinID="ErrorLabelBold" runat="server" Font-Bold="True" Font-Size="Medium" ForeColor="Red"></asp:Label>
+<asp:Label SkinID="MessageLabelNormal" runat="server" Font-Bold="True" Font-Size="Medium" ForeColor="Navy"></asp:Label>
+        
+        

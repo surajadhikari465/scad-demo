@@ -1,0 +1,40 @@
+<%@ Master Language="VB" Inherits="SLIM.UserInterface_Mobile" Codebehind="Mobile.master.vb" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Store Level Item Maintenance</title>
+    <style type="text/css">
+        #header {
+			background: #004000;
+			height: 50px;
+			padding-left: 5px;
+		}
+		a.CurrentSection, a:hover.CurrentSection, a:active.CurrentSection, a:link.CurrentSection, a:visited.CurrentSection {
+		    color: black;
+		    text-decoration: none;
+		}
+    </style>
+</head>
+<body style="background-color: #e3e3e3;">
+
+    <form id="form1" runat="server">
+        <div id="header">
+            <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Size="12px" ForeColor="White"
+                Text="Store Level Item Maintenance - Southwest Region" Width="464px" Font-Names="Tahoma"></asp:Label><br />
+            <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Size="X-Small" ForeColor="White" Text="Version 1.2" Width="75px" Font-Names="Tahoma"></asp:Label>
+        </div>
+        <div id="navigation">
+            <asp:HyperLink ID="lnkWebQuery" runat="server" NavigateUrl="~/UserInterface/WebQuery/Main.aspx">Web Query</asp:HyperLink>
+            <asp:HyperLink ID="lnkAuthorizations" runat="server" NavigateUrl="~/UserInterface/ItemAuthorizations/Main.aspx">Authorizations</asp:HyperLink>
+            <asp:HyperLink ID="lnkRefresh" runat="server" NavigateUrl="~/UserInterface/RefreshPOS/Main.aspx">Refresh</asp:HyperLink>
+            <asp:HyperLink ID="lnkLogOff" runat="server" NavigateUrl="~/Default.aspx">Log Off</asp:HyperLink>
+        </div>
+        <div>
+            <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+            </asp:contentplaceholder>
+        </div>
+    </form>
+</body>
+</html>

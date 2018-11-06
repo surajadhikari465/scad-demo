@@ -1,0 +1,1861 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Consolidated Item Changes Report</Value>
+                <Style>
+                  <FontFamily>Tahoma</FontFamily>
+                  <FontSize>20pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>SteelBlue</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Height>0.36in</Height>
+        <Width>13.39583in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Tablix Name="Tablix1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>0.97222in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.93056in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.78056in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.45in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.29167in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.7in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.72916in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.70833in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.83333in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.69583in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Change Date</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox8">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Identifier</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox4">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Default Identifier</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox24">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Subteam # - Name</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox24</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox22">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Product Description</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox22</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox20">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>POS Description</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox20</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Brand Name</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox16">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Tax Class</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox16</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox10">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Package Unit</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox10</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox12">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Food Stamp Eligible</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox14">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>POS Scale Tare</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox14</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Nutri Facts Changed</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox5">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Retail Size</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox5</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox7">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Retail UOM</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox7</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox6">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Organic</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>White</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox6</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>CornflowerBlue</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.32083in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="IconChangeDate">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatDateTime(Fields!IconChangeDate.Value, DateFormat.ShortDate)</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>IconChangeDate</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Identifier">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Identifier.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Identifier</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Default_Identifer">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Default_Identifer.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Default_Identifer</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="SubTeam_Name">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!SubTeam_No.Value &amp; " - " &amp; Fields!SubTeam_Name.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIf(Fields!SubTeamWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Item_Description">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Item_Description.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Item_Description</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!ProductDescriptionWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="POS_Description">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!POS_Description.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>POS_Description</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!PosDescriptionWasChanged.Value = true, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Brand_Name">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Brand_Name.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Brand_Name</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!BrandWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="TaxClassDesc">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!TaxClassDesc.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>TaxClassDesc</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!TaxWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Package_Desc1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Package_Desc1.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Package_Desc1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!PackageDesc1WasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Food_Stamps">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=IIF(Fields!Food_Stamps.Value = True, "Y", "N")</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!FoodStampWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="ScaleTare">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!ScaleTare.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ScaleTare</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>White</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="AreNutrifactsChanged">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!AreNutrifactsChanged.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>AreNutrifactsChanged</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>White</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Package_Desc2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Package_Desc2.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Package_Desc2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!PackageDesc2WasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="RetailUOMAbbreviation">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!RetailUOMAbbreviation.Value</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>RetailUOMAbbreviation</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!PackageUnitIdWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Organic">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=IIF(Fields!Organic.Value, "Y", "N")</Value>
+                              <Style>
+                                <FontFamily>Calibri</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Organic</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>=IIF(Fields!OrganicWasChanged.Value, "Salmon", "White")</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="Details" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>Main</DataSetName>
+        <Top>0.36in</Top>
+        <Height>1.01666in</Height>
+        <Width>15.39583in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+    </ReportItems>
+    <Height>1.50875in</Height>
+    <Style />
+  </Body>
+  <Width>15.63542in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>6f037568-9d8f-4f75-b7fb-0ae64c4d1a05</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Main">
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@FromDate">
+            <Value>=Parameters!FromDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ToDate">
+            <Value>=Parameters!ToDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@SubTeam_No">
+            <Value>=Parameters!Subteam_No.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>
+          SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+          DECLARE @DateFrom DATETIME = DATEADD(day, 0, DATEDIFF(day, 0, @FromDate));
+          DECLARE @DateTo DATETIME = DATEADD(ms, -3, DATEADD(dd, DATEDIFF(dd, 0, @ToDate + 1), 0));
+
+          CREATE TABLE #changes (
+          Item_Key INT
+          ,Identifier NVARCHAR(13)
+          ,ProductDescriptionWasChanged BIT NOT NULL
+          ,PosDescriptionWasChanged BIT NOT NULL
+          ,SubTeamWasChanged BIT NOT NULL
+          ,BrandWasChanged BIT NOT NULL
+          ,TaxWasChanged BIT NOT NULL
+          ,FoodStampWasChanged BIT NOT NULL
+          ,PackageDesc1WasChanged BIT NOT NULL
+          ,PackageDesc2WasChanged BIT NOT NULL
+          ,PackageUnitIdWasChanged BIT NOT NULL
+          ,OrganicWasChanged BIT NOT NULL
+          )
+
+          INSERT INTO #changes (
+          Item_Key
+          ,Identifier
+          ,ProductDescriptionWasChanged
+          ,PosDescriptionWasChanged
+          ,SubTeamWasChanged
+          ,BrandWasChanged
+          ,TaxWasChanged
+          ,FoodStampWasChanged
+          ,PackageDesc1WasChanged
+          ,PackageDesc2WasChanged
+          ,PackageUnitIdWasChanged
+          ,OrganicWasChanged
+          )
+          SELECT ii.Item_Key AS Item_Key
+          ,lc.Identifier AS Identifier
+          ,0 AS ProductDescriptionWasChanged
+          ,0 AS PosDescriptionWasChanged
+          ,0 AS SubTeamWasChanged
+          ,0 AS BrandWasChanged
+          ,0 AS TaxWasChanged
+          ,0 AS FoodStampWasChanged
+          ,0 AS PackageDesc1WasChanged
+          ,0 AS PackageDesc2WasChanged
+          ,0 AS PackageUnitIdWasChanged
+          ,0 AS OrganicWasChanged
+          FROM IconItemLastChange lc
+          INNER JOIN ItemIdentifier ii ON lc.Identifier = ii.Identifier
+          WHERE lc.InsertDate BETWEEN @DateFrom
+          AND @DateTo
+          AND ii.Deleted_Identifier = 0
+          AND ii.Remove_Identifier = 0
+          GROUP BY ii.Item_Key
+          ,lc.Identifier
+
+          SELECT
+          MAX(Insert_Date) as Insert_Date,
+          c.Item_Key
+          INTO #maxDateBeforeTimePeriod
+          FROM #changes c
+          LEFT JOIN ItemChangeHistory h on c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date &lt; @DateFrom
+          GROUP BY c.Item_Key
+
+          -- ========================================================
+          -- Check each column to see if it changed during time frame
+          -- First Update:	Compare values within date range to value before date range
+          -- Second Update:	Check if values changed during date range
+          --					This is necessary if there is no record prior to date range (i.e. new item created)
+          -- ========================================================
+          -- Item_Description
+          UPDATE c
+          SET ProductDescriptionWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Item_Description &lt;&gt; h2.Item_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET ProductDescriptionWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Item_Description &lt;&gt; h2.Item_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- POS Description
+          UPDATE c
+          SET PosDescriptionWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.POS_Description &lt;&gt; h2.POS_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PosDescriptionWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.POS_Description &lt;&gt; h2.POS_Description
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- SubTeam_No
+          UPDATE c
+          SET SubTeamWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.SubTeam_No &lt;&gt; h2.SubTeam_No
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET SubTeamWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.SubTeam_No &lt;&gt; h2.SubTeam_No
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Brand
+          UPDATE c
+          SET BrandWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Brand_ID &lt;&gt; h2.Brand_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET BrandWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Brand_ID &lt;&gt; h2.Brand_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Tax
+          UPDATE c
+          SET TaxWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.TaxClassID &lt;&gt; h2.TaxClassID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET TaxWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.TaxClassID &lt;&gt; h2.TaxClassID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- FoodStamp
+          UPDATE c
+          SET FoodStampWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Food_Stamps &lt;&gt; h2.Food_Stamps
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET FoodStampWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Food_Stamps &lt;&gt; h2.Food_Stamps
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageDesc1 (Package Unit)
+          UPDATE c
+          SET PackageDesc1WasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc1 &lt;&gt; h2.Package_Desc1
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageDesc1WasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc1 &lt;&gt; h2.Package_Desc1
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageDesc2 (Retail Size)
+          UPDATE c
+          SET PackageDesc2WasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc2 &lt;&gt; h2.Package_Desc2
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageDesc2WasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Desc2 &lt;&gt; h2.Package_Desc2
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- PackageUnitId (Retail UOM)
+          UPDATE c
+          SET PackageUnitIdWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Unit_ID &lt;&gt; h2.Package_Unit_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET PackageUnitIdWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Package_Unit_ID &lt;&gt; h2.Package_Unit_ID
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- Organic
+          -- PackageUnitId (Retail UOM)
+          UPDATE c
+          SET OrganicWasChanged = 1
+          FROM #changes c
+          LEFT JOIN #maxDateBeforeTimePeriod btp on c.Item_Key = btp.Item_Key
+          LEFT JOIN ItemChangeHistory h on btp.Item_Key = h.Item_Key
+          AND btp.Insert_Date = h.Insert_Date
+          WHERE EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Organic &lt;&gt; h2.Organic
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          UPDATE c
+          SET OrganicWasChanged = 1
+          FROM #changes c
+          INNER JOIN ItemChangeHistory h ON c.Item_Key = h.Item_Key
+          WHERE h.Insert_Date BETWEEN @DateFrom AND @DateTo
+          AND EXISTS (
+          SELECT 1
+          FROM ItemChangeHistory h2
+          WHERE h.Item_Key = h2.Item_Key
+          AND h.Organic &lt;&gt; h2.Organic
+          AND h2.Insert_Date BETWEEN @DateFrom AND @DateTo
+          )
+
+          -- ========================================================
+          -- Run Main Query
+          -- ========================================================
+          SELECT i.Item_Key AS ItemKey
+          ,lc.InsertDate AS IconChangeDate
+          ,ii.Identifier AS Identifier
+          ,CASE
+          WHEN ii.Default_Identifier = 1
+          THEN 'Y'
+          ELSE 'N'
+          END AS Default_Identifer
+          ,i.Item_Description AS Item_Description
+          ,i.POS_Description AS POS_Description
+          ,st.SubTeam_No AS SubTeam_No
+          ,st.SubTeam_Name AS SubTeam_Name
+          ,i.Brand_ID AS Brand_ID
+          ,ib.Brand_Name AS Brand_Name
+          ,i.TaxClassID AS TaxClassID
+          ,tc.TaxClassDesc AS TaxClassDesc
+          ,i.Food_Stamps AS Food_Stamps
+          ,i.Package_Desc1 AS Package_Desc1
+          ,i.Package_Desc2 AS Package_Desc2
+          ,iu.Unit_Abbreviation AS RetailUOMAbbreviation
+          ,lc.ScaleTare AS ScaleTare
+          ,lc.AreNutriFactsChanged AS AreNutrifactsChanged
+          ,i.Organic AS Organic
+          ,c.BrandWasChanged AS BrandWasChanged
+          ,c.FoodStampWasChanged AS FoodStampWasChanged
+          ,c.OrganicWasChanged AS OrganicWasChanged
+          ,c.PackageDesc1WasChanged AS PackageDesc1WasChanged
+          ,c.PackageDesc2WasChanged AS PackageDesc2WasChanged
+          ,c.PackageUnitIdWasChanged AS PackageUnitIdWasChanged
+          ,c.PosDescriptionWasChanged AS PosDescriptionWasChanged
+          ,c.ProductDescriptionWasChanged AS ProductDescriptionWasChanged
+          ,c.SubTeamWasChanged AS SubTeamWasChanged
+          ,c.TaxWasChanged AS TaxWasChanged
+          FROM #changes c
+          INNER JOIN IconItemLastChange lc ON c.Identifier = lc.Identifier
+          INNER JOIN Item i ON c.Item_Key = i.Item_Key
+          INNER JOIN ItemIdentifier ii ON lc.Identifier = ii.Identifier
+          INNER JOIN ItemBrand ib ON i.Brand_ID = ib.Brand_ID
+          INNER JOIN TaxClass tc ON i.TaxClassID = tc.TaxClassID
+          INNER JOIN SubTeam st ON i.SubTeam_No = st.SubTeam_No
+          INNER JOIN ItemUnit iu ON i.Package_Unit_ID = iu.Unit_ID
+          WHERE st.SubTeam_No IN (@SubTeam_No)
+
+          IF OBJECT_ID('tempdb..#changes') IS NOT NULL
+          DROP TABLE #changes
+
+          IF OBJECT_ID('tempdb..#maxDateBeforeTimePeriod') IS NOT NULL
+          DROP TABLE #maxDateBeforeTimePeriod
+        </CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="ItemKey">
+          <DataField>ItemKey</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Identifier">
+          <DataField>Identifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="IconChangeDate">
+          <DataField>IconChangeDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Default_Identifer">
+          <DataField>Default_Identifer</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Item_Description">
+          <DataField>Item_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="POS_Description">
+          <DataField>POS_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SubTeam_No">
+          <DataField>SubTeam_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SubTeam_Name">
+          <DataField>SubTeam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Brand_ID">
+          <DataField>Brand_ID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Brand_Name">
+          <DataField>Brand_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TaxClassID">
+          <DataField>TaxClassID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="TaxClassDesc">
+          <DataField>TaxClassDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Food_Stamps">
+          <DataField>Food_Stamps</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc1">
+          <DataField>Package_Desc1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Package_Desc2">
+          <DataField>Package_Desc2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="RetailUOMAbbreviation">
+          <DataField>RetailUOMAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ScaleTare">
+          <DataField>ScaleTare</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AreNutrifactsChanged">
+          <DataField>AreNutrifactsChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Organic">
+          <DataField>Organic</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="BrandWasChanged">
+          <DataField>BrandWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="FoodStampWasChanged">
+          <DataField>FoodStampWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="OrganicWasChanged">
+          <DataField>OrganicWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PackageDesc1WasChanged">
+          <DataField>PackageDesc1WasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PackageDesc2WasChanged">
+          <DataField>PackageDesc2WasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PackageUnitIdWasChanged">
+          <DataField>PackageUnitIdWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PosDescriptionWasChanged">
+          <DataField>PosDescriptionWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="ProductDescriptionWasChanged">
+          <DataField>ProductDescriptionWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="SubTeamWasChanged">
+          <DataField>SubTeamWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="TaxWasChanged">
+          <DataField>TaxWasChanged</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Subteam">
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>
+          SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+          SELECT
+          Subteam_No,
+          Subteam_Name
+          FROM Subteam (NOLOCK)
+          ORDER BY Subteam_Name
+        </CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Subteam_No">
+          <DataField>Subteam_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Subteam_Name">
+          <DataField>Subteam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DefaultFromAndToDates">
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>SELECT        CAST(GETDATE() - 1 AS date) AS FromDate, CAST(GETDATE() AS date) AS ToDate</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="FromDate">
+          <DataField>FromDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ToDate">
+          <DataField>ToDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="FromDate">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>DefaultFromAndToDates</DataSetName>
+          <ValueField>FromDate</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>From</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ToDate">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>DefaultFromAndToDates</DataSetName>
+          <ValueField>ToDate</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>To </Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Subteam_No">
+      <DataType>Integer</DataType>
+      <Prompt>Subteam</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Subteam</DataSetName>
+          <ValueField>Subteam_No</ValueField>
+          <LabelField>Subteam_Name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>
+    Public Function ValueChanged (OldValue As String, NewValue AS String) As Boolean
+    If Trim(OldValue) &lt;&gt; Trim(NewValue) Then
+    Return True
+    Else
+    Return False
+    End If
+    End Function
+  </Code>
+  <Language>en-US</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>5702887f-cc8b-4c3e-ae6b-2e9da5f83ba5</rd:ReportID>
+</Report>

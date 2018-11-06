@@ -1,0 +1,171 @@
+<%@ Master Language="VB" Inherits="SLIM.UserInterface_MasterPage" CodeBehind="MasterPage.master.vb" %>
+
+<%@ Register TagPrefix="iglbar" Namespace="Infragistics.WebUI.UltraWebListbar" Assembly="Infragistics2.WebUI.UltraWebListbar.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" %>
+<%@ Register TagPrefix="ignav" Namespace="Infragistics.WebUI.UltraWebNavigator" Assembly="Infragistics2.WebUI.UltraWebNavigator.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Store Level Item Maintenance</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+        h1, h2 {
+            margin: 0;
+        }
+
+        #header {
+            background: #004000;
+            height: 50px;
+            padding-left: 155px;
+        }
+
+        #navigation {
+            position: absolute;
+            left: 0px;
+            width: 150px;
+            border: 3px solid black;
+        }
+
+        #content {
+            position: absolute;
+            left: 200px;
+            top: 75px;
+        }
+    </style>
+</head>
+<body style="background-color: #e3e3e3;">
+
+    <form id="form1" runat="server">
+        <div id="header">
+            <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Size="12px" ForeColor="White"
+                Text="Store Level Item Maintenance - Southwest Region" Width="464px" Font-Names="Tahoma"></asp:Label><br />
+            <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Size="X-Small" ForeColor="White" Text="Version 1.2" Width="75px" Font-Names="Tahoma"></asp:Label>            
+            <asp:Label ID="ServerLabel" runat="server" Font-Bold="True" Font-Names="Tahoma" Font-Size="X-Small" ForeColor="White"></asp:Label>
+            <br />
+            <span style="font-family: tahoma; font-size: 11px; color: white; font-weight: bold;">To report an issue with SLIM, please create a support ticket in <a style="color:#66CDAA" href="http://orchard/SC/ServiceCatalog/RequestOffering/439ca897-b842-fba3-67f6-fadb4aaaca12,456073ab-7464-4f47-ed72-4cc77f161a58">Orchard</a>.</span> 
+        </div>
+
+        <div id="Navigation">
+
+            <ignav:UltraWebMenu ID="UltraWebMenu1" runat="server" Font-Names="Tahoma"
+                Font-Size="11px" WebMenuTarget="VerticalMenu" BackColor="#004000"
+                ForeColor="White" BorderStyle="None" SeparatorClass="" TargetFrame=""
+                TargetUrl="">
+                <Images>
+                    <SubMenuImage Url="ig_menuTri.gif" />
+                </Images>
+                <IslandStyle BackColor="#004000" BorderStyle="Outset" BorderWidth="1px" Cursor="Default" Font-Names="tahoma" Font-Size="12px" ForeColor="White">
+                </IslandStyle>
+                <HoverItemStyle BackColor="Green" Cursor="Default" ForeColor="White" Font-Bold="False" Font-Underline="True">
+                </HoverItemStyle>
+                <Levels>
+                    <ignav:Level Index="0" />
+                    <ignav:Level Index="1" />
+                </Levels>
+                <DisabledStyle Font-Names="MS Sans Serif" Font-Size="8pt" ForeColor="Gray">
+                </DisabledStyle>
+                <ItemStyle Cursor="Default" Font-Names="Tahoma" Font-Size="12px" />
+                <SeparatorStyle BackgroundImage="ig_menuSep.gif" CssClass="SeparatorClass" CustomRules="background-repeat:repeat-x; " />
+                <ExpandEffects ShadowColor="LightGray" Type="Slide" />
+                <Items>
+                    <ignav:Item TargetUrl="~/UserInterface/Administration/Main.aspx" Text="Administration" TagString="Admin">
+                    </ignav:Item>
+                    <ignav:Item Text="Item Request" TagString="ItemRequest">
+                        <Items>
+                            <ignav:Item Text="New Item Requests" TagString="NewItemRequest">
+                                <Items>
+                                    <ignav:Item TagString="NewItem" TargetUrl="~/UserInterface/ItemRequest/ItemIdentifier.aspx" Text="Create New Item">
+                                    </ignav:Item>
+                                    <ignav:Item TargetUrl="~/UserInterface/ItemRequest/ItemPending.aspx" Text="Pending">
+                                    </ignav:Item>
+                                    <ignav:Item TargetUrl="~/UserInterface/ItemRequest/ItemProcessed.aspx" Text="Processed">
+                                    </ignav:Item>
+                                    <ignav:Item TargetUrl="~/UserInterface/ItemRequest/ItemRejected.aspx" Text="Rejected">
+                                    </ignav:Item>
+                                </Items>
+                            </ignav:Item>
+                            <ignav:Item Text="Refresh Requests" TagString="Refresh">
+                                <Items>
+                                    <ignav:Item TargetUrl="~/UserInterface/RefreshPOS/Main.aspx" Text="New Refresh" />
+                                    <ignav:Item TargetUrl="~/UserInterface/RefreshPOS/RefreshPending.aspx" Text="Pending" />
+                                </Items>
+                            </ignav:Item>
+                        </Items>
+                    </ignav:Item>
+                    <ignav:Item Text="Vendor Request" TagString="Vendor">
+                        <Items>
+                            <ignav:Item TagString="NewVendor" TargetUrl="~/UserInterface/VendorRequest/VendorForm.aspx"
+                                Text="Create New Vendor">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/VendorRequest/VendorPending.aspx" Text="Pending">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/VendorRequest/VendorProcessed.aspx" Text="Processed">
+                            </ignav:Item>
+                        </Items>
+                    </ignav:Item>
+                    <ignav:Item Text="Store Specials" TagString="ISS">
+                        <Items>
+                            <ignav:Item TargetUrl="~/UserInterface/InStoreSpecials/Main.aspx" Text="Create New ISS" TagString="ISSNew">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/InStoreSpecials/StoreSpecialsStatus.aspx?status=1"
+                                Text="Pending ">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/InStoreSpecials/StoreSpecialsStatus.aspx?status=2"
+                                Text="In Process">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/InStoreSpecials/StoreSpecialsStatus.aspx?status=3"
+                                Text="Processed">
+                            </ignav:Item>
+                            <ignav:Item TargetUrl="~/UserInterface/InStoreSpecials/StoreSpecialsStatus.aspx?status=4"
+                                Text="Rejected">
+                            </ignav:Item>
+                        </Items>
+                    </ignav:Item>
+                    <ignav:Item TargetUrl="~/UserInterface/RetailCost/Main.aspx" Text="Retail Cost Maint." TagString="RetailCostMaintenance">
+                    </ignav:Item>
+                    <ignav:Item TargetUrl="~/UserInterface/ItemAuthorizations/Main.aspx" Text="Authorizations" TagString="Authorizations">
+                    </ignav:Item>
+                    <ignav:Item TargetUrl="~/UserInterface/ItemECommerce/Main.aspx"
+                        Text="ECommerce" TagString="ECommerce">
+                    </ignav:Item>
+                    <ignav:Item TargetUrl="~/UserInterface/ItemVendor/Main.aspx" Text="Edit Item's Vendor" TagString="EditItemVendor">
+                    </ignav:Item>
+                    <ignav:Item TargetUrl="~/UserInterface/WebQuery/Main.aspx" Text="Web Query" TagString="WebQuery">
+                    </ignav:Item>
+                    <ignav:Item TagString="LogOff" TargetUrl="~/Default.aspx" Text="Log Off">
+                    </ignav:Item>
+                </Items>
+                <LeafItemStyle Font-Names="tahoma" Font-Size="12px">
+                </LeafItemStyle>
+                <TopLevelParentItemStyle BackColor="#004000">
+                </TopLevelParentItemStyle>
+            </ignav:UltraWebMenu>
+            <br />
+            <br />
+            <br />
+
+
+        </div>
+        <div id="content">
+            <asp:SiteMapPath ID="SiteMapPath1" runat="server" Font-Names="Tahoma" Font-Size="12px"
+                PathSeparator=" : " Style="z-index: 100; left: 3px; position: absolute; top: -14px" Width="481px">
+                <PathSeparatorStyle Font-Bold="True" ForeColor="#507CD1" />
+                <CurrentNodeStyle ForeColor="#333333" />
+                <NodeStyle Font-Bold="True" ForeColor="#284E98" />
+                <RootNodeStyle Font-Bold="True" ForeColor="#507CD1" />
+            </asp:SiteMapPath>
+            <br />
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+
+
+        </div>
+        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" />
+    </form>
+</body>
+</html>

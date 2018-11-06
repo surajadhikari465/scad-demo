@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="ItemCatalog">
+      <rd:DataSourceID>c8b31833-960b-4a9b-8147-f015d346a889</rd:DataSourceID>
+      <DataSourceReference>ItemCatalog</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <ReportParameters>
+    <ReportParameter Name="Subteam">
+      <DataType>Integer</DataType>
+      <Prompt>Subteam</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Subteams</DataSetName>
+          <ValueField>Subteam_No</ValueField>
+          <LabelField>Subteam_Name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="StartDate">
+      <DataType>DateTime</DataType>
+      <Prompt>Order Start Date:</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="EndDate">
+      <DataType>DateTime</DataType>
+      <Prompt>Order End Date:</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>1in</RightMargin>
+  <LeftMargin>1in</LeftMargin>
+  <BottomMargin>1in</BottomMargin>
+  <rd:ReportID>6574d14e-9805-4e77-acfa-60917a42668f</rd:ReportID>
+  <DataSets>
+    <DataSet Name="ItemCatalog">
+      <Fields>
+        <Field Name="Identifier">
+          <DataField>Identifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Subteam_No">
+          <DataField>Subteam_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Brand_Name">
+          <DataField>Brand_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Item_Description">
+          <DataField>Item_Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Pack_Size">
+          <DataField>Pack_Size</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Item_Size">
+          <DataField>Item_Size</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="UOM">
+          <DataField>UOM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StoreAbbr">
+          <DataField>StoreAbbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Ordered">
+          <DataField>Ordered</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>select distinct ii.Identifier, i.Subteam_No, b.Brand_Name, i.Item_Description,
+i.Package_Desc1 as Pack_Size, i.Package_Desc2 as Item_Size, u.Unit_Abbreviation as UOM,
+s.StoreAbbr, sum(oi.QuantityOrdered) As Ordered
+
+from Item i 
+INNER JOIN ItemIdentifier ii (nolock) on i.Item_Key = ii.Item_Key
+INNER JOIN ItemBrand b  (nolock) on i.Brand_ID = b.Brand_ID
+INNER JOIN ItemUnit u  (nolock) on i.Package_Unit_ID = u.Unit_ID
+INNER JOIN OrderItem oi on i.Item_Key = oi.Item_Key
+INNER JOIN OrderHeader oh  (nolock) on oi.OrderHeader_ID = oh.OrderHeader_ID
+INNER JOIN Vendor v (nolock)  on v.Vendor_ID = oh.PurchaseLocation_ID
+INNER JOIN Store s (nolock)  on v.Store_no = s.Store_No
+
+
+where i.Subteam_No in (@Subteam)
+and oh.OrderDate BETWEEN @StartDate and @EndDate
+
+group by ii.Identifier, i.Subteam_No, b.Brand_Name, i.Item_Description,
+i.Package_Desc1, i.Package_Desc2, u.Unit_Abbreviation,s.StoreAbbr
+
+order by i.Subteam_No, ii.Identifier</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@Subteam">
+            <Value>=Parameters!Subteam.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@StartDate">
+            <Value>=Parameters!StartDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="Subteams">
+      <Fields>
+        <Field Name="Subteam_No">
+          <DataField>Subteam_No</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Subteam_Name">
+          <DataField>Subteam_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>ItemCatalog</DataSourceName>
+        <CommandText>SELECT Subteam_No, Subteam_Name FROM Subteam
+Order By Subteam_Name</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <Width>11.375in</Width>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Width>11.25in</Width>
+        <Style>
+          <Color>#365838</Color>
+          <FontFamily>Times New Roman</FontFamily>
+          <FontSize>18pt</FontSize>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Height>0.33in</Height>
+        <Value>Subteam Order History</Value>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>0.72299in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <DataSetName>ItemCatalog</DataSetName>
+        <RowGroupings>
+          <RowGrouping>
+            <Width>1.0114in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Identifier">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Identifier.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Identifier.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Identifier">
+                  <rd:DefaultName>Identifier</rd:DefaultName>
+                  <Style>
+                    <Color>White</Color>
+                    <BackgroundColor>#4a7349</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>7</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Identifier.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.5in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Subteam_No">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Subteam_No.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Subteam_No.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Subteam_No">
+                  <rd:DefaultName>Subteam_No</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#a3cba3</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>6</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Subteam_No.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>2.625in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Brand_Name">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Brand_Name.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Brand_Name.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Brand_Name">
+                  <rd:DefaultName>Brand_Name</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#dedab5</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>5</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Brand_Name.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>4.5in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Item_Description">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Item_Description.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Item_Description.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Item_Description">
+                  <rd:DefaultName>Item_Description</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#dedab5</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>4</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Item_Description.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.62588in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Pack_Size">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Pack_Size.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Pack_Size.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Pack_Size">
+                  <rd:DefaultName>Pack_Size</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#dedab5</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>3</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Pack_Size.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.75106in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_Item_Size">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Item_Size.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Item_Size.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Item_Size">
+                  <rd:DefaultName>Item_Size</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#dedab5</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>2</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Item_Size.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+          <RowGrouping>
+            <Width>0.50071in</Width>
+            <DynamicRows>
+              <Grouping Name="matrix1_UOM">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!UOM.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!UOM.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="UOM">
+                  <rd:DefaultName>UOM</rd:DefaultName>
+                  <Style>
+                    <BackgroundColor>#dedab5</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>1</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!UOM.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+          </RowGrouping>
+        </RowGroupings>
+        <Top>0.33in</Top>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <Height>0.21in</Height>
+            <DynamicColumns>
+              <Grouping Name="matrix1_StoreAbbr">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!StoreAbbr.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!StoreAbbr.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="StoreAbbr">
+                  <rd:DefaultName>StoreAbbr</rd:DefaultName>
+                  <Style>
+                    <Color>White</Color>
+                    <BackgroundColor>#4a7349</BackgroundColor>
+                    <BorderColor>
+                      <Default>DarkGray</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontFamily>Times New Roman</FontFamily>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <ZIndex>8</ZIndex>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!StoreAbbr.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicColumns>
+          </ColumnGrouping>
+        </ColumnGroupings>
+        <Width>11.23704in</Width>
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox3">
+              <rd:DefaultName>textbox3</rd:DefaultName>
+              <Style>
+                <BorderColor>
+                  <Default>DarkGray</Default>
+                </BorderColor>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <FontFamily>Times New Roman</FontFamily>
+                <FontSize>9pt</FontSize>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+              <ZIndex>9</ZIndex>
+              <CanGrow>true</CanGrow>
+              <Value>
+              </Value>
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <MatrixRows>
+          <MatrixRow>
+            <Height>0.21in</Height>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Style>
+                      <BorderColor>
+                        <Default>DarkGray</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <FontSize>9pt</FontSize>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!Ordered.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+          </MatrixRow>
+        </MatrixRows>
+      </Matrix>
+    </ReportItems>
+    <Height>0.75in</Height>
+  </Body>
+  <Language>en-US</Language>
+  <TopMargin>1in</TopMargin>
+</Report>

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="StoreOrderGuide._Default" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Default.aspx.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.My.MySettings" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.CatalogControl">
+    <Position X="2.5" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>App_Controls\CatalogControl.ascx.vb</FileName>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAIEAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Catalog" />
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.Order">
+    <Position X="5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\Order.vb</FileName>
+      <HashCode>AAIAAJAAAAAAAAAAAAAACAFAABAAAAAAAAACQAEACAg=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CatalogID" />
+    </ShowAsAssociation>
+    <AssociationLine Name="CatalogID" Type="StoreOrderGuide.Catalog" FixedFromPoint="true">
+      <Path>
+        <Point X="5.875" Y="11.25" />
+        <Point X="5.875" Y="8.353" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="StoreOrderGuide.CatalogItem">
+    <Position X="7.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\CatalogItem.vb</FileName>
+      <HashCode>AAIAAAAAAAAAQIAAAABCCAEAAAEAEAABAAACQAEAAgg=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CatalogID" />
+      <Property Name="Item_Key" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.Store">
+    <Position X="10.25" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>App_Code\Store.vb</FileName>
+      <HashCode>AAAAAAAAAAAAEAAAAIAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.ManagedBy">
+    <Position X="10.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>App_Code\ManagedBy.vb</FileName>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAACgAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.CatalogStore">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\CatalogStore.vb</FileName>
+      <HashCode>AAIAAAAAAAAAAAAAAABCCAEAAAEAAAAAAAACQAEAAgg=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CatalogID" />
+      <Property Name="StoreNo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.Item">
+    <Position X="10.25" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>App_Code\Item.vb</FileName>
+      <HashCode>EAAAAAgBBCAAAIgAABAAABAAAAACAAABAAQAQAIABiA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.OrderItem">
+    <Position X="12.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OrderItem.vb</FileName>
+      <HashCode>AAIAABAAAAAAAIAAAAAAAABAAAEAAAADAAAAgAAAAAE=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OrderID" />
+      <Property Name="Item_Key" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Item_Key" Type="StoreOrderGuide.Item" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="11.25" />
+        <Point X="13" Y="8.246" />
+        <Point X="12" Y="8.246" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="StoreOrderGuide.OrderControl">
+    <Position X="2.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Controls\OrderControl.ascx.vb</FileName>
+      <HashCode>AAEBAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAIEAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.Catalog">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\Catalog.vb</FileName>
+      <HashCode>AAIAAIAAAQAgAQBAGFAAGBEAAxECAEAGCAACUAEACAg=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ManagedByID" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.User">
+    <Position X="2.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\User.vb</FileName>
+      <HashCode>AAAAAAAAACgAQEAAAAICAQoBAAEAAAACAQAQAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.CatalogItemControl">
+    <Position X="7.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>App_Controls\CatalogItemControl.ascx.vb</FileName>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAIgAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Catalog" />
+      <Property Name="CatalogItem" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.OrderItemControl">
+    <Position X="9.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Controls\OrderItemControl.ascx.vb</FileName>
+      <HashCode>AAEAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+      <Property Name="OrderItem" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StoreOrderGuide.Dal">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\Dal.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAgA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StoreOrderGuide.Common">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\Common.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAIACAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Module Name="StoreOrderGuide.My.Resources.Resources" Collapsed="true">
+    <Position X="2.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="StoreOrderGuide.My.MySettingsProperty" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+</ClassDiagram>

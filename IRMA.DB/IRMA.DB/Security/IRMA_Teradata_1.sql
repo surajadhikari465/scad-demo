@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [IRMA_Teradata]
+    WITH PASSWORD = N'4u{fnesjZwimcll pApaDkkgmsFT7_&#$!~<lvJkosf_gU!w', SID = 0x1B234BEA4A8D204F92E27F35FA176DCE, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

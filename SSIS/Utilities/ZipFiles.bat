@@ -1,0 +1,1 @@
+FOR %%i IN (%1*.csv) DO "C:\Program Files (x86)\7-Zip\7z.exe" a -tgzip "%1%%~ni.gz" "%%i"

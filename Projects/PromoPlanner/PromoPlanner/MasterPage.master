@@ -1,0 +1,34 @@
+<%@ Master Language="VB" Inherits="PromoPlanner.MasterPage" Codebehind="MasterPage.master.vb" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Promo Planner</title>
+    <link rel="stylesheet" type="text/css" href="promo.css"/>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    	<table class="headertable">
+		<tr>
+			<td align="middle" rowspan="2" style="width: 1px"><img alt="wfm" src="images/slieWFMlogo.jpg" width="105" height="75"/></td>
+			<td>
+				<table class="innertable">
+					<tr>
+						<td>
+                            <span style="color: #ffffff">
+							IRMA Promo Planner</span></td>
+					</tr>
+					
+				</table>
+                <asp:Label ID="ServerLabel" runat="server" Font-Bold="True" Font-Size="X-Small" ForeColor="White"></asp:Label></td>
+		</tr>
+	</table>
+	<br />
+        <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+        </asp:contentplaceholder>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CompetitorStoreDataSet" targetNamespace="http://tempuri.org/CompetitorStoreDataSet.xsd" xmlns:mstns="http://tempuri.org/CompetitorStoreDataSet.xsd" xmlns="http://tempuri.org/CompetitorStoreDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="ItemCatalog260ConnectionString" IsAppSettingsProperty="True" Modifier="Assembly" Name="ItemCatalog260ConnectionString (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.MySettings.GlobalReference.Default.ItemCatalog260ConnectionString" Provider="System.Data.SqlClient">
+          </Connection>
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="ItemCatalog250ConnectionString1" IsAppSettingsProperty="True" Modifier="Assembly" Name="ItemCatalog250ConnectionString1 (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.MySettings.GlobalReference.Default.ItemCatalog250ConnectionString1" Provider="System.Data.SqlClient">
+          </Connection>
+        </Connections>
+        <Tables>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="CompetitorStoreDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="CompetitorStoreDataSet" msprop:Generator_DataSetName="CompetitorStoreDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="CompetitorImportInfo" msprop:Generator_UserTableName="CompetitorImportInfo" msprop:Generator_RowDeletedName="CompetitorImportInfoRowDeleted" msprop:Generator_RowChangedName="CompetitorImportInfoRowChanged" msprop:Generator_RowClassName="CompetitorImportInfoRow" msprop:Generator_RowChangingName="CompetitorImportInfoRowChanging" msprop:Generator_RowEvArgName="CompetitorImportInfoRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorImportInfoRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorImportInfoDataTable" msprop:Generator_TableVarName="tableCompetitorImportInfo" msprop:Generator_RowDeletingName="CompetitorImportInfoRowDeleting" msprop:Generator_TablePropName="CompetitorImportInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorImportInfoID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_UserColumnName="CompetitorImportInfoID" msprop:Generator_ColumnVarNameInTable="columnCompetitorImportInfoID" msprop:Generator_ColumnPropNameInRow="CompetitorImportInfoID" msprop:Generator_ColumnPropNameInTable="CompetitorImportInfoIDColumn" type="xs:int" />
+              <xs:element name="CompetitorImportSessionID" msprop:Generator_UserColumnName="CompetitorImportSessionID" msprop:Generator_ColumnPropNameInRow="CompetitorImportSessionID" msprop:Generator_ColumnVarNameInTable="columnCompetitorImportSessionID" msprop:Generator_ColumnPropNameInTable="CompetitorImportSessionIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Item_Key" msprop:Generator_UserColumnName="Item_Key" msprop:Generator_ColumnVarNameInTable="columnItem_Key" msprop:Generator_ColumnPropNameInRow="Item_Key" msprop:Generator_ColumnPropNameInTable="Item_KeyColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="WFMIdentifier" msprop:Generator_UserColumnName="WFMIdentifier" msprop:Generator_ColumnVarNameInTable="columnWFMIdentifier" msprop:Generator_ColumnPropNameInRow="WFMIdentifier" msprop:Generator_ColumnPropNameInTable="WFMIdentifierColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="CompetitorID" msprop:Generator_UserColumnName="CompetitorID" msprop:Generator_ColumnVarNameInTable="columnCompetitorID" msprop:Generator_ColumnPropNameInRow="CompetitorID" msprop:Generator_ColumnPropNameInTable="CompetitorIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="CompetitorLocationID" msprop:Generator_UserColumnName="CompetitorLocationID" msprop:Generator_ColumnPropNameInRow="CompetitorLocationID" msprop:Generator_ColumnVarNameInTable="columnCompetitorLocationID" msprop:Generator_ColumnPropNameInTable="CompetitorLocationIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="CompetitorStoreID" msprop:Generator_UserColumnName="CompetitorStoreID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="FiscalYear" msprop:Generator_UserColumnName="FiscalYear" msprop:Generator_ColumnVarNameInTable="columnFiscalYear" msprop:Generator_ColumnPropNameInRow="FiscalYear" msprop:Generator_ColumnPropNameInTable="FiscalYearColumn" type="xs:short" minOccurs="0" />
+              <xs:element name="FiscalPeriod" msprop:Generator_UserColumnName="FiscalPeriod" msprop:Generator_ColumnVarNameInTable="columnFiscalPeriod" msprop:Generator_ColumnPropNameInRow="FiscalPeriod" msprop:Generator_ColumnPropNameInTable="FiscalPeriodColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="PeriodWeek" msprop:Generator_UserColumnName="PeriodWeek" msprop:Generator_ColumnVarNameInTable="columnPeriodWeek" msprop:Generator_ColumnPropNameInRow="PeriodWeek" msprop:Generator_ColumnPropNameInTable="PeriodWeekColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="Competitor" msprop:Generator_UserColumnName="Competitor" msprop:Generator_ColumnVarNameInTable="columnCompetitor" msprop:Generator_ColumnPropNameInRow="Competitor" msprop:Generator_ColumnPropNameInTable="CompetitorColumn" type="xs:string" />
+              <xs:element name="Location" msprop:Generator_UserColumnName="Location" msprop:Generator_ColumnPropNameInRow="Location" msprop:Generator_ColumnVarNameInTable="columnLocation" msprop:Generator_ColumnPropNameInTable="LocationColumn" type="xs:string" />
+              <xs:element name="CompetitorStore" msprop:Generator_UserColumnName="CompetitorStore" msprop:Generator_ColumnPropNameInRow="CompetitorStore" msprop:Generator_ColumnVarNameInTable="columnCompetitorStore" msprop:Generator_ColumnPropNameInTable="CompetitorStoreColumn" type="xs:string" />
+              <xs:element name="UPCCode" msprop:Generator_UserColumnName="UPCCode" msprop:Generator_ColumnPropNameInRow="UPCCode" msprop:Generator_ColumnVarNameInTable="columnUPCCode" msprop:Generator_ColumnPropNameInTable="UPCCodeColumn" type="xs:string" />
+              <xs:element name="Description" msprop:Generator_UserColumnName="Description" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Size" msprop:Generator_UserColumnName="Size" msprop:Generator_ColumnPropNameInRow="Size" msprop:Generator_ColumnVarNameInTable="columnSize" msprop:Generator_ColumnPropNameInTable="SizeColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UnitOfMeasure" msprop:Generator_UserColumnName="UnitOfMeasure" msprop:Generator_ColumnVarNameInTable="columnUnitOfMeasure" msprop:Generator_ColumnPropNameInRow="UnitOfMeasure" msprop:Generator_ColumnPropNameInTable="UnitOfMeasureColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="PriceMultiple" msprop:Generator_UserColumnName="PriceMultiple" msprop:Generator_ColumnPropNameInRow="PriceMultiple" msprop:Generator_ColumnVarNameInTable="columnPriceMultiple" msprop:Generator_ColumnPropNameInTable="PriceMultipleColumn" type="xs:unsignedByte" default="1" minOccurs="0" />
+              <xs:element name="Price" msprop:Generator_UserColumnName="Price" msprop:Generator_ColumnPropNameInRow="Price" msprop:Generator_ColumnVarNameInTable="columnPrice" msprop:Generator_ColumnPropNameInTable="PriceColumn" type="xs:decimal" />
+              <xs:element name="SaleMultiple" msprop:Generator_UserColumnName="SaleMultiple" msprop:Generator_ColumnPropNameInRow="SaleMultiple" msprop:Generator_ColumnVarNameInTable="columnSaleMultiple" msprop:Generator_ColumnPropNameInTable="SaleMultipleColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="Sale" msprop:Generator_UserColumnName="Sale" msprop:Generator_ColumnPropNameInRow="Sale" msprop:Generator_ColumnVarNameInTable="columnSale" msprop:Generator_ColumnPropNameInTable="SaleColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="DateChecked" msprop:Generator_UserColumnName="DateChecked" msprop:Generator_ColumnPropNameInRow="DateChecked" msprop:Generator_ColumnVarNameInTable="columnDateChecked" msprop:Generator_ColumnPropNameInTable="DateCheckedColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Unit_ID" msprop:Generator_UserColumnName="Unit_ID" msprop:Generator_ColumnVarNameInTable="columnUnit_ID" msprop:Generator_ColumnPropNameInRow="Unit_ID" msprop:Generator_ColumnPropNameInTable="Unit_IDColumn" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompetitorPrice" msprop:Generator_UserTableName="CompetitorPrice" msprop:Generator_RowDeletedName="CompetitorPriceRowDeleted" msprop:Generator_RowChangedName="CompetitorPriceRowChanged" msprop:Generator_RowClassName="CompetitorPriceRow" msprop:Generator_RowChangingName="CompetitorPriceRowChanging" msprop:Generator_RowEvArgName="CompetitorPriceRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorPriceRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorPriceDataTable" msprop:Generator_TableVarName="tableCompetitorPrice" msprop:Generator_RowDeletingName="CompetitorPriceRowDeleting" msprop:Generator_TablePropName="CompetitorPrice">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Item_Key" msprop:Generator_UserColumnName="Item_Key" msprop:Generator_ColumnPropNameInRow="Item_Key" msprop:Generator_ColumnVarNameInTable="columnItem_Key" msprop:Generator_ColumnPropNameInTable="Item_KeyColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="CompetitorStoreID" msprop:Generator_UserColumnName="CompetitorStoreID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="FiscalYear" msprop:Generator_UserColumnName="FiscalYear" msprop:Generator_ColumnPropNameInRow="FiscalYear" msprop:Generator_ColumnVarNameInTable="columnFiscalYear" msprop:Generator_ColumnPropNameInTable="FiscalYearColumn" type="xs:short" minOccurs="0" />
+              <xs:element name="FiscalPeriod" msprop:Generator_UserColumnName="FiscalPeriod" msprop:Generator_ColumnPropNameInRow="FiscalPeriod" msprop:Generator_ColumnVarNameInTable="columnFiscalPeriod" msprop:Generator_ColumnPropNameInTable="FiscalPeriodColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="PeriodWeek" msprop:Generator_UserColumnName="PeriodWeek" msprop:Generator_ColumnPropNameInRow="PeriodWeek" msprop:Generator_ColumnVarNameInTable="columnPeriodWeek" msprop:Generator_ColumnPropNameInTable="PeriodWeekColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="Description" msprop:Generator_UserColumnName="Description" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PriceMultiple" msprop:Generator_UserColumnName="PriceMultiple" msprop:Generator_ColumnPropNameInRow="PriceMultiple" msprop:Generator_ColumnVarNameInTable="columnPriceMultiple" msprop:Generator_ColumnPropNameInTable="PriceMultipleColumn" type="xs:unsignedByte" default="1" minOccurs="0" />
+              <xs:element name="Price" msprop:Generator_UserColumnName="Price" msprop:Generator_ColumnPropNameInRow="Price" msprop:Generator_ColumnVarNameInTable="columnPrice" msprop:Generator_ColumnPropNameInTable="PriceColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="SaleMultiple" msprop:Generator_UserColumnName="SaleMultiple" msprop:Generator_ColumnPropNameInRow="SaleMultiple" msprop:Generator_ColumnVarNameInTable="columnSaleMultiple" msprop:Generator_ColumnPropNameInTable="SaleMultipleColumn" type="xs:unsignedByte" minOccurs="0" />
+              <xs:element name="Sale" msprop:Generator_UserColumnName="Sale" msprop:Generator_ColumnPropNameInRow="Sale" msprop:Generator_ColumnVarNameInTable="columnSale" msprop:Generator_ColumnPropNameInTable="SaleColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Size" msprop:Generator_UserColumnName="Size" msprop:Generator_ColumnPropNameInRow="Size" msprop:Generator_ColumnVarNameInTable="columnSize" msprop:Generator_ColumnPropNameInTable="SizeColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Unit_ID" msprop:Generator_UserColumnName="Unit_ID" msprop:Generator_ColumnPropNameInRow="Unit_ID" msprop:Generator_ColumnVarNameInTable="columnUnit_ID" msprop:Generator_ColumnPropNameInTable="Unit_IDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="UpdateUserID" msprop:Generator_UserColumnName="UpdateUserID" msprop:Generator_ColumnPropNameInRow="UpdateUserID" msprop:Generator_ColumnVarNameInTable="columnUpdateUserID" msprop:Generator_ColumnPropNameInTable="UpdateUserIDColumn" type="xs:int" />
+              <xs:element name="UpdateDateTime" msprop:Generator_UserColumnName="UpdateDateTime" msprop:Generator_ColumnPropNameInRow="UpdateDateTime" msprop:Generator_ColumnVarNameInTable="columnUpdateDateTime" msprop:Generator_ColumnPropNameInTable="UpdateDateTimeColumn" type="xs:dateTime" />
+              <xs:element name="UPCCode" msprop:Generator_UserColumnName="UPCCode" msprop:Generator_ColumnPropNameInRow="UPCCode" msprop:Generator_ColumnVarNameInTable="columnUPCCode" msprop:Generator_ColumnPropNameInTable="UPCCodeColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompetitorID" msprop:Generator_UserColumnName="CompetitorID" msprop:Generator_ColumnVarNameInTable="columnCompetitorID" msprop:Generator_ColumnPropNameInRow="CompetitorID" msprop:Generator_ColumnPropNameInTable="CompetitorIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="CompetitorLocationID" msprop:Generator_UserColumnName="CompetitorLocationID" msprop:Generator_ColumnVarNameInTable="columnCompetitorLocationID" msprop:Generator_ColumnPropNameInRow="CompetitorLocationID" msprop:Generator_ColumnPropNameInTable="CompetitorLocationIDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="WFMIdentifier" msprop:Generator_UserColumnName="WFMIdentifier" msprop:Generator_ColumnPropNameInRow="WFMIdentifier" msprop:Generator_ColumnVarNameInTable="columnWFMIdentifier" msprop:Generator_ColumnPropNameInTable="WFMIdentifierColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="13" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Competitor" msprop:Generator_UserColumnName="Competitor" msprop:Generator_ColumnPropNameInRow="Competitor" msprop:Generator_ColumnVarNameInTable="columnCompetitor" msprop:Generator_ColumnPropNameInTable="CompetitorColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Location" msprop:Generator_UserColumnName="Location" msprop:Generator_ColumnPropNameInRow="Location" msprop:Generator_ColumnVarNameInTable="columnLocation" msprop:Generator_ColumnPropNameInTable="LocationColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompetitorStore" msprop:Generator_UserColumnName="CompetitorStore" msprop:Generator_ColumnPropNameInRow="CompetitorStore" msprop:Generator_ColumnVarNameInTable="columnCompetitorStore" msprop:Generator_ColumnPropNameInTable="CompetitorStoreColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompetitorPriceID" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorPriceID" msprop:Generator_ColumnPropNameInRow="CompetitorPriceID" msprop:Generator_ColumnVarNameInTable="columnCompetitorPriceID" msprop:Generator_ColumnPropNameInTable="CompetitorPriceIDColumn" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompetitorImportSession" msprop:Generator_UserTableName="CompetitorImportSession" msprop:Generator_RowDeletedName="CompetitorImportSessionRowDeleted" msprop:Generator_RowChangedName="CompetitorImportSessionRowChanged" msprop:Generator_RowClassName="CompetitorImportSessionRow" msprop:Generator_RowChangingName="CompetitorImportSessionRowChanging" msprop:Generator_RowEvArgName="CompetitorImportSessionRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorImportSessionRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorImportSessionDataTable" msprop:Generator_TableVarName="tableCompetitorImportSession" msprop:Generator_RowDeletingName="CompetitorImportSessionRowDeleting" msprop:Generator_TablePropName="CompetitorImportSession">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorImportSessionID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorImportSessionID" msprop:Generator_ColumnPropNameInRow="CompetitorImportSessionID" msprop:Generator_ColumnVarNameInTable="columnCompetitorImportSessionID" msprop:Generator_ColumnPropNameInTable="CompetitorImportSessionIDColumn" type="xs:int" />
+              <xs:element name="User_ID" msprop:Generator_UserColumnName="User_ID" msprop:Generator_ColumnPropNameInRow="User_ID" msprop:Generator_ColumnVarNameInTable="columnUser_ID" msprop:Generator_ColumnPropNameInTable="User_IDColumn" type="xs:int" />
+              <xs:element name="StartDateTime" msprop:Generator_UserColumnName="StartDateTime" msprop:Generator_ColumnPropNameInRow="StartDateTime" msprop:Generator_ColumnVarNameInTable="columnStartDateTime" msprop:Generator_ColumnPropNameInTable="StartDateTimeColumn" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="FiscalWeek" msprop:Generator_UserTableName="FiscalWeek" msprop:Generator_RowDeletedName="FiscalWeekRowDeleted" msprop:Generator_RowChangedName="FiscalWeekRowChanged" msprop:Generator_RowClassName="FiscalWeekRow" msprop:Generator_RowChangingName="FiscalWeekRowChanging" msprop:Generator_RowEvArgName="FiscalWeekRowChangeEvent" msprop:Generator_RowEvHandlerName="FiscalWeekRowChangeEventHandler" msprop:Generator_TableClassName="FiscalWeekDataTable" msprop:Generator_TableVarName="tableFiscalWeek" msprop:Generator_RowDeletingName="FiscalWeekRowDeleting" msprop:Generator_TablePropName="FiscalWeek">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FiscalYear" msprop:Generator_UserColumnName="FiscalYear" msprop:Generator_ColumnVarNameInTable="columnFiscalYear" msprop:Generator_ColumnPropNameInRow="FiscalYear" msprop:Generator_ColumnPropNameInTable="FiscalYearColumn" type="xs:short" />
+              <xs:element name="FiscalPeriod" msprop:Generator_UserColumnName="FiscalPeriod" msprop:Generator_ColumnVarNameInTable="columnFiscalPeriod" msprop:Generator_ColumnPropNameInRow="FiscalPeriod" msprop:Generator_ColumnPropNameInTable="FiscalPeriodColumn" type="xs:unsignedByte" />
+              <xs:element name="PeriodWeek" msprop:Generator_UserColumnName="PeriodWeek" msprop:Generator_ColumnVarNameInTable="columnPeriodWeek" msprop:Generator_ColumnPropNameInRow="PeriodWeek" msprop:Generator_ColumnPropNameInTable="PeriodWeekColumn" type="xs:unsignedByte" />
+              <xs:element name="YearWeek" msprop:Generator_UserColumnName="YearWeek" msprop:Generator_ColumnVarNameInTable="columnYearWeek" msprop:Generator_ColumnPropNameInRow="YearWeek" msprop:Generator_ColumnPropNameInTable="YearWeekColumn" type="xs:unsignedByte" />
+              <xs:element name="FiscalWeekDescription" msprop:Generator_UserColumnName="FiscalWeekDescription" msprop:Generator_ColumnVarNameInTable="columnFiscalWeekDescription" msprop:Generator_ColumnPropNameInRow="FiscalWeekDescription" msprop:Generator_ColumnPropNameInTable="FiscalWeekDescriptionColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="StartDate" msprop:Generator_UserColumnName="StartDate" msprop:Generator_ColumnVarNameInTable="columnStartDate" msprop:Generator_ColumnPropNameInRow="StartDate" msprop:Generator_ColumnPropNameInTable="StartDateColumn" type="xs:dateTime" />
+              <xs:element name="EndDate" msprop:Generator_UserColumnName="EndDate" msprop:Generator_ColumnVarNameInTable="columnEndDate" msprop:Generator_ColumnPropNameInRow="EndDate" msprop:Generator_ColumnPropNameInTable="EndDateColumn" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Competitor" msprop:Generator_UserTableName="Competitor" msprop:Generator_RowDeletedName="CompetitorRowDeleted" msprop:Generator_RowChangedName="CompetitorRowChanged" msprop:Generator_RowClassName="CompetitorRow" msprop:Generator_RowChangingName="CompetitorRowChanging" msprop:Generator_RowEvArgName="CompetitorRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorDataTable" msprop:Generator_TableVarName="tableCompetitor" msprop:Generator_RowDeletingName="CompetitorRowDeleting" msprop:Generator_TablePropName="Competitor">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorID" msprop:Generator_ColumnVarNameInTable="columnCompetitorID" msprop:Generator_ColumnPropNameInRow="CompetitorID" msprop:Generator_ColumnPropNameInTable="CompetitorIDColumn" type="xs:int" />
+              <xs:element name="Name" msprop:Generator_UserColumnName="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompetitorLocation" msprop:Generator_UserTableName="CompetitorLocation" msprop:Generator_RowDeletedName="CompetitorLocationRowDeleted" msprop:Generator_RowChangedName="CompetitorLocationRowChanged" msprop:Generator_RowClassName="CompetitorLocationRow" msprop:Generator_RowChangingName="CompetitorLocationRowChanging" msprop:Generator_RowEvArgName="CompetitorLocationRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorLocationRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorLocationDataTable" msprop:Generator_TableVarName="tableCompetitorLocation" msprop:Generator_RowDeletingName="CompetitorLocationRowDeleting" msprop:Generator_TablePropName="CompetitorLocation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorLocationID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorLocationID" msprop:Generator_ColumnVarNameInTable="columnCompetitorLocationID" msprop:Generator_ColumnPropNameInRow="CompetitorLocationID" msprop:Generator_ColumnPropNameInTable="CompetitorLocationIDColumn" type="xs:int" />
+              <xs:element name="Name" msprop:Generator_UserColumnName="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompetitorStore" msprop:Generator_UserTableName="CompetitorStore" msprop:Generator_RowDeletedName="CompetitorStoreRowDeleted" msprop:Generator_RowChangedName="CompetitorStoreRowChanged" msprop:Generator_RowClassName="CompetitorStoreRow" msprop:Generator_RowChangingName="CompetitorStoreRowChanging" msprop:Generator_RowEvArgName="CompetitorStoreRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorStoreRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorStoreDataTable" msprop:Generator_TableVarName="tableCompetitorStore" msprop:Generator_RowDeletingName="CompetitorStoreRowDeleting" msprop:Generator_TablePropName="CompetitorStore">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorStoreID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorStoreID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIDColumn" type="xs:int" />
+              <xs:element name="CompetitorID" msprop:Generator_UserColumnName="CompetitorID" msprop:Generator_ColumnVarNameInTable="columnCompetitorID" msprop:Generator_ColumnPropNameInRow="CompetitorID" msprop:Generator_ColumnPropNameInTable="CompetitorIDColumn" type="xs:int" />
+              <xs:element name="CompetitorLocationID" msprop:Generator_UserColumnName="CompetitorLocationID" msprop:Generator_ColumnVarNameInTable="columnCompetitorLocationID" msprop:Generator_ColumnPropNameInRow="CompetitorLocationID" msprop:Generator_ColumnPropNameInTable="CompetitorLocationIDColumn" type="xs:int" />
+              <xs:element name="Name" msprop:Generator_UserColumnName="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="UpdateUserID" msprop:Generator_UserColumnName="UpdateUserID" msprop:Generator_ColumnVarNameInTable="columnUpdateUserID" msprop:Generator_ColumnPropNameInRow="UpdateUserID" msprop:Generator_ColumnPropNameInTable="UpdateUserIDColumn" type="xs:int" />
+              <xs:element name="UpdateDateTime" msprop:Generator_UserColumnName="UpdateDateTime" msprop:Generator_ColumnVarNameInTable="columnUpdateDateTime" msprop:Generator_ColumnPropNameInRow="UpdateDateTime" msprop:Generator_ColumnPropNameInTable="UpdateDateTimeColumn" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompetitorStoreIdentifier" msprop:Generator_UserTableName="CompetitorStoreIdentifier" msprop:Generator_RowDeletedName="CompetitorStoreIdentifierRowDeleted" msprop:Generator_RowChangedName="CompetitorStoreIdentifierRowChanged" msprop:Generator_RowClassName="CompetitorStoreIdentifierRow" msprop:Generator_RowChangingName="CompetitorStoreIdentifierRowChanging" msprop:Generator_RowEvArgName="CompetitorStoreIdentifierRowChangeEvent" msprop:Generator_RowEvHandlerName="CompetitorStoreIdentifierRowChangeEventHandler" msprop:Generator_TableClassName="CompetitorStoreIdentifierDataTable" msprop:Generator_TableVarName="tableCompetitorStoreIdentifier" msprop:Generator_RowDeletingName="CompetitorStoreIdentifierRowDeleting" msprop:Generator_TablePropName="CompetitorStoreIdentifier">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompetitorStoreIdentifierID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="CompetitorStoreIdentifierID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreIdentifierID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreIdentifierID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIdentifierIDColumn" type="xs:int" />
+              <xs:element name="CompetitorStoreID" msprop:Generator_UserColumnName="CompetitorStoreID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIDColumn" type="xs:int" />
+              <xs:element name="Identifier" msprop:Generator_UserColumnName="Identifier" msprop:Generator_ColumnVarNameInTable="columnIdentifier" msprop:Generator_ColumnPropNameInRow="Identifier" msprop:Generator_ColumnPropNameInTable="IdentifierColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="StoreCompetitorStore" msprop:Generator_UserTableName="StoreCompetitorStore" msprop:Generator_RowDeletedName="StoreCompetitorStoreRowDeleted" msprop:Generator_RowChangedName="StoreCompetitorStoreRowChanged" msprop:Generator_RowClassName="StoreCompetitorStoreRow" msprop:Generator_RowChangingName="StoreCompetitorStoreRowChanging" msprop:Generator_RowEvArgName="StoreCompetitorStoreRowChangeEvent" msprop:Generator_RowEvHandlerName="StoreCompetitorStoreRowChangeEventHandler" msprop:Generator_TableClassName="StoreCompetitorStoreDataTable" msprop:Generator_TableVarName="tableStoreCompetitorStore" msprop:Generator_RowDeletingName="StoreCompetitorStoreRowDeleting" msprop:Generator_TablePropName="StoreCompetitorStore">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Store_No" msprop:Generator_UserColumnName="Store_No" msprop:Generator_ColumnVarNameInTable="columnStore_No" msprop:Generator_ColumnPropNameInRow="Store_No" msprop:Generator_ColumnPropNameInTable="Store_NoColumn" type="xs:int" />
+              <xs:element name="CompetitorStoreID" msprop:Generator_UserColumnName="CompetitorStoreID" msprop:Generator_ColumnVarNameInTable="columnCompetitorStoreID" msprop:Generator_ColumnPropNameInRow="CompetitorStoreID" msprop:Generator_ColumnPropNameInTable="CompetitorStoreIDColumn" type="xs:int" />
+              <xs:element name="Priority" msprop:Generator_UserColumnName="Priority" msprop:Generator_ColumnVarNameInTable="columnPriority" msprop:Generator_ColumnPropNameInRow="Priority" msprop:Generator_ColumnPropNameInTable="PriorityColumn" type="xs:unsignedByte" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ItemUnit" msprop:Generator_UserTableName="ItemUnit" msprop:Generator_RowDeletedName="ItemUnitRowDeleted" msprop:Generator_RowChangedName="ItemUnitRowChanged" msprop:Generator_RowClassName="ItemUnitRow" msprop:Generator_RowChangingName="ItemUnitRowChanging" msprop:Generator_RowEvArgName="ItemUnitRowChangeEvent" msprop:Generator_RowEvHandlerName="ItemUnitRowChangeEventHandler" msprop:Generator_TableClassName="ItemUnitDataTable" msprop:Generator_TableVarName="tableItemUnit" msprop:Generator_RowDeletingName="ItemUnitRowDeleting" msprop:Generator_TablePropName="ItemUnit">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Unit_ID" msprop:Generator_UserColumnName="Unit_ID" msprop:Generator_ColumnVarNameInTable="columnUnit_ID" msprop:Generator_ColumnPropNameInRow="Unit_ID" msprop:Generator_ColumnPropNameInTable="Unit_IDColumn" type="xs:int" />
+              <xs:element name="Unit_Name" msprop:Generator_UserColumnName="Unit_Name" msprop:Generator_ColumnVarNameInTable="columnUnit_Name" msprop:Generator_ColumnPropNameInRow="Unit_Name" msprop:Generator_ColumnPropNameInTable="Unit_NameColumn" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorImportInfo" />
+      <xs:field xpath="mstns:CompetitorImportInfoID" />
+    </xs:unique>
+    <xs:unique name="CompetitorPriceKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorPrice" />
+      <xs:field xpath="mstns:CompetitorPriceID" />
+    </xs:unique>
+    <xs:unique name="CompetitorImportSession_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorImportSession" />
+      <xs:field xpath="mstns:CompetitorImportSessionID" />
+    </xs:unique>
+    <xs:unique name="FiscalWeek_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:FiscalWeek" />
+      <xs:field xpath="mstns:FiscalYear" />
+      <xs:field xpath="mstns:FiscalPeriod" />
+      <xs:field xpath="mstns:PeriodWeek" />
+    </xs:unique>
+    <xs:unique name="Competitor_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Competitor" />
+      <xs:field xpath="mstns:CompetitorID" />
+    </xs:unique>
+    <xs:unique name="CompetitorLocation_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorLocation" />
+      <xs:field xpath="mstns:CompetitorLocationID" />
+    </xs:unique>
+    <xs:unique name="CompetitorStore_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorStore" />
+      <xs:field xpath="mstns:CompetitorStoreID" />
+    </xs:unique>
+    <xs:unique name="CompetitorStoreIdentifier_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:CompetitorStoreIdentifier" />
+      <xs:field xpath="mstns:CompetitorStoreIdentifierID" />
+    </xs:unique>
+    <xs:unique name="UX_CompetitorStoreIdentifier">
+      <xs:selector xpath=".//mstns:CompetitorStoreIdentifier" />
+      <xs:field xpath="mstns:CompetitorStoreID" />
+      <xs:field xpath="mstns:Identifier" />
+    </xs:unique>
+    <xs:unique name="PK_StoreCompetitorStore" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:StoreCompetitorStore" />
+      <xs:field xpath="mstns:Store_No" />
+      <xs:field xpath="mstns:CompetitorStoreID" />
+    </xs:unique>
+    <xs:unique name="ItemUnit_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:ItemUnit" />
+      <xs:field xpath="mstns:Unit_ID" />
+    </xs:unique>
+    <xs:keyref name="FK_CompetitorStore_StoreCompetitorStore" refer="CompetitorStore_Constraint1" msprop:rel_Generator_UserRelationName="FK_CompetitorStore_StoreCompetitorStore" msprop:rel_Generator_RelationVarName="relationFK_CompetitorStore_StoreCompetitorStore" msprop:rel_Generator_UserChildTable="StoreCompetitorStore" msprop:rel_Generator_UserParentTable="CompetitorStore" msprop:rel_Generator_ParentPropName="CompetitorStoreRow" msprop:rel_Generator_ChildPropName="GetStoreCompetitorStoreRows">
+      <xs:selector xpath=".//mstns:StoreCompetitorStore" />
+      <xs:field xpath="mstns:CompetitorStoreID" />
+    </xs:keyref>
+    <xs:keyref name="FK_FiscalWeek_CompetitorPrice" refer="FiscalWeek_Constraint1" msprop:rel_Generator_UserRelationName="FK_FiscalWeek_CompetitorPrice" msprop:rel_Generator_RelationVarName="relationFK_FiscalWeek_CompetitorPrice" msprop:rel_Generator_UserChildTable="CompetitorPrice" msprop:rel_Generator_UserParentTable="FiscalWeek" msprop:rel_Generator_ParentPropName="FiscalWeekRowParent" msprop:rel_Generator_ChildPropName="GetCompetitorPriceRows" msdata:UpdateRule="None" msdata:DeleteRule="None">
+      <xs:selector xpath=".//mstns:CompetitorPrice" />
+      <xs:field xpath="mstns:FiscalYear" />
+      <xs:field xpath="mstns:FiscalPeriod" />
+      <xs:field xpath="mstns:PeriodWeek" />
+    </xs:keyref>
+    <xs:keyref name="FK_ItemUnit_CompetitorPrice" refer="ItemUnit_Constraint1" msprop:rel_Generator_UserRelationName="FK_ItemUnit_CompetitorPrice" msprop:rel_Generator_RelationVarName="relationFK_ItemUnit_CompetitorPrice" msprop:rel_Generator_UserChildTable="CompetitorPrice" msprop:rel_Generator_UserParentTable="ItemUnit" msprop:rel_Generator_ParentPropName="ItemUnitRow" msprop:rel_Generator_ChildPropName="GetCompetitorPriceRows">
+      <xs:selector xpath=".//mstns:CompetitorPrice" />
+      <xs:field xpath="mstns:Unit_ID" />
+    </xs:keyref>
+    <xs:keyref name="FK_CompetitorImportSession_CompetitorImportInfo" refer="CompetitorImportSession_Constraint1" msprop:rel_Generator_UserRelationName="FK_CompetitorImportSession_CompetitorImportInfo" msprop:rel_Generator_RelationVarName="relationFK_CompetitorImportSession_CompetitorImportInfo" msprop:rel_Generator_UserChildTable="CompetitorImportInfo" msprop:rel_Generator_UserParentTable="CompetitorImportSession" msprop:rel_Generator_ParentPropName="CompetitorImportSessionRow" msprop:rel_Generator_ChildPropName="GetCompetitorImportInfoRows">
+      <xs:selector xpath=".//mstns:CompetitorImportInfo" />
+      <xs:field xpath="mstns:CompetitorImportSessionID" />
+    </xs:keyref>
+    <xs:keyref name="FK_FiscalWeek_CompetitorImportInfo" refer="FiscalWeek_Constraint1" msprop:rel_Generator_UserRelationName="FK_FiscalWeek_CompetitorImportInfo" msprop:rel_Generator_RelationVarName="relationFK_FiscalWeek_CompetitorImportInfo" msprop:rel_Generator_UserChildTable="CompetitorImportInfo" msprop:rel_Generator_UserParentTable="FiscalWeek" msprop:rel_Generator_ParentPropName="FiscalWeekRowParent" msprop:rel_Generator_ChildPropName="GetCompetitorImportInfoRows">
+      <xs:selector xpath=".//mstns:CompetitorImportInfo" />
+      <xs:field xpath="mstns:FiscalYear" />
+      <xs:field xpath="mstns:FiscalPeriod" />
+      <xs:field xpath="mstns:PeriodWeek" />
+    </xs:keyref>
+    <xs:keyref name="FK_CompetitorImportInfo_ItemUnit" refer="ItemUnit_Constraint1" msprop:rel_Generator_UserRelationName="FK_CompetitorImportInfo_ItemUnit" msprop:rel_Generator_RelationVarName="relationFK_CompetitorImportInfo_ItemUnit" msprop:rel_Generator_UserChildTable="CompetitorImportInfo" msprop:rel_Generator_UserParentTable="ItemUnit" msprop:rel_Generator_ParentPropName="ItemUnitRow" msprop:rel_Generator_ChildPropName="GetCompetitorImportInfoRows">
+      <xs:selector xpath=".//mstns:CompetitorImportInfo" />
+      <xs:field xpath="mstns:Unit_ID" />
+    </xs:keyref>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="FK_CompetitorStore_Competitor" msdata:parent="Competitor" msdata:child="CompetitorStore" msdata:parentkey="CompetitorID" msdata:childkey="CompetitorID" msprop:Generator_UserRelationName="FK_CompetitorStore_Competitor" msprop:Generator_RelationVarName="relationFK_CompetitorStore_Competitor" msprop:Generator_UserChildTable="CompetitorStore" msprop:Generator_UserParentTable="Competitor" msprop:Generator_ParentPropName="CompetitorRow" msprop:Generator_ChildPropName="GetCompetitorStoreRows" />
+      <msdata:Relationship name="FK_CompetitorStore_CompetitorLocation" msdata:parent="CompetitorLocation" msdata:child="CompetitorStore" msdata:parentkey="CompetitorLocationID" msdata:childkey="CompetitorLocationID" msprop:Generator_UserRelationName="FK_CompetitorStore_CompetitorLocation" msprop:Generator_RelationVarName="relationFK_CompetitorStore_CompetitorLocation" msprop:Generator_UserChildTable="CompetitorStore" msprop:Generator_UserParentTable="CompetitorLocation" msprop:Generator_ParentPropName="CompetitorLocationRow" msprop:Generator_ChildPropName="GetCompetitorStoreRows" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

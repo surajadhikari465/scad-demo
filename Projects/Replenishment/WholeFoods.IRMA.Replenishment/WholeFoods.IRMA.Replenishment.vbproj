@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6A82DE21-636D-4D61-AABF-57E3DCBB6626}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>WholeFoods.IRMA.Replenishment</AssemblyName>
+    <MyType>Windows</MyType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <OptionStrict>On</OptionStrict>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>WholeFoods.IRMA.Replenishment.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>WholeFoods.IRMA.Replenishment.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>WholeFoods.IRMA.Replenishment.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>
+    </CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>WholeFoods.IRMA.Replenishment.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>
+    </CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AxInterop.MSWinsockLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\AxInterop.MSWinsockLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Shared.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics2.Shared.v9.2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics2.Win.UltraWinGrid.v9.2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Infragistics2.Win.v9.2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Interop.OSPOP3, Version=15.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Interop.OSPOP3.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.VBA, Version=6.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Interop.VBA.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Libraries\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.Compatibility" />
+    <Reference Include="office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Libraries\office.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeOnlyDo.Client.SSH, Version=2.2.6.71, Culture=neutral, PublicKeyToken=72e5267712baa5fd">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\WeOnlyDo.Client.SSH.dll</HintPath>
+    </Reference>
+    <Reference Include="WeOnlyDo.Security.Cryptography.KeyManager, Version=1.0.3.14, Culture=neutral, PublicKeyToken=900ddd6a51580424">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\WeOnlyDo.Security.Cryptography.KeyManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AverageCostUpdate\DataAccess\AverageCostUpdateDAO.vb" />
+    <Compile Include="CloseReceiving\DataAccess\CloseReceivingDAO.vb" />
+    <Compile Include="Common\BusinessLogic\JobErrorBO.vb" />
+    <Compile Include="Common\BusinessLogic\FileCreationComparerBO.vb" />
+    <Compile Include="Common\BusinessLogic\FileNameComparerBO.vb" />
+    <Compile Include="Common\BusinessLogic\InstanceDataBO.vb" />
+    <Compile Include="Common\BusinessLogic\InstanceDataFlagsBO.vb" />
+    <Compile Include="Common\BusinessLogic\JobStatusBO.vb" />
+    <Compile Include="Common\BusinessLogic\PricingMethodsBO.vb" />
+    <Compile Include="Common\BusinessLogic\ScheduledJobBO.vb" />
+    <Compile Include="Common\BusinessLogic\StoreFTPConfigBO.vb" />
+    <Compile Include="Common\DataAccess\StaticStoreFTPConfigDAO.vb" />
+    <Compile Include="Common\DataAccess\InstanceDataDAO.vb" />
+    <Compile Include="Common\DataAccess\JobStatusDAO.vb" />
+    <Compile Include="Common\DataAccess\PricingMethodsDAO.vb" />
+    <Compile Include="Common\DataAccess\StoreFTPConfigDAO.vb" />
+    <Compile Include="Common\PagerDuty\PagerDutyUtility.vb" />
+    <Compile Include="Common\Writers\ChangeType.vb" />
+    <Compile Include="Common\Writers\Constants.vb" />
+    <Compile Include="Common\Writers\TransferWriterFiles.vb" />
+    <Compile Include="Common\Writers\BaseWriter.vb" />
+    <Compile Include="EInvoicing\BusinessLogic\EInvoicingBO.vb" />
+    <Compile Include="EInvoicing\BusinessLogic\EinvoicingSearchBO.vb" />
+    <Compile Include="EInvoicing\BusinessLogic\EInvoicing_CurrentInvoice.vb" />
+    <Compile Include="EInvoicing\BusinessLogic\EInvoicing_HeaderBO.vb" />
+    <Compile Include="EInvoicing\BusinessLogic\EInvoicing_InvoiceBO.vb" />
+    <Compile Include="EInvoicing\DataAccess\EInvoicingDAO.vb" />
+    <Compile Include="EInvoicing\DataAccess\EInvoicing_HeaderDAO.vb" />
+    <Compile Include="EInvoicing\DataAccess\EInvoicing_InvoiceDAO.vb" />
+    <Compile Include="EST\BusinessLogic\ESTBO.vb" />
+    <Compile Include="EST\DataAccess\ESTDAO.vb" />
+    <Compile Include="Exception\ScheduledJobStateTransitionException.vb" />
+    <Compile Include="HART\BusinessLogic\HARTBO.vb" />
+    <Compile Include="HART\DataAccess\HARTDAO.vb" />
+    <Compile Include="Jobs\AverageCostUpdateJob.vb" />
+    <Compile Include="Jobs\CheckSendOrderStatusJob.vb" />
+    <Compile Include="Jobs\CloseReceivingJob.vb" />
+    <Compile Include="Jobs\BuildStoreESTFileJob.vb" />
+    <Compile Include="Jobs\PeopleSoftTransferUploadJob.vb" />
+    <Compile Include="Jobs\EInvoicingJob.vb" />
+    <Compile Include="Jobs\ESTImportJob.vb" />
+    <Compile Include="Jobs\HARTExportJob.vb" />
+    <Compile Include="Jobs\HARTExportLoadJob.vb" />
+    <Compile Include="Jobs\HARTExportTransferJob.vb" />
+    <Compile Include="Jobs\HARTImportJob.vb" />
+    <Compile Include="Jobs\PeopleSoftUploadJob.vb" />
+    <Compile Include="Jobs\BuildStoreScaleFileJob.vb" />
+    <Compile Include="Jobs\PlumHostImportJob.vb" />
+    <Compile Include="Jobs\PlumStoreExtractJob.vb" />
+    <Compile Include="Jobs\POSAuditReport.vb" />
+    <Compile Include="Jobs\POSPullJob.vb" />
+    <Compile Include="Jobs\ScalePushJob.vb" />
+    <Compile Include="Jobs\ScheduledJob.vb" />
+    <Compile Include="Jobs\SendOrdersJob.vb" />
+    <Compile Include="Jobs\TLogJob.vb" />
+    <Compile Include="PeopleSoftUpload\BusinessLogic\GLBO.vb" />
+    <Compile Include="PeopleSoftUpload\DataAccess\GLDAO.vb" />
+    <Compile Include="PeopleSoftUpload\BusinessLogic\PeopleSoftUploadBO.vb" />
+    <Compile Include="PeopleSoftUpload\DataAccess\PeopleSoftUploadDAO.vb" />
+    <Compile Include="POSPull\BusinessLogic\POSPullBO.vb" />
+    <Compile Include="POSPull\BusinessLogic\POSItemBO.vb" />
+    <Compile Include="POSPull\DataAccess\POSPullDAO.vb" />
+    <Compile Include="POSPush\BusinessLogic\POSBatchFooterBO.vb" />
+    <Compile Include="POSPush\BusinessLogic\POSBatchHeaderBO.vb" />
+    <Compile Include="POSPush\BusinessLogic\POSWriterDictionaryBO.vb" />
+    <Compile Include="POSPush\Controller\POSBatchStoresProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSItemRefreshProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSPromoOfferProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSItemDataChangeProcessor.vb" />
+    <Compile Include="POSPush\BusinessLogic\TaxFlagBO.vb" />
+    <Compile Include="POSPush\Controller\POSTaxFlagsProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSVendorIdAddsProcessor.vb" />
+    <Compile Include="POSPush\DataAccess\HealthCheckDAO.vb" />
+    <Compile Include="POSPush\DataAccess\POSWriterDAO.vb" />
+    <Compile Include="POSPush\DataAccess\StorePOSConfigDAO.vb" />
+    <Compile Include="POSPush\Writers\Components\IBMProcessStart.Designer.vb">
+      <DependentUpon>IBMProcessStart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="POSPush\Writers\Components\IBMProcessStart.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POSPush\Writers\IBM_ADDMI_Writer.vb" />
+    <Compile Include="POSPush\Writers\IBM_Writer.vb" />
+    <Compile Include="POSPush\Writers\PIRUS_Writer.vb" />
+    <Compile Include="POSPush\Writers\FX_RBXWriter.vb" />
+    <Compile Include="POSPush\Controller\POSItemDeletesProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSItemIdAddsProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSItemIdDeletesProcessor.vb" />
+    <Compile Include="POSPush\Controller\POSProcessor.vb" />
+    <Compile Include="POSPush\Writers\POSWriter.vb" />
+    <Compile Include="POSPush\BusinessLogic\POSDataElementBO.vb" />
+    <Compile Include="POSPush\BusinessLogic\StoreUpdatesBO.vb" />
+    <Compile Include="POSPush\POSException\POSWriterException.vb" />
+    <Compile Include="POSPush\POSException\POSStoreUpdateInitializationException.vb" />
+    <Compile Include="Jobs\POSPushJob.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="POSPush\Writers\SILWriter.vb" />
+    <Compile Include="POSPush\Writers\StoreLine_POS.vb" />
+    <Compile Include="ScalePush\Controller\NutriFactsProcessor.vb" />
+    <Compile Include="ScalePush\Controller\ScaleExtraTextProcessor.vb" />
+    <Compile Include="ScalePush\Controller\CorpScaleItemDataChangeProcessor.vb" />
+    <Compile Include="ScalePush\Controller\CorpScaleItemIdAddsProcessor.vb" />
+    <Compile Include="ScalePush\Controller\CorpScaleItemIdDeletesProcessor.vb" />
+    <Compile Include="ScalePush\Controller\ScaleProcessor.vb" />
+    <Compile Include="ScalePush\Controller\ZoneScaleItemDeleteProcessor.vb" />
+    <Compile Include="ScalePush\Controller\ZoneScalePriceChangeProcessor.vb" />
+    <Compile Include="ScalePush\DataAccess\PLUMCorpChgDAO.vb" />
+    <Compile Include="ScalePush\DataAccess\ScaleWriterDAO.vb" />
+    <Compile Include="ScalePush\DataAccess\StoreScaleConfigDAO.vb" />
+    <Compile Include="ScalePush\ScaleException\ScaleStoreUpdateInitializationException.vb" />
+    <Compile Include="ScalePush\ScaleException\ScaleWriterException.vb" />
+    <Compile Include="ScalePush\Writers\SmartX_Writer.vb" />
+    <Compile Include="ScalePush\Writers\EPlum_Writer.vb" />
+    <Compile Include="ScalePush\Writers\PlumHost_CorporateWriter.vb" />
+    <Compile Include="ScalePush\Writers\PlumStore_Writer.vb" />
+    <Compile Include="ScalePush\Writers\ScaleWriter.vb" />
+    <Compile Include="ScalePush\Writers\PlumHost_ZoneWriter.vb" />
+    <Compile Include="SendOrders\BusinessLogic\POHeaderBO.vb" />
+    <Compile Include="SendOrders\BusinessLogic\SendOrdersBO.vb" />
+    <Compile Include="SendOrders\DataAccess\SendOrdersDAO.vb" />
+    <Compile Include="TagPush\BusinessLogic\ShelfTagBO.vb" />
+    <Compile Include="TagPush\BusinessLogic\TagDataElementBO.vb" />
+    <Compile Include="TagPush\BusinessLogic\TagWriterDictionaryBO.vb" />
+    <Compile Include="TagPush\Controller\TagPriceBatchProcessor.vb" />
+    <Compile Include="TagPush\Controller\TagProcessor.vb" />
+    <Compile Include="TagPush\DataAccess\TagWriterDAO.vb" />
+    <Compile Include="TagPush\TagException\TagWriterException.vb" />
+    <Compile Include="TagPush\Writers\ElectronicShelfTagWriter.vb" />
+    <Compile Include="TagPush\Writers\FileMakerPro_Writer.vb" />
+    <Compile Include="TagPush\Writers\FX_RBXTagWriter.vb" />
+    <Compile Include="TagPush\Writers\PrintLab_ExemptTagWriter.vb" />
+    <Compile Include="TagPush\Writers\PrintLab_Writer.vb" />
+    <Compile Include="TagPush\Writers\TagWriter.vb" />
+    <Compile Include="TLog\BusinessLogic\TlogLoginInfo.vb" />
+    <Compile Include="TLog\BusinessLogic\TlogStoreInfo.vb" />
+    <Compile Include="TLog\FL\FLParser.vb" />
+    <Compile Include="TLog\TlogParserInterface.vb" />
+    <Compile Include="TLog\UK\DiscountItem.vb" />
+    <Compile Include="TLog\UK\OfferItem.vb" />
+    <Compile Include="TLog\UK\Parser.vb" />
+    <Compile Include="TLog\UK\PaymentItem.vb" />
+    <Compile Include="TLog\UK\Transaction.vb" />
+    <Compile Include="TLog\UK\TransactionItem.vb" />
+    <Compile Include="TLog\UK\VoidItem.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POSPush\Writers\Components\IBMProcessStart.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>IBMProcessStart.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+      <SubType>
+      </SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Wholefoods.IRMA.FaxLog\Wholefoods.IRMA.FaxLog\WholeFoods.IRMA.FaxLog.vbproj">
+      <Project>{6F732051-5D10-4E07-9388-6AAC3E63A52A}</Project>
+      <Name>WholeFoods.IRMA.FaxLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\WholeFoods.Utility.vbproj">
+      <Project>{83E129BF-0B0A-4816-8573-639F794299FA}</Project>
+      <Name>WholeFoods.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ItemCatalogLib\ItemCatalogLib.vbproj">
+      <Project>{3374040D-5A0F-412A-A32A-E70B90339F94}</Project>
+      <Name>ItemCatalogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PagerDutyLib\PagerDutyLib\PagerDutyLib.csproj">
+      <Project>{d2f2e337-45a4-4406-8e87-db87880eb919}</Project>
+      <Name>PagerDutyLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PLUMScale\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PeopleSoftTransferUpload.sln" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

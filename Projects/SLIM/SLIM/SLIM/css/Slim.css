@@ -1,0 +1,12 @@
+﻿body 
+{
+	font-family: Tahoma; font-size: 12px;
+}
+.SlimTable 
+{ 
+	border: 1px solid black; 
+}
+.SlimTable .header 
+{ 
+	font-family: tahoma; font-size: 12px; background-color: #004000; color: white; font-weight: bold; 
+}

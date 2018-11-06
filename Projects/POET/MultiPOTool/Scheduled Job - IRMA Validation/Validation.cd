@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Microsoft Sans Serif" Size="8.25" />
+  <Class Name="Scheduled_Job___IRMA_Validation.BOValidateByRegion">
+    <Position X="2.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>BusinessObjects\BOValidateByRegion.vb</FileName>
+      <HashCode>ABAAAAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scheduled_Job___IRMA_Validation.DAOValidateByRegion">
+    <Position X="4.75" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>DataAccess\DAOValidateByRegion.vb</FileName>
+      <HashCode>AAAAIAAQAAEAAABAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scheduled_Job___IRMA_Validation.Email">
+    <Position X="2.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>Email.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Module Name="Scheduled_Job___IRMA_Validation.Validation">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Validation.vb</FileName>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+</ClassDiagram>
