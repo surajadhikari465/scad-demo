@@ -66,6 +66,7 @@
     <Folder Include="Scripts\PostDeploymentScripts" />
     <Folder Include="Scripts\Templates" />
     <Folder Include="Jobs" />
+    <Folder Include="dbo\User Defined Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -94,6 +95,8 @@
     <Build Include="dbo\Stored Procedures\PurgeData.sql" />
     <None Include="Jobs\Kitbuilder_LoadHospitalityItems.sql" />
     <None Include="Jobs\KitBuilder_LoadLocaleDataFromIcon.sql" />
+    <Build Include="dbo\Stored Procedures\ItemAddOrUpdate.sql" />
+    <Build Include="dbo\User Defined Types\ItemAddOrUpdateType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />

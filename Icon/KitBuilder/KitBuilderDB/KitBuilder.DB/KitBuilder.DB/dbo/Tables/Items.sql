@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Items] (
-    [ItemId]               INT            NOT NULL,
+	[ItemId]               INT            NOT NULL,
     [ScanCode]             NVARCHAR (13)  NOT NULL,
     [ProductDesc]          NVARCHAR (255) NULL,
     [CustomerFriendlyDesc] NVARCHAR (255) NULL,
@@ -10,7 +10,3 @@
     [LastUpdatedDateUtc]   DATETIME2 (7)  NULL,
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemId] ASC)
 );
-
-
-
-
