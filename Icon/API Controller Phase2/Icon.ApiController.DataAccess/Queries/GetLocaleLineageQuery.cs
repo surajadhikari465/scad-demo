@@ -110,7 +110,6 @@ namespace Icon.ApiController.DataAccess.Queries
 
                         foreach (var store in stores)
                         {
-							// venue add cheyali
 							regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
                         }
                     }
