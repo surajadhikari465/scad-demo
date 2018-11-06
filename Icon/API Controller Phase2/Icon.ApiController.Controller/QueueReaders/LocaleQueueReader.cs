@@ -321,7 +321,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						{
 							new Contracts.TraitValueType
 							{
-								value = localeLineage.VenueOccupant,
+								value = "", // Venue Occopant has to be added into the MessageQueueLocale Table from the UI.(Table Schema has to be updated)
 							}
 						}
 					}
