@@ -17,7 +17,7 @@ echo on ########################################################################
 echo on ### PRE VERIFICATION                                                         ###
 echo on ################################################################################
 
-show bridges WFMSB1.Mammoth.*
+show bridge WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1
 
 echo on #######################################################################
 echo on ### DELETE BRIDGE                                                   ###
@@ -30,6 +30,6 @@ echo on ########################################################################
 echo on ### POST-SHOW                                                                ###
 echo on ################################################################################
 
-show bridges WFMSB1.Mammoth.*
+show bridge WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1
 
 commit
