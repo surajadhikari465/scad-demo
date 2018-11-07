@@ -188,5 +188,6 @@ namespace Icon.Framework
         public const string Tsf365Eligible = "TSE";
         public const string WfmEligilble = "WFE";
         public const string Other3pEligible = "OTE";
+        public const string VenueSubType = "VST";
 	}
 }
