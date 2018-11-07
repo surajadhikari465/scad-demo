@@ -46,6 +46,11 @@ namespace Icon.ApiController.DataAccess.Queries
                             localeLineage = BuildLineageFromStore(context, parameters.LocaleId);
                             break;
                         }
+					case (LocaleTypes.Venue):
+						{
+							localeLineage = BuildLineageFromVenue(context, parameters.LocaleId);
+							break;
+						}
                     default:
                         {
                             throw new ArgumentException("An invalid LocaleTypeId was provided to GetLocaleLineageQuery.");
@@ -105,7 +110,7 @@ namespace Icon.ApiController.DataAccess.Queries
 
                         foreach (var store in stores)
                         {
-                            regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
+							regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
                         }
                     }
                 }
@@ -250,7 +255,63 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
-        private List<LocaleLineageModel> BuildStoreDescendantLocales(IconContext context, Locale metro)
+		private LocaleLineageModel BuildLineageFromVenue(IconContext context, int localeId)
+		{
+			var venue = context.Locale
+				.Include(l => l.LocaleTrait.Select(lt => lt.Trait))
+				.Single(l => l.localeID == localeId);
+
+			var store = venue.Locale2;
+			var metro = store.Locale2;
+			var region = metro.Locale2;
+			var chain = region.Locale2;
+
+			var localeLineage = new LocaleLineageModel// chain
+			{
+				LocaleId = chain.localeID,
+				LocaleName = chain.localeName,
+				DescendantLocales = new List<LocaleLineageModel>
+				{
+					new LocaleLineageModel// region
+					{
+						LocaleId = region.localeID,
+						LocaleName = region.localeName,
+						DescendantLocales = new List<LocaleLineageModel>
+						{
+							new LocaleLineageModel// metro
+							{
+								LocaleId = metro.localeID,
+								LocaleName = metro.localeName,
+								DescendantLocales = new List<LocaleLineageModel>
+								{
+									new LocaleLineageModel//store
+									{
+										LocaleId = store.localeID,
+										LocaleName = store.localeName,
+										DescendantLocales = new List<LocaleLineageModel>
+										{
+											new LocaleLineageModel// venue
+											{
+												LocaleId = venue.localeID,
+												LocaleName = venue.localeName,
+												LocaleOpenDate = venue.localeOpenDate,
+												LocaleCloseDate = venue.localeCloseDate,
+												VenueCode = venue.localeID.ToString(),
+												VenueOccupant = venue.localeName
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			};
+
+			return localeLineage;
+		}
+		
+		private List<LocaleLineageModel> BuildStoreDescendantLocales(IconContext context, Locale metro)
         {
             if (context.Locale.Any(l => l.parentLocaleID == metro.localeID))
             {
@@ -298,5 +359,5 @@ namespace Icon.ApiController.DataAccess.Queries
                 LocaleCloseDate = store.localeCloseDate
             };
         }
-    }
+	}
 }
