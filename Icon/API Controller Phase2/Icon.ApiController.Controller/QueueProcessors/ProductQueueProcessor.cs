@@ -174,15 +174,20 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
         private void SetMessageProperties()
         {
-            messageProperties = new Dictionary<string, string>();
-            messageProperties.Add("IconMessageID", String.Empty);
-            messageProperties.Add("Source", "Icon");
-			messageProperties.Add("TransactionType", "Global Item");
+          messageProperties = new Dictionary<string, string>
+          {
+            { "IconMessageID", String.Empty },
+            { "Source", "Icon" },
+            { "TransactionType", "Global Item" }
+          };
 
-			if (!String.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
-            {
-                messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
-            }
+          var nonNonReceiving = String.Format("{0},{1}", settings.NonReceivingSystemsAll, settings.NonReceivingSystemsProduct).Split(',')
+            .Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+          
+          if(nonNonReceiving.Any())
+          {
+            messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, String.Join(",", nonNonReceiving));
+          }
         }
 
         private void ProcessResponse(bool messageSent, MessageHistory message)

@@ -1,5 +1,4 @@
 ﻿using Icon.Common;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +15,8 @@ namespace Icon.ApiController.Common
         public string NonReceivingSystemsAll { get; set; }
         public string NonReceivingSystemsItemLocale { get; set; }
         public string NonReceivingSystemsPrice { get; set; }
+        public string NonReceivingSystemsProduct { get; set; }
+        public string NonReceivingSystemsHierarchy { get; set; }
         public bool EnableNationalHierarchy { get; set; }
 
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
@@ -31,6 +32,8 @@ namespace Icon.ApiController.Common
                 NonReceivingSystemsAll = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsAll", false),
                 NonReceivingSystemsItemLocale = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsItemLocale", false),
                 NonReceivingSystemsPrice = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsPrice", false),
+                NonReceivingSystemsProduct = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsProduct", false),
+                NonReceivingSystemsHierarchy = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsHierarchy", false),
                 EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy), false)
             };
         }

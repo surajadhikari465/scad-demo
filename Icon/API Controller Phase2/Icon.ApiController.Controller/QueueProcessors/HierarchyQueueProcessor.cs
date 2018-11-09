@@ -151,15 +151,20 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
         private void SetMessageProperties()
         {
-            messageProperties = new Dictionary<string, string>();
-            messageProperties.Add("IconMessageID", string.Empty);
-            messageProperties.Add("Source", "Icon");
-			messageProperties.Add("TransactionType", "Hierarchy");
+          messageProperties = new Dictionary<string, string>
+          {
+            { "IconMessageID", string.Empty },
+            { "Source", "Icon" },
+            { "TransactionType", "Hierarchy" }
+          };
 
-			if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsAll))
-            {
-                messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
-            }
+          var nonNonReceiving = String.Format("{0},{1}", settings.NonReceivingSystemsAll, settings.NonReceivingSystemsHierarchy).Split(',')
+            .Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+          
+          if(nonNonReceiving.Any())
+          {
+            messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, String.Join(",", nonNonReceiving));
+          }
         }
 
         private void ProcessResponse(bool messageSent, MessageHistory message, List<string> publishedHierarchyClassesByIdAsString, string hierarchyName)

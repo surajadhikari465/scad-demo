@@ -117,6 +117,8 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     }
                     break;
                 case MessageTypes.Product:
+                    PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsProduct);
+
                     //is the message for a non-retail product?
                     if (isMessageHistoryANonRetailProductMessageQueryHandler.Search(new IsMessageHistoryANonRetailProductMessageParameters { Message = message }))
                     {
@@ -124,8 +126,13 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                         PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, "R10");
                     }
                     break;
-                case MessageTypes.Locale:
                 case MessageTypes.Hierarchy:
+                  if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsHierarchy))
+                  {
+                    PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsHierarchy);
+                  }
+                    break;
+                case MessageTypes.Locale:
                 case MessageTypes.DepartmentSale:
                 case MessageTypes.CchTaxUpdate:
                 case MessageTypes.ProductSelectionGroup:
