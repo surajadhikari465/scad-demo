@@ -86,9 +86,10 @@ __DeployPropFileList__
 "
 
 function BuildHtmlListItems(
-    [string] $items
+    [string] $List,
+    [string] $Delim
 ){
-    $itemList = $items.Split("`n")
+    $itemList = $List.Split($Delim)
     $htm = ""
     foreach($item in $itemList){
         $htm += "<li>" + $item + "`n"
@@ -96,10 +97,13 @@ function BuildHtmlListItems(
     return $htm
 }
 
-$appListTxt = $relValuesInHash.TibcoAppsUpdated
-if(-not $appListTxt.tolower().Contains("none")){
+$tibcoAppsUpdated = $relValuesInHash.TibcoAppsUpdated
+$tibcoAppsUpdatedOL = "<ol style='font-family:Calibri'>" + (BuildHtmlListItems -List $tibcoAppsUpdated -Delim ",") + "</ol>"
+
+
+if(-not $tibcoAppsUpdated.tolower().Contains("none")){
     $propsListTxt = ""
-    $appList = $appListTxt.Split("`n")
+    $appList = $tibcoAppsUpdated.Split(",")
     foreach($app in $appList){
         $app = $app.trim()
         if($app -like "IrmaPriceListener"){
@@ -120,7 +124,7 @@ if(-not $appListTxt.tolower().Contains("none")){
     }
     $propsListTxt = $propsListTxt.trim()
 
-    $propsHtm = BuildHtmlListItems $propsListTxt # Remove any extra lines so we dont create empty HTML list-item tags.
+    $propsHtm = BuildHtmlListItems -List $propsListTxt -Delim "`n" # Remove any extra lines so we dont create empty HTML list-item tags.
     $propFilesHtm = ""
     if($targetEnv -like "QA"){
         $tibcoEnv = "QAF"
@@ -134,6 +138,8 @@ if(-not $appListTxt.tolower().Contains("none")){
     $propFilesHtm = "N/A"
 }
 
+# Additional replacements for var values that were generated herein.
+$relDocTxt = $relDocTxt.Replace("__TibcoAppsUpdatedOL__", $tibcoAppsUpdatedOL)
 $relDocTxt = $relDocTxt.Replace("__PropFilesListSection__", $propFilesHtm)
 
 ##################################################################################################################
@@ -142,6 +148,6 @@ $relDocTxt = $relDocTxt.Replace("__PropFilesListSection__", $propFilesHtm)
 Set-Content $relDoc -Value $relDocTxt
 $relDocFileObj = Get-ChildItem $relDoc
 $docDest = "\\irmaqaapp1\e$\inetpub\wwwroot\reldoc"
-Copy-Item $relDoc -Destination $docDest
+#Copy-Item $relDoc -Destination $docDest
 
 "URL --> " + "http://irmaqaapp1/reldoc/" + $relDocFileObj.name
