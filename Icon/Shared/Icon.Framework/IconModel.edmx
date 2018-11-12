@@ -222,7 +222,7 @@
           <Property Name="HierarchyParentClassId" Type="int" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
-          <Property Name="NationalClassCode" Type="nvarchar" MaxLength="255" Nullable="true" />
+          <Property Name="NationalClassCode" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueItemLocale">
           <Key>
@@ -301,6 +301,9 @@
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+          <Property Name="VenueCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="VenueOccopant" Type="nvarchar" MaxLength="255" />
+          <Property Name="VenueSubType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueNutrition">
           <Key>
@@ -6342,6 +6345,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageQueueLocale" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageQueueLocale" ToRole="MessageType" />
+          <Property Name="VenueCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VenueOccopant" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VenueSubType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_app_MessageQueueLocale_MessageHistory">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -7725,6 +7731,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueLocale">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueLocale">
               <MappingFragment StoreEntitySet="MessageQueueLocale">
+                <ScalarProperty Name="VenueSubType" ColumnName="VenueSubType" />
+                <ScalarProperty Name="VenueOccopant" ColumnName="VenueOccopant" />
+                <ScalarProperty Name="VenueCode" ColumnName="VenueCode" />
                 <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
                 <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
