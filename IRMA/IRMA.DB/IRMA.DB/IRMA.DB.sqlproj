@@ -3351,6 +3351,7 @@
     <Build Include="Schema\amz\StoredProcedures\LockPurchaseOrderEvents.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockTransferOrderEvents.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\CheckReceivingInProgress.sql" />
+    <Build Include="Schema\amz\StoredProcedures\LockInventoryMessages.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

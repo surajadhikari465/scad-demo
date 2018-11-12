@@ -10,3 +10,8 @@
 	[RETAIL_UOM] [varchar](25) NULL,
 	[RETAIL_PACK] [varchar](15) NULL
 ) ON [PRIMARY];
+
+GO
+
+GRANT ALTER, DELETE, INSERT ON [dbo].[VendorLaneExtract] TO [IRMAPDXExtractRole]
+Go

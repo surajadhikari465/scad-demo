@@ -71,22 +71,15 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Catch</pd:from>
-            <pd:to>Log Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Log Error</pd:from>
-            <pd:to>Update Queue Table With Mapping Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
             <pd:from>TransferOrderDataMapper</pd:from>
             <pd:to>Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Update Queue Table With Mapping Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -314,13 +307,6 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>CatchSendingToEsbException</pd:from>
-                <pd:to>Log Error Inside Group</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
                 <pd:from>Convert Message to JSON</pd:from>
                 <pd:to>Archive Message</pd:to>
                 <pd:lineType>Default</pd:lineType>
@@ -349,15 +335,15 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Log Error Inside Group</pd:from>
-                <pd:to>Convert-Message-to-JSON-1</pd:to>
+                <pd:from>Archive Message On Error</pd:from>
+                <pd:to>Update OrderQueue Table With Error</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Archive Message On Error</pd:from>
-                <pd:to>Update OrderQueue Table With Error</pd:to>
+                <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>Convert-Message-to-JSON-1</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -435,58 +421,12 @@
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
                 <pd:x>787</pd:x>
-                <pd:y>419</pd:y>
+                <pd:y>415</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
                 </config>
                 <pd:inputBindings/>
-            </pd:activity>
-            <pd:activity name="Log Error Inside Group">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>915</pd:x>
-                <pd:y>427</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <LogElement>
-                        <LogDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </LogDate>
-                        <xsl:if test="$Get-ApplicationID/resultSet/Record[1]/ApplicationID">
-                            <ApplicationID>
-                                <xsl:value-of select="$Get-ApplicationID/resultSet/Record[1]/ApplicationID"/>
-                            </ApplicationID>
-                        </xsl:if>
-                        <HostName>
-                            <xsl:value-of select="BW:getHostName()"/>
-                        </HostName>
-                        <UserName>
-                            <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                        </UserName>
-                        <Thread>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </Thread>
-                        <Level>
-                            <xsl:value-of select="&quot;Error&quot;"/>
-                        </Level>
-                        <Logger>
-                            <xsl:value-of select="&quot;Publish Purchase Order Service&quot;"/>
-                        </Logger>
-                        <Message>
-                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
-                        </Message>
-                        <Exception>
-                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
-                        </Exception>
-                        <InsertedDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </InsertedDate>
-                    </LogElement>
-                </pd:inputBindings>
             </pd:activity>
             <pd:activity name="Archive Message">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
@@ -512,6 +452,18 @@
                                 <EventType>
                                     <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrderDelete[1]/pfx3:eventType"/>
                                 </EventType>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder)">
+                                <BusinessUnitID>
+                                    <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder[1]/pfx3:locationChange/pfx3:toLocationNumber"/>
+                                </BusinessUnitID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <BusinessUnitID>
+                                    <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrderDelete[1]/pfx3:locationNumber"/>
+                                </BusinessUnitID>
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:choose>
@@ -555,9 +507,6 @@
                                 </MessageNumber>
                             </xsl:otherwise>
                         </xsl:choose>
-                        <LastReprocessID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </LastReprocessID>
                         <QueueID>
                             <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueID>
@@ -583,8 +532,8 @@
             <pd:activity name="Convert-Message-to-JSON-1">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>1031</pd:x>
-                <pd:y>419</pd:y>
+                <pd:x>988</pd:x>
+                <pd:y>415</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -599,8 +548,8 @@
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1179</pd:x>
-                <pd:y>427</pd:y>
+                <pd:x>1158</pd:x>
+                <pd:y>423</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -624,6 +573,18 @@
                         </xsl:choose>
                         <xsl:choose>
                             <xsl:when test="exists($TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder)">
+                                <BusinessUnitID>
+                                    <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder[1]/pfx3:locationChange/pfx3:toLocationNumber"/>
+                                </BusinessUnitID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <BusinessUnitID>
+                                    <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrderDelete[1]/pfx3:locationNumber"/>
+                                </BusinessUnitID>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder)">
                                 <KeyID>
                                     <xsl:value-of select="$TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder[1]/pfx3:transferNumber"/>
                                 </KeyID>
@@ -642,6 +603,11 @@
                         <Status>
                             <xsl:value-of select="'U'"/>
                         </Status>
+                        <xsl:if test="$_error/ns3:ErrorReport/StackTrace">
+                            <ErrorDescription>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ErrorDescription>
+                        </xsl:if>
                         <xsl:choose>
                             <xsl:when test="exists($TransferOrderDataMapper/pfx3:transferOrders/pfx3:transferOrder)">
                                 <MessageNumber>
@@ -654,9 +620,6 @@
                                 </MessageNumber>
                             </xsl:otherwise>
                         </xsl:choose>
-                        <LastReprocessID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </LastReprocessID>
                         <QueueID>
                             <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueID>
@@ -709,7 +672,7 @@ And STATUS = 'I'
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
                 <pd:x>1318</pd:x>
-                <pd:y>427</pd:y>
+                <pd:y>423</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
@@ -813,7 +776,14 @@ And STATUS = 'I'
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
                     <ErrorDescription>
-                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </ErrorDescription>
                     <QueueId>
                         <xsl:value-of select="$CurrentQueueId/QueueId"/>
@@ -822,52 +792,6 @@ And STATUS = 'I'
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                     </InProcessBy>
                 </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Log Error">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>926</pd:x>
-            <pd:y>548</pd:y>
-            <config>
-                <processName>/SharedResources/Processes/LogPublisher.process</processName>
-                <spawn>true</spawn>
-            </config>
-            <pd:inputBindings>
-                <LogElement>
-                    <LogDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </LogDate>
-                    <xsl:if test="$Get-ApplicationID/resultSet/Record[1]/ApplicationID">
-                        <ApplicationID>
-                            <xsl:value-of select="$Get-ApplicationID/resultSet/Record[1]/ApplicationID"/>
-                        </ApplicationID>
-                    </xsl:if>
-                    <HostName>
-                        <xsl:value-of select="BW:getHostName()"/>
-                    </HostName>
-                    <UserName>
-                        <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                    </UserName>
-                    <Thread>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Thread>
-                    <Level>
-                        <xsl:value-of select="&quot;Error&quot;"/>
-                    </Level>
-                    <Logger>
-                        <xsl:value-of select="&quot;Publish Purchase Order Service&quot;"/>
-                    </Logger>
-                    <Message>
-                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
-                    </Message>
-                    <Exception>
-                        <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
-                    </Exception>
-                    <InsertedDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </InsertedDate>
-                </LogElement>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -881,33 +805,6 @@ And STATUS = 'I'
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Get ApplicationID">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>292</pd:x>
-        <pd:y>211</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>100</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT	 TOP 1 ApplicationID
-		FROM
-		AppConfigApp
-		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
-			  AND NAME ='IRMA CLIENT'</statement>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput/>
-        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="GetEvents">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
@@ -1210,52 +1107,6 @@ WHERE et.EventTypeCode = 'TSF_LINE_DEL'
             </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Log All Errors">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>875</pd:x>
-        <pd:y>660</pd:y>
-        <config>
-            <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <LogElement>
-                <LogDate>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                </LogDate>
-                <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="$Get-ApplicationID/resultSet/Record[1]/ApplicationID">
-                    <ApplicationID>
-                        <xsl:value-of select="$Get-ApplicationID/resultSet/Record[1]/ApplicationID"/>
-                    </ApplicationID>
-                </xsl:if>
-                <HostName>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
-                </HostName>
-                <UserName>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                </UserName>
-                <Thread>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </Thread>
-                <Level>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;Error&quot;"/>
-                </Level>
-                <Logger>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;Publish Purchase Order Service&quot;"/>
-                </Logger>
-                <Message>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
-                </Message>
-                <Exception>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
-                </Exception>
-                <InsertedDate>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                </InsertedDate>
-            </LogElement>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:activity name="UniqueEvent">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
@@ -1296,11 +1147,16 @@ WHERE et.EventTypeCode = 'TSF_LINE_DEL'
 SET Status ='F',
         InProcessBy = NULL,
 	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate()
+	LastProcessedTime = getdate(),
+	ErrorDescription = ?
  WHERE InProcessBy = ?
 And STATUS = 'I'
 </statement>
             <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>ErrorDescription</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
                 <parameter>
                     <parameterName>InProcessBy</parameterName>
                     <dataType>INTEGER</dataType>
@@ -1309,6 +1165,16 @@ And STATUS = 'I'
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
+                <ErrorDescription>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ErrorDescription>
                 <InProcessBy>
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                 </InProcessBy>
@@ -1429,18 +1295,11 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>GetEvents</pd:from>
-        <pd:to>Get ApplicationID</pd:to>
+        <pd:to>UniqueEvent</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($GetEvents/resultSet/Record)</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Get ApplicationID</pd:from>
-        <pd:to>UniqueEvent</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>GetEvents</pd:from>
@@ -1450,22 +1309,15 @@ And STATUS = 'I'
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch All</pd:from>
-        <pd:to>Log All Errors</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log All Errors</pd:from>
-        <pd:to>Update Message to Error Status</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Update Message to Error Status</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch All</pd:from>
+        <pd:to>Update Message to Error Status</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

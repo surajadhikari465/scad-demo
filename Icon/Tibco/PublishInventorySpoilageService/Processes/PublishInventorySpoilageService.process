@@ -77,13 +77,6 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Mapper Catch</pd:from>
-            <pd:to>Log Mapper Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Log Mapper Error</pd:from>
             <pd:to>Update Queue Table With Mapping Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -249,20 +242,6 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>CatchSendingToEsbException</pd:from>
-                <pd:to>Log Error Inside Group</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Log Error Inside Group</pd:from>
-                <pd:to>ConvertToJSon</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
                 <pd:from>ConvertToJSon</pd:from>
                 <pd:to>Archive Message On Error</pd:to>
                 <pd:lineType>Default</pd:lineType>
@@ -272,6 +251,13 @@
             <pd:transition>
                 <pd:from>Archive Message On Error</pd:from>
                 <pd:to>Update Queue Table With Error</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>ConvertToJSon</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -340,6 +326,9 @@
                         <EventType>
                             <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:eventType"/>
                         </EventType>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber"/>
+                        </BusinessUnitID>
                         <KeyID>
                             <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:adjustmentNumber"/>
                         </KeyID>
@@ -352,9 +341,6 @@
                         <MessageNumber>
                             <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                         </MessageNumber>
-                        <LastReprocessID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </LastReprocessID>
                         <QueueID>
                             <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueID>
@@ -421,7 +407,7 @@ And STATUS = 'I'</statement>
             <pd:activity name="CatchSendingToEsbException">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>662</pd:x>
+                <pd:x>691</pd:x>
                 <pd:y>292</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
@@ -429,52 +415,6 @@ And STATUS = 'I'</statement>
                     <catchAll>true</catchAll>
                 </config>
                 <pd:inputBindings/>
-            </pd:activity>
-            <pd:activity name="Log Error Inside Group">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>789</pd:x>
-                <pd:y>300</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <LogElement>
-                        <LogDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </LogDate>
-                        <xsl:if test="$Get-ApplicationID/resultSet/Record/ApplicationID">
-                            <ApplicationID>
-                                <xsl:value-of select="$Get-ApplicationID/resultSet/Record[1]/ApplicationID"/>
-                            </ApplicationID>
-                        </xsl:if>
-                        <HostName>
-                            <xsl:value-of select="BW:getHostName()"/>
-                        </HostName>
-                        <UserName>
-                            <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
-                        </UserName>
-                        <Thread>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </Thread>
-                        <Level>
-                            <xsl:value-of select="&quot;Error&quot;"/>
-                        </Level>
-                        <Logger>
-                            <xsl:value-of select="&quot;Publish Inventory Spoilage Service&quot;"/>
-                        </Logger>
-                        <Message>
-                            <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
-                        </Message>
-                        <Exception>
-                            <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
-                        </Exception>
-                        <InsertedDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </InsertedDate>
-                    </LogElement>
-                </pd:inputBindings>
             </pd:activity>
             <pd:activity name="Update Queue Table With Error">
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
@@ -564,6 +504,9 @@ And STATUS = 'I'</statement>
                         <EventType>
                             <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/EventType"/>
                         </EventType>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber"/>
+                        </BusinessUnitID>
                         <KeyID>
                             <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/AdjustmentNumber"/>
                         </KeyID>
@@ -573,12 +516,14 @@ And STATUS = 'I'</statement>
                         <Status>
                             <xsl:value-of select="&quot;U&quot;"/>
                         </Status>
+                        <xsl:if test="$_error/ns4:ErrorReport/StackTrace">
+                            <ErrorDescription>
+                                <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                            </ErrorDescription>
+                        </xsl:if>
                         <MessageNumber>
                             <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/MessageNumber"/>
                         </MessageNumber>
-                        <LastReprocessID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </LastReprocessID>
                         <QueueID>
                             <xsl:value-of select="$CurrentQueueId/QueueId"/>
                         </QueueID>
@@ -596,51 +541,6 @@ And STATUS = 'I'</statement>
                 <catchAll>true</catchAll>
             </config>
             <pd:inputBindings/>
-        </pd:activity>
-        <pd:activity name="Log Mapper Error">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>895</pd:x>
-            <pd:y>436</pd:y>
-            <config>
-                <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            </config>
-            <pd:inputBindings>
-                <LogElement>
-                    <LogDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </LogDate>
-                    <ApplicationID>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationId"/>
-                    </ApplicationID>
-                    <HostName>
-                        <xsl:value-of select="BW:getHostName()"/>
-                    </HostName>
-                    <UserName>
-                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
-                    </UserName>
-                    <Thread>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Thread>
-                    <Level>
-                        <xsl:value-of select="&quot;Error&quot;"/>
-                    </Level>
-                    <Logger>
-                        <xsl:value-of select="&quot;Publish Inventory Spoilage Service&quot;"/>
-                    </Logger>
-                    <Message>
-                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
-                    </Message>
-                    <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
-                        <Exception>
-                            <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
-                        </Exception>
-                    </xsl:if>
-                    <InsertedDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </InsertedDate>
-                </LogElement>
-            </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Update Queue Table With Mapping Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
@@ -680,8 +580,8 @@ And STATUS = 'I'</statement>
                 <jdbcUpdateActivityInput>
                     <ErrorDescription>
                         <xsl:choose>
-                            <xsl:when test="exists($_error/ns4:ErrorReport/Msg)">
-                                <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/StackTrace)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -708,33 +608,6 @@ And STATUS = 'I'</statement>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Get ApplicationID">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>363</pd:x>
-        <pd:y>326</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>100</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT	 TOP 1 ApplicationID
-		FROM
-		AppConfigApp
-		WHERE EnvironmentID= (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = (SELECT TOP 1 Environment From version))
-			  AND NAME ='IRMA CLIENT'</statement>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>ApplicationID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput/>
-        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="GetShrinkData">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
@@ -788,12 +661,6 @@ WHERE iq.Status in ('I') AND ii.Default_Identifier = 1 AND InProcessBy = ?
 ORDER BY KeyID 
 </statement>
             <wizardData/>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
             <oraObjects/>
             <oraTables/>
             <QueryOutputCachedSchemaColumns>QueueId</QueryOutputCachedSchemaColumns>
@@ -872,6 +739,12 @@ ORDER BY KeyID
             <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>InProcessBy</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
@@ -879,52 +752,6 @@ ORDER BY KeyID
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                 </InProcessBy>
             </jdbcQueryActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Log DB Error">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>830</pd:x>
-        <pd:y>602</pd:y>
-        <config>
-            <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <LogElement>
-                <LogDate>
-                    <xsl:value-of select="current-dateTime()"/>
-                </LogDate>
-                <ApplicationID>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationId"/>
-                </ApplicationID>
-                <HostName>
-                    <xsl:value-of select="BW:getHostName()"/>
-                </HostName>
-                <UserName>
-                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
-                </UserName>
-                <Thread>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </Thread>
-                <Level>
-                    <xsl:value-of select="&quot;Error&quot;"/>
-                </Level>
-                <Logger>
-                    <xsl:value-of select="&quot;Publish Inventory Spoilage Service&quot;"/>
-                </Logger>
-                <Message>
-                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
-                </Message>
-                <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
-                    <Exception>
-                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
-                    </Exception>
-                </xsl:if>
-                <InsertedDate>
-                    <xsl:value-of select="current-dateTime()"/>
-                </InsertedDate>
-            </LogElement>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Update Errors">
@@ -960,8 +787,8 @@ And STATUS = 'I'</statement>
             <jdbcUpdateActivityInput>
                 <ErrorDescription>
                     <xsl:choose>
-                        <xsl:when test="exists($_error/ns4:ErrorReport/Msg)">
-                            <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/StackTrace)">
+                            <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -1086,21 +913,6 @@ And STATUS = 'I'</statement>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetShrinkData</pd:from>
-        <pd:to>Get ApplicationID</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($GetShrinkData/resultSet/Record)</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Get ApplicationID</pd:from>
-        <pd:to>GroupAndSendSpoilageData</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Update Errors</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -1108,15 +920,16 @@ And STATUS = 'I'</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log DB Error</pd:from>
-        <pd:to>Update Errors</pd:to>
+        <pd:from>GetShrinkData</pd:from>
+        <pd:to>GroupAndSendSpoilageData</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($GetShrinkData/resultSet/Record)</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>DB Catch</pd:from>
-        <pd:to>Log DB Error</pd:to>
+        <pd:to>Update Errors</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

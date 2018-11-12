@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [amz].[MessageArchive](
 	[MessageArchiveID] [int] IDENTITY(1,1) NOT NULL,
+	[BusinessUnitID] [int] NOT NULL,
 	[QueueID] [int] NULL,
 	[KeyID] [int] NOT NULL,
 	[SecondaryKeyID] [int] NULL,
