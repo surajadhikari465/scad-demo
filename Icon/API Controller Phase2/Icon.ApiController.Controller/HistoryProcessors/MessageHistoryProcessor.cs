@@ -117,7 +117,10 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     }
                     break;
                 case MessageTypes.Product:
-                    PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsProduct);
+                    if (!string.IsNullOrWhiteSpace(settings.NonReceivingSystemsProduct))
+                    {
+                      PrependValueToDictionaryEntry(messageProperties, nonReceivingSystemsJmsKey, settings.NonReceivingSystemsProduct);
+                    }
 
                     //is the message for a non-retail product?
                     if (isMessageHistoryANonRetailProductMessageQueryHandler.Search(new IsMessageHistoryANonRetailProductMessageParameters { Message = message }))
@@ -153,6 +156,8 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         /// <param name="valueToPrepend"></param>
         private void PrependValueToDictionaryEntry(Dictionary<string, string> stringDictionary, string key, string valueToPrepend)
         {
+          if(String.IsNullOrWhiteSpace(key) || String.IsNullOrWhiteSpace(valueToPrepend)) return;
+
             if (!stringDictionary.ContainsKey(key))
             {
                 stringDictionary.Add(key, valueToPrepend);
@@ -168,14 +173,16 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         /// </summary>
         private Dictionary<string, string> SetMessageProperties(MessageHistory message)
         {
-            var messageProperties = new Dictionary<string, string>();
-            messageProperties.Add("IconMessageID", message.MessageHistoryId.ToString());
-            messageProperties.Add("Source", "Icon");
- 
-            //make sure the non-receiving systems message property is set correctly per message type
-            EnsureNonReceivingSystemPropertiesAreSet(message, messageProperties, EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
+          var messageProperties = new Dictionary<string, string>
+          {
+            { "IconMessageID", message.MessageHistoryId.ToString() },
+            { "Source", "Icon" }
+          };
 
-            return messageProperties;
+          //make sure the non-receiving systems message property is set correctly per message type
+          EnsureNonReceivingSystemPropertiesAreSet(message, messageProperties, EsbConstants.NonReceivingSystemsJmsProperty, settings.NonReceivingSystemsAll);
+
+          return messageProperties;
         }
 
         private void ProcessResponse(bool messageSent, MessageHistory message)
