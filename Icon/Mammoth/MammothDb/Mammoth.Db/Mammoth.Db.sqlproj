@@ -788,8 +788,6 @@
     <Build Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
     <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEsbMessageTypeForCheckpointRequest.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddNumberOfDigitsForCFSItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
@@ -799,6 +797,9 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulatePromoRewardItemPriceTypes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddNumberOfDigitsForCFSItems.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddEsbMessageTypeForCheckpointRequest.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRewardItemPriceType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -810,7 +811,6 @@
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulateRewardItemPriceType.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
