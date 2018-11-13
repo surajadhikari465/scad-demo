@@ -333,8 +333,11 @@ WHERE ia.Region = @Region
 AND l.Region = @Region
 OPTION (RECOMPILE)
 
+--exclude carriage return/line feed characters for scale extra text for onePlum
+DECLARE @LF char(1) = char(10)
+DECLARE @CR char(1) = char(13)
 UPDATE ist
-SET ScaleExtraText = ia.AttributeValue
+SET ScaleExtraText = Replace(Replace(ia.AttributeValue, @CR, ''), @LF, '')
 FROM #itemExtended				ist
 JOIN Locale						l	on ist.BusinessUnitID = l.BusinessUnitID
 JOIN ItemLocaleAttributesExt	ia	on	ist.Region = ia.Region
