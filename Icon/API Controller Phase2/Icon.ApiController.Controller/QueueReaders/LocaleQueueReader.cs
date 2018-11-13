@@ -206,7 +206,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
 						var storeLocaleType = new Contracts.LocaleType
 						{
-							Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
+							Action = Contracts.ActionEnum.AddOrUpdate,
 							ActionSpecified = true,
 							name = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleName,
 							type = new Contracts.LocaleTypeType
@@ -215,7 +215,12 @@ namespace Icon.ApiController.Controller.QueueReaders
 								description = Contracts.LocaleDescType.Store
 							},
 						};
-						if (localeTypeId == 4)
+						if (localeTypeId == 5)
+						{
+							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString();
+							storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
+						}
+						else
 						{
 							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
 							storeLocaleType.addresses = new Contracts.AddressType[]
@@ -223,11 +228,6 @@ namespace Icon.ApiController.Controller.QueueReaders
 								CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
 							};
 							storeLocaleType.traits = CreateStoreLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]);
-						}
-						if (localeTypeId == 5)
-						{
-							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString();
-							storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
 						}
 						if (storeLocaleLineage.LocaleOpenDate.HasValue)
 						{

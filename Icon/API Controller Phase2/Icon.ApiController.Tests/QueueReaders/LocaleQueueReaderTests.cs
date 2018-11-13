@@ -1010,7 +1010,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var locales = metro.locales;
 
 
-			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
 			Assert.IsTrue(actionSpecified);
 			Assert.AreEqual(localeId, metros[0].localeID.ToString());
 			Assert.AreEqual(localeName, metros[0].localeName);
@@ -1049,7 +1049,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var locales = store.locales;
 
 
-			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
 			Assert.IsTrue(actionSpecified);
 			Assert.AreEqual(localeId, stores[0].localeID.ToString());
 			Assert.AreEqual(localeName, stores[0].localeName);
