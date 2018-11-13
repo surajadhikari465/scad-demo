@@ -1,0 +1,28 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Application/InstanceId=407
+
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-pn\pnq;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/Username=TibcoDataWriter
+Connections/JDBC/IRMA/Password=#!Au7uqiI62/LDe3aF8jfOwK1jWdfv0lEPxbQmJOt40JKRW8YO2Br0OA==
+
+Connections/JMS/ESB/JndiContextUrl=ssl://cerd1619.wfm.pvt:27293,ssl://cerd1622.wfm.pvt:27293
+Connections/JMS/ESB/JndiUsername=jndiIconUser
+Connections/JMS/ESB/JndiPassword=#!v6d1upvjh1kpGYGYAongT2/+Yy2n24aZNAc2ub2VsAwY9/GG2grXnj4uft+EnSOC
+Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
+Connections/JMS/ESB/Username=iconUser
+Connections/JMS/ESB/Password=#!0Ll/mVvcY3E0CUGuGk6NLM94dUIzCjCJVFLtSfFiX5M=
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-1,machine=cerd1673
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-2,machine=cerd1674
