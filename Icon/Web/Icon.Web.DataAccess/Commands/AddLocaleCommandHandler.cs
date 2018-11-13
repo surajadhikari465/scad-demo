@@ -63,7 +63,7 @@ namespace Icon.Web.DataAccess.Commands
                     new LocaleTrait { traitID = Traits.Fax, traitValue = data.Fax },
                     new LocaleTrait { traitID = Traits.InsertDate, traitValue = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture) },
                     new LocaleTrait { traitID = Traits.ModifiedUser, traitValue = data.UserName },
-                    new LocaleTrait { traitID = Traits.Currency, traitValue = currencyCode }
+                    new LocaleTrait { traitID = Traits.CurrencyCode, traitValue = currencyCode }
                 }
             };
 

@@ -21,7 +21,7 @@ namespace Icon.Web.Tests.Unit.Models
             testLocale = TestHelpers.GetFakeLocaleWithAddress();
             testLocale.LocaleTrait = TestHelpers.MakeLocaleTraitsForLocale();
             testLocale.LocaleTrait.Add(
-                new LocaleTrait { traitID = Traits.Currency, traitValue = expectedCurrencyCode });
+                new LocaleTrait { traitID = Traits.CurrencyCode, traitValue = expectedCurrencyCode });
 
             //When
             var actualCurrencyCode = LocaleAccessor.GetCurrencyCode(testLocale);
@@ -37,7 +37,7 @@ namespace Icon.Web.Tests.Unit.Models
             testLocale = TestHelpers.GetFakeLocaleWithAddress();
             testLocale.LocaleTrait = TestHelpers.MakeLocaleTraitsForLocale();
             testLocale.LocaleTrait.Add(
-                new LocaleTrait { traitID = Traits.Currency, traitValue = expectedCurrencyCode });
+                new LocaleTrait { traitID = Traits.CurrencyCode, traitValue = expectedCurrencyCode });
 
             //When
             var actualCurrencyCode = LocaleAccessor.GetCurrencyCode(testLocale);

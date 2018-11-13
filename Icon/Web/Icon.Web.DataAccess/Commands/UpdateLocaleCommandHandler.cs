@@ -50,7 +50,7 @@ namespace Icon.Web.DataAccess.Commands
             var currencyCode = GetCurrencyCodeForCountry(data.CountryId);
             if (!String.IsNullOrWhiteSpace(currencyCode))
             {
-                AddOrUpdateTraitValue(TraitCodes.Currency, existingLocale, currencyCode);
+                AddOrUpdateTraitValue(TraitCodes.CurrencyCode, existingLocale, currencyCode);
             }
 
             UpdateAddress(existingLocale, data);

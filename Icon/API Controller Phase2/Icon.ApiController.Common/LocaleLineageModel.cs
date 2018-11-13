@@ -11,6 +11,7 @@ namespace Icon.ApiController.Common
         public string BusinessUnitId { get; set; }
 		public string VenueCode { get; set; }
 		public string VenueOccupant { get; set; }
+		public string VenueSubType { get; set; }
 		public string PhoneNumber { get; set; }
         public int AddressId { get; set; }
         public string AddressUsageCode { get; set; }

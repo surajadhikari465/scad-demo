@@ -99,7 +99,10 @@ namespace Icon.ApiController.Controller.QueueReaders
 
 				BuildMetroAndStoreElements(localeLineage, miniBulk, message.LocaleTypeId);
 
-				BuildVenueElements(localeLineage, miniBulk,message.LocaleTypeId);
+				if (message.LocaleTypeId == 5)
+				{ 
+					BuildVenueElements(localeLineage, miniBulk,message.LocaleTypeId);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -143,30 +146,34 @@ namespace Icon.ApiController.Controller.QueueReaders
 
 		private void BuildVenueElements(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
 		{
-			var region = localeLineage.DescendantLocales[0];
-			var regionMiniBulk = miniBulk.locales[0].locales[0];
-			for (int metroIndex = 0; metroIndex < region.DescendantLocales.Count; metroIndex++)
-			{
-				var metro = region.DescendantLocales[metroIndex];
-				for (int storeIndex = 0; storeIndex < metro.DescendantLocales.Count; storeIndex++)
+			for (int regionIndex = 0; regionIndex < localeLineage.DescendantLocales.Count; regionIndex++)
+			{ 
+				var region = localeLineage.DescendantLocales[regionIndex];
+				var regionMiniBulk = miniBulk.locales[0].locales[regionIndex];
+				for (int metroIndex = 0; metroIndex < region.DescendantLocales.Count; metroIndex++)
 				{
-					var store = metro.DescendantLocales[storeIndex];
-					var storeMiniBulk = miniBulk.locales[0].locales[0].locales[metroIndex].locales[storeIndex];
-					for (int venueIndex = 0; venueIndex < store.DescendantLocales.Count; venueIndex++)
+					var metro = region.DescendantLocales[metroIndex];
+					for (int storeIndex = 0; storeIndex < metro.DescendantLocales.Count; storeIndex++)
 					{
-						storeMiniBulk.locales[venueIndex] = new Contracts.LocaleType
+						var store = metro.DescendantLocales[storeIndex];
+						var storeMiniBulk = regionMiniBulk.locales[metroIndex].locales[storeIndex];
+						for (int venueIndex = 0; venueIndex < store.DescendantLocales.Count; venueIndex++)
 						{
-							Action = localeTypeId == LocaleTypes.Venue ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
-							ActionSpecified = true,
-							id = store.DescendantLocales[venueIndex].LocaleId.ToString(),
-							name = store.DescendantLocales[venueIndex].LocaleName,
-							type = new Contracts.LocaleTypeType
+							var venue = store.DescendantLocales[venueIndex];
+							storeMiniBulk.locales[venueIndex] = new Contracts.LocaleType
 							{
-								code = Contracts.LocaleCodeType.VNU,
-								description = Contracts.LocaleDescType.Venue
-							},
-							traits = CreateVenueLocaleTraits(store.DescendantLocales[venueIndex]),
-						};
+								Action = localeTypeId == LocaleTypes.Venue ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
+								ActionSpecified = true,
+								id = venue.DescendantLocales[venueIndex].LocaleId.ToString(),
+								name = venue.DescendantLocales[venueIndex].LocaleName,
+								type = new Contracts.LocaleTypeType
+								{
+									code = Contracts.LocaleCodeType.VNU,
+									description = Contracts.LocaleDescType.Venue
+								},
+								traits = CreateVenueLocaleTraits(venue.DescendantLocales[venueIndex]),
+							};
+						}
 					}
 				}
 			}
@@ -174,75 +181,77 @@ namespace Icon.ApiController.Controller.QueueReaders
 
 		private void BuildMetroAndStoreElements(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
 		{
-			var region = localeLineage.DescendantLocales[0];
-			var regionMiniBulk = miniBulk.locales[0].locales[0];
-
-			for (int metroIndex = 0; metroIndex < region.DescendantLocales.Count; metroIndex++)
+			for (int regionIndex = 0; regionIndex < localeLineage.DescendantLocales.Count; regionIndex++)
 			{
-				regionMiniBulk.locales[metroIndex] = new Contracts.LocaleType
+				var region = localeLineage.DescendantLocales[regionIndex];
+				var regionMiniBulk = miniBulk.locales[0].locales[regionIndex];
+				for (int metroIndex = 0; metroIndex < region.DescendantLocales.Count; metroIndex++)
 				{
-					Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
-					ActionSpecified = true,
-					id = region.DescendantLocales[metroIndex].LocaleId.ToString(),
-					name = region.DescendantLocales[metroIndex].LocaleName,
-					type = new Contracts.LocaleTypeType
+					regionMiniBulk.locales[metroIndex] = new Contracts.LocaleType
 					{
-						code = Contracts.LocaleCodeType.MTR,
-						description = Contracts.LocaleDescType.Metro
-					},
-					locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales.Count]
-				};
-
-				for (int storeIndex = 0; storeIndex < region.DescendantLocales[metroIndex].DescendantLocales.Count; storeIndex++)
-				{
-					var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
-					var storeLocaleType = new Contracts.LocaleType
-					{
-						Action = Contracts.ActionEnum.AddOrUpdate,
+						Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
 						ActionSpecified = true,
-						id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString(),
-						name = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleName,
+						id = region.DescendantLocales[metroIndex].LocaleId.ToString(),
+						name = region.DescendantLocales[metroIndex].LocaleName,
 						type = new Contracts.LocaleTypeType
 						{
-							code = Contracts.LocaleCodeType.STR,
-							description = Contracts.LocaleDescType.Store
+							code = Contracts.LocaleCodeType.MTR,
+							description = Contracts.LocaleDescType.Metro
 						},
-						locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count]
+						locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales.Count]
 					};
-					if (localeTypeId == 4)
+
+					for (int storeIndex = 0; storeIndex < region.DescendantLocales[metroIndex].DescendantLocales.Count; storeIndex++)
 					{
-						storeLocaleType.addresses = new Contracts.AddressType[]
+						var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
+						var storeLocaleType = new Contracts.LocaleType
 						{
-							CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
+							Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
+							ActionSpecified = true,
+							name = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleName,
+							type = new Contracts.LocaleTypeType
+							{
+								code = Contracts.LocaleCodeType.STR,
+								description = Contracts.LocaleDescType.Store
+							},
 						};
-						storeLocaleType.traits = CreateStoreLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]);
+						if (localeTypeId == 4)
+						{
+							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
+							storeLocaleType.addresses = new Contracts.AddressType[]
+							{
+								CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
+							};
+							storeLocaleType.traits = CreateStoreLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]);
+						}
+						if (localeTypeId == 5)
+						{
+							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString();
+							storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
+						}
+						if (storeLocaleLineage.LocaleOpenDate.HasValue)
+						{
+							storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
+							storeLocaleType.openDateSpecified = true;
+						}
+						if (storeLocaleLineage.LocaleCloseDate.HasValue)
+						{
+							storeLocaleType.closeDate = storeLocaleLineage.LocaleCloseDate.Value;
+							storeLocaleType.closeDateSpecified = true;
+						}
+						regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
 					}
-					if (storeLocaleLineage.LocaleOpenDate.HasValue)
-					{
-						storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
-						storeLocaleType.openDateSpecified = true;
-					}
-					if (storeLocaleLineage.LocaleOpenDate.HasValue)
-					{
-						storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
-						storeLocaleType.openDateSpecified = true;
-					}
-					if (storeLocaleLineage.LocaleCloseDate.HasValue)
-					{
-						storeLocaleType.closeDate = storeLocaleLineage.LocaleCloseDate.Value;
-						storeLocaleType.closeDateSpecified = true;
-					}
-					regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
 				}
 			}
 		}
 
 		private void BuildRegionElement(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
 		{
-			var region = localeLineage.DescendantLocales[0];
-
-			miniBulk.locales[0].locales = new Contracts.LocaleType[]
+			for (int regionIndex = 0; regionIndex < localeLineage.DescendantLocales.Count; regionIndex++)
 			{
+				var region = localeLineage.DescendantLocales[regionIndex];
+				miniBulk.locales[0].locales = new Contracts.LocaleType[]
+				{
 				new Contracts.LocaleType
 				{
 					Action = localeTypeId == LocaleTypes.Region ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
@@ -256,7 +265,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 					},
 					locales = new Contracts.LocaleType[region.DescendantLocales.Count]
 				}
-			};
+				};
+			}
 		}
 
 		private void BuildChainElement(LocaleLineageModel localeLineage, Contracts.LocaleType miniBulk, int localeTypeId)
@@ -321,9 +331,22 @@ namespace Icon.ApiController.Controller.QueueReaders
 						{
 							new Contracts.TraitValueType
 							{
-								value = "", 
-								// value = localeLineage.VenueOccupant,
-								// Venue Occopant has to be added into the MessageQueueLocale Table from the UI.(Table Schema has to be updated)
+								value = localeLineage.VenueOccupant,
+							}
+						}
+					}
+				},
+				new Contracts.TraitType
+				{
+					code = TraitCodes.LocaleSubtype,
+					type = new Contracts.TraitTypeType
+					{
+						description = TraitDescriptions.LocaleSubtype,
+						value = new Contracts.TraitValueType[]
+						{
+							new Contracts.TraitValueType
+							{
+								value = localeLineage.VenueSubType,
 							}
 						}
 					}

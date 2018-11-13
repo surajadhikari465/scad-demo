@@ -110,7 +110,7 @@ namespace Icon.ApiController.DataAccess.Queries
 
                         foreach (var store in stores)
                         {
-							regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
+							regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildLocaleLineageModel(store));
                         }
                     }
                 }
@@ -160,7 +160,7 @@ namespace Icon.ApiController.DataAccess.Queries
 
                     foreach (var store in stores)
                     {
-                        regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildStoreLocaleLineageModel(store));
+                        regionLocaleLineage.DescendantLocales.Single(l => l.LocaleId == metro.localeID).DescendantLocales.Add(BuildLocaleLineageModel(store));
                     }
                 }
             }
@@ -199,7 +199,7 @@ namespace Icon.ApiController.DataAccess.Queries
                             {
                                 LocaleId = metro.localeID,
                                 LocaleName = metro.localeName,
-                                DescendantLocales = BuildStoreDescendantLocales(context, metro)
+                                DescendantLocales = BuildDescendantLocales(context, metro)
                             }
                         }
                     }
@@ -244,7 +244,7 @@ namespace Icon.ApiController.DataAccess.Queries
                                 LocaleName = metro.localeName,
                                 DescendantLocales = new List<LocaleLineageModel>
                                 {
-                                    BuildStoreLocaleLineageModel(store)
+                                    BuildLocaleLineageModel(store)
                                 }
                             }
                         }
@@ -292,12 +292,12 @@ namespace Icon.ApiController.DataAccess.Queries
 										{
 											new LocaleLineageModel// venue
 											{
-												LocaleId = venue.localeID,
-												LocaleName = venue.localeName,
-												LocaleOpenDate = venue.localeOpenDate,
-												LocaleCloseDate = venue.localeCloseDate,
-												VenueCode = venue.localeID.ToString(),
-												VenueOccupant = venue.localeName
+												LocaleId = store.localeID,
+												LocaleName = store.localeName,
+												DescendantLocales = new List<LocaleLineageModel>
+												{
+													BuildVenueLocaleLineageModel(venue)
+												}
 											}
 										}
 									}
@@ -310,8 +310,8 @@ namespace Icon.ApiController.DataAccess.Queries
 
 			return localeLineage;
 		}
-		
-		private List<LocaleLineageModel> BuildStoreDescendantLocales(IconContext context, Locale metro)
+
+		private List<LocaleLineageModel> BuildDescendantLocales(IconContext context, Locale metro)
         {
             if (context.Locale.Any(l => l.parentLocaleID == metro.localeID))
             {
@@ -325,7 +325,7 @@ namespace Icon.ApiController.DataAccess.Queries
                         .Include(l => l.LocaleAddress.Select(la => la.Address).Select(a => a.PhysicalAddress).Select(pa => pa.Timezone))
                         .Include(l => l.LocaleAddress.Select(la => la.AddressUsage))
                         .ToList()
-                        .Select(l => BuildStoreLocaleLineageModel(l))
+                        .Select(l => BuildLocaleLineageModel(l))
                         .ToList();
             }
             else
@@ -334,30 +334,46 @@ namespace Icon.ApiController.DataAccess.Queries
             }
         }
 
-        private LocaleLineageModel BuildStoreLocaleLineageModel(Locale store)
+		private LocaleLineageModel BuildVenueLocaleLineageModel(Locale venue)
+		{
+			return new LocaleLineageModel
+			{
+				LocaleId = venue.localeID,
+				LocaleName = venue.localeName,
+				VenueCode = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueCode)?.traitValue ?? string.Empty,
+				VenueOccupant = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueOccupant)?.traitValue ?? string.Empty,
+				VenueSubType = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.LocaleSubtype)?.traitValue ?? string.Empty,
+				LocaleOpenDate = venue?.localeOpenDate ?? DateTime.UtcNow,
+				LocaleCloseDate = venue?.localeCloseDate ?? DateTime.MaxValue
+			};
+		}
+
+
+		private LocaleLineageModel BuildLocaleLineageModel(Locale store)
         {
-            return new LocaleLineageModel
+			return new LocaleLineageModel
             {
                 LocaleId = store.localeID,
                 LocaleName = store.localeName,
-                StoreAbbreviation = store.LocaleTrait.Single(lt => lt.Trait.traitCode == TraitCodes.StoreAbbreviation).traitValue,
-                BusinessUnitId = store.LocaleTrait.Single(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId).traitValue,
-                PhoneNumber = store.LocaleTrait.Single(lt => lt.Trait.traitCode == TraitCodes.PhoneNumber).traitValue,
-                AddressId = store.LocaleAddress.Single(la => la.localeID == store.localeID).addressID,
-                AddressUsageCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).AddressUsage.addressUsageCode,
-                AddressLine1 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.addressLine1,
-                AddressLine2 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.addressLine2,
-                AddressLine3 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.addressLine3,
-                CityName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.City.cityName,
-                TerritoryCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Territory.territoryCode,
-                TerritoryName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Territory.territoryName,
-                CountryCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country.countryCode,
-                CountryName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country.countryName,
-                PostalCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.PostalCode.postalCode,
-                TimezoneName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Timezone.timezoneName,
-                LocaleOpenDate = store.localeOpenDate,
-                LocaleCloseDate = store.localeCloseDate
-            };
+                StoreAbbreviation = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.StoreAbbreviation)?.traitValue?? string.Empty,
+                BusinessUnitId = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId)?.traitValue??string.Empty,
+                PhoneNumber = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PhoneNumber)?.traitValue?? string.Empty,
+				AddressId = store.LocaleAddress.SingleOrDefault(la => la.localeID == store.localeID)?.addressID ?? 0,
+				AddressUsageCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).AddressUsage?.addressUsageCode ?? string.Empty,
+				AddressLine1 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress?.addressLine1 ?? string.Empty,
+				AddressLine2 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress?.addressLine2 ?? string.Empty,
+				AddressLine3 = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress?.addressLine3 ?? string.Empty,
+				CityName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.City?.cityName ?? string.Empty,
+				TerritoryCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Territory?.territoryCode ?? string.Empty,
+				TerritoryName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Territory?.territoryName ?? string.Empty,
+				CountryCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country?.countryCode ?? string.Empty,
+				CountryName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Country?.countryName ?? string.Empty,
+				PostalCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.PostalCode?.postalCode ?? string.Empty,
+				TimezoneName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Timezone?.timezoneName ?? string.Empty,
+				LocaleOpenDate = store?.localeOpenDate??DateTime.UtcNow,
+                LocaleCloseDate = store?.localeCloseDate ?? DateTime.MaxValue
+			};
         }
+
 	}
 }

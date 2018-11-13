@@ -21,6 +21,7 @@ namespace Icon.Web.Mvc.AutoMapperConverters
             destination.OwnerOrgPartyId = source.ownerOrgPartyID;
             destination.ParentLocaleId = source.parentLocaleID;
 
+			// store related traits
             LocaleTrait businessUnitIdTrait = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.PsBusinessUnitId);
             destination.BusinessUnitId = businessUnitIdTrait == null ? null : businessUnitIdTrait.traitValue;
             
@@ -30,7 +31,7 @@ namespace Icon.Web.Mvc.AutoMapperConverters
             LocaleTrait phoneNumberTrait = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.PhoneNumber);
             destination.PhoneNumber = phoneNumberTrait == null ? null : phoneNumberTrait.traitValue;
 
-            LocaleAddress localeAddress = source.LocaleAddress.FirstOrDefault();
+			LocaleAddress localeAddress = source.LocaleAddress.FirstOrDefault();
             if (localeAddress != null)
             {
                 destination.AddressId = localeAddress.addressID;
@@ -58,8 +59,21 @@ namespace Icon.Web.Mvc.AutoMapperConverters
                     }
                 }
             }
+			//end of Store related traits
 
-            return destination;
+			//Venue Related Traits
+			LocaleTrait venueCode = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.VenueCode);
+			destination.VenueCode = venueCode == null ? null : venueCode.traitValue;
+
+			LocaleTrait venueOccopant = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.VenueOccupant);
+			destination.VenueOccopant = venueOccopant == null ? null : venueOccopant.traitValue;
+
+			LocaleTrait venueSubType = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.LocaleSubtype);
+			destination.VenueSubType = venueSubType == null ? null : venueSubType.traitValue;
+			// end of Venue related Traits
+
+
+			return destination;
         }
     }
 }

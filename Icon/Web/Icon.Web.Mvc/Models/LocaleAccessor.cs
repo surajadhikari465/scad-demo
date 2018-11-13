@@ -177,7 +177,7 @@ namespace Icon.Web.Mvc.Models
 
         public static string GetCurrencyCode(Locale locale)
         {
-            LocaleTrait trait = locale.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.Currency);
+            LocaleTrait trait = locale.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.CurrencyCode);
             return trait == null ? String.Empty : trait.traitValue;
         }
     }

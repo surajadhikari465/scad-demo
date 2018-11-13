@@ -22,6 +22,8 @@ namespace Icon.Web.DataAccess.Queries
 
             locale = context.Locale
                 .Include(l => l.LocaleTrait.Select(localeTrait => localeTrait.Trait))
+				.Include(l => l.LocaleTrait.Select(lt => lt.traitID))
+				.Include(l => l.LocaleTrait.Select(lt => lt.traitValue))
                 .Include(l => l.LocaleType)
                 .Include(l => l.LocaleAddress)
                 .Include(l => l.LocaleAddress.Select(la => la.Address))

@@ -756,7 +756,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 TimezoneId = address.timezoneID.Value,
                 CurrencyCode = CurrencyCodes.Usd
             };
-            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
 
             // When.
             updateLocaleCommandHandler.Execute(command);
@@ -766,7 +766,7 @@ namespace Icon.Web.Tests.Integration.Commands
             var updatedLocale = context.Locale
                 .Include(l => l.LocaleTrait )
                 .FirstOrDefault(l => l.localeID == testLocale.localeID);
-            var updated = updatedLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            var updated = updatedLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
 
             Assert.AreEqual(CurrencyCodes.Usd, updated.traitValue, "locale should have a currency trait value");
         }
@@ -796,7 +796,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 CurrencyCode = CurrencyCodes.Cad
             };
             updateLocaleCommandHandler.Execute(setupCommand);
-            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
             Assert.AreEqual(CurrencyCodes.Cad, existing.traitValue, "locale should have initially had expected currency trait value");
 
             // When.
@@ -817,7 +817,7 @@ namespace Icon.Web.Tests.Integration.Commands
             updateLocaleCommandHandler.Execute(updateCommand);
 
             // Then.
-            var updated = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.Currency);
+            var updated = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
             Assert.AreEqual(CurrencyCodes.Usd, updated.traitValue, "locale should have updated currency trait value");
         }
     }

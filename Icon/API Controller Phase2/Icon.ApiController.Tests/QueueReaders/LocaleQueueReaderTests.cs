@@ -34,6 +34,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private string regionName;
         private string metroName;
         private string storeName;
+		private string venueName;
         private string cityName;
         private string countyName;
         private string territoryName;
@@ -49,10 +50,14 @@ namespace Icon.ApiController.Tests.QueueReaders
         private string storeAbbreviation;
         private string phoneNumber;
         private string businessUnitId;
-        private Locale chain;
+		private string venueCode;
+		private string venueOccopant;
+		private string venueSubType;
+		private Locale chain;
         private Locale region;
         private Locale[] metros;
         private Locale[] stores;
+		private Locale[] venues;
         private Country country;
         private County county;
         private City city;
@@ -60,7 +65,9 @@ namespace Icon.ApiController.Tests.QueueReaders
         private Territory territory;
         private Timezone timezone;
 
-        [TestInitialize]
+		
+
+		[TestInitialize]
         public void Initialize()
         {
             transaction = new TransactionScope();
@@ -71,6 +78,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             regionName = "Central";
             metroName = "MET_SD";
             storeName = "Hillcrest";
+			venueName = "New_Venue";
             cityName = "San Diego";
             countyName = "San Diego County";
             territoryName = "California";
@@ -86,6 +94,9 @@ namespace Icon.ApiController.Tests.QueueReaders
             storeAbbreviation = "TST";
             phoneNumber = "512-999-9999";
             businessUnitId = "99999";
+			venueCode = "1234";
+			venueOccopant = "New Occopant";
+			venueSubType = "Hospatality";
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
             mockEmailClient = new Mock<IEmailClient>();
@@ -97,6 +108,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             BuildTestRegion();
             BuildTestMetros();
             BuildTestStores();
+			BuildTestVenues();
             BuildPhysicalAddressEntities();
             BuildStoreAttributes();
 
@@ -240,7 +252,20 @@ namespace Icon.ApiController.Tests.QueueReaders
             context.SaveChanges();
         }
 
-        private void BuildTestStores()
+		private void BuildTestVenues()
+		{
+			venues = new Locale[3]
+			{
+				new TestLocaleBuilder().WithLocaleTypeId(LocaleTypes.Venue).WithLocaleName(venueName+"1").WithParentLocaleId(stores[0].localeID),
+				new TestLocaleBuilder().WithLocaleTypeId(LocaleTypes.Venue).WithLocaleName(venueName+"2").WithParentLocaleId(stores[0].localeID),
+				new TestLocaleBuilder().WithLocaleTypeId(LocaleTypes.Venue).WithLocaleName(venueName+"3").WithParentLocaleId(stores[0].localeID)
+			};
+
+			context.Locale.AddRange(venues);
+			context.SaveChanges();
+		}
+
+		private void BuildTestStores()
         {
             stores = new Locale[9]
             {
@@ -895,5 +920,182 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.AreEqual(timezoneName.ToString(), Contracts.TimezoneNameType.USCentral.ToString());
             Assert.IsNull(locales);
         }
-    }
+
+		[TestMethod]
+		public void GetLocaleMiniBulk_VenueMessage_MiniBulkShouldContainVenueElelmets()
+		{
+			// Given.
+			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+			{
+				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+			};
+
+			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+			// When.
+			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+			// Then.
+			var region = miniBulk.locales[0];
+			var metro = region.locales[0];
+			var store = metro.locales[0];
+			var venue = store.locales[0];
+
+			Assert.IsNotNull(region);
+			Assert.IsNotNull(metro);
+			Assert.IsNotNull(store);
+			Assert.IsNotNull(venue);
+		}
+
+		[TestMethod]
+		public void GetLocaleMiniBulk_VenueMessage_RegionElementShouldContainAllRequiredInformation()
+		{
+			//Given
+			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+			{
+				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+			};
+
+			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+			// When.
+			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+			// Then.
+			var region = miniBulk.locales[0].locales[0];
+			var action = region.Action;
+			var actionSpecified = region.ActionSpecified;
+			var localeId = region.id;
+			var localeName = region.name;
+			var localeType = region.type;
+			var localeTypeCode = localeType.code;
+			var localeTypeDesc = localeType.description;
+			var localeTraits = region.traits;
+
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.IsTrue(actionSpecified);
+			Assert.AreEqual(localeId, this.region.localeID.ToString());
+			Assert.AreEqual(localeName, this.region.localeName);
+			Assert.IsNotNull(localeType);
+			Assert.AreEqual(Contracts.LocaleCodeType.REG, localeTypeCode);
+			Assert.AreEqual(Contracts.LocaleDescType.Region, localeTypeDesc);
+			Assert.IsNull(localeTraits);
+		}
+
+		[TestMethod]
+		public void GetLocaleMiniBulk_VenueMessage_MetroElementShouldContainAllRequiredInformation()
+		{
+			// Given.
+			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+			{
+				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+			};
+
+			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+			// When.
+			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+			// Then.
+			var metro = miniBulk.locales[0].locales[0].locales[0];
+			var action = metro.Action;
+			var actionSpecified = metro.ActionSpecified;
+			var localeId = metro.id;
+			var localeName = metro.name;
+			var localeType = metro.type;
+			var localeTypeCode = localeType.code;
+			var localeTypeDesc = localeType.description;
+			var localeTraits = metro.traits;
+			var localeAddress = metro.addresses;
+			var locales = metro.locales;
+
+
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.IsTrue(actionSpecified);
+			Assert.AreEqual(localeId, metros[0].localeID.ToString());
+			Assert.AreEqual(localeName, metros[0].localeName);
+			Assert.IsNotNull(localeType);
+			Assert.AreEqual(Contracts.LocaleCodeType.MTR, localeTypeCode);
+			Assert.AreEqual(Contracts.LocaleDescType.Metro, localeTypeDesc);
+			Assert.IsNull(localeTraits);
+			Assert.AreEqual(1, locales.Length);
+		}
+
+		[TestMethod]
+		public void GetLocaleMiniBulk_VenueMessage_StoreElementShouldContainAllRequiredInformation()
+		{
+			// Given.
+			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+			{
+				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+			};
+
+			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+			// When.
+			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+			// Then.
+			var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
+			var action = store.Action;
+			var actionSpecified = store.ActionSpecified;
+			var localeId = store.id;
+			var localeName = store.name;
+			var localeType = store.type;
+			var localeTypeCode = localeType.code;
+			var localeTypeDesc = localeType.description;
+			var localeTraits = store.traits;
+			var localeAddress = store.addresses;
+			var locales = store.locales;
+
+
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.IsTrue(actionSpecified);
+			Assert.AreEqual(localeId, stores[0].localeID.ToString());
+			Assert.AreEqual(localeName, stores[0].localeName);
+			Assert.IsNotNull(localeType);
+			Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
+			Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
+			Assert.IsNull(localeTraits);
+
+
+		}
+
+		[TestMethod]
+		public void GetLocaleMiniBulk_VenueMessage_VenueElelmentShouldContainAllRequiredInformation()
+		{
+			// Given.
+			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+			{
+				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+			};
+
+			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+			// When.
+			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+			// Then.
+			var venue = miniBulk.locales[0].locales[0].locales[0].locales[0].locales[0];
+			var action = venue.Action;
+			var actionSpecified = venue.ActionSpecified;
+			var localeId = venue.id;
+			var localeName = venue.name;
+			var localeType = venue.type;
+			var localeTypeCode = localeType.code;
+			var localeTypeDesc = localeType.description;
+			var localeTraits = venue.traits;
+			var locales = venue.locales;
+
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.IsTrue(actionSpecified);
+			Assert.AreEqual(localeName, venues[0].localeName);
+			Assert.IsNotNull(localeType);
+			Assert.AreEqual(Contracts.LocaleCodeType.VNU, localeTypeCode);
+			Assert.AreEqual(Contracts.LocaleDescType.Venue, localeTypeDesc);
+			Assert.AreEqual(3, localeTraits.Length);
+			Assert.IsNull(locales);
+		}
+
+	}
 }
