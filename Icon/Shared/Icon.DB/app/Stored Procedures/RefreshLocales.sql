@@ -15,6 +15,42 @@ BEGIN
 
 	insert into 
 		app.MessageQueueLocale
+		(
+		[MessageTypeId],
+		[MessageStatusId],
+		[MessageHistoryId],
+		[InsertDate],
+		[LocaleId],
+		[OwnerOrgPartyId],
+		[StoreAbbreviation],
+		[LocaleName],
+		[LocaleOpenDate],
+		[LocaleCloseDate],
+		[LocaleTypeId],
+		[ParentLocaleId],
+		[BusinessUnitId],
+		[AddressId],
+		[AddressUsageCode],
+		[CountryName],
+		[CountryCode],
+		[TerritoryName],
+		[TerritoryCode],
+		[CityName],
+		[PostalCode],
+		[Latitude],
+		[Longitude],
+		[AddressLine1],
+		[AddressLine2],
+		[AddressLine3],
+		[TimezoneCode],
+		[TimezoneName],
+		[PhoneNumber],
+		[VenueCode],
+		[VenueOccopant],
+		[VenueSubType],
+		[InProcessBy],
+		[ProcessedDate]
+		)
 	select
 		@LocaleMessageId,
 		@ReadyStatusId,
@@ -45,6 +81,9 @@ BEGIN
 		isnull(tz.timezoneCode, 'CST'),
 		isnull(tz.timezoneName, '(UTC-06:00) Central Time (US & Canada)'),
 		isnull(ph.traitValue, '512-477-4455'),
+		null,
+		null,
+		null,
 		null,
 		null
 	from
