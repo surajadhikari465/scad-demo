@@ -1,4 +1,45 @@
-﻿$gitRootFolder = "c:\tlux\dev\git\IRMA"
+﻿########################################################################################################################################
+########################################################################################################################################
+# Functions
+########################################################################################################################################
+########################################################################################################################################
+
+function AskYesNo() {
+    param([string] $MainPrompt)
+    $prompt = "$MainPrompt --> Yes or No? (y/n)"
+    $response = Read-Host $prompt
+
+    While ((-not ($response -like 'n')) -and (-not ($response -like 'y')))
+    {
+        Write-Host "Invalid input.  Please enter y or n."
+        $response = Read-Host $prompt
+    }
+
+    return ($response -like 'y')
+}
+
+########################################################################################################################################
+
+function BuildHtmlListItems(
+    [string] $List,
+    [string] $Delim
+){
+    $itemList = $List.Split($Delim)
+    $htm = ""
+    foreach($item in $itemList){
+        $htm += "<li>" + $item + "`n"
+    }
+    return $htm
+}
+
+########################################################################################################################################
+########################################################################################################################################
+########################################################################################################################################
+########################################################################################################################################
+
+
+
+$gitRootFolder = "c:\tlux\dev\git\Icon"
 
 ########################################################################################################################################
 
@@ -11,8 +52,6 @@ if(!(Test-Path $relDocInValuesFile)){
 $relDocInValuesTxt = Get-Content -Encoding String $relDocInValuesFile
 $relDocInValues = $relDocInValuesTxt.split("`n") # Each line in rel-doc input file.
 
-########################################################################################################################################
-########################################################################################################################################
 ########################################################################################################################################
 
 $relTmpl = "$gitRootFolder\DevOps\Release Documentation\IRMA Apps Release Template.htm"
@@ -85,18 +124,6 @@ __DeployPropFileList__
 </ol>
 "
 
-function BuildHtmlListItems(
-    [string] $List,
-    [string] $Delim
-){
-    $itemList = $List.Split($Delim)
-    $htm = ""
-    foreach($item in $itemList){
-        $htm += "<li>" + $item + "`n"
-    }
-    return $htm
-}
-
 $tibcoAppsUpdated = $relValuesInHash.TibcoAppsUpdated
 $tibcoAppsUpdatedOL = "<ol style='font-family:Calibri'>" + (BuildHtmlListItems -List $tibcoAppsUpdated -Delim ",") + "</ol>"
 
@@ -146,8 +173,12 @@ $relDocTxt = $relDocTxt.Replace("__PropFilesListSection__", $propFilesHtm)
 ##################################################################################################################
 
 Set-Content $relDoc -Value $relDocTxt
+"Local File --> " + $relDoc
+
 $relDocFileObj = Get-ChildItem $relDoc
 $docDest = "\\irmaqaapp1\e$\inetpub\wwwroot\reldoc"
-#Copy-Item $relDoc -Destination $docDest
+if(AskYesNo "`n-----`nCopy doc to web server: $docDest ?"){
+    Copy-Item $relDoc -Destination $docDest
+    "URL --> " + "http://irmaqaapp1/reldoc/" + $relDocFileObj.name
+}
 
-"URL --> " + "http://irmaqaapp1/reldoc/" + $relDocFileObj.name
