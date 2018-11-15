@@ -30,7 +30,7 @@
     [TimezoneName]      NVARCHAR (100) NULL,
     [PhoneNumber]       NVARCHAR (50)  NULL,
 	[VenueCode]			NVARCHAR (255)	NULL,
-	[VenueOccopant]     NVARCHAR (255) NULL,
+	[VenueOccupant]     NVARCHAR (255) NULL,
 	[VenueSubType]		NVARCHAR (255) NULL,
     [InProcessBy]       INT            NULL,
     [ProcessedDate]     DATETIME2 (7)  NULL,

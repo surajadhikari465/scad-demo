@@ -51,7 +51,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private string phoneNumber;
         private string businessUnitId;
 		private string venueCode;
-		private string venueOccopant;
+		private string venueOccupant;
 		private string venueSubType;
 		private Locale chain;
         private Locale region;
@@ -95,7 +95,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             phoneNumber = "512-999-9999";
             businessUnitId = "99999";
 			venueCode = "1234";
-			venueOccopant = "New Occopant";
+			venueOccupant = "New Occupant";
 			venueSubType = "Hospatality";
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();

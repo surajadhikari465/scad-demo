@@ -47,7 +47,7 @@ namespace Icon.Framework
         public Nullable<int> InProcessBy { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
         public string VenueCode { get; set; }
-        public string VenueOccopant { get; set; }
+        public string VenueOccupant { get; set; }
         public string VenueSubType { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }

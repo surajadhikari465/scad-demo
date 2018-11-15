@@ -65,8 +65,8 @@ namespace Icon.Web.Mvc.AutoMapperConverters
 			LocaleTrait venueCode = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.VenueCode);
 			destination.VenueCode = venueCode == null ? null : venueCode.traitValue;
 
-			LocaleTrait venueOccopant = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.VenueOccupant);
-			destination.VenueOccopant = venueOccopant == null ? null : venueOccopant.traitValue;
+			LocaleTrait venueOccupant = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.VenueOccupant);
+			destination.VenueOccupant = venueOccupant == null ? null : venueOccupant.traitValue;
 
 			LocaleTrait venueSubType = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.LocaleSubtype);
 			destination.VenueSubType = venueSubType == null ? null : venueSubType.traitValue;

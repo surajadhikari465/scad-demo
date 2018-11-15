@@ -46,7 +46,7 @@ BEGIN
 		[TimezoneName],
 		[PhoneNumber],
 		[VenueCode],
-		[VenueOccopant],
+		[VenueOccupant],
 		[VenueSubType],
 		[InProcessBy],
 		[ProcessedDate]
