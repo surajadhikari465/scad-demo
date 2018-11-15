@@ -11,6 +11,6 @@
 	[ProcessTimes] SMALLINT NULL,
 	[LastProcessedTime] DATETIME2(7) NULL,
 	[MessageTimestampUtc] DATETIME2(7) NOT NULL CONSTRAINT [DF_ReceiptQueue_MessageTimestampUtc] DEFAULT (SYSUTCDATETIME()),
-  [ResetBy] [nvarchar](255) NULL,
-	CONSTRAINT [CK_ReceiptQueue_Status] CHECK ([Status] IN ('U', 'I', 'P', 'F', 'R'))
+    [ResetBy] [nvarchar](255) NULL,
+	CONSTRAINT [CK_ReceiptQueue_Status] CHECK  ([Status]='R' OR [Status]='F' OR [Status]='P' OR [Status]='I' OR [Status]='U')
 )

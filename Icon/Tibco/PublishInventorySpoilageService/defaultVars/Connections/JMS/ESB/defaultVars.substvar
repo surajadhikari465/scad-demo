@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>#!fUGSktKxCPXUo6VfBtU67lynwytyNi7s4vT7cM5t54kJT2HGlh0jKQ==</value>
+			<value>#!aDgrjT2ZV6caFTUw4n7mP4zyoIpeKzc/TavHZURmKiY4Rev9idKhbw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -27,7 +27,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!xu6sAMrNt30Ue5oDiA2JcfeTcNVk7JjrsDBuwVfPLDduHedzeup1Ig==</value>
+			<value>#!LYlfyibXMKplYZStsUBwFAQSGroihwxXlUVx2VKD/tE1GLPqTGUtTw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -36,10 +36,10 @@
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
 			<value>OrderTopicConnectionFactory</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1541362639149</modTime>
+			<modTime>1542239117033</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>

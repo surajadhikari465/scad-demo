@@ -3217,7 +3217,7 @@
     <Build Include="Schema\dbo\Tables\Tables1\StoreItemExtended.sql" />
     <Build Include="Schema\infor\Tables\OrderExpectedDateChangeQueue.sql" />
     <None Include="SQL Agent Job\VIM - Infor Data Feeds - IRMA Extract.sql" />
-    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeOrders.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeOrders.sql" />
     <None Include="SQL Agent Job\ItemCatalog - Order Purge.sql" />
     <None Include="SQL Agent Job\ItemCatalog - ItemHistory Purge.sql" />
     <None Include="SQL Agent Job\ItemCatalog - PriceHistory Purge.sql" />
@@ -3362,7 +3362,7 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
     <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
-    <None Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
+    <Build Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -3374,5 +3374,8 @@
       <SqlOwnerName>dbo</SqlOwnerName>
       <SqlPermissionSet>EXTERNAL_ACCESS</SqlPermissionSet>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeploy\HC_DropTriggerOrderItemAddUpdDel.sql" />
   </ItemGroup>
 </Project>
