@@ -785,7 +785,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddDefaultValueToEplumSessionTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEmergencyPriceServiceToAppTable.sql" />
     <None Include="Jobs\MAMMOTH.CopyGpmDataForAudit.sql" />
-    <Build Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
+    <None Include="dbo\Stored Procedures\CopyGpmDataForAudit.sql" />
     <Build Include="gpm\Stored Procedures\AddOrUpdateMessageSequence.sql" />
     <Build Include="dbo\Stored Procedures\GetItemNutritionAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateItemPriceTypeWithGsp.sql" />
@@ -811,6 +811,7 @@
     <None Include="SqlSchemaCompare_MammothDev.scmp" />
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
+    <None Include="Scripts\Projects\GPM\R10PriceAudit_Pre765.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

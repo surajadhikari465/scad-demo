@@ -185,4 +185,7 @@
   <ItemGroup>
     <RefactorLog Include="MammothStaging.Db.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\R10PriceAudit.sql" />
+  </ItemGroup>
 </Project>
