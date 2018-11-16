@@ -1,0 +1,128 @@
+﻿@using WebSupport.Helpers
+@using WebSupport.Models
+@using System.Data
+
+@model WebSupport.ViewModels.MessageExportViewModel
+@{ ViewBag.Title = "Message Export"; }
+
+<style>
+  table { border-collapse: collapse; width: 100%; }
+  tr:nth-child(even) { background-color: #f0f5f5;}
+  tr:hover { background-color: rgba(250, 255, 138, 0.52);}
+</style>
+
+<h2>Reset Honeycrisp Messages</h2>
+<br />
+<div class="row container-fluid">
+  @using(Html.BeginForm("Index", "MessageExport", null, FormMethod.Post, new { @class = "" }))
+  {
+  <div class="form-group">
+    <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+      @Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
+    </div>
+
+    <div class="col-sm-2">
+      @Html.DropDownListFor(x => x.RegionIndex, Model.Regions, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
+      @Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+      @Html.LabelFor(x => x.QueueIndex, new { @class = "control-label" })
+    </div>
+
+    <div class="col-sm-2">
+      @Html.DropDownListFor(x => x.QueueIndex, Model.Queues, new { @class = "form-control", id = "Queue", onchange = "HideElement()" })
+      @Html.ValidationMessageFor(x => x.QueueIndex, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
+      @Html.LabelFor(x => x.StatusIndex, new { @class = "control-label" })
+    </div>
+
+    <div class="col-sm-2">
+      @Html.DropDownListFor(x => x.StatusIndex, Model.Status, new { @class = "form-control", id = "Status", onchange = "HideElement()" })
+      @Html.ValidationMessageFor(x => x.StatusIndex, "", new { @class = "text-danger" })
+      @*</label>*@
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-2">
+        <input type="submit" value="Refresh Queue" class="btn btn-primary form-submit col-md-offset-3" name="btnRefresh" />
+      </div>
+    </div>
+  </div>
+
+    <br />
+    <br />
+    <hr />
+    <div id="divView" class="col-sm-12" style="overflow-x:auto">
+      @{if(!Model.IsSuccess)
+        {
+          <div style="background-color:lightyellow; border:2px solid; padding:15px">
+            <h2 style="text-align:center; color:darkred">Processing error</h2>
+            <p>@Model.Error</p>
+            <hr />
+            <p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persist.</p>
+          </div>
+        }
+        else
+        {
+          if(Model.ResultTable != null && Model.ResultTable.Rows.Count == 0)
+          {
+            <p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+          }
+        }
+      }
+
+      @{if(Model.IsSuccess && Model.ResultTable != null && Model.ResultTable.Rows.Count > 0)
+        {
+          <table>
+            <tr>
+              <th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
+
+              @foreach(DataColumn column in Model.ResultTable.Columns)
+              {
+                <th style="text-align:left; height:30px; background:rgb(220, 218, 218)">@column.Caption.Replace("_", " ")</th>
+              }
+            </tr>
+
+            @foreach(DataRow row in Model.ResultTable.Rows)
+            {
+              <tr>
+                <td align="left" style="padding-left:5px">
+                  <input type="checkbox" name="cbIsSelected" value="@row["QueueID"]" onclick="" />
+                </td>
+
+                @foreach(var val in row.ItemArray)
+                {
+                  if(val.GetType() != typeof(String))
+                  {
+                    <td align="right" style="padding-right:15px">@val</td> }
+                  else
+                  {
+                    <td align="left">@val</td>}
+                }
+              </tr>
+            }
+          </table>
+
+          <br />
+          <div class="form-group col-sm-offset-2">
+            <input type="submit" value="Send Message(s)" class="btn btn-primary form-submit col-md-offset-3" id="cmdSend" name="btnSend" style="background-color:#4CAF50" />
+          </div>
+        }
+      }
+    </div>
+  }
+</div>
+
+    @section Scripts
+{
+      <script type="text/javascript">
+        $(document).on('change', '#Region,#Queue', function () {
+          var e = document.getElementById("divView");
+          if (e != null) e.style.display = "none";
+        }
+        );
+      </script>
+    }

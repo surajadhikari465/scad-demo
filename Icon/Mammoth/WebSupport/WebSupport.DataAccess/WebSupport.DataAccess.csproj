@@ -131,6 +131,7 @@
     <Compile Include="Commands\UpsertGpmStatusCommandHandler.cs" />
     <Compile Include="Commands\UpsertGpmStatusCommandParameters.cs" />
     <Compile Include="DataConstants.cs" />
+    <Compile Include="DBAdapter.cs" />
     <Compile Include="IIrmaContextFactory.cs" />
     <Compile Include="IrmaContextFactory.cs" />
     <Compile Include="Models\CheckPointMessageModel.cs" />
