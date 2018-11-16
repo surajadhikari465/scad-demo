@@ -336,7 +336,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                             description = ItemPriceDescriptions.RegularPrice,
-                                            id = (PriceTypeIdType)ItemPriceTypes.Reg
+                                            id = PriceTypeIdType.REG
                                     },
                                     uom = new Contracts.UomType
                                     {
@@ -410,7 +410,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                         type = new Contracts.PriceTypeType
                                         {
                                             description = ItemPriceDescriptions.RegularPrice,
-                                            id = (PriceTypeIdType)ItemPriceTypes.Reg
+                                            id = PriceTypeIdType.REG
                                         },
                                         uom = new Contracts.UomType
                                         {
@@ -553,7 +553,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     type = new Contracts.PriceTypeType
                                     {
                                         description = ItemPriceDescriptions.RegularPrice,
-                                        id = (PriceTypeIdType)ItemPriceTypes.Reg
+                                        id = PriceTypeIdType.REG
                                     },
                                     uom = new Contracts.UomType
                                     {
