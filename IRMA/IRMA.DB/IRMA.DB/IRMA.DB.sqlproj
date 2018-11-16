@@ -3355,6 +3355,7 @@
     <Build Include="Schema\amz\StoredProcedures\GetMessagesWithError.sql" />
     <Build Include="Schema\amz\StoredProcedures\SendErrorNotificationEmail.sql" />
     <None Include="SQL Agent Job\HoneyCrisp-SendErrorNotificationEmail.sql" />
+    <Build Include="Schema\amz\StoredProcedures\ResetQueueMessages.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
