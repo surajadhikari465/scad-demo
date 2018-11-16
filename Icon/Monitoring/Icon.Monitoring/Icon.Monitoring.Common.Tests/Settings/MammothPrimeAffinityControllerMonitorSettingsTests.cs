@@ -18,7 +18,7 @@ namespace Icon.Monitoring.Common.Tests.Settings
         }
 
         [TestMethod]
-        public void Load_ConfigurationSettingsExist_ShouldPopulateTheSettings()
+        public void PrimeAffinityController_Load_ConfigurationSettingsExist_ShouldPopulateTheSettings()
         {
             //When
             settings.Load();

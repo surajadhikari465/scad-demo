@@ -169,10 +169,5 @@ namespace Icon.Monitoring.Monitors
                     GetTomorrowsUtcStartDate());
             }
         }
-
-        private DateTime GetTomorrowsUtcStartDate()
-        {
-            return DateTime.UtcNow.Date.AddDays(1);
-        }
     }
 }

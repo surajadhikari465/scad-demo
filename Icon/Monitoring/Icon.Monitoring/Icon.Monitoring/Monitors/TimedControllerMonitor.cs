@@ -1,5 +1,7 @@
 ﻿using Icon.Logging;
+using Icon.Monitoring.Common.PagerDuty;
 using Icon.Monitoring.Common.Settings;
+using Newtonsoft.Json;
 using System;
 
 namespace Icon.Monitoring.Monitors
@@ -51,5 +53,69 @@ namespace Icon.Monitoring.Monitors
         }
 
         protected abstract void TimedCheckStatusAndNotify();
+
+        protected DateTime GetTomorrowsUtcStartDate()
+        {
+            return DateTime.UtcNow.Date.AddDays(1);
+        }
+
+        protected void LogInfo(string message, string region)
+        {
+            LogInfo(this.logger, message, region);
+        }
+
+        protected void LogInfo(string message, string region, string error)
+        {
+            LogInfo(this.logger, message, region, error);
+        }
+
+        protected void LogInfo(string message, string region, PagerDutyResponse pagerDutyResponse)
+        {
+            LogInfo(this.logger, message, region, pagerDutyResponse);
+        }
+
+        protected void LogError(string message, string region, Exception ex)
+        {
+            LogError(this.logger, message, region, ex);
+        }
+
+        protected void LogInfo(ILogger logger, string message, string region)
+        {
+            logger.Info(JsonConvert.SerializeObject(new
+            {
+                Message = message,
+                Region = region
+            }));
+        }
+
+        protected void LogInfo(ILogger logger, string message, string region, string error)
+        {
+            logger.Info(JsonConvert.SerializeObject(new
+            {
+                Message = message,
+                Region = region,
+                Error = error
+            }));
+        }
+
+        protected void LogInfo(ILogger logger, string message, string region, PagerDutyResponse pagerDutyResponse)
+        {
+            logger.Info(JsonConvert.SerializeObject(new
+            {
+                Message = message,
+                Region = region,
+                Response = pagerDutyResponse
+            }));
+        }
+
+        protected void LogError(ILogger logger, string message, string region, Exception ex)
+        {
+            logger.Error(JsonConvert.SerializeObject(new
+            {
+                Message = message,
+                Region = region,
+                Error = ex
+            }));
+        }
     }
 }
