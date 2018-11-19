@@ -31,19 +31,23 @@ namespace WebSupport.Controllers
       try
       {
         ViewModel.Error = null;
+        int keyID = 0;
         var queue = (MessageExportViewModel.QueueName)Enum.Parse(typeof(MessageExportViewModel.QueueName), ViewModel.Queues[ViewModel.QueueIndex].Value);
         var region = ViewModel.Regions[ViewModel.RegionIndex];
         var status = (MessageExportViewModel.StatusName)Enum.Parse(typeof(MessageExportViewModel.StatusName), ViewModel.Status[ViewModel.StatusIndex].Value);
-  
+
         if(Request.Form["btnSend"] != null) ResetMessages(region, queue);
   
+        if(!string.IsNullOrEmpty(ViewModel.KeyID)) int.TryParse(ViewModel.KeyID, out keyID);
+
         using(var db = new DBAdapter(region.Text))
         {
           ViewModel.ResultTable = db.ExecuteDataSet("amz.ResetQueueMessages",
                                             CommandType.StoredProcedure,
                                             new SqlParameter[]{ new SqlParameter("@action", "Get"),
                                                                 new SqlParameter("@queue", queue.ToString()),
-                                                                new SqlParameter("@status", status.ToString()[0])}
+                                                                new SqlParameter("@status", status.ToString()[0]),
+                                                                keyID <= 0 ? null : new SqlParameter("@keyID", keyID)}
                                            ).Tables[0];
         }
       }

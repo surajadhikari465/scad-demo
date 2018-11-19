@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using WebSupport.DataAccess;
+using WebSupport.Models;
 
 namespace WebSupport.ViewModels
 {
@@ -19,6 +20,11 @@ namespace WebSupport.ViewModels
     public SelectListItem[] Regions { get; set; }
     public SelectListItem[] Queues  { get; set; }
     public SelectListItem[] Status  { get; set; }
+    public DateTime? ReceivedDate   { get; set; }
+
+    [Display(Name = "Key ID")]
+    [RegularExpression(ValidationConstants.RegExNumeric, ErrorMessage = ValidationConstants.InvalidNumericInput)]
+    public string KeyID { get; set; }
 
     [Required]
     [Display(Name = "Message Queue")]

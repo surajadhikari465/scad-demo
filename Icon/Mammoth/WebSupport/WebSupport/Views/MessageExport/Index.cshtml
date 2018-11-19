@@ -16,41 +16,52 @@
 <div class="row container-fluid">
   @using(Html.BeginForm("Index", "MessageExport", null, FormMethod.Post, new { @class = "" }))
   {
-  <div class="form-group">
-    <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
-      @Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
-    </div>
-
-    <div class="col-sm-2">
-      @Html.DropDownListFor(x => x.RegionIndex, Model.Regions, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
-      @Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
-      @Html.LabelFor(x => x.QueueIndex, new { @class = "control-label" })
-    </div>
-
-    <div class="col-sm-2">
-      @Html.DropDownListFor(x => x.QueueIndex, Model.Queues, new { @class = "form-control", id = "Queue", onchange = "HideElement()" })
-      @Html.ValidationMessageFor(x => x.QueueIndex, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
-      @Html.LabelFor(x => x.StatusIndex, new { @class = "control-label" })
-    </div>
-
-    <div class="col-sm-2">
-      @Html.DropDownListFor(x => x.StatusIndex, Model.Status, new { @class = "form-control", id = "Status", onchange = "HideElement()" })
-      @Html.ValidationMessageFor(x => x.StatusIndex, "", new { @class = "text-danger" })
-      @*</label>*@
-    </div>
-
     <div class="form-group">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+        @Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
+      </div>
+
+      <div class="col-sm-2">
+        @Html.DropDownListFor(x => x.RegionIndex, Model.Regions, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
+        @Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
+      </div>
+
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+        @Html.LabelFor(x => x.QueueIndex, new { @class = "control-label" })
+      </div>
+
+      <div class="col-sm-2">
+        @Html.DropDownListFor(x => x.QueueIndex, Model.Queues, new { @class = "form-control", id = "Queue", onchange = "HideElement()" })
+        @Html.ValidationMessageFor(x => x.QueueIndex, "", new { @class = "text-danger" })
+      </div>
+
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
+        @Html.LabelFor(x => x.StatusIndex, new { @class = "control-label" })
+      </div>
+
+      <div class="col-sm-2">
+        @Html.DropDownListFor(x => x.StatusIndex, Model.Status, new { @class = "form-control", id = "Status", onchange = "HideElement()" })
+        @Html.ValidationMessageFor(x => x.StatusIndex, "", new { @class = "text-danger" })
+      </div>
+
       <div class="col-sm-offset-1 col-sm-2">
         <input type="submit" value="Refresh Queue" class="btn btn-primary form-submit col-md-offset-3" name="btnRefresh" />
       </div>
     </div>
-  </div>
+
+    <br />
+    <br />
+    <hr style="color:red" />
+    <div class="form-group">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
+        @Html.LabelFor(x => x.KeyID, new { @class = "control-label" })
+      </div>
+
+      <div class="col-sm-2">
+        @Html.TextBoxFor(model => Model.KeyID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.KeyID, "", new { @class = "text-danger" })
+      </div>
+    </div>
 
     <br />
     <br />

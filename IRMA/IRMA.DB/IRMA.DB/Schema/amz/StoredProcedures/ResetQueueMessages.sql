@@ -5,6 +5,7 @@ CREATE PROCEDURE amz.ResetQueueMessages
   @maxRecords int = 10000,
 	@userName NVARCHAR(200) = NULL,
   @status NVARCHAR(1) = NULL,
+  @keyID INT = NULL,
   @IDs dbo.IntType READONLY
 AS
 BEGIN
@@ -16,25 +17,38 @@ BEGIN
     BEGIN
       IF(@queue = 'Archive')
        BEGIN
-         SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
+         IF(@keyID IS NOT NULL)
+           SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
                 CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status,
                 CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
-         FROM amz.MessageArchive A
-         INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
-         WHERE (Status = IsNull(@status, Status) AND Status <> 'F') OR
-               (Status = IsNull(@status, Status) AND Status = 'F' AND IsNull(ProcessTimes, 0) >= 6)
+           FROM amz.MessageArchive A
+           INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
+           WHERE A.KeyID = @keyID
+         ELSE
+           SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
+                  CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status,
+                  CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
+           FROM amz.MessageArchive A
+           INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
+           WHERE ((Status = IsNull(@status, Status) AND Status <> 'F') OR
+                 (Status = IsNull(@status, Status) AND Status = 'F' AND IsNull(ProcessTimes, 0) >= 6))
        END
 
       ELSE IF(@queue IN('Inventory', 'Order', 'Receipt'))
        BEGIN
          SET @sql = 'DECLARE @status NVARCHAR(1) = ' + CASE WHEN @status IS NULL THEN 'NULL' ELSE ('''' + @status + '''') END + ';
-                     SELECT TOP(' + CAST(@maxRecords as varchar(25)) + ') QueueID, B.EventTypeDescription [Event], KeyID,
-                            CASE Status WHEN ''F'' THEN ''Failed'' WHEN ''P'' THEN ''Processed'' ELSE ''Unprocessed'' END Status,
-                            CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
-                     FROM amz.' + @queue + 'Queue A
-                     INNER JOIN amz.EventType B on B.EventTypeID = A.EventTypeID
-                     WHERE (Status = IsNull(@status, Status) AND Status <> ''F'') OR
-                           (Status = IsNull(@status, Status) AND Status = ''F'' AND IsNull(ProcessTimes, 0) >= 6);';
+                       SELECT TOP(' + CAST(@maxRecords as varchar(25)) + ') QueueID, B.EventTypeDescription [Event], KeyID,
+                              CASE Status WHEN ''F'' THEN ''Failed'' WHEN ''P'' THEN ''Processed'' ELSE ''Unprocessed'' END Status,
+                              CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
+                       FROM amz.' + @queue + 'Queue A
+                       INNER JOIN amz.EventType B on B.EventTypeID = A.EventTypeID';
+
+
+         IF(@keyID IS NOT NULL)
+           SET @sql = @sql + ' WHERE A.KeyID = ' + cast(@keyID as nvarchar(20)); 
+         ELSE
+           SET @sql = @sql + ' WHERE (Status = IsNull(@status, Status) AND Status <> ''F'') OR
+                                     (Status = IsNull(@status, Status) AND Status = ''F'' AND IsNull(ProcessTimes, 0) >= 6);';
         EXEC(@sql);
       END
 
