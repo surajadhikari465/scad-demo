@@ -1,0 +1,13 @@
+Administrators	WFM\IRMA.Deploy.NonProd	Job Web
+Administrators	WFM\Icon.Deploy.NonProd	Job Web
+Administrators	WFM\Mammoth.Deploy.NProd	Job Web
+Administrators	WFM\IconInterfaceUserDev	Job Web
+Administrators	WFM\MammothDev	Job Web
+Administrators	WFM\IconWebDev	Web
+Administrators	WFM\NutriconServiceDev	Web
+Administrators	WFM\SPOReportsDev	Web
+IIS_IUSRS	WFM\MammothDev	Web
+IIS_IUSRS	WFM\IconWebDev	Web
+IIS_IUSRS	WFM\NutriconServiceDev	Web
+IIS_IUSRS	WFM\SPOReportsDev	Web
+IIS_IUSRS	Authenticated Users	Web
