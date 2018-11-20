@@ -12,12 +12,7 @@
 	[Message] [xml] NOT NULL,
 	[LastReprocess] [datetime2](7) NULL,
 	[LastReprocessID] [nchar](13) NULL,
-	[ProcessTimes] [smallint] NOT NULL,
+	[ProcessTimes] [smallint] NOT NULL CONSTRAINT [DF_Amz_MessageArchive_ProcessTimes] DEFAULT ((0)),
 	[EventType] [nvarchar](25) NOT NULL,
   [ResetBy] [nvarchar](255) NULL
-) 
-
-GO
-
-ALTER TABLE [amz].[MessageArchive] ADD  DEFAULT ((0)) FOR [ProcessTimes]
-GO
+)
