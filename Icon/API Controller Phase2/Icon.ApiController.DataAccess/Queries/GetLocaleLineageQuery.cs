@@ -355,7 +355,8 @@ namespace Icon.ApiController.DataAccess.Queries
             {
                 LocaleId = store.localeID,
                 LocaleName = store.localeName,
-                StoreAbbreviation = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.StoreAbbreviation)?.traitValue?? string.Empty,
+				CurrencyCode = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.CurrencyCode)?.traitValue ?? string.Empty,
+				StoreAbbreviation = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.StoreAbbreviation)?.traitValue?? string.Empty,
                 BusinessUnitId = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId)?.traitValue??string.Empty,
                 PhoneNumber = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PhoneNumber)?.traitValue?? string.Empty,
 				AddressId = store.LocaleAddress.SingleOrDefault(la => la.localeID == store.localeID)?.addressID ?? 0,

@@ -53,6 +53,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 		private string venueCode;
 		private string venueOccupant;
 		private string venueSubType;
+		private string currencyCode;
 		private Locale chain;
         private Locale region;
         private Locale[] metros;
@@ -97,6 +98,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			venueCode = "1234";
 			venueOccupant = "New Occupant";
 			venueSubType = "Hospatality";
+			currencyCode = "USD";
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
             mockEmailClient = new Mock<IEmailClient>();
@@ -111,7 +113,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			BuildTestVenues();
             BuildPhysicalAddressEntities();
             BuildStoreAttributes();
-
+			BuildVenueAttributes();
             queueReader = new LocaleQueueReader(
                 mockLogger.Object,
                 mockEmailClient.Object,
@@ -126,7 +128,41 @@ namespace Icon.ApiController.Tests.QueueReaders
             transaction.Dispose();
         }
 
-        private void BuildStoreAttributes()
+		private void BuildVenueAttributes()
+		{
+			foreach (var venue in venues)
+			{
+				var venueCodeTrait = new LocaleTrait
+				{
+					localeID = venue.localeID,
+					traitID = Traits.VenueCode,
+					traitValue = venueCode
+				};
+
+				context.LocaleTrait.Add(venueCodeTrait);
+
+				var venueOccupantTrait = new LocaleTrait
+				{
+					localeID = venue.localeID,
+					traitID = Traits.VenueOccupant,
+					traitValue = venueOccupant
+				};
+
+				context.LocaleTrait.Add(venueOccupantTrait);
+
+				var venueSubTypeTrait = new LocaleTrait
+				{
+					localeID = venue.localeID,
+					traitID = Traits.LocaleSubtype,
+					traitValue = venueSubType
+				};
+
+				context.LocaleTrait.Add(venueSubTypeTrait);
+				context.SaveChanges();
+			}
+		}
+
+		private void BuildStoreAttributes()
         {
             foreach (var store in stores)
             {
@@ -146,7 +182,16 @@ namespace Icon.ApiController.Tests.QueueReaders
                     traitValue = businessUnitId
                 };
 
-                context.LocaleTrait.Add(businessUnitIdTrait);
+				context.LocaleTrait.Add(businessUnitIdTrait);
+
+				var currencyCodeTrait = new LocaleTrait
+				{
+					localeID = store.localeID,
+					traitID = Traits.CurrencyCode,
+					traitValue = currencyCode
+				};
+
+				context.LocaleTrait.Add(currencyCodeTrait);
 
                 var phoneNumberTrait = new LocaleTrait
                 {
@@ -550,6 +595,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             var localeTraits = firstStore.traits;
             var storeAbbreviation = localeTraits[0].type.value[0].value;
             var phoneNumber = localeTraits[1].type.value[0].value;
+			var currencyCode = localeTraits[2].type.value[0].value;
             var localeAddress = firstStore.addresses;
             var addressId = localeAddress[0].id;
             var addressUsageCode = localeAddress[0].usage.code;
@@ -571,9 +617,10 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.IsNotNull(localeType);
             Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
             Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
-            Assert.AreEqual(2, localeTraits.Length);
+            Assert.AreEqual(3, localeTraits.Length);
             Assert.AreEqual(storeAbbreviation, storeAbbreviation);
             Assert.AreEqual(phoneNumber, phoneNumber);
+			Assert.AreEqual(currencyCode, currencyCode);
             Assert.AreEqual(addressId, stores[0].LocaleAddress.Single().addressID);
             Assert.AreEqual(addressUsageCode, stores[0].LocaleAddress.Single().AddressUsage.addressUsageCode);
             Assert.AreEqual(addressLine1, (addressLine1 + " " + addressLine2 + " " + addressLine3).Trim());
@@ -883,7 +930,8 @@ namespace Icon.ApiController.Tests.QueueReaders
             var localeTraits = store.traits;
             var storeAbbreviation = localeTraits[0].type.value[0].value;
             var phoneNumber = localeTraits[1].type.value[0].value;
-            var localeAddress = store.addresses;
+			var currencyCode = localeTraits[2].type.value[0].value;
+			var localeAddress = store.addresses;
             var addressId = localeAddress[0].id;
             var addressUsageCode = localeAddress[0].usage.code;
             var addressLine1 = (localeAddress[0].type.Item as Contracts.PhysicalAddressType).addressLine1;
@@ -905,10 +953,11 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.IsNotNull(localeType);
             Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
             Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
-            Assert.AreEqual(2, localeTraits.Length);
+            Assert.AreEqual(3, localeTraits.Length);
             Assert.AreEqual(storeAbbreviation, storeAbbreviation);
             Assert.AreEqual(phoneNumber, phoneNumber);
-            Assert.AreEqual(addressId, stores[0].LocaleAddress.Single().addressID);
+			Assert.AreEqual(currencyCode, currencyCode);
+			Assert.AreEqual(addressId, stores[0].LocaleAddress.Single().addressID);
             Assert.AreEqual(addressUsageCode, stores[0].LocaleAddress.Single().AddressUsage.addressUsageCode);
             Assert.AreEqual(addressLine1, (addressLine1 + " " + addressLine2 + " " + addressLine3).Trim());
             Assert.AreEqual(cityName, city.cityName);

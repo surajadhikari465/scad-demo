@@ -173,6 +173,17 @@ namespace Icon.ApiController.Controller.QueueReaders
 								},
 								traits = CreateVenueLocaleTraits(venue.DescendantLocales[venueIndex]),
 							};
+							storeMiniBulk.locales[venueIndex].openDateSpecified = (venue.DescendantLocales[venueIndex].LocaleOpenDate != null);
+							if (storeMiniBulk.locales[venueIndex].openDateSpecified)
+							{
+								storeMiniBulk.locales[venueIndex].openDate = venue.DescendantLocales[venueIndex].LocaleOpenDate.Value;
+							}
+
+							storeMiniBulk.locales[venueIndex].closeDateSpecified = (venue.DescendantLocales[venueIndex].LocaleCloseDate != null);
+							if (storeMiniBulk.locales[venueIndex].closeDateSpecified)
+							{
+								storeMiniBulk.locales[venueIndex].closeDate = venue.DescendantLocales[venueIndex].LocaleCloseDate.Value;
+							}
 						}
 					}
 				}
@@ -387,7 +398,23 @@ namespace Icon.ApiController.Controller.QueueReaders
 							}
 						}
 					}
+				},
+				new Contracts.TraitType
+				{
+					code = TraitCodes.CurrencyCode,
+					type = new Contracts.TraitTypeType
+					{
+						description = TraitDescriptions.CurrencyCode,
+						value = new Contracts.TraitValueType[]
+						{
+							new Contracts.TraitValueType
+							{
+								value = localeLineage.CurrencyCode,
+							}
+						}
+					}
 				}
+
 			};
 		}
 
