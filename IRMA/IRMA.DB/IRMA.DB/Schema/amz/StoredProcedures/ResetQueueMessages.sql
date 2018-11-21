@@ -6,6 +6,7 @@ CREATE PROCEDURE amz.ResetQueueMessages
 	@userName NVARCHAR(200) = NULL,
   @status NVARCHAR(1) = NULL,
   @keyID INT = NULL,
+  @insertDate DATE = NULL,
   @IDs dbo.IntType READONLY
 AS
 BEGIN
@@ -23,14 +24,15 @@ BEGIN
                 CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
            FROM amz.MessageArchive A
            INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
-           WHERE A.KeyID = @keyID
+           WHERE A.KeyID = @keyID AND CAST(A.InsertDate AS DATE) = IsNull(@insertDate, CAST(A.InsertDate AS DATE))
          ELSE
            SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
                   CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status,
                   CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
            FROM amz.MessageArchive A
            INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
-           WHERE ((Status = IsNull(@status, Status) AND Status <> 'F') OR
+           WHERE CAST(A.InsertDate AS DATE) = IsNull(@insertDate, CAST(A.InsertDate AS DATE)) AND
+                 ((Status = IsNull(@status, Status) AND Status <> 'F') OR
                  (Status = IsNull(@status, Status) AND Status = 'F' AND IsNull(ProcessTimes, 0) >= 6))
        END
 
@@ -47,8 +49,10 @@ BEGIN
          IF(@keyID IS NOT NULL)
            SET @sql = @sql + ' WHERE A.KeyID = ' + cast(@keyID as nvarchar(20)); 
          ELSE
-           SET @sql = @sql + ' WHERE (Status = IsNull(@status, Status) AND Status <> ''F'') OR
-                                     (Status = IsNull(@status, Status) AND Status = ''F'' AND IsNull(ProcessTimes, 0) >= 6);';
+           SET @sql = @sql + ' WHERE ((Status = IsNull(@status, Status) AND Status <> ''F'') OR
+                                      (Status = IsNull(@status, Status) AND Status = ''F'' AND IsNull(ProcessTimes, 0) >= 6))';
+
+        IF(@insertDate IS NOT NULL) SET @sql = @sql + ' AND CAST(A.InsertDate AS DATE) = ''' +  cast(@insertdate as NVARCHAR(10)) + '''';
         EXEC(@sql);
       END
 

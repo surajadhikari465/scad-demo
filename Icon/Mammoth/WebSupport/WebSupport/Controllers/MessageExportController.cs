@@ -37,7 +37,7 @@ namespace WebSupport.Controllers
         var status = (MessageExportViewModel.StatusName)Enum.Parse(typeof(MessageExportViewModel.StatusName), ViewModel.Status[ViewModel.StatusIndex].Value);
 
         if(Request.Form["btnSend"] != null) ResetMessages(region, queue);
-  
+
         if(!string.IsNullOrEmpty(ViewModel.KeyID)) int.TryParse(ViewModel.KeyID, out keyID);
 
         using(var db = new DBAdapter(region.Text))
@@ -47,7 +47,8 @@ namespace WebSupport.Controllers
                                             new SqlParameter[]{ new SqlParameter("@action", "Get"),
                                                                 new SqlParameter("@queue", queue.ToString()),
                                                                 new SqlParameter("@status", status.ToString()[0]),
-                                                                keyID <= 0 ? null : new SqlParameter("@keyID", keyID)}
+                                                                keyID <= 0 ? null : new SqlParameter("@keyID", keyID),
+                                                                ViewModel.ReceivedDate == null ? null : new SqlParameter("@insertDate", ViewModel.ReceivedDate)}
                                            ).Tables[0];
         }
       }

@@ -7,8 +7,8 @@
 
 <style>
   table { border-collapse: collapse; width: 100%; }
-  tr:nth-child(even) { background-color: #f0f5f5;}
-  tr:hover { background-color: rgba(250, 255, 138, 0.52);}
+  tr:nth-child(even) { background-color: #f0f5f5; }
+  tr:hover { background-color: rgba(250, 255, 138, 0.52); }
 </style>
 
 <h2>Reset Honeycrisp Messages</h2>
@@ -17,7 +17,7 @@
   @using(Html.BeginForm("Index", "MessageExport", null, FormMethod.Post, new { @class = "" }))
   {
     <div class="form-group">
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray">
         @Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
       </div>
 
@@ -26,16 +26,16 @@
         @Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
       </div>
 
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small;">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:90px;">
         @Html.LabelFor(x => x.QueueIndex, new { @class = "control-label" })
       </div>
 
-      <div class="col-sm-2">
+      <div class="col-sm-2" style="padding:0px; width:150px">
         @Html.DropDownListFor(x => x.QueueIndex, Model.Queues, new { @class = "form-control", id = "Queue", onchange = "HideElement()" })
         @Html.ValidationMessageFor(x => x.QueueIndex, "", new { @class = "text-danger" })
       </div>
 
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray;">
         @Html.LabelFor(x => x.StatusIndex, new { @class = "control-label" })
       </div>
 
@@ -44,7 +44,7 @@
         @Html.ValidationMessageFor(x => x.StatusIndex, "", new { @class = "text-danger" })
       </div>
 
-      <div class="col-sm-offset-1 col-sm-2">
+      <div class="col-sm-2" style="width:auto">
         <input type="submit" value="Refresh Queue" class="btn btn-primary form-submit col-md-offset-3" name="btnRefresh" />
       </div>
     </div>
@@ -53,13 +53,31 @@
     <br />
     <hr style="color:red" />
     <div class="form-group">
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray">
         @Html.LabelFor(x => x.KeyID, new { @class = "control-label" })
       </div>
 
       <div class="col-sm-2">
         @Html.TextBoxFor(model => Model.KeyID, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.KeyID, "", new { @class = "text-danger" })
+      </div>
+
+      <div class="col-sm-3" style="font-size:small; color:gray; width:90px;">
+        @Html.LabelFor(x => x.ReceivedDate, new { @class = "control-label" })
+      </div>
+
+      <div class="input-group bootstrap-datetimepicker-widget">
+        <div class="input-group date" id="dtpDateTime" style="width:150px">
+          @Html.TextBoxFor(model => Model.ReceivedDate, new { @class = "form-control" })
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+          </span>
+        </div>
+
+        <script type="text/javascript">
+          //$.fn.datepicker.defaults.autoclose = true;
+          $(function () { $('#dtpDateTime').datetimepicker({ format: 'MM/DD/YYYY' }); });
+        </script>
       </div>
     </div>
 
@@ -127,13 +145,13 @@
   }
 </div>
 
-    @section Scripts
+@section Scripts
 {
-      <script type="text/javascript">
-        $(document).on('change', '#Region,#Queue', function () {
-          var e = document.getElementById("divView");
-          if (e != null) e.style.display = "none";
-        }
-        );
-      </script>
+  <script type="text/javascript">
+    $(document).on('change', '#Region,#Queue', function () {
+      var e = document.getElementById("divView");
+      if (e != null) e.style.display = "none";
     }
+    );
+  </script>
+}

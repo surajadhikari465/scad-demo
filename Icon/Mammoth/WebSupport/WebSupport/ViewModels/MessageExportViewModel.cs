@@ -20,7 +20,6 @@ namespace WebSupport.ViewModels
     public SelectListItem[] Regions { get; set; }
     public SelectListItem[] Queues  { get; set; }
     public SelectListItem[] Status  { get; set; }
-    public DateTime? ReceivedDate   { get; set; }
 
     [Display(Name = "Key ID")]
     [RegularExpression(ValidationConstants.RegExNumeric, ErrorMessage = ValidationConstants.InvalidNumericInput)]
@@ -37,20 +36,25 @@ namespace WebSupport.ViewModels
     [Required]
     [Display(Name = "Status")]
     public int StatusIndex { get; set; }
+    
+    [DataType(DataType.Date)]
+    [Display(Name = "Received Date")]
+    public DateTime? ReceivedDate { get; set; }
 
     public MessageExportViewModel()
     {
       Regions = DataConstants.WholeFoodsRegions.Distinct(StringComparer.InvariantCultureIgnoreCase).OrderBy(x => x)
-                                   .Select((x, i) => new SelectListItem{ Text = x, Value = i.ToString(), Selected = (i == 0) })
-                                   .ToArray();
+                             .Where(x => x != RegionNameConstants.UK)
+                             .Select((x, i) => new SelectListItem{ Text = x, Value = i.ToString(), Selected = (i == 0) })
+                             .ToArray();
 
       Queues = Enum.GetNames(typeof(QueueName)).Cast<string>().OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
-                         .Select((x, i) => new SelectListItem{ Text = x, Value = ((int)Enum.Parse(typeof(QueueName), x)).ToString(), Selected = (i == 0) })
-                         .ToArray();
+                   .Select((x, i) => new SelectListItem{ Text = x, Value = ((int)Enum.Parse(typeof(QueueName), x)).ToString(), Selected = (i == 0) })
+                   .ToArray();
 
       Status = Enum.GetNames(typeof(StatusName)).Cast<string>().OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
-                         .Select((x, i) => new SelectListItem{ Text = x, Value = ((int)Enum.Parse(typeof(StatusName), x)).ToString(), Selected = (i == 0) })
-                         .ToArray();
+                   .Select((x, i) => new SelectListItem{ Text = x, Value = ((int)Enum.Parse(typeof(StatusName), x)).ToString(), Selected = (i == 0) })
+                   .ToArray();
     }
   }
 }
