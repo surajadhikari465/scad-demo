@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<DTSConfiguration>
+	<DTSConfigurationHeading>
+		<DTSConfigurationFileInfo GeneratedBy="WFM\mcjunkip" GeneratedFromPackageName="vim_extract" GeneratedFromPackageID="{DC7A26BC-ADF9-4CAB-9657-6F9F6773894B}" GeneratedDate="8/7/2012 11:50:26 AM"/>
+	</DTSConfigurationHeading>
+	<Configuration ConfiguredType="Property" Path="\Package.LogProviders[SSIS log provider for Text files].Properties[ConfigString]" ValueType="String">
+		<ConfiguredValue>vim_extract_log</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.LogProviders[SSIS log provider for Text files].Properties[Description]" ValueType="String">
+		<ConfiguredValue>Writes log entries for events to a CSV file</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.LogProviders[SSIS log provider for Text files].Properties[Name]" ValueType="String">
+		<ConfiguredValue>SSIS log provider for Text files</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[Item Store Exception Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\ISXfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[ItemCatalog database].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=idd-rm\rmd;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI10.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-vim_extract-{F4EF4A0B-4694-4F85-BF54-970304F98BAA}ItemCatalog database;</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[ItemCatalog database].Properties[ServerName]" ValueType="String">
+		<ConfiguredValue>idd-rm\rmd</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[ItemCatalog database].Properties[UserName]" ValueType="String">
+		<ConfiguredValue>IRMASchedJobs</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[ItemCatalog database].Properties[Password]" ValueType="String">
+		<ConfiguredValue>L@v3rn3</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[Reg Hierarchy Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\RHIfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIM Retail Price File Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\RPRfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[vim test files].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMFuturePrice Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\RFPfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMItemRegion Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\IRGfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMPriceType Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\PRTfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMPriceZone Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\PRZfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMPSVendorRef Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\PVRfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMRegDept Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\RDPfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMRetailPRicetest].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\retailpricetest.txt</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMStore connection manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\STRfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMVendorCostFile Connection Manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\VCTfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[VIMVendorStoreItem file manager].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\VSIfull.dat</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Variables[User::DestinationFolder].Properties[Value]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package\VIM Extract gzip Execute Process Task.Properties[Executable]" ValueType="String">
+		<ConfiguredValue>C:\Program Files (x86)\GnuWin32\bin\gzip.exe</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package\VIM Extract gzip Execute Process Task.Properties[WorkingDirectory]" ValueType="String">
+		<ConfiguredValue>E:\inetpub\ftproot\vimfiles\TS\</ConfiguredValue>
+	</Configuration>
+</DTSConfiguration>
