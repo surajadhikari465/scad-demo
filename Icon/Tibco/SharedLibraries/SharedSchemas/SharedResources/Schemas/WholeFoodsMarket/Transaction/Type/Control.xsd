@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="9.6">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
@@ -39,7 +38,6 @@
 					<xs:element name="passwordAuthorization" type="tpf:POSLogPasswordAuthorization" minOccurs="0"/>
 				</xs:sequence>
 				<xs:element name="openLane" type="tmz:DateTimezoneType"/>
-				<xs:element name="productAvailabilityLog" type="tpf:ProductAvailabilityLogType"/>
 			</xs:choice>
 			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:choice minOccurs="0">

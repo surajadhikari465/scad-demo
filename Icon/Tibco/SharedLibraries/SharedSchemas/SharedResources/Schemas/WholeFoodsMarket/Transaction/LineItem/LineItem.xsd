@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
+<!-- edited with XMLSpy v2015 sp2 (x64) (http://www.altova.com) by Madelyn Lescalleet (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:lit="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.4">
 	<!-- ================== -->
 	<!-- Schema Imports             -->

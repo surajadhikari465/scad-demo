@@ -14,12 +14,12 @@
 		<xs:sequence>
 			<xs:element name="code" type="lrf:LocaleCodeType">
 				<xs:annotation>
-					<xs:documentation>CMP, CHN, REG, MTR, STR, OFF, VNU</xs:documentation>
+					<xs:documentation>CMP, CHN, REG, MTR, STR, OFF</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="description" type="lrf:LocaleDescType">
 				<xs:annotation>
-					<xs:documentation>Company, Chain, Region, Metro, Store, Office, Venue</xs:documentation>
+					<xs:documentation>Company, Chain, Region, Metro, Store, Office</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>

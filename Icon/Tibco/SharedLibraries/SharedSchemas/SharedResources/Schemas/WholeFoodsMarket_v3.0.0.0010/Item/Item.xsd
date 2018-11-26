@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 (x64) (http://www.altova.com) by WFM (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.3">
+	<!--	<xs:complexType name="StoreGroupsType"/> -->
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" schemaLocation="BaseItem.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" schemaLocation="../Locale/Locale.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="items">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" type="ItemType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="item" type="ItemType"/>
+	<xs:complexType name="ItemType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:ItemIdType"/>
+			<xs:element name="base" type="ibi:BaseItemType">
+				<xs:annotation>
+					<xs:documentation>Base item contains item information that is not locale specific but inherent solely to the item itself. This element contains Consumer Information (eg: nutrition) and will contain some Supplier information in the future.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="locale" type="lcl:LocaleType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>An item has locale information, including specific attributes for enterprise, regional, and store level item data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+	</xs:complexType>
+</xs:schema>

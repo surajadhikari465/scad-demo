@@ -173,7 +173,6 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="authorizationCode" type="AuthorizationCode" form="qualified"/>
-			<xs:element name="preAuthorizationCode" type="AuthorizationCode" form="qualified" minOccurs="0"/>
 			<xs:element name="referenceNumber" type="ReferenceNumber" form="qualified" minOccurs="0"/>
 			<xs:element name="merchantNumber" type="MerchantNumber" form="qualified" minOccurs="0">
 				<xs:annotation>

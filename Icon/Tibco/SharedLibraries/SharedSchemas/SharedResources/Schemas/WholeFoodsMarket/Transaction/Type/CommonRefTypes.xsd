@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:taf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:tpy="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:scn="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+<!-- edited with XMLSpy v2015 sp2 (x64) (http://www.altova.com) by Madelyn Lescalleet (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:taf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:tpy="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="../../Address/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../../Item/Item.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
@@ -15,7 +14,6 @@
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../../Common/NameType.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="../../Item/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" schemaLocation="../../Item/ScanCode.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" schemaLocation="../../Party/TransactionParty.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" schemaLocation="../../Store/Store.xsd"/>
@@ -122,11 +120,6 @@
 			<xs:extension base="crf:WfmStrType"/>
 		</xs:simpleContent>
 	</xs:complexType>
-	<xs:complexType name="TransactionType">
-		<xs:sequence>
-			<xs:element name="transactionType" type="tmf:TransactionTypeEnum"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="ItemCount">
 		<xs:simpleContent>
 			<xs:extension base="crf:WfmStrType"/>
@@ -160,11 +153,6 @@
 	<xs:complexType name="RetailCustomersType">
 		<xs:sequence>
 			<xs:element name="customer" type="tpy:TransactionPartyType" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="tabsType">
-		<xs:sequence>
-			<xs:element name="tab" type="txf:tabType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReceiptDetailType">
@@ -356,37 +344,6 @@
 			<xs:element name="settle" type="SafeSettleType" form="qualified" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="TipInType">
-		<xs:sequence>
-			<xs:element name="tipAction" type="tmf:TipInActionTypeCodeEnum" minOccurs="0"/>
-			<xs:element name="type" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="isVoided" type="crf:WfmBoolType" minOccurs="0"/>
-			<xs:element name="tenderName" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="amount" type="amt:AmountType" form="qualified"/>
-			<xs:element name="originalPaymentAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
-			<xs:element name="authorization" type="lif:TenderAuthorizationsBase" form="qualified" minOccurs="0"/>
-			<xs:element name="tipApproval" type="crf:WfmBoolType" minOccurs="0"/>
-			<xs:element name="count" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
-			<xs:element name="category" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="originalEpsTransactionId" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="tipTransactionTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
-			<xs:element name="lastEpsTransactionId" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="originalUser" type="prf:PartyType" minOccurs="0"/>
-			<xs:element name="updateBy" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="updatedDate" type="DateTimeType" form="qualified" minOccurs="0"/>
-			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified" minOccurs="0"/>
-			<xs:element name="tenderID" type="crf:TenderIdType" form="qualified" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="DateTimeType">
-		<xs:complexContent>
-			<xs:extension base="tmz:DateTimezoneType">
-				<xs:sequence>
-					<xs:element name="dateType" type="tmf:DateTimeTypeEnum"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="OpenCloseSettleBalanceType">
 		<xs:complexContent>
 			<xs:extension base="amt:AmountType">
@@ -434,7 +391,6 @@
 			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:element name="overShort" type="ControlOverShortType" minOccurs="0"/>
 			<xs:element name="accounts" type="ControlAccountsType" minOccurs="0"/>
-			<xs:element name="tipIn" type="TipInType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SettleBase">
@@ -677,18 +633,6 @@
 			<xs:element name="invalidPassword" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
 			<xs:element name="storeRegister" type="str:StoreType" form="qualified" minOccurs="0"/>
 			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ProductAvailabilityLogType">
-		<xs:sequence>
-			<xs:element name="productAvailability" type="itm:ItemType" form="qualified" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ProductAvailabilityType">
-		<xs:sequence>
-			<xs:element name="posItemId" type="crf:ItemIdType" form="qualified"/>
-			<xs:element name="scanCodes" type="scn:ScanCodesType" form="qualified"/>
-			<xs:element name="isAvailable" type="crf:WfmBoolType" form="qualified"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="OperatorControlActionType">

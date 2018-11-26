@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.3">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" schemaLocation="GroupType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" schemaLocation="LinkType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" schemaLocation="../Hierarchy/Hierarchy.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" schemaLocation="../Trait/Trait.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="ActionEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Add"/>
+			<xs:enumeration value="AddOrUpdate"/>
+			<xs:enumeration value="Archive"/>
+			<xs:enumeration value="Delete"/>
+			<xs:enumeration value="Inactivate"/>
+			<xs:enumeration value="Inherit"/>
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="Reset"/>
+			<xs:enumeration value="Update"/>
+			<xs:enumeration value="Replace"/>
+			<xs:enumeration value="Exclude"/>
+			<xs:enumeration value="AddOrUpdateInstruction"/>
+			<xs:enumeration value="ClearInstruction"/>
+			<xs:enumeration value="IsPartOf"/>
+			<xs:enumeration value="AddsTo"/>
+			<xs:enumeration value="IsRemovedFrom"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LanguageCodeEnum">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="eng">
+				<xs:annotation>
+					<xs:documentation>English</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CultureTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="en-CA"/>
+			<xs:enumeration value="en-GB"/>
+			<xs:enumeration value="en-US"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CurrencyTypeCodeEnum">
+		<xs:annotation>
+			<xs:documentation>enum: ISO-4217 / UN/ECE REC 09 Codes</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="CAD">
+				<xs:annotation>
+					<xs:documentation>Canadian Dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EUR">
+				<xs:annotation>
+					<xs:documentation>euro</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GBP">
+				<xs:annotation>
+					<xs:documentation>Pound Sterling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="USD">
+				<xs:annotation>
+					<xs:documentation>United States Dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DayOfWeekNameEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="MONDAY"/>
+			<xs:enumeration value="TUESDAY"/>
+			<xs:enumeration value="WEDNESDAY"/>
+			<xs:enumeration value="THURSDAY"/>
+			<xs:enumeration value="FRIDAY"/>
+			<xs:enumeration value="SATURDAY"/>
+			<xs:enumeration value="SUNDAY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DayOfWeekAbbrEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="MON"/>
+			<xs:enumeration value="TU"/>
+			<xs:enumeration value="TUE"/>
+			<xs:enumeration value="TUES"/>
+			<xs:enumeration value="WED"/>
+			<xs:enumeration value="TH"/>
+			<xs:enumeration value="THU"/>
+			<xs:enumeration value="THUR"/>
+			<xs:enumeration value="THURS"/>
+			<xs:enumeration value="FRI"/>
+			<xs:enumeration value="SAT"/>
+			<xs:enumeration value="SUN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonthOfYearNameFullEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="JANUARY"/>
+			<xs:enumeration value="FEBRUARY"/>
+			<xs:enumeration value="MARCH"/>
+			<xs:enumeration value="APRIL"/>
+			<xs:enumeration value="MAY"/>
+			<xs:enumeration value="JUNE"/>
+			<xs:enumeration value="JULY"/>
+			<xs:enumeration value="AUGUST"/>
+			<xs:enumeration value="SEPTEMBER"/>
+			<xs:enumeration value="OCTOBER"/>
+			<xs:enumeration value="NOVEMBER"/>
+			<xs:enumeration value="DECEMBER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonthOfYearAbbrEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="JAN"/>
+			<xs:enumeration value="FEB"/>
+			<xs:enumeration value="MAR"/>
+			<xs:enumeration value="APR"/>
+			<xs:enumeration value="MAY"/>
+			<xs:enumeration value="JUN"/>
+			<xs:enumeration value="JUL"/>
+			<xs:enumeration value="AUG"/>
+			<xs:enumeration value="SEP"/>
+			<xs:enumeration value="OCT"/>
+			<xs:enumeration value="NOV"/>
+			<xs:enumeration value="DEC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RoundingActionEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Up"/>
+			<xs:enumeration value="Down"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Retail"/>
+			<xs:enumeration value="Eat-In"/>
+			<xs:enumeration value="Catering"/>
+			<xs:enumeration value="Selfscan"/>
+			<xs:enumeration value="HomeShopping"/>
+			<xs:enumeration value="WIC"/>
+			<xs:enumeration value="DriveOff"/>
+			<xs:enumeration value="Unpaid"/>
+			<xs:enumeration value="XReport"/>
+			<xs:enumeration value="ZReport"/>
+			<xs:enumeration value="Tab"/>
+			<xs:enumeration value="TabSuspend"/>
+			<xs:enumeration value="Tip"/>
+			<xs:enumeration value="CollectiveTip"/>
+			<xs:enumeration value="PersonalTip"/>
+			<xs:enumeration value="Walkoff"/>
+			<xs:enumeration value="WalkoffSuspend"/>
+			<xs:enumeration value="Sale"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
