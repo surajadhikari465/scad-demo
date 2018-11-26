@@ -68,7 +68,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.settings.PosPushStartTime_FL = LocalTime.FromHourMinuteSecondTick(0, 10, 0, 0); // 00:10:00
 
             this.mockAppLogQuery.SetupSequence(q => q.Search(It.IsAny<GetAppLogByAppAndMessageParameters>()))
-                .Returns(null)
+                .Returns((AppLog)null)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
@@ -99,7 +99,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.settings.PosPushStartTime_FL = LocalTime.FromHourMinuteSecondTick(0, 10, 0, 0); // 00:10:00
 
             this.mockAppLogQuery.SetupSequence(q => q.Search(It.IsAny<GetAppLogByAppAndMessageParameters>()))
-                .Returns(null)
+                .Returns((AppLog)null)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
@@ -177,7 +177,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.settings.PosPushStartTime_FL = LocalTime.FromHourMinuteSecondTick(0, 10, 0, 0); // 00:10:00
 
             this.mockAppLogQuery.SetupSequence(q => q.Search(It.IsAny<GetAppLogByAppAndMessageParameters>()))
-                .Returns(null)
+                .Returns((AppLog)null)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
@@ -189,7 +189,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
-                .Returns(null)
+                .Returns((AppLog)null)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
                 .Returns(appLogAllOtherRegions)
@@ -223,15 +223,15 @@ namespace Icon.Monitoring.Tests.Monitors
             this.settings.PosPushStartTime_SO = LocalTime.FromHourMinuteSecondTick(0, 10, 0, 0); // 00:10:00
 
             this.mockAppLogQuery.SetupSequence(q => q.Search(It.IsAny<GetAppLogByAppAndMessageParameters>()))
-                .Returns(null)                      // FL
+                .Returns((AppLog)null)                      // FL
                 .Returns(appLogOtherRegions)        // MA
-                .Returns(null)                      // MW
+                .Returns((AppLog)null)                      // MW
                 .Returns(appLogOtherRegions)        // NA
-                .Returns(null)                      // NC
+                .Returns((AppLog)null)                      // NC
                 .Returns(appLogOtherRegions)        // NE
                 .Returns(appLogOtherRegions)        // PN
                 .Returns(appLogOtherRegions)        // RM
-                .Returns(null)                      // SO
+                .Returns((AppLog)null)                      // SO
                 .Returns(appLogOtherRegions)        // SP
                 .Returns(appLogOtherRegions)        // SW
                 .Returns(appLogOtherRegions);       // UK

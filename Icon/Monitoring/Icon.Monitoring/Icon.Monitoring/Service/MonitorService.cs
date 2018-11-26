@@ -73,13 +73,14 @@
             if (!settings.SendPagerDutyNotifications) return;
 
             DayOfWeek blackOutDay;
-            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
+            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.GetCurrentInstant()).TimeOfDay;
+
             if (!Enum.TryParse(settings.MaintenanceDay, out blackOutDay))
             {
                 blackOutDay = DayOfWeek.Sunday;
             }
 
-            if ((currentTime.LocalDateTime.TimeOfDay >= settings.MaintenanceStartTime && currentTime.LocalDateTime.TimeOfDay <= settings.MaintenanceEndTime)
+            if ((currentTime >= settings.MaintenanceStartTime && currentTime <= settings.MaintenanceEndTime)
                 && DateTime.Now.DayOfWeek == blackOutDay)
             {
                 return;

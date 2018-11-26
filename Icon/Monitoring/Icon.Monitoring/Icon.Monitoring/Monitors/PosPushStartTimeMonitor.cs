@@ -85,7 +85,7 @@
                 appLog = this.appLogQuery.Search(queryParameters);
 
                 LocalTime configuredStartTime = GetConfiguredStartTimeByRegion(region);
-                LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
+                LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.GetCurrentInstant()).TimeOfDay;
 
                 bool hasStartedOnTime = HasPosPushStartedOnTime(appLog, configuredStartTime, currentTime);
 

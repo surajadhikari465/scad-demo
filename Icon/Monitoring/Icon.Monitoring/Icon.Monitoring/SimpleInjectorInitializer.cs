@@ -54,12 +54,14 @@
             container.RegisterSingleton<ITLogConJobMonitorSettings, TLogConJobMonitorSettings>();
             container.RegisterSingleton<IVimLocaleConJobMonitorSettings, VimLocaleConJobMonitorSettings>();
             container.RegisterSingleton<IMammothPrimeAffinityControllerMonitorSettings, MammothPrimeAffinityControllerMonitorSettings>();
+            container.RegisterSingleton<IMammothExpiringTprServiceMonitorSettings, MammothExpiringTprServiceMonitorSettings>();
+            container.RegisterSingleton<IMammothActivePriceServiceMonitorSettings, MammothActivePriceServiceMonitorSettings>();
             container.RegisterSingleton<IMonitorCache, MonitorCache>();
 
             container.RegisterSingleton<IMonitorService, MonitorService>();
             container.RegisterSingleton<IMonitorSettings>(() => MonitorSettings.CreateFromConfig());
             var monitors = GetMonitorsRegisteredInAppConfig();
-            container.RegisterCollection(typeof(IMonitor), monitors);
+            container.Collection.Register(typeof(IMonitor), monitors);
 
             container.Register<MessageQueueCache>();
             container.Register<MammothMessageQueueCache>();

@@ -90,7 +90,7 @@
         }
         private bool ShouldCheckDataInMessageQueuePriceAndItemTable(string regionCode)
         {
-            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.Now).TimeOfDay;
+            LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.GetCurrentInstant()).TimeOfDay;
             TimeSpan configuredInterval = TimeSpan.FromMilliseconds(0);
 
             LocalTime openTime = GetConfiguredOpenTimeByRegion(regionCode);
