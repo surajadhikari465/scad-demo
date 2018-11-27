@@ -1,9 +1,6 @@
-﻿
-CREATE PROCEDURE dbo.GetRetentionPoliciesByTableDailyPurge
-(
-	@Table VARCHAR(64),
-	@IncludedInDailyPurge bit
-)
+﻿CREATE PROCEDURE dbo.GetRetentionPoliciesByTableDailyPurge
+	@Table VARCHAR(64) = NULL,
+	@IncludedInDailyPurge bit = NULL
 AS 
 BEGIN
 
@@ -20,6 +17,8 @@ SELECT [RetentionPolicyId]
       ,[LastPurgedDateTime]
   FROM [dbo].[RetentionPolicy]
   WHERE [Table] = IsNull(@Table,[Table]) and IncludedInDailyPurge = IsNull(@IncludedInDailyPurge ,IncludedInDailyPurge)
-  order by [table] asc
+  ORDER BY [Table]
 END 
 
+GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRMAClientRole];

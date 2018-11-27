@@ -1,6 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.UpdateRetentionPolicy
-(
+﻿CREATE PROCEDURE dbo.UpdateRetentionPolicy
 	@RetentionPolicyId INT,
 	@Schema VARCHAR(50),
 	@Table VARCHAR(64),
@@ -11,10 +9,17 @@ CREATE PROCEDURE dbo.UpdateRetentionPolicy
 	@IncludedInDailyPurge bit,
 	@DailyPurgeCompleted bit,
 	@PurgeJobName VARCHAR(50)
-)
 AS
 BEGIN
 	SET NOCOUNT ON
+
+  IF NOT Exists(SELECT 1 from sys.tables A
+            INNER JOIN sys.schemas B ON B.schema_id = A.schema_id
+            WHERE B.name = @Schema and A.name = @Table)
+  BEGIN
+    RAISERROR('Table and/or Schema does not exist. Please verify your input and try again.', 15, 1);
+    RETURN;
+  END
 
 	--See if there is a current record.
 	IF EXISTS (SELECT RetentionPolicyId FROM [RetentionPolicy] (nolock) WHERE RetentionPolicyId = @RetentionPolicyId)
@@ -64,3 +69,5 @@ BEGIN
 	SET NOCOUNT OFF
 END
 
+GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRMAClientRole];

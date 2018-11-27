@@ -2,18 +2,12 @@ Option Strict Off
 Option Explicit On
 
 Imports Infragistics.Win.UltraWinDataSource
-Imports Infragistics.Shared
 Imports Infragistics.Win
 Imports Infragistics.Win.UltraWinGrid
 Imports log4net
-Imports System.Configuration
 Imports System.Data.SqlClient
 Imports WholeFoods.Utility.DataAccess
-Imports WholeFoods.Utility
-Imports WholeFoods.IRMA.Common
-Imports WholeFoods.IRMA.Common.BusinessLogic
 Imports WholeFoods.IRMA.Common.DataAccess
-Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Module Global_Renamed
     ' Define the log4net logger for this class.
@@ -1083,74 +1077,20 @@ Module Global_Renamed
     Public Sub LoadSubTeamByType(ByRef eSubTeamType As enumSubTeamType, ByRef cmbSubTeam As System.Windows.Forms.ComboBox, Optional ByRef lNumber As Integer = -1, Optional ByRef lOrderHeader_SubTeamNo As Integer = -1)
         LoadSubTeamByType(eSubTeamType, cmbSubTeam, Nothing, lNumber, lOrderHeader_SubTeamNo)
     End Sub
-    Public Sub LoadAllJobsFromRetentionPolicy(ByRef cmbPurgeJobName As System.Windows.Forms.ComboBox)
-        LoadCombo(cmbPurgeJobName, "GetPurgeJobNamesForRetentionPolicy", "PurgeJobName", "PurgeJobName")
-    End Sub
 
-    Public Sub LoadTableswithRetentionPolicy(ByRef cmbTableName As System.Windows.Forms.ComboBox)
-        LoadCombo(cmbTableName, "GetTablesWithRetentionPolicy", "Table", "Table")
-    End Sub
+  Public Sub LoadColumnsForTable(ByRef cmbPurgeJobName As System.Windows.Forms.ComboBox, ByVal Schema As String, ByVal Table As String)
+    Dim paramList As New DBParamList()
 
+    paramList.Add(New DBParam("Schema", DBParamType.String, Schema))
+    paramList.Add(New DBParam("Table", DBParamType.String, Table))
 
-    Public Function ValidateTableByTableNameSchema(ByVal Schema As String, ByVal Table As String) As Boolean
-        Dim cmd As SqlClient.SqlCommand
-        Dim prm As SqlClient.SqlParameter
-        Dim isTableValid As Boolean
-        cmd = New SqlClient.SqlCommand
-        cmd.CommandType = CommandType.StoredProcedure
-        cmd.CommandText = "ValidateIfTableExists"
+    Call LoadCombo(cmbPurgeJobName, "GetColumnNamesBySchemaTable", "Column_Name", "Column_Name", paramList)
 
-        prm = New SqlClient.SqlParameter("@Schema", SqlDbType.VarChar)
-        prm.Direction = ParameterDirection.Input
-        prm.Value = Schema
-        cmd.Parameters.Add(prm)
+    paramList = Nothing
+    logger.Debug("LoadLocations Exit")
+  End Sub
 
-
-        prm = New SqlClient.SqlParameter("@Table", SqlDbType.VarChar)
-        prm.Direction = ParameterDirection.Input
-        prm.Value = Table
-        cmd.Parameters.Add(prm)
-
-        'add output parameter
-        prm = New SqlClient.SqlParameter("@IsTableValid", SqlDbType.Bit)
-        prm.Direction = ParameterDirection.Output
-        cmd.Parameters.Add(prm)
-
-        'set the database connection
-        cmd.Connection = GetAdoNetConnection()
-
-        Try
-            cmd.ExecuteNonQuery()
-
-            isTableValid = cmd.Parameters("@IsTableValid").Value
-        Catch ex As Exception
-            'use the date/time from the computer as the fallback
-            isTableValid = False
-            logger.Error(ex.Message)
-        Finally
-            prm = Nothing
-            cmd.Dispose()
-        End Try
-        Return isTableValid
-    End Function
-    Public Sub LoadColumnsForTable(ByRef cmbPurgeJobName As System.Windows.Forms.ComboBox, ByVal Schema As String, ByVal Table As String)
-
-
-        Dim paramList As New DBParamList()
-
-        paramList.Add(New DBParam("Schema", DBParamType.String, Schema))
-
-        paramList.Add(New DBParam("Table", DBParamType.String, Table))
-
-
-        Call LoadCombo(cmbPurgeJobName, "GetColumnNamesBySchemaTable", "Column_Name", "Column_Name", paramList)
-
-        paramList = Nothing
-
-        logger.Debug("LoadLocations Exit")
-    End Sub
-
-    Public Sub LoadSubTeamByType(ByRef eSubTeamType As enumSubTeamType, ByRef cmbSubTeam As System.Windows.Forms.ComboBox, ByRef abSubTeamUnRestricted() As Boolean, Optional ByRef lNumber As Integer = -1, Optional ByRef lOrderHeader_SubTeamNo As Integer = -1)
+  Public Sub LoadSubTeamByType(ByRef eSubTeamType As enumSubTeamType, ByRef cmbSubTeam As System.Windows.Forms.ComboBox, ByRef abSubTeamUnRestricted() As Boolean, Optional ByRef lNumber As Integer = -1, Optional ByRef lOrderHeader_SubTeamNo As Integer = -1)
 
         logger.Debug("LoadSubTeamByType Entry")
 

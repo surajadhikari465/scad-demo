@@ -1444,7 +1444,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetPSVendors.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetPurchaseOrderHeader.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetPurchaseOrderReportDetails.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs2\GetPurgeJobNamesForRetentionPolicy.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetRandomWeightScalePLUs.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetReceiveLogDate.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetReceivingCheckList.sql" />
@@ -1472,7 +1471,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetRetailTeams.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetRetailZones.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetRetentionPoliciesByTableDailyPurge.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs2\GetRetentionPolicyById.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetReturnOrderChanges.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetReturnOrderList.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs2\GetReturnOrderRecords.sql" />
@@ -1556,7 +1554,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetSustainabilityRankings.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetSystemDate.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetSystemDateCmd.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\GetTablesWithRetentionPolicy.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetTaxClass_ByDescExact.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetTaxClass_ByTaxClassDescStartsWith.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\GetTaxClasses.sql" />

@@ -3,353 +3,211 @@ Option Explicit On
 Imports WholeFoods.Utility.DataAccess
 
 Friend Class frmRetentionPolicies
-    Inherits System.Windows.Forms.Form
+  Inherits System.Windows.Forms.Form
 
-    Private retentionPoliciesID As Integer
-    Private mbChanged As Boolean
-    Private mbLoading As Boolean
-    Private schema As String
-    Private operation As String
-    Private table As String
-    Private referenceColumn As String
-    Private mbUserUpdates As Boolean 'Indicates that the user can update (save) the form.
-    Const Add As String = "Add"
-    Const StraightPugeJob As String = "StraightPurge"
-    Private IsInitializing As Boolean
+  Private action As ActionName
+  Private bUpdated As Boolean = False
+  Private mbChanged As Boolean = False
+  Private mbLoading As Boolean = True
+  Private policyDataRow As DataRow
+  Private dataSource As DataTable
+  Private factory As DataFactory
 
+  Const VALIDATION_HEADER As String = "Cannot save retention policy!"
 
-    Private Sub frmRetentionPoliciesEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+  Public ReadOnly Property IsUpdated() As Boolean
+    Get
+      Return bUpdated
+    End Get
+  End Property
 
-        Dim rsRetentionPolicy As DAO.Recordset = Nothing
-        mbChanged = False
-        mbLoading = True
-        '-- Center form
-        CenterForm(Me)
+  Enum ActionName
+    Add
+    Update
+  End Enum
 
-        '-- Load rentention policy data if retentionPoliciesID has value
-        If retentionPoliciesID <> 0 Then
-            Try
-                rsRetentionPolicy = SQLOpenRecordSet("EXEC GetRetentionPolicyById " & retentionPoliciesID, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-                txtSchema.Text = Convert.ToString(rsRetentionPolicy.Fields("Schema").Value)
-                txtTable.Text = Convert.ToString(rsRetentionPolicy.Fields("Table").Value)
+  Private Sub frmRetentionPoliciesEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    mbLoading = True
 
-                LoadColumns()
-                ' set the controls based on data from database
-                cboColumn.Text = Convert.ToString(rsRetentionPolicy.Fields("ReferenceColumn").Value)
-                schema = rsRetentionPolicy.Fields("Schema").Value
-                table = rsRetentionPolicy.Fields("Table").Value
-                referenceColumn = rsRetentionPolicy.Fields("ReferenceColumn").Value
-                NumericUpDownDaysToKeep.Value = rsRetentionPolicy.Fields("DaysToKeep").Value
-                NumericUpDownTimeToStart.Value = rsRetentionPolicy.Fields("TimeToStart").Value
-                NumericUpDownTimeToEnd.Value = rsRetentionPolicy.Fields("TimeToEnd").Value
-                CheckBox_IncludedInDailyPurge.Checked = rsRetentionPolicy.Fields("IncludedInDailyPurge").Value
-                CheckBox_DailyPurgeCompleted.Checked = rsRetentionPolicy.Fields("DailyPurgeCompleted").Value
+    If action = ActionName.Add Then
+      cboJobName.SelectedIndex = 0
+    Else
+      LoadJobs()
+      cboJobName.Text = policyDataRow!PurgeJobName
+    End If
 
-                If (Not IsDBNull(rsRetentionPolicy.Fields("LastPurgedDateTime").Value)) Then
-                    txtLastPurgedDateTime.Text = rsRetentionPolicy.Fields("LastPurgedDateTime").Value
-                Else
+    txtSchema.Text = IIf(IsDBNull(policyDataRow!Schema), "dbo", policyDataRow!Schema)
+    txtTable.Text = IIf(IsDBNull(policyDataRow!Table), String.Empty, policyDataRow!Table)
+    If Not IsDBNull(policyDataRow!DaysToKeep) Then NumericUpDownDaysToKeep.Value = CInt(policyDataRow!DaysToKeep)
+    If Not IsDBNull(policyDataRow!TimeToStart) Then NumericUpDownTimeToStart.Value = CInt(policyDataRow!TimeToStart)
+    If Not IsDBNull(policyDataRow!TimeToEnd) Then NumericUpDownTimeToEnd.Value = CInt(policyDataRow!TimeToEnd)
+    If Not IsDBNull(policyDataRow!IncludedInDailyPurge) Then checkIncludedInDailyPurge.Checked = CBool(policyDataRow!IncludedInDailyPurge)
+    If Not IsDBNull(policyDataRow!DailyPurgeCompleted) Then checkDailyPurgeCompleted.Checked = CBool(policyDataRow!DailyPurgeCompleted)
+    If Not IsDBNull(policyDataRow!LastPurgedDateTime) Then lblLastPurgedDate.Text = policyDataRow!LastPurgedDateTime.ToString()
 
-                    txtLastPurgedDateTime.Text = String.Empty
-                End If
+    LoadColumns()
+    If IsDBNull(policyDataRow!ReferenceColumn) Then
+      cboColumn.SelectedIndex = -1
+    Else
+      cboColumn.Text = policyDataRow!ReferenceColumn
+    End If
 
-                LoadJobs()
-                cboJobName.Text = Convert.ToString(rsRetentionPolicy.Fields("PurgeJobName").Value)
+    cboJobName.Enabled = (action = ActionName.Update)
+    txtSchema.Enabled = (action = ActionName.Add)
+    txtTable.Enabled = (action = ActionName.Add)
 
-            Finally
-                If rsRetentionPolicy IsNot Nothing Then
-                    rsRetentionPolicy.Close()
-                    rsRetentionPolicy = Nothing
-                End If
-            End Try
+    mbLoading = False
+  End Sub
 
-        End If
-        If (operation = Add) Then
+  Public Sub Load_Form(ByRef sourceDataTable As DataTable, ByVal retentionID As Integer)
+    If sourceDataTable Is Nothing Then Throw New ArgumentNullException("Required parameter <sourceDataTable> is missing.")
 
-            LoadJobs()
-            cboJobName.Text = StraightPugeJob
-            txtLastPurgedDateTime.Visible = False
-            lblPurgedDateTime.Visible = False
-            cboJobName.Enabled = False
-        Else
-            txtSchema.Enabled = False
-            txtTable.Enabled = False
-            txtLastPurgedDateTime.Enabled = False
-        End If
+    dataSource = sourceDataTable
+    Dim result As DataRow() = dataSource.Select(String.Format("RetentionPolicyId = {0}", retentionID.ToString()))
 
-        mbLoading = False
-        mbUserUpdates = True
-    End Sub
-    ''' <summary>
-    ''' Load_Form
-    ''' </summary>
-    ''' <param name="RetentionPoliciesIDPassed"></param>
-    ''' <param name="SchemaPassed"></param>
-    ''' <param name="TablePassed"></param>
-    ''' <param name="ReferenceColumnPassed"></param>
-    ''' <param name="OperationPassed"></param>
-    Public Sub Load_Form(Optional ByRef RetentionPoliciesIDPassed As Integer = 0, Optional ByRef SchemaPassed As String = "", Optional ByRef TablePassed As String = "", Optional ByRef ReferenceColumnPassed As String = "", Optional ByVal OperationPassed As String = "Add")
+    action = IIf(result.Length = 0, ActionName.Add, ActionName.Update)
 
-        retentionPoliciesID = RetentionPoliciesIDPassed
-        schema = SchemaPassed
-        table = TablePassed
-        referenceColumn = ReferenceColumnPassed
-        operation = OperationPassed
-        Me.ShowDialog()
+    Select Case action
+      Case ActionName.Add : policyDataRow = dataSource.NewRow
+      Case ActionName.Update : policyDataRow = result(0)
+      Case Else : Throw New Exception("Unsupported action")
+    End Select
 
-    End Sub
+    factory = New DataFactory(DataFactory.ItemCatalog)
+    Me.ShowDialog()
+  End Sub
 
-    Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+  Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+    If mbChanged Then
+      Select Case MsgBox("Save changes before closing?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Data changed!")
+        Case MsgBoxResult.Yes : If Not Save() Then Exit Sub
+        Case MsgBoxResult.Cancel : Exit Sub
+      End Select
+    End If
 
-        Dim iAns As Short
+    Me.Close()
+  End Sub
 
-        If mbUserUpdates Then
-            If mbChanged Then
-                iAns = MsgBox("Save changes before closing?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Data changed!")
-                Select Case iAns
-                    Case MsgBoxResult.Yes
-                        If Not Save() Then Exit Sub
-                    Case MsgBoxResult.Cancel
-                        Exit Sub
-                End Select
-            End If
-        End If
+  Private Sub LoadJobs()
+    Const PURGE_JOB_NAME As String = "PurgeJobName"
+    cboJobName.DataSource = IIf(dataSource Is Nothing, Nothing, dataSource.DefaultView.ToTable(True, PURGE_JOB_NAME))
+    cboJobName.DisplayMember = PURGE_JOB_NAME
+  End Sub
 
-        Me.Close()
+  Private Sub LoadColumns()
+    cboColumn.Items.Clear()
+    LoadColumnsForTable(cboColumn, txtSchema.Text, txtTable.Text)
+  End Sub
 
-    End Sub
-    Private Sub LoadJobs()
+  Private Sub cmdApply_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdApply.Click
+    If Save() Then Close()
+  End Sub
 
-        LoadAllJobsFromRetentionPolicy(cboJobName)
+  Private Function Save() As Boolean
+    If Not mbChanged OrElse Not ValidateData() Then Return False
 
+    ' no need to check for duplicate, we will let them enter duplicate records
+    ' if they want to enter from 22-2 then they can enter from 22-24 and 0-2
+    'If (operation = Add) Then
+    '    Try
+    '        '-- Check to see if the retention policy already exists. this will be called only in add operation
+    '        rsRetenionPolicy = SQLOpenRecordSet("EXEC CheckForDuplicateRetentionPolicyRecord " & txtSchema.Text & ", " & txtTable.Text, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+    '        If rsRetenionPolicy.Fields("Found").Value > 0 Then
+    '            MsgBox("A retention policy already exists for this table.", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
 
-    End Sub
-    Private Sub LoadColumns()
-        '' make sure table name and schema are valis, if valid then load columns for that table
-        If ValidateTableName(txtSchema.Text, txtTable.Text) Then
-            LoadColumnsForTable(cboColumn, txtSchema.Text, txtTable.Text)
-        Else
-            cboColumn.Items.Clear()
-        End If
+    '            txtSchema.Focus()
+    '            Exit Function
+    '        End If
+    '    Finally
+    '        If rsRetenionPolicy IsNot Nothing Then
+    '            rsRetenionPolicy.Close()
+    '            rsRetenionPolicy = Nothing
+    '        End If
+    '    End Try
+    'End If
 
-    End Sub
-    Private Function ValidateTableName(ByVal SchemaPassed As String, ByVal TablePassed As String) As Boolean
+    Dim paramList As New DBParamList From
+    {
+      New DBParam("@RetentionPolicyId", DBParamType.Int, policyDataRow!RetentionPolicyId),
+      New DBParam("@Schema", DBParamType.String, IIf(IsDBNull(policyDataRow!Schema), txtSchema.Text, policyDataRow!Schema)),
+      New DBParam("@Table", DBParamType.String, IIf(IsDBNull(policyDataRow!Table), txtTable.Text, policyDataRow!Table)),
+      New DBParam("@PurgeJobName", DBParamType.String, cboJobName.Text),
+      New DBParam("@ReferenceColumn", DBParamType.String, cboColumn.Text),
+      New DBParam("@DaysToKeep", DBParamType.Int, NumericUpDownDaysToKeep.Value),
+      New DBParam("@TimeToStart", DBParamType.Int, NumericUpDownTimeToStart.Value),
+      New DBParam("@TimeToEnd", DBParamType.Int, NumericUpDownTimeToEnd.Value),
+      New DBParam("@IncludedInDailyPurge", DBParamType.Bit, checkIncludedInDailyPurge.Checked),
+      New DBParam("@DailyPurgeCompleted", DBParamType.Bit, checkDailyPurgeCompleted.Checked)
+    }
 
-        Return ValidateTableByTableNameSchema(txtSchema.Text, txtTable.Text)
+    Try
+      factory.GetStoredProcedureDataTable("dbo.UpdateRetentionPolicy", paramList)
+      bUpdated = True
+    Catch ex As Exception
+      MessageBox.Show(ex.InnerException.Message, "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+      Return False
+    End Try
 
-    End Function
-    Private Sub cboColumn_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboColumn.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Changed(False)
+    Return True
+  End Function
 
-        If KeyAscii = 8 Then
-            cboColumn.SelectedIndex = -1
-        End If
+  Private Function ValidateData(Optional ByRef bMsg As Boolean = True) As Boolean
+    Dim warning As String = String.Empty
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    If Trim(txtSchema.Text) = "" Then
+      warning = "Please enter value in Schema"
+      txtSchema.Focus()
+    ElseIf Trim(txtTable.Text) = "" Then
+      warning = "Please enter value in Table"
+      txtTable.Focus()
+    ElseIf cboColumn.SelectedIndex = -1 Then
+      warning = "Please select Column"
+      cboColumn.Focus()
+    ElseIf NumericUpDownTimeToStart.Value > NumericUpDownTimeToEnd.Value Then
+      warning = "Time To Start must be less than or equal to Time to End."
+      NumericUpDownTimeToStart.Focus()
+    ElseIf cboJobName.SelectedIndex = -1 Then
+      warning = "Please select Job Name"
+      cboJobName.Focus()
+    End If
 
-    Private Sub cboColumn_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboColumn.SelectedIndexChanged
+    If Not String.IsNullOrEmpty(warning) Then MsgBox(warning, MsgBoxStyle.Exclamation, VALIDATION_HEADER)
+    Return String.IsNullOrEmpty(warning)
+  End Function
 
-        If IsInitializing Then Exit Sub
+  ' this method will enable the aply (save) button
+  Private Sub Changed(Optional ByRef bChanged As Boolean = True)
+    If mbLoading Then Exit Sub
 
-        referenceColumn = VB6.GetItemData(cboColumn, cboColumn.SelectedIndex)
+    mbChanged = bChanged
+    cmdApply.Enabled = mbChanged
+  End Sub
 
-        Changed()
-
-    End Sub
-
-    Private Sub cmdApply_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdApply.Click
-
-        Save()
-
-    End Sub
-
-    Private Function Save() As Boolean
-
-        Dim rsRetenionPolicy As DAO.Recordset = Nothing
-
-        Save = False
-
-        If mbChanged Then
-            If Not ValidateTableName(txtSchema.Text, txtTable.Text) Then
-                MsgBox("Please enter valid values for Schema and Table.", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-                Exit Function
-            End If
-            If Not ValidateData() Then Exit Function
-            ' no need to check for duplicate, we will let them enter duplicate records
-            ' i fthey want to enter from 22-2 then they can enter from 22-24 and 0-2
-            'If (operation = Add) Then
-            '    Try
-
-
-            '        '-- Check to see if the retention policy already exists. this will be called only in add operation
-            '        rsRetenionPolicy = SQLOpenRecordSet("EXEC CheckForDuplicateRetentionPolicyRecord " & txtSchema.Text & ", " & txtTable.Text, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-            '        If rsRetenionPolicy.Fields("Found").Value > 0 Then
-            '            MsgBox("A retention policy already exists for this table.", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-
-            '            txtSchema.Focus()
-            '            Exit Function
-            '        End If
-            '    Finally
-            '        If rsRetenionPolicy IsNot Nothing Then
-            '            rsRetenionPolicy.Close()
-            '            rsRetenionPolicy = Nothing
-            '        End If
-            '    End Try
-            'End If
-            '--Update the record.
-            SQLOpenRS(rsRetenionPolicy, "EXEC UpdateRetentionPolicy " & retentionPoliciesID & ", " & txtSchema.Text & ", " & txtTable.Text & ", " & cboColumn.Text & ",'" & NumericUpDownDaysToKeep.Value & "', '" & NumericUpDownTimeToStart.Value & "', '" & NumericUpDownTimeToEnd.Value & "', '" & CheckBox_IncludedInDailyPurge.Checked & "', '" & CheckBox_DailyPurgeCompleted.Checked & "', '" & cboJobName.Text & "'", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-
-                retentionPoliciesID = rsRetenionPolicy.Fields(0).Value
-
-                Save = True
-
-            Changed(False)
-
-        End If
-
-    End Function
-
-    Private Function ValidateData(Optional ByRef bMsg As Boolean = True) As Boolean
-
-        ValidateData = True
-        Dim errorMessage As String = ""
-        ' validate data for different controls
-        If Trim(txtSchema.Text) = "" Then
-            errorMessage = MsgBox("Please enter value in Schema", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            ValidateData = False
-            txtSchema.Focus()
-        ElseIf Trim(txtTable.Text) = "" Then
-            ValidateData = False
-            errorMessage = MsgBox("Please enter value in Table", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            txtTable.Focus()
-        ElseIf cboColumn.SelectedIndex = -1 Then
-            ValidateData = False
-            errorMessage = MsgBox("Please select Column", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            cboColumn.Focus()
-        ElseIf NumericUpDownDaysToKeep.Value <= 0 Then
-            errorMessage = MsgBox("Please enter value in Days To Keep greater than 0", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            ValidateData = False
-            NumericUpDownDaysToKeep.Focus()
-        ElseIf NumericUpDownTimeToStart.Value > NumericUpDownTimeToEnd.Value Then
-            errorMessage = MsgBox("Time To Start must be less than or equal to Time to End.", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            ValidateData = False
-            NumericUpDownTimeToStart.Focus()
-
-        ElseIf cboJobName.SelectedIndex = -1 Then
-            ValidateData = False
-            errorMessage = MsgBox("Please select Job Name", MsgBoxStyle.Exclamation, "Cannot save retention policy!")
-            cboJobName.Focus()
-        End If
-
-
-    End Function
-    ' this method will enable the aply (save) button
-    Private Sub Changed(Optional ByRef bChanged As Boolean = True)
-
-        If mbLoading Or Not mbUserUpdates Then Exit Sub
-
-        If bChanged = True Then
-            cmdApply.Enabled = True
-            mbChanged = True
-        Else
-            cmdApply.Enabled = False
-            mbChanged = False
-        End If
-
-    End Sub
-
-    Private Sub frmRetentionPolicies_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-
-        mbChanged = False
-        mbLoading = False
-        retentionPoliciesID = 0
-        schema = ""
-        table = ""
-        referenceColumn = False
-        mbUserUpdates = False
-
-    End Sub
 #Region "CheckForInputchange"
-    Private Sub txtSchema_TextChanged(sender As Object, e As EventArgs) Handles txtSchema.TextChanged
+  Private Sub txtBox_TextChanged(sender As Object, e As EventArgs) Handles txtTable.TextChanged, txtSchema.TextChanged
+    Changed()
+  End Sub
 
-        If IsInitializing Then Exit Sub
+  Private Sub CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles checkIncludedInDailyPurge.CheckedChanged, checkDailyPurgeCompleted.CheckedChanged
+    Changed()
+  End Sub
 
-        Changed()
-    End Sub
+  Private Sub cbo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboJobName.SelectedIndexChanged, cboColumn.SelectedIndexChanged
+    If mbLoading Then Return
 
-    Private Sub txtTable_TextChanged(sender As Object, e As EventArgs) Handles txtTable.TextChanged
+    If sender Is cboColumn Then policyDataRow!ReferenceColumn = cboColumn.Text
+    Changed()
+  End Sub
 
-        If IsInitializing Then Exit Sub
+  Private Sub txtBox_Leave(sender As Object, e As EventArgs) Handles txtSchema.Leave, txtTable.Leave
+    If (Not String.IsNullOrWhiteSpace(txtSchema.Text) AndAlso Not String.IsNullOrWhiteSpace(txtTable.Text)) Then
+      LoadColumns()
+    End If
+  End Sub
 
-        Changed()
-    End Sub
-
-    Private Sub NumericUpDownDaysToKeep_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownDaysToKeep.ValueChanged
-
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-    ' eneable save change button if user makes any changes in any of the controls
-    Private Sub dtStartDate_ValueChanged(sender As Object, e As EventArgs)
-
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
-    Private Sub dtEndDate_ValueChanged(sender As Object, e As EventArgs)
-
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
-    Private Sub CheckBox_IncludedInDailyPurge_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_IncludedInDailyPurge.CheckedChanged
-
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
-    Private Sub CheckBox_DailyPurgeCompleted_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_DailyPurgeCompleted.CheckedChanged
-
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
-    Private Sub cboJobName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboJobName.SelectedIndexChanged
-        If IsInitializing Then Exit Sub
-        Changed()
-    End Sub
-
-    Private Sub txtSchema_Leave(sender As Object, e As EventArgs) Handles txtSchema.Leave
-        If (txtSchema.Text <> "" And txtTable.Text <> "") Then
-            LoadColumns()
-        End If
-    End Sub
-
-    Private Sub txtTable_Leave(sender As Object, e As EventArgs) Handles txtTable.Leave
-        If (txtSchema.Text <> "" And txtTable.Text <> "") Then
-            LoadColumns()
-        End If
-    End Sub
-
-    Private Sub NumericUpDownTimeToStart_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownTimeToStart.ValueChanged
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
-    Private Sub NumericUpDownTimeToEnd_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownTimeToEnd.ValueChanged
-        If IsInitializing Then Exit Sub
-
-        Changed()
-    End Sub
-
+  Private Sub NumericUpDown_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownTimeToStart.ValueChanged, NumericUpDownTimeToEnd.ValueChanged, NumericUpDownDaysToKeep.ValueChanged
+    Changed()
+  End Sub
 #End Region
 End Class

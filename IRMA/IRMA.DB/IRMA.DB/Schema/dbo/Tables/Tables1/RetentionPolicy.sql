@@ -12,4 +12,9 @@
     [LastPurgedDateTime]   DATETIME      NULL,
     CONSTRAINT [PK_RetentionPolicy] PRIMARY KEY CLUSTERED ([RetentionPolicyId] ASC) WITH (FILLFACTOR = 80)
 );
+GO
 
+GRANT SELECT ON OBJECT::dbo.RetentionPolicy TO [IRSUser];
+GO
+GRANT UPDATE ON OBJECT::dbo.RetentionPolicy TO [IRSUser];
+GO

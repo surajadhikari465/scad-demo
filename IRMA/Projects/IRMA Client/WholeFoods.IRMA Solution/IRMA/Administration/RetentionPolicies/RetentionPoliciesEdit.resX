@@ -533,28 +533,28 @@
   <data name="&gt;&gt;Label_IsSecureTransfer.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="CheckBox_IncludedInDailyPurge.AutoSize" type="System.Boolean, mscorlib">
+  <data name="checkIncludedInDailyPurge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="CheckBox_IncludedInDailyPurge.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="checkIncludedInDailyPurge.Location" type="System.Drawing.Point, System.Drawing">
     <value>164, 244</value>
   </data>
-  <data name="CheckBox_IncludedInDailyPurge.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="checkIncludedInDailyPurge.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
   </data>
-  <data name="CheckBox_IncludedInDailyPurge.TabIndex" type="System.Int32, mscorlib">
+  <data name="checkIncludedInDailyPurge.TabIndex" type="System.Int32, mscorlib">
     <value>117</value>
   </data>
-  <data name="&gt;&gt;CheckBox_IncludedInDailyPurge.Name" xml:space="preserve">
-    <value>CheckBox_IncludedInDailyPurge</value>
+  <data name="&gt;&gt;checkIncludedInDailyPurge.Name" xml:space="preserve">
+    <value>checkIncludedInDailyPurge</value>
   </data>
-  <data name="&gt;&gt;CheckBox_IncludedInDailyPurge.Type" xml:space="preserve">
+  <data name="&gt;&gt;checkIncludedInDailyPurge.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;CheckBox_IncludedInDailyPurge.Parent" xml:space="preserve">
+  <data name="&gt;&gt;checkIncludedInDailyPurge.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CheckBox_IncludedInDailyPurge.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;checkIncludedInDailyPurge.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
   <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
@@ -593,31 +593,31 @@
   <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="CheckBox_DailyPurgeCompleted.AutoSize" type="System.Boolean, mscorlib">
+  <data name="checkDailyPurgeCompleted.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="CheckBox_DailyPurgeCompleted.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="checkDailyPurgeCompleted.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CheckBox_DailyPurgeCompleted.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="checkDailyPurgeCompleted.Location" type="System.Drawing.Point, System.Drawing">
     <value>164, 271</value>
   </data>
-  <data name="CheckBox_DailyPurgeCompleted.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="checkDailyPurgeCompleted.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
   </data>
-  <data name="CheckBox_DailyPurgeCompleted.TabIndex" type="System.Int32, mscorlib">
+  <data name="checkDailyPurgeCompleted.TabIndex" type="System.Int32, mscorlib">
     <value>119</value>
   </data>
-  <data name="&gt;&gt;CheckBox_DailyPurgeCompleted.Name" xml:space="preserve">
-    <value>CheckBox_DailyPurgeCompleted</value>
+  <data name="&gt;&gt;checkDailyPurgeCompleted.Name" xml:space="preserve">
+    <value>checkDailyPurgeCompleted</value>
   </data>
-  <data name="&gt;&gt;CheckBox_DailyPurgeCompleted.Type" xml:space="preserve">
+  <data name="&gt;&gt;checkDailyPurgeCompleted.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;CheckBox_DailyPurgeCompleted.Parent" xml:space="preserve">
+  <data name="&gt;&gt;checkDailyPurgeCompleted.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CheckBox_DailyPurgeCompleted.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;checkDailyPurgeCompleted.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="txtSchema.Font" type="System.Drawing.Font, System.Drawing">
@@ -682,6 +682,9 @@
   </data>
   <data name="cboJobName.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
+  </data>
+  <data name="cboJobName.Items" xml:space="preserve">
+    <value>StraightPurge</value>
   </data>
   <data name="cboJobName.Location" type="System.Drawing.Point, System.Drawing">
     <value>160, 300</value>
@@ -788,36 +791,6 @@
   <data name="&gt;&gt;Label8.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="txtLastPurgedDateTime.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="txtLastPurgedDateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 334</value>
-  </data>
-  <data name="txtLastPurgedDateTime.MaxLength" type="System.Int32, mscorlib">
-    <value>250</value>
-  </data>
-  <data name="txtLastPurgedDateTime.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="txtLastPurgedDateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>329, 20</value>
-  </data>
-  <data name="txtLastPurgedDateTime.TabIndex" type="System.Int32, mscorlib">
-    <value>128</value>
-  </data>
-  <data name="&gt;&gt;txtLastPurgedDateTime.Name" xml:space="preserve">
-    <value>txtLastPurgedDateTime</value>
-  </data>
-  <data name="&gt;&gt;txtLastPurgedDateTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtLastPurgedDateTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;txtLastPurgedDateTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="lblPurgedDateTime.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
@@ -854,6 +827,30 @@
   <data name="&gt;&gt;lblPurgedDateTime.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="lblLastPurgedDate.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt, style=Bold</value>
+  </data>
+  <data name="lblLastPurgedDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 334</value>
+  </data>
+  <data name="lblLastPurgedDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>329, 20</value>
+  </data>
+  <data name="lblLastPurgedDate.TabIndex" type="System.Int32, mscorlib">
+    <value>129</value>
+  </data>
+  <data name="&gt;&gt;lblLastPurgedDate.Name" xml:space="preserve">
+    <value>lblLastPurgedDate</value>
+  </data>
+  <data name="&gt;&gt;lblLastPurgedDate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblLastPurgedDate.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblLastPurgedDate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -873,7 +870,7 @@
     <value>No</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Retention Policy Edit</value>

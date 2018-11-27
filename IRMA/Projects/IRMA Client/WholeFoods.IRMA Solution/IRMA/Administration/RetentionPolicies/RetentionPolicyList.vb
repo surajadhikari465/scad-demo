@@ -1,266 +1,152 @@
 Option Strict Off
 Option Explicit On
+
+Imports WholeFoods.Utility.DataAccess
+
 Friend Class frmRetentionPolicyList
-    Inherits System.Windows.Forms.Form
+  Inherits System.Windows.Forms.Form
 
-    Private RetentionPolicyTable As DataTable
-    Private Const StraightPugeJob As String = "StraightPurge"
-    Private Const SelectOne As String = "Select One"
-    Private IsInitializing As Boolean
-    Private Sub cmdAddRetentionPolicy_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdAddRetentionPolicy.Click
+  Private RetentionPolicyTable As DataTable
+  Private Const StraightPugeJob As String = "StraightPurge"
 
-        frmRetentionPolicies.Load_Form()
+  Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+    Me.Close()
+  End Sub
 
-        frmRetentionPolicies.Dispose()
+  Private Sub frmRetentionPolicyList_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles MyBase.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-        RefreshGrid()
+    If KeyAscii = 13 Then 'Shift+Enter.
+      ClearAndRefresh()
+    End If
 
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    eventArgs.Handled = (KeyAscii = 0)
+  End Sub
 
+  Private Sub ClearAndRefresh() 'Clear Search Criteria
+    cboTable.SelectedIndex = -1
+    CheckBox_IncludedInDailyPurge.Checked = False
+    RefreshGrid()
+  End Sub
 
-    Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
-        Me.Close()
-    End Sub
-    Private Sub cmdSearch_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
+  Private Sub frmRetentionPolicyList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    ClearAndRefresh()
+  End Sub
 
-        RefreshGrid()
+  Private Sub RefreshGrid()
+    Try
+      If RetentionPolicyTable Is Nothing Then
+        cboTable.DataSource = Nothing
+        Dim factory As New DataFactory(DataFactory.ItemCatalog)
+        RetentionPolicyTable = factory.GetStoredProcedureDataTable("dbo.GetRetentionPoliciesByTableDailyPurge")
 
-    End Sub
-    Private Sub frmRetentionPolicyList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
-        Dim s As String
-        s = ugrdRetentionPolicy.Selected.Rows(0).Cells("RetentionPolicyId").Value
-        MsgBox(s)
-    End Sub
-
-    Private Sub frmRetentionPolicyList_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles MyBase.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        If KeyAscii = 13 Then 'Shift+Enter.
-            ClearAndRefresh()
+        If RetentionPolicyTable IsNot Nothing Then
+          cboTable.DataSource = RetentionPolicyTable.DefaultView.ToTable(True, "Table")
+          cboTable.DisplayMember = "Table"
+          cboTable.SelectedIndex = -1
         End If
+      End If
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-    Private Sub ClearAndRefresh()
-        '-- Clear Search Criteria
-        If cboTable.Enabled Then cboTable.SelectedIndex = -1
-        CheckBox_IncludedInDailyPurge.Checked = False
-        RefreshGrid()
+      RetentionPolicyTable.DefaultView.RowFilter = IIf(cboTable.SelectedIndex < 0, Nothing, String.Format("Table = '{0}' and IncludedInDailyPurge = {1}", cboTable.Text, IIf(CheckBox_IncludedInDailyPurge.Checked, "1", "0")))
+      ugrdRetentionPolicy.DataSource = RetentionPolicyTable.DefaultView
 
-    End Sub
+    Catch ex As Exception
+      RetentionPolicyTable = Nothing
+      MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK)
+    End Try
 
-    Private Sub frmRetentionPolicyList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-        '-- Center form
-        CenterForm(Me)
+    If ugrdRetentionPolicy.Rows.Count > 0 Then ugrdRetentionPolicy.Rows(0).Selected = True
 
-        LoadTable()
-        SetupDataTable()
-        RefreshGrid()
+    SetButtons()
+  End Sub
 
-    End Sub
+  Private Sub cboTable_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboTable.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    Private Sub LoadTable()
+    If KeyAscii = 8 Then
+      cboTable.SelectedIndex = -1
+    End If
 
-        LoadTableswithRetentionPolicy(cboTable)
+    eventArgs.KeyChar = Chr(KeyAscii)
+    eventArgs.Handled = (KeyAscii = 0)
+  End Sub
 
-    End Sub
+  Private Sub SetButtons()
+    cmdDelete.Enabled = ugrdRetentionPolicy.Selected.Rows.Count > 0
+    cmdEdit.Enabled = ugrdRetentionPolicy.Selected.Rows.Count = 1
+  End Sub
 
-    Private Sub RefreshGrid()
+  Private Sub ugrdLocationList_CellChange(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.CellEventArgs) Handles ugrdRetentionPolicy.CellChange
+    SetButtons()
+  End Sub
 
-        Dim selectedTable As String = Nothing
-        Dim includedInDailyPurge As String = Nothing
+  Private Sub ugrdLocationList_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles ugrdRetentionPolicy.Click
+    SetButtons()
+  End Sub
 
-        'new grid
-        Dim rowRetentionPolicyList As DAO.Recordset = Nothing
-        Dim row As DataRow
-        selectedTable = "Null"
-        If cboTable.SelectedIndex > -1 Then
-            selectedTable = cboTable.Text
-        Else
-            LoadTable()
-        End If
+  Private Sub ugrdLocationList_DoubleClickRow(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.DoubleClickRowEventArgs) Handles ugrdRetentionPolicy.DoubleClickRow
+    If cmdEdit.Enabled Then cmdEdit.PerformClick()
+  End Sub
 
+  Private Sub cmdDeleteRetentionPolicy_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdDelete.Click
+    Dim iDelCnt As Short
+    Dim hasJobsOtherThanPurgejob As Boolean = False
+    If ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
 
-        If CheckBox_IncludedInDailyPurge.Checked Then
-            includedInDailyPurge = "True"
-        Else
-            includedInDailyPurge = "Null"
-        End If
+      '-- Make sure they really want to delete.
+      If MsgBox("Delete the selected Retention Policies?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Delete Retention Policies") = MsgBoxResult.No Then
+        Exit Sub
+      End If
 
-        Try
-
-            rowRetentionPolicyList = SQLOpenRecordSet("EXEC GetRetentionPoliciesByTableDailyPurge " & selectedTable & ", " & includedInDailyPurge, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-
-            RetentionPolicyTable.Rows.Clear()
-
-            'loads new grid
-            While Not rowRetentionPolicyList.EOF
-
-                row = RetentionPolicyTable.NewRow
-                row("RetentionPolicyId") = rowRetentionPolicyList.Fields("RetentionPolicyId").Value
-                row("Schema") = rowRetentionPolicyList.Fields("Schema").Value
-                row("Table") = rowRetentionPolicyList.Fields("Table").Value
-                row("ReferenceColumn") = rowRetentionPolicyList.Fields("ReferenceColumn").Value
-                row("DaysToKeep") = rowRetentionPolicyList.Fields("DaysToKeep").Value
-                row("TimeToStart") = rowRetentionPolicyList.Fields("TimeToStart").Value
-                row("TimeToEnd") = rowRetentionPolicyList.Fields("TimeToEnd").Value
-                row("IncludedInDailyPurge") = rowRetentionPolicyList.Fields("IncludedInDailyPurge").Value
-                row("DailyPurgeCompleted") = rowRetentionPolicyList.Fields("DailyPurgeCompleted").Value
-                row("PurgeJobName") = rowRetentionPolicyList.Fields("PurgeJobName").Value
-                row("LastPurgedDateTime") = rowRetentionPolicyList.Fields("LastPurgedDateTime").Value
-
-
-                RetentionPolicyTable.Rows.Add(row)
-
-                rowRetentionPolicyList.MoveNext()
-            End While
-
-            RetentionPolicyTable.AcceptChanges()
-            ugrdRetentionPolicy.DataSource = RetentionPolicyTable
-            'close down rs for new grid
-        Finally
-            If rowRetentionPolicyList IsNot Nothing Then
-                rowRetentionPolicyList.Close()
-                rowRetentionPolicyList = Nothing
-            End If
-        End Try
-
-        If ugrdRetentionPolicy.Rows.Count > 0 Then
-            ugrdRetentionPolicy.Rows(0).Selected = True
-        End If
-
-        SetButtons()
-
-    End Sub
-    Private Sub cboTable_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboTable.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        If KeyAscii = 8 Then
-            cboTable.SelectedIndex = -1
-        End If
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-    Private Sub gridLoc_DblClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
-
-        If cmdEditRetentionPolicy.Enabled Then
-            cmdEditRetentionPolicy.PerformClick()
-        End If
-
-    End Sub
-    Private Sub SetButtons()
-
-        If ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
-            Me.cmdDeleteRetentionPolicy.Enabled = True
-        Else
-            Me.cmdDeleteRetentionPolicy.Enabled = False
-        End If
-
-        If ugrdRetentionPolicy.Selected.Rows.Count = 1 Then
-            Me.cmdEditRetentionPolicy.Enabled = True
-        Else
-
-            Me.cmdEditRetentionPolicy.Enabled = False
-        End If
-
-    End Sub
-    Private Sub SetupDataTable()
-        RetentionPolicyTable = New DataTable("RetentionPolicy")
-        'Hidden.
-        '--------------------
-        RetentionPolicyTable.Columns.Add(New DataColumn("RetentionPolicyId", GetType(Integer)))
-        'Visible.
-        '--------------------
-        RetentionPolicyTable.Columns.Add(New DataColumn("Schema", GetType(String)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("Table", GetType(String)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("ReferenceColumn", GetType(String)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("DaysToKeep", GetType(Integer)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("TimeToStart", GetType(Integer)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("TimeToEnd", GetType(Integer)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("IncludedInDailyPurge", GetType(Boolean)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("DailyPurgeCompleted", GetType(Boolean)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("PurgeJobName", GetType(String)))
-        RetentionPolicyTable.Columns.Add(New DataColumn("LastPurgedDateTime", GetType(String)))
-
-    End Sub
-    Private Sub ugrdLocationList_CellChange(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.CellEventArgs) Handles ugrdRetentionPolicy.CellChange
-        SetButtons()
-    End Sub
-
-    Private Sub ugrdLocationList_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles ugrdRetentionPolicy.Click
-        SetButtons()
-    End Sub
-
-    Private Sub ugrdLocationList_DoubleClickRow(ByVal sender As Object, ByVal e As Infragistics.Win.UltraWinGrid.DoubleClickRowEventArgs) Handles ugrdRetentionPolicy.DoubleClickRow
-
-        If cmdEditRetentionPolicy.Enabled Then
-            cmdEditRetentionPolicy.PerformClick()
-        End If
-
-    End Sub
-    Private Sub cmdDeleteRetentionPolicy_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdDeleteRetentionPolicy.Click
-
-        Dim iDelCnt As Short
-        Dim hasJobsOtherThanPurgejob As Boolean = False
-        If ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
-
-            '-- Make sure they really want to delete.
-            If MsgBox("Delete the selected Retention Policies?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Delete Retention Policies") = MsgBoxResult.No Then
-                Exit Sub
-            End If
-
-            For iDelCnt = 0 To ugrdRetentionPolicy.Selected.Rows.Count - 1
-                '  only jobs with purge name as StraightPurge can be deleted at this point
-                If (ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("PurgeJobName").Value.ToString <> StraightPugeJob) Then
-                    hasJobsOtherThanPurgejob = True
-
-                Else
-                    '   SQLExecute("EXEC DeleteInventoryLocations " & ugrdLocationList.Columns(0).CellValue(vBook).ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-                    SQLExecute("EXEC DeleteRetentionPolicy " & ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("RetentionPolicyId").Value.ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-                End If
-            Next iDelCnt
-            ' IF any job with purge name other than StraightPurge has been marked for deletion show the message
-            If (hasJobsOtherThanPurgejob And ugrdRetentionPolicy.Selected.Rows.Count > 1) Then
-                MsgBox("Retention Policies with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
-            ElseIf (hasJobsOtherThanPurgejob And ugrdRetentionPolicy.Selected.Rows.Count = 1) Then
-                MsgBox("Retention Policy with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
-            End If
-            '-- Refresh the grid
-            RefreshGrid()
+      For iDelCnt = 0 To ugrdRetentionPolicy.Selected.Rows.Count - 1
+        '  only jobs with purge name as StraightPurge can be deleted at this point
+        If (ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("PurgeJobName").Value.ToString <> StraightPugeJob) Then
+          hasJobsOtherThanPurgejob = True
 
         Else
-            'Shouldn't happen, but just in case.
-            MsgBox("You must first select a Retention Policy to delete.", MsgBoxStyle.Exclamation, "Notice!")
-
+          '   SQLExecute("EXEC DeleteInventoryLocations " & ugrdLocationList.Columns(0).CellValue(vBook).ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+          SQLExecute("EXEC DeleteRetentionPolicy " & ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("RetentionPolicyId").Value.ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
         End If
+      Next iDelCnt
+      ' IF any job with purge name other than StraightPurge has been marked for deletion show the message
+      If (hasJobsOtherThanPurgejob And ugrdRetentionPolicy.Selected.Rows.Count > 1) Then
+        MsgBox("Retention Policies with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
+      ElseIf (hasJobsOtherThanPurgejob And ugrdRetentionPolicy.Selected.Rows.Count = 1) Then
+        MsgBox("Retention Policy with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
+      End If
 
-    End Sub
-    Private Sub cmdSearch_Click_1(sender As Object, e As EventArgs) Handles cmdSearch.Click
-        RefreshGrid()
-    End Sub
+      RefreshGrid()
+    Else
+      'Shouldn't happen, but just in case.
+      MsgBox("You must first select a Retention Policy to delete.", MsgBoxStyle.Exclamation, "Notice!")
+    End If
+  End Sub
 
-    Private Sub cmdReset_Click(sender As Object, e As EventArgs) Handles cmdReset.Click
-        ClearAndRefresh()
-    End Sub
+  Private Sub cmdSearch_Click(sender As Object, e As EventArgs) Handles cmdSearch.Click
+    RefreshGrid()
+  End Sub
 
-    Private Sub cmdEditRetentionPolicy_Click(sender As Object, e As EventArgs) Handles cmdEditRetentionPolicy.Click
-        If ugrdRetentionPolicy.Selected.Rows.Count = 1 Then
+  Private Sub cmdReset_Click(sender As Object, e As EventArgs) Handles cmdReset.Click
+    ClearAndRefresh()
+  End Sub
 
-            '-- Show the edit screen
-            frmRetentionPolicies.Load_Form((ugrdRetentionPolicy.Selected.Rows(0).Cells("RetentionPolicyId").Value), (ugrdRetentionPolicy.Selected.Rows(0).Cells("Schema").Value), (ugrdRetentionPolicy.Selected.Rows(0).Cells("Table").Value), (ugrdRetentionPolicy.Selected.Rows(0).Cells("ReferenceColumn").Value), "Update")
-            frmRetentionPolicies.Dispose()
-            RefreshGrid()
+  Private Sub cmdAddEdit_Click(sender As Object, e As EventArgs) Handles cmdEdit.Click, cmdAdd.Click
+    If RetentionPolicyTable Is Nothing Then Return
 
-        Else
-            MsgBox("Please select a line to edit.", MsgBoxStyle.Exclamation, "Notice!")
+    Dim id As Integer = -1
 
-        End If
+    If sender Is cmdEdit AndAlso ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
+      id = CInt(ugrdRetentionPolicy.Selected.Rows(0).Cells("RetentionPolicyId").Value)
+    End If
 
-    End Sub
+    frmRetentionPolicies.Load_Form(RetentionPolicyTable, id)
+    Dim bRefresh As Boolean = frmRetentionPolicies.IsUpdated
+    frmRetentionPolicies.Dispose()
+
+    If Not bRefresh Then Exit Sub 'No changes ha been made
+
+    RetentionPolicyTable = Nothing
+    RefreshGrid() 'Refresh grid when actual changes has been done.
+  End Sub
 End Class

@@ -121,10 +121,10 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cmdDeleteRetentionPolicy.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="cmdDelete.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="cmdDeleteRetentionPolicy.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="cmdDelete.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
         JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACBklEQVRYR72UUXLDMAhEc/QcLWdq+9+y
@@ -139,42 +139,42 @@
         Kj0JzTvBTB/tyLhZj8cPmAXDEnMz0oQAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="cmdDeleteRetentionPolicy.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdDelete.Location" type="System.Drawing.Point, System.Drawing">
     <value>930, 216</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdDeleteRetentionPolicy.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdDelete.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="cmdDeleteRetentionPolicy.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 41</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdDeleteRetentionPolicy.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdDelete.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="cmdDeleteRetentionPolicy.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="cmdDelete.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="cmdDeleteRetentionPolicy.ToolTip" xml:space="preserve">
+  <data name="cmdDelete.ToolTip" xml:space="preserve">
     <value>Delete Retention Policy</value>
   </data>
-  <data name="&gt;&gt;cmdDeleteRetentionPolicy.Name" xml:space="preserve">
-    <value>cmdDeleteRetentionPolicy</value>
+  <data name="&gt;&gt;cmdDelete.Name" xml:space="preserve">
+    <value>cmdDelete</value>
   </data>
-  <data name="&gt;&gt;cmdDeleteRetentionPolicy.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdDelete.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdDeleteRetentionPolicy.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdDelete.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdDeleteRetentionPolicy.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdDelete.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="cmdAddRetentionPolicy.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="cmdAdd.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="cmdAddRetentionPolicy.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="cmdAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
         JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAuklEQVRYR+2OCwrDMAxDc/QcLTfLZqiK
@@ -184,34 +184,34 @@
         QmCC
 </value>
   </data>
-  <data name="cmdAddRetentionPolicy.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdAdd.Location" type="System.Drawing.Point, System.Drawing">
     <value>930, 122</value>
   </data>
-  <data name="cmdAddRetentionPolicy.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdAdd.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="cmdAddRetentionPolicy.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 41</value>
   </data>
-  <data name="cmdAddRetentionPolicy.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdAdd.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="cmdAddRetentionPolicy.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="cmdAdd.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="cmdAddRetentionPolicy.ToolTip" xml:space="preserve">
+  <data name="cmdAdd.ToolTip" xml:space="preserve">
     <value>Add Retention Policy</value>
   </data>
-  <data name="&gt;&gt;cmdAddRetentionPolicy.Name" xml:space="preserve">
-    <value>cmdAddRetentionPolicy</value>
+  <data name="&gt;&gt;cmdAdd.Name" xml:space="preserve">
+    <value>cmdAdd</value>
   </data>
-  <data name="&gt;&gt;cmdAddRetentionPolicy.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdAdd.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdAddRetentionPolicy.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdAdd.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdAddRetentionPolicy.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdAdd.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="cmdExit.Font" type="System.Drawing.Font, System.Drawing">
@@ -257,10 +257,10 @@
   <data name="&gt;&gt;cmdExit.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="cmdEditRetentionPolicy.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="cmdEdit.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
-  <data name="cmdEditRetentionPolicy.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="cmdEdit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
         JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABoklEQVRYR72RAZLDMAgD8/Q8rT9rvdhK
@@ -273,34 +273,34 @@
         qASA3vw6AJyE+AbXX2Bc+MTfoPmFAOBnX8DxhLcDn8e2PQBVYl+UL99uzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="cmdEditRetentionPolicy.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdEdit.Location" type="System.Drawing.Point, System.Drawing">
     <value>930, 169</value>
   </data>
-  <data name="cmdEditRetentionPolicy.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdEdit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="cmdEditRetentionPolicy.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 41</value>
   </data>
-  <data name="cmdEditRetentionPolicy.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdEdit.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="cmdEditRetentionPolicy.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="cmdEdit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="cmdEditRetentionPolicy.ToolTip" xml:space="preserve">
+  <data name="cmdEdit.ToolTip" xml:space="preserve">
     <value>Edit Retention Policy</value>
   </data>
-  <data name="&gt;&gt;cmdEditRetentionPolicy.Name" xml:space="preserve">
-    <value>cmdEditRetentionPolicy</value>
+  <data name="&gt;&gt;cmdEdit.Name" xml:space="preserve">
+    <value>cmdEdit</value>
   </data>
-  <data name="&gt;&gt;cmdEditRetentionPolicy.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdEdit.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdEditRetentionPolicy.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdEdit.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdEditRetentionPolicy.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdEdit.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="cmdSearch.Font" type="System.Drawing.Font, System.Drawing">
@@ -675,7 +675,7 @@
     <value>No</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Manage Retention Policies</value>

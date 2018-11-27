@@ -1,21 +1,32 @@
 Imports WholeFoods.Utility
 
 Public Class DataAccess
-    Private Shared ReadOnly mcolConnect As Collection
-    Public Enum enuDBList
-        ItemCatalog = 1
-    End Enum
-    Shared Sub New()
-        mcolConnect = New Collection
-        Try
-            Dim config As New Configuration.AppSettingsReader
-            mcolConnect.Add(New WFM.SQLServer.Connect(ConfigurationServices.AppSettings("ItemCatalogConnectionString"), ConfigurationServices.AppSettings("ItemCatalogCommandTimeout")), enuDBList.ItemCatalog.ToString)
-            config = Nothing
-        Catch ex As System.Exception
-            Throw
-        End Try
-    End Sub
-    Public Shared Sub AddConnectionString(ByVal ConnectionString As String, ByVal CommandTimeout As Integer)
+  Private Shared mcolConnect As Collection
+  Public Enum enuDBList
+    ItemCatalog = 1
+  End Enum
+  Shared Sub New()
+    mcolConnect = New Collection
+    Try
+      Dim config As New Configuration.AppSettingsReader
+      mcolConnect.Add(New WFM.SQLServer.Connect(ConfigurationServices.AppSettings("ItemCatalogConnectionString"), ConfigurationServices.AppSettings("ItemCatalogCommandTimeout")), enuDBList.ItemCatalog.ToString)
+      config = Nothing
+    Catch ex As System.Exception
+      Throw
+    End Try
+  End Sub
+
+  Public Sub New(ByVal connectionString As String)
+    mcolConnect = New Collection
+
+    Try
+      mcolConnect.Add(New WFM.SQLServer.Connect(connectionString, 60), enuDBList.ItemCatalog.ToString)
+    Catch ex As System.Exception
+      Throw
+    End Try
+  End Sub
+
+  Public Shared Sub AddConnectionString(ByVal ConnectionString As String, ByVal CommandTimeout As Integer)
         mcolConnect.Add(New WFM.SQLServer.Connect(ConnectionString, CommandTimeout))
     End Sub
     Public Shared Sub ConnectSqlCommand(ByRef cmd As SqlClient.SqlCommand, ByVal DB As enuDBList)
@@ -49,4 +60,3 @@ Public Class DataAccess
         con = Nothing
     End Sub
 End Class
-
