@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
+    <OutputPath>bin\Perf\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>

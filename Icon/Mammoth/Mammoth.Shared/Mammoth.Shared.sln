@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.Common", "Mammoth.Common\Mammoth.Common.csproj", "{563F0633-8364-4ED0-88FF-F55302117348}"
 EndProject
@@ -18,6 +18,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Perf|Any CPU = Perf|Any CPU
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
@@ -26,6 +27,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{563F0633-8364-4ED0-88FF-F55302117348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{563F0633-8364-4ED0-88FF-F55302117348}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{563F0633-8364-4ED0-88FF-F55302117348}.QA|Any CPU.Build.0 = QA|Any CPU
 		{563F0633-8364-4ED0-88FF-F55302117348}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,6 +39,8 @@ Global
 		{563F0633-8364-4ED0-88FF-F55302117348}.UnitTest|Any CPU.Build.0 = Test|Any CPU
 		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82505A9B-2264-4428-9806-D5EF838109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{82505A9B-2264-4428-9806-D5EF838109B3}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{82505A9B-2264-4428-9806-D5EF838109B3}.QA|Any CPU.Build.0 = Release|Any CPU
 		{82505A9B-2264-4428-9806-D5EF838109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,6 +51,8 @@ Global
 		{82505A9B-2264-4428-9806-D5EF838109B3}.UnitTest|Any CPU.Build.0 = Release|Any CPU
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.QA|Any CPU.Build.0 = QA|Any CPU
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,6 +63,8 @@ Global
 		{EED6C132-5E76-46E9-BD78-103AF9545AC7}.UnitTest|Any CPU.Build.0 = Test|Any CPU
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.QA|Any CPU.Build.0 = Release|Any CPU
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,6 +75,8 @@ Global
 		{D7953C91-887D-4CA0-8497-E45D4B4897E8}.UnitTest|Any CPU.Build.0 = Release|Any CPU
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.QA|Any CPU.Build.0 = Release|Any CPU
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,6 +87,8 @@ Global
 		{799950FA-6F28-43CA-A60C-769BBE9DE6A9}.UnitTest|Any CPU.Build.0 = Release|Any CPU
 		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.QA|Any CPU.Build.0 = Release|Any CPU
 		{1F642581-F7FF-4B48-B9C9-71B6350A1496}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,28 +101,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Mammoth.Common\\Mammoth.Common.csproj
-		SccProjectName1 = Mammoth.Common
-		SccLocalPath1 = Mammoth.Common
-		SccProjectUniqueName2 = Mammoth.Common.DataAccess\\Mammoth.Common.DataAccess.csproj
-		SccProjectName2 = Mammoth.Common.DataAccess
-		SccLocalPath2 = Mammoth.Common.DataAccess
-		SccProjectUniqueName3 = Mammoth.Logging\\Mammoth.Logging.csproj
-		SccProjectName3 = Mammoth.Logging
-		SccLocalPath3 = Mammoth.Logging
-		SccProjectUniqueName4 = Mammoth.Common.ControllerApplication\\Mammoth.Common.ControllerApplication.csproj
-		SccProjectName4 = Mammoth.Common.ControllerApplication
-		SccLocalPath4 = Mammoth.Common.ControllerApplication
-		SccProjectUniqueName5 = Mammoth.Framework\\Mammoth.Framework.csproj
-		SccProjectName5 = Mammoth.Framework
-		SccLocalPath5 = Mammoth.Framework
-		SccProjectUniqueName6 = Mammoth.Common.Testing\\Mammoth.Common.Testing.csproj
-		SccProjectName6 = Mammoth.Common.Testing
-		SccLocalPath6 = Mammoth.Common.Testing
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99F5F3CF-5279-4EA4-85A3-BBE99760631F}
 	EndGlobalSection
 EndGlobal
