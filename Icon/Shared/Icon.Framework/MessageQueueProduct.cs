@@ -117,7 +117,7 @@ namespace Icon.Framework
         public Nullable<bool> KitchenItem { get; set; }
         public string KitchenDescription { get; set; }
         public string ImageURL { get; set; }
-        
+    
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }

@@ -14,14 +14,7 @@ namespace Icon.Framework
     
     public partial class SeafoodCatchType
     {
-        public SeafoodCatchType()
-        {
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
-        }
-    
         public int SeafoodCatchTypeId { get; set; }
         public string Description { get; set; }
-    
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
     }
 }

@@ -167,7 +167,7 @@ BEGIN
 		null																			AS ProcessedDate,
 		ia.AnimalWelfareRating															AS [AnimalWelfareRating],
 		ia.[Biodynamic]																	AS [Biodynamic],
-		ia.MilkTypes																	AS [MilkTypes],
+		ia.MilkType																	    AS [MilkType],
 		ia.[CheeseRaw]																	AS [CheeseRaw],
 		ia.EcoScaleRating																AS [EcoScaleRating],
 		ia.GlutenFreeAgencyName															AS [GlutenFreeAgency],

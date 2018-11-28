@@ -140,7 +140,7 @@ BEGIN
               cast(coalesce(nullif(fin.disableSubTeamEvents,'0'), '0') AS bit)	as SubTeamNotAligned,
 			  isa.AnimalWelfareRating			as AnimalWelfareRating,
 			  isa.Biodynamic					as Biodynamic,
-			  isa.MilkTypes					    as MilkTypes,
+			  isa.MilkType					    as MilkType,
 			  isa.CheeseRaw						as CheeseRaw,
 			  isa.EcoScaleRating				as EcoScaleRating,
 			  CASE
@@ -217,4 +217,5 @@ BEGIN
 			  LEFT JOIN Nat_CTE			nat     on  sc.itemID = nat.itemID
               LEFT JOIN FinSubTeam_CTE  fin		on  sc.itemID = fin.itemID
 			  LEFT JOIN ItemSignAttribute isa	on	sc.itemID = isa.ItemID
+			  LEFT JOIN HealthyEatingRating her on	isa.HealthyEatingRatingId = her.HealthyEatingRatingId			  
 END

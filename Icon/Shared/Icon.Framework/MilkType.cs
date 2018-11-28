@@ -14,14 +14,7 @@ namespace Icon.Framework
     
     public partial class MilkType
     {
-        public MilkType()
-        {
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
-        }
-    
         public int MilkTypeId { get; set; }
         public string Description { get; set; }
-    
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
     }
 }

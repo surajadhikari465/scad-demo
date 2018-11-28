@@ -14,14 +14,7 @@ namespace Icon.Framework
     
     public partial class EcoScaleRating
     {
-        public EcoScaleRating()
-        {
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
-        }
-    
         public int EcoScaleRatingId { get; set; }
         public string Description { get; set; }
-    
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
     }
 }

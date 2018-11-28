@@ -14,14 +14,7 @@ namespace Icon.Framework
     
     public partial class SeafoodFreshOrFrozen
     {
-        public SeafoodFreshOrFrozen()
-        {
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
-        }
-    
         public int SeafoodFreshOrFrozenId { get; set; }
         public string Description { get; set; }
-    
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
     }
 }

@@ -722,6 +722,7 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScript.sql" />
+    <None Include="Scripts\PopulateData\PopulateNewItemSignAttributeColumnsWithExistingData.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="PreDeploymentScript.sql" />

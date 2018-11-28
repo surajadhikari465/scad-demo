@@ -40,12 +40,12 @@ namespace Icon.Framework
         public bool AirChilled { get; set; }
         public bool MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
-    
-        public virtual AnimalWelfareRating AnimalWelfareRating { get; set; }
-        public virtual EcoScaleRating EcoScaleRating { get; set; }
-        public virtual Item Item { get; set; }
-        public virtual MilkType MilkType { get; set; }
-        public virtual SeafoodCatchType SeafoodCatchType { get; set; }
-        public virtual SeafoodFreshOrFrozen SeafoodFreshOrFrozen { get; set; }
+        public string AnimalWelfareRating { get; set; }
+        public string DrainedWeightUom { get; set; }
+        public string EcoScaleRating { get; set; }
+        public string FreshOrFrozen { get; set; }
+        public string SeafoodCatchType { get; set; }
+        public string MilkType { get; set; }
+        public string DeliverySystem { get; set; }
     }
 }

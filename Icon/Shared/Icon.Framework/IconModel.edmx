@@ -87,8 +87,14 @@
           <Property Name="DryAged" Type="bit" />
           <Property Name="AirChilled" Type="bit" />
           <Property Name="MadeInHouse" Type="bit" />
-          <Property Name="DeliverySystem" Type="varchar" MaxLength="100" />
+          <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
           <Property Name="AlcoholByVolume" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
+          <Property Name="DrainedWeightUom" Type="nvarchar" MaxLength="255" />
+          <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
+          <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
+          <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
+          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="IRMAItemSubscription">
           <Key>
@@ -904,6 +910,13 @@
           <Property Name="AirChilled" Type="bit" Nullable="false" />
           <Property Name="MadeInHouse" Type="bit" Nullable="false" />
           <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
+          <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
+          <Property Name="DrainedWeightUom" Type="nvarchar" MaxLength="255" />
+          <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
+          <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
+          <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
+          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -1678,42 +1691,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ItemSignAttribute_AnimalWelfareRatingId">
-          <End Role="AnimalWelfareRating" Type="Self.AnimalWelfareRating" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AnimalWelfareRating">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_CheeseMilkTypeId">
-          <End Role="MilkType" Type="Self.MilkType" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MilkType">
-              <PropertyRef Name="MilkTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="CheeseMilkTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_EcoScaleRatingId">
-          <End Role="EcoScaleRating" Type="Self.EcoScaleRating" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EcoScaleRating">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ItemSignAttribute_ItemId">
           <End Role="Item" Type="Self.Item" Multiplicity="1" />
           <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
@@ -1723,30 +1700,6 @@
             </Principal>
             <Dependent Role="ItemSignAttribute">
               <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodCatchTypeId">
-          <End Role="SeafoodCatchType" Type="Self.SeafoodCatchType" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodCatchType">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-          <End Role="SeafoodFreshOrFrozen" Type="Self.SeafoodFreshOrFrozen" Multiplicity="0..1" />
-          <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodFreshOrFrozen">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2839,28 +2792,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="ScanCode" EntitySet="ScanCode" />
             <End Role="Mapping" EntitySet="Mapping" />
           </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_AnimalWelfareRatingId" Association="Self.FK_ItemSignAttribute_AnimalWelfareRatingId">
-            <End Role="AnimalWelfareRating" EntitySet="AnimalWelfareRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_CheeseMilkTypeId" Association="Self.FK_ItemSignAttribute_CheeseMilkTypeId">
-            <End Role="MilkType" EntitySet="MilkType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_EcoScaleRatingId" Association="Self.FK_ItemSignAttribute_EcoScaleRatingId">
-            <End Role="EcoScaleRating" EntitySet="EcoScaleRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
           <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Self.FK_ItemSignAttribute_ItemId">
             <End Role="Item" EntitySet="Item" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodCatchTypeId" Association="Self.FK_ItemSignAttribute_SeafoodCatchTypeId">
-            <End Role="SeafoodCatchType" EntitySet="SeafoodCatchType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId" Association="Self.FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-            <End Role="SeafoodFreshOrFrozen" EntitySet="SeafoodFreshOrFrozen" />
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_MessageHistory_MessageStatus" Association="Self.FK_MessageHistory_MessageStatus">
@@ -3624,28 +3557,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="InforMessageHistory" EntityType="Icon.Framework.Model.InforMessageHistory" />
           <EntitySet Name="MessageArchiveHierarchy" EntityType="Icon.Framework.Model.MessageArchiveHierarchy" />
           <EntitySet Name="ItemSignAttribute" EntityType="Icon.Framework.Model.ItemSignAttribute" />
-          <AssociationSet Name="FK_ItemSignAttribute_AnimalWelfareRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId">
-            <End Role="AnimalWelfareRating" EntitySet="AnimalWelfareRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_EcoScaleRatingId" Association="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId">
-            <End Role="EcoScaleRating" EntitySet="EcoScaleRating" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
           <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId">
             <End Role="Item" EntitySet="Item" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_CheeseMilkTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId">
-            <End Role="MilkType" EntitySet="MilkType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodCatchTypeId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId">
-            <End Role="SeafoodCatchType" EntitySet="SeafoodCatchType" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId" Association="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-            <End Role="SeafoodFreshOrFrozen" EntitySet="SeafoodFreshOrFrozen" />
             <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
           </AssociationSet>
           <EntitySet Name="IRMAItem" EntityType="Icon.Framework.Model.IRMAItem" />
@@ -5635,7 +5548,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </Key>
           <Property Name="SeafoodFreshOrFrozenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" FromRole="SeafoodFreshOrFrozen" ToRole="ItemSignAttribute" />
         </EntityType>
         <EntityType Name="SeafoodCatchType">
           <Key>
@@ -5643,7 +5555,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </Key>
           <Property Name="SeafoodCatchTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" FromRole="SeafoodCatchType" ToRole="ItemSignAttribute" />
         </EntityType>
         <EntityType Name="AnimalWelfareRating">
           <Key>
@@ -5651,23 +5562,20 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </Key>
           <Property Name="AnimalWelfareRatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" FromRole="AnimalWelfareRating" ToRole="ItemSignAttribute" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="EcoScaleRating">
           <Key>
             <PropertyRef Name="EcoScaleRatingId" />
           </Key>
           <Property Name="EcoScaleRatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" FromRole="EcoScaleRating" ToRole="ItemSignAttribute" />
         </EntityType>
         <EntityType Name="MilkType">
           <Key>
             <PropertyRef Name="MilkTypeId" />
           </Key>
           <Property Name="MilkTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" FromRole="MilkType" ToRole="ItemSignAttribute" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />          
         </EntityType>
         <EntityType Name="ItemNutrition">
           <Key>
@@ -6135,38 +6043,15 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="DryAged" Type="Boolean" Nullable="false" />
           <Property Name="AirChilled" Type="Boolean" Nullable="false" />
           <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
-          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AnimalWelfareRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_AnimalWelfareRatingId" FromRole="ItemSignAttribute" ToRole="AnimalWelfareRating" />
-          <NavigationProperty Name="EcoScaleRating" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_EcoScaleRatingId" FromRole="ItemSignAttribute" ToRole="EcoScaleRating" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="ItemSignAttribute" ToRole="Item" />
-          <NavigationProperty Name="MilkType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_CheeseMilkTypeId" FromRole="ItemSignAttribute" ToRole="MilkType" />
-          <NavigationProperty Name="SeafoodCatchType" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodCatchTypeId" FromRole="ItemSignAttribute" ToRole="SeafoodCatchType" />
-          <NavigationProperty Name="SeafoodFreshOrFrozen" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_SeafoodFreshOrFrozenId" FromRole="ItemSignAttribute" ToRole="SeafoodFreshOrFrozen" />
+          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />          
+          <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliverySystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="FK_ItemSignAttribute_AnimalWelfareRatingId">
-          <End Type="Icon.Framework.Model.AnimalWelfareRating" Role="AnimalWelfareRating" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AnimalWelfareRating">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="AnimalWelfareRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_EcoScaleRatingId">
-          <End Type="Icon.Framework.Model.EcoScaleRating" Role="EcoScaleRating" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EcoScaleRating">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="EcoScaleRatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ItemSignAttribute_ItemId">
           <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
           <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
@@ -6176,42 +6061,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="ItemSignAttribute">
               <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_CheeseMilkTypeId">
-          <End Type="Icon.Framework.Model.MilkType" Role="MilkType" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MilkType">
-              <PropertyRef Name="MilkTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="CheeseMilkTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodCatchTypeId">
-          <End Type="Icon.Framework.Model.SeafoodCatchType" Role="SeafoodCatchType" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodCatchType">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodCatchTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ItemSignAttribute_SeafoodFreshOrFrozenId">
-          <End Type="Icon.Framework.Model.SeafoodFreshOrFrozen" Role="SeafoodFreshOrFrozen" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SeafoodFreshOrFrozen">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="SeafoodFreshOrFrozenId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6256,8 +6105,14 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="DryAged" Type="Boolean" />
           <Property Name="AirChilled" Type="Boolean" />
           <Property Name="MadeInHouse" Type="Boolean" />
-          <Property Name="DeliverySystem" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DeliverySystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="AlcoholByVolume" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Currency">
           <Key>
@@ -7631,6 +7486,13 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemSignAttribute">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
               <MappingFragment StoreEntitySet="ItemSignAttribute">
+                <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
+                <ScalarProperty Name="MilkType" ColumnName="MilkType" />
+                <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
+                <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
+                <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
+                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
+                <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
                 <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
                 <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
                 <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
@@ -7663,6 +7525,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="IRMAItem">
             <EntityTypeMapping TypeName="Icon.Framework.Model.IRMAItem">
               <MappingFragment StoreEntitySet="IRMAItem">
+                <ScalarProperty Name="MilkType" ColumnName="MilkType" />
+                <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
+                <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
+                <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
+                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
+                <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
                 <ScalarProperty Name="AlcoholByVolume" ColumnName="AlcoholByVolume" />
                 <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
                 <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
