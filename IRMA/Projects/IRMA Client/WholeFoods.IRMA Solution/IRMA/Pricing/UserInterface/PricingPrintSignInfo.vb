@@ -572,15 +572,11 @@ ExitSub:
         Return Not NonNetworkIssueResponseCodes.Contains(responseStatusCode)
     End Function
 
-    Private Sub StartLabelTextBox_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartLabelTextBox.Enter
-        logger.Debug("StartLabelTextBox_Enter Enter")
+  Private Sub StartLabelTextBox_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles StartLabelTextBox.Enter
+    StartLabelTextBox.SelectAll()
+  End Sub
 
-        HighlightText(StartLabelTextBox)
-
-        logger.Debug("StartLabelTextBox_Enter End")
-    End Sub
-
-    Private Sub StartLabelTextBox_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles StartLabelTextBox.KeyPress
+  Private Sub StartLabelTextBox_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles StartLabelTextBox.KeyPress
         logger.Debug("StartLabelTextBox_KeyPress Enter")
 
         Dim keyAscii As Short = Asc(e.KeyChar)

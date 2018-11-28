@@ -290,16 +290,11 @@ Friend Class frmPricingPrintSigns
         logger.Debug("cmdSearch_Click End")
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        logger.Debug("txtField_Enter Start")
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        Dim index As Short = txtField.GetIndex(eventSender)
-        HighlightText(txtField(index))
-
-        logger.Debug("txtField_Enter End")
-    End Sub
-
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
         logger.Debug("txtField_KeyPress Start")
 
         Dim keyAscii As Short = Asc(eventArgs.KeyChar)

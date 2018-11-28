@@ -73,14 +73,12 @@ Friend Class frmCostExceptionReport
 
         End If
     End Sub
-	
-	Private Sub txtCost_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCost.Enter
-		
-		HighlightText(txtCost)
-		
-	End Sub
-	
-	Private Sub txtCost_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCost.KeyPress
+
+  Private Sub txtCost_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCost.Enter
+    txtCost.SelectAll()
+  End Sub
+
+  Private Sub txtCost_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCost.KeyPress
 		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 		
 		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtCost.Tag), txtCost, 0, 0, 0)

@@ -647,116 +647,92 @@ Friend Class frmVendorCostDetail
 
     End Sub
 
-    Private Sub txtCost_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCost.Enter
+  Private Sub txtBox_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCost.Enter, txtFreight.Enter, txtMSRP.Enter, txtPkgDesc1.Enter
+    CType(sender, TextBox).SelectAll()
+  End Sub
 
-        logger.Debug("txtCost_Enter Entry")
-        HighlightText(txtCost)
-        logger.Debug("txtCost_Enter Exit")
+  Private Sub txtCost_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCost.KeyPress
 
-    End Sub
+    logger.Debug("txtCost_KeyPress Entry")
 
-    Private Sub txtCost_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCost.KeyPress
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-        logger.Debug("txtCost_KeyPress Entry")
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtCost.Tag), txtCost, 0, 0, 0)
 
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
+    logger.Debug("txtCost_KeyPress Exit")
+  End Sub
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtCost.Tag), txtCost, 0, 0, 0)
+  Private Sub txtCost_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCost.TextChanged
+    logger.Debug("txtCost_TextChanged Entry")
+    If Me.IsInitializing Then Exit Sub
+    pbDataChanged = True
+    logger.Debug("txtCost_TextChanged Exit")
+  End Sub
 
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
-        logger.Debug("txtCost_KeyPress Exit")
-    End Sub
+  Private Sub txtFreight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFreight.KeyPress
+    logger.Debug("txtFreight_KeyPress Entry")
 
-    Private Sub txtCost_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCost.TextChanged
-        logger.Debug("txtCost_TextChanged Entry")
-        If Me.IsInitializing Then Exit Sub
-        pbDataChanged = True
-        logger.Debug("txtCost_TextChanged Exit")
-    End Sub
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-    Private Sub txtFreight_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFreight.Enter
-        logger.Debug("txtFreight_Enter Entry")
-        HighlightText(txtFreight)
-        logger.Debug("txtFreight_Enter Exit")
-    End Sub
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtFreight.Tag), txtFreight, 0, 0, 0)
 
-    Private Sub txtFreight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFreight.KeyPress
-        logger.Debug("txtFreight_KeyPress Entry")
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
+    logger.Debug("txtFreight_KeyPress Exit")
+  End Sub
 
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+  Private Sub txtFreight_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFreight.TextChanged
+    logger.Debug("txtFreight_TextChanged Entry")
+    If Me.IsInitializing Then Exit Sub
+    pbDataChanged = True
+    logger.Debug("txtFreight_TextChanged Exit")
+  End Sub
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtFreight.Tag), txtFreight, 0, 0, 0)
+  Private Sub txtMSRP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMSRP.KeyPress
+    logger.Debug("txtMSRP_KeyPress Entry")
 
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
-        logger.Debug("txtFreight_KeyPress Exit")
-    End Sub
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-    Private Sub txtFreight_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFreight.TextChanged
-        logger.Debug("txtFreight_TextChanged Entry")
-        If Me.IsInitializing Then Exit Sub
-        pbDataChanged = True
-        logger.Debug("txtFreight_TextChanged Exit")
-    End Sub
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMSRP.Tag), txtMSRP, 0, 0, 0)
 
-    Private Sub txtMSRP_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMSRP.Enter
-        logger.Debug("txtMSRP_Enter Entry")
-        HighlightText(txtMSRP)
-        logger.Debug("txtMSRP_Enter Exit")
-    End Sub
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
 
-    Private Sub txtMSRP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMSRP.KeyPress
-        logger.Debug("txtMSRP_KeyPress Entry")
+    logger.Debug("txtMSRP_KeyPress Exit")
+  End Sub
 
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+  Private Sub txtMSRP_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMSRP.TextChanged
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMSRP.Tag), txtMSRP, 0, 0, 0)
+    logger.Debug("txtMSRP_TextChanged Entry")
+    If Me.IsInitializing Then Exit Sub
+    pbDataChanged = True
+    logger.Debug("txtMSRP_TextChanged Exit")
 
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
+  End Sub
 
-        logger.Debug("txtMSRP_KeyPress Exit")
-    End Sub
+  Private Sub txtPkgDesc1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPkgDesc1.KeyPress
 
-    Private Sub txtMSRP_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMSRP.TextChanged
+    logger.Debug("txtPkgDesc1_KeyPress Entry")
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-        logger.Debug("txtMSRP_TextChanged Entry")
-        If Me.IsInitializing Then Exit Sub
-        pbDataChanged = True
-        logger.Debug("txtMSRP_TextChanged Exit")
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtPkgDesc1.Tag), txtPkgDesc1, 0, 0, 0)
 
-    End Sub
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
+    logger.Debug("txtPkgDesc1_KeyPress Exit")
+  End Sub
 
-    Private Sub txtPkgDesc1_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPkgDesc1.Enter
-
-        logger.Debug("txtPkgDesc1_Enter Entry")
-        HighlightText(txtPkgDesc1)
-        logger.Debug("txtPkgDesc1_Enter Exit")
-
-    End Sub
-
-    Private Sub txtPkgDesc1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPkgDesc1.KeyPress
-
-        logger.Debug("txtPkgDesc1_KeyPress Entry")
-        Dim KeyAscii As Short = Asc(e.KeyChar)
-
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtPkgDesc1.Tag), txtPkgDesc1, 0, 0, 0)
-
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
-        logger.Debug("txtPkgDesc1_KeyPress Exit")
-    End Sub
-
-    Private Sub txtPkgDesc1_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPkgDesc1.TextChanged
+  Private Sub txtPkgDesc1_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPkgDesc1.TextChanged
 
         logger.Debug("txtPkgDesc1_TextChanged Entry")
         If Me.IsInitializing Then Exit Sub

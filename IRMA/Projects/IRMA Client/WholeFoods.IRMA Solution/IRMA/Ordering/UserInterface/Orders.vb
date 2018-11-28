@@ -1736,63 +1736,57 @@ me_exit:
         logger.Debug("<= ucCostAdjReasonCode_RowSelected")
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        logger.Debug("=> txtField_Enter")
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        Dim Index As Short = txtField.GetIndex(eventSender)
+  Private Sub txtField_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtField.Leave
+    logger.Debug("=> txtField_Leave")
 
-        HighlightText(txtField(Index))
+    If m_DiscountAmtChanged And m_OrderDiscountType <> 0 Then
+      txtField(iOrderHeaderQuantityDiscount).Text = txtField(iOrderHeaderQuantityDiscount).Text.Trim()
+      If txtField(iOrderHeaderQuantityDiscount).Text.Length <> 0 Then
+        m_OrderDiscountAmt = CDec(txtField(iOrderHeaderQuantityDiscount).Text)
+      End If
+      SaveData()
+      UpdateOrderItemsCost()
 
-        logger.Debug("<= txtField_Enter")
-    End Sub
-
-    Private Sub txtField_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtField.Leave
-        logger.Debug("=> txtField_Leave")
-
-        If m_DiscountAmtChanged And m_OrderDiscountType <> 0 Then
-            txtField(iOrderHeaderQuantityDiscount).Text = txtField(iOrderHeaderQuantityDiscount).Text.Trim()
-            If txtField(iOrderHeaderQuantityDiscount).Text.Length <> 0 Then
-                m_OrderDiscountAmt = CDec(txtField(iOrderHeaderQuantityDiscount).Text)
-            End If
-            SaveData()
-            UpdateOrderItemsCost()
-
-            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), _
+      DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
                               CDec(txtField(iOrderHeader3rdPartyFreight).Text))
 
-            RefreshOrderDetails(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), True)
-            m_DiscountAmtChanged = False
+      RefreshOrderDetails(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), True)
+      m_DiscountAmtChanged = False
+    End If
+
+    logger.Debug("<= txtField_Leave ")
+  End Sub
+
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    logger.Debug("txtField_KeyPress Entry")
+
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
+
+    If Not txtField(Index).ReadOnly Then
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+
+      If Index = iOrderHeaderInvoiceNumber Then
+        If KeyAscii >= ASCII_LOWERCASE_A And KeyAscii <= ASCII_LOWERCASE_Z Then
+          KeyAscii = KeyAscii - ASCII_LOWERCASE_A + ASCII_UPPERCASE_A
         End If
+      End If
+    End If
 
-        logger.Debug("<= txtField_Leave ")
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        logger.Debug("txtField_KeyPress Entry")
+    If KeyAscii = ASCII_NULL Then
+      eventArgs.Handled = True
+    End If
 
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
+    logger.Debug("txtField_KeyPress Exit")
+  End Sub
 
-        If Not txtField(Index).ReadOnly Then
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-
-            If Index = iOrderHeaderInvoiceNumber Then
-                If KeyAscii >= ASCII_LOWERCASE_A And KeyAscii <= ASCII_LOWERCASE_Z Then
-                    KeyAscii = KeyAscii - ASCII_LOWERCASE_A + ASCII_UPPERCASE_A
-                End If
-            End If
-        End If
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-
-        If KeyAscii = ASCII_NULL Then
-            eventArgs.Handled = True
-        End If
-
-        logger.Debug("txtField_KeyPress Exit")
-    End Sub
-
-    Private Sub RefreshOrderDetails(ByRef lOrderNumber As Integer, ByRef bUpdateGrid As Boolean)
+  Private Sub RefreshOrderDetails(ByRef lOrderNumber As Integer, ByRef bUpdateGrid As Boolean)
         logger.Debug("RefreshOrderDetails Entry")
 
         Dim rsTemp As DAO.Recordset = Nothing

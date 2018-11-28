@@ -190,127 +190,110 @@ Friend Class frmVendor
         logger.Debug("TextBox_PSVendorExport_TextChanged Exit")
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        logger.Debug("txtField_Enter Entry")
-        Dim Index As Short = txtField.GetIndex(eventSender)
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
 
-        HighlightText(txtField(Index))
+    logger.Debug("txtField_KeyPress Entry")
 
-        logger.Debug("txtField_Enter Exit")
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-    End Sub
+    If KeyAscii = 13 And iVendorComments <> Index Then
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+      KeyAscii = 0
+      System.Windows.Forms.SendKeys.Send("{TAB}")
 
-        logger.Debug("txtField_KeyPress Entry")
+    ElseIf Not txtField(Index).ReadOnly Then
 
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
 
-        If KeyAscii = 13 And iVendorComments <> Index Then
+    End If
 
-            KeyAscii = 0
-            System.Windows.Forms.SendKeys.Send("{TAB}")
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
 
-        ElseIf Not txtField(Index).ReadOnly Then
+    logger.Debug("txtField_KeyPress Exit")
+  End Sub
 
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+  Private Sub txtBox_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCounty.Enter, txtPayToCounty.Enter
+    CType(sender, TextBox).SelectAll()
+  End Sub
 
-        End If
+  Private Sub txtCounty_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCounty.KeyPress
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
+    logger.Debug("txtCounty_KeyPress Entry")
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-        logger.Debug("txtField_KeyPress Exit")
-    End Sub
+    If KeyAscii = 13 Then
 
-    Private Sub txtCounty_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCounty.Enter
+      KeyAscii = 0
+      System.Windows.Forms.SendKeys.Send("{TAB}")
 
-        logger.Debug("txtCounty_Enter Entry")
+    Else
 
-        HighlightText(txtCounty)
-        logger.Debug("txtCounty_Enter Exit")
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtCounty.Tag, txtCounty, 0, 0, 0)
 
-    End Sub
+    End If
 
-    Private Sub txtCounty_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCounty.KeyPress
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
 
-        logger.Debug("txtCounty_KeyPress Entry")
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+    logger.Debug("txtCounty_KeyPress Exit")
+  End Sub
 
-        If KeyAscii = 13 Then
+  Private Sub txtCounty_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCounty.TextChanged
+    If Me.IsInitializing Then Exit Sub
 
-            KeyAscii = 0
-            System.Windows.Forms.SendKeys.Send("{TAB}")
+    logger.Debug("txtCounty_TextChanged Entry")
 
-        Else
+    pbDataChanged = True
 
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtCounty.Tag, txtCounty, 0, 0, 0)
+    logger.Debug("txtCounty_TextChanged Exit")
 
-        End If
+  End Sub
 
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
+  Private Sub txtPayToCounty_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPayToCounty.KeyPress
+    logger.Debug("txtPayToCounty_KeyPress Entry")
 
-        logger.Debug("txtCounty_KeyPress Exit")
-    End Sub
+    Dim KeyAscii As Short = Asc(e.KeyChar)
 
-    Private Sub txtCounty_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCounty.TextChanged
-        If Me.IsInitializing Then Exit Sub
+    If KeyAscii = 13 Then
 
-        logger.Debug("txtCounty_TextChanged Entry")
+      KeyAscii = 0
+      System.Windows.Forms.SendKeys.Send("{TAB}")
 
-        pbDataChanged = True
+    Else
 
-        logger.Debug("txtCounty_TextChanged Exit")
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtPayToCounty.Tag, txtPayToCounty, 0, 0, 0)
 
-    End Sub
+    End If
 
-    Private Sub txtPayToCounty_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPayToCounty.Enter
-        HighlightText(txtPayToCounty)
+    e.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      e.Handled = True
+    End If
 
-    End Sub
+    logger.Debug("txtPayToCounty_KeyPress Exit")
 
-    Private Sub txtPayToCounty_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPayToCounty.KeyPress
-        logger.Debug("txtPayToCounty_KeyPress Entry")
+  End Sub
 
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+  Private Sub txtPayToCounty_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPayToCounty.TextChanged
+    If Me.IsInitializing Then Exit Sub
 
-        If KeyAscii = 13 Then
+    logger.Debug("txtPayToCounty_TextChanged Entry")
+    pbDataChanged = True
+    logger.Debug("txtPayToCounty_TextChanged Exit")
 
-            KeyAscii = 0
-            System.Windows.Forms.SendKeys.Send("{TAB}")
+  End Sub
 
-        Else
-
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtPayToCounty.Tag, txtPayToCounty, 0, 0, 0)
-
-        End If
-
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
-
-        logger.Debug("txtPayToCounty_KeyPress Exit")
-
-    End Sub
-
-    Private Sub txtPayToCounty_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPayToCounty.TextChanged
-        If Me.IsInitializing Then Exit Sub
-
-        logger.Debug("txtPayToCounty_TextChanged Entry")
-        pbDataChanged = True
-        logger.Debug("txtPayToCounty_TextChanged Exit")
-
-    End Sub
-
-    Private Sub _optPOTrans_0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _optPOTrans_0.CheckedChanged
+  Private Sub _optPOTrans_0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _optPOTrans_0.CheckedChanged
         If Me.IsInitializing Then Exit Sub
 
         logger.Debug("rbFax_CheckedChanged Entry")

@@ -93,20 +93,20 @@ Friend Class frmShipperEdit
         txtQuantity.Text = _shipperItem.Qty
     End Sub
 
-    Private Sub txtQuantity_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtQuantity.Enter
-        HighlightText(txtQuantity)
-    End Sub
+  Private Sub txtQuantity_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtQuantity.Enter
+    txtQuantity.SelectAll()
+  End Sub
 
-    Private Sub txtQuantity_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtQuantity.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+  Private Sub txtQuantity_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtQuantity.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, "Number", txtQuantity, 0, 0, 0)
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, "Number", txtQuantity, 0, 0, 0)
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
 #End Region
 

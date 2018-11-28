@@ -1033,31 +1033,28 @@ Friend Class frmTGMLast
     End Function
 
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Integer = txtField.GetIndex(eventSender)
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        HighlightText(txtField(Index))
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Integer = Asc(eventArgs.KeyChar)
+    Dim Index As Integer = txtField.GetIndex(eventSender)
 
-    End Sub
+    If KeyAscii = 13 Then
+      RefreshGrid()
+      KeyAscii = 0
+    Else
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+    End If
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        Dim KeyAscii As Integer = Asc(eventArgs.KeyChar)
-        Dim Index As Integer = txtField.GetIndex(eventSender)
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-        If KeyAscii = 13 Then
-            RefreshGrid()
-            KeyAscii = 0
-        Else
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-        End If
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-
-    Public Sub SaveTGMData()
+  Public Sub SaveTGMData()
 
         FileOpen(1, Trim(glTGMTool.FileName), OpenMode.Output)
 

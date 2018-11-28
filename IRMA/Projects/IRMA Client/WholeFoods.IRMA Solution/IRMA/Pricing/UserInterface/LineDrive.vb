@@ -273,14 +273,12 @@ Friend Class frmLineDrive
         'PrintReport(crwReport)
 
 	End Sub
-	
-    Private Sub txtFamily_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtFamily.Enter
 
-        HighlightText(txtFamily)
+  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtFamily.Enter, txtPct.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    End Sub
-	
-	Private Sub txtFamily_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtFamily.KeyPress
+  Private Sub txtFamily_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtFamily.KeyPress
 		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 		
 		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtFamily.Tag), txtFamily, 0, 0, 0)
@@ -290,14 +288,8 @@ Friend Class frmLineDrive
 			eventArgs.Handled = True
 		End If
 	End Sub
-	
-	Private Sub txtPct_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPct.Enter
-		
-		HighlightText(txtPct)
-		
-	End Sub
-	
-	Private Sub txtPct_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPct.KeyPress
+
+  Private Sub txtPct_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPct.KeyPress
 		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 		
 		KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtPct.Tag), txtPct, 0, 0, 2)
@@ -332,27 +324,25 @@ Friend Class frmLineDrive
         End Select
 
     End Sub
-	
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Short = txtField.GetIndex(eventSender)
 
-        HighlightText(txtField(Index))
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    End Sub
-	Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		Dim Index As Short = txtField.GetIndex(eventSender)
-		
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
-	
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-    Private Sub OptSelection_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles optSelection.CheckedChanged
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
+
+
+  Private Sub OptSelection_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles optSelection.CheckedChanged
 
         If mbFilling Or IsInitializing Then Exit Sub
 

@@ -115,12 +115,12 @@ Friend Class frmOutOfPeriodInvoice
         ShowSubTeams()
         CenterForm(Me)
     End Sub
-	
-    Private Sub mskStartDate_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mskStartDate.Enter
-        HighLightText(mskStartDate)
-    End Sub
 
-    Private Sub ShowStores()
+  Private Sub mskStartDate_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mskStartDate.Enter
+    mskStartDate.SelectAll()
+  End Sub
+
+  Private Sub ShowStores()
         If chkAllStores.Checked Then
             _cmbField_1.Enabled = False
         Else

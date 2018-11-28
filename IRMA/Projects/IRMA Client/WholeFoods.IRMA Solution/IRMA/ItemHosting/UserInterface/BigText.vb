@@ -41,24 +41,22 @@ Friend Class frmBigText
         If Me.IsInitializing = True Then Exit Sub
         If Me.Visible Then pbChanged = True
 	End Sub
-	
-	
-	Private Sub txtBigText_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtBigText.Enter
-		
-		HighlightText(txtBigText)
-		
-	End Sub
-	
-	
-	Private Sub txtBigText_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtBigText.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		
-		'-- psValidationTag must be set by the calling form
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, (Me.psValidationTag), txtBigText, 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
+
+
+  Private Sub txtBigText_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtBigText.Enter
+    txtBigText.SelectAll()
+  End Sub
+
+
+  Private Sub txtBigText_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtBigText.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+
+    '-- psValidationTag must be set by the calling form
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (Me.psValidationTag), txtBigText, 0, 0, 0)
+
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 End Class

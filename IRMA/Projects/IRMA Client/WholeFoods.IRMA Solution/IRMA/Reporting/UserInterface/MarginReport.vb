@@ -147,28 +147,25 @@ Friend Class frmMarginReport
 
         End If
     End Sub
-	
-	Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-		Dim Index As Short = txtField.GetIndex(eventSender)
-		
-		HighlightText(txtField(Index))
-		
-	End Sub
-	
-	Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		Dim Index As Short = txtField.GetIndex(eventSender)
-		
-		'-- Restrict key presses to that type of field
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, "NUMBER", txtField(Index), 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
 
-    Private Sub _lblLabel_0_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _lblLabel_0.Click
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    End Sub
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
+
+    '-- Restrict key presses to that type of field
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, "NUMBER", txtField(Index), 0, 0, 0)
+
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
+
+  Private Sub _lblLabel_0_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _lblLabel_0.Click
+
+  End Sub
 End Class

@@ -1088,41 +1088,38 @@ me_err:
         pbDataChanged = True
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Short = txtField.GetIndex(eventSender)
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    Dim txtBox As TextBox = CType(eventSender, TextBox)
+    If Not txtBox.ReadOnly Then txtBox.SelectAll()
+  End Sub
 
-        If Not txtField(Index).ReadOnly Then
-            HighlightText(txtField(Index))
-        End If
-    End Sub
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
-
-        If Index = iItemTie Or Index = iItemHigh Or Index = iItemMin_Temperature Or Index = iItemMax_Temperature Or
+    If Index = iItemTie Or Index = iItemHigh Or Index = iItemMin_Temperature Or Index = iItemMax_Temperature Or
            Index = iItemUnits_Per_Pallet Or Index = iItemYield Or Index = iItemAverage_Unit_Weight Or Index = iItemPurchaseThresholdCouponAmount Or
            Index = iItemHandlingChargeOverride Or Index = iItemNotAvailNote Or Index = iItemSign_Description Then
-            mbRollbackBatches = mbRollbackBatches Or False
-        Else
-            mbRollbackBatches = True
-        End If
+      mbRollbackBatches = mbRollbackBatches Or False
+    Else
+      mbRollbackBatches = True
+    End If
 
-        If Not txtField(Index).ReadOnly Then
+    If Not txtField(Index).ReadOnly Then
 
-            '-- Restrict key presses to that type of field
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+      '-- Restrict key presses to that type of field
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
 
-            If iItemPOS_Description = Index Then KeyAscii = Asc(UCase(Chr(KeyAscii)))
-        End If
+      If iItemPOS_Description = Index Then KeyAscii = Asc(UCase(Chr(KeyAscii)))
+    End If
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-    Private Sub chkField_CheckStateChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkField.CheckStateChanged
+  Private Sub chkField_CheckStateChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkField.CheckStateChanged
         If Me.isInitializing Then Exit Sub
 
         Dim Index As Short = chkField.GetIndex(eventSender)

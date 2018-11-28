@@ -223,16 +223,11 @@ Friend Class frmOrdersSearch
         logger.Debug("frmOrdersSearch_FormClosed Exit")
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        logger.Debug("txtField_Enter Entry")
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        Dim Index As Short = txtField.GetIndex(eventSender)
-        HighlightText(txtField(Index))
-
-        logger.Debug("txtField_Enter Exit")
-    End Sub
-
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
         logger.Debug("txtField_KeyPress Entry")
 
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)

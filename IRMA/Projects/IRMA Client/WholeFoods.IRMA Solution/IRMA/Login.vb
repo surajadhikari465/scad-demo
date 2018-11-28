@@ -211,6 +211,6 @@ Friend Class frmLogin
     End Sub
 
     Private Sub txtPassword_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPassword.Enter
-        HighlightText(txtPassword)
-    End Sub
+    txtPassword.SelectAll()
+  End Sub
 End Class

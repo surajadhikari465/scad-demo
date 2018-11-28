@@ -361,10 +361,10 @@ CleanUp:
     End Sub
 
     Private Sub txtDistribution_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtDistribution.Enter
-        HighlightText(txtDistribution)
-    End Sub
+    txtDistribution.SelectAll()
+  End Sub
 
-    Private Sub txtDistribution_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtDistribution.KeyPress
+  Private Sub txtDistribution_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtDistribution.KeyPress
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
         If KeyAscii = 13 Then
             Call RefreshGrid()

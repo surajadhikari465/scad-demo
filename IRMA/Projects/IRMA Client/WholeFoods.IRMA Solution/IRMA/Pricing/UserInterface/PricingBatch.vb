@@ -1330,10 +1330,10 @@ ExitSub:
     End Sub
 
     Private Sub txtIdentifier_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtIdentifier.Enter
-        HighlightText(txtIdentifier)
-    End Sub
+    txtIdentifier.SelectAll()
+  End Sub
 
-    Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
+  Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
         logger.Debug("txtIdentifier_KeyPress Enter")
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 

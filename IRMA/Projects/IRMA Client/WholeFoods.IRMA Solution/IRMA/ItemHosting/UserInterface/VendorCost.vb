@@ -504,15 +504,11 @@ ExitSub:
         logger.Debug("OptSelection_CheckedChanged Exit")
     End Sub
 
-    Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
+  Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
+    txtItemID.SelectAll()
+  End Sub
 
-        logger.Debug("txtItemID_Enter Entry")
-        HighlightText(txtItemID)
-        logger.Debug("txtItemID_Enter Exit")
-
-    End Sub
-
-    Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
+  Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
 
         logger.Debug("txtItemID_KeyPress Entry")
 

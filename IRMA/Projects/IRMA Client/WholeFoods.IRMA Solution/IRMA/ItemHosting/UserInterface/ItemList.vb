@@ -103,27 +103,24 @@ Friend Class frmItemList
         chkPrintOnly.Visible = False
 
     End Sub
-	
-	Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-		Dim Index As Short = txtField.GetIndex(eventSender)
-		
-		HighlightText(txtField(Index))
-		
-	End Sub
-	
-	Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		Dim Index As Short = txtField.GetIndex(eventSender)
-		
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-		
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
 
-    Private Sub chkNatItems_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNatItems.Click
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
+
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
+
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
+
+  Private Sub chkNatItems_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNatItems.Click
         If chkNatItems.CheckState = CheckState.Checked Then
             txtVendorName.Enabled = False
             txtField(5).Enabled = False

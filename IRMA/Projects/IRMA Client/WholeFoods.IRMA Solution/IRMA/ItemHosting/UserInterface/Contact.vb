@@ -144,28 +144,28 @@ Friend Class frmContact
 
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtContactName.Enter, txtPhone.Enter, txtFax.Enter, txtExt.Enter, txtEmail.Enter
-        HighlightText(CType(eventSender, TextBox))
-    End Sub
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtContactName.Enter, txtPhone.Enter, txtFax.Enter, txtExt.Enter, txtEmail.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtContactName.KeyPress, txtPhone.KeyPress, txtFax.KeyPress, txtExt.KeyPress, txtEmail.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim txtBox As TextBox = CType(eventSender, TextBox)
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtContactName.KeyPress, txtPhone.KeyPress, txtFax.KeyPress, txtExt.KeyPress, txtEmail.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim txtBox As TextBox = CType(eventSender, TextBox)
 
-        If KeyAscii = 13 Then
-            KeyAscii = 0
-            System.Windows.Forms.SendKeys.Send("{TAB}")
-        ElseIf Not txtBox.ReadOnly Then
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtBox.Tag, txtBox, 0, 0, 0)
-        End If
+    If KeyAscii = 13 Then
+      KeyAscii = 0
+      System.Windows.Forms.SendKeys.Send("{TAB}")
+    ElseIf Not txtBox.ReadOnly Then
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtBox.Tag, txtBox, 0, 0, 0)
+    End If
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-    Sub CheckNoContacts()
+  Sub CheckNoContacts()
         Dim sMsg As String = String.Empty
 
         '-- Make sure there is data

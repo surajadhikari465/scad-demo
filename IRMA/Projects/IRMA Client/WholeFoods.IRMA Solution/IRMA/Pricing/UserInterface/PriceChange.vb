@@ -611,28 +611,26 @@ Friend Class frmPriceChange
 
     End Sub
 
-    Private Sub txtMultiple_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
+  Private Sub txtMultiple_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
+    txtMultiple.SelectAll()
+  End Sub
 
-        HighlightText(txtMultiple)
+  Private Sub txtMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs)
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    End Sub
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMultiple.Tag), txtMultiple, 0, 0, 0)
 
-    Private Sub txtMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs)
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMultiple.Tag), txtMultiple, 0, 0, 0)
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
 #End Region
 
 #Region "Option Button Code"
 
-    Private Sub ManualRadioButton_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ManualRadioButton.CheckedChanged
+  Private Sub ManualRadioButton_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ManualRadioButton.CheckedChanged
         If mbFilling Or IsInitializing Then Exit Sub
 
         Call SetCombos()

@@ -365,44 +365,35 @@ Friend Class frmItemIdentifierAdd
         End If
     End Sub
 
-    Private Sub txtCheckDigit_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCheckDigit.Enter
+  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCheckDigit.Enter, txtIdentifier.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        HighlightText(txtCheckDigit)
+  Private Sub txtCheckDigit_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCheckDigit.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    End Sub
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtCheckDigit.Tag), txtCheckDigit, 0, 0, 0)
 
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-    Private Sub txtCheckDigit_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCheckDigit.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+  Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtCheckDigit.Tag), txtCheckDigit, 0, 0, 0)
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtIdentifier.Tag), txtIdentifier, 0, 0, 0)
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    If Chr(KeyAscii) = "0" And Len(Trim(txtIdentifier.Text)) = 0 Then KeyAscii = 0
 
-    Private Sub txtIdentifier_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtIdentifier.Enter
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-        HighlightText(txtIdentifier)
-
-    End Sub
-
-    Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtIdentifier.Tag), txtIdentifier, 0, 0, 0)
-
-        If Chr(KeyAscii) = "0" And Len(Trim(txtIdentifier.Text)) = 0 Then KeyAscii = 0
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-
-    Private Sub RadioButton_SendToScale_Yes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButton_SendToScale_Yes.CheckedChanged
+  Private Sub RadioButton_SendToScale_Yes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButton_SendToScale_Yes.CheckedChanged
         ' TFS 6744: Add a warning message for the non-type-2 identifiers.
         If Me.RadioButton_SendToScale_Yes.Checked = True Then
             Me.GroupBox_NumScaleDigits.Enabled = True

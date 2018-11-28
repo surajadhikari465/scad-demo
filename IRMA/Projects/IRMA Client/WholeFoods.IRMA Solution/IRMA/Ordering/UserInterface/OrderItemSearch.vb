@@ -524,48 +524,45 @@ Friend Class frmOrderItemSearch
 
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        logger.Debug("txtField_Enter Entry")
-        Dim Index As Short = txtField.GetIndex(eventSender)
-        HighlightText(txtField(Index))
-        logger.Debug("txtField_Enter Exit")
-    End Sub
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        logger.Debug("txtField_KeyPress Entry")
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
-        If txtField(Index).ReadOnly Then GoTo EventExitSub
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-        logger.Debug("txtField_KeyPress Exit")
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    logger.Debug("txtField_KeyPress Entry")
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
+    If txtField(Index).ReadOnly Then GoTo EventExitSub
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+    logger.Debug("txtField_KeyPress Exit")
 EventExitSub:
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-        logger.Debug("txtField_KeyPress Exit")
-    End Sub
-    Private Function IsGLPackagingAccountAvailable(ByVal SubTeamNo As Integer) As Boolean
-        Dim DAO As SubTeamDAO = New SubTeamDAO
-        Dim dr As DataRow = Nothing
-        Dim _dataset As DataSet
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+    logger.Debug("txtField_KeyPress Exit")
+  End Sub
+  Private Function IsGLPackagingAccountAvailable(ByVal SubTeamNo As Integer) As Boolean
+    Dim DAO As SubTeamDAO = New SubTeamDAO
+    Dim dr As DataRow = Nothing
+    Dim _dataset As DataSet
 
-        Dim AccountNumber As String = String.Empty
-        IsGLPackagingAccountAvailable = False
+    Dim AccountNumber As String = String.Empty
+    IsGLPackagingAccountAvailable = False
 
-        _dataset = DAO.GetSubTeam(SubTeamNo)
-        dr = _dataset.Tables(0).Rows(0)
+    _dataset = DAO.GetSubTeam(SubTeamNo)
+    dr = _dataset.Tables(0).Rows(0)
 
-        AccountNumber = dr("GLPackagingAcct").ToString().Trim
+    AccountNumber = dr("GLPackagingAcct").ToString().Trim
 
-        _dataset.Dispose()
+    _dataset.Dispose()
 
-        If AccountNumber <> String.Empty Then
-            IsGLPackagingAccountAvailable = True
-        End If
-    End Function
+    If AccountNumber <> String.Empty Then
+      IsGLPackagingAccountAvailable = True
+    End If
+  End Function
 
-    Private Function IsGLSuppliesAccountAvailable(ByVal SubTeamNo As Integer) As Boolean
+  Private Function IsGLSuppliesAccountAvailable(ByVal SubTeamNo As Integer) As Boolean
         Dim DAO As SubTeamDAO = New SubTeamDAO
         Dim dr As DataRow = Nothing
         Dim _dataset As DataSet

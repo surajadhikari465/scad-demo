@@ -550,32 +550,27 @@ Friend Class frmOrderAdd
         logger.Debug("LimitStore Exit")
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        logger.Debug("txtField_Enter Entry")
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        Dim Index As Short = txtField.GetIndex(eventSender)
-        HighlightText(txtField(Index))
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    logger.Debug("txtField_KeyPress Entry")
 
-        logger.Debug("txtField_Enter Exit")
-    End Sub
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        logger.Debug("txtField_KeyPress Entry")
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
 
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = ASCII_NULL Then
+      eventArgs.Handled = True
+    End If
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+    logger.Debug("txtField_KeyPress Exit")
+  End Sub
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = ASCII_NULL Then
-            eventArgs.Handled = True
-        End If
-
-        logger.Debug("txtField_KeyPress Exit")
-    End Sub
-
-    Private Sub LoadOnlyDistributionCenters()
+  Private Sub LoadOnlyDistributionCenters()
         logger.Debug("LoadOnlyDistributionCenters Entry")
 
         cmbField(iOrderHeaderPurchaseLocation_ID).Items.Clear()

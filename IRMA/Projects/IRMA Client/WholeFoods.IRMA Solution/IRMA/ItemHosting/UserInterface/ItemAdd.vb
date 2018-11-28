@@ -522,13 +522,11 @@ Friend Class frmItemAdd
     End Sub
 
     Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Short = txtField.GetIndex(eventSender)
+    Dim txtBox As TextBox = CType(eventSender, TextBox)
+    If Not txtBox.ReadOnly And txtBox.Enabled And txtBox.Visible Then txtBox.SelectAll()
+  End Sub
 
-        '-- highlight the string
-        If (Not txtField(Index).ReadOnly) And (txtField(Index).Enabled) And (txtField(Index).Visible) Then HighlightText(txtField(Index))
-    End Sub
-
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
         Dim KeyAscii As Short = Asc(EventArgs.KeyChar)
         Dim Index As Short = txtField.GetIndex(eventSender)
 

@@ -818,68 +818,55 @@ Friend Class frmPromotionChange
         Me.Close()
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Short = txtField.GetIndex(eventSender)
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        HighlightText(txtField(Index))
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-    End Sub
+    If txtField(Index).ReadOnly = False Then
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+    End If
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-        If txtField(Index).ReadOnly = False Then
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-        End If
+  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMSRPMultiple.Enter, txtMSRPPrice.Enter, txtMultiple.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+  Private Sub txtMSRPMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMSRPMultiple.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    Private Sub txtMSRPMultiple_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMSRPMultiple.Enter
+    If txtMSRPMultiple.ReadOnly = False Then
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMSRPMultiple.Tag), txtMSRPMultiple, 0, 0, 0)
+    End If
 
-        HighlightText(txtMSRPMultiple)
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-    End Sub
+  Private Sub txtMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMultiple.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    Private Sub txtMSRPMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMSRPMultiple.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    If txtMultiple.ReadOnly = False Then
+      KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMultiple.Tag), txtMultiple, 0, 0, 0)
+    End If
 
-        If txtMSRPMultiple.ReadOnly = False Then
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMSRPMultiple.Tag), txtMSRPMultiple, 0, 0, 0)
-        End If
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-
-    Private Sub txtMSRPPrice_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
-        txtMSRPPrice.SelectAll()
-    End Sub
-
-    Private Sub txtMultiple_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMultiple.Enter
-        HighlightText(txtMultiple)
-    End Sub
-
-    Private Sub txtMultiple_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMultiple.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        If txtMultiple.ReadOnly = False Then
-            KeyAscii = ValidateKeyPressEvent(KeyAscii, (txtMultiple.Tag), txtMultiple, 0, 0, 0)
-        End If
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-    End Sub
-
-    Private Sub txtPrice_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPOSPrice.Enter
+  Private Sub txtPrice_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPOSPrice.Enter
         txtPOSPrice.SelectAll()
     End Sub
 

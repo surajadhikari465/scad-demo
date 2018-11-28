@@ -96,28 +96,25 @@ Friend Class frmAPUploadReports
             cmbStore.SelectedIndex = -1
         End If
 	End Sub
-	
-    Private Sub txtDate_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtDate.Enter
-        Dim Index As Short = txtDate.GetIndex(eventSender)
 
-        HighlightText(txtDate(Index))
+  Private Sub txtDate_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtDate.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    End Sub
+  Private Sub txtDate_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtDate.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtDate.GetIndex(eventSender)
 
-	Private Sub txtDate_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtDate.KeyPress
-		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		Dim Index As Short = txtDate.GetIndex(eventSender)
-		
-		If txtDate(Index).ReadOnly Then GoTo EventExitSub
-		
-		'-- Restrict key presses to that type of field
-		KeyAscii = ValidateKeyPressEvent(KeyAscii, "Date", txtDate(Index), 0, 0, 0)
-		
-EventExitSub: 
-		eventArgs.KeyChar = Chr(KeyAscii)
-		If KeyAscii = 0 Then
-			eventArgs.Handled = True
-		End If
-	End Sub
+    If txtDate(Index).ReadOnly Then GoTo EventExitSub
+
+    '-- Restrict key presses to that type of field
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, "Date", txtDate(Index), 0, 0, 0)
+
+EventExitSub:
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = 0 Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
 End Class

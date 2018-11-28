@@ -787,15 +787,11 @@ Friend Class frmPricingBatchItemSearch
         logger.Debug("OptSelection_CheckedChanged Exit")
     End Sub
 
-    Private Sub txtDescription_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtDescription.Enter
-        HighlightText(txtDescription)
-    End Sub
+  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtDescription.Enter, txtIdentifier.Enter, txtNumBatch.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    Private Sub txtIdentifier_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtIdentifier.Enter
-        HighlightText(txtIdentifier)
-    End Sub
-
-    Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
+  Private Sub txtIdentifier_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtIdentifier.KeyPress
         logger.Debug("txtIdentifier_KeyPress Enter")
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
@@ -810,11 +806,7 @@ Friend Class frmPricingBatchItemSearch
         logger.Debug("txtIdentifier_KeyPress Exit")
     End Sub
 
-    Private Sub txtNumBatch_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
-        HighlightText(txtNumBatch)
-    End Sub
-
-    Private Sub txtNumBatch_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs)
+  Private Sub txtNumBatch_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs)
         logger.Debug("txtNumBatch_KeyPress Enter")
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 

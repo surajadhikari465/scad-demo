@@ -423,27 +423,26 @@ Friend Class frmItemSearch
         End If
     End Sub
 
-    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-        Dim Index As Short = txtField.GetIndex(eventSender)
-        HighlightText(txtField(Index))
-    End Sub
+  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+    CType(eventSender, TextBox).SelectAll()
+  End Sub
 
-    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        Dim Index As Short = txtField.GetIndex(eventSender)
+  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Dim Index As Short = txtField.GetIndex(eventSender)
 
-        If txtField(Index).ReadOnly Then GoTo EventExitSub
+    If txtField(Index).ReadOnly Then GoTo EventExitSub
 
-        KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+    KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
 
 EventExitSub:
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = Keys.None Then
-            eventArgs.Handled = True
-        End If
-    End Sub
+    eventArgs.KeyChar = Chr(KeyAscii)
+    If KeyAscii = Keys.None Then
+      eventArgs.Handled = True
+    End If
+  End Sub
 
-    Private Sub InitializeDataFactory()
+  Private Sub InitializeDataFactory()
 
         Try
             If _factory Is Nothing Then
