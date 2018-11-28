@@ -165,11 +165,11 @@ BEGIN
 		finhc.hierarchyParentClassID													AS FinancialParentId,
 		null																			AS InProcessBy,
 		null																			AS ProcessedDate,
-		aw.Description																	AS [AnimalWelfareRating],
+		ia.AnimalWelfareRating															AS [AnimalWelfareRating],
 		ia.[Biodynamic]																	AS [Biodynamic],
-		cm.Description																	AS [CheeseMilkType],
+		ia.MilkTypes																	AS [MilkTypes],
 		ia.[CheeseRaw]																	AS [CheeseRaw],
-		es.Description																	AS [EcoScaleRating],
+		ia.EcoScaleRating																AS [EcoScaleRating],
 		ia.GlutenFreeAgencyName															AS [GlutenFreeAgency],
 		he.Description																	AS [HealthyEatingRating],
 		ia.KosherAgencyName																AS [KosherAgency], 
@@ -177,8 +177,8 @@ BEGIN
 		ia.NonGmoAgencyName																AS [NonGmoAgency],
 		ia.OrganicAgencyName															AS [OrganicAgency],
 		ia.[PremiumBodyCare]															AS [PremiumBodyCare],
-		sff.Description																	AS [SeafoodFreshOrFrozen],
-		sfc.Description																	AS [SeafoodCatchType],
+		ia.FreshOrFrozen																AS [SeafoodFreshOrFrozen],
+		ia.SeafoodCatchType																AS [SeafoodCatchType],
 		ia.VeganAgencyName																AS [VeganAgency],
 		ia.[Vegetarian]																	AS [Vegetarian],
 		ia.[WholeTrade]																	AS [WholeTrade],
@@ -313,12 +313,7 @@ BEGIN
 															AND ds.traitID			= @departmentSaleTraitID
 															AND ds.localeID			= @localeID
 		LEFT JOIN ItemSignAttribute		ia			ON	i.itemID					= ia.itemID
-		LEFT JOIN AnimalWelfareRating	aw			ON	ia.AnimalWelfareRatingId	= aw.AnimalWelfareRatingId
-		LEFT JOIN MilkType				cm			ON	ia.CheeseMilkTypeId			= cm.MilkTypeId
-		LEFT JOIN EcoScaleRating		es			ON	ia.EcoScaleRatingID			= es.EcoScaleRatingID
 		LEFT JOIN HealthyEatingRating	he			ON	ia.HealthyEatingRatingID	= he.HealthyEatingRatingID
-		LEFT JOIN SeafoodCatchType		sfc			ON	ia.SeafoodCatchTypeID		= sfc.SeafoodCatchTypeID
-		LEFT JOIN SeafoodFreshOrFrozen	sff			ON	ia.SeafoodFreshOrFrozenID	= sff.SeafoodFreshOrFrozenID
 		LEFT JOIN ItemTrait				nr			ON	nr.traitID					= @nrTraitId  AND nr.itemID = i.itemID  AND nr.localeID = @localeID
 		LEFT JOIN ItemTrait				gpp			ON	gpp.traitID					= @gppTraitId AND gpp.itemID = i.itemID AND gpp.localeID = @localeID
 		LEFT JOIN ItemTrait				ftc			ON	ftc.traitID					= @ftcTraitId AND ftc.itemID = i.itemID AND ftc.localeID = @localeID

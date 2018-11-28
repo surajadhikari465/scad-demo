@@ -138,11 +138,11 @@ BEGIN
               coalesce(fin.subTeamNo, -1)		as SubTeamNo,
               cast(coalesce(nullif(fin.posDeptNo,''), '-1') AS int)				as DeptNo,
               cast(coalesce(nullif(fin.disableSubTeamEvents,'0'), '0') AS bit)	as SubTeamNotAligned,
-			  awr.Description					as AnimalWelfareRating,
+			  isa.AnimalWelfareRating			as AnimalWelfareRating,
 			  isa.Biodynamic					as Biodynamic,
-			  mt.Description					as CheeseMilkType,
+			  isa.MilkTypes					    as MilkTypes,
 			  isa.CheeseRaw						as CheeseRaw,
-			  esr.Description					as EcoScaleRating,
+			  isa.EcoScaleRating				as EcoScaleRating,
 			  CASE
 					WHEN isa.GlutenFreeAgencyName IS NULL OR ltrim(rtrim(isa.GlutenFreeAgencyName))='' THEN NULL
 					WHEN ltrim(rtrim(isa.GlutenFreeAgencyName))='No' THEN @falseBit
@@ -166,8 +166,8 @@ BEGIN
 					ELSE @trueBit
 			  END								as NonGmo,
 			  isa.PremiumBodyCare				as PremiumBodyCare,
-			  sff.Description					as FreshOrFrozen,
-			  sfct.Description					as SeafoodCatchType,
+			  isa.FreshOrFrozen					as FreshOrFrozen,
+			  isa.SeafoodCatchType				as SeafoodCatchType,
 			  CASE 
 					WHEN isa.VeganAgencyName IS NULL OR ltrim(rtrim(isa.VeganAgencyName))='' THEN NULL
 					WHEN ltrim(rtrim(isa.VeganAgencyName))='No' THEN @falseBit
@@ -217,10 +217,4 @@ BEGIN
 			  LEFT JOIN Nat_CTE			nat     on  sc.itemID = nat.itemID
               LEFT JOIN FinSubTeam_CTE  fin		on  sc.itemID = fin.itemID
 			  LEFT JOIN ItemSignAttribute isa	on	sc.itemID = isa.ItemID
-			  LEFT JOIN AnimalWelfareRating awr on	isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId
-			  LEFT JOIN HealthyEatingRating her on	isa.HealthyEatingRatingId = her.HealthyEatingRatingId
-			  LEFT JOIN MilkType	mt			on	isa.CheeseMilkTypeId = mt.MilkTypeId
-			  LEFT JOIN EcoScaleRating esr		on	isa.EcoScaleRatingId = esr.EcoScaleRatingId
-			  LEFT JOIN SeafoodFreshOrFrozen sff	on	isa.SeafoodFreshOrFrozenId = sff.SeafoodFreshOrFrozenId
-			  LEFT JOIN SeafoodCatchType sfct	on	isa.SeafoodCatchTypeId = sfct.SeafoodCatchTypeId
 END

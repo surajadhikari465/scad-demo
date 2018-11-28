@@ -25,6 +25,13 @@
 	[AirChilled] [bit] NOT NULL DEFAULT 0,
 	[MadeInHouse] [bit] NOT NULL DEFAULT 0,
 	[CustomerFriendlyDescription] NVARCHAR (60) NULL,
+	AnimalWelfareRating NVARCHAR(255) NULL,
+	MilkType NVARCHAR(255) NULL,
+	DeliverySystems NVARCHAR(255) NULL,
+	DrainedWeightUom NVARCHAR(255) NULL,
+	EcoScaleRating NVARCHAR(255) NULL,
+	FreshOrFrozen NVARCHAR(255) NULL,
+	SeafoodCatchType NVARCHAR(255) NULL
  CONSTRAINT [PK_ItemSignAttribute] PRIMARY KEY CLUSTERED 
 (
 	[ItemSignAttributeID] ASC
@@ -37,31 +44,10 @@ CREATE NONCLUSTERED INDEX IX_ItemSignAttribute_ItemId
     ON dbo.[ItemSignAttribute] ([ItemID]); 
 GO
 
-
 ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_ItemId] FOREIGN KEY([ItemID])
 REFERENCES dbo.Item ([itemID])
 GO
 
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_AnimalWelfareRatingId] FOREIGN KEY([AnimalWelfareRatingId])
-REFERENCES dbo.AnimalWelfareRating ([AnimalWelfareRatingId])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_CheeseMilkTypeId] FOREIGN KEY([CheeseMilkTypeId])
-REFERENCES dbo.MilkType ([MilkTypeId])
-GO
-
 ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_HealthyEatingRatingId] FOREIGN KEY([HealthyEatingRatingId])
 REFERENCES dbo.HealthyEatingRating ([HealthyEatingRatingId])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_EcoScaleRatingId] FOREIGN KEY([EcoScaleRatingId])
-REFERENCES dbo.EcoScaleRating ([EcoScaleRatingId])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_SeafoodFreshOrFrozenId] FOREIGN KEY([SeafoodFreshOrFrozenId])
-REFERENCES dbo.SeafoodFreshOrFrozen ([SeafoodFreshOrFrozenId])
-GO
-
-ALTER TABLE dbo.[ItemSignAttribute]  WITH CHECK ADD  CONSTRAINT [FK_ItemSignAttribute_SeafoodCatchTypeId] FOREIGN KEY([SeafoodCatchTypeId])
-REFERENCES dbo.SeafoodCatchType ([SeafoodCatchTypeId])
 GO
