@@ -49,7 +49,6 @@ namespace Icon.Framework
         public string DeliverySystem { get; set; }
         public Nullable<decimal> AlcoholByVolume { get; set; }
         public string AnimalWelfareRating { get; set; }
-        public string DrainedWeightUom { get; set; }
         public string EcoScaleRating { get; set; }
         public string FreshOrFrozen { get; set; }
         public string SeafoodCatchType { get; set; }

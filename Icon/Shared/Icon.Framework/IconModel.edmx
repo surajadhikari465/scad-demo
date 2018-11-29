@@ -85,7 +85,6 @@
           <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
           <Property Name="AlcoholByVolume" Type="decimal" Precision="5" Scale="2" />
           <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
-          <Property Name="DrainedWeightUom" Type="nvarchar" MaxLength="255" />
           <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
           <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
           <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
@@ -5996,7 +5995,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="DeliverySystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="AlcoholByVolume" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -7366,7 +7364,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
                 <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
                 <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
-                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
                 <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
                 <ScalarProperty Name="AlcoholByVolume" ColumnName="AlcoholByVolume" />
                 <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
