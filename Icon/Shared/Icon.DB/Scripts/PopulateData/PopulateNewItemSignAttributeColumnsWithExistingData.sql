@@ -13,13 +13,13 @@ BEGIN
 		INNER JOIN dbo.ItemSignAttribute isa on isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId		
 
 	UPDATE dbo.ItemSignAttribute  
-	SET MilkTypes = mt.[Description]
-	FROM dbo.MilkTypes mt
+	SET MilkType = mt.[Description]
+	FROM dbo.MilkType mt
 		INNER JOIN dbo.ItemSignAttribute isa on isa.CheeseMilkTypeId = mt.MilkTypeId
 
 	UPDATE dbo.ItemSignAttribute  
 	SET EcoScaleRating = esr.[Description]
-	FROM dbo.EcoScaleRatings esr
+	FROM dbo.EcoScaleRating esr
 		INNER JOIN dbo.ItemSignAttribute isa on isa.EcoScaleRatingId = esr.EcoScaleRatingId
 
 	UPDATE dbo.ItemSignAttribute  
