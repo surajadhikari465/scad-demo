@@ -306,6 +306,28 @@
                                                             <ns9:description>
                                                                 <xsl:value-of select="'Rewards'"/>
                                                             </ns9:description>
+                                                            <ns9:type>
+                                                                <ns9:id>
+                                                                    <xsl:value-of select="current()/pfx:PriceTypeAttribute"/>
+                                                                </ns9:id>
+                                                                <xsl:choose>
+                                                                    <xsl:when test="current()/pfx:PriceTypeAttribute='PMI'">
+                                                                        <ns9:description>
+                                                                            <xsl:value-of select="'Prime Member Incremental'"/>
+                                                                        </ns9:description>
+                                                                    </xsl:when>
+                                                                    <xsl:when test="current()/pfx:PriceTypeAttribute='PMD'">
+                                                                        <ns9:description>
+                                                                            <xsl:value-of select="'Prime Member Deal'"/>
+                                                                        </ns9:description>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <ns9:description>
+                                                                            <xsl:value-of select="'Reward'"/>
+                                                                        </ns9:description>
+                                                                    </xsl:otherwise>
+                                                                </xsl:choose>
+                                                            </ns9:type>
                                                         </ns8:type>
                                                         <ns8:uom>
                                                             <ns52:code>
