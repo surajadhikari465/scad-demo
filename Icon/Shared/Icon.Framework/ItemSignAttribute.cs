@@ -41,11 +41,9 @@ namespace Icon.Framework
         public bool MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
         public string AnimalWelfareRating { get; set; }
-        public string DrainedWeightUom { get; set; }
         public string EcoScaleRating { get; set; }
         public string FreshOrFrozen { get; set; }
         public string SeafoodCatchType { get; set; }
         public string MilkType { get; set; }
-        public string DeliverySystem { get; set; }
     }
 }

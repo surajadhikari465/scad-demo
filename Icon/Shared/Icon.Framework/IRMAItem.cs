@@ -33,16 +33,11 @@ namespace Icon.Framework
         public Nullable<int> merchandiseClassID { get; set; }
         public Nullable<int> nationalClassID { get; set; }
         public System.DateTime insertDate { get; set; }
-        public Nullable<int> AnimalWelfareRatingId { get; set; }
         public Nullable<bool> Biodynamic { get; set; }
-        public Nullable<int> CheeseMilkTypeId { get; set; }
         public Nullable<bool> CheeseRaw { get; set; }
-        public Nullable<int> EcoScaleRatingId { get; set; }
         public Nullable<int> HealthyEatingRatingId { get; set; }
         public Nullable<bool> Msc { get; set; }
         public Nullable<bool> PremiumBodyCare { get; set; }
-        public Nullable<int> SeafoodFreshOrFrozenId { get; set; }
-        public Nullable<int> SeafoodCatchTypeId { get; set; }
         public Nullable<bool> Vegetarian { get; set; }
         public Nullable<bool> WholeTrade { get; set; }
         public Nullable<bool> GrassFed { get; set; }

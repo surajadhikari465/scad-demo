@@ -86,11 +86,6 @@ namespace Icon.Framework
         public virtual DbSet<PLURequest> PLURequest { get; set; }
         public virtual DbSet<PLURequestChangeHistory> PLURequestChangeHistory { get; set; }
         public virtual DbSet<PLURequestChangeType> PLURequestChangeType { get; set; }
-        public virtual DbSet<SeafoodFreshOrFrozen> SeafoodFreshOrFrozen { get; set; }
-        public virtual DbSet<SeafoodCatchType> SeafoodCatchType { get; set; }
-        public virtual DbSet<AnimalWelfareRating> AnimalWelfareRating { get; set; }
-        public virtual DbSet<EcoScaleRating> EcoScaleRating { get; set; }
-        public virtual DbSet<MilkType> MilkType { get; set; }
         public virtual DbSet<ItemNutrition> ItemNutrition { get; set; }
         public virtual DbSet<MammothEventQueue> MammothEventQueue { get; set; }
         public virtual DbSet<MammothEventType> MammothEventType { get; set; }
@@ -98,7 +93,6 @@ namespace Icon.Framework
         public virtual DbSet<VimEventType> VimEventType { get; set; }
         public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
         public virtual DbSet<AuthorizedProductList> AuthorizedProductList { get; set; }
-        public virtual DbSet<DeliverySystem> DeliverySystem { get; set; }
         public virtual DbSet<MessageQueueBusinessUnitInProcess> MessageQueueBusinessUnitInProcess { get; set; }
         public virtual DbSet<PerformanceLog> PerformanceLog { get; set; }
         public virtual DbSet<ItemLink> ItemLink { get; set; }

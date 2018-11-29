@@ -69,16 +69,11 @@
           <Property Name="merchandiseClassID" Type="int" />
           <Property Name="nationalClassID" Type="int" />
           <Property Name="insertDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="AnimalWelfareRatingId" Type="int" />
           <Property Name="Biodynamic" Type="bit" />
-          <Property Name="CheeseMilkTypeId" Type="int" />
           <Property Name="CheeseRaw" Type="bit" />
-          <Property Name="EcoScaleRatingId" Type="int" />
           <Property Name="HealthyEatingRatingId" Type="int" />
           <Property Name="Msc" Type="bit" />
           <Property Name="PremiumBodyCare" Type="bit" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="int" />
-          <Property Name="SeafoodCatchTypeId" Type="int" />
           <Property Name="Vegetarian" Type="bit" />
           <Property Name="WholeTrade" Type="bit" />
           <Property Name="GrassFed" Type="bit" />
@@ -729,13 +724,6 @@
           <Property Name="addressUsageCode" Type="nvarchar" MaxLength="3" Nullable="false" />
           <Property Name="addressUsageDesc" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="AnimalWelfareRating">
-          <Key>
-            <PropertyRef Name="AnimalWelfareRatingId" />
-          </Key>
-          <Property Name="AnimalWelfareRatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="cityID" />
@@ -772,21 +760,6 @@
           <Property Name="numericCode" Type="int" />
           <Property Name="minorUnit" Type="int" />
           <Property Name="symbol" Type="nvarchar" MaxLength="3" />
-        </EntityType>
-        <EntityType Name="DeliverySystem">
-          <Key>
-            <PropertyRef Name="DeliverySystemID" />
-          </Key>
-          <Property Name="DeliverySystemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DeliverySystemCode" Type="nvarchar" MaxLength="4" Nullable="false" />
-          <Property Name="DeliverySystemName" Type="nvarchar" MaxLength="100" />
-        </EntityType>
-        <EntityType Name="EcoScaleRating">
-          <Key>
-            <PropertyRef Name="EcoScaleRatingId" />
-          </Key>
-          <Property Name="EcoScaleRatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Hierarchy">
           <Key>
@@ -911,12 +884,10 @@
           <Property Name="MadeInHouse" Type="bit" Nullable="false" />
           <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
           <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
-          <Property Name="DrainedWeightUom" Type="nvarchar" MaxLength="255" />
           <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
           <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
           <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
           <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
-          <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -987,13 +958,6 @@
           <Property Name="localeTypeCode" Type="nvarchar" MaxLength="3" Nullable="false" />
           <Property Name="localeTypeDesc" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="MilkType">
-          <Key>
-            <PropertyRef Name="MilkTypeId" />
-          </Key>
-          <Property Name="MilkTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
-        </EntityType>
         <EntityType Name="PhysicalAddress">
           <Key>
             <PropertyRef Name="addressID" />
@@ -1035,21 +999,7 @@
           </Key>
           <Property Name="scanCodeTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="scanCodeTypeDesc" Type="nvarchar" MaxLength="255" />
-        </EntityType>
-        <EntityType Name="SeafoodCatchType">
-          <Key>
-            <PropertyRef Name="SeafoodCatchTypeId" />
-          </Key>
-          <Property Name="SeafoodCatchTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SeafoodFreshOrFrozen">
-          <Key>
-            <PropertyRef Name="SeafoodFreshOrFrozenId" />
-          </Key>
-          <Property Name="SeafoodFreshOrFrozenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
+        </EntityType>       
         <EntityType Name="Territory">
           <Key>
             <PropertyRef Name="territoryID" />
@@ -2615,13 +2565,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressType" EntityType="Self.AddressType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressUsage" EntityType="Self.AddressUsage" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AnimalWelfareRating" EntityType="Self.AnimalWelfareRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrencyType" EntityType="Self.CurrencyType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DeliverySystem" EntityType="Self.DeliverySystem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EcoScaleRating" EntityType="Self.EcoScaleRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hierarchy" EntityType="Self.Hierarchy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HierarchyClass" EntityType="Self.HierarchyClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HierarchyClassTrait" EntityType="Self.HierarchyClassTrait" Schema="dbo" store:Type="Tables" />
@@ -2639,13 +2586,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="LocaleSubType" EntityType="Self.LocaleSubType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleTrait" EntityType="Self.LocaleTrait" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleType" EntityType="Self.LocaleType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MilkType" EntityType="Self.MilkType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhysicalAddress" EntityType="Self.PhysicalAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostalCode" EntityType="Self.PostalCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScanCode" EntityType="Self.ScanCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScanCodeType" EntityType="Self.ScanCodeType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SeafoodCatchType" EntityType="Self.SeafoodCatchType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SeafoodFreshOrFrozen" EntityType="Self.SeafoodFreshOrFrozen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Territory" EntityType="Self.Territory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Timezone" EntityType="Self.Timezone" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trait" EntityType="Self.Trait" Schema="dbo" store:Type="Tables" />
@@ -3482,11 +3426,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="PLURequestChangeType" EntitySet="PLURequestChangeType" />
             <End Role="PLURequestChangeHistory" EntitySet="PLURequestChangeHistory" />
           </AssociationSet>
-          <EntitySet Name="SeafoodFreshOrFrozen" EntityType="Icon.Framework.Model.SeafoodFreshOrFrozen" />
-          <EntitySet Name="SeafoodCatchType" EntityType="Icon.Framework.Model.SeafoodCatchType" />
-          <EntitySet Name="AnimalWelfareRating" EntityType="Icon.Framework.Model.AnimalWelfareRating" />
-          <EntitySet Name="EcoScaleRating" EntityType="Icon.Framework.Model.EcoScaleRating" />
-          <EntitySet Name="MilkType" EntityType="Icon.Framework.Model.MilkType" />
           <EntitySet Name="ItemNutrition" EntityType="Icon.Framework.Model.ItemNutrition" />
           <EntitySet Name="MammothEventQueue" EntityType="Icon.Framework.Model.MammothEventQueue" />
           <EntitySet Name="MammothEventType" EntityType="Icon.Framework.Model.MammothEventType" />
@@ -3528,7 +3467,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <Parameter Name="BusinessUnit" Mode="In" Type="Int32" />
             <Parameter Name="MessageTypeId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="DeliverySystem" EntityType="Icon.Framework.Model.DeliverySystem" />
           <EntitySet Name="MessageQueueBusinessUnitInProcess" EntityType="Icon.Framework.Model.MessageQueueBusinessUnitInProcess" />
           <AssociationSet Name="FK_MessageQueueBusinessUnitInProcess_MessageType" Association="Icon.Framework.Model.FK_MessageQueueBusinessUnitInProcess_MessageType">
             <End Role="MessageType" EntitySet="MessageType" />
@@ -5542,41 +5480,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SeafoodFreshOrFrozen">
-          <Key>
-            <PropertyRef Name="SeafoodFreshOrFrozenId" />
-          </Key>
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SeafoodCatchType">
-          <Key>
-            <PropertyRef Name="SeafoodCatchTypeId" />
-          </Key>
-          <Property Name="SeafoodCatchTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="AnimalWelfareRating">
-          <Key>
-            <PropertyRef Name="AnimalWelfareRatingId" />
-          </Key>
-          <Property Name="AnimalWelfareRatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          </EntityType>
-        <EntityType Name="EcoScaleRating">
-          <Key>
-            <PropertyRef Name="EcoScaleRatingId" />
-          </Key>
-          <Property Name="EcoScaleRatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="MilkType">
-          <Key>
-            <PropertyRef Name="MilkTypeId" />
-          </Key>
-          <Property Name="MilkTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />          
-        </EntityType>
         <EntityType Name="ItemNutrition">
           <Key>
             <PropertyRef Name="RecipeId" />
@@ -5858,14 +5761,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DeliverySystem">
-          <Key>
-            <PropertyRef Name="DeliverySystemID" />
-          </Key>
-          <Property Name="DeliverySystemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DeliverySystemCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="DeliverySystemName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="MessageQueueBusinessUnitInProcess">
           <Key>
             <PropertyRef Name="ControllerInstanceId" />
@@ -6045,12 +5940,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
           <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />          
           <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DeliverySystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ItemSignAttribute_ItemId">
           <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
@@ -6087,16 +5980,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="merchandiseClassID" Type="Int32" />
           <Property Name="nationalClassID" Type="Int32" />
           <Property Name="insertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AnimalWelfareRatingId" Type="Int32" />
           <Property Name="Biodynamic" Type="Boolean" />
-          <Property Name="CheeseMilkTypeId" Type="Int32" />
           <Property Name="CheeseRaw" Type="Boolean" />
-          <Property Name="EcoScaleRatingId" Type="Int32" />
           <Property Name="HealthyEatingRatingId" Type="Int32" />
           <Property Name="Msc" Type="Boolean" />
           <Property Name="PremiumBodyCare" Type="Boolean" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
-          <Property Name="SeafoodCatchTypeId" Type="Int32" />
           <Property Name="Vegetarian" Type="Boolean" />
           <Property Name="WholeTrade" Type="Boolean" />
           <Property Name="GrassFed" Type="Boolean" />
@@ -7108,46 +6996,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SeafoodFreshOrFrozen">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.SeafoodFreshOrFrozen">
-              <MappingFragment StoreEntitySet="SeafoodFreshOrFrozen">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SeafoodCatchType">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.SeafoodCatchType">
-              <MappingFragment StoreEntitySet="SeafoodCatchType">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AnimalWelfareRating">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.AnimalWelfareRating">
-              <MappingFragment StoreEntitySet="AnimalWelfareRating">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EcoScaleRating">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.EcoScaleRating">
-              <MappingFragment StoreEntitySet="EcoScaleRating">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MilkType">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MilkType">
-              <MappingFragment StoreEntitySet="MilkType">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MilkTypeId" ColumnName="MilkTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ItemNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemNutrition">
               <MappingFragment StoreEntitySet="ItemNutrition">
@@ -7387,15 +7235,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="MessageQueueDeleteControllerFromBusinessUnitInProcess" FunctionName="Icon.Framework.Model.Store.MessageQueueDeleteControllerFromBusinessUnitInProcess" />
           <FunctionImportMapping FunctionImportName="MessageQueueUpdateControllerBusinessUnitInProcess" FunctionName="Icon.Framework.Model.Store.MessageQueueUpdateControllerBusinessUnitInProcess" />
-          <EntitySetMapping Name="DeliverySystem">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.DeliverySystem">
-              <MappingFragment StoreEntitySet="DeliverySystem">
-                <ScalarProperty Name="DeliverySystemName" ColumnName="DeliverySystemName" />
-                <ScalarProperty Name="DeliverySystemCode" ColumnName="DeliverySystemCode" />
-                <ScalarProperty Name="DeliverySystemID" ColumnName="DeliverySystemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MessageQueueBusinessUnitInProcess">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueBusinessUnitInProcess">
               <MappingFragment StoreEntitySet="MessageQueueBusinessUnitInProcess">
@@ -7486,12 +7325,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemSignAttribute">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
               <MappingFragment StoreEntitySet="ItemSignAttribute">
-                <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
                 <ScalarProperty Name="MilkType" ColumnName="MilkType" />
                 <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
                 <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
                 <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
-                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
                 <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
                 <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
                 <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
@@ -7541,16 +7378,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
                 <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
                 <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
                 <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
                 <ScalarProperty Name="Msc" ColumnName="Msc" />
                 <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
                 <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
-                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
                 <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
                 <ScalarProperty Name="insertDate" ColumnName="insertDate" />
                 <ScalarProperty Name="nationalClassID" ColumnName="nationalClassID" />
                 <ScalarProperty Name="merchandiseClassID" ColumnName="merchandiseClassID" />

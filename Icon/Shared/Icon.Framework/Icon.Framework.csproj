@@ -104,14 +104,6 @@
     <Compile Include="Agency.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AnimalWelfareRating.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AnimalWelfareRatings.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AnimalWelfareRatings.tt</DependentUpon>
-    </Compile>
     <Compile Include="APIMessageProcessorLogEntry.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
@@ -147,22 +139,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CurrencyTypes.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DeliverySystem.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DeliverySystems.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeliverySystems.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DrainedWeightUoms.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DrainedWeightUoms.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EcoScaleRating.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EventQueue.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
@@ -311,9 +287,6 @@
     <Compile Include="MessageType.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MilkType.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="PerformanceLog.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
@@ -356,17 +329,6 @@
     <Compile Include="ScanCodeType.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SeafoodCatchType.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SeafoodFreshOrFrozen.cs">
-      <DependentUpon>IconModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EcoScaleRatings.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EcoScaleRatings.tt</DependentUpon>
-    </Compile>
     <Compile Include="EventTypeNames.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -376,11 +338,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HealthyEatingRatings.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MilkTypes.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MilkTypes.tt</DependentUpon>
     </Compile>
     <Compile Include="PLURequestChangeTypeNames.cs">
       <DependentUpon>PLURequestChangeTypeNames.tt</DependentUpon>
@@ -443,16 +400,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ScanCodeTypeDescriptions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SeafoodCatchTypes.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SeafoodCatchTypes.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SeafoodFreshOrFrozenTypes.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SeafoodFreshOrFrozenTypes.tt</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <DependentUpon>IconModel.tt</DependentUpon>
@@ -805,22 +752,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AnimalWelfareRatings.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AnimalWelfareRatings.cs</LastGenOutput>
-    </None>
-    <None Include="DeliverySystems.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DeliverySystems.cs</LastGenOutput>
-    </None>
-    <None Include="DrainedWeightUoms.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DrainedWeightUoms.cs</LastGenOutput>
-    </None>
-    <None Include="EcoScaleRatings.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EcoScaleRatings.cs</LastGenOutput>
-    </None>
     <None Include="HealthyEatingRatings.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HealthyEatingRatings.cs</LastGenOutput>
@@ -828,18 +759,6 @@
     <None Include="HierarchyLevelNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HierarchyLevelNames.cs</LastGenOutput>
-    </None>
-    <None Include="MilkTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MilkTypes.cs</LastGenOutput>
-    </None>
-    <None Include="SeafoodCatchTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SeafoodCatchTypes.cs</LastGenOutput>
-    </None>
-    <None Include="SeafoodFreshOrFrozenTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SeafoodFreshOrFrozenTypes.cs</LastGenOutput>
     </None>
     <None Include="StorePosTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
