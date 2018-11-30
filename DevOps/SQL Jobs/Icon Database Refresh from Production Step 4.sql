@@ -1,0 +1,4 @@
+--Set DB to Multi-User
+USE [master]
+ALTER DATABASE [iCON] SET MULTI_USER
+GO
