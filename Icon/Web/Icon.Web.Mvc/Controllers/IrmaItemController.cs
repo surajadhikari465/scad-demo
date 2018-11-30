@@ -38,7 +38,7 @@ namespace Icon.Web.Controllers
             IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyClassesQuery,
             ICommandHandler<UpdateIrmaItemCommand> updateIrmaItemHandler,
             IManagerHandler<AddItemManager> addItemDeleteIrmaItemHandler,
-            IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>> getIrmaItemsQuery,          
+            IQueryHandler<GetIrmaItemsParameters, List<IRMAItem>> getIrmaItemsQuery,
             ICommandHandler<DeleteIrmaItemCommand> deleteIrmaItemHandler,
             IExcelExporterService excelExporterService)
         {
@@ -81,7 +81,6 @@ namespace Icon.Web.Controllers
 
             List<IRMAItem> searchResults = getIrmaItemsQuery.Search(parameters);
             List<string> uoms = UomCodes.ByName.Values.ToList();
-            List<string> deliverySystems = DeliverySystems.AsDictionary.Values.ToList();
             HierarchyClassListModel allHierarchies = getHierarchyClassesQuery.Search(new GetHierarchyLineageParameters());
 
             List<HierarchyClassViewModel> iconBrands = allHierarchies.BrandHierarchyList.Select(b => new HierarchyClassViewModel(b)).DistinctBy(hc => hc.HierarchyClassName).ToList();
@@ -92,7 +91,6 @@ namespace Icon.Web.Controllers
                 .ToList();
 
             viewModel.Uoms = uoms;
-            viewModel.DeliverySystems = deliverySystems;
             viewModel.AllBrands = iconBrands.Union(irmaBrands).OrderBy(b => b.HierarchyClassName).ToList();
             viewModel.TaxHierarchyClasses = allHierarchies.TaxHierarchyList.Select(t => new HierarchyClassViewModel(t))
                 .DistinctBy(t => t.HierarchyClassId).OrderBy(t => t.HierarchyClassLineage).ToList();
@@ -105,18 +103,13 @@ namespace Icon.Web.Controllers
                 HasInvalidData = ItemContainsInValidData(item),
                 IsNewBrand = irmaBrands.Any(brand => item.brandName.Trim().ToLower() == brand.HierarchyClassName.Trim().ToLower()),
                 RetailUom = item.retailUom,
-                IsUnsupportedUom = !uoms.Any(uom => (item.retailUom?? string.Empty).Trim().ToLower() == uom.Trim().ToLower()),
+                IsUnsupportedUom = !uoms.Any(uom => (item.retailUom ?? string.Empty).Trim().ToLower() == uom.Trim().ToLower()),
                 MerchandiseHierarchyClassName = viewModel.MerchandiseHierarchyClasses.SingleOrDefault(merch => merch.HierarchyClassId == (item.merchandiseClassID ?? 0)) == null ? String.Empty :
                     viewModel.MerchandiseHierarchyClasses.SingleOrDefault(merch => merch.HierarchyClassId == (item.merchandiseClassID ?? 0)).HierarchyClassLineage,
                 TaxHierarchyClassName = viewModel.TaxHierarchyClasses.SingleOrDefault(tax => tax.HierarchyClassId == (item.taxClassID ?? 0)) == null ? String.Empty :
                     viewModel.TaxHierarchyClasses.SingleOrDefault(tax => tax.HierarchyClassId == (item.taxClassID ?? 0)).HierarchyClassLineage,
                 IrmaSubTeamName = item.irmaSubTeamName,
             }).ToList();
-            viewModel.AnimalWelfareRatings = AnimalWelfareRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.MilkTypes = MilkTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.EcoScaleRatings = EcoScaleRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
 
             //var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
             //viewModel.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
@@ -126,7 +119,7 @@ namespace Icon.Web.Controllers
             //viewModel.VeganAgencies = certificationAgencies.Where(ca => ca.Vegan == "1").ToList();
             viewModel.NullableBooleanComboBoxValues = new NullableBooleanComboBoxValuesViewModel();
 
-           
+
             return PartialView("_IrmaItemSearchResultsPartial", viewModel);
         }
 
@@ -165,10 +158,10 @@ namespace Icon.Web.Controllers
             if (selected == null || selected.Count == 0)
             {
                 return Json(new
-                    {
-                        Success = false,
-                        Message = "No items were selected to validate."
-                    });
+                {
+                    Success = false,
+                    Message = "No items were selected to validate."
+                });
             }
 
             return LoadOrValidateItems(selected, isValidated: true);
@@ -238,7 +231,7 @@ namespace Icon.Web.Controllers
 
             GridModel gridModel = new GridModel();
             List<Transaction<IrmaItemViewModel>> transactions = gridModel.LoadTransactions<IrmaItemViewModel>(HttpContext.Request.Form["ig_transactions"]);
-            
+
             foreach (Transaction<IrmaItemViewModel> item in transactions)
             {
                 UpdateIrmaItemCommand update = new UpdateIrmaItemCommand();
@@ -255,15 +248,15 @@ namespace Icon.Web.Controllers
                 update.TaxHierarchyClassId = item.row.TaxHierarchyClassId;
                 update.MerchandiseHierarchyClassId = item.row.MerchandiseHierarchyClassId;
                 update.NationalHierarchyClassId = item.row.NationalHierarchyClassId;
-                update.AnimalWelfareRatingId = item.row.AnimalWelfareRatingId;
+                update.AnimalWelfareRating = item.row.AnimalWelfareRating;
                 update.Biodynamic = item.row.Biodynamic;
-                update.CheeseMilkTypeId = item.row.CheeseMilkTypeId;
+                update.CheeseMilkType = item.row.CheeseMilkType;
                 update.CheeseRaw = item.row.CheeseRaw;
-                update.EcoScaleRatingId = item.row.EcoScaleRatingId;
+                update.EcoScaleRating = item.row.EcoScaleRating;
                 update.Msc = item.row.Msc;
                 update.PremiumBodyCare = item.row.PremiumBodyCare;
-                update.SeafoodFreshOrFrozenId = item.row.SeafoodFreshOrFrozenId;
-                update.SeafoodCatchTypeId = item.row.SeafoodCatchTypeId;
+                update.SeafoodFreshOrFrozen = item.row.SeafoodFreshOrFrozen;
+                update.SeafoodCatchType = item.row.SeafoodCatchType;
                 update.Vegetarian = item.row.Vegetarian;
                 update.WholeTrade = item.row.WholeTrade;
                 update.GrassFed = item.row.GrassFed;
@@ -276,7 +269,7 @@ namespace Icon.Web.Controllers
 
                 try
                 {
-                    updateIrmaItemHandler.Execute(update);                    
+                    updateIrmaItemHandler.Execute(update);
                 }
                 catch (CommandException exception)
                 {
@@ -310,7 +303,7 @@ namespace Icon.Web.Controllers
 
             return DeleteItems(selected);
         }
-             
+
         private JsonResult DeleteItems(List<IrmaItemViewModel> selected)
         {
             List<string> errorMessages = new List<string>();
@@ -318,10 +311,10 @@ namespace Icon.Web.Controllers
             foreach (var row in selected)
             {
                 DeleteIrmaItemCommand deleteItem = new DeleteIrmaItemCommand();
-                deleteItem.IrmaItemId = row.IrmaItemId;   
+                deleteItem.IrmaItemId = row.IrmaItemId;
 
                 try
-                {                   
+                {
                     deleteIrmaItemHandler.Execute(deleteItem);
                 }
                 catch (CommandException exception)
@@ -398,15 +391,15 @@ namespace Icon.Web.Controllers
                     IrmaSubTeamName = b.irmaSubTeamName,
                     MerchandiseHierarchyClassId = b.merchandiseClassID,
                     TaxHierarchyClassId = b.taxClassID,
-                    AnimalWelfareRatingId = b.AnimalWelfareRatingId,
+                    AnimalWelfareRating = b.AnimalWelfareRating,
                     Biodynamic = b.Biodynamic,
-                    CheeseMilkTypeId = b.CheeseMilkTypeId,
+                    CheeseMilkType = b.MilkType,
                     CheeseRaw = b.CheeseRaw,
-                    EcoScaleRatingId = b.EcoScaleRatingId,
+                    EcoScaleRating = b.EcoScaleRating,
                     Msc = b.Msc,
                     PremiumBodyCare = b.PremiumBodyCare,
-                    SeafoodFreshOrFrozenId = b.SeafoodFreshOrFrozenId,
-                    SeafoodCatchTypeId = b.SeafoodCatchTypeId,
+                    SeafoodFreshOrFrozen = b.FreshOrFrozen,
+                    SeafoodCatchType = b.SeafoodCatchType,
                     Vegetarian = b.Vegetarian,
                     WholeTrade = b.WholeTrade,
                     GrassFed = b.GrassFed,
@@ -439,15 +432,15 @@ namespace Icon.Web.Controllers
         private List<HierarchyClassModel> GetTaxHiearchyForDropDown(List<HierarchyClassModel> TaxHierarchyList)
         {
             TaxHierarchyList.Add(new HierarchyClassModel()
-                {
-                    HierarchyClassId = 0,
-                    HierarchyClassName = Constants.UndefinedTaxName,
-                    HierarchyLevel = HierarchyLevels.Tax,
-                    HierarchyLineage = Constants.UndefinedTaxName,
-                    HierarchyParentClassId = null,
-                    HierarchyId = 0
-                });
-            return TaxHierarchyList;            
+            {
+                HierarchyClassId = 0,
+                HierarchyClassName = Constants.UndefinedTaxName,
+                HierarchyLevel = HierarchyLevels.Tax,
+                HierarchyLineage = Constants.UndefinedTaxName,
+                HierarchyParentClassId = null,
+                HierarchyId = 0
+            });
+            return TaxHierarchyList;
         }
     }
 }

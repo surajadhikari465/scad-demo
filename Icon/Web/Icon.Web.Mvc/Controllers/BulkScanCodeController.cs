@@ -92,14 +92,7 @@ namespace Icon.Web.Mvc.Controllers
                 viewModel.OverLimitScanCodeCount = scanCodesOverSearchLimit;
             }
 
-            viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(String.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.DeliverySystems = GetDeliverySystemSelectList(String.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.AnimalWelfareRatings = AnimalWelfareRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.MilkTypes = MilkTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.EcoScaleRatings = EcoScaleRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-
+            viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(String.Empty, includeInitialBlank: false); 
             var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
             viewModel.ItemSearchResults.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
             viewModel.ItemSearchResults.KosherAgencies = certificationAgencies.Where(ca => ca.Kosher == "1").ToList();
@@ -167,13 +160,7 @@ namespace Icon.Web.Mvc.Controllers
             }
 
             viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(String.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.DeliverySystems = GetDeliverySystemSelectList(String.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.AnimalWelfareRatings = AnimalWelfareRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.MilkTypes = MilkTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.EcoScaleRatings = EcoScaleRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-
+          
             var certificationAgencies = getCertificationAgenciesQuery.Search(new GetCertificationAgenciesParameters());
             viewModel.ItemSearchResults.GlutenFreeAgencies = certificationAgencies.Where(ca => ca.GlutenFree == "1").ToList();
             viewModel.ItemSearchResults.KosherAgencies = certificationAgencies.Where(ca => ca.Kosher == "1").ToList();
@@ -215,19 +202,7 @@ namespace Icon.Web.Mvc.Controllers
 
             return new SelectList(uoms, selectedUom);
         }
-
-        private SelectList GetDeliverySystemSelectList(string selectedDeliverySystem, bool includeInitialBlank)
-        {
-            var deliverySystems = DeliverySystems.AsDictionary.Values.ToList();
-
-            if (includeInitialBlank)
-            {
-                // Insert empty value at the beginning of the list to allow for an un-selected state.
-                deliverySystems.Insert(0, String.Empty);
-            }
-
-            return new SelectList(deliverySystems, selectedDeliverySystem);
-        }
+    
 
         private List<HierarchyClassViewModel> GetHierarchyLineage(List<HierarchyClassModel> hierarchyList)
         {

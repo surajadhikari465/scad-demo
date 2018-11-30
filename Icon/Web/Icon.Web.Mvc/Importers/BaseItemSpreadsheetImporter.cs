@@ -166,17 +166,7 @@ namespace Icon.Web.Mvc.Importers
 
             if (ValidRows.Count > 0)
             {
-                ValidateDeliverySystem();
-            }
-
-            if (ValidRows.Count > 0)
-            {
                 ValidateValidated();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateAnimalWelfareRating();
             }
 
             if (ValidRows.Count > 0)
@@ -184,20 +174,11 @@ namespace Icon.Web.Mvc.Importers
                 ValidateBiodynamic();
             }
 
-            if (ValidRows.Count > 0)
-            {
-                ValidateCheeseAttributeMilkType();
-            }
-
+           
             if (ValidRows.Count > 0)
             {
                 ValidateCheeseAttributeRaw();
             }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateEcoScaleRating();
-            }        
 
             if (ValidRows.Count > 0)
             {
@@ -232,16 +213,6 @@ namespace Icon.Web.Mvc.Importers
             if (ValidRows.Count > 0)
             {
                 ValidateMadeInHouse();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateSeafoodFreshOrFrozen();
-            }
-
-            if (ValidRows.Count > 0)
-            {
-                ValidateSeafoodWildOrFarmRaised();
             }
 
             if (ValidRows.Count > 0)
@@ -401,19 +372,7 @@ namespace Icon.Web.Mvc.Importers
                 AddErrorRows(error, invalidRows);
             }
         }
-
-        protected void ValidateDeliverySystem()
-        {
-            var validDeliverySystems = DeliverySystems.AsDictionary.Values.ToList();
-
-            var invalidRows = ValidRows.Where(row => !String.IsNullOrWhiteSpace(row.DeliverySystem) && !validDeliverySystems.Contains(row.DeliverySystem)).ToList();
-
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Delivery System should be one of the following: {0}.", String.Join(", ", DeliverySystems.AsDictionary.Values));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+      
         protected void ValidateValidated()
         {
             Validator = new YesNoValidator();
@@ -427,18 +386,18 @@ namespace Icon.Web.Mvc.Importers
             }
         }
 
-        protected void ValidateAnimalWelfareRating()
-        {
-            Validator = new AnimalWelfareRatingValidator();
+        //protected void ValidateAnimalWelfareRating()
+        //{
+        //    Validator = new AnimalWelfareRatingValidator();
 
-            var invalidRows = ValidRows.Where(row => !Validator.Validate(row.AnimalWelfareRating)).ToList();
+        //    var invalidRows = ValidRows.Where(row => !Validator.Validate(row.AnimalWelfareRating)).ToList();
 
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Animal Welfare Rating is not recognized.  Valid entries are {0}.", String.Join(", ", AnimalWelfareRatings.Descriptions.AsArray));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+        //    if (invalidRows.Count > 0)
+        //    {
+        //        string error = String.Format("Animal Welfare Rating is not recognized.  Valid entries are {0}.", String.Join(", ", AnimalWelfareRatings.Descriptions.AsArray));
+        //        AddErrorRows(error, invalidRows);
+        //    }
+        //}
 
         protected void ValidateBiodynamic()
         {
@@ -453,18 +412,18 @@ namespace Icon.Web.Mvc.Importers
             }
         }
 
-        protected void ValidateCheeseAttributeMilkType()
-        {
-            Validator = new CheeseAttributeMilkTypeValidator();
+        //protected void ValidateCheeseAttributeMilkType()
+        //{
+        //    Validator = new CheeseAttributeMilkTypeValidator();
 
-            var invalidRows = ValidRows.Where(row => !Validator.Validate(row.CheeseAttributeMilkType)).ToList();
+        //    var invalidRows = ValidRows.Where(row => !Validator.Validate(row.CheeseAttributeMilkType)).ToList();
 
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Cheese Attribute: Milk Type is not recognized.  Valid entries are {0}.", String.Join(", ", MilkTypes.Descriptions.AsArray));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+        //    if (invalidRows.Count > 0)
+        //    {
+        //        string error = String.Format("Cheese Attribute: Milk Type is not recognized.  Valid entries are {0}.", String.Join(", ", MilkTypes.Descriptions.AsArray));
+        //        AddErrorRows(error, invalidRows);
+        //    }
+        //}
 
         protected void ValidateCheeseAttributeRaw()
         {
@@ -479,18 +438,18 @@ namespace Icon.Web.Mvc.Importers
             }
         }
 
-        protected void ValidateEcoScaleRating()
-        {
-            Validator = new EcoScaleRatingValidator();
+        //protected void ValidateEcoScaleRating()
+        //{
+        //    Validator = new EcoScaleRatingValidator();
 
-            var invalidRows = ValidRows.Where(row => !Validator.Validate(row.EcoScaleRating)).ToList();
+        //    var invalidRows = ValidRows.Where(row => !Validator.Validate(row.EcoScaleRating)).ToList();
 
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Eco-Scale Rating is not recognized.  Valid entries are {0}.", String.Join(", ", EcoScaleRatings.Descriptions.AsArray));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+        //    if (invalidRows.Count > 0)
+        //    {
+        //        string error = String.Format("Eco-Scale Rating is not recognized.  Valid entries are {0}.", String.Join(", ", EcoScaleRatings.Descriptions.AsArray));
+        //        AddErrorRows(error, invalidRows);
+        //    }
+        //}
      
 
         protected void ValidatePremiumBodyCare()
@@ -583,31 +542,31 @@ namespace Icon.Web.Mvc.Importers
                 AddErrorRows(error, invalidRows);
             }
         }
-        protected void ValidateSeafoodFreshOrFrozen()
-        {
-            Validator = new SeafoodFreshOrFrozenValidator();
+        //protected void ValidateSeafoodFreshOrFrozen()
+        //{
+        //    //Validator = new SeafoodFreshOrFrozenValidator();
 
-            var invalidRows = ValidRows.Where(row => !Validator.Validate(row.SeafoodFreshOrFrozen)).ToList();
+        //    var invalidRows = ValidRows.Where(row => !Validator.Validate(row.SeafoodFreshOrFrozen)).ToList();
 
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Fresh Or Frozen is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodFreshOrFrozenTypes.Descriptions.AsArray));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+        //    if (invalidRows.Count > 0)
+        //    {
+        //        string error = String.Format("Fresh Or Frozen is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodFreshOrFrozenTypes.Descriptions.AsArray));
+        //        AddErrorRows(error, invalidRows);
+        //    }
+        //}
 
-        protected void ValidateSeafoodWildOrFarmRaised()
-        {
-            Validator = new SeafoodCatchTypeValidator();
+        //protected void ValidateSeafoodWildOrFarmRaised()
+        //{
+        //    Validator = new SeafoodCatchTypeValidator();
 
-            var invalidRows = ValidRows.Where(row => !Validator.Validate(row.SeafoodWildOrFarmRaised)).ToList();
+        //    var invalidRows = ValidRows.Where(row => !Validator.Validate(row.SeafoodWildOrFarmRaised)).ToList();
 
-            if (invalidRows.Count > 0)
-            {
-                string error = String.Format("Seafood: Wild Or Farm Raised is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodCatchTypes.Descriptions.AsArray));
-                AddErrorRows(error, invalidRows);
-            }
-        }
+        //    if (invalidRows.Count > 0)
+        //    {
+        //        string error = String.Format("Seafood: Wild Or Farm Raised is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodCatchTypes.Descriptions.AsArray));
+        //        AddErrorRows(error, invalidRows);
+        //    }
+        //}
      
         protected void ValidateVegetarian()
         {

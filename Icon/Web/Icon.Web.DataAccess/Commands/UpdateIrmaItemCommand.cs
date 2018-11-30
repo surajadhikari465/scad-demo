@@ -16,23 +16,23 @@ namespace Icon.Web.DataAccess.Commands
         public int? MerchandiseHierarchyClassId { get; set; }
         public int? TaxHierarchyClassId { get; set; }
         public int? NationalHierarchyClassId { get; set; }
-        public int? AnimalWelfareRatingId { get; set; }
+        public string AnimalWelfareRating { get; set; }
 
         public bool? Biodynamic { get; set; }
 
-        public int? CheeseMilkTypeId { get; set; }
+        public string CheeseMilkType { get; set; }
 
         public bool? CheeseRaw { get; set; }
 
-        public int? EcoScaleRatingId { get; set; }
+        public string EcoScaleRating { get; set; }
 
         public bool? Msc { get; set; }
 
         public bool? PremiumBodyCare { get; set; }
 
-        public int? SeafoodFreshOrFrozenId { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
 
-        public int? SeafoodCatchTypeId { get; set; }
+        public string SeafoodCatchType { get; set; }
 
         public bool? Vegetarian { get; set; }
 

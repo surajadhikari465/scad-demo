@@ -163,13 +163,10 @@ namespace Icon.Web.Mvc.Importers
                         DepartmentSale = String.Empty,
                         Notes = notes,
                         AnimalWelfareRating = animalWelfareRating,
-                        AnimalWelfareRatingId = animalWelfareRating == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(AnimalWelfareRatings.AsDictionary, animalWelfareRating),
                         Biodynamic = biodynamic == null ? String.Empty : biodynamic,
                         CheeseAttributeMilkType = cheeseAttributeMilkType,
-                        CheeseAttributeMilkTypeId = cheeseAttributeMilkType == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(MilkTypes.AsDictionary, cheeseAttributeMilkType),
                         CheeseAttributeRaw = cheeseAttributeRaw == null ? String.Empty : cheeseAttributeRaw,
                         EcoScaleRating = ecoScaleRating,
-                        EcoScaleRatingId = ecoScaleRating == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(EcoScaleRatings.AsDictionary, ecoScaleRating),
                         GlutenFreeAgencyLineage = glutenFree,
                         GlutenFreeAgency = glutenFree == Constants.ExcelImportRemoveValueKeyword ? "0" : glutenFree.GetIdFromCellText(),
                         KosherAgencyLineage = kosher,
@@ -181,9 +178,7 @@ namespace Icon.Web.Mvc.Importers
                         OrganicAgency = organic == Constants.ExcelImportRemoveValueKeyword ? "0" : organic.GetIdFromCellText(),
                         PremiumBodyCare = premiumBodyCare == null ? String.Empty : premiumBodyCare,
                         SeafoodFreshOrFrozen = seafoodFreshOrFrozen,
-                        SeafoodFreshOrFrozenId = seafoodFreshOrFrozen == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(SeafoodFreshOrFrozenTypes.AsDictionary, seafoodFreshOrFrozen),
-                        SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised,
-                        SeafoodWildOrFarmRaisedId = seafoodWildOrFarmRaised == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(SeafoodCatchTypes.AsDictionary, seafoodWildOrFarmRaised),
+                        SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised,          
                         VeganAgencyLineage = vegan,
                         VeganAgency = vegan == Constants.ExcelImportRemoveValueKeyword ? "0" : vegan.GetIdFromCellText(),
                         Vegetarian = vegetarian == null ? String.Empty : vegetarian,
@@ -276,19 +271,14 @@ namespace Icon.Web.Mvc.Importers
                         DepartmentSale = String.Empty,
                         Notes = notes,
                         AnimalWelfareRating = animalWelfareRating,
-                        AnimalWelfareRatingId = animalWelfareRating == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(AnimalWelfareRatings.AsDictionary, animalWelfareRating),
                         Biodynamic = biodynamic == null ? String.Empty : biodynamic,
                         CheeseAttributeMilkType = cheeseAttributeMilkType,
-                        CheeseAttributeMilkTypeId = cheeseAttributeMilkType == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(MilkTypes.AsDictionary, cheeseAttributeMilkType),
                         CheeseAttributeRaw = cheeseAttributeRaw == null ? String.Empty : cheeseAttributeRaw,
-                        EcoScaleRating = ecoScaleRating,
-                        EcoScaleRatingId = ecoScaleRating == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(EcoScaleRatings.AsDictionary, ecoScaleRating),             
+                        EcoScaleRating = ecoScaleRating,       
                         Msc = msc == null ? String.Empty : msc,
                         PremiumBodyCare = premiumBodyCare == null ? String.Empty : premiumBodyCare,
-                        SeafoodFreshOrFrozen = seafoodFreshOrFrozen,
-                        SeafoodFreshOrFrozenId = seafoodFreshOrFrozen == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(SeafoodFreshOrFrozenTypes.AsDictionary, seafoodFreshOrFrozen),
+                        SeafoodFreshOrFrozen = seafoodFreshOrFrozen,           
                         SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised,
-                        SeafoodWildOrFarmRaisedId = seafoodWildOrFarmRaised == Constants.ExcelImportRemoveValueKeyword ? "0" : base.GetIdFromDescription(SeafoodCatchTypes.AsDictionary, seafoodWildOrFarmRaised),
                         Vegetarian = vegetarian == null ? String.Empty : vegetarian,
                         WholeTrade = wholeTrade == null ? String.Empty : wholeTrade,
                         GrassFed = grassFed == null ? String.Empty : grassFed,
@@ -375,13 +365,10 @@ namespace Icon.Web.Mvc.Importers
                     && String.IsNullOrWhiteSpace(row.HiddenItem)
                     && String.IsNullOrWhiteSpace(row.Notes)
                     && String.IsNullOrWhiteSpace(row.AnimalWelfareRating)
-                    && String.IsNullOrWhiteSpace(row.AnimalWelfareRatingId)
                     && String.IsNullOrWhiteSpace(row.Biodynamic)
                     && String.IsNullOrWhiteSpace(row.CheeseAttributeMilkType)
-                    && String.IsNullOrWhiteSpace(row.CheeseAttributeMilkTypeId)
                     && String.IsNullOrWhiteSpace(row.CheeseAttributeRaw)
                     && String.IsNullOrWhiteSpace(row.EcoScaleRating)
-                    && String.IsNullOrWhiteSpace(row.EcoScaleRatingId)
                     && String.IsNullOrWhiteSpace(row.GlutenFreeAgencyLineage)
                     && String.IsNullOrWhiteSpace(row.GlutenFreeAgency)
                     && String.IsNullOrWhiteSpace(row.KosherAgencyLineage)
@@ -392,9 +379,7 @@ namespace Icon.Web.Mvc.Importers
                     && String.IsNullOrWhiteSpace(row.OrganicAgency)
                     && String.IsNullOrWhiteSpace(row.PremiumBodyCare)
                     && String.IsNullOrWhiteSpace(row.SeafoodFreshOrFrozen)
-                    && String.IsNullOrWhiteSpace(row.SeafoodFreshOrFrozenId)
                     && String.IsNullOrWhiteSpace(row.SeafoodWildOrFarmRaised)
-                    && String.IsNullOrWhiteSpace(row.SeafoodWildOrFarmRaisedId)
                     && String.IsNullOrWhiteSpace(row.VeganAgencyLineage)
                     && String.IsNullOrWhiteSpace(row.VeganAgency)
                     && String.IsNullOrWhiteSpace(row.Vegetarian)

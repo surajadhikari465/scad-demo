@@ -28,19 +28,19 @@ namespace Icon.Web.Tests.Common.Builders
         private string nationalHierarchyName;
         private int? nationalHierarchyClassId;
         private string notes;
-        private int? animalWelfareRatingId;
+        private string animalWelfareRating;
         private bool? biodynamic;
-        private int? cheeseMilkTypeId;
+        private string cheeseMilkType;
         private bool? cheeseRaw;
-        private int? ecoScaleRatingId;
+        private string ecoScaleRating;
         private string glutenFreeAgency;
         private string kosherAgency;
         private string nonGmoAgency;
         private string organicAgency;
         private bool? premiumBodyCare;
         private int? productionClaimsId;
-        private int? seafoodFreshOrFrozenId;
-        private int? seafoodCatchTypeId;
+        private string seafoodFreshOrFrozen;
+        private string seafoodCatchType;
         private string veganAgency;
         private bool? vegetarian;
         private bool? wholeTrade;
@@ -73,19 +73,19 @@ namespace Icon.Web.Tests.Common.Builders
             this.nationalHierarchyName = null;
             this.nationalHierarchyClassId = null;
             this.notes = null;
-            this.animalWelfareRatingId = null;
+            this.animalWelfareRating = null;
             this.biodynamic = null;
-            this.cheeseMilkTypeId = null;
+            this.cheeseMilkType = null;
             this.cheeseRaw = null;
-            this.ecoScaleRatingId= null;
+            this.ecoScaleRating= null;
             this.glutenFreeAgency = null;
             this.kosherAgency = null;
             this.nonGmoAgency = null;
             this.organicAgency = null;
             this.premiumBodyCare = null;
             this.productionClaimsId = null;
-            this.seafoodFreshOrFrozenId = null;
-            this.seafoodCatchTypeId = null;
+            this.seafoodFreshOrFrozen = null;
+            this.seafoodCatchType = null;
             this.veganAgency = null;
             this.vegetarian = null;
             this.wholeTrade = null;
@@ -232,9 +232,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithAnimalWelfareRatingId(int? animalWelfareRatingId)
+        public TestItemSearchModelBuilder WithAnimalWelfareRating(string animalWelfareRating)
         {
-            this.animalWelfareRatingId = animalWelfareRatingId;
+            this.animalWelfareRating = animalWelfareRating;
             return this;
         }
 
@@ -244,9 +244,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithCheeseMilkTypeId(int? cheeseMilkTypeId)
+        public TestItemSearchModelBuilder WithCheeseMilkType(string cheeseMilkType)
         {
-            this.cheeseMilkTypeId = cheeseMilkTypeId;
+            this.cheeseMilkType = cheeseMilkType;
             return this;
         }
 
@@ -256,9 +256,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithEcoScaleRatingId(int? ecoScaleRatingId)
+        public TestItemSearchModelBuilder WithEcoScaleRating(string ecoScaleRating)
         {
-            this.ecoScaleRatingId = ecoScaleRatingId;
+            this.ecoScaleRating = ecoScaleRating;
             return this;
         }
 
@@ -274,7 +274,7 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithNonGmoAgencyId(int? nonGmoAgencyId)
+        public TestItemSearchModelBuilder WithNonGmoAgencyId(string nonGmoAgency)
         {
             this.nonGmoAgency = nonGmoAgency;
             return this;
@@ -298,15 +298,15 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSearchModelBuilder WithSeafoodFreshOrFrozenId(int? seafoodFreshOrFrozenId)
+        public TestItemSearchModelBuilder WithSeafoodFreshOrFrozen(string seafoodFreshOrFrozen)
         {
-            this.seafoodFreshOrFrozenId = seafoodFreshOrFrozenId;
+            this.seafoodFreshOrFrozen = seafoodFreshOrFrozen;
             return this;
         }
 
-        public TestItemSearchModelBuilder WithSeafoodCatchTypeId(int? seafoodCatchTypeId)
+        public TestItemSearchModelBuilder WithSeafoodCatchType(string seafoodCatchType)
         {
-            this.seafoodCatchTypeId = seafoodCatchTypeId;
+            this.seafoodCatchType = seafoodCatchType;
             return this;
         }
 
@@ -373,18 +373,18 @@ namespace Icon.Web.Tests.Common.Builders
             itemSearchModel.NationalHierarchyName = this.nationalHierarchyName;
             itemSearchModel.NationalHierarchyClassId = this.nationalHierarchyClassId;
             itemSearchModel.Notes = this.notes;
-            itemSearchModel.AnimalWelfareRatingId = this.animalWelfareRatingId;
+            itemSearchModel.AnimalWelfareRating = this.animalWelfareRating;
             itemSearchModel.Biodynamic = this.biodynamic;
-            itemSearchModel.CheeseMilkTypeId = this.cheeseMilkTypeId;
+            itemSearchModel.CheeseMilkType= this.cheeseMilkType;
             itemSearchModel.CheeseRaw = this.cheeseRaw;
-            itemSearchModel.EcoScaleRatingId = this.ecoScaleRatingId;
+            itemSearchModel.EcoScaleRating = this.ecoScaleRating;
             itemSearchModel.GlutenFreeAgency = this.glutenFreeAgency;
             itemSearchModel.KosherAgency = this.kosherAgency;
             itemSearchModel.NonGmoAgency = this.nonGmoAgency;
             itemSearchModel.OrganicAgency = this.organicAgency;
             itemSearchModel.PremiumBodyCare = this.premiumBodyCare;
-            itemSearchModel.SeafoodFreshOrFrozenId = this.seafoodFreshOrFrozenId;
-            itemSearchModel.SeafoodCatchTypeId = this.seafoodCatchTypeId;
+            itemSearchModel.SeafoodFreshOrFrozen = this.seafoodFreshOrFrozen;
+            itemSearchModel.SeafoodCatchType = this.seafoodCatchType;
             itemSearchModel.VeganAgency = this.veganAgency;
             itemSearchModel.Vegetarian = this.vegetarian;
             itemSearchModel.WholeTrade = this.wholeTrade;

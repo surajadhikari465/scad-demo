@@ -7,19 +7,19 @@ namespace Icon.Web.Tests.Common.Builders
     public class TestItemSignAttributeBuilder
     {
         private int itemID;
-        private int? animalWelfareRatingId;
+        private string animalWelfareRating;
         private bool biodynamic;
-        private int? cheeseMilkTypeId;
+        private string cheeseMilkType;
         private bool cheeseRaw;
-        private int? ecoScaleRatingId;
+        private string ecoScaleRating;
         private string glutenFreeAgencyName;
         private int? healthyEatingRatingId;
         private string kosherAgencyName;
         private string nonGmoAgencyName;
         private string organicAgencyName;
         private bool premiumBodyCare;
-        private int? seafoodFreshOrFrozenId;
-        private int? seafoodWildOrFarmRaisedId;
+        private string seafoodFreshOrFrozen;
+        private string seafoodWildOrFarmRaised;
         private string veganAgencyName;
         private bool vegetarian;
         private bool wholeTrade;
@@ -34,19 +34,19 @@ namespace Icon.Web.Tests.Common.Builders
         public TestItemSignAttributeBuilder()
         {
             itemID = 123456;
-            animalWelfareRatingId = null;
+            animalWelfareRating = null;
             biodynamic = false;
-            cheeseMilkTypeId = null;
+            cheeseMilkType = null;
             cheeseRaw = false;
-            ecoScaleRatingId = null;
+            ecoScaleRating = null;
             glutenFreeAgencyName = null;
             healthyEatingRatingId = null;
             kosherAgencyName = null;
             nonGmoAgencyName = null;
             organicAgencyName = null;
             premiumBodyCare = false;
-            seafoodFreshOrFrozenId = null;
-            seafoodWildOrFarmRaisedId = null;
+            seafoodFreshOrFrozen = null;
+            seafoodWildOrFarmRaised = null;
             veganAgencyName = null;
             vegetarian = false;
             wholeTrade = false;
@@ -65,9 +65,9 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestItemSignAttributeBuilder WithAnimalWelfareRatingId(int? animalWelfareRatingId)
+        public TestItemSignAttributeBuilder WithAnimalWelfareRating(string animalWelfareRating)
         {
-            this.animalWelfareRatingId = animalWelfareRatingId;
+            this.animalWelfareRating = animalWelfareRating;
             return this;
         }
 
@@ -76,9 +76,9 @@ namespace Icon.Web.Tests.Common.Builders
             this.cheeseRaw = cheeseRaw;
             return this;
         }
-        public TestItemSignAttributeBuilder WithMilkTypeId(int? milkTypeId)
+        public TestItemSignAttributeBuilder WithMilkType(string milkType)
         {
-            this.cheeseMilkTypeId = milkTypeId;
+            this.cheeseMilkType = milkType;
             return this;
         }
         public TestItemSignAttributeBuilder WithBiodynamic(bool biodynamic)
@@ -98,9 +98,9 @@ namespace Icon.Web.Tests.Common.Builders
             this.grassFed = grassFed;
             return this;
         }
-        public TestItemSignAttributeBuilder WithEcoScaleRatingId(int? ecoScaleRatingId)
+        public TestItemSignAttributeBuilder WithEcoScaleRating(string ecoScaleRating)
         {
-            this.ecoScaleRatingId = ecoScaleRatingId;
+            this.ecoScaleRating = ecoScaleRating;
             return this;
         }
 
@@ -130,19 +130,19 @@ namespace Icon.Web.Tests.Common.Builders
             this.healthyEatingRatingId = healthyEatingRatingId;
             return this;
         }
-        public TestItemSignAttributeBuilder WithSeafoodFreshOrFrozenId(int? seafoodFreshOrFrozenId)
+        public TestItemSignAttributeBuilder WithSeafoodFreshOrFrozen(string seafoodFreshOrFrozen)
         {
-            this.seafoodFreshOrFrozenId = seafoodFreshOrFrozenId;
+            this.seafoodFreshOrFrozen = seafoodFreshOrFrozen;
             return this;
         }
-        public TestItemSignAttributeBuilder WithCheeseMilkTypeId(int? cheeseMilkTypeId)
+        public TestItemSignAttributeBuilder WithCheeseMilkType(string cheeseMilkType)
         {
-            this.cheeseMilkTypeId = cheeseMilkTypeId;
+            this.cheeseMilkType = cheeseMilkType;
             return this;
         }
-        public TestItemSignAttributeBuilder WithSeafoodCatchTypeId(int? seafoodCatchTypeId)
+        public TestItemSignAttributeBuilder WithSeafoodCatchType(string seafoodCatchType)
         {
-            this.seafoodWildOrFarmRaisedId = seafoodCatchTypeId;
+            this.seafoodWildOrFarmRaised = seafoodCatchType;
             return this;
         }
 
@@ -204,18 +204,18 @@ namespace Icon.Web.Tests.Common.Builders
             return new ItemSignAttribute
             {
                 ItemID = itemID,
-                AnimalWelfareRatingId = animalWelfareRatingId,
+                AnimalWelfareRating = animalWelfareRating,
                 Biodynamic = biodynamic,
-                CheeseMilkTypeId = cheeseMilkTypeId,
+                MilkType = cheeseMilkType,
                 CheeseRaw = cheeseRaw,
-                EcoScaleRatingId = ecoScaleRatingId,
+                EcoScaleRating = ecoScaleRating,
                 GlutenFreeAgencyName = glutenFreeAgencyName,
                 KosherAgencyName = kosherAgencyName,
                 NonGmoAgencyName = nonGmoAgencyName,
                 OrganicAgencyName = organicAgencyName,
                 PremiumBodyCare = premiumBodyCare,
-                SeafoodFreshOrFrozenId = seafoodFreshOrFrozenId,
-                SeafoodCatchTypeId = seafoodWildOrFarmRaisedId,
+                FreshOrFrozen = seafoodFreshOrFrozen,
+                SeafoodCatchType = seafoodWildOrFarmRaised,
                 VeganAgencyName = veganAgencyName,
                 Vegetarian = vegetarian,
                 WholeTrade = wholeTrade,

@@ -67,8 +67,8 @@ namespace Icon.Web.Controllers
             var viewModel = new ItemSearchViewModel
             {
                 RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true),
-                DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true),
-                DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true),
+                //DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true),
+                //DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true),
                 //FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true)
             }; 
 
@@ -84,22 +84,15 @@ namespace Icon.Web.Controllers
             {
                 Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
                 viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true);
-                viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true);
-                viewModel.DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true);
+                //viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true);
+                //viewModel.DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true);
                 //viewModel.FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true);
                 return PartialView("_ItemSearchOptionsPartial", viewModel);
             }
 
             viewModel.TotalRecordsCount = getItemsBySearchQueryHandler.Search(viewModel.GetSearchParameters(true)).ItemsCount;
             
-            viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: false);
-            viewModel.ItemSearchResults.AnimalWelfareRatings = AnimalWelfareRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.MilkTypes = MilkTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.EcoScaleRatings = EcoScaleRatings.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodFreshOrFrozenTypes = SeafoodFreshOrFrozenTypes.AsDictionary.OrderBy(kvp => kvp.Value).Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-            viewModel.ItemSearchResults.SeafoodCatchTypes = SeafoodCatchTypes.AsDictionary.Select(kvp => new HierarchyClassViewModel { HierarchyClassId = kvp.Key, HierarchyClassLineage = kvp.Value }).ToList();
-
+            viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: false);      
            
             HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
             viewModel.ItemSearchResults.BrandHierarchyClasses = GetHierarchyLineage(hierarchyListModel.BrandHierarchyList);
@@ -448,7 +441,6 @@ namespace Icon.Web.Controllers
             viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
 
             viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
-            viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);
 
             return View(viewModel);
         }
@@ -465,7 +457,6 @@ namespace Icon.Web.Controllers
                 viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
                 viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
                 viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
-                viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);
 
                 return View(viewModel);
             }
@@ -491,8 +482,7 @@ namespace Icon.Web.Controllers
                 viewModel.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
                 viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
                 viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
-                viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
-                viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, true);        
+                viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);     
 
                 return View(viewModel);
             }
@@ -510,7 +500,6 @@ namespace Icon.Web.Controllers
 
             // Populate selection lists in view.
             viewModel.RetailUoms = GetRetailUomSelectList(viewModel.RetailUom, includeInitialBlank: true);
-            viewModel.DeliverySystems = GetDeliverySystemSelectList(viewModel.DeliverySystem, includeInitialBlank: true);
             HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
             viewModel.MerchandiseHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
             viewModel.TaxHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.TaxHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
@@ -533,18 +522,18 @@ namespace Icon.Web.Controllers
             return new SelectList(uoms, selectedUom);
         }
 
-        private SelectList GetDrainedWeightUomSelectList(string selectedValue, bool includeInitialBlank)
-        {
-            var values = DrainedWeightUoms.Values.ToList();
+        //private SelectList GetDrainedWeightUomSelectList(string selectedValue, bool includeInitialBlank)
+        //{
+        //    var values = DrainedWeightUoms.Values.ToList();
 
-            if (includeInitialBlank)
-            {
-                // Insert empty value at the beginning of the list to allow for an un-selected state.
-                values.Insert(0, string.Empty);
-            }
+        //    if (includeInitialBlank)
+        //    {
+        //        // Insert empty value at the beginning of the list to allow for an un-selected state.
+        //        values.Insert(0, string.Empty);
+        //    }
 
-            return new SelectList(values, selectedValue);
-        }
+        //    return new SelectList(values, selectedValue);
+        //}
 
         //private SelectList GetFairTradeCertifiedSelectList(string selectedValue, bool includeInitialBlank)
         //{
@@ -558,20 +547,6 @@ namespace Icon.Web.Controllers
 
         //    return new SelectList(values, selectedValue);
         //}
-
-
-        private SelectList GetDeliverySystemSelectList(string selectedDeliverySystem, bool includeInitialBlank)
-        {
-            var deliverySystems = DeliverySystems.AsDictionary.Values.ToList();
-
-            if (includeInitialBlank)
-            {
-                // Insert empty value at the beginning of the list to allow for an un-selected state.
-                deliverySystems.Insert(0, string.Empty);
-            }
-
-            return new SelectList(deliverySystems, selectedDeliverySystem);
-        }
 
         private List<HierarchyClassViewModel> GetHierarchyLineage(List<HierarchyClassModel> hierarchyList)
         {

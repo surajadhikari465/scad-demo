@@ -65,20 +65,20 @@
             column.For(item => item.AlcoholByVolume).HeaderText("Alcohol By Volume").Width("150px");
             column.For(item => item.NationalHierarchyClassId).HeaderText("National Class").Width("200px").FormatterFunction("lookupNationalClassName");
             column.For(item => item.AirChilled).HeaderText("Air Chilled").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.AnimalWelfareRatingId).HeaderText("Animal Welfare Rating").Width("200px").FormatterFunction("formatAnimalWelfareRating");
+            column.For(item => item.AnimalWelfareRating).HeaderText("Animal Welfare Rating").Width("200px");
             column.For(item => item.Biodynamic).HeaderText("Biodynamic").Width("100px").FormatterFunction("boolFormatter");
-            column.For(item => item.CheeseMilkTypeId).HeaderText("Cheese Attribute: Milk Type").Width("200px").FormatterFunction("formatMilkType");
+            column.For(item => item.CheeseMilkType).HeaderText("Cheese Attribute: Milk Type").Width("200px");
             column.For(item => item.CheeseRaw).HeaderText("Cheese Attribute: Raw").Width("200px").FormatterFunction("boolFormatter");
             column.For(item => item.DryAged).HeaderText("Dry Aged").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.EcoScaleRatingId).HeaderText("Eco Scale Rating").Width("200px").FormatterFunction("formatEcoScaleRating");
+            column.For(item => item.EcoScaleRating).HeaderText("Eco Scale Rating").Width("200px");
             column.For(item => item.FreeRange).HeaderText("Free Range").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.SeafoodFreshOrFrozenId).HeaderText("Fresh or Frozen").Width("200px").FormatterFunction("formatSeafoodFreshOrFrozenType");
+            column.For(item => item.SeafoodFreshOrFrozen).HeaderText("Fresh or Frozen").Width("200px");
             column.For(item => item.GrassFed).HeaderText("Grass Fed").Width("200px").FormatterFunction("boolFormatter");   
             column.For(item => item.MadeInHouse).HeaderText("Made In House").Width("200px").FormatterFunction("boolFormatter");
             column.For(item => item.Msc).HeaderText("MSC").Width("100px").FormatterFunction("boolFormatter");          
             column.For(item => item.PastureRaised).HeaderText("Pasture Raised").Width("200px").FormatterFunction("boolFormatter");
             column.For(item => item.PremiumBodyCare).HeaderText("Premium Body Care").Width("200px").FormatterFunction("boolFormatter");
-            column.For(item => item.SeafoodCatchTypeId).HeaderText("Seafood: Wild or Farm Raised").Width("200px").FormatterFunction("formatSeafoodCatchType");        
+            column.For(item => item.SeafoodCatchType).HeaderText("Seafood: Wild or Farm Raised").Width("200px");        
             column.For(item => item.Vegetarian).HeaderText("Vegetarian").Width("100px").FormatterFunction("boolFormatter");
             column.For(item => item.WholeTrade).HeaderText("Whole Trade").Width("100px").FormatterFunction("boolFormatter");
         })
@@ -122,15 +122,8 @@
                                 .Virtualization(true)
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local));
-                    settings.ColumnSetting().ColumnKey("DeliverySystem").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
-                        .ComboEditorOptions(deliverySystemOptions =>
-                            deliverySystemOptions.DataSource(Model.DeliverySystems.AsQueryable())
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
-                                .AllowCustomValue(true)
-                                .Virtualization(true)
-                                .DropDownWidth(300)
-                                .FilteringType(ComboFilteringType.Local));
+                    settings.ColumnSetting().ColumnKey("DeliverySystem")
+                        .EditorType(ColumnEditorType.Text);
                     settings.ColumnSetting().ColumnKey("FoodStamp");
                     settings.ColumnSetting().ColumnKey("PosScaleTare").Required(true).Validation(true)
                         .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(3).MinValue(0).MaxValue(9.999));
@@ -179,19 +172,9 @@
                                 .Virtualization(true)
                                 .DropDownWidth(400)
                                 .FilteringType(ComboFilteringType.Local));
-                    settings.ColumnSetting().ColumnKey("AnimalWelfareRatingId")
-                                            .EditorType(ColumnEditorType.Combo)
-                                            .ComboEditorOptions(options =>
-                                                options.DataSource(Model.AnimalWelfareRatings.AsQueryable())
-                                                    .ValueKey("HierarchyClassId")
-                                                    .TextKey("HierarchyClassLineage")
-                                                    .ShowDropDownButton(true)
-                                                    .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                                    .AllowCustomValue(false)
-                                                    .Virtualization(true)
-                                                    .DropDownWidth(300)
-                                                    .FilteringType(ComboFilteringType.Local)
-                                            );
+                    settings.ColumnSetting().ColumnKey("AnimalWelfareRating")
+                                            .EditorType(ColumnEditorType.Text)
+                                            ;
                     settings.ColumnSetting().ColumnKey("Biodynamic")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>
@@ -204,19 +187,9 @@
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
                         );
-                    settings.ColumnSetting().ColumnKey("CheeseMilkTypeId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(options =>
-                            options.DataSource(Model.MilkTypes.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(300)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
+                    settings.ColumnSetting().ColumnKey("CheeseMilkType")
+                        .EditorType(ColumnEditorType.Text)
+                     ;
                     settings.ColumnSetting().ColumnKey("CheeseRaw")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>
@@ -229,19 +202,8 @@
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
                         );
-                    settings.ColumnSetting().ColumnKey("EcoScaleRatingId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(options =>
-                            options.DataSource(Model.EcoScaleRatings.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(300)
-                                .FilteringType(ComboFilteringType.Local)
-                        );                
+                    settings.ColumnSetting().ColumnKey("EcoScaleRating")
+                        .EditorType(ColumnEditorType.Text);                
                     settings.ColumnSetting().ColumnKey("Msc")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>
@@ -266,32 +228,10 @@
                                 .DropDownWidth(300)
                                 .FilteringType(ComboFilteringType.Local)
                         );
-                    settings.ColumnSetting().ColumnKey("SeafoodFreshOrFrozenId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(options =>
-                            options.DataSource(Model.SeafoodFreshOrFrozenTypes.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(300)
-                                .FilteringType(ComboFilteringType.Local)
-                        );
-                    settings.ColumnSetting().ColumnKey("SeafoodCatchTypeId")
-                        .EditorType(ColumnEditorType.Combo)
-                        .ComboEditorOptions(options =>
-                            options.DataSource(Model.SeafoodCatchTypes.AsQueryable())
-                                .ValueKey("HierarchyClassId")
-                                .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                .AllowCustomValue(false)
-                                .Virtualization(true)
-                                .DropDownWidth(300)
-                                .FilteringType(ComboFilteringType.Local)
-                        );                   
+                    settings.ColumnSetting().ColumnKey("SeafoodFreshOrFrozen")
+                        .EditorType(ColumnEditorType.Text);
+                    settings.ColumnSetting().ColumnKey("SeafoodCatchType")
+                        .EditorType(ColumnEditorType.Text);                   
                     settings.ColumnSetting().ColumnKey("Vegetarian")
                         .EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(options =>

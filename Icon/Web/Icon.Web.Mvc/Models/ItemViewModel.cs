@@ -36,19 +36,19 @@ namespace Icon.Web.Mvc.Models
         public bool DepartmentSale { get; set; }
         public bool HiddenItem { get; set; }
         public string Notes { get; set; }
-        public int? AnimalWelfareRatingId { get; set; }
+        public string AnimalWelfareRating { get; set; }
         public bool? Biodynamic { get; set; }
-        public int? CheeseMilkTypeId { get; set; }
+        public string CheeseMilkType { get; set; }
         public bool? CheeseRaw { get; set; }
-        public int? EcoScaleRatingId { get; set; }
+        public string EcoScaleRating { get; set; }
         public string GlutenFreeAgency { get; set; }
         public string KosherAgency { get; set; }
         public bool? Msc { get; set; }
         public string NonGmoAgency { get; set; }
         public string OrganicAgency { get; set; }
         public bool? PremiumBodyCare { get; set; }
-        public int? SeafoodFreshOrFrozenId { get; set; }
-        public int? SeafoodCatchTypeId { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
+        public string SeafoodCatchType { get; set; }
         public string VeganAgency { get; set; }
         public bool? Vegetarian { get; set; }
         public bool? WholeTrade { get; set; }
@@ -110,19 +110,19 @@ namespace Icon.Web.Mvc.Models
             NationalHierarchyName = item.NationalHierarchyName;
             NationalHierarchyClassId = item.NationalHierarchyClassId;
 
-            AnimalWelfareRatingId = item.AnimalWelfareRatingId;
+            AnimalWelfareRating = item.AnimalWelfareRating;
             Biodynamic = item.Biodynamic;
-            CheeseMilkTypeId = item.CheeseMilkTypeId;
+            CheeseMilkType = item.CheeseMilkType;
             CheeseRaw = item.CheeseRaw;
-            EcoScaleRatingId = item.EcoScaleRatingId;
+            EcoScaleRating = item.EcoScaleRating;
             GlutenFreeAgency = item.GlutenFreeAgency;
             KosherAgency = item.KosherAgency;
             Msc = item.Msc;
             NonGmoAgency = item.NonGmoAgency;
             OrganicAgency = item.OrganicAgency;
             PremiumBodyCare = item.PremiumBodyCare;
-            SeafoodFreshOrFrozenId = item.SeafoodFreshOrFrozenId;
-            SeafoodCatchTypeId = item.SeafoodCatchTypeId;
+            SeafoodFreshOrFrozen = item.SeafoodFreshOrFrozen;
+            SeafoodCatchType = item.SeafoodCatchType;
             VeganAgency = item.VeganAgency;
             Vegetarian = item.Vegetarian;
             WholeTrade = item.WholeTrade;

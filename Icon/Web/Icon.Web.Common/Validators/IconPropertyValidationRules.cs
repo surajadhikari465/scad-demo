@@ -75,9 +75,6 @@ namespace Icon.Web.Common.Validators
                 case ValidatorPropertyNames.AlcoholByVolume:
                     return new IconPropertyValidationRules(TraitPatterns.AlcoholByVolume, ValidatorErrorMessages.AlcoholByVolumeError);
 
-                case ValidatorPropertyNames.DrainedWeightUom:
-                    return new IconPropertyValidationRules(TraitPatterns.DrainedWeightUom, ValidatorErrorMessages.DrainedWeightUomError);
-
                 case ValidatorPropertyNames.DrainedWeight:
                     return new IconPropertyValidationRules(TraitPatterns.DrainedWeight, ValidatorErrorMessages.DrainedWeightError);
               

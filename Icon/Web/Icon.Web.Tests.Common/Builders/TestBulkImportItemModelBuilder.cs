@@ -32,22 +32,17 @@ namespace Icon.Web.Tests.Common.Builders
         private string hiddenItem;
         private string nationalLineage;
         private string nationalId;
-        private string animalWelfareRatingId;
         private string animalWelfareRating;
         private string biodynamic;
-        private string milkTypeId;
         private string milkType;
         private string cheeseAttributeRaw;
-        private string ecoScaleRatingId;
         private string ecoScaleRating;
         private string glutenFreeAgencyId;
         private string kosherAgencyId;
         private string nonGmoAgencyId;
         private string organicAgencyId;
         private string premiumBodyCare;
-        private string seafoodFreshOrFrozenId;
         private string seafoodFreshOrFrozen;
-        private string seafoodWildOrFarmRaisedId;
         private string seafoodWildOrFarmRaised;
         private string veganAgencyId;
         private string vegetarian;
@@ -98,21 +93,17 @@ namespace Icon.Web.Tests.Common.Builders
             hiddenItem = String.Empty;
             nationalId = "5";
             nationalLineage = "Class1|5";
-            animalWelfareRatingId = String.Empty;
+            animalWelfareRating = String.Empty;
             biodynamic = String.Empty;
-            milkTypeId = String.Empty;
             milkType = String.Empty;
             cheeseAttributeRaw = String.Empty;
-            ecoScaleRatingId = String.Empty;
             ecoScaleRating = String.Empty;
             glutenFreeAgencyId = String.Empty;
             kosherAgencyId = String.Empty;
             nonGmoAgencyId = String.Empty;
             organicAgencyId = String.Empty;
             premiumBodyCare = String.Empty;
-            seafoodFreshOrFrozenId = String.Empty;
             seafoodFreshOrFrozen = String.Empty;
-            seafoodWildOrFarmRaisedId = String.Empty;
             seafoodWildOrFarmRaised = String.Empty;
             veganAgencyId = String.Empty;
             vegetarian = String.Empty;
@@ -268,12 +259,6 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestBulkImportItemModelBuilder WithAnimalWelfareRatingId(string animalWelfareRatingId)
-        {
-            this.animalWelfareRatingId = animalWelfareRatingId;
-            return this;
-        }
-
         public TestBulkImportItemModelBuilder WithAnimalWelfareRating(string animalWelfareRating)
         {
             this.animalWelfareRating = animalWelfareRating;
@@ -286,12 +271,7 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestBulkImportItemModelBuilder WithMilkTypeId(string milkTypeId)
-        {
-            this.milkTypeId = milkTypeId;
-            return this;
-        }
-
+  
         public TestBulkImportItemModelBuilder WithMilkType(string milkType)
         {
             this.milkType = milkType;
@@ -304,12 +284,7 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestBulkImportItemModelBuilder WithEcoScaleRatingId(string ecoScaleRatingId)
-        {
-            this.ecoScaleRatingId = ecoScaleRatingId;
-            return this;
-        }
-
+ 
         public TestBulkImportItemModelBuilder WithEcoScaleRating(string ecoScaleRating)
         {
             this.ecoScaleRating = ecoScaleRating;
@@ -346,12 +321,6 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestBulkImportItemModelBuilder WithSeafoodFreshOrFrozenId(string seafoodFreshOrFrozenId)
-        {
-            this.seafoodFreshOrFrozenId = seafoodFreshOrFrozenId;
-            return this;
-        }
-
         public TestBulkImportItemModelBuilder WithSeafoodFreshOrFrozen(string seafoodFreshOrFrozen)
         {
             this.seafoodFreshOrFrozen = seafoodFreshOrFrozen;
@@ -364,11 +333,6 @@ namespace Icon.Web.Tests.Common.Builders
             return this;
         }
 
-        public TestBulkImportItemModelBuilder WithSeafoodCatchTypeId(string seafoodCatchTypeId)
-        {
-            this.seafoodWildOrFarmRaisedId = seafoodCatchTypeId;
-            return this;
-        }
 
         public TestBulkImportItemModelBuilder WithVeganAgency(string veganAgencyId)
         {
@@ -569,22 +533,22 @@ namespace Icon.Web.Tests.Common.Builders
             bulkImportItemModel.Notes = note;
             bulkImportItemModel.NationalId = nationalId;
             bulkImportItemModel.NationalLineage = nationalLineage;
-            bulkImportItemModel.AnimalWelfareRatingId = animalWelfareRatingId;
+            bulkImportItemModel.AnimalWelfareRating = animalWelfareRating;
             bulkImportItemModel.AnimalWelfareRating = animalWelfareRating;
             bulkImportItemModel.Biodynamic = biodynamic;
             bulkImportItemModel.CheeseAttributeMilkType = milkType;
-            bulkImportItemModel.CheeseAttributeMilkTypeId = milkTypeId;
+            bulkImportItemModel.CheeseAttributeMilkType = milkType;
             bulkImportItemModel.CheeseAttributeRaw = cheeseAttributeRaw;
             bulkImportItemModel.EcoScaleRating = ecoScaleRating;
-            bulkImportItemModel.EcoScaleRatingId = ecoScaleRatingId;
+            bulkImportItemModel.EcoScaleRating = ecoScaleRating;
             bulkImportItemModel.GlutenFreeAgency = glutenFreeAgencyId;
             bulkImportItemModel.KosherAgency = kosherAgencyId;
             bulkImportItemModel.NonGmoAgency = nonGmoAgencyId;
             bulkImportItemModel.OrganicAgency = organicAgencyId;
             bulkImportItemModel.PremiumBodyCare = premiumBodyCare;
-            bulkImportItemModel.SeafoodFreshOrFrozenId = seafoodFreshOrFrozenId;
             bulkImportItemModel.SeafoodFreshOrFrozen = seafoodFreshOrFrozen;
-            bulkImportItemModel.SeafoodWildOrFarmRaisedId = seafoodWildOrFarmRaisedId;
+            bulkImportItemModel.SeafoodFreshOrFrozen = seafoodFreshOrFrozen;
+            bulkImportItemModel.SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised;
             bulkImportItemModel.SeafoodWildOrFarmRaised = seafoodWildOrFarmRaised;
             bulkImportItemModel.VeganAgency = veganAgencyId;
             bulkImportItemModel.Vegetarian = vegetarian;

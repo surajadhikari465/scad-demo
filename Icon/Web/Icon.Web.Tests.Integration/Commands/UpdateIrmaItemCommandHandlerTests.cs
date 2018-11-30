@@ -430,11 +430,11 @@ namespace Icon.Web.Tests.Integration.Commands
                 RetailUom = String.Empty,
                 BrandName = "UpdateIrma Test Brand",
             };
-            updatedItem.AnimalWelfareRatingId = AnimalWelfareRatings.AsDictionary.First().Key;
-            updatedItem.CheeseMilkTypeId = MilkTypes.AsDictionary.First().Key;
-            updatedItem.EcoScaleRatingId = EcoScaleRatings.AsDictionary.First().Key;
-            updatedItem.SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.AsDictionary.First().Key;
-            updatedItem.SeafoodCatchTypeId = SeafoodCatchTypes.AsDictionary.First().Key;
+            updatedItem.AnimalWelfareRating = "Step1";
+            updatedItem.CheeseMilkType = "Milk";
+            updatedItem.EcoScaleRating = "BaselineOrange";
+            updatedItem.SeafoodFreshOrFrozen= "Fresh";
+            updatedItem.SeafoodCatchType = "Wild";
             updatedItem.Biodynamic = true;
             updatedItem.Vegetarian = true;
             updatedItem.WholeTrade = true;
@@ -449,14 +449,14 @@ namespace Icon.Web.Tests.Integration.Commands
             string expectedDescription = updatedItem.PosDescription;
             string actualDescription = verifyUpdateItem.posDescription;
             
-            Assert.AreEqual(updatedItem.AnimalWelfareRatingId, verifyUpdateItem.AnimalWelfareRatingId);
+            Assert.AreEqual(updatedItem.AnimalWelfareRating, verifyUpdateItem.AnimalWelfareRating);
             Assert.IsTrue(verifyUpdateItem.Biodynamic.Value);
-            Assert.AreEqual(updatedItem.CheeseMilkTypeId, verifyUpdateItem.CheeseMilkTypeId);
+            Assert.AreEqual(updatedItem.CheeseMilkType, verifyUpdateItem.MilkType);
             Assert.IsTrue(verifyUpdateItem.CheeseRaw.Value);
-            Assert.AreEqual(updatedItem.EcoScaleRatingId, verifyUpdateItem.EcoScaleRatingId);
+            Assert.AreEqual(updatedItem.EcoScaleRating, verifyUpdateItem.EcoScaleRating);
             Assert.IsTrue(verifyUpdateItem.PremiumBodyCare.Value);
-            Assert.AreEqual(updatedItem.SeafoodFreshOrFrozenId, verifyUpdateItem.SeafoodFreshOrFrozenId);
-            Assert.AreEqual(updatedItem.SeafoodCatchTypeId, verifyUpdateItem.SeafoodCatchTypeId);
+            Assert.AreEqual(updatedItem.SeafoodFreshOrFrozen, verifyUpdateItem.FreshOrFrozen);
+            Assert.AreEqual(updatedItem.SeafoodCatchType, verifyUpdateItem.SeafoodCatchType);
             Assert.IsTrue(verifyUpdateItem.Vegetarian.Value);
             Assert.IsTrue(verifyUpdateItem.WholeTrade.Value);
         }

@@ -106,20 +106,20 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "pfy.traitValue")]
         public string ProductFlavorType { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.AnimalWelfareRatingId")]
-        public int? AnimalWelfareRatingId { get; set; }
+        [SqlResult(SqlSortValue = "isa.AnimalWelfareRating")]
+        public string AnimalWelfareRating { get; set; }
 
         [SqlResult(SqlSortValue = "isa.Biodynamic")]
         public bool? Biodynamic { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.CheeseMilkTypeId")]
-        public int? CheeseMilkTypeId { get; set; }
+        [SqlResult(SqlSortValue = "isa.CheeseMilkType")]
+        public string CheeseMilkType { get; set; }
 
         [SqlResult(SqlSortValue = "isa.CheeseRaw")]
         public bool? CheeseRaw { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.EcoScaleRatingId")]
-        public int? EcoScaleRatingId { get; set; }
+        [SqlResult(SqlSortValue = "isa.EcoScaleRating")]
+        public string EcoScaleRating { get; set; }
 
         [SqlResult(SqlSortValue = "isa.GlutenFreeAgencyName")]
         public string GlutenFreeAgency { get; set; }
@@ -139,11 +139,11 @@ namespace Icon.Web.DataAccess.Models
         [SqlResult(SqlSortValue = "isa.PremiumBodyCare")]
         public bool? PremiumBodyCare { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.SeafoodFreshOrFrozenId")]
-        public int? SeafoodFreshOrFrozenId { get; set; }
+        [SqlResult(SqlSortValue = "isa.SeafoodFreshOrFrozen")]
+        public string SeafoodFreshOrFrozen { get; set; }
 
-        [SqlResult(SqlSortValue = "isa.SeafoodCatchTypeId")]
-        public int? SeafoodCatchTypeId { get; set; }
+        [SqlResult(SqlSortValue = "isa.SeafoodCatchType")]
+        public string SeafoodCatchType { get; set; }
 
         [SqlResult(SqlSortValue = "isa.VeganAgencyName")]
         public string VeganAgency { get; set; }

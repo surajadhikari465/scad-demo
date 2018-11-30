@@ -53,140 +53,15 @@ namespace Icon.Web.Mvc.Excel
                 case "Nutrition Required":
                 case "Organic Personal Care":
                 case "Paleo":
-                    return trueFalseOrEmptyString;
                 case "Animal Welfare Rating":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[AnimalWelfareRatings.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            AnimalWelfareRatings.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[AnimalWelfareRatings.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            AnimalWelfareRatings.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
                 case "Cheese Attribute: Milk Type":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[MilkTypes.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            MilkTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[MilkTypes.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            MilkTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
                 case "Eco-Scale Rating":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[EcoScaleRatings.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            EcoScaleRatings.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[EcoScaleRatings.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            EcoScaleRatings.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }                
                 case "Fresh Or Frozen":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[SeafoodFreshOrFrozenTypes.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            SeafoodFreshOrFrozenTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[SeafoodFreshOrFrozenTypes.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            SeafoodFreshOrFrozenTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
                 case "Seafood: Wild Or Farm Raised":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[SeafoodCatchTypes.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            SeafoodCatchTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[SeafoodCatchTypes.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            SeafoodCatchTypes.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
                 case "Delivery System":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[DeliverySystems.Descriptions.AsArray.Length + 2];
-                            validValues[0] = null;
-                            DeliverySystems.Descriptions.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[DeliverySystems.Descriptions.AsArray.Length + 1];
-                            validValues[0] = null;
-                            DeliverySystems.Descriptions.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }
                 case "Drained Weight Uom":
-                    {
-                        string[] validValues;
-                        if (includeRemoveOption)
-                        {
-                            validValues = new string[DrainedWeightUoms.AsArray.Length + 2];
-                            validValues[0] = null;
-                            DrainedWeightUoms.AsArray.CopyTo(validValues, 1);
-                            validValues[validValues.Length - 1] = Constants.ExcelImportRemoveValueKeyword;
-                        }
-                        else
-                        {
-                            validValues = new string[DrainedWeightUoms.AsArray.Length + 1];
-                            validValues[0] = null;
-                            DrainedWeightUoms.AsArray.CopyTo(validValues, 1);
-                        }
-
-                        return validValues;
-                    }                
+                    return trueFalseOrEmptyString;
+                    
                 default:
                     throw new ArgumentException(String.Format("{0} is not a known trait.", trait));
             }

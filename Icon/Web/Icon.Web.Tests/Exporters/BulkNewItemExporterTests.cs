@@ -235,32 +235,6 @@ namespace Icon.Web.Tests.Unit.Exporters
         }
 
         [TestMethod]
-        public void Export_ExportedSignAttributes_DescriptionsShouldBeExportedToTheSpreadsheet()
-        {
-            // Given.
-            BulkImportNewItemModel itemModel = new TestBulkImportNewItemModelBuilder()
-                .WithAnimalWelfareRating(AnimalWelfareRatings.Descriptions.AsArray[0])
-                .WithMilkType(MilkTypes.Descriptions.AsArray[0])
-                .WithEcoScaleRating(EcoScaleRatings.Descriptions.AsArray[0])
-                .WithSeafoodFreshOrFrozen(SeafoodFreshOrFrozenTypes.Descriptions.AsArray[0])
-                .WithSeafoodCatchType(SeafoodCatchTypes.Descriptions.AsArray[0]);
-
-            exporter.ExportData.Add(itemModel);
-
-            // When.
-            exporter.Export();
-
-            // Then.
-            Worksheet firstWorksheet = exportModel.ExcelWorkbook.Worksheets[0];
-
-            Assert.AreEqual(AnimalWelfareRatings.Descriptions.AsArray[0], firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.AnimalWelfareRatingColumnIndex].Value);
-            Assert.AreEqual(MilkTypes.Descriptions.AsArray[0], firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.CheeseAttributeMilkTypeColumnIndex].Value);
-            Assert.AreEqual(EcoScaleRatings.Descriptions.AsArray[0], firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.EcoScaleRatingColumnIndex].Value);
-            Assert.AreEqual(SeafoodFreshOrFrozenTypes.Descriptions.AsArray[0], firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodFreshOrFrozenColumnIndex].Value);
-            Assert.AreEqual(SeafoodCatchTypes.Descriptions.AsArray[0], firstWorksheet.Rows[1].Cells[ExcelHelper.IrmaItemColumnIndexes.SeafoodWildOrFarmRaisedColumnIndex].Value);
-        }
-
-        [TestMethod]
         public void Export_NoMerchandiseOrTaxValues_SpreadsheetValuesShouldBeEmptyString()
         {
             // Given.

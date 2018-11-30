@@ -87,7 +87,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Delivery System")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public string SelectedDeliverySystem { get; set; }
+        public string DeliverySystem { get; set; }
 
         [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmprty = true)]
         [Display(Name = "Brand")]
@@ -189,7 +189,7 @@ namespace Icon.Web.Mvc.Models
 
         public SelectList RetailUoms { get; set; }
 
-        public SelectList DeliverySystems { get; set; }
+        public string DeliverySystems { get; set; }
 
         [Display(Name = "Notes")]
         [IconPropertyValidation(ValidatorPropertyNames.Notes, CanBeNullOrEmprty = true)]
@@ -218,7 +218,6 @@ namespace Icon.Web.Mvc.Models
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
         public string DrainedWeightUom { get; set; }
-        public SelectList DrainedWeightUomOptions { get; set; }
 
         [Display(Name = "Product Flavor Type")]
         [IgGridRouteValue]

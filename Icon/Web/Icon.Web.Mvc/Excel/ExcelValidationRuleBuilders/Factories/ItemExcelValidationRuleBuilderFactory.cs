@@ -44,12 +44,12 @@ namespace Icon.Web.Mvc.Excel.ExcelValidationRuleBuilders.Factories
                 new YesOrNoExcelValidationRuleBuilder(itemColumns.IndexOf(ExcelExportColumnNames.OrganicPersonalCare)),
                 new YesOrNoExcelValidationRuleBuilder(itemColumns.IndexOf(ExcelExportColumnNames.Paleo)),
 
-                new RemovableValueCollectionExcelValidationRuleBuilder(AnimalWelfareRatings.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.AnimalWelfareRating)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(MilkTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.CheeseAttributeMilkType)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(EcoScaleRatings.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.EcoScaleRating)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodFreshOrFrozenTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodFreshOrFrozen)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodCatchTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodWildOrFarmRaised)),
-                new RemovableValueCollectionExcelValidationRuleBuilder(DrainedWeightUoms.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.DrainedWeightUom)),               
+                //new RemovableValueCollectionExcelValidationRuleBuilder(AnimalWelfareRatings.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.AnimalWelfareRating)),
+                //new RemovableValueCollectionExcelValidationRuleBuilder(MilkTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.CheeseAttributeMilkType)),
+                //new RemovableValueCollectionExcelValidationRuleBuilder(EcoScaleRatings.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.EcoScaleRating)),
+                //new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodFreshOrFrozenTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodFreshOrFrozen)),
+                //new RemovableValueCollectionExcelValidationRuleBuilder(SeafoodCatchTypes.Descriptions.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.SeafoodWildOrFarmRaised)),
+                //new RemovableValueCollectionExcelValidationRuleBuilder(DrainedWeightUoms.AsArray, itemColumns.IndexOf(ExcelExportColumnNames.DrainedWeightUom)),               
             };
         }
     }

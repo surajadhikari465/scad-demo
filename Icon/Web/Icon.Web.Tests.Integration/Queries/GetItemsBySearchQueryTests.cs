@@ -506,27 +506,6 @@ namespace Icon.Web.Tests.Integration.Queries
         }
 
         [TestMethod]
-        public void GetItemsBySearchQuery_DeliverySystem_ReturnsItemsWithSameDeliverySystem()
-        {
-            // Given
-            item1.ItemTrait.Add(new ItemTrait { traitID = Traits.DeliverySystem, traitValue = DeliverySystems.Descriptions.Lz, itemID = item1.itemID, localeID = Locales.WholeFoods });
-            context.SaveChanges();
-
-            parameters = new GetItemsBySearchParameters
-            {
-                DeliverySystem = DeliverySystems.Descriptions.Lz,
-            };
-
-            // When
-            var items = getItemsBySearchQuery.Search(parameters).Items.Where(i => itemsById.Contains(i.ItemId)).ToList();
-
-            // Then
-            int expectedCount = 1;
-            int actualCount = items.Count;
-            Assert.AreEqual(expectedCount, actualCount);
-        }
-
-        [TestMethod]
         public void GetItemsBySearchQuery_DeliverySystemAndNoItemsMatch_ReturnsNoItems()
         {
             // Given
@@ -1144,15 +1123,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_AnimalWelfareRating_ReturnsItemsWithSameAnimalWelfareRating()
         {
             //Given
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRatingId(AnimalWelfareRatings.Step5Plus));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRatingId(AnimalWelfareRatings.Step5Plus));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRatingId(AnimalWelfareRatings.Step5));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRating("Step5Plus"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRating("Step5Plus"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithAnimalWelfareRating("Step5"));
             
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
             {
-                AnimalWelfareRatingId = AnimalWelfareRatings.Step5Plus
+                AnimalWelfareRating = "Step 5+"
             };
 
             //When
@@ -1683,15 +1662,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_MilkType_ReturnsItemsWithSameMilkType()
         {
             //Given
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkTypeId(MilkTypes.BuffaloMilk));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkTypeId(MilkTypes.BuffaloMilk));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkTypeId(MilkTypes.CowMilk));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkType("BuffaloMilk"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkType("BuffaloMilk"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithCheeseMilkType("CowMilk"));
 
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
             {
-                MilkTypeId = MilkTypes.BuffaloMilk
+                MilkType = "Buffalo Milk"
             };
 
             //When
@@ -1705,15 +1684,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_EcoScaleRating_ReturnsItemsWithSameEcoScaleRating()
         {
 
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRatingId(EcoScaleRatings.PremiumYellow));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRatingId(EcoScaleRatings.PremiumYellow));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRatingId(EcoScaleRatings.UltraPremiumGreen));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRating("PremiumYellow"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRating("PremiumYellow"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithEcoScaleRating("UltraPremiumGreen"));
 
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
             {
-                EcoScaleRatingId = EcoScaleRatings.PremiumYellow
+                EcoScaleRating = "Premium/Yellow"
             };
 
             //When
@@ -1727,15 +1706,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_SeafoodFreshOrFrozen_ReturnsItemsWithSameSeafoodFreshOrFrozen()
         {
             //Given
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozenId(SeafoodFreshOrFrozenTypes.PreviouslyFrozen));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozenId(SeafoodFreshOrFrozenTypes.PreviouslyFrozen));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozenId(SeafoodFreshOrFrozenTypes.Fresh));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozen("PreviouslyFrozen"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozen("PreviouslyFrozen"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodFreshOrFrozen("Fresh"));
 
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
             {
-                SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.PreviouslyFrozen
+                SeafoodFreshOrFrozen = "Previously Frozen"
             };
 
             //When
@@ -1749,15 +1728,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_SeafoodCatchType_ReturnsItemsWithSameSeafoodCatchType()
         {
             //Given
-            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchTypeId(SeafoodCatchTypes.Wild));
-            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchTypeId(SeafoodCatchTypes.Wild));
-            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchTypeId(SeafoodCatchTypes.FarmRaised));
+            item1.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchType("Wild"));
+            item2.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchType("Wild"));
+            item3.ItemSignAttribute.Add(new TestItemSignAttributeBuilder().WithSeafoodCatchType("FarmRaised"));
 
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
             {
-                SeafoodCatchTypeId = SeafoodCatchTypes.Wild
+                SeafoodCatchType = "Wild"
             };
 
             //When

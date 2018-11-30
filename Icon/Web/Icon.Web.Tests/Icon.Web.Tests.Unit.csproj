@@ -99,7 +99,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2018.11.15.1\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2018.11.29.3\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -291,12 +291,7 @@
     <Compile Include="Managers\AddBrandManagerHandlerTests.cs" />
     <Compile Include="Utility\ViewModelHelpersTests.cs" />
     <Compile Include="Validators\AddEwicMappingManagerValidatorTests.cs" />
-    <Compile Include="Validators\DeliverySystemValidatorTests.cs" />
-    <Compile Include="Validators\SeafoodCatchTypeValidatorTests.cs" />
-    <Compile Include="Validators\SeafoodFreshOrFrozenValidatorTests.cs" />
-    <Compile Include="Validators\EcoScaleRatingValidatorTests.cs" />
     <Compile Include="Validators\BusinessUnitValidatorTests.cs" />
-    <Compile Include="Validators\AnimalWelfareRatingValidatorTests.cs" />
     <Compile Include="Validators\HierarchyValidatorTests.cs" />
     <Compile Include="Validators\IconPropertyValidationRulesTests.cs" />
     <Compile Include="Validators\RetailUomValidatorTests.cs" />
@@ -305,7 +300,6 @@
     <Compile Include="Validators\ProductDescriptionValidatorTests.cs" />
     <Compile Include="Validators\PosDescriptionValidatorTests.cs" />
     <Compile Include="Validators\PackageUnitValidatorTests.cs" />
-    <Compile Include="Validators\CheeseAttributeMilkTypeValidatorTests.cs" />
     <Compile Include="Validators\YesNoValidatorTests.cs" />
     <Compile Include="Validators\PosScaleTareValidatorTests.cs" />
     <Compile Include="Validators\PluValidatorTests.cs" />

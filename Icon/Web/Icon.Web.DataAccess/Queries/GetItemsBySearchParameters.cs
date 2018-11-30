@@ -64,20 +64,20 @@ namespace Icon.Web.DataAccess.Queries
         [SqlParameter(ParamName = "nationalHierarchy", SqlDbType = SqlDbType.VarChar)]
         public string NationalClass { get; set; }
 
-        [SqlParameter(ParamName = "animalWelfareRatingId", SqlDbType = SqlDbType.Int)]
-        public int? AnimalWelfareRatingId { get; set; }
+        [SqlParameter(ParamName = "animalWelfareRating", SqlDbType = SqlDbType.VarChar)]
+        public string AnimalWelfareRating { get; set; }
 
         [SqlParameter(ParamName = "biodynamic", SqlDbType = SqlDbType.VarChar)]
         public string Biodynamic { get; set; }
 
-        [SqlParameter(ParamName = "milkTypeId", SqlDbType = SqlDbType.Int)]
-        public int? MilkTypeId { get; set; }
+        [SqlParameter(ParamName = "milkType", SqlDbType = SqlDbType.VarChar)]
+        public string MilkType { get; set; }
 
         [SqlParameter(ParamName = "cheeseRaw", SqlDbType = SqlDbType.VarChar)]
         public string CheeseRaw { get; set; }
 
-        [SqlParameter(ParamName = "ecoScaleRatingId", SqlDbType = SqlDbType.Int)]
-        public int? EcoScaleRatingId { get; set; }
+        [SqlParameter(ParamName = "ecoScaleRating", SqlDbType = SqlDbType.VarChar)]
+        public string EcoScaleRating { get; set; }
 
         [SqlParameter(ParamName = "glutenFreeAgency", SqlDbType = SqlDbType.VarChar)]
         public string GlutenFreeAgency { get; set; }
@@ -97,11 +97,11 @@ namespace Icon.Web.DataAccess.Queries
         [SqlParameter(ParamName = "premiumBodyCare", SqlDbType = SqlDbType.VarChar)]
         public string PremiumBodyCare { get; set; }
 
-        [SqlParameter(ParamName = "seafoodFreshOrFrozenId", SqlDbType = SqlDbType.Int)]
-        public int? SeafoodFreshOrFrozenId { get; set; }
+        [SqlParameter(ParamName = "seafoodFreshOrFrozen", SqlDbType = SqlDbType.VarChar)]
+        public string SeafoodFreshOrFrozen { get; set; }
 
-        [SqlParameter(ParamName = "seafoodCatchTypeId", SqlDbType = SqlDbType.Int)]
-        public int? SeafoodCatchTypeId { get; set; }
+        [SqlParameter(ParamName = "seafoodCatchType", SqlDbType = SqlDbType.VarChar)]
+        public string SeafoodCatchType { get; set; }
 
         [SqlParameter(ParamName = "veganAgency", SqlDbType = SqlDbType.VarChar)]
         public string VeganAgency { get; set; }

@@ -77,54 +77,7 @@
                         var validUoms = UomCodes.ByName.Values.ToList();
                         return string.IsNullOrEmpty(x.Uom) || validUoms.Contains(x.Uom);
                     },
-                    string.Format("UOM should be one of the following: {0}.", string.Join(", ", UomCodes.ByName.Values))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        var validDelivery = DeliverySystems.AsDictionary.Values.ToList();
-                        return string.IsNullOrEmpty(x.DeliverySystem) || validDelivery.Contains(x.DeliverySystem);
-                    },
-                    string.Format("Delivery System should be one of the following: {0}.", String.Join(", ", DeliverySystems.AsDictionary.Values))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        return string.IsNullOrEmpty(x.AnimalWelfareRating)
-                        || x.AnimalWelfareRating == Constants.ExcelImportRemoveValueKeyword
-                        || AnimalWelfareRatings.Descriptions.AsArray.Contains(x.AnimalWelfareRating, StringComparer.OrdinalIgnoreCase);
-                    },
-                    string.Format("Animal Welfare Rating is not recognized.  Valid entries are {0}.", string.Join(", ", AnimalWelfareRatings.Descriptions.AsArray))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        return string.IsNullOrEmpty(x.CheeseAttributeMilkType)
-                        || x.CheeseAttributeMilkType == Constants.ExcelImportRemoveValueKeyword
-                        || MilkTypes.Descriptions.AsArray.Contains(x.CheeseAttributeMilkType, StringComparer.OrdinalIgnoreCase);
-                    },
-                    string.Format("Cheese Attribute: Milk Type is not recognized.  Valid entries are {0}.", string.Join(", ", MilkTypes.Descriptions.AsArray))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        return string.IsNullOrEmpty(x.EcoScaleRating)
-                        || x.EcoScaleRating == Constants.ExcelImportRemoveValueKeyword
-                        || EcoScaleRatings.Descriptions.AsArray.Contains(x.EcoScaleRating, StringComparer.OrdinalIgnoreCase);
-                    },
-                    string.Format("Eco-Scale Rating is not recognized.  Valid entries are {0}.", string.Join(", ", EcoScaleRatings.Descriptions.AsArray))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        return string.IsNullOrEmpty(x.SeafoodFreshOrFrozen)
-                        || x.SeafoodFreshOrFrozen == Constants.ExcelImportRemoveValueKeyword
-                        || SeafoodFreshOrFrozenTypes.Descriptions.AsArray.Contains(x.SeafoodFreshOrFrozen, StringComparer.OrdinalIgnoreCase);
-                    },
-                    string.Format("Fresh Or Frozen is not recognized.  Valid entries are {0}.", string.Join(", ", SeafoodFreshOrFrozenTypes.Descriptions.AsArray))),
-
-                new PredicateExcelValidator<ItemExcelModel>(x =>
-                    {
-                        return string.IsNullOrEmpty(x.SeafoodWildOrFarmRaised)
-                        || x.SeafoodWildOrFarmRaised == Constants.ExcelImportRemoveValueKeyword
-                        || SeafoodCatchTypes.Descriptions.AsArray.Contains(x.SeafoodWildOrFarmRaised, StringComparer.OrdinalIgnoreCase);
-                    },
-                    string.Format("Seafood: Wild Or Farm Raised is not recognized.  Valid entries are {0}.", string.Join(", ", SeafoodCatchTypes.Descriptions.AsArray))),
+                    string.Format("UOM should be one of the following: {0}.", string.Join(", ", UomCodes.ByName.Values))),              
 
                 new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
                     x => x.AlcoholByVolume,
@@ -134,10 +87,10 @@
                     x => x.DrainedWeight,
                     TraitPatterns.DrainedWeight,
                     "Drained Weight is not recognized. Valid entry should be a number with maximum of 4 decimal places."),
-                new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
-                    x => x.DrainedWeightUom,
-                    TraitPatterns.DrainedWeightUom + "|" + Constants.ExcelImportRemoveValueKeyword,
-                    string.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray))),             
+                //new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
+                //    x => x.DrainedWeightUom,
+                //    TraitPatterns.DrainedWeightUom + "|" + Constants.ExcelImportRemoveValueKeyword,
+                //    string.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray))),             
                 new RegexOrEmptyStringItemModelValidator<ItemExcelModel>(
                     x => x.MainProductName,
                     TraitPatterns.MainProductName,

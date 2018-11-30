@@ -109,10 +109,10 @@ namespace Icon.Web.Mvc.Models
             return notesQuery.Count() == 0 ? String.Empty : notesQuery.Single().traitValue;
         }
 
-        public static int? GetAnimalWelfareRatingId(Item item)
+        public static string GetAnimalWelfareRating(Item item)
         {
             var signAttributes = item.ItemSignAttribute.FirstOrDefault();
-            return signAttributes == null ? (int?) null : signAttributes.AnimalWelfareRatingId;
+            return signAttributes == null ?  null : signAttributes.AnimalWelfareRating;
         }
 
         public static string GetBiodynamic(Item item)

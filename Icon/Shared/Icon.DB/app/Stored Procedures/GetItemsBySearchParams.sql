@@ -29,19 +29,19 @@
 	@pft varchar(255)= null,
 	@plo varchar(255)= null,
 	@llp varchar(255)= null,
-	@animalWelfareRatingId int = null,
+	@animalWelfareRating varchar(255) = null,
 	@biodynamic varchar(3) = null,
-	@milkTypeId int = null,
+	@milkType varchar(255) = null,
 	@cheeseRaw varchar(3) = null,
-	@ecoScaleRatingId int = null,
+	@ecoScaleRating varchar(255) = null,
 	@glutenFreeAgency varchar(255) = null,
 	@kosherAgency varchar(255) = null,
 	@isMsc varchar(3) = null,
 	@nonGmoAgency varchar(255) = null,
 	@organicAgency varchar(255) = null,
 	@premiumBodyCare varchar(3) = null,
-	@seafoodFreshOrFrozenId int = null,
-	@seafoodCatchTypeId int = null,
+	@seafoodFreshOrFrozen varchar(255) = null,
+	@seafoodCatchType varchar(255) = null,
 	@veganAgency varchar(255) = null,
 	@vegetarian varchar(3) = null,
 	@wholeTrade varchar(3) = null,
@@ -236,19 +236,19 @@ BEGIN
 		opc.traitValue				as OrganicPersonalCare,
 		plo.traitValue				as Paleo,
 		pft.traitValue				as ProductFlavorType,
-		isa.AnimalWelfareRatingId	as AnimalWelfareRatingId,
+		isa.AnimalWelfareRating	    as AnimalWelfareRating,
 		isa.Biodynamic				as Biodynamic,
-		isa.CheeseMilkTypeId		as CheeseMilkTypeId,
+		isa.MilkType		        as CheeseMilkType,
 		isa.CheeseRaw				as CheeseRaw,
-		isa.EcoScaleRatingId		as EcoScaleRatingId,
+		isa.EcoScaleRating		    as EcoScaleRating,
 		isa.GlutenFreeAgencyName	as GlutenFreeAgencyName,
 		isa.KosherAgencyName		as KosherAgencyName,
 		isa.Msc						as Msc,
 		isa.NonGmoAgencyName		as NonGmoAgencyName,
 		isa.OrganicAgencyName		as OrganicAgencyName,
 		isa.PremiumBodyCare			as PremiumBodyCare,
-		isa.SeafoodFreshOrFrozenId	as SeafoodFreshOrFrozenId,
-		isa.SeafoodCatchTypeId		as SeafoodCatchTypeId,
+		isa.FreshOrFrozen	        as SeafoodFreshOrFrozen,
+		isa.SeafoodCatchType		as SeafoodCatchType,
 		isa.VeganAgencyName			as VeganAgencyName,
 		isa.Vegetarian			    as Vegetarian,
 		isa.WholeTrade				as WholeTrade,
@@ -459,8 +459,8 @@ BEGIN
 		SET @whereSql = @whereSql + 'and moddate.traitValue like ''%'' + @modifiedDate + ''%'' '
 	IF NOT ISNULL(@modifiedUser, '') = ''
 		SET @whereSql = @whereSql + 'and modusr.traitValue like ''%'' + @modifiedUser + ''%'' '
-	IF NOT ISNULL(@animalWelfareRatingId, '') = ''
-		SET @whereSql = @whereSql + 'and @animalWelfareRatingId = isa.AnimalWelfareRatingId '
+	IF NOT ISNULL(@animalWelfareRating, '') = ''
+		SET @whereSql = @whereSql + 'and @animalWelfareRating = isa.AnimalWelfareRating '
 	IF NOT ISNULL(@biodynamic, '') = ''
 	BEGIN
 		IF @biodynamic = 'yes'
@@ -468,8 +468,8 @@ BEGIN
 		ELSE
 			SET @whereSql = @whereSql + 'and 0 = isa.Biodynamic '
 	END
-	IF NOT ISNULL(@milkTypeId, '') = ''
-		SET @whereSql = @whereSql + 'and @milkTypeId = isa.CheeseMilkTypeId '
+	IF NOT ISNULL(@milkType, '') = ''
+		SET @whereSql = @whereSql + 'and @milkType = isa.MilkType '
 	IF NOT ISNULL(@cheeseRaw, '') = ''
 	BEGIN
 		IF @cheeseRaw = 'yes'
@@ -477,8 +477,8 @@ BEGIN
 		ELSE
 			SET @whereSql = @whereSql + 'and 0 = isa.CheeseRaw '
 	END
-	IF NOT ISNULL(@ecoScaleRatingId, '') = ''
-		SET @whereSql = @whereSql + 'and @ecoScaleRatingId = isa.EcoScaleRatingId '
+	IF NOT ISNULL(@ecoScaleRating, '') = ''
+		SET @whereSql = @whereSql + 'and @ecoScaleRating = isa.EcoScaleRating '
 	IF NOT ISNULL(@glutenFreeAgency, '') = ''
 		SET @whereSql = @whereSql + 'and @glutenFreeAgency = ISA.GlutenFreeAgencyName '
 	IF NOT ISNULL(@kosherAgency, '') = ''
@@ -494,10 +494,10 @@ BEGIN
 		ELSE
 			SET @whereSql = @whereSql + 'and 0 = isa.PremiumBodyCare '
 	END
-	IF NOT ISNULL(@seafoodFreshOrFrozenId, '') = ''
-		SET @whereSql = @whereSql + 'and @seafoodFreshOrFrozenId = isa.SeafoodFreshOrFrozenId '
-	IF NOT ISNULL(@seafoodCatchTypeId, '') = ''
-		SET @whereSql = @whereSql + 'and @seafoodCatchTypeId = isa.SeafoodCatchTypeId '
+	IF NOT ISNULL(@seafoodFreshOrFrozen, '') = ''
+		SET @whereSql = @whereSql + 'and @seafoodFreshOrFrozen = isa.FreshOrFrozen '
+	IF NOT ISNULL(@seafoodCatchType, '') = ''
+		SET @whereSql = @whereSql + 'and @seafoodCatchType = isa.SeafoodCatchType '
 	IF NOT ISNULL(@veganAgency, '') = ''
 		SET @whereSql = @whereSql + 'and @veganAgency = ISA.VeganAgencyName '
 	IF NOT ISNULL(@vegetarian, '') = ''
@@ -609,7 +609,7 @@ BEGIN
 		@validationDateTraitID int,
 		@retailSizeID int,
 		@retailUomID int,
-		@deliverySystemID int,
+		@deliverySystemID varchar(255),
 		@scaleTareID int,
 		@taxRomanceTraitID int,
 		@hiddenItemTraitID int,
@@ -665,19 +665,19 @@ BEGIN
 		@pft varchar(255),
 		@plo varchar(255),
 		@llp varchar(255),
-		@animalWelfareRatingId int,
+		@animalWelfareRating varchar(255),
 		@biodynamic varchar(3),
-		@milkTypeId int,
+		@milkType varchar(255),
 		@cheeseRaw varchar(3),
-		@ecoScaleRatingId int,
+		@ecoScaleRating varchar(255),
 		@glutenFreeAgency varchar(255),
 		@kosherAgency varchar(255),
 		@isMsc varchar(3),
 		@nonGmoAgency varchar(255),
 		@organicAgency varchar(255),
 		@premiumBodyCare varchar(3),
-		@seafoodFreshOrFrozenId int,
-		@seafoodCatchTypeId int,
+		@seafoodFreshOrFrozen varchar(255),
+		@seafoodCatchType varchar(255),
 		@veganAgency varchar(255),
 		@vegetarian varchar(3),
 		@wholeTrade varchar(3),
@@ -768,19 +768,19 @@ BEGIN
 		@pft,
 		@plo,
 		@llp,
-		@animalWelfareRatingId,
+		@animalWelfareRating,
 		@biodynamic,
-		@milkTypeId,
+		@milkType,
 		@cheeseRaw,
-		@ecoScaleRatingId,
+		@ecoScaleRating,
 		@glutenFreeAgency,
 		@kosherAgency,
 		@isMsc,
 		@nonGmoAgency,
 		@organicAgency,
 		@premiumBodyCare,
-		@seafoodFreshOrFrozenId,
-		@seafoodCatchTypeId,
+		@seafoodFreshOrFrozen,
+		@seafoodCatchType,
 		@veganAgency,
 		@vegetarian,
 		@wholeTrade,

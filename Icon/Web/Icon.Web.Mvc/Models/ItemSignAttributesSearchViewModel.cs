@@ -10,11 +10,6 @@ namespace Icon.Web.Mvc.Models
     {
         public ItemSignAttributesSearchViewModel()
         {
-            CheeseMilkTypes = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.MilkTypes.AsDictionary, true);
-            EcoScaleRatings = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.EcoScaleRatings.AsDictionary, true);
-            AnimalWelfareRatings = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.AnimalWelfareRatings.AsDictionary, true);            
-            SeafoodFreshOrFrozen = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.SeafoodFreshOrFrozenTypes.AsDictionary, true, true);
-            SeafoodCatchTypes = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.SeafoodCatchTypes.AsDictionary, true);
             BiodynamicOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             CheeseRawOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             PremiumBodyCareOptions = ViewModelHelpers.BuildYesOrNoSelectList();
@@ -32,8 +27,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Animal Welfare Rating")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public int? SelectedAnimalWelfareRatingId { get; set; }
-        public SelectList AnimalWelfareRatings { get; set; }
+        public string AnimalWelfareRating { get; set; }
 
         [Display(Name = "Biodynamic")]
         [IgGridRouteValue]
@@ -44,8 +38,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Cheese Attribute: Milk Type")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public int? SelectedCheeseMilkTypeId { get; set; }
-        public SelectList CheeseMilkTypes { get; set; }
+        public string CheeseMilkType { get; set; }
 
         [Display(Name = "Cheese Attribute: Raw")]
         [IgGridRouteValue]
@@ -56,8 +49,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Eco-Scale Rating")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public int? SelectedEcoScaleRatingId { get; set; }
-        public SelectList EcoScaleRatings { get; set; }
+        public string EcoScaleRating { get; set; }
 
         [Display(Name = "Gluten-Free")]
         [IgGridRouteValue]
@@ -94,14 +86,12 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Fresh or Frozen")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public int? SelectedSeafoodFreshOrFrozenId { get; set; }
-        public SelectList SeafoodFreshOrFrozen { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
 
         [Display(Name = "Seafood: Wild or Farm Raised")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
-        public int? SelectedSeafoodCatchTypeId { get; set; }
-        public SelectList SeafoodCatchTypes { get; set; }
+        public string SeafoodCatchType { get; set; }
 
         [Display(Name = "Vegan")]
         [IgGridRouteValue]

@@ -322,156 +322,6 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
         }
 
         [TestMethod]
-        public void ItemExcelValidatorFactory_DeliverySystemIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Delivery System should be one of the following: {0}.", string.Join(", ", DeliverySystems.AsDictionary.Values));
-
-            testItem1.DeliverySystem = "abc";
-            testItem2.DeliverySystem = "12345.1234";
-            testItem3.DeliverySystem = DeliverySystems.AsDictionary.Values.First();
-            testItem4.DeliverySystem = DeliverySystems.AsDictionary.Values.Last();
-            testItem5.DeliverySystem = string.Empty;
-            testItem6.DeliverySystem = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
-        public void ItemExcelValidatorFactory_AnimalWelfareRatingIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Animal Welfare Rating is not recognized.  Valid entries are {0}.", string.Join(", ", AnimalWelfareRatings.Descriptions.AsArray));
-
-            testItem1.AnimalWelfareRating = "abc";
-            testItem2.AnimalWelfareRating = "12345.1234";
-            testItem3.AnimalWelfareRating = AnimalWelfareRatings.Descriptions.AsArray.First();
-            testItem4.AnimalWelfareRating = AnimalWelfareRatings.Descriptions.AsArray.Last();
-            testItem5.AnimalWelfareRating = Constants.ExcelImportRemoveValueKeyword;
-            testItem6.AnimalWelfareRating = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
-        public void ItemExcelValidatorFactory_CheeseMilkTypeIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Cheese Attribute: Milk Type is not recognized.  Valid entries are {0}.", string.Join(", ", MilkTypes.Descriptions.AsArray));
-
-            testItem1.CheeseAttributeMilkType = "abc";
-            testItem2.CheeseAttributeMilkType = "12345.1234";
-            testItem3.CheeseAttributeMilkType = MilkTypes.Descriptions.AsArray.First();
-            testItem4.CheeseAttributeMilkType = MilkTypes.Descriptions.AsArray.Last();
-            testItem5.CheeseAttributeMilkType = Constants.ExcelImportRemoveValueKeyword;
-            testItem6.CheeseAttributeMilkType = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
-        public void ItemExcelValidatorFactory_EcoScaleRatingIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Eco-Scale Rating is not recognized.  Valid entries are {0}.", string.Join(", ", EcoScaleRatings.Descriptions.AsArray));
-
-            testItem1.EcoScaleRating = "abc";
-            testItem2.EcoScaleRating = "12345.1234";
-            testItem3.EcoScaleRating = EcoScaleRatings.Descriptions.AsArray.First();
-            testItem4.EcoScaleRating = EcoScaleRatings.Descriptions.AsArray.Last();
-            testItem5.EcoScaleRating = Constants.ExcelImportRemoveValueKeyword;
-            testItem6.EcoScaleRating = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
-        public void ItemExcelValidatorFactory_SeafoodFreshOrFrozenIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Fresh Or Frozen is not recognized.  Valid entries are {0}.", string.Join(", ", SeafoodFreshOrFrozenTypes.Descriptions.AsArray));
-
-            testItem1.SeafoodFreshOrFrozen = "abc";
-            testItem2.SeafoodFreshOrFrozen = "12345.1234";
-            testItem3.SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.AsArray.First();
-            testItem4.SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.AsArray.Last();
-            testItem5.SeafoodFreshOrFrozen = Constants.ExcelImportRemoveValueKeyword;
-            testItem6.SeafoodFreshOrFrozen = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
-        public void ItemExcelValidatorFactory_SeafoodCatchTypesIsInvalid_ShouldSetError()
-        {
-            //Given
-            string error = string.Format("Seafood: Wild Or Farm Raised is not recognized.  Valid entries are {0}.", string.Join(", ", SeafoodCatchTypes.Descriptions.AsArray));
-
-            testItem1.SeafoodWildOrFarmRaised = "abc";
-            testItem2.SeafoodWildOrFarmRaised = "12345.1234";
-            testItem3.SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.AsArray.First();
-            testItem4.SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.AsArray.Last();
-            testItem5.SeafoodWildOrFarmRaised = Constants.ExcelImportRemoveValueKeyword;
-            testItem6.SeafoodWildOrFarmRaised = string.Empty;
-
-            //When
-            ValidateModels();
-
-            //Then
-            Assert.AreEqual(error, testItem1.Error);
-            Assert.AreEqual(error, testItem2.Error);
-            Assert.IsNull(testItem3.Error);
-            Assert.IsNull(testItem4.Error);
-            Assert.IsNull(testItem5.Error);
-            Assert.IsNull(testItem6.Error);
-        }
-
-        [TestMethod]
         public void ItemExcelValidatorFactory_GlutenFreeAgencyDoesNotExist_ShouldSetError()
         {
             //Given
@@ -1012,7 +862,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem = "Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1021,19 +871,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating = "BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",
@@ -1058,7 +908,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem = "Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1067,19 +917,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating = "BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",
@@ -1104,7 +954,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem ="Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1113,19 +963,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating = "BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",
@@ -1150,7 +1000,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem = "Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1159,19 +1009,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating ="BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",
@@ -1196,7 +1046,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem = "Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1205,19 +1055,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating = "BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",
@@ -1242,7 +1092,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 PosScaleTare = "1",
                 RetailSize = "1",
                 Uom = UomCodes.Each,
-                DeliverySystem = DeliverySystems.AsDictionary.Values.First(),
+                DeliverySystem = "Delivery",
                 Merchandise = testMerchandise.HierarchyClassName + "|" + testMerchandise.HierarchyClassId,
                 NationalClass = testNational.HierarchyClassName + "|" + testNational.HierarchyClassId,
                 Tax = testTax.HierarchyClassName + "|" + testTax.HierarchyClassId,
@@ -1251,19 +1101,19 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
                 DepartmentSale = "Y",
                 HiddenItem = "N",
                 Notes = "Test",
-                AnimalWelfareRating = AnimalWelfareRatings.Descriptions.Step1,
+                AnimalWelfareRating = "Step1",
                 Biodynamic = "Y",
-                CheeseAttributeMilkType = MilkTypes.Descriptions.BuffaloMilk,
+                CheeseAttributeMilkType = "BuffaloMilk",
                 CheeseAttributeRaw = "N",
-                EcoScaleRating = EcoScaleRatings.Descriptions.BaselineOrange,
+                EcoScaleRating = "BaselineOrange",
                 GlutenFree = testGlutenFree.hierarchyClassName + "|" + testGlutenFree.hierarchyClassID,
                 Kosher = testKosher.hierarchyClassName + "|" + testKosher.hierarchyClassID,
                 Msc = "N",
                 NonGmo = testNonGmo.hierarchyClassName + "|" + testNonGmo.hierarchyClassID,
                 Organic = testOrganic.hierarchyClassName + "|" + testOrganic.hierarchyClassID,
                 PremiumBodyCare = "Y",
-                SeafoodFreshOrFrozen = SeafoodFreshOrFrozenTypes.Descriptions.Fresh,
-                SeafoodWildOrFarmRaised = SeafoodCatchTypes.Descriptions.FarmRaised,
+                SeafoodFreshOrFrozen = "Fresh",
+                SeafoodWildOrFarmRaised = "FarmRaised",
                 Vegan = testVegan.hierarchyClassName + "|" + testVegan.hierarchyClassID,
                 Vegetarian = "Y",
                 WholeTrade = "Y",

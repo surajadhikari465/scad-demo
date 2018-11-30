@@ -822,32 +822,7 @@ namespace Icon.Web.Tests.Unit.Importers
             Assert.AreEqual(1, importer.ErrorRows.Count);
             Assert.AreEqual("UOM should be one of the following: EA, LB, CT, OZ, CS, PK, LT, PT, KG, ML, GL, GR, CG, FT, YD, QT, SQFT, MT, FZ.",
                 importer.ErrorRows[0].Error);
-        }
-
-        [TestMethod]
-        public void ValidateSpreadsheetData_DeliverySystemIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string validDeliverySystem = DeliverySystems.Descriptions.Cap;
-            string invalidDeliverySystem = "Invalid Delivery System";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder().WithDeliverySystem(validDeliverySystem));
-            importItems.Add(new TestBulkImportNewItemModelBuilder().WithScanCode("111").WithDeliverySystem(invalidDeliverySystem));
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(2, importer.ParsedRows.Count);
-            Assert.AreEqual(1, importer.ValidRows.Count);
-            Assert.AreEqual(1, importer.ErrorRows.Count);
-            Assert.AreEqual("Delivery System should be one of the following: CAP, CHW, LZ, SG, TB, VC, VS.",
-                importer.ErrorRows[0].Error);
-        }
+        }   
 
         [TestMethod]
         public void ValidateSpreadsheetData_ValidatedIsInvalid_ShouldAddErrorRow()
@@ -869,29 +844,7 @@ namespace Icon.Web.Tests.Unit.Importers
             Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
             Assert.AreEqual("Validated should be Y, N, or blank.", importer.ErrorRows[0].Error);
         }
-
-        [TestMethod]
-        public void ValidateSpreadsheetData_AnimalWelfareRatingIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string invalidValue = "INVALID";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].AnimalWelfareRating = invalidValue;
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
-            Assert.AreEqual(String.Format("Animal Welfare Rating is not recognized.  Valid entries are {0}.", String.Join(", ", AnimalWelfareRatings.Descriptions.AsArray)),
-                importer.ErrorRows[0].Error);
-        }
-
+  
         [TestMethod]
         public void ValidateSpreadsheetData_BiodynamicIsInvalid_ShouldAddErrorRow()
         {
@@ -911,28 +864,6 @@ namespace Icon.Web.Tests.Unit.Importers
             // Then.
             Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
             Assert.AreEqual("Biodynamic should be Y, N, or blank.", importer.ErrorRows[0].Error);
-        }
-
-        [TestMethod]
-        public void ValidateSpreadsheetData_CheeseAttributeMilkTypeIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string invalidValue = "INVALID";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].CheeseAttributeMilkType = invalidValue;
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
-            Assert.AreEqual(String.Format("Cheese Attribute: Milk Type is not recognized.  Valid entries are {0}.", String.Join(", ", MilkTypes.Descriptions.AsArray)),
-                importer.ErrorRows[0].Error);
         }
 
         [TestMethod]
@@ -956,28 +887,7 @@ namespace Icon.Web.Tests.Unit.Importers
             Assert.AreEqual("Cheese Attribute: Raw should be Y, N, or blank.", importer.ErrorRows[0].Error);
         }
 
-        [TestMethod]
-        public void ValidateSpreadsheetData_EcoScaleIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string invalidValue = "INVALID";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].EcoScaleRating = invalidValue;
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
-            Assert.AreEqual(String.Format("Eco-Scale Rating is not recognized.  Valid entries are {0}.", String.Join(", ", EcoScaleRatings.Descriptions.AsArray)),
-                importer.ErrorRows[0].Error);
-        }
-
+     
         [TestMethod]
         public void ValidateSpreadsheetData_GlutenFreeIsInvalid_ShouldAddErrorRow()
         {
@@ -1249,52 +1159,7 @@ namespace Icon.Web.Tests.Unit.Importers
             Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
             Assert.AreEqual("Made In House should be Y, N, or blank.", importer.ErrorRows[0].Error);
         }
-    
         
-        [TestMethod]
-        public void ValidateSpreadsheetData_SeafoodFreshOrFrozenIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string invalidValue = "INVALID";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].SeafoodFreshOrFrozen = invalidValue;
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
-            Assert.AreEqual(String.Format("Fresh Or Frozen is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodFreshOrFrozenTypes.Descriptions.AsArray)),
-                importer.ErrorRows[0].Error);
-        }
-
-        [TestMethod]
-        public void ValidateSpreadsheetData_SeafoodWildOrFarmRaisedIsInvalid_ShouldAddErrorRow()
-        {
-            // Given.
-            string invalidValue = "INVALID";
-
-            importItems.Add(new TestBulkImportNewItemModelBuilder());
-            importItems[0].SeafoodWildOrFarmRaised = invalidValue;
-
-            AddHierarchyClassesToHierarchyLineageQueryResult(importItems);
-
-            importer.ParsedRows = importItems;
-
-            // When.
-            importer.ValidateSpreadsheetData();
-
-            // Then.
-            Assert.AreEqual(importItems.Count, importer.ErrorRows.Count);
-            Assert.AreEqual(String.Format("Seafood: Wild Or Farm Raised is not recognized.  Valid entries are {0}.", String.Join(", ", SeafoodCatchTypes.Descriptions.AsArray)),
-                importer.ErrorRows[0].Error);
-        }
-
         [TestMethod]
         public void ValidateSpreadsheetData_VeganIsInvalid_ShouldAddErrorRow()
         {

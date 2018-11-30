@@ -51,9 +51,7 @@ namespace Icon.Web.Mvc.Models
         public SelectList RetailUoms { get; set; }
 
         [Display(Name = "Delivery System")]
-        [DeliverySystem]
         public string DeliverySystem { get; set; }
-        public SelectList DeliverySystems { get; set; }
 
         [Display(Name = "Food Stamp Eligible")]
         public bool FoodStampEligible { get; set; }
@@ -103,24 +101,21 @@ namespace Icon.Web.Mvc.Models
         public bool IsValidated { get { return ValidatedDate != null; } }
 
         [Display(Name = "Animal Welfare Rating")]
-        public int? SelectedAnimalWelfareRatingId { get; set; }
-        public SelectList AnimalWelfareRatings { get; set; }
+        public string AnimalWelfareRating { get; set; }
 
         [Display(Name = "Biodynamic")]
         public string SelectedBiodynamicOption { get; set; }
         public SelectList BiodynamicOptions { get; set; }
 
         [Display(Name = "Cheese Attribute: Milk Type")]
-        public int? SelectedCheeseMilkTypeId { get; set; }
-        public SelectList CheeseMilkTypes { get; set; }
+        public string CheeseMilkType { get; set; }
 
         [Display(Name = "Cheese Attribute: Raw")]
         public string SelectedCheeseRawOption { get; set; }
         public SelectList CheeseRawOptions { get; set; }
 
         [Display(Name = "Eco Scale Rating")]
-        public int? SelectedEcoScaleRatingId { get; set; }
-        public SelectList EcoScaleRatings { get; set; }
+        public string EcoScaleRating { get; set; }
 
         [Display(Name = "Gluten Free")]
         public string GlutenFreeAgency { get; set; }
@@ -143,12 +138,10 @@ namespace Icon.Web.Mvc.Models
         public SelectList PremiumBodyCareOptions { get; set; }
 
         [Display(Name = "Fresh or Frozen")]
-        public int? SelectedSeafoodFreshOrFrozenId { get; set; }
-        public SelectList SeafoodFreshOrFrozen { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
 
         [Display(Name = "Seafood: Wild or Farm Raised")]
-        public int? SelectedSeafoodCatchTypeId { get; set; }
-        public SelectList SeafoodCatchTypes { get; set; }
+        public string SeafoodCatchType { get; set; }
 
         [Display(Name = "Vegan")]
         public string VeganAgency { get; set; }
@@ -251,19 +244,19 @@ namespace Icon.Web.Mvc.Models
             HiddenItem = ConversionUtility.ConvertBitStringToBool(item.HiddenItem);
             Notes = item.Notes;
             ValidatedDate = item.ValidatedDate == null ? (DateTime?)null : DateTime.Parse(item.ValidatedDate);
-            SelectedAnimalWelfareRatingId = item.AnimalWelfareRatingId;
+            AnimalWelfareRating = item.AnimalWelfareRating;
             SelectedBiodynamicOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.Biodynamic);
-            SelectedCheeseMilkTypeId = item.CheeseMilkTypeId;
+            CheeseMilkType = item.CheeseMilkType;
             SelectedCheeseRawOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.CheeseRaw);
-            SelectedEcoScaleRatingId = item.EcoScaleRatingId;
+            EcoScaleRating = item.EcoScaleRating;
             GlutenFreeAgency = item.GlutenFreeAgency;
             KosherAgency = item.KosherAgency;
             SelectedMscOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.Msc);
             NonGmoAgency = item.NonGmoAgency;
             OrganicAgency = item.OrganicAgency;
             SelectedPremiumBodyCareOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.PremiumBodyCare);
-            SelectedSeafoodFreshOrFrozenId = item.SeafoodFreshOrFrozenId;
-            SelectedSeafoodCatchTypeId = item.SeafoodCatchTypeId;
+            SeafoodFreshOrFrozen = item.SeafoodFreshOrFrozen;
+            SeafoodCatchType = item.SeafoodCatchType;
             VeganAgency = item.VeganAgency;
             SelectedVegetarianOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.Vegetarian);
             SelectedWholeTradeOption = ConversionUtility.ConvertNullableBoolToYesNoFull(item.WholeTrade);
@@ -305,12 +298,7 @@ namespace Icon.Web.Mvc.Models
         }
 
         private void BuildSelectLists()
-        {
-            CheeseMilkTypes = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.MilkTypes.AsDictionary, true);
-            EcoScaleRatings = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.EcoScaleRatings.AsDictionary, true);
-            AnimalWelfareRatings = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.AnimalWelfareRatings.AsDictionary, true);
-            SeafoodFreshOrFrozen = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.SeafoodFreshOrFrozenTypes.AsDictionary, true);
-            SeafoodCatchTypes = ViewModelHelpers.BuildSelectListFromDictionary(Icon.Framework.SeafoodCatchTypes.AsDictionary, true);
+        {           
             BiodynamicOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             CheeseRawOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             PremiumBodyCareOptions = ViewModelHelpers.BuildYesOrNoSelectList();
@@ -323,7 +311,6 @@ namespace Icon.Web.Mvc.Models
             DryAgedOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             AirChilledOptions = ViewModelHelpers.BuildYesOrNoSelectList();
             MadeInHouseOptions = ViewModelHelpers.BuildYesOrNoSelectList();
-            DrainedWeightUomOptions = new SelectList(DrainedWeightUoms.Values);
         }
     }
 }

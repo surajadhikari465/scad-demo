@@ -194,11 +194,11 @@ namespace Icon.Web.Tests.Unit.Controllers
                     SelectedDepartmentSaleId = "Test Dept",
                     SelectedFoodStampId = "Test FoodStamp",
                     SelectedRetailUom = "Test UOM",
-                    SelectedDeliverySystem = "Test Delivery System",
+                    DeliverySystem = "Test Delivery System",
                     TaxHierarchy = "Test Tax",
                     ItemSignAttributes = new ItemSignAttributesSearchViewModel
                     {
-                        SelectedAnimalWelfareRatingId = AnimalWelfareRatings.Step3,
+                        AnimalWelfareRating ="Step 3",
                         SelectedBiodynamicOption = "Test Biodynamic",
                         SelectedCheeseRawOption = "Test CheeseRaw",
                         GlutenFreeAgency = "Test Gluten",
@@ -206,10 +206,10 @@ namespace Icon.Web.Tests.Unit.Controllers
                         NonGmoAgency = "Test NonGmo",
                         OrganicAgency = "Test Organic",
                         SelectedPremiumBodyCareOption = "Test PremiumBodyCare",
-                        SelectedCheeseMilkTypeId = MilkTypes.GoatMilk,
-                        SelectedEcoScaleRatingId = EcoScaleRatings.PremiumYellow,
-                        SelectedSeafoodCatchTypeId = SeafoodCatchTypes.Wild,
-                        SelectedSeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.PreviouslyFrozen,
+                        CheeseMilkType = "Goat Milk",
+                        EcoScaleRating = "Premium/Yellow",
+                        SeafoodCatchType = "Wild",
+                        SeafoodFreshOrFrozen = "Previously Frozen",
                         VeganAgency = "Test Vegan",
                         SelectedVegetarianOption = "Test Vegetarian",
                         SelectedWholeTradeOption = "Test WholeTrade"
@@ -234,21 +234,21 @@ namespace Icon.Web.Tests.Unit.Controllers
                     && p.FoodStampEligible == viewModel.SelectedFoodStampId
                     && p.HiddenItemStatus == HiddenStatus.Hidden
                     && p.RetailUom == viewModel.SelectedRetailUom
-                    && p.DeliverySystem == viewModel.SelectedDeliverySystem
+                    && p.DeliverySystem == viewModel.DeliverySystem
                     && p.SearchStatus == SearchStatus.Loaded
                     && p.TaxRomance == viewModel.TaxHierarchy
-                    && p.AnimalWelfareRatingId == AnimalWelfareRatings.Step3
+                    && p.AnimalWelfareRating == "Step 3"
                     && p.Biodynamic == viewModel.ItemSignAttributes.SelectedBiodynamicOption
-                    && p.MilkTypeId == MilkTypes.GoatMilk
+                    && p.MilkType == "Goat Milk"
                     && p.CheeseRaw == viewModel.ItemSignAttributes.SelectedCheeseRawOption
-                    && p.EcoScaleRatingId == EcoScaleRatings.PremiumYellow
+                    && p.EcoScaleRating == "Premium/Yellow"
                     && p.GlutenFreeAgency == viewModel.ItemSignAttributes.GlutenFreeAgency
                     && p.KosherAgency == viewModel.ItemSignAttributes.KosherAgency
                     && p.NonGmoAgency == viewModel.ItemSignAttributes.NonGmoAgency
                     && p.OrganicAgency == viewModel.ItemSignAttributes.OrganicAgency
                     && p.PremiumBodyCare == viewModel.ItemSignAttributes.SelectedPremiumBodyCareOption
-                    && p.SeafoodFreshOrFrozenId == SeafoodFreshOrFrozenTypes.PreviouslyFrozen
-                    && p.SeafoodCatchTypeId == SeafoodCatchTypes.Wild
+                    && p.SeafoodFreshOrFrozen == "Previously Frozen"
+                    && p.SeafoodCatchType == "Wild"
                     && p.VeganAgency == viewModel.ItemSignAttributes.VeganAgency
                     && p.Vegetarian == viewModel.ItemSignAttributes.SelectedVegetarianOption
                     && p.WholeTrade == viewModel.ItemSignAttributes.SelectedWholeTradeOption)))
@@ -516,7 +516,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             var actualTax = viewModel.TaxHierarchyClasses.ToList();
             var actualBrowse = viewModel.BrowsingHierarchyClasses.ToList();
             var actualUoms = viewModel.RetailUoms.ToList();
-            var actualDeliverySystems = viewModel.DeliverySystems.ToList();
 
             Assert.AreEqual(1, actualMerch.Count);
             Assert.AreEqual(2, actualTax.Count);
@@ -525,9 +524,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("EA", actualUoms[1].Text);
             Assert.AreEqual("LB", actualUoms[2].Text);
             Assert.AreEqual("CT", actualUoms[3].Text);
-            Assert.AreEqual("CAP", actualDeliverySystems[1].Text);
-            Assert.AreEqual("CHW", actualDeliverySystems[2].Text);
-            Assert.AreEqual("LZ", actualDeliverySystems[3].Text);
         }
 
         [TestMethod]
@@ -663,7 +659,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             var actualTax = viewModel.TaxHierarchyClasses.ToList();
             var actualBrowsing = viewModel.BrowsingHierarchyClasses.ToList();
             var actualUoms = viewModel.RetailUoms.ToList();
-            var actualDeliverySystems = viewModel.DeliverySystems.ToList();
 
             Assert.AreEqual(1, actualMerchandise.Count);
             Assert.AreEqual(2, actualTax.Count);
@@ -672,9 +667,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("EA", actualUoms[1].Text);
             Assert.AreEqual("LB", actualUoms[2].Text);
             Assert.AreEqual("CT", actualUoms[3].Text);
-            Assert.AreEqual("CAP", actualDeliverySystems[1].Text);
-            Assert.AreEqual("CHW", actualDeliverySystems[2].Text);
-            Assert.AreEqual("LZ", actualDeliverySystems[3].Text);
         }
 
         [TestMethod]

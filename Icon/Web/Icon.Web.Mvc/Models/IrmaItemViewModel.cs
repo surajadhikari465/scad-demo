@@ -28,15 +28,15 @@ namespace Icon.Web.Mvc.Models
         public string IrmaSubTeamName { get; set; }
         public string NationalHierarchyClassName { get; set; }
         public int? NationalHierarchyClassId { get; set; }
-        public int? AnimalWelfareRatingId { get; set; }
+        public string AnimalWelfareRating { get; set; }
 
         public bool? Biodynamic { get; set; }
 
-        public int? CheeseMilkTypeId { get; set; }
+        public string CheeseMilkType { get; set; }
 
         public bool? CheeseRaw { get; set; }
 
-        public int? EcoScaleRatingId { get; set; }
+        public string EcoScaleRating { get; set; }
 
         public string GlutenFreeAgency { get; set; }
 
@@ -50,9 +50,9 @@ namespace Icon.Web.Mvc.Models
 
         public bool? PremiumBodyCare { get; set; }
 
-        public int? SeafoodFreshOrFrozenId { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
 
-        public int? SeafoodCatchTypeId { get; set; }
+        public string SeafoodCatchType { get; set; }
 
         public string VeganAgency { get; set; }
 
@@ -89,15 +89,15 @@ namespace Icon.Web.Mvc.Models
             this.TaxHierarchyClassId = irmaItem.taxClassID;
             this.IrmaSubTeamName = irmaItem.irmaSubTeamName;
             this.NationalHierarchyClassId = irmaItem.nationalClassID;
-            AnimalWelfareRatingId = irmaItem.AnimalWelfareRatingId;
+            AnimalWelfareRating = irmaItem.AnimalWelfareRating;
             Biodynamic = irmaItem.Biodynamic;
-            CheeseMilkTypeId = irmaItem.CheeseMilkTypeId;
+            CheeseMilkType = irmaItem.MilkType;
             CheeseRaw = irmaItem.CheeseRaw;
-            EcoScaleRatingId = irmaItem.EcoScaleRatingId;
+            EcoScaleRating = irmaItem.EcoScaleRating;
             Msc = irmaItem.Msc;
             PremiumBodyCare = irmaItem.PremiumBodyCare;
-            SeafoodFreshOrFrozenId = irmaItem.SeafoodFreshOrFrozenId;
-            SeafoodCatchTypeId = irmaItem.SeafoodCatchTypeId;
+            SeafoodFreshOrFrozen = irmaItem.FreshOrFrozen;
+            SeafoodCatchType = irmaItem.SeafoodCatchType;
             Vegetarian = irmaItem.Vegetarian;
             WholeTrade = irmaItem.WholeTrade;
             GrassFed = irmaItem.GrassFed;

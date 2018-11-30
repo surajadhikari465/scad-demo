@@ -80,7 +80,7 @@
                 <div class="row">
                     @Html.LabelFor(model => model.DeliverySystem, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.DeliverySystem, Model.DeliverySystems, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.DeliverySystem, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -206,9 +206,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => model.SelectedAnimalWelfareRatingId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.AnimalWelfareRating, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedAnimalWelfareRatingId, Model.AnimalWelfareRatings, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.AnimalWelfareRating, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -218,9 +218,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => model.SelectedCheeseMilkTypeId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.CheeseMilkType, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedCheeseMilkTypeId, Model.CheeseMilkTypes, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.CheeseMilkType, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -236,9 +236,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => model.SelectedEcoScaleRatingId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.EcoScaleRating, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedEcoScaleRatingId, Model.EcoScaleRatings, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.EcoScaleRating , new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -248,9 +248,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => model.SelectedSeafoodFreshOrFrozenId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.SeafoodFreshOrFrozen, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedSeafoodFreshOrFrozenId, Model.SeafoodFreshOrFrozen, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.SeafoodFreshOrFrozen, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -308,9 +308,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => model.SelectedSeafoodCatchTypeId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.SeafoodCatchType, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedSeafoodCatchTypeId, Model.SeafoodCatchTypes, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.SeafoodCatchType, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">

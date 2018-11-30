@@ -42,8 +42,7 @@ namespace Icon.Web.Common
         public static readonly string UserFormatError = String.Format("Please enter {0} or fewer valid characters.", Constants.NotesMaxLength);
         public static readonly string RetailSizeError = String.Format("Please enter a number greater than zero with 5 or less digits to the left of the decimal and 4 or less digits to the right of the decimal.");
         public static readonly string AlcoholByVolumeError = String.Format("Alcohol By Volume must be a number between 0 and 99.99 with up to two decimal places.");
-        public static readonly string DrainedWeightUomError = String.Format("Drained Weight UOM is not recognized. Valid entries are {0}", string.Join(", ", DrainedWeightUoms.AsArray));
-        public static readonly string DrainedWeightError = "Drained Weight is not recognized. Valid entry should be a number with maximum of 4 decimal places.";
+       public static readonly string DrainedWeightError = "Drained Weight is not recognized. Valid entry should be a number with maximum of 4 decimal places.";
         //public static readonly string FairTradeCertifiedError = string.Format("Fair Trade Certified is not recognized.  Valid entries are {0}.", string.Join(", ", FairTradeCertifiedValues.AsArray));
         public static readonly string MainProductNameError = "Main Product Name is not recognized. Valid entry should be a text value with maximum of 255 characters";
         public static readonly string ProductFlavorTypeError = "Product Flavor or Type is not recognized. Valid entry should be a text value with maximum of 255 characters";

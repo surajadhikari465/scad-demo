@@ -89,9 +89,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @Html.LabelFor(model => Model.SelectedDeliverySystem, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => Model.DeliverySystem, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => Model.SelectedDeliverySystem, Model.DeliverySystems, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => Model.DeliverySystem, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
                 <div class="row">
@@ -175,9 +175,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.ItemSignAttributes.SelectedAnimalWelfareRatingId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.ItemSignAttributes.AnimalWelfareRating, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.ItemSignAttributes.SelectedAnimalWelfareRatingId, Model.ItemSignAttributes.AnimalWelfareRatings, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.ItemSignAttributes.AnimalWelfareRating, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -196,9 +196,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.ItemSignAttributes.SelectedCheeseMilkTypeId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.ItemSignAttributes.CheeseMilkType, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.ItemSignAttributes.SelectedCheeseMilkTypeId, Model.ItemSignAttributes.CheeseMilkTypes, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.ItemSignAttributes.CheeseMilkType,  new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -219,7 +219,7 @@
                 <div class="row">
                     @Html.LabelFor(model => Model.DrainedWeightUom, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => Model.DrainedWeightUom, Model.DrainedWeightUomOptions, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => Model.DrainedWeightUom, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -231,9 +231,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.ItemSignAttributes.SelectedEcoScaleRatingId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.ItemSignAttributes.EcoScaleRating, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.ItemSignAttributes.SelectedEcoScaleRatingId, Model.ItemSignAttributes.EcoScaleRatings, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.ItemSignAttributes.EcoScaleRating, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -252,9 +252,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.ItemSignAttributes.SelectedSeafoodFreshOrFrozenId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.ItemSignAttributes.SeafoodFreshOrFrozen, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.ItemSignAttributes.SelectedSeafoodFreshOrFrozenId, Model.ItemSignAttributes.SeafoodFreshOrFrozen, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.ItemSignAttributes.SeafoodFreshOrFrozen, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 
@@ -374,9 +374,9 @@
                 </div>
 
                 <div class="row">
-                    @Html.LabelFor(model => model.ItemSignAttributes.SelectedSeafoodCatchTypeId, new { @class = "col-md-3 form-label" })
+                    @Html.LabelFor(model => model.ItemSignAttributes.SeafoodCatchType, new { @class = "col-md-3 form-label" })
                     <div>
-                        @Html.DropDownListFor(model => model.ItemSignAttributes.SelectedSeafoodCatchTypeId, Model.ItemSignAttributes.SeafoodCatchTypes, new { @class = "col-md-6 form-input" })
+                        @Html.TextBoxFor(model => model.ItemSignAttributes.SeafoodCatchType, new { @class = "col-md-6 form-input" })
                     </div>
                 </div>
 

@@ -44,18 +44,18 @@
         public string IsValidated { get; set; }
         public bool IsValidationStatus { get { return IsValidated != null; } }
 
-        public int? AnimalWelfareRatingId { get; set; }
+        public string AnimalWelfareRating { get; set; }
         public bool? Biodynamic { get; set; }
-        public int? CheeseMilkTypeId { get; set; }
+        public string CheeseMilkType { get; set; }
         public bool? CheeseRaw { get; set; }
-        public int? EcoScaleRatingId { get; set; }
+        public string EcoScaleRating { get; set; }
         public string GlutenFreeAgency { get; set; }
         public string KosherAgency { get; set; }
         public string NonGmoAgency { get; set; }
         public string OrganicAgency { get; set; }
         public bool? PremiumBodyCare { get; set; }
-        public int? SeafoodFreshOrFrozenId { get; set; }
-        public int? SeafoodCatchTypeId { get; set; }
+        public string SeafoodFreshOrFrozen { get; set; }
+        public string SeafoodCatchType { get; set; }
         public string VeganAgency { get; set; }
         public bool? Vegetarian { get; set; }
         public bool? WholeTrade { get; set; }

@@ -27,13 +27,10 @@ namespace Icon.Web.DataAccess.Models
         public string IsValidated { get; set; }
         public string RegionCode { get; set; }
         public string AnimalWelfareRating { get; set; }
-        public string AnimalWelfareRatingId { get; set; }
         public string Biodynamic { get; set; }
         public string CheeseAttributeMilkType { get; set; }
-        public string CheeseAttributeMilkTypeId { get; set; }
         public string CheeseAttributeRaw { get; set; }
         public string EcoScaleRating { get; set; }
-        public string EcoScaleRatingId { get; set; }
         public string GlutenFreeAgency{ get; set; }
         public string GlutenFreeAgencyLineage { get; set; }
         public string Msc { get; set; }
@@ -44,9 +41,7 @@ namespace Icon.Web.DataAccess.Models
         public string OrganicAgency { get; set; }
         public string OrganicAgencyLineage { get; set; }
         public string PremiumBodyCare { get; set; }
-        public string SeafoodFreshOrFrozenId { get; set; }
         public string SeafoodFreshOrFrozen { get; set; }
-        public string SeafoodWildOrFarmRaisedId { get; set; }
         public string SeafoodWildOrFarmRaised { get; set; }
         public string VeganAgency { get; set; }
         public string VeganAgencyLineage { get; set; }

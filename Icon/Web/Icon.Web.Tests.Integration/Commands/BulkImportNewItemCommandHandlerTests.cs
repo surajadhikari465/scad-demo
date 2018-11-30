@@ -200,11 +200,11 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithNationalId(testNational.hierarchyClassID.ToString())
                 .WithMsc("1");
 
-            newItemData.AnimalWelfareRatingId = AnimalWelfareRatings.AsDictionary.Single(e => e.Value == newItemData.AnimalWelfareRating).Key.ToString();
-            newItemData.CheeseAttributeMilkTypeId = MilkTypes.AsDictionary.Single(e => e.Value == newItemData.CheeseAttributeMilkType).Key.ToString();
-            newItemData.EcoScaleRatingId = EcoScaleRatings.AsDictionary.Single(e => e.Value == newItemData.EcoScaleRating).Key.ToString();
-            newItemData.SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.AsDictionary.Single(e => e.Value == newItemData.SeafoodFreshOrFrozen).Key.ToString();
-            newItemData.SeafoodWildOrFarmRaisedId = SeafoodCatchTypes.AsDictionary.Single(e => e.Value == newItemData.SeafoodWildOrFarmRaised).Key.ToString();
+            newItemData.AnimalWelfareRating = newItemData.AnimalWelfareRating;
+            newItemData.CheeseAttributeMilkType = newItemData.CheeseAttributeMilkType;
+            newItemData.EcoScaleRating = newItemData.EcoScaleRating;
+            newItemData.SeafoodFreshOrFrozen =newItemData.SeafoodFreshOrFrozen;
+            newItemData.SeafoodWildOrFarmRaised = newItemData.SeafoodWildOrFarmRaised;
             newItemData.GlutenFreeAgency = testGlutenFree.hierarchyClassID.ToString();
             newItemData.KosherAgency = testKosher.hierarchyClassID.ToString();
             newItemData.NonGmoAgency = testNonGmo.hierarchyClassID.ToString();
@@ -245,18 +245,18 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Sign Attributes.
             var signAttributes = context.ItemSignAttribute.Single(isa => isa.ItemID == newItemId);
-            string animalWelfareRating = signAttributes.AnimalWelfareRating.Description;
+            string animalWelfareRating = signAttributes.AnimalWelfareRating;
             bool biodynamic = signAttributes.Biodynamic;
-            string cheeseMilkType = signAttributes.MilkType.Description;
+            string cheeseMilkType = signAttributes.MilkType;
             bool cheeseRaw = signAttributes.CheeseRaw;
-            string ecoScaleRating = signAttributes.EcoScaleRating.Description;
+            string ecoScaleRating = signAttributes.EcoScaleRating;
             string glutenFree= signAttributes.GlutenFreeAgencyName;
             string kosher = signAttributes.KosherAgencyName;
             string nonGmo = signAttributes.NonGmoAgencyName;
             string organic = signAttributes.OrganicAgencyName;
             bool premiumBodyCare = signAttributes.PremiumBodyCare;
-            string seafoodFreshOrFrozen = signAttributes.SeafoodFreshOrFrozen.Description;
-            string seafoodCatchType = signAttributes.SeafoodCatchType.Description;
+            string seafoodFreshOrFrozen = signAttributes.FreshOrFrozen;
+            string seafoodCatchType = signAttributes.SeafoodCatchType;
             string vegan = signAttributes.VeganAgencyName;
             bool vegetarian = signAttributes.Vegetarian;
             bool wholeTrade = signAttributes.WholeTrade;
