@@ -34,9 +34,9 @@ Friend Class frmRetentionPolicyList
     ClearAndRefresh()
   End Sub
 
-  Private Sub RefreshGrid()
+  Private Sub RefreshGrid(Optional bForce As Boolean = False)
     Try
-      If RetentionPolicyTable Is Nothing Then
+      If RetentionPolicyTable Is Nothing OrElse bForce Then
         cboTable.DataSource = Nothing
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         RetentionPolicyTable = factory.GetStoredProcedureDataTable("dbo.GetRetentionPoliciesByTableDailyPurge")
@@ -50,26 +50,17 @@ Friend Class frmRetentionPolicyList
 
       RetentionPolicyTable.DefaultView.RowFilter = IIf(cboTable.SelectedIndex < 0, Nothing, String.Format("Table = '{0}' and IncludedInDailyPurge = {1}", cboTable.Text, IIf(CheckBox_IncludedInDailyPurge.Checked, "1", "0")))
       ugrdRetentionPolicy.DataSource = RetentionPolicyTable.DefaultView
-
     Catch ex As Exception
       RetentionPolicyTable = Nothing
       MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK)
     End Try
 
     If ugrdRetentionPolicy.Rows.Count > 0 Then ugrdRetentionPolicy.Rows(0).Selected = True
-
     SetButtons()
   End Sub
 
   Private Sub cboTable_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboTable.KeyPress
-    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-    If KeyAscii = 8 Then
-      cboTable.SelectedIndex = -1
-    End If
-
-    eventArgs.KeyChar = Chr(KeyAscii)
-    eventArgs.Handled = (KeyAscii = 0)
+    If eventArgs.KeyChar = vbBack Then cboTable.SelectedIndex = -1
   End Sub
 
   Private Sub SetButtons()
@@ -90,25 +81,23 @@ Friend Class frmRetentionPolicyList
   End Sub
 
   Private Sub cmdDeleteRetentionPolicy_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdDelete.Click
-    Dim iDelCnt As Short
+    Dim count As Short
     Dim hasJobsOtherThanPurgejob As Boolean = False
-    If ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
 
+    If ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
       '-- Make sure they really want to delete.
       If MsgBox("Delete the selected Retention Policies?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Delete Retention Policies") = MsgBoxResult.No Then
         Exit Sub
       End If
 
-      For iDelCnt = 0 To ugrdRetentionPolicy.Selected.Rows.Count - 1
-        '  only jobs with purge name as StraightPurge can be deleted at this point
-        If (ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("PurgeJobName").Value.ToString <> StraightPugeJob) Then
+      For count = 0 To ugrdRetentionPolicy.Selected.Rows.Count - 1 'FYI: Only jobs with purge name as StraightPurge can be deleted at this point
+        If String.Compare(ugrdRetentionPolicy.Selected.Rows(count).Cells("PurgeJobName").Value.ToString(), StraightPugeJob, True) <> 0 Then
           hasJobsOtherThanPurgejob = True
-
         Else
-          '   SQLExecute("EXEC DeleteInventoryLocations " & ugrdLocationList.Columns(0).CellValue(vBook).ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-          SQLExecute("EXEC DeleteRetentionPolicy " & ugrdRetentionPolicy.Selected.Rows(iDelCnt).Cells("RetentionPolicyId").Value.ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+          SQLExecute("EXEC DeleteRetentionPolicy " & ugrdRetentionPolicy.Selected.Rows(count).Cells("RetentionPolicyId").Value.ToString, DAO.RecordsetOptionEnum.dbSQLPassThrough)
         End If
-      Next iDelCnt
+      Next count
+
       ' IF any job with purge name other than StraightPurge has been marked for deletion show the message
       If (hasJobsOtherThanPurgejob And ugrdRetentionPolicy.Selected.Rows.Count > 1) Then
         MsgBox("Retention Policies with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
@@ -116,7 +105,7 @@ Friend Class frmRetentionPolicyList
         MsgBox("Retention Policy with Purge Job Name other than ""StraightPurge"" cannot be deleted.", MsgBoxStyle.Exclamation, "Notice!")
       End If
 
-      RefreshGrid()
+      RefreshGrid(True)
     Else
       'Shouldn't happen, but just in case.
       MsgBox("You must first select a Retention Policy to delete.", MsgBoxStyle.Exclamation, "Notice!")
@@ -144,9 +133,6 @@ Friend Class frmRetentionPolicyList
     Dim bRefresh As Boolean = frmRetentionPolicies.IsUpdated
     frmRetentionPolicies.Dispose()
 
-    If Not bRefresh Then Exit Sub 'No changes ha been made
-
-    RetentionPolicyTable = Nothing
-    RefreshGrid() 'Refresh grid when actual changes has been done.
+    If bRefresh Then RefreshGrid(True) 'Refresh grid when actual changes has been done.
   End Sub
 End Class
