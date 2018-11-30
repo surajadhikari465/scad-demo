@@ -197,6 +197,8 @@
     <Compile Include="Queries\GetAllBusinessUnitsQueryHandler.cs" />
     <Compile Include="Queries\GetItemNutritionAttributesByItemIdQuery.cs" />
     <Compile Include="Queries\GetItemNutritionAttributesByItemIdQueryHandler.cs" />
+    <Compile Include="Queries\GetItemsQuery.cs" />
+    <Compile Include="Queries\GetItemsQueryHandler.cs" />
     <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQuery.cs" />
     <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQueryHandler.cs" />
     <Compile Include="Queries\GetLocalesByBusinessUnitsQuery.cs" />
@@ -205,6 +207,9 @@
     <Compile Include="Queries\GetItemPriceAttributesByStoreAndScanCodeQuery.cs" />
     <Compile Include="Queries\GetPricesByScanCodeAndStoreQuery.cs" />
     <Compile Include="Queries\GetItemPriceAttributesByStoreAndScanCodeQueryHandler.cs" />
+    <Compile Include="Models\DataMonster\ItemComposite.cs" />
+    <Compile Include="Models\DataMonster\ItemInformation.cs" />
+    <Compile Include="Models\DataMonster\ItemLocaleInformation.cs" />
     <Compile Include="Settings\DataAccessSettings.cs" />
   </ItemGroup>
   <ItemGroup>

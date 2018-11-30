@@ -803,6 +803,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddNumberOfDigitsForCFSItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEsbMessageTypeForCheckpointRequest.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRewardItemPriceType.sql" />
+    <Build Include="dbo\Stored Procedures\GetItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

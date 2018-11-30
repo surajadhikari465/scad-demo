@@ -31,6 +31,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Web.Http;
+using MammothWebApi.DataAccess.Models.DataMonster;
 
 namespace MammothWebApi
 {
@@ -86,6 +87,10 @@ namespace MammothWebApi
                 DbConnectionQueryHandlerDecorator<GetLocalesByBusinessUnitsQuery, IEnumerable<Locales>>>(Lifestyle.Scoped);
             container.RegisterDecorator<IQueryHandler<GetItemPriceAttributesByStoreAndScanCodeQuery, IEnumerable<ItemStorePriceModel>>,
                 DbConnectionQueryHandlerDecorator<GetItemPriceAttributesByStoreAndScanCodeQuery, IEnumerable<ItemStorePriceModel>>>(Lifestyle.Scoped);
+            container.RegisterDecorator<IQueryHandler<GetItemsQuery, ItemComposite>,
+                DbConnectionQueryHandlerDecorator<GetItemsQuery, ItemComposite>>(Lifestyle.Scoped);
+
+            
             container.Register<ReconnectToEsbJob>();
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);

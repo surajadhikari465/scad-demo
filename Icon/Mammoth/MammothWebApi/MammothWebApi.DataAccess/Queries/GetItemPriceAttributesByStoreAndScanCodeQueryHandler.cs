@@ -2,11 +2,12 @@
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Models;
-using MoreLinq;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using MoreLinq.Extensions;
 
 namespace MammothWebApi.DataAccess.Queries
 {

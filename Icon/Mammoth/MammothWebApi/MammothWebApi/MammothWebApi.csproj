@@ -202,6 +202,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BackgroundJobs\JobFactory.cs" />
     <Compile Include="BackgroundJobs\ReconnectToEsbJob.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ItemLocaleController.cs" />
     <Compile Include="Controllers\ItemNutritionController.cs" />
     <Compile Include="Controllers\PriceController.cs" />
