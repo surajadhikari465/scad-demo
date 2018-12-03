@@ -54,6 +54,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
         public void GetPrimeAffinityItemStoreModelsForActiveSales_SomeItemsAreAuthorizedAndSomeAreNotAndSomeHaveActiveSalesAndRegionIsNotOnGpm_ReturnsAuthorizedItems()
         {
             //Given
+            SetRegionToNonGpm();
+
             var itemLocaleAttribute1 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[0], true);
             var itemLocaleAttribute2 = InsertItemLocaleAttribute(testRegion, testItemIds[0], testBusinessUnitIds[1], true);
             var itemLocaleAttribute3 = InsertItemLocaleAttribute(testRegion, testItemIds[1], testBusinessUnitIds[0], true);
@@ -323,7 +325,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
 
         private dynamic InsertItemLocaleAttribute(string region, int itemId, int businessUnitId, bool authorized)
         {
-            return sqlDbProvider.Connection.QueryFirst<dynamic>(
+             var itemAttributeLocaleID = sqlDbProvider.Connection.QueryFirst<int>(
                 $@"INSERT INTO dbo.ItemAttributes_Locale_{region}
                              (ItemID
                              ,BusinessUnitID
@@ -371,16 +373,19 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                              ,0
                              ,0)
                     
-                    SELECT *
-                    FROM dbo.ItemAttributes_Locale_{region}
-                    WHERE ItemID = @ItemId
-                        AND BusinessUnitID = @BusinessUnitId",
+                    SELECT SCOPE_IDENTITY()",
                 new
                 {
                     ItemId = itemId,
                     BusinessUnitId = businessUnitId,
                     Authorized = authorized
                 });
+
+            return sqlDbProvider.Connection.QueryFirst(
+                $@" SELECT * 
+                    FROM dbo.ItemAttributes_Locale_{region}
+                    WHERE ItemAttributeLocaleID = @itemAttributeLocaleID",
+                new { ItemAttributeLocaleID = itemAttributeLocaleID });
         }
 
         private void InsertTestData()
@@ -526,6 +531,16 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                     FROM gpm.Price_{region} 
                     WHERE PriceID = @PriceId",
                 new { PriceId = priceId });
+        }
+
+        private void SetRegionToNonGpm()
+        {
+            sqlDbProvider.Connection.Execute(
+                 @"
+                    UPDATE dbo.RegionGpmStatus
+                    SET IsGpmEnabled = 0
+                    WHERE Region = @TestRegion ",
+                 new { TestRegion = testRegion });
         }
     }
 }
