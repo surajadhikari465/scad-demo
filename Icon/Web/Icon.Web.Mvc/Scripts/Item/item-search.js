@@ -159,18 +159,13 @@ function runConsolidatedSearch() {
     }
 
     viewModel.ItemSignAttributes = {};
-    viewModel.ItemSignAttributes.SelectedAnimalWelfareRatingId = $("#ItemSignAttributes_SelectedAnimalWelfareRatingId").val();
     viewModel.ItemSignAttributes.SelectedBiodynamicOption = $("#ItemSignAttributes_SelectedBiodynamicOption").val();
-    viewModel.ItemSignAttributes.SelectedCheeseMilkTypeId = $("#ItemSignAttributes_SelectedCheeseMilkTypeId").val();
     viewModel.ItemSignAttributes.SelectedCheeseRawOption = $("#ItemSignAttributes_SelectedCheeseRawOption").val();
-    viewModel.ItemSignAttributes.SelectedEcoScaleRatingId = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.GlutenFreeAgency = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.KosherAgency = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.NonGmoAgency = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.OrganicAgency = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.SelectedPremiumBodyCareOption = $("#ItemSignAttributes_SelectedStatusId").val();
-    viewModel.ItemSignAttributes.SelectedSeafoodFreshOrFrozenId = $("#ItemSignAttributes_SelectedStatusId").val();
-    viewModel.ItemSignAttributes.SelectedSeafoodCatchTypeId = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.VeganAgency = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.SelectedVegetarianOption = $("#ItemSignAttributes_SelectedStatusId").val();
     viewModel.ItemSignAttributes.SelectedWholeTradeOption = $("#ItemSignAttributes_SelectedStatusId").val();

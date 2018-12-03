@@ -16,7 +16,6 @@ namespace Icon.Web.Mvc.Models
 
         public List<ItemViewModel> Items { get; set; }
         public SelectList RetailUoms { get; set; }
-        public SelectList DeliverySystems { get; set; }
         public List<HierarchyClassViewModel> BrandHierarchyClasses { get; set; }
         public List<HierarchyClassViewModel> MerchandiseHierarchyClasses { get; set; }
         public List<HierarchyClassViewModel> TaxHierarchyClasses { get; set; }

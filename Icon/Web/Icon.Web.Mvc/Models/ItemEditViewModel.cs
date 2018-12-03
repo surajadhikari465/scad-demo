@@ -182,7 +182,6 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Drained Weight UOM")]
         [IconPropertyValidation(ValidatorPropertyNames.DrainedWeightUom, CanBeNullOrEmprty = true)]
         public string DrainedWeightUom { get; set; }
-        public SelectList DrainedWeightUomOptions { get; set; }
 
         [Display(Name = "Fair Trade Certified")]
         [IconPropertyValidation(ValidatorPropertyNames.FairTradeCertified, CanBeNullOrEmprty = true)]

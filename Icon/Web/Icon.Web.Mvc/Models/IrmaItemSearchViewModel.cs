@@ -30,7 +30,6 @@ namespace Icon.Web.Mvc.Models
 
         public List<IrmaItemViewModel> Items { get; set; }
         public List<string> Uoms { get; set; }
-        public List<string> DeliverySystems { get; set; }
         public List<HierarchyClassViewModel> AllBrands { get; set; }
         public List<HierarchyClassViewModel> MerchandiseHierarchyClasses { get; set; }
         public List<HierarchyClassViewModel> TaxHierarchyClasses { get; set; }
