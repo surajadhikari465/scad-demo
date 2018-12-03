@@ -6,31 +6,31 @@ BEGIN
 	--=======================================================
 	-- Declare Variables
 	--=======================================================
-	DECLARE @db NVARCHAR(50) = '[' + @DBName + '].[dbo].'
-	DECLARE @Link NVARCHAR(100)
-	DECLARE @sql NVARCHAR(max)
-	DECLARE @IRMASubteam NVARCHAR(50) = RTRIM(SUBSTRING(@IconSubteam, 0, CHARINDEX('(', @IconSubteam)))
+	DECLARE @db NVARCHAR(50) = '[' + @DBName + '].[dbo].',
+          @Link NVARCHAR(100),
+          @sql NVARCHAR(max),
+          @IRMASubteam NVARCHAR(50) = RTRIM(SUBSTRING(@IconSubteam, 0, CHARINDEX('(', @IconSubteam)))
 
-	SELECT @Link = '[' + @IRMARegion + '].' + @db
+	SET @Link = '[' + @IRMARegion + '].' + @db;
 
 	--=======================================================
 	-- Icon Data:
 	--=======================================================
 	CREATE TABLE #IconItemSignAttribute (
-		[Icon Identifier] [nvarchar](13) PRIMARY KEY NOT NULL,
+		[Icon Identifier] [nvarchar](13) PRIMARY KEY,
 		[Icon Subteam] [nvarchar](50) NOT NULL,
-		[Icon AnimalWelfareRating] [nvarchar](10) NULL,
+		[Icon AnimalWelfareRating] NVARCHAR(255) NULL,
 		[Icon Biodynamic] [bit] NULL,
-		[Icon CheeseMilkType] [nvarchar](40) NULL,
+		[Icon CheeseMilkType] NVARCHAR(255) NULL,
 		[Icon CheeseRaw] [bit] NULL,
-		[Icon EcoScaleRating] [nvarchar](30) NULL,
+		[Icon EcoScaleRating] NVARCHAR(255) NULL,
 		[Icon GlutenFree] [bit] NULL,
 		[Icon Kosher] [bit] NULL,
 		[Icon NonGmo] [bit] NULL,
 		[Icon Organic] [bit] NULL,
 		[Icon PremiumBodyCare] [bit] NULL,
-		[Icon FreshOrFrozen] [nvarchar](30) NULL,
-		[Icon SeafoodCatchType] [nvarchar](15) NULL,
+		[Icon FreshOrFrozen] NVARCHAR(255) NULL,
+		[Icon SeafoodCatchType] NVARCHAR(255) NULL,
 		[Icon Vegan] [bit] NULL,
 		[Icon Vegetarian] [bit] NULL,
 		[Icon WholeTrade] [bit] NULL,
@@ -40,8 +40,7 @@ BEGIN
 		[Icon FreeRange] [bit] NULL,
 		[Icon DryAged] [bit] NULL,
 		[Icon AirChilled] [bit] NULL,
-		[Icon MadeInHouse] [bit] NULL
-		) ON [PRIMARY];
+		[Icon MadeInHouse] [bit] NULL);
 
 	WITH cte_subteam
 	AS (
@@ -78,22 +77,21 @@ BEGIN
 		[Icon FreeRange],
 		[Icon DryAged],
 		[Icon AirChilled],
-		[Icon MadeInHouse]
-		)
+		[Icon MadeInHouse])
 	SELECT sc.scanCode AS [ScanCode],
 		RTRIM(SUBSTRING(st.SubTeam, 0, CHARINDEX('(', st.SubTeam))) AS [Icon Subteam],
-		ISNULL(awr.Description, '0') AS 'Animal Welfare Rating',
+		ISNULL(irma.AnimalWelfareRating, '0') AS [Animal Welfare Rating],
 		ISNULL(isa.Biodynamic, '0') AS Biodynamic,
-		ISNULL(mt.Description, '0') AS 'Milk Type',
+		ISNULL(irma.MilkType, '0') AS [Milk Type],
 		ISNULL(isa.CheeseRaw, '0') AS CheeseRaw,
-		ISNULL(esr.Description, '0') AS 'Eco Scale Rating',
+		ISNULL(irma.EcoScaleRating, '0') AS [Eco Scale Rating],
 		CASE WHEN ISNULL(isa.GlutenFreeAgencyName, '') = '' THEN '0' ELSE '1' END AS GlutenFreeAgencyName,
 		CASE WHEN ISNULL(isa.KosherAgencyName, '') = '' THEN '0' ELSE '1' END AS KosherAgencyName,
 		CASE WHEN ISNULL(isa.NonGmoAgencyName, '') = '' THEN '0' ELSE '1' END AS NonGmoAgencyName,
 		CASE WHEN ISNULL(isa.OrganicAgencyName, '') = '' THEN '0' ELSE '1' END AS OrganicAgencyName,	
 		ISNULL(isa.PremiumBodyCare, '0') AS PremiumBodyCare,
-		ISNULL(sff.Description, '0') AS 'Fresh Or Frozen',
-		ISNULL(sfct.Description, '0') AS 'Seafood Catch Type',
+		ISNULL(irma.FreshOrFrozen, '0') AS [Fresh Or Frozen],
+		ISNULL(irma.SeafoodCatchType, '0') AS [Seafood Catch Type],
 		CASE WHEN ISNULL(isa.VeganAgencyName, '') = '' THEN '0' ELSE '1' END AS VeganAgencyName,
 		ISNULL(isa.Vegetarian, '0') AS Vegetarian,
 		ISNULL(isa.WholeTrade, '0') AS WholeTrade,
@@ -107,11 +105,7 @@ BEGIN
 	FROM scancode sc(NOLOCK)
 	JOIN cte_subteam st ON sc.itemid = st.itemid
 	LEFT JOIN ItemSignAttribute ISA(NOLOCK) ON sc.itemID = isa.ItemID
-	LEFT JOIN AnimalWelfareRating awr(NOLOCK) ON isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId
-	LEFT JOIN MilkType mt(NOLOCK) ON isa.CheeseMilkTypeId = mt.MilkTypeId
-	LEFT JOIN EcoScaleRating esr(NOLOCK) ON isa.EcoScaleRatingId = esr.EcoScaleRatingId
-	LEFT JOIN SeafoodFreshOrFrozen sff(NOLOCK) ON isa.SeafoodFreshOrFrozenId = sff.SeafoodFreshOrFrozenId
-	LEFT JOIN SeafoodCatchType sfct(NOLOCK) ON isa.SeafoodCatchTypeId = sfct.SeafoodCatchTypeId
+  LEFT JOIN app.IRMAItem irma(NOLOCK) ON sc.scanCode = irma.identifier
 	ORDER BY sc.scanCode
 
 	--=======================================================
@@ -144,12 +138,9 @@ BEGIN
 		[IRMA FreeRange] [bit] NULL,
 		[IRMA DryAged] [bit] NULL,
 		[IRMA AirChilled] [bit] NULL,
-		[IRMA MadeInHouse] [bit] NULL
-		) ON [PRIMARY]
+		[IRMA MadeInHouse] [bit] NULL)
 
-	SELECT @sql = 
-		'
-INSERT INTO #IRMAItemSignAttribute (
+	SELECT @sql = 'INSERT INTO #IRMAItemSignAttribute (
 	[IRMA Item_Key],
 	[IRMA Identifier],
 	[IRMA Default_Identifier],
@@ -295,10 +286,8 @@ WHERE i.Deleted_Item = 0
 			OR ([Icon FreeRange] <> [IRMA FreeRange])
 			OR ([Icon DryAged] <> [IRMA DryAged])
 			OR ([Icon AirChilled] <> [IRMA AirChilled])
-			OR ([Icon MadeInHouse] <> [IRMA MadeInHouse])
-			)
-	ORDER BY [IRMA Item_Key],
-		[IRMA Default_Identifier] DESC
+			OR ([Icon MadeInHouse] <> [IRMA MadeInHouse]))
+	ORDER BY [IRMA Item_Key], [IRMA Default_Identifier] DESC
 END
 
 GO

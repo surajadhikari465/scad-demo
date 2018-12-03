@@ -1,2490 +1,882 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ToolsVersion="2.0">
-  <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD50cnVlPC9FbmFibGVkPg0KICA8UHJvamVjdE5hbWU+U0FLPC9Qcm9qZWN0TmFtZT4NCiAgPEF1eFBhdGg+U0FLPC9BdXhQYXRoPg0KICA8TG9jYWxQYXRoPlNBSzwvTG9jYWxQYXRoPg0KICA8UHJvdmlkZXI+U0FLPC9Qcm92aWRlcj4NCjwvU291cmNlQ29udHJvbEluZm8+</State>
-  <DataSources>
-    <ProjectItem>
-      <Name>Icon.rds</Name>
-      <FullPath>Icon.rds</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>idt-ce.rds</Name>
-      <FullPath>idt-ce.rds</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemCatalog.rds</Name>
-      <FullPath>ItemCatalog.rds</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ReportServer.rds</Name>
-      <FullPath>ReportServer.rds</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>XMLDataSource.rds</Name>
-      <FullPath>XMLDataSource.rds</FullPath>
-    </ProjectItem>
-  </DataSources>
-  <DataSets />
-  <Reports>
-    <ProjectItem>
-      <Name>3WayMatchDetailSummary.rdl</Name>
-      <FullPath>3WayMatchDetailSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ActiveItemsListRpt.rdl</Name>
-      <FullPath>ActiveItemsListRpt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AdjustmentSummaryReport.rdl</Name>
-      <FullPath>AdjustmentSummaryReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AllocationReportDetail.rdl</Name>
-      <FullPath>AllocationReportDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AllocationReportSummary.rdl</Name>
-      <FullPath>AllocationReportSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>APUPAccrualsClosed.rdl</Name>
-      <FullPath>APUPAccrualsClosed.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>APUPClosed.rdl</Name>
-      <FullPath>APUPClosed.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Average Cost Variance.rdl</Name>
-      <FullPath>Average Cost Variance.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCost.rdl</Name>
-      <FullPath>AvgCost.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostMrgItemDet.rdl</Name>
-      <FullPath>AvgCostMrgItemDet.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostMrgItemSum.rdl</Name>
-      <FullPath>AvgCostMrgItemSum.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostMrgPODet.rdl</Name>
-      <FullPath>AvgCostMrgPODet.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostMrgPORegion.rdl</Name>
-      <FullPath>AvgCostMrgPORegion.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostMrgPOSum.rdl</Name>
-      <FullPath>AvgCostMrgPOSum.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>AvgCostVariance.rdl</Name>
-      <FullPath>AvgCostVariance.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>BatchDetailReport.rdl</Name>
-      <FullPath>BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>BatchPricingBatchSummary.rdl</Name>
-      <FullPath>BatchPricingBatchSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>BatchPricingItemDetail.rdl</Name>
-      <FullPath>BatchPricingItemDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>BatchPricingItemSummary.rdl</Name>
-      <FullPath>BatchPricingItemSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>BOHCompareReport.rdl</Name>
-      <FullPath>BOHCompareReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Bulk Export - All Items.rdl</Name>
-      <FullPath>Bulk Export - All Items.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CheckList.rdl</Name>
-      <FullPath>CheckList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Closed Orders Missing Invoice Data.rdl</Name>
-      <FullPath>Closed Orders Missing Invoice Data.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Closed Orders Report.rdl</Name>
-      <FullPath>Closed Orders Report.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Closed Orders Summary.rdl</Name>
-      <FullPath>Closed Orders Summary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ClosedPendingEinvoices.rdl</Name>
-      <FullPath>ClosedPendingEinvoices.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CompetitorMarginImpact.rdl</Name>
-      <FullPath>CompetitorMarginImpact.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ConsolidatedItemChangesReport.rdl</Name>
-      <FullPath>ConsolidatedItemChangesReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ControlGroup3WayMatchLog.rdl</Name>
-      <FullPath>ControlGroup3WayMatchLog.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>COOLReceivingReport.rdl</Name>
-      <FullPath>COOLReceivingReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>COOLShippingReport.rdl</Name>
-      <FullPath>COOLShippingReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CostAuditReport.rdl</Name>
-      <FullPath>CostAuditReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CostChangeEventReport.rdl</Name>
-      <FullPath>CostChangeEventReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReason.rdl</Name>
-      <FullPath>CreditReason.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReasonDetail.rdl</Name>
-      <FullPath>CreditReasonDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReasonDetailSummary.rdl</Name>
-      <FullPath>CreditReasonDetailSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReasonRegion.rdl</Name>
-      <FullPath>CreditReasonRegion.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReasonRegionSummary.rdl</Name>
-      <FullPath>CreditReasonRegionSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CreditReasonZone.rdl</Name>
-      <FullPath>CreditReasonZone.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CycleCount.rdl</Name>
-      <FullPath>CycleCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CycleCountMaster.rdl</Name>
-      <FullPath>CycleCountMaster.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>CycleCountMasterSummary.rdl</Name>
-      <FullPath>CycleCountMasterSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Daily Receiving.rdl</Name>
-      <FullPath>Daily Receiving.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DailyAverageCostTrendReport.rdl</Name>
-      <FullPath>DailyAverageCostTrendReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DailyItemAvgCostChgsRpt.rdl</Name>
-      <FullPath>DailyItemAvgCostChgsRpt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DASHandlingCharge.rdl</Name>
-      <FullPath>DASHandlingCharge.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DCAvgCostMargin2.rdl</Name>
-      <FullPath>DCAvgCostMargin2.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DCPerformance.rdl</Name>
-      <FullPath>DCPerformance.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DCStoreRetailPriceReport.rdl</Name>
-      <FullPath>DCStoreRetailPriceReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Deleted Orders Report.rdl</Name>
-      <FullPath>Deleted Orders Report.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DiscontinuedItemsWithInventory.rdl</Name>
-      <FullPath>DiscontinuedItemsWithInventory.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>DSDAuthorizedProductListing.rdl</Name>
-      <FullPath>DSDAuthorizedProductListing.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>eInvoiceExceptionReport.rdl</Name>
-      <FullPath>eInvoiceExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>eInvoiceItemExceptions.rdl</Name>
-      <FullPath>eInvoiceItemExceptions.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>eInvoicingErrorReport.rdl</Name>
-      <FullPath>eInvoicingErrorReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>EInvSuspendedInvoices.rdl</Name>
-      <FullPath>EInvSuspendedInvoices.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>EInvVendorPOMissingEInvoice.rdl</Name>
-      <FullPath>EInvVendorPOMissingEInvoice.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ExceptionsReport.rdl</Name>
-      <FullPath>ExceptionsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Facility Avg Cost Item List.rdl</Name>
-      <FullPath>Facility Avg Cost Item List.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FacilityOpenCustomerOrders.rdl</Name>
-      <FullPath>FacilityOpenCustomerOrders.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FacilityOrderReport.rdl</Name>
-      <FullPath>FacilityOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FillRateReport7DayDetail.rdl</Name>
-      <FullPath>FillRateReport7DayDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FillRateReportFPtD.rdl</Name>
-      <FullPath>FillRateReportFPtD.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FillRateReportSummary.rdl</Name>
-      <FullPath>FillRateReportSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_BatchDetailReport.rdl</Name>
-      <FullPath>FL_BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_CasesByDepartment.rdl</Name>
-      <FullPath>FL_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>FL_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_DCCasesShipped.rdl</Name>
-      <FullPath>FL_DCCasesShipped.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>FL_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_DynamicRankTopMovers.rdl</Name>
-      <FullPath>FL_DynamicRankTopMovers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_GrossMarginAudit.rdl</Name>
-      <FullPath>FL_GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_InStoreSpecialsReport.rdl</Name>
-      <FullPath>FL_InStoreSpecialsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_InventoryValueDetail.rdl</Name>
-      <FullPath>FL_InventoryValueDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_InventoryValueSummary.rdl</Name>
-      <FullPath>FL_InventoryValueSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_InvoiceManifestReport.rdl</Name>
-      <FullPath>FL_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_IRMAEXEChecklist.rdl</Name>
-      <FullPath>FL_IRMAEXEChecklist.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ItemList.rdl</Name>
-      <FullPath>FL_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ItemsByVendor.rdl</Name>
-      <FullPath>FL_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ItemsByVendor.rdl</Name>
-      <FullPath>FL_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ItemStatusList.rdl</Name>
-      <FullPath>FL_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_MarginBySubTeam.rdl</Name>
-      <FullPath>FL_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_MarginByVendor.rdl</Name>
-      <FullPath>FL_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_MovementByDay.rdl</Name>
-      <FullPath>FL_MovementByDay.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_NotAvailableItems.rdl</Name>
-      <FullPath>FL_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_NotAvailableReport.rdl</Name>
-      <FullPath>FL_NotAvailableReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_NotOnFile.rdl</Name>
-      <FullPath>FL_NotOnFile.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_OnHandVendorPack.rdl</Name>
-      <FullPath>FL_OnHandVendorPack.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_OpenOrdersDetailReport.rdl</Name>
-      <FullPath>FL_OpenOrdersDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_OpenOrdersReport.rdl</Name>
-      <FullPath>FL_OpenOrdersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_PreOrderedDCShipping.rdl</Name>
-      <FullPath>FL_PreOrderedDCShipping.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_PreOrderedQuantity.rdl</Name>
-      <FullPath>FL_PreOrderedQuantity.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_PricebookReport.rdl</Name>
-      <FullPath>FL_PricebookReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ProductOrderGuide.rdl</Name>
-      <FullPath>FL_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_PurchaseOrderReport.rdl</Name>
-      <FullPath>FL_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_Random_Weight_Scale_PLUs.rdl</Name>
-      <FullPath>FL_Random_Weight_Scale_PLUs.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_Specials.rdl</Name>
-      <FullPath>FL_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_Specials.rdl</Name>
-      <FullPath>FL_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_SpecialsInProgress.rdl</Name>
-      <FullPath>FL_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_StoreOrdersTotBySKU.rdl</Name>
-      <FullPath>FL_StoreOrdersTotBySKU.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_StoreVendorMovement.rdl</Name>
-      <FullPath>FL_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_TopMoversDetail.rdl</Name>
-      <FullPath>FL_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_TopMoversSummary.rdl</Name>
-      <FullPath>FL_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_VendorItemCount.rdl</Name>
-      <FullPath>FL_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_VendorQuery.rdl</Name>
-      <FullPath>FL_VendorQuery.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ZeroMovement52WeekReport.rdl</Name>
-      <FullPath>FL_ZeroMovement52WeekReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FL_ZeroMovementReport.rdl</Name>
-      <FullPath>FL_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>FPShrink.rdl</Name>
-      <FullPath>FPShrink.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GeneralStoreInventoryByUnits.rdl</Name>
-      <FullPath>GeneralStoreInventoryByUnits.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GetReceivingListForNOIDNORD.rdl</Name>
-      <FullPath>GetReceivingListForNOIDNORD.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GetReceivingListForNOIDNORD.rdl</Name>
-      <FullPath>GetReceivingListForNOIDNORD.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GetReceivingListForNOIDNORDSubReport.rdl</Name>
-      <FullPath>GetReceivingListForNOIDNORDSubReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GetReceivingListForNOIDNORDSubReport.rdl</Name>
-      <FullPath>GetReceivingListForNOIDNORDSubReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GLDistributionCheckDetailsReport.rdl</Name>
-      <FullPath>GLDistributionCheckDetailsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GLDistributionCheckReport.rdl</Name>
-      <FullPath>GLDistributionCheckReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GLUploadReport.rdl</Name>
-      <FullPath>GLUploadReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>GrossMarginAudit.rdl</Name>
-      <FullPath>GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Icon IRMA Sign Attributtes Comparison.rdl</Name>
-      <FullPath>Icon IRMA Sign Attributtes Comparison.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Icon Items By Validation Date.rdl</Name>
-      <FullPath>Icon Items By Validation Date.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IconItemSearch.rdl</Name>
-      <FullPath>IconItemSearch.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InventoryBalance.rdl</Name>
-      <FullPath>InventoryBalance.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InventoryCountSheet.rdl</Name>
-      <FullPath>InventoryCountSheet.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InventoryGuideReport.rdl</Name>
-      <FullPath>InventoryGuideReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InvLocationItems.rdl</Name>
-      <FullPath>InvLocationItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InvLocationItemsManualCountSheet.rdl</Name>
-      <FullPath>InvLocationItemsManualCountSheet.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InvLocations.rdl</Name>
-      <FullPath>InvLocations.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InvoiceDiscrepanciesReport.rdl</Name>
-      <FullPath>InvoiceDiscrepanciesReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>InvoiceTolerance.rdl</Name>
-      <FullPath>InvoiceTolerance.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMA R10 Audit.rdl</Name>
-      <FullPath>IRMA R10 Audit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IrmaAlternatePluVersusIconPlu.rdl</Name>
-      <FullPath>IrmaAlternatePluVersusIconPlu.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMAePLUMComparisonReport_Detail.rdl</Name>
-      <FullPath>IRMAePLUMComparisonReport_Detail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMAePLUMComparisonReport_Summary.rdl</Name>
-      <FullPath>IRMAePLUMComparisonReport_Summary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IrmaItemsVersusIcon.rdl</Name>
-      <FullPath>IrmaItemsVersusIcon.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IrmaPluItemsWithMultipleIdentifiersVersusIconPlu.rdl</Name>
-      <FullPath>IrmaPluItemsWithMultipleIdentifiersVersusIconPlu.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IrmaPluVersusIconPlu.rdl</Name>
-      <FullPath>IrmaPluVersusIconPlu.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMAScanAudit.rdl</Name>
-      <FullPath>IRMAScanAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMASOXConflictReport.rdl</Name>
-      <FullPath>IRMASOXConflictReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>IRMAvsPOSAudit.rdl</Name>
-      <FullPath>IRMAvsPOSAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Item Hierarchies.rdl</Name>
-      <FullPath>Item Hierarchies.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemDetailsAtStoreLevel.rdl</Name>
-      <FullPath>ItemDetailsAtStoreLevel.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemLevelRefusalReport.rdl</Name>
-      <FullPath>ItemLevelRefusalReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemList.rdl</Name>
-      <FullPath>ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemOrderHistoryReport.rdl</Name>
-      <FullPath>ItemOrderHistoryReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Items Scanned on Receipt Detail.rdl</Name>
-      <FullPath>Items Scanned on Receipt Detail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Items Scanned on Receipt Summary.rdl</Name>
-      <FullPath>Items Scanned on Receipt Summary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemsByPriceType.rdl</Name>
-      <FullPath>ItemsByPriceType.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemsBySustainabilityRanking.rdl</Name>
-      <FullPath>ItemsBySustainabilityRanking.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemsByVendor.rdl</Name>
-      <FullPath>ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemsMarkedIgnorePackUpdate.rdl</Name>
-      <FullPath>ItemsMarkedIgnorePackUpdate.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ItemStatusList.rdl</Name>
-      <FullPath>ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>JDASyncAudit.rdl</Name>
-      <FullPath>JDASyncAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>JDASyncAudit.rdl</Name>
-      <FullPath>JDASyncAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>JobStatus.rdl</Name>
-      <FullPath>JobStatus.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>JobStatusAlert.rdl</Name>
-      <FullPath>JobStatusAlert.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>KitchenCaseTransfer.rdl</Name>
-      <FullPath>KitchenCaseTransfer.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>LeadTimeVendors.rdl</Name>
-      <FullPath>LeadTimeVendors.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>LotNoByIdentifier.rdl</Name>
-      <FullPath>LotNoByIdentifier.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>LotNoByLotNo.rdl</Name>
-      <FullPath>LotNoByLotNo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_DCCasesShipped.rdl</Name>
-      <FullPath>MA_DCCasesShipped.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>MA_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_GrossMarginExceptionReport.rdl</Name>
-      <FullPath>MA_GrossMarginExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_GrossMarginExceptionReportVsMvmt.rdl</Name>
-      <FullPath>MA_GrossMarginExceptionReportVsMvmt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_InventoryValueDetail.rdl</Name>
-      <FullPath>MA_InventoryValueDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_InventoryValueSummary.rdl</Name>
-      <FullPath>MA_InventoryValueSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_InvoiceManifestReport.rdl</Name>
-      <FullPath>MA_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_IRMAEXEChecklist.rdl</Name>
-      <FullPath>MA_IRMAEXEChecklist.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ItemList.rdl</Name>
-      <FullPath>MA_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ItemMasterDownload.rdl</Name>
-      <FullPath>MA_ItemMasterDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ItemMasterWithToledo.rdl</Name>
-      <FullPath>MA_ItemMasterWithToledo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ItemsByVendor.rdl</Name>
-      <FullPath>MA_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ItemStatusList.rdl</Name>
-      <FullPath>MA_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_MarginBySubTeam.rdl</Name>
-      <FullPath>MA_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_MarginByVendor.rdl</Name>
-      <FullPath>MA_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_MassExemptList.rdl</Name>
-      <FullPath>MA_MassExemptList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_Master_Inventory_Sheet.rdl</Name>
-      <FullPath>MA_Master_Inventory_Sheet.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_Movement.rdl</Name>
-      <FullPath>MA_Movement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_NotAvailableItems.rdl</Name>
-      <FullPath>MA_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_OnHandVendorPack.rdl</Name>
-      <FullPath>MA_OnHandVendorPack.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_Open_Orders_With_Totals.rdl</Name>
-      <FullPath>MA_Open_Orders_With_Totals.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_OrderCostChanges.rdl</Name>
-      <FullPath>MA_OrderCostChanges.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_OrderGuide.rdl</Name>
-      <FullPath>MA_OrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_PreOrderedQuantity.rdl</Name>
-      <FullPath>MA_PreOrderedQuantity.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ProductOrderGuide.rdl</Name>
-      <FullPath>MA_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_PurchaseOrderReport.rdl</Name>
-      <FullPath>MA_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_Specials.rdl</Name>
-      <FullPath>MA_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_SpecialsInProgress.rdl</Name>
-      <FullPath>MA_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_StoreOrdersTotBySKU.rdl</Name>
-      <FullPath>MA_StoreOrdersTotBySKU.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_StoreVendorMovement.rdl</Name>
-      <FullPath>MA_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ToledoInfoDownload.rdl</Name>
-      <FullPath>MA_ToledoInfoDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_TopMoversDetail.rdl</Name>
-      <FullPath>MA_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_VendorItemCount.rdl</Name>
-      <FullPath>MA_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ZeroCostReport.rdl</Name>
-      <FullPath>MA_ZeroCostReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MA_ZeroMovementReport.rdl</Name>
-      <FullPath>MA_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ManualDiscountPOReport.rdl</Name>
-      <FullPath>ManualDiscountPOReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Merch Hierarchy.rdl</Name>
-      <FullPath>Merch Hierarchy.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MovementFull.rdl</Name>
-      <FullPath>MovementFull.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MovementPromo.rdl</Name>
-      <FullPath>MovementPromo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_AdPlanAuditReport.rdl</Name>
-      <FullPath>MW_AdPlanAuditReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_AuthorizationReport.rdl</Name>
-      <FullPath>MW_AuthorizationReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_BatchDetailReport.rdl</Name>
-      <FullPath>MW_BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_CasesByDepartment.rdl</Name>
-      <FullPath>MW_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>MW_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>MW_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GLSalesReport.rdl</Name>
-      <FullPath>MW_GLSalesReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GLTransferDetailsReport.rdl</Name>
-      <FullPath>MW_GLTransferDetailsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GLTransfersReport.rdl</Name>
-      <FullPath>MW_GLTransfersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GrossMarginAudit.rdl</Name>
-      <FullPath>MW_GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GrossMarginExceptionReport.rdl</Name>
-      <FullPath>MW_GrossMarginExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_GrossMarginExceptionReportVsMvmt.rdl</Name>
-      <FullPath>MW_GrossMarginExceptionReportVsMvmt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_InvoiceManifestReport.rdl</Name>
-      <FullPath>MW_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemList.rdl</Name>
-      <FullPath>MW_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemMasterDownload.rdl</Name>
-      <FullPath>MW_ItemMasterDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemMasterWithToledo.rdl</Name>
-      <FullPath>MW_ItemMasterWithToledo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemsByVendor.rdl</Name>
-      <FullPath>MW_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemsByVendor.rdl</Name>
-      <FullPath>MW_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemsListByVendor.rdl</Name>
-      <FullPath>MW_ItemsListByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ItemStatusList.rdl</Name>
-      <FullPath>MW_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_MarginBySubTeam.rdl</Name>
-      <FullPath>MW_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_MarginByVendor.rdl</Name>
-      <FullPath>MW_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_MassExemptList.rdl</Name>
-      <FullPath>MW_MassExemptList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_MovementSingleStore.rdl</Name>
-      <FullPath>MW_MovementSingleStore.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_NotAvailableItems.rdl</Name>
-      <FullPath>MW_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_NotOnFile.rdl</Name>
-      <FullPath>MW_NotOnFile.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_POS_DEPT_Audit.rdl</Name>
-      <FullPath>MW_POS_DEPT_Audit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_POS_IRMA.rdl</Name>
-      <FullPath>MW_POS_IRMA.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ProductOrderGuide.rdl</Name>
-      <FullPath>MW_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_PurchaseOrderReport.rdl</Name>
-      <FullPath>MW_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_Random_Weight_Scale_PLUs.rdl</Name>
-      <FullPath>MW_Random_Weight_Scale_PLUs.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_Specials.rdl</Name>
-      <FullPath>MW_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_SpecialsInProgress.rdl</Name>
-      <FullPath>MW_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_StoreOrdersTotBySKU.rdl</Name>
-      <FullPath>MW_StoreOrdersTotBySKU.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_StoreVendorMovement.rdl</Name>
-      <FullPath>MW_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ToledoInfoDownload.rdl</Name>
-      <FullPath>MW_ToledoInfoDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_TopMoversDetail.rdl</Name>
-      <FullPath>MW_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_TopMoversSummary.rdl</Name>
-      <FullPath>MW_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_Vendor52WeekByDept.rdl</Name>
-      <FullPath>MW_Vendor52WeekByDept.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_VendorItemCount.rdl</Name>
-      <FullPath>MW_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_VendorListing.rdl</Name>
-      <FullPath>MW_VendorListing.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_VendorQuery.rdl</Name>
-      <FullPath>MW_VendorQuery.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>MW_ZeroMovementReport.rdl</Name>
-      <FullPath>MW_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_CasesByDepartment.rdl</Name>
-      <FullPath>NA_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>NA_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_DiscoItemsNotDeleted.rdl</Name>
-      <FullPath>NA_DiscoItemsNotDeleted.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_DiscoNotDeletedNotAuthed.rdl</Name>
-      <FullPath>NA_DiscoNotDeletedNotAuthed.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ExpiredPriceTypes.rdl</Name>
-      <FullPath>NA_ExpiredPriceTypes.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_InvoiceManifestReport.rdl</Name>
-      <FullPath>NA_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ItemList.rdl</Name>
-      <FullPath>NA_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ItemsByVendor.rdl</Name>
-      <FullPath>NA_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ItemsEachandVendorPackGreaterThan1.rdl</Name>
-      <FullPath>NA_ItemsEachandVendorPackGreaterThan1.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ItemsNoVendor.rdl</Name>
-      <FullPath>NA_ItemsNoVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ItemsStoresMultiplePrimaryVendors.rdl</Name>
-      <FullPath>NA_ItemsStoresMultiplePrimaryVendors.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_KitchenFoodTrakExport.rdl</Name>
-      <FullPath>NA_KitchenFoodTrakExport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_LinkedItemReport.rdl</Name>
-      <FullPath>NA_LinkedItemReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_MarginBySubTeam.rdl</Name>
-      <FullPath>NA_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_MarginByVendor.rdl</Name>
-      <FullPath>NA_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_MassExemptList.rdl</Name>
-      <FullPath>NA_MassExemptList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_NotAvailableItems.rdl</Name>
-      <FullPath>NA_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_OrdersCreatedAfterInvoice.rdl</Name>
-      <FullPath>NA_OrdersCreatedAfterInvoice.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_POSTare.rdl</Name>
-      <FullPath>NA_POSTare.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ProductOrderGuide.rdl</Name>
-      <FullPath>NA_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_PurchaseOrderReport.rdl</Name>
-      <FullPath>NA_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_Specials.rdl</Name>
-      <FullPath>NA_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_SpecialsInProgress.rdl</Name>
-      <FullPath>NA_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_StoreItemNoPrimaryVendor.rdl</Name>
-      <FullPath>NA_StoreItemNoPrimaryVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_StoreOrdersTotBySKU.rdl</Name>
-      <FullPath>NA_StoreOrdersTotBySKU.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_StoreVendorMovement.rdl</Name>
-      <FullPath>NA_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_TopMoversDetail.rdl</Name>
-      <FullPath>NA_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_X3_Export.rdl</Name>
-      <FullPath>NA_X3_Export.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NA_ZeroMovementReport.rdl</Name>
-      <FullPath>NA_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_BatchDetailReport.rdl</Name>
-      <FullPath>NC_BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_BatchDetailReport.rdl</Name>
-      <FullPath>NC_BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_CasesByDepartment.rdl</Name>
-      <FullPath>NC_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>NC_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>NC_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_DynamicRankTopMovers.rdl</Name>
-      <FullPath>NC_DynamicRankTopMovers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_GrossMarginAudit.rdl</Name>
-      <FullPath>NC_GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_InStoreSpecialsReport.rdl</Name>
-      <FullPath>NC_InStoreSpecialsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_InvoiceManifestReport.rdl</Name>
-      <FullPath>NC_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ItemList.rdl</Name>
-      <FullPath>NC_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ItemPriceHistory.rdl</Name>
-      <FullPath>NC_ItemPriceHistory.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ItemsByVendor.rdl</Name>
-      <FullPath>NC_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ItemStatusList.rdl</Name>
-      <FullPath>NC_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_MarginAnalysis.rdl</Name>
-      <FullPath>NC_MarginAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_MarginBySubTeam.rdl</Name>
-      <FullPath>NC_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_MarginByVendor.rdl</Name>
-      <FullPath>NC_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_MovementByDay.rdl</Name>
-      <FullPath>NC_MovementByDay.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_NotAvailableItems.rdl</Name>
-      <FullPath>NC_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_NotOnFile.rdl</Name>
-      <FullPath>NC_NotOnFile.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_PO.Closed.rdl</Name>
-      <FullPath>NC_PO.Closed.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_PO.Movement.rdl</Name>
-      <FullPath>NC_PO.Movement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_PricebookReport.rdl</Name>
-      <FullPath>NC_PricebookReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_PurchaseOrderReport.rdl</Name>
-      <FullPath>NC_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_Random_Weight_Scale_PLUs.rdl</Name>
-      <FullPath>NC_Random_Weight_Scale_PLUs.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_Specials.rdl</Name>
-      <FullPath>NC_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_SpecialsInProgress.rdl</Name>
-      <FullPath>NC_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_StoreVendorMovement.rdl</Name>
-      <FullPath>NC_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_TopMoversDetail.rdl</Name>
-      <FullPath>NC_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_TopMoversSummary.rdl</Name>
-      <FullPath>NC_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_VendorQuery.rdl</Name>
-      <FullPath>NC_VendorQuery.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ZeroMovement52WeekReport.rdl</Name>
-      <FullPath>NC_ZeroMovement52WeekReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NC_ZeroMovementReport.rdl</Name>
-      <FullPath>NC_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NE_ItemAttributeQueries.rdl</Name>
-      <FullPath>NE_ItemAttributeQueries.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NE_ItemList.rdl</Name>
-      <FullPath>NE_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NE_OrdersCreatedAfterInvoice.rdl</Name>
-      <FullPath>NE_OrdersCreatedAfterInvoice.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NE_POOpen.rdl</Name>
-      <FullPath>NE_POOpen.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NoTagReport.rdl</Name>
-      <FullPath>NoTagReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>NutritionExceptions.rdl</Name>
-      <FullPath>NutritionExceptions.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OpenOrdersDetailReport.rdl</Name>
-      <FullPath>OpenOrdersDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OpenOrdersReport.rdl</Name>
-      <FullPath>OpenOrdersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OpenOrdersReportNOIDNORD.rdl</Name>
-      <FullPath>OpenOrdersReportNOIDNORD.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OrderImportExceptionsDetail.rdl</Name>
-      <FullPath>OrderImportExceptionsDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OrderInvoice.rdl</Name>
-      <FullPath>OrderInvoice.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OrderItemQueueReport.rdl</Name>
-      <FullPath>OrderItemQueueReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>OutOfPeriodInv.rdl</Name>
-      <FullPath>OutOfPeriodInv.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Paid by Agreed Cost Post Payment Discrepancy Resolution.rdl</Name>
-      <FullPath>Paid by Agreed Cost Post Payment Discrepancy Resolution.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Partial Shipment Report.rdl</Name>
-      <FullPath>Partial Shipment Report.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PerpetualMovementReport.rdl</Name>
-      <FullPath>PerpetualMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PirisAudit.rdl</Name>
-      <FullPath>PirisAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_BatchDetailReport.rdl</Name>
-      <FullPath>PN_BatchDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_CasesByDepartment.rdl</Name>
-      <FullPath>PN_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>PN_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>PN_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_DynamicRankTopMovers.rdl</Name>
-      <FullPath>PN_DynamicRankTopMovers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_InvoiceManifestReport.rdl</Name>
-      <FullPath>PN_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ItemList.rdl</Name>
-      <FullPath>PN_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ItemMasterDownload.rdl</Name>
-      <FullPath>PN_ItemMasterDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ItemMasterWithToledo.rdl</Name>
-      <FullPath>PN_ItemMasterWithToledo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ItemsByVendor.rdl</Name>
-      <FullPath>PN_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ItemStatusList.rdl</Name>
-      <FullPath>PN_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_MarginByVendor.rdl</Name>
-      <FullPath>PN_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_MovementSingleStore.rdl</Name>
-      <FullPath>PN_MovementSingleStore.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_NotAvailableItems.rdl</Name>
-      <FullPath>PN_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_NotOnFile.rdl</Name>
-      <FullPath>PN_NotOnFile.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_PricebookReport.rdl</Name>
-      <FullPath>PN_PricebookReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ProductOrderGuide.rdl</Name>
-      <FullPath>PN_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_PurchaseOrderReport.rdl</Name>
-      <FullPath>PN_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_Random_Weight_Scale_PLUs.rdl</Name>
-      <FullPath>PN_Random_Weight_Scale_PLUs.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_Specials.rdl</Name>
-      <FullPath>PN_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_SpecialsInProgress.rdl</Name>
-      <FullPath>PN_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_StoreVendorMovement.rdl</Name>
-      <FullPath>PN_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ToledoInfoDownload.rdl</Name>
-      <FullPath>PN_ToledoInfoDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_TopMoversDetail.rdl</Name>
-      <FullPath>PN_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_TopMoversSummary.rdl</Name>
-      <FullPath>PN_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_VendorItemCount.rdl</Name>
-      <FullPath>PN_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_VendorListing.rdl</Name>
-      <FullPath>PN_VendorListing.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_VendorQuery.rdl</Name>
-      <FullPath>PN_VendorQuery.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ZeroMovement52WeekReport.rdl</Name>
-      <FullPath>PN_ZeroMovement52WeekReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PN_ZeroMovementReport.rdl</Name>
-      <FullPath>PN_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Admin Reason Codes in SPOT.rdl</Name>
-      <FullPath>PO Admin Reason Codes in SPOT.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Fulfillment Report - eInvoice Quantity less than Ordered Quantity.rdl</Name>
-      <FullPath>PO Fulfillment Report - eInvoice Quantity less than Ordered Quantity.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Fulfillment Report Detail By Vendor.rdl</Name>
-      <FullPath>PO Fulfillment Report Detail By Vendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Fulfillment Report Summary By Vendor.rdl</Name>
-      <FullPath>PO Fulfillment Report Summary By Vendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Fulfillment Report Summary.rdl</Name>
-      <FullPath>PO Fulfillment Report Summary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Item Level Refusal Code.rdl</Name>
-      <FullPath>PO Item Level Refusal Code.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PO Refusal Code.rdl</Name>
-      <FullPath>PO Refusal Code.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>POAccuracy.rdl</Name>
-      <FullPath>POAccuracy.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PODateComparisonReport.rdl</Name>
-      <FullPath>PODateComparisonReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>POExceptionReport.rdl</Name>
-      <FullPath>POExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>POS_IRMA.rdl</Name>
-      <FullPath>POS_IRMA.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PostAlocInventoryWeeklyHistoryRpt.rdl</Name>
-      <FullPath>PostAlocInventoryWeeklyHistoryRpt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PreAlocInventoryWeeklyHistoryRpt.rdl</Name>
-      <FullPath>PreAlocInventoryWeeklyHistoryRpt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PriceChangeEventReport.rdl</Name>
-      <FullPath>PriceChangeEventReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ProductOrderGuide.rdl</Name>
-      <FullPath>ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchaseAccrualReport.rdl</Name>
-      <FullPath>PurchaseAccrualReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchaseOrderReport.rdl</Name>
-      <FullPath>PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchaseOrderReportBarcodes.rdl</Name>
-      <FullPath>PurchaseOrderReportBarcodes.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchasesSummary.rdl</Name>
-      <FullPath>PurchasesSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchaseToSalesReportDetail.rdl</Name>
-      <FullPath>PurchaseToSalesReportDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchaseToSalesReportSummary.rdl</Name>
-      <FullPath>PurchaseToSalesReportSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>PurchToSalesComp.rdl</Name>
-      <FullPath>PurchToSalesComp.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ReasonCodeDetail.rdl</Name>
-      <FullPath>ReasonCodeDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ReasonCodeOnPO.rdl</Name>
-      <FullPath>ReasonCodeOnPO.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Received Not Closed.rdl</Name>
-      <FullPath>Received Not Closed.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ReceivingDocuments.rdl</Name>
-      <FullPath>ReceivingDocuments.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ReceivingLog.rdl</Name>
-      <FullPath>ReceivingLog.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RefusedItemDetail.rdl</Name>
-      <FullPath>RefusedItemDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RefusedItemSummary.rdl</Name>
-      <FullPath>RefusedItemSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RefusedPOsReport.rdl</Name>
-      <FullPath>RefusedPOsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RefusedPOsReport.rdl</Name>
-      <FullPath>RefusedPOsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RegionalVendorMovement.rdl</Name>
-      <FullPath>RegionalVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RegionSalesCompByDayTWLW.rdl</Name>
-      <FullPath>RegionSalesCompByDayTWLW.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RegionSalesCompByDayTWLY.rdl</Name>
-      <FullPath>RegionSalesCompByDayTWLY.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RegionSalesCompByWeek.rdl</Name>
-      <FullPath>RegionSalesCompByWeek.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RegionSalesCompTrend.rdl</Name>
-      <FullPath>RegionSalesCompTrend.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RetailPriceGuides.rdl</Name>
-      <FullPath>RetailPriceGuides.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RGISExtract.rdl</Name>
-      <FullPath>RGISExtract.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RipeInvoice.rdl</Name>
-      <FullPath>RipeInvoice.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_BERTReport.rdl</Name>
-      <FullPath>RM_BERTReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_CasesByDepartment.rdl</Name>
-      <FullPath>RM_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>RM_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_CommodityCodeDatesCompare.rdl</Name>
-      <FullPath>RM_CommodityCodeDatesCompare.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_CommodityCodeMovementSummary.rdl</Name>
-      <FullPath>RM_CommodityCodeMovementSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>RM_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_DynamicRankTopMovers.rdl</Name>
-      <FullPath>RM_DynamicRankTopMovers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_GrossMarginAudit.rdl</Name>
-      <FullPath>RM_GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_GrossMarginExceptionReport.rdl</Name>
-      <FullPath>RM_GrossMarginExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_GrossMarginExceptionReportVsMvmt.rdl</Name>
-      <FullPath>RM_GrossMarginExceptionReportVsMvmt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_InvoiceManifestReport.rdl</Name>
-      <FullPath>RM_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ItemList.rdl</Name>
-      <FullPath>RM_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ItemMasterDownload.rdl</Name>
-      <FullPath>RM_ItemMasterDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ItemMasterWithToledo.rdl</Name>
-      <FullPath>RM_ItemMasterWithToledo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ItemsByVendor.rdl</Name>
-      <FullPath>RM_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ItemStatusList.rdl</Name>
-      <FullPath>RM_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_MarginBySubTeam.rdl</Name>
-      <FullPath>RM_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_MarginByVendor.rdl</Name>
-      <FullPath>RM_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_MassExemptList.rdl</Name>
-      <FullPath>RM_MassExemptList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_MovementByDay.rdl</Name>
-      <FullPath>RM_MovementByDay.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_NotAvailableItems.rdl</Name>
-      <FullPath>RM_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ProductOrderGuide.rdl</Name>
-      <FullPath>RM_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_PurchaseOrderReport.rdl</Name>
-      <FullPath>RM_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_Specials.rdl</Name>
-      <FullPath>RM_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_SpecialsInProgress.rdl</Name>
-      <FullPath>RM_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_StoreVendorMovement.rdl</Name>
-      <FullPath>RM_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ToledoInfoDownload.rdl</Name>
-      <FullPath>RM_ToledoInfoDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_TopMoversDetail.rdl</Name>
-      <FullPath>RM_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_TopMoversSummary.rdl</Name>
-      <FullPath>RM_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_VendorItemCount.rdl</Name>
-      <FullPath>RM_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ZeroMovement52WeekReport.rdl</Name>
-      <FullPath>RM_ZeroMovement52WeekReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>RM_ZeroMovementReport.rdl</Name>
-      <FullPath>RM_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>rptImportSummary.rdl</Name>
-      <FullPath>rptImportSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>rptUnmappedItems.rdl</Name>
-      <FullPath>rptUnmappedItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Shippers.rdl</Name>
-      <FullPath>Shippers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ShortReport.rdl</Name>
-      <FullPath>ShortReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Shrink.rdl</Name>
-      <FullPath>Shrink.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SO_InventoryValueDetail.rdl</Name>
-      <FullPath>SO_InventoryValueDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SO_InventoryValueSummary.rdl</Name>
-      <FullPath>SO_InventoryValueSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SOG_PrintCatalog.rdl</Name>
-      <FullPath>SOG_PrintCatalog.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SOG_PrintCatalogs.rdl</Name>
-      <FullPath>SOG_PrintCatalogs.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SORipe_PurchaseOrderReport.rdl</Name>
-      <FullPath>SORipe_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_InvoiceManifestReport.rdl</Name>
-      <FullPath>SP_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_ItemList.rdl</Name>
-      <FullPath>SP_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_ItemsByVendor.rdl</Name>
-      <FullPath>SP_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_MarginBySubTeam.rdl</Name>
-      <FullPath>SP_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_MarginByVendor.rdl</Name>
-      <FullPath>SP_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_NotAvailableItems.rdl</Name>
-      <FullPath>SP_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_PriceBookByTeam.rdl</Name>
-      <FullPath>SP_PriceBookByTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_ProductOrderGuide.rdl</Name>
-      <FullPath>SP_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_PurchaseOrderReport.rdl</Name>
-      <FullPath>SP_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_Specials.rdl</Name>
-      <FullPath>SP_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_SpecialsInProgress.rdl</Name>
-      <FullPath>SP_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_StoreOrdersTotBySKU.rdl</Name>
-      <FullPath>SP_StoreOrdersTotBySKU.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_StoreVendorMovement.rdl</Name>
-      <FullPath>SP_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_TopMoversDetail.rdl</Name>
-      <FullPath>SP_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_TopMoversSummary.rdl</Name>
-      <FullPath>SP_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SP_ZeroMovementReport.rdl</Name>
-      <FullPath>SP_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Specials.rdl</Name>
-      <FullPath>Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SpecialsInProgress.rdl</Name>
-      <FullPath>SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>StoreInventoryByUnits.rdl</Name>
-      <FullPath>StoreInventoryByUnits.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>StoreOrders.rdl</Name>
-      <FullPath>StoreOrders.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>StoreVendorMovement.rdl</Name>
-      <FullPath>StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SubTeamShrink.rdl</Name>
-      <FullPath>SubTeamShrink.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SuspendedOrderReport.rdl</Name>
-      <FullPath>SuspendedOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ ZeroMovementReport.rdl</Name>
-      <FullPath>SW_ ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_BERTReport.rdl</Name>
-      <FullPath>SW_BERTReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_CasesByDepartment.rdl</Name>
-      <FullPath>SW_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>SW_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_CommodityCodeDatesCompare.rdl</Name>
-      <FullPath>SW_CommodityCodeDatesCompare.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_CommodityCodeMovementSummary.rdl</Name>
-      <FullPath>SW_CommodityCodeMovementSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_DepartmentSalesAnalysis.rdl</Name>
-      <FullPath>SW_DepartmentSalesAnalysis.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_DynamicRankTopMovers.rdl</Name>
-      <FullPath>SW_DynamicRankTopMovers.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_GrossMarginAudit.rdl</Name>
-      <FullPath>SW_GrossMarginAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_GrossMarginExceptionReport.rdl</Name>
-      <FullPath>SW_GrossMarginExceptionReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_GrossMarginExceptionReportVsMvmt.rdl</Name>
-      <FullPath>SW_GrossMarginExceptionReportVsMvmt.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ItemList.rdl</Name>
-      <FullPath>SW_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ItemMasterDownload.rdl</Name>
-      <FullPath>SW_ItemMasterDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ItemMasterWithToledo.rdl</Name>
-      <FullPath>SW_ItemMasterWithToledo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ItemsByVendor.rdl</Name>
-      <FullPath>SW_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ItemStatusList.rdl</Name>
-      <FullPath>SW_ItemStatusList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_MarginBySubTeam.rdl</Name>
-      <FullPath>SW_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_MarginByVendor.rdl</Name>
-      <FullPath>SW_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_MassExemptList.rdl</Name>
-      <FullPath>SW_MassExemptList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_MovementByDay.rdl</Name>
-      <FullPath>SW_MovementByDay.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_NotAvailableItems.rdl</Name>
-      <FullPath>SW_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ProductOrderGuide.rdl</Name>
-      <FullPath>SW_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_PurchaseOrderReport.rdl</Name>
-      <FullPath>SW_PurchaseOrderReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_RetailGuide.rdl</Name>
-      <FullPath>SW_RetailGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_Specials.rdl</Name>
-      <FullPath>SW_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_SpecialsInProgress.rdl</Name>
-      <FullPath>SW_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_StoreVendorMovement.rdl</Name>
-      <FullPath>SW_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ToledoInfoDownload.rdl</Name>
-      <FullPath>SW_ToledoInfoDownload.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_TopMoversDetail.rdl</Name>
-      <FullPath>SW_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_TopMoversSummary.rdl</Name>
-      <FullPath>SW_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_UseTaxQuery.rdl</Name>
-      <FullPath>SW_UseTaxQuery.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_VendorItemCount.rdl</Name>
-      <FullPath>SW_VendorItemCount.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ZeroMovement52WeekReport.rdl</Name>
-      <FullPath>SW_ZeroMovement52WeekReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>SW_ZeroMovementReport.rdl</Name>
-      <FullPath>SW_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Top 20 Items for All Sub Team.rdl</Name>
-      <FullPath>Top 20 Items for All Sub Team.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>TopMoversDetail.rdl</Name>
-      <FullPath>TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>TopMoversSummary.rdl</Name>
-      <FullPath>TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>TransactionHistoryReport.rdl</Name>
-      <FullPath>TransactionHistoryReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_CasesByDepartment.rdl</Name>
-      <FullPath>UK_CasesByDepartment.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_CasesByDepartmentAudit.rdl</Name>
-      <FullPath>UK_CasesByDepartmentAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_CostAuditReport.rdl</Name>
-      <FullPath>UK_CostAuditReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_GLSalesReport.rdl</Name>
-      <FullPath>UK_GLSalesReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_GLTransferDetailsReport.rdl</Name>
-      <FullPath>UK_GLTransferDetailsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_GLTransfersReport.rdl</Name>
-      <FullPath>UK_GLTransfersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_InvoiceManifestReport.rdl</Name>
-      <FullPath>UK_InvoiceManifestReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ItemList.rdl</Name>
-      <FullPath>UK_ItemList.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ItemsByVendor.rdl</Name>
-      <FullPath>UK_ItemsByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MarginBySubTeam.rdl</Name>
-      <FullPath>UK_MarginBySubTeam.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MarginByVendor.rdl</Name>
-      <FullPath>UK_MarginByVendor.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumDairyFreeRegular.rdl</Name>
-      <FullPath>UK_MediumDairyFreeRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumGlutenFreeRegular.rdl</Name>
-      <FullPath>UK_MediumGlutenFreeRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumNew.rdl</Name>
-      <FullPath>UK_MediumNew.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumPrivateLabelRegular.rdl</Name>
-      <FullPath>UK_MediumPrivateLabelRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumPromo.rdl</Name>
-      <FullPath>UK_MediumPromo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumRegular.rdl</Name>
-      <FullPath>UK_MediumRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumRegularAll.rdl</Name>
-      <FullPath>UK_MediumRegularAll.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumSigns_Batch.rdl</Name>
-      <FullPath>UK_MediumSigns_Batch.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_MediumSigns_New.rdl</Name>
-      <FullPath>UK_MediumSigns_New.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_NotAvailableItems.rdl</Name>
-      <FullPath>UK_NotAvailableItems.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_OpenOrdersDetailReport.rdl</Name>
-      <FullPath>UK_OpenOrdersDetailReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_OpenOrdersReport.rdl</Name>
-      <FullPath>UK_OpenOrdersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_OpenOrdersReport.rdl</Name>
-      <FullPath>UK_OpenOrdersReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ProductOrderGuide.rdl</Name>
-      <FullPath>UK_ProductOrderGuide.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ReceivingLog.rdl</Name>
-      <FullPath>UK_ReceivingLog.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallDairyFreeRegular.rdl</Name>
-      <FullPath>UK_SmallDairyFreeRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallGlutenFreeRegular.rdl</Name>
-      <FullPath>UK_SmallGlutenFreeRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallNew.rdl</Name>
-      <FullPath>UK_SmallNew.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallPrivateLabelRegular.rdl</Name>
-      <FullPath>UK_SmallPrivateLabelRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallPromo.rdl</Name>
-      <FullPath>UK_SmallPromo.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallRegular.rdl</Name>
-      <FullPath>UK_SmallRegular.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallRegularAll.rdl</Name>
-      <FullPath>UK_SmallRegularAll.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SmallSigns.rdl</Name>
-      <FullPath>UK_SmallSigns.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_Specials.rdl</Name>
-      <FullPath>UK_Specials.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_SpecialsInProgress.rdl</Name>
-      <FullPath>UK_SpecialsInProgress.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_StoreVendorMovement.rdl</Name>
-      <FullPath>UK_StoreVendorMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_TopMoversDetail.rdl</Name>
-      <FullPath>UK_TopMoversDetail.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_TopMoversSummary.rdl</Name>
-      <FullPath>UK_TopMoversSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_WarehouseMovement.rdl</Name>
-      <FullPath>UK_WarehouseMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_WasteReport.rdl</Name>
-      <FullPath>UK_WasteReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ZeroCostReport.rdl</Name>
-      <FullPath>UK_ZeroCostReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UK_ZeroMovementReport.rdl</Name>
-      <FullPath>UK_ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>UPCCostAudit.rdl</Name>
-      <FullPath>UPCCostAudit.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>WarehouseMovement.rdl</Name>
-      <FullPath>WarehouseMovement.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>WarehouseOutOfStock.rdl</Name>
-      <FullPath>WarehouseOutOfStock.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Waste.rdl</Name>
-      <FullPath>Waste.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>WeeklyPurchasesSalesSummary.rdl</Name>
-      <FullPath>WeeklyPurchasesSalesSummary.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ZeroCostItemsReport.rdl</Name>
-      <FullPath>ZeroCostItemsReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>ZeroMovementReport.rdl</Name>
-      <FullPath>ZeroMovementReport.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>365PromotionsReport.rdl</Name>
-      <FullPath>365PromotionsReport.rdl</FullPath>
-    </ProjectItem>
-  </Reports>
-  <Configurations>
-    <Configuration>
-      <Name>UK Production</Name>
-      <Options>
-        <OutputPath>bin\UK Production</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-uk/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/UK</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>UK Standby</Name>
-      <Options>
-        <OutputPath>bin\UK Standby</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://ias-uk/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/UK</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>UK Dev</Name>
-      <Options>
-        <OutputPath>bin\UK Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-uk/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/UK</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>FL Dev</Name>
-      <Options>
-        <OutputPath>bin\FL Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
-        <TargetFolder>irma/sw/test</TargetFolder>
-        <TargetDataSourceFolder>irma/sw/test</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>FL Test</Name>
-      <Options>
-        <OutputPath>bin\FL Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iaq-fl/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/FL</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>UK Test</Name>
-      <Options>
-        <OutputPath>bin\UK Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://ird-uk/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/UK</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>NA_Dev</Name>
-      <Options>
-        <OutputPath>bin\NA_Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-na/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/NA</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MA_Dev</Name>
-      <Options>
-        <OutputPath>bin\MA_Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MA</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>local</Name>
-      <Options>
-        <OutputPath>bin\local</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://ird-so/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SO</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SW Dev</Name>
-      <Options>
-        <OutputPath>bin\SW Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SW/DEV</TargetFolder>
-        <TargetDataSourceFolder>IRMA/SW/DEV</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SW Test</Name>
-      <Options>
-        <OutputPath>bin\SW Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://ird-sw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SW</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MA Test</Name>
-      <Options>
-        <OutputPath>bin\MA Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MA</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>RM Dev</Name>
-      <Options>
-        <OutputPath>bin\RM Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://ird-rm/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/RM</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>RM Test</Name>
-      <Options>
-        <OutputPath>bin\RM Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-rm/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/RM</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SW QA</Name>
-      <Options>
-        <OutputPath>bin\SW QA</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iaq-sw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SW</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>RM QA</Name>
-      <Options>
-        <OutputPath>bin\RM QA</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iaq-rm/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/RM</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SW Prd</Name>
-      <Options>
-        <OutputPath>bin\SW Prd</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-sw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SW</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>RM Prd</Name>
-      <Options>
-        <OutputPath>bin\RM Prd</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-rm/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/RM</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>NC Test</Name>
-      <Options>
-        <OutputPath>bin\NC Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/NC_V3</TargetFolder>
-        <TargetDataSourceFolder>IRMA/NC_V3</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>NC Dev</Name>
-      <Options>
-        <OutputPath>bin\NC Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/NC</TargetFolder>
-        <TargetDataSourceFolder>IRMA/NC</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>NC QA</Name>
-      <Options>
-        <OutputPath>bin\NC QA</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iaq-nc/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/NC</TargetFolder>
-        <TargetDataSourceFolder>IRMA/NC</TargetDataSourceFolder>
-        <OverwriteDataSources>true</OverwriteDataSources>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MW QA</Name>
-      <Options>
-        <OutputPath>bin\MW QA</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iaq-mw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MW</TargetFolder>
-        <TargetDataSourceFolder>IRMA/MW</TargetDataSourceFolder>
-        <OverwriteDataSources>true</OverwriteDataSources>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MW Test</Name>
-      <Options>
-        <OutputPath>bin\MW Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-mw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MW</TargetFolder>
-        <TargetDataSourceFolder>IRMA/MW</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MW PRD</Name>
-      <Options>
-        <OutputPath>bin\MW PRD</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-mw/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MW</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>PN Dev</Name>
-      <Options>
-        <OutputPath>bin\PN Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-pn/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/PN</TargetFolder>
-        <TargetDataSourceFolder>IRMA/PN</TargetDataSourceFolder>
-        <OverwriteDataSources>true</OverwriteDataSources>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>PN QA</Name>
-      <Options>
-        <OutputPath>bin\PN QA</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/PN</TargetFolder>
-        <TargetDataSourceFolder>IRMA/PN</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>PN Prd</Name>
-      <Options>
-        <OutputPath>bin\PN Prd</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/PN</TargetFolder>
-        <TargetDataSourceFolder>IRMA/PN</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>MW Dev</Name>
-      <Options>
-        <OutputPath>bin\MW Dev</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/MW/DEV</TargetFolder>
-        <TargetDataSourceFolder>IRMA/MW/DEV</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SP_Test</Name>
-      <Options>
-        <OutputPath>bin\SP_Test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iad-sp/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SP</TargetFolder>
-        <OverwriteDataSources>true</OverwriteDataSources>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SP_PRD</Name>
-      <Options>
-        <OutputPath>bin\SP_PRD</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://iap-sp/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SP</TargetFolder>
-      </Options>
-    </Configuration>
-    <Configuration>
-      <Name>SO_test</Name>
-      <Options>
-        <OutputPath>bin\SO_test</OutputPath>
-        <TargetServerVersion>SSRS2008</TargetServerVersion>
-        <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
-        <TargetFolder>IRMA/SO/Test</TargetFolder>
-        <TargetDataSourceFolder>IRMA/SO/Test</TargetDataSourceFolder>
-      </Options>
-    </Configuration>
-  </Configurations>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)' == 'UK Production' ">
+    <FullPath>UK Production</FullPath>
+    <OutputPath>bin\UK Production</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/UK</TargetReportFolder>
+    <TargetServerURL>http://iap-uk/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'UK Standby' ">
+    <FullPath>UK Standby</FullPath>
+    <OutputPath>bin\UK Standby</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/UK</TargetReportFolder>
+    <TargetServerURL>http://ias-uk/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'UK Dev' ">
+    <FullPath>UK Dev</FullPath>
+    <OutputPath>bin\UK Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/UK</TargetReportFolder>
+    <TargetServerURL>http://iad-uk/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FL Dev' ">
+    <FullPath>FL Dev</FullPath>
+    <OutputPath>bin\FL Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>irma/sw/test</TargetReportFolder>
+    <TargetDatasourceFolder>irma/sw/test</TargetDatasourceFolder>
+    <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FL Test' ">
+    <FullPath>FL Test</FullPath>
+    <OutputPath>bin\FL Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/FL</TargetReportFolder>
+    <TargetServerURL>http://iaq-fl/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'UK Test' ">
+    <FullPath>UK Test</FullPath>
+    <OutputPath>bin\UK Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/UK</TargetReportFolder>
+    <TargetServerURL>http://ird-uk/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'NA_Dev' ">
+    <FullPath>NA_Dev</FullPath>
+    <OutputPath>bin\NA_Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/NA</TargetReportFolder>
+    <TargetServerURL>http://iad-na/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MA_Dev' ">
+    <FullPath>MA_Dev</FullPath>
+    <OutputPath>bin\MA_Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MA</TargetReportFolder>
+    <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'local' ">
+    <FullPath>local</FullPath>
+    <OutputPath>bin\local</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SO</TargetReportFolder>
+    <TargetServerURL>http://ird-so/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SW Dev' ">
+    <FullPath>SW Dev</FullPath>
+    <OutputPath>bin\SW Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SW/DEV</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/SW/DEV</TargetDatasourceFolder>
+    <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SW Test' ">
+    <FullPath>SW Test</FullPath>
+    <OutputPath>bin\SW Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SW</TargetReportFolder>
+    <TargetServerURL>http://ird-sw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MA Test' ">
+    <FullPath>MA Test</FullPath>
+    <OutputPath>bin\MA Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MA</TargetReportFolder>
+    <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'RM Dev' ">
+    <FullPath>RM Dev</FullPath>
+    <OutputPath>bin\RM Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/RM</TargetReportFolder>
+    <TargetServerURL>http://ird-rm/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'RM Test' ">
+    <FullPath>RM Test</FullPath>
+    <OutputPath>bin\RM Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/RM</TargetReportFolder>
+    <TargetServerURL>http://iad-rm/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SW QA' ">
+    <FullPath>SW QA</FullPath>
+    <OutputPath>bin\SW QA</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SW</TargetReportFolder>
+    <TargetServerURL>http://iaq-sw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'RM QA' ">
+    <FullPath>RM QA</FullPath>
+    <OutputPath>bin\RM QA</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/RM</TargetReportFolder>
+    <TargetServerURL>http://iaq-rm/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SW Prd' ">
+    <FullPath>SW Prd</FullPath>
+    <OutputPath>bin\SW Prd</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SW</TargetReportFolder>
+    <TargetServerURL>http://iap-sw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'RM Prd' ">
+    <FullPath>RM Prd</FullPath>
+    <OutputPath>bin\RM Prd</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/RM</TargetReportFolder>
+    <TargetServerURL>http://iap-rm/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'NC Test' ">
+    <FullPath>NC Test</FullPath>
+    <OutputPath>bin\NC Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/NC_V3</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/NC_V3</TargetDatasourceFolder>
+    <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'NC Dev' ">
+    <FullPath>NC Dev</FullPath>
+    <OutputPath>bin\NC Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/NC</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/NC</TargetDatasourceFolder>
+    <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'NC QA' ">
+    <FullPath>NC QA</FullPath>
+    <OutputPath>bin\NC QA</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>True</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/NC</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/NC</TargetDatasourceFolder>
+    <TargetServerURL>http://iaq-nc/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MW QA' ">
+    <FullPath>MW QA</FullPath>
+    <OutputPath>bin\MW QA</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>True</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MW</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/MW</TargetDatasourceFolder>
+    <TargetServerURL>http://iaq-mw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MW Test' ">
+    <FullPath>MW Test</FullPath>
+    <OutputPath>bin\MW Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MW</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/MW</TargetDatasourceFolder>
+    <TargetServerURL>http://iad-mw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MW PRD' ">
+    <FullPath>MW PRD</FullPath>
+    <OutputPath>bin\MW PRD</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MW</TargetReportFolder>
+    <TargetServerURL>http://iap-mw/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'PN Dev' ">
+    <FullPath>PN Dev</FullPath>
+    <OutputPath>bin\PN Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>True</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/PN</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
+    <TargetServerURL>http://iad-pn/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'PN QA' ">
+    <FullPath>PN QA</FullPath>
+    <OutputPath>bin\PN QA</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/PN</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
+    <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'PN Prd' ">
+    <FullPath>PN Prd</FullPath>
+    <OutputPath>bin\PN Prd</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/PN</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
+    <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'MW Dev' ">
+    <FullPath>MW Dev</FullPath>
+    <OutputPath>bin\MW Dev</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/MW/DEV</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/MW/DEV</TargetDatasourceFolder>
+    <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SP_Test' ">
+    <FullPath>SP_Test</FullPath>
+    <OutputPath>bin\SP_Test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>True</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SP</TargetReportFolder>
+    <TargetServerURL>http://iad-sp/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SP_PRD' ">
+    <FullPath>SP_PRD</FullPath>
+    <OutputPath>bin\SP_PRD</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SP</TargetReportFolder>
+    <TargetServerURL>http://iap-sp/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'SO_test' ">
+    <FullPath>SO_test</FullPath>
+    <OutputPath>bin\SO_test</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <TargetReportFolder>IRMA/SO/Test</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/SO/Test</TargetDatasourceFolder>
+    <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup>
+    <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD50cnVlPC9FbmFibGVkPg0KICA8UHJvamVjdE5hbWU+U0FLPC9Qcm9qZWN0TmFtZT4NCiAgPEF1eFBhdGg+U0FLPC9BdXhQYXRoPg0KICA8TG9jYWxQYXRoPlNBSzwvTG9jYWxQYXRoPg0KICA8UHJvdmlkZXI+U0FLPC9Qcm92aWRlcj4NCjwvU291cmNlQ29udHJvbEluZm8+</State>
+    <DataSources>@(DataSource)</DataSources>
+    <DataSets>@(DataSet)</DataSets>
+    <Reports>@(Report)</Reports>
+  </PropertyGroup>
+  <ItemGroup>
+    <DataSource Include="Icon.rds" />
+    <DataSource Include="idt-ce.rds" />
+    <DataSource Include="ItemCatalog.rds" />
+    <DataSource Include="ReportServer.rds" />
+    <DataSource Include="XMLDataSource.rds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Report Include="365PromotionsReport.rdl" />
+    <Report Include="3WayMatchDetailSummary.rdl" />
+    <Report Include="ActiveItemsListRpt.rdl" />
+    <Report Include="AdjustmentSummaryReport.rdl" />
+    <Report Include="AllocationReportDetail.rdl" />
+    <Report Include="AllocationReportSummary.rdl" />
+    <Report Include="APUPAccrualsClosed.rdl" />
+    <Report Include="APUPClosed.rdl" />
+    <Report Include="Average Cost Variance.rdl" />
+    <Report Include="AvgCost.rdl" />
+    <Report Include="AvgCostMrgItemDet.rdl" />
+    <Report Include="AvgCostMrgItemSum.rdl" />
+    <Report Include="AvgCostMrgPODet.rdl" />
+    <Report Include="AvgCostMrgPORegion.rdl" />
+    <Report Include="AvgCostMrgPOSum.rdl" />
+    <Report Include="AvgCostVariance.rdl" />
+    <Report Include="BatchDetailReport.rdl" />
+    <Report Include="BatchPricingBatchSummary.rdl" />
+    <Report Include="BatchPricingItemDetail.rdl" />
+    <Report Include="BatchPricingItemSummary.rdl" />
+    <Report Include="BOHCompareReport.rdl" />
+    <Report Include="Bulk Export - All Items.rdl" />
+    <Report Include="CheckList.rdl" />
+    <Report Include="Closed Orders Missing Invoice Data.rdl" />
+    <Report Include="Closed Orders Report.rdl" />
+    <Report Include="Closed Orders Summary.rdl" />
+    <Report Include="ClosedPendingEinvoices.rdl" />
+    <Report Include="CompetitorMarginImpact.rdl" />
+    <Report Include="ConsolidatedItemChangesReport.rdl" />
+    <Report Include="ControlGroup3WayMatchLog.rdl" />
+    <Report Include="COOLReceivingReport.rdl" />
+    <Report Include="COOLShippingReport.rdl" />
+    <Report Include="CostAuditReport.rdl" />
+    <Report Include="CostChangeEventReport.rdl" />
+    <Report Include="CreditReason.rdl" />
+    <Report Include="CreditReasonDetail.rdl" />
+    <Report Include="CreditReasonDetailSummary.rdl" />
+    <Report Include="CreditReasonRegion.rdl" />
+    <Report Include="CreditReasonRegionSummary.rdl" />
+    <Report Include="CreditReasonZone.rdl" />
+    <Report Include="CycleCount.rdl" />
+    <Report Include="CycleCountMaster.rdl" />
+    <Report Include="CycleCountMasterSummary.rdl" />
+    <Report Include="Daily Receiving.rdl" />
+    <Report Include="DailyAverageCostTrendReport.rdl" />
+    <Report Include="DailyItemAvgCostChgsRpt.rdl" />
+    <Report Include="DASHandlingCharge.rdl" />
+    <Report Include="DCAvgCostMargin2.rdl" />
+    <Report Include="DCPerformance.rdl" />
+    <Report Include="DCStoreRetailPriceReport.rdl" />
+    <Report Include="Deleted Orders Report.rdl" />
+    <Report Include="DepartmentSalesAnalysis.rdl" />
+    <Report Include="DiscontinuedItemsWithInventory.rdl" />
+    <Report Include="DSDAuthorizedProductListing.rdl" />
+    <Report Include="eInvoiceExceptionReport.rdl" />
+    <Report Include="eInvoiceItemExceptions.rdl" />
+    <Report Include="eInvoicingErrorReport.rdl" />
+    <Report Include="EInvSuspendedInvoices.rdl" />
+    <Report Include="EInvVendorPOMissingEInvoice.rdl" />
+    <Report Include="ExceptionsReport.rdl" />
+    <Report Include="Facility Avg Cost Item List.rdl" />
+    <Report Include="FacilityOpenCustomerOrders.rdl" />
+    <Report Include="FacilityOrderReport.rdl" />
+    <Report Include="FillRateReport7DayDetail.rdl" />
+    <Report Include="FillRateReportFPtD.rdl" />
+    <Report Include="FillRateReportSummary.rdl" />
+    <Report Include="FL_BatchDetailReport.rdl" />
+    <Report Include="FL_CasesByDepartment.rdl" />
+    <Report Include="FL_CasesByDepartmentAudit.rdl" />
+    <Report Include="FL_DCCasesShipped.rdl" />
+    <Report Include="FL_DepartmentSalesAnalysis.rdl" />
+    <Report Include="FL_DynamicRankTopMovers.rdl" />
+    <Report Include="FL_GrossMarginAudit.rdl" />
+    <Report Include="FL_InStoreSpecialsReport.rdl" />
+    <Report Include="FL_InventoryValueDetail.rdl" />
+    <Report Include="FL_InventoryValueSummary.rdl" />
+    <Report Include="FL_InvoiceManifestReport.rdl" />
+    <Report Include="FL_IRMAEXEChecklist.rdl" />
+    <Report Include="FL_ItemList.rdl" />
+    <Report Include="FL_ItemsByVendor.rdl" />
+    <Report Include="FL_ItemsByVendor.rdl" />
+    <Report Include="FL_ItemStatusList.rdl" />
+    <Report Include="FL_MarginBySubTeam.rdl" />
+    <Report Include="FL_MarginByVendor.rdl" />
+    <Report Include="FL_MovementByDay.rdl" />
+    <Report Include="FL_NotAvailableItems.rdl" />
+    <Report Include="FL_NotAvailableReport.rdl" />
+    <Report Include="FL_NotOnFile.rdl" />
+    <Report Include="FL_OnHandVendorPack.rdl" />
+    <Report Include="FL_OpenOrdersDetailReport.rdl" />
+    <Report Include="FL_OpenOrdersReport.rdl" />
+    <Report Include="FL_PreOrderedDCShipping.rdl" />
+    <Report Include="FL_PreOrderedQuantity.rdl" />
+    <Report Include="FL_PricebookReport.rdl" />
+    <Report Include="FL_ProductOrderGuide.rdl" />
+    <Report Include="FL_PurchaseOrderReport.rdl" />
+    <Report Include="FL_Random_Weight_Scale_PLUs.rdl" />
+    <Report Include="FL_Specials.rdl" />
+    <Report Include="FL_Specials.rdl" />
+    <Report Include="FL_SpecialsInProgress.rdl" />
+    <Report Include="FL_StoreOrdersTotBySKU.rdl" />
+    <Report Include="FL_StoreVendorMovement.rdl" />
+    <Report Include="FL_TopMoversDetail.rdl" />
+    <Report Include="FL_TopMoversSummary.rdl" />
+    <Report Include="FL_VendorItemCount.rdl" />
+    <Report Include="FL_VendorQuery.rdl" />
+    <Report Include="FL_ZeroMovement52WeekReport.rdl" />
+    <Report Include="FL_ZeroMovementReport.rdl" />
+    <Report Include="FPShrink.rdl" />
+    <Report Include="GeneralStoreInventoryByUnits.rdl" />
+    <Report Include="GetReceivingListForNOIDNORD.rdl" />
+    <Report Include="GetReceivingListForNOIDNORD.rdl" />
+    <Report Include="GetReceivingListForNOIDNORDSubReport.rdl" />
+    <Report Include="GetReceivingListForNOIDNORDSubReport.rdl" />
+    <Report Include="GLDistributionCheckDetailsReport.rdl" />
+    <Report Include="GLDistributionCheckReport.rdl" />
+    <Report Include="GLUploadReport.rdl" />
+    <Report Include="GrossMarginAudit.rdl" />
+    <Report Include="Icon IRMA Sign Attributes Comparison.rdl" />
+    <Report Include="Icon Items By Validation Date.rdl" />
+    <Report Include="IconItemSearch.rdl" />
+    <Report Include="InventoryBalance.rdl" />
+    <Report Include="InventoryCountSheet.rdl" />
+    <Report Include="InventoryGuideReport.rdl" />
+    <Report Include="InvLocationItems.rdl" />
+    <Report Include="InvLocationItemsManualCountSheet.rdl" />
+    <Report Include="InvLocations.rdl" />
+    <Report Include="InvoiceDiscrepanciesReport.rdl" />
+    <Report Include="InvoiceTolerance.rdl" />
+    <Report Include="IRMA R10 Audit.rdl" />
+    <Report Include="IrmaAlternatePluVersusIconPlu.rdl" />
+    <Report Include="IRMAePLUMComparisonReport_Detail.rdl" />
+    <Report Include="IRMAePLUMComparisonReport_Summary.rdl" />
+    <Report Include="IrmaItemsVersusIcon.rdl" />
+    <Report Include="IrmaPluItemsWithMultipleIdentifiersVersusIconPlu.rdl" />
+    <Report Include="IrmaPluVersusIconPlu.rdl" />
+    <Report Include="IRMAScanAudit.rdl" />
+    <Report Include="IRMASOXConflictReport.rdl" />
+    <Report Include="IRMAvsPOSAudit.rdl" />
+    <Report Include="Item Hierarchies.rdl" />
+    <Report Include="ItemDetailsAtStoreLevel.rdl" />
+    <Report Include="ItemLevelRefusalReport.rdl" />
+    <Report Include="ItemList.rdl" />
+    <Report Include="ItemOrderHistoryReport.rdl" />
+    <Report Include="Items Scanned on Receipt Detail.rdl" />
+    <Report Include="Items Scanned on Receipt Summary.rdl" />
+    <Report Include="ItemsByPriceType.rdl" />
+    <Report Include="ItemsBySustainabilityRanking.rdl" />
+    <Report Include="ItemsByVendor.rdl" />
+    <Report Include="ItemsMarkedIgnorePackUpdate.rdl" />
+    <Report Include="ItemStatusList.rdl" />
+    <Report Include="JDASyncAudit.rdl" />
+    <Report Include="JDASyncAudit.rdl" />
+    <Report Include="JobStatus.rdl" />
+    <Report Include="JobStatusAlert.rdl" />
+    <Report Include="KitchenCaseTransfer.rdl" />
+    <Report Include="LeadTimeVendors.rdl" />
+    <Report Include="LotNoByIdentifier.rdl" />
+    <Report Include="LotNoByLotNo.rdl" />
+    <Report Include="ManualDiscountPOReport.rdl" />
+    <Report Include="MA_DCCasesShipped.rdl" />
+    <Report Include="MA_DepartmentSalesAnalysis.rdl" />
+    <Report Include="MA_GrossMarginExceptionReport.rdl" />
+    <Report Include="MA_GrossMarginExceptionReportVsMvmt.rdl" />
+    <Report Include="MA_InventoryValueDetail.rdl" />
+    <Report Include="MA_InventoryValueSummary.rdl" />
+    <Report Include="MA_InvoiceManifestReport.rdl" />
+    <Report Include="MA_IRMAEXEChecklist.rdl" />
+    <Report Include="MA_ItemList.rdl" />
+    <Report Include="MA_ItemMasterDownload.rdl" />
+    <Report Include="MA_ItemMasterWithToledo.rdl" />
+    <Report Include="MA_ItemsByVendor.rdl" />
+    <Report Include="MA_ItemStatusList.rdl" />
+    <Report Include="MA_MarginBySubTeam.rdl" />
+    <Report Include="MA_MarginByVendor.rdl" />
+    <Report Include="MA_MassExemptList.rdl" />
+    <Report Include="MA_Master_Inventory_Sheet.rdl" />
+    <Report Include="MA_Movement.rdl" />
+    <Report Include="MA_NotAvailableItems.rdl" />
+    <Report Include="MA_OnHandVendorPack.rdl" />
+    <Report Include="MA_Open_Orders_With_Totals.rdl" />
+    <Report Include="MA_OrderCostChanges.rdl" />
+    <Report Include="MA_OrderGuide.rdl" />
+    <Report Include="MA_PreOrderedQuantity.rdl" />
+    <Report Include="MA_ProductOrderGuide.rdl" />
+    <Report Include="MA_PurchaseOrderReport.rdl" />
+    <Report Include="MA_Specials.rdl" />
+    <Report Include="MA_SpecialsInProgress.rdl" />
+    <Report Include="MA_StoreOrdersTotBySKU.rdl" />
+    <Report Include="MA_StoreVendorMovement.rdl" />
+    <Report Include="MA_ToledoInfoDownload.rdl" />
+    <Report Include="MA_TopMoversDetail.rdl" />
+    <Report Include="MA_VendorItemCount.rdl" />
+    <Report Include="MA_ZeroCostReport.rdl" />
+    <Report Include="MA_ZeroMovementReport.rdl" />
+    <Report Include="Merch Hierarchy.rdl" />
+    <Report Include="MovementFull.rdl" />
+    <Report Include="MovementPromo.rdl" />
+    <Report Include="MW_AdPlanAuditReport.rdl" />
+    <Report Include="MW_AuthorizationReport.rdl" />
+    <Report Include="MW_BatchDetailReport.rdl" />
+    <Report Include="MW_CasesByDepartment.rdl" />
+    <Report Include="MW_CasesByDepartmentAudit.rdl" />
+    <Report Include="MW_DepartmentSalesAnalysis.rdl" />
+    <Report Include="MW_GLSalesReport.rdl" />
+    <Report Include="MW_GLTransferDetailsReport.rdl" />
+    <Report Include="MW_GLTransfersReport.rdl" />
+    <Report Include="MW_GrossMarginAudit.rdl" />
+    <Report Include="MW_GrossMarginExceptionReport.rdl" />
+    <Report Include="MW_GrossMarginExceptionReportVsMvmt.rdl" />
+    <Report Include="MW_InvoiceManifestReport.rdl" />
+    <Report Include="MW_ItemList.rdl" />
+    <Report Include="MW_ItemMasterDownload.rdl" />
+    <Report Include="MW_ItemMasterWithToledo.rdl" />
+    <Report Include="MW_ItemsByVendor.rdl" />
+    <Report Include="MW_ItemsByVendor.rdl" />
+    <Report Include="MW_ItemsListByVendor.rdl" />
+    <Report Include="MW_ItemStatusList.rdl" />
+    <Report Include="MW_MarginBySubTeam.rdl" />
+    <Report Include="MW_MarginByVendor.rdl" />
+    <Report Include="MW_MassExemptList.rdl" />
+    <Report Include="MW_MovementSingleStore.rdl" />
+    <Report Include="MW_NotAvailableItems.rdl" />
+    <Report Include="MW_NotOnFile.rdl" />
+    <Report Include="MW_POS_DEPT_Audit.rdl" />
+    <Report Include="MW_POS_IRMA.rdl" />
+    <Report Include="MW_ProductOrderGuide.rdl" />
+    <Report Include="MW_PurchaseOrderReport.rdl" />
+    <Report Include="MW_Random_Weight_Scale_PLUs.rdl" />
+    <Report Include="MW_Specials.rdl" />
+    <Report Include="MW_SpecialsInProgress.rdl" />
+    <Report Include="MW_StoreOrdersTotBySKU.rdl" />
+    <Report Include="MW_StoreVendorMovement.rdl" />
+    <Report Include="MW_ToledoInfoDownload.rdl" />
+    <Report Include="MW_TopMoversDetail.rdl" />
+    <Report Include="MW_TopMoversSummary.rdl" />
+    <Report Include="MW_Vendor52WeekByDept.rdl" />
+    <Report Include="MW_VendorItemCount.rdl" />
+    <Report Include="MW_VendorListing.rdl" />
+    <Report Include="MW_VendorQuery.rdl" />
+    <Report Include="MW_ZeroMovementReport.rdl" />
+    <Report Include="NA_CasesByDepartment.rdl" />
+    <Report Include="NA_CasesByDepartmentAudit.rdl" />
+    <Report Include="NA_DiscoItemsNotDeleted.rdl" />
+    <Report Include="NA_DiscoNotDeletedNotAuthed.rdl" />
+    <Report Include="NA_ExpiredPriceTypes.rdl" />
+    <Report Include="NA_InvoiceManifestReport.rdl" />
+    <Report Include="NA_ItemList.rdl" />
+    <Report Include="NA_ItemsByVendor.rdl" />
+    <Report Include="NA_ItemsEachandVendorPackGreaterThan1.rdl" />
+    <Report Include="NA_ItemsNoVendor.rdl" />
+    <Report Include="NA_ItemsStoresMultiplePrimaryVendors.rdl" />
+    <Report Include="NA_KitchenFoodTrakExport.rdl" />
+    <Report Include="NA_LinkedItemReport.rdl" />
+    <Report Include="NA_MarginBySubTeam.rdl" />
+    <Report Include="NA_MarginByVendor.rdl" />
+    <Report Include="NA_MassExemptList.rdl" />
+    <Report Include="NA_NotAvailableItems.rdl" />
+    <Report Include="NA_OrdersCreatedAfterInvoice.rdl" />
+    <Report Include="NA_POSTare.rdl" />
+    <Report Include="NA_ProductOrderGuide.rdl" />
+    <Report Include="NA_PurchaseOrderReport.rdl" />
+    <Report Include="NA_Specials.rdl" />
+    <Report Include="NA_SpecialsInProgress.rdl" />
+    <Report Include="NA_StoreItemNoPrimaryVendor.rdl" />
+    <Report Include="NA_StoreOrdersTotBySKU.rdl" />
+    <Report Include="NA_StoreVendorMovement.rdl" />
+    <Report Include="NA_TopMoversDetail.rdl" />
+    <Report Include="NA_X3_Export.rdl" />
+    <Report Include="NA_ZeroMovementReport.rdl" />
+    <Report Include="NC_BatchDetailReport.rdl" />
+    <Report Include="NC_BatchDetailReport.rdl" />
+    <Report Include="NC_CasesByDepartment.rdl" />
+    <Report Include="NC_CasesByDepartmentAudit.rdl" />
+    <Report Include="NC_DepartmentSalesAnalysis.rdl" />
+    <Report Include="NC_DynamicRankTopMovers.rdl" />
+    <Report Include="NC_GrossMarginAudit.rdl" />
+    <Report Include="NC_InStoreSpecialsReport.rdl" />
+    <Report Include="NC_InvoiceManifestReport.rdl" />
+    <Report Include="NC_ItemList.rdl" />
+    <Report Include="NC_ItemPriceHistory.rdl" />
+    <Report Include="NC_ItemsByVendor.rdl" />
+    <Report Include="NC_ItemStatusList.rdl" />
+    <Report Include="NC_MarginAnalysis.rdl" />
+    <Report Include="NC_MarginBySubTeam.rdl" />
+    <Report Include="NC_MarginByVendor.rdl" />
+    <Report Include="NC_MovementByDay.rdl" />
+    <Report Include="NC_NotAvailableItems.rdl" />
+    <Report Include="NC_NotOnFile.rdl" />
+    <Report Include="NC_PO.Closed.rdl" />
+    <Report Include="NC_PO.Movement.rdl" />
+    <Report Include="NC_PricebookReport.rdl" />
+    <Report Include="NC_PurchaseOrderReport.rdl" />
+    <Report Include="NC_Random_Weight_Scale_PLUs.rdl" />
+    <Report Include="NC_Specials.rdl" />
+    <Report Include="NC_SpecialsInProgress.rdl" />
+    <Report Include="NC_StoreVendorMovement.rdl" />
+    <Report Include="NC_TopMoversDetail.rdl" />
+    <Report Include="NC_TopMoversSummary.rdl" />
+    <Report Include="NC_VendorQuery.rdl" />
+    <Report Include="NC_ZeroMovement52WeekReport.rdl" />
+    <Report Include="NC_ZeroMovementReport.rdl" />
+    <Report Include="NE_ItemAttributeQueries.rdl" />
+    <Report Include="NE_ItemList.rdl" />
+    <Report Include="NE_OrdersCreatedAfterInvoice.rdl" />
+    <Report Include="NE_POOpen.rdl" />
+    <Report Include="NoTagReport.rdl" />
+    <Report Include="NutritionExceptions.rdl" />
+    <Report Include="OpenOrdersDetailReport.rdl" />
+    <Report Include="OpenOrdersReport.rdl" />
+    <Report Include="OpenOrdersReportNOIDNORD.rdl" />
+    <Report Include="OrderImportExceptionsDetail.rdl" />
+    <Report Include="OrderInvoice.rdl" />
+    <Report Include="OrderItemQueueReport.rdl" />
+    <Report Include="OutOfPeriodInv.rdl" />
+    <Report Include="Paid by Agreed Cost Post Payment Discrepancy Resolution.rdl" />
+    <Report Include="Partial Shipment Report.rdl" />
+    <Report Include="PerpetualMovementReport.rdl" />
+    <Report Include="PirisAudit.rdl" />
+    <Report Include="PN_BatchDetailReport.rdl" />
+    <Report Include="PN_CasesByDepartment.rdl" />
+    <Report Include="PN_CasesByDepartmentAudit.rdl" />
+    <Report Include="PN_DepartmentSalesAnalysis.rdl" />
+    <Report Include="PN_DynamicRankTopMovers.rdl" />
+    <Report Include="PN_InvoiceManifestReport.rdl" />
+    <Report Include="PN_ItemList.rdl" />
+    <Report Include="PN_ItemMasterDownload.rdl" />
+    <Report Include="PN_ItemMasterWithToledo.rdl" />
+    <Report Include="PN_ItemsByVendor.rdl" />
+    <Report Include="PN_ItemStatusList.rdl" />
+    <Report Include="PN_MarginByVendor.rdl" />
+    <Report Include="PN_MovementSingleStore.rdl" />
+    <Report Include="PN_NotAvailableItems.rdl" />
+    <Report Include="PN_NotOnFile.rdl" />
+    <Report Include="PN_PricebookReport.rdl" />
+    <Report Include="PN_ProductOrderGuide.rdl" />
+    <Report Include="PN_PurchaseOrderReport.rdl" />
+    <Report Include="PN_Random_Weight_Scale_PLUs.rdl" />
+    <Report Include="PN_Specials.rdl" />
+    <Report Include="PN_SpecialsInProgress.rdl" />
+    <Report Include="PN_StoreVendorMovement.rdl" />
+    <Report Include="PN_ToledoInfoDownload.rdl" />
+    <Report Include="PN_TopMoversDetail.rdl" />
+    <Report Include="PN_TopMoversSummary.rdl" />
+    <Report Include="PN_VendorItemCount.rdl" />
+    <Report Include="PN_VendorListing.rdl" />
+    <Report Include="PN_VendorQuery.rdl" />
+    <Report Include="PN_ZeroMovement52WeekReport.rdl" />
+    <Report Include="PN_ZeroMovementReport.rdl" />
+    <Report Include="PO Admin Reason Codes in SPOT.rdl" />
+    <Report Include="PO Fulfillment Report - eInvoice Quantity less than Ordered Quantity.rdl" />
+    <Report Include="PO Fulfillment Report Detail By Vendor.rdl" />
+    <Report Include="PO Fulfillment Report Summary By Vendor.rdl" />
+    <Report Include="PO Fulfillment Report Summary.rdl" />
+    <Report Include="PO Item Level Refusal Code.rdl" />
+    <Report Include="PO Refusal Code.rdl" />
+    <Report Include="POAccuracy.rdl" />
+    <Report Include="PODateComparisonReport.rdl" />
+    <Report Include="POExceptionReport.rdl" />
+    <Report Include="PostAlocInventoryWeeklyHistoryRpt.rdl" />
+    <Report Include="POS_IRMA.rdl" />
+    <Report Include="PreAlocInventoryWeeklyHistoryRpt.rdl" />
+    <Report Include="PriceChangeEventReport.rdl" />
+    <Report Include="ProductOrderGuide.rdl" />
+    <Report Include="PurchaseAccrualReport.rdl" />
+    <Report Include="PurchaseOrderReport.rdl" />
+    <Report Include="PurchaseOrderReportBarcodes.rdl" />
+    <Report Include="PurchasesSummary.rdl" />
+    <Report Include="PurchaseToSalesReportDetail.rdl" />
+    <Report Include="PurchaseToSalesReportSummary.rdl" />
+    <Report Include="PurchToSalesComp.rdl" />
+    <Report Include="ReasonCodeDetail.rdl" />
+    <Report Include="ReasonCodeOnPO.rdl" />
+    <Report Include="Received Not Closed.rdl" />
+    <Report Include="ReceivingDocuments.rdl" />
+    <Report Include="ReceivingLog.rdl" />
+    <Report Include="RefusedItemDetail.rdl" />
+    <Report Include="RefusedItemSummary.rdl" />
+    <Report Include="RefusedPOsReport.rdl" />
+    <Report Include="RefusedPOsReport.rdl" />
+    <Report Include="RegionalVendorMovement.rdl" />
+    <Report Include="RegionSalesCompByDayTWLW.rdl" />
+    <Report Include="RegionSalesCompByDayTWLY.rdl" />
+    <Report Include="RegionSalesCompByWeek.rdl" />
+    <Report Include="RegionSalesCompTrend.rdl" />
+    <Report Include="RetailPriceGuides.rdl" />
+    <Report Include="RGISExtract.rdl" />
+    <Report Include="RipeInvoice.rdl" />
+    <Report Include="RM_BERTReport.rdl" />
+    <Report Include="RM_CasesByDepartment.rdl" />
+    <Report Include="RM_CasesByDepartmentAudit.rdl" />
+    <Report Include="RM_CommodityCodeDatesCompare.rdl" />
+    <Report Include="RM_CommodityCodeMovementSummary.rdl" />
+    <Report Include="RM_DepartmentSalesAnalysis.rdl" />
+    <Report Include="RM_DynamicRankTopMovers.rdl" />
+    <Report Include="RM_GrossMarginAudit.rdl" />
+    <Report Include="RM_GrossMarginExceptionReport.rdl" />
+    <Report Include="RM_GrossMarginExceptionReportVsMvmt.rdl" />
+    <Report Include="RM_InvoiceManifestReport.rdl" />
+    <Report Include="RM_ItemList.rdl" />
+    <Report Include="RM_ItemMasterDownload.rdl" />
+    <Report Include="RM_ItemMasterWithToledo.rdl" />
+    <Report Include="RM_ItemsByVendor.rdl" />
+    <Report Include="RM_ItemStatusList.rdl" />
+    <Report Include="RM_MarginBySubTeam.rdl" />
+    <Report Include="RM_MarginByVendor.rdl" />
+    <Report Include="RM_MassExemptList.rdl" />
+    <Report Include="RM_MovementByDay.rdl" />
+    <Report Include="RM_NotAvailableItems.rdl" />
+    <Report Include="RM_ProductOrderGuide.rdl" />
+    <Report Include="RM_PurchaseOrderReport.rdl" />
+    <Report Include="RM_Specials.rdl" />
+    <Report Include="RM_SpecialsInProgress.rdl" />
+    <Report Include="RM_StoreVendorMovement.rdl" />
+    <Report Include="RM_ToledoInfoDownload.rdl" />
+    <Report Include="RM_TopMoversDetail.rdl" />
+    <Report Include="RM_TopMoversSummary.rdl" />
+    <Report Include="RM_VendorItemCount.rdl" />
+    <Report Include="RM_ZeroMovement52WeekReport.rdl" />
+    <Report Include="RM_ZeroMovementReport.rdl" />
+    <Report Include="rptImportSummary.rdl" />
+    <Report Include="rptUnmappedItems.rdl" />
+    <Report Include="Shippers.rdl" />
+    <Report Include="ShortReport.rdl" />
+    <Report Include="Shrink.rdl" />
+    <Report Include="SOG_PrintCatalog.rdl" />
+    <Report Include="SOG_PrintCatalogs.rdl" />
+    <Report Include="SORipe_PurchaseOrderReport.rdl" />
+    <Report Include="SO_InventoryValueDetail.rdl" />
+    <Report Include="SO_InventoryValueSummary.rdl" />
+    <Report Include="Specials.rdl" />
+    <Report Include="SpecialsInProgress.rdl" />
+    <Report Include="SP_InvoiceManifestReport.rdl" />
+    <Report Include="SP_ItemList.rdl" />
+    <Report Include="SP_ItemsByVendor.rdl" />
+    <Report Include="SP_MarginBySubTeam.rdl" />
+    <Report Include="SP_MarginByVendor.rdl" />
+    <Report Include="SP_NotAvailableItems.rdl" />
+    <Report Include="SP_PriceBookByTeam.rdl" />
+    <Report Include="SP_ProductOrderGuide.rdl" />
+    <Report Include="SP_PurchaseOrderReport.rdl" />
+    <Report Include="SP_Specials.rdl" />
+    <Report Include="SP_SpecialsInProgress.rdl" />
+    <Report Include="SP_StoreOrdersTotBySKU.rdl" />
+    <Report Include="SP_StoreVendorMovement.rdl" />
+    <Report Include="SP_TopMoversDetail.rdl" />
+    <Report Include="SP_TopMoversSummary.rdl" />
+    <Report Include="SP_ZeroMovementReport.rdl" />
+    <Report Include="StoreInventoryByUnits.rdl" />
+    <Report Include="StoreOrders.rdl" />
+    <Report Include="StoreVendorMovement.rdl" />
+    <Report Include="SubTeamShrink.rdl" />
+    <Report Include="SuspendedOrderReport.rdl" />
+    <Report Include="SW_ ZeroMovementReport.rdl" />
+    <Report Include="SW_BERTReport.rdl" />
+    <Report Include="SW_CasesByDepartment.rdl" />
+    <Report Include="SW_CasesByDepartmentAudit.rdl" />
+    <Report Include="SW_CommodityCodeDatesCompare.rdl" />
+    <Report Include="SW_CommodityCodeMovementSummary.rdl" />
+    <Report Include="SW_DepartmentSalesAnalysis.rdl" />
+    <Report Include="SW_DynamicRankTopMovers.rdl" />
+    <Report Include="SW_GrossMarginAudit.rdl" />
+    <Report Include="SW_GrossMarginExceptionReport.rdl" />
+    <Report Include="SW_GrossMarginExceptionReportVsMvmt.rdl" />
+    <Report Include="SW_ItemList.rdl" />
+    <Report Include="SW_ItemMasterDownload.rdl" />
+    <Report Include="SW_ItemMasterWithToledo.rdl" />
+    <Report Include="SW_ItemsByVendor.rdl" />
+    <Report Include="SW_ItemStatusList.rdl" />
+    <Report Include="SW_MarginBySubTeam.rdl" />
+    <Report Include="SW_MarginByVendor.rdl" />
+    <Report Include="SW_MassExemptList.rdl" />
+    <Report Include="SW_MovementByDay.rdl" />
+    <Report Include="SW_NotAvailableItems.rdl" />
+    <Report Include="SW_ProductOrderGuide.rdl" />
+    <Report Include="SW_PurchaseOrderReport.rdl" />
+    <Report Include="SW_RetailGuide.rdl" />
+    <Report Include="SW_Specials.rdl" />
+    <Report Include="SW_SpecialsInProgress.rdl" />
+    <Report Include="SW_StoreVendorMovement.rdl" />
+    <Report Include="SW_ToledoInfoDownload.rdl" />
+    <Report Include="SW_TopMoversDetail.rdl" />
+    <Report Include="SW_TopMoversSummary.rdl" />
+    <Report Include="SW_UseTaxQuery.rdl" />
+    <Report Include="SW_VendorItemCount.rdl" />
+    <Report Include="SW_ZeroMovement52WeekReport.rdl" />
+    <Report Include="SW_ZeroMovementReport.rdl" />
+    <Report Include="Top 20 Items for All Sub Team.rdl" />
+    <Report Include="TopMoversDetail.rdl" />
+    <Report Include="TopMoversSummary.rdl" />
+    <Report Include="TransactionHistoryReport.rdl" />
+    <Report Include="UK_CasesByDepartment.rdl" />
+    <Report Include="UK_CasesByDepartmentAudit.rdl" />
+    <Report Include="UK_CostAuditReport.rdl" />
+    <Report Include="UK_GLSalesReport.rdl" />
+    <Report Include="UK_GLTransferDetailsReport.rdl" />
+    <Report Include="UK_GLTransfersReport.rdl" />
+    <Report Include="UK_InvoiceManifestReport.rdl" />
+    <Report Include="UK_ItemList.rdl" />
+    <Report Include="UK_ItemsByVendor.rdl" />
+    <Report Include="UK_MarginBySubTeam.rdl" />
+    <Report Include="UK_MarginByVendor.rdl" />
+    <Report Include="UK_MediumDairyFreeRegular.rdl" />
+    <Report Include="UK_MediumGlutenFreeRegular.rdl" />
+    <Report Include="UK_MediumNew.rdl" />
+    <Report Include="UK_MediumPrivateLabelRegular.rdl" />
+    <Report Include="UK_MediumPromo.rdl" />
+    <Report Include="UK_MediumRegular.rdl" />
+    <Report Include="UK_MediumRegularAll.rdl" />
+    <Report Include="UK_MediumSigns_Batch.rdl" />
+    <Report Include="UK_MediumSigns_New.rdl" />
+    <Report Include="UK_NotAvailableItems.rdl" />
+    <Report Include="UK_OpenOrdersDetailReport.rdl" />
+    <Report Include="UK_OpenOrdersReport.rdl" />
+    <Report Include="UK_OpenOrdersReport.rdl" />
+    <Report Include="UK_ProductOrderGuide.rdl" />
+    <Report Include="UK_ReceivingLog.rdl" />
+    <Report Include="UK_SmallDairyFreeRegular.rdl" />
+    <Report Include="UK_SmallGlutenFreeRegular.rdl" />
+    <Report Include="UK_SmallNew.rdl" />
+    <Report Include="UK_SmallPrivateLabelRegular.rdl" />
+    <Report Include="UK_SmallPromo.rdl" />
+    <Report Include="UK_SmallRegular.rdl" />
+    <Report Include="UK_SmallRegularAll.rdl" />
+    <Report Include="UK_SmallSigns.rdl" />
+    <Report Include="UK_Specials.rdl" />
+    <Report Include="UK_SpecialsInProgress.rdl" />
+    <Report Include="UK_StoreVendorMovement.rdl" />
+    <Report Include="UK_TopMoversDetail.rdl" />
+    <Report Include="UK_TopMoversSummary.rdl" />
+    <Report Include="UK_WarehouseMovement.rdl" />
+    <Report Include="UK_WasteReport.rdl" />
+    <Report Include="UK_ZeroCostReport.rdl" />
+    <Report Include="UK_ZeroMovementReport.rdl" />
+    <Report Include="UPCCostAudit.rdl" />
+    <Report Include="WarehouseMovement.rdl" />
+    <Report Include="WarehouseOutOfStock.rdl" />
+    <Report Include="Waste.rdl" />
+    <Report Include="WeeklyPurchasesSalesSummary.rdl" />
+    <Report Include="ZeroCostItemsReport.rdl" />
+    <Report Include="ZeroMovementReport.rdl" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
 </Project>
