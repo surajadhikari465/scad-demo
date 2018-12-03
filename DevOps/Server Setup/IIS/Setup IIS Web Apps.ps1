@@ -13,16 +13,23 @@
 
 $PreviewMode = $false
 
-$appPoolDefinitionList = Get-Content "\\irmaqafile\e$\IRMA\Staging\docs\Projects\IIS Web App Setup\App Pool Defs.Dev.tsv"
+$gitRootFolder = "c:\tlux\dev\git\Icon"
+$scriptFolder = "$gitRootFolder\DevOps\Server Setup\IIS"
+
+$outputBreak = "---------------------------------------------------------------------"
+
+########################################################################################################################################
+
+$appPoolDefinitionList = Get-Content "$scriptFolder\App Pool Defs.Dev.tsv"
 $appPoolDefs = $appPoolDefinitionList.Split("`n")
 
-$appDefinitionList = Get-Content "\\irmaqafile\e$\IRMA\Staging\docs\Projects\IIS Web App Setup\IIS Web App Defs.Dev.tsv"
+$appDefinitionList = Get-Content "$scriptFolder\IIS Web App Defs.Dev.tsv"
 $webAppDefs = $appDefinitionList.Split("`n")
 
-$legacyAppDefinitionList = Get-Content "\\irmaqafile\e$\IRMA\Staging\docs\Projects\IIS Web App Setup\Legacy IIS Web App Defs.tsv"
+$legacyAppDefinitionList = Get-Content "$scriptFolder\Legacy IIS Web App Defs.tsv"
 $legacyWebAppDefs = $legacyAppDefinitionList.Split("`n")
 
-$webServersText = Get-Content "\\irmaqafile\e$\IRMA\Staging\docs\Projects\IIS Web App Setup\Web Server List.Dev"
+$webServersText = Get-Content "$scriptFolder\Web Server List.Dev"
 $webServers = @("IRMADevWeb01")#$webServersText.Split("`n")
 
 #######################################################################################
@@ -56,7 +63,8 @@ Foreach ($webServer in $webServers)
 
     Invoke-Command -ComputerName $webSvr -ScriptBlock {
         param($poolDefs, $appDefs, $legAppDefs, $r_previewMode)
-    
+        $outputBreak = "---------------------------------------------------------------------"
+
         # Import WebAdministration to use IIS commandlets.
         # Depending on the server, one of the following module loads should work.
         # **Disabling ps-snapin cmd because import-module should work on our new web servers.
@@ -72,14 +80,25 @@ Foreach ($webServer in $webServers)
         cd IIS:\AppPools\
 
         foreach($poolDef in $poolDefs){
-
+            $outputBreak
             $poolAttributeList = $poolDef.Split("`t")
             $poolName = $poolAttributeList[0]
             $poolDotNetVersion = $poolAttributeList[1]
             $username = $poolAttributeList[2]
             $password = $poolAttributeList[3]
+            $extProperty = $poolAttributeList[4]
 
-            "Creating app pool '$poolName' for user '$username' and .NET '$poolDotNetVersion'..."
+            $hasExtProp = $false
+            # Check if field has equals sign, which means there's an extended attribute defined.
+            if($extProperty -like "*=*"){
+                $hasExtProp = $true
+                $extProp = $extProperty.Split("=")
+                $extPropName = $extProp[0]
+                $extPropValue = $extProp[1]
+                $extPropMsg = " and extended property '$extPropName=$extPropValue'"
+            }
+
+            "Creating app pool '$poolName' for user '$username' and .NET '$poolDotNetVersion'$extPropMsg..."
         
             if(!(Test-Path $poolName -pathType container))
             {
@@ -112,6 +131,11 @@ Foreach ($webServer in $webServers)
             } else {
                 Write-Host -ForegroundColor yellow ("**App pool [" + $poolName + "] already exists.")
             }
+
+            if($hasExtProp){
+                "Setting pool extended property: $extProp"
+                Set-ItemProperty ("IIS:\AppPools\$poolName") -Name $extPropName -Value $extPropValue
+            }
         }
         
         ################################################
@@ -120,7 +144,7 @@ Foreach ($webServer in $webServers)
         cd IIS:\Sites\
 
         foreach($appDef in $appDefs){
-
+            $outputBreak
             $appAttributeList = $appDef.Split("`t")
             $appName = $appAttributeList[0]
             $dnsName = $appAttributeList[1]
@@ -153,7 +177,7 @@ Foreach ($webServer in $webServers)
         # Setup legacy apps under sites
         ################################################
         foreach($legDef in $legAppDefs){
-
+            $outputBreak
             $legacyAppDefinitionList = $legDef.Split("`t")
             $appName = $legacyAppDefinitionList[0]
             $siteName = $legacyAppDefinitionList[1]
