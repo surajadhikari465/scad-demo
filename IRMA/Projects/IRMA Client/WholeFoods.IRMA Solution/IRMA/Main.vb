@@ -2461,13 +2461,13 @@ me_exit:
         logger.Debug("ViewClientLogFileToolStripMenuItem_Click exit")
     End Sub
 
-    Private Sub ManageRetentionPoliciesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuAdministration_SystemConfiguration_ManageRetentionPolicies.Click
-        logger.Debug("ManageRetentionPoliciesToolStripMenuItem_Click entry")
-        frmRetentionPolicyList.ShowDialog()
-        logger.Debug("ManageRetentionPoliciesToolStripMenuItem_Click exit")
-    End Sub
+  Private Sub ManageRetentionPoliciesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuAdministration_SystemConfiguration_ManageRetentionPolicies.Click
+    Using form As frmRetentionPolicyList = New frmRetentionPolicyList()
+      form.ShowDialog()
+    End Using
+  End Sub
 
-    Private Sub mnuData_CancelAllSales_Click(sender As Object, e As EventArgs) Handles mnuData_CancelAllSales.Click
+  Private Sub mnuData_CancelAllSales_Click(sender As Object, e As EventArgs) Handles mnuData_CancelAllSales.Click
         logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click entry")
         CancelSalesMultipleItems.ShowDialog()
         logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click exit")

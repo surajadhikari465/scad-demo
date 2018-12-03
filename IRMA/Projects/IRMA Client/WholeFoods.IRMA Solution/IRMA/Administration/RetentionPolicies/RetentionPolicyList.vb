@@ -5,15 +5,22 @@ Imports WholeFoods.Utility.DataAccess
 
 Friend Class frmRetentionPolicyList
   Inherits System.Windows.Forms.Form
+  Implements IDisposable
 
-  Private RetentionPolicyTable As DataTable
+  Private RetentionPolicyTable As DataTable = Nothing
   Private Const StraightPugeJob As String = "StraightPurge"
 
-  Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
-    Me.Close()
+  Private Sub form_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    ClearAndRefresh()
   End Sub
 
-  Private Sub frmRetentionPolicyList_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles MyBase.KeyPress
+  Public Overloads Sub Dispose() Implements IDisposable.Dispose
+    RetentionPolicyTable = Nothing
+    Dispose(True)
+    GC.SuppressFinalize(Me)
+  End Sub
+
+  Private Sub form_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles MyBase.KeyPress
     Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
     If KeyAscii = 13 Then 'Shift+Enter.
@@ -24,14 +31,14 @@ Friend Class frmRetentionPolicyList
     eventArgs.Handled = (KeyAscii = 0)
   End Sub
 
+  Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+    Me.Close()
+  End Sub
+
   Private Sub ClearAndRefresh() 'Clear Search Criteria
     cboTable.SelectedIndex = -1
     CheckBox_IncludedInDailyPurge.Checked = False
     RefreshGrid()
-  End Sub
-
-  Private Sub frmRetentionPolicyList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-    ClearAndRefresh()
   End Sub
 
   Private Sub RefreshGrid(Optional bForce As Boolean = False)
@@ -124,15 +131,20 @@ Friend Class frmRetentionPolicyList
     If RetentionPolicyTable Is Nothing Then Return
 
     Dim id As Integer = -1
+    Dim bRefresh As Boolean = False
 
     If sender Is cmdEdit AndAlso ugrdRetentionPolicy.Selected.Rows.Count > 0 Then
       id = CInt(ugrdRetentionPolicy.Selected.Rows(0).Cells("RetentionPolicyId").Value)
     End If
 
-    frmRetentionPolicies.Load_Form(RetentionPolicyTable, id)
-    Dim bRefresh As Boolean = frmRetentionPolicies.IsUpdated
-    frmRetentionPolicies.Dispose()
-
-    If bRefresh Then RefreshGrid(True) 'Refresh grid when actual changes has been done.
+    Try
+      Using form As frmRetentionPolicies = New frmRetentionPolicies(RetentionPolicyTable, id)
+        form.ShowDialog()
+        bRefresh = form.IsUpdated
+      End Using
+      If bRefresh Then RefreshGrid(True) 'Refresh grid when actual changes has been done.
+    Catch ex As Exception
+      MessageBox.Show(ex.Message, "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    End Try
   End Sub
 End Class

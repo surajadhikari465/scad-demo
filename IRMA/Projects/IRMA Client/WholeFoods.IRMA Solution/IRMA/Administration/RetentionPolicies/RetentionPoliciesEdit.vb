@@ -4,6 +4,7 @@ Imports WholeFoods.Utility.DataAccess
 
 Friend Class frmRetentionPolicies
   Inherits System.Windows.Forms.Form
+  Implements IDisposable
 
   Private action As ActionName
   Private bUpdated As Boolean = False
@@ -26,7 +27,25 @@ Friend Class frmRetentionPolicies
     Update
   End Enum
 
-  Private Sub frmRetentionPoliciesEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+  Public Sub New(ByRef sourceDataTable As DataTable, ByVal retentionID As Integer)
+    If sourceDataTable Is Nothing Then Throw New ArgumentNullException("Required parameter <sourceDataTable> is missing.")
+
+    dataSource = sourceDataTable
+    Dim result As DataRow() = dataSource.Select(String.Format("RetentionPolicyId = {0}", retentionID.ToString()))
+
+    action = IIf(result.Length = 0, ActionName.Add, ActionName.Update)
+
+    Select Case action
+      Case ActionName.Add : policyDataRow = dataSource.NewRow
+      Case ActionName.Update : policyDataRow = result(0)
+      Case Else : Throw New Exception("Unsupported action")
+    End Select
+
+    factory = New DataFactory(DataFactory.ItemCatalog)
+    InitializeComponent()
+  End Sub
+
+  Private Sub form_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
     mbLoading = True
 
     If action = ActionName.Add Then
@@ -59,22 +78,10 @@ Friend Class frmRetentionPolicies
     mbLoading = False
   End Sub
 
-  Public Sub Load_Form(ByRef sourceDataTable As DataTable, ByVal retentionID As Integer)
-    If sourceDataTable Is Nothing Then Throw New ArgumentNullException("Required parameter <sourceDataTable> is missing.")
-
-    dataSource = sourceDataTable
-    Dim result As DataRow() = dataSource.Select(String.Format("RetentionPolicyId = {0}", retentionID.ToString()))
-
-    action = IIf(result.Length = 0, ActionName.Add, ActionName.Update)
-
-    Select Case action
-      Case ActionName.Add : policyDataRow = dataSource.NewRow
-      Case ActionName.Update : policyDataRow = result(0)
-      Case Else : Throw New Exception("Unsupported action")
-    End Select
-
-    factory = New DataFactory(DataFactory.ItemCatalog)
-    Me.ShowDialog()
+  Public Overloads Sub Dispose() Implements IDisposable.Dispose
+    factory = Nothing
+    Dispose(True)
+    GC.SuppressFinalize(Me)
   End Sub
 
   Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
@@ -85,7 +92,7 @@ Friend Class frmRetentionPolicies
       End Select
     End If
 
-    Me.Close()
+    Close()
   End Sub
 
   Private Sub LoadJobs()
