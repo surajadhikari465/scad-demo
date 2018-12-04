@@ -682,6 +682,7 @@
     <None Include="Scripts\PopulateData\Archive\AddVenueLocaleType.sql" />
     <None Include="Scripts\PopulateData\Archive\AddIrmaItemKeyTraitCodes.sql" />
     <None Include="Scripts\PopulateData\Archive\AddHospitalityAndEstoreTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\StashDataForNewSignAttributeColumns.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

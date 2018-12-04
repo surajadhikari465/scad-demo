@@ -1,41 +1,49 @@
-﻿declare @scriptKey varchar(128)
+﻿-- PBI 29201: As GDT I want hardcoding removed for several attributes in Icon 
+--  - Remove old columns from ItemSignAttribute table (must be last PBI in series)
+-- (PBI 29184 - As GDT I want enumeration removed for several attributes in Icon - Add New Columns to Database)
+-- Pull Requests related to this: 1397, 1399, 1400, 1402, 1405, 1422
 
--- PBI 29184 - As GDT I want enumeration removed for several attributes in Icon - Add New Columns to Database
-set @scriptKey = 'PopulateNewItemSignAttributeColumnsWithExistingData'
+DECLARE @scriptKey VARCHAR(128)= 'PopulateNewItemSignAttributeColumnsWithExistingData'
 
-IF(NOT exists(Select * from app.PostDeploymentScriptHistory where ScriptKey = @scriptKey))
+IF (not exists(SELECT * FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN
+	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + @scriptKey;
 
-	-- Populate the new columns with values from old columns using a post deploy script
-	UPDATE dbo.ItemSignAttribute  
-	SET AnimalWelfareRating = awr.[Description]
-	FROM dbo.AnimalWelfareRating awr
-		INNER JOIN dbo.ItemSignAttribute isa on isa.AnimalWelfareRatingId = awr.AnimalWelfareRatingId		
+	-- Populate the new columns in the ItemSignAttribute table from values stored 
+	--   in the temporary staging table during pre-deploy	
+	UPDATE dbo.ItemSignAttribute SET AnimalWelfareRating = t.AnimalWelfareRating
+	FROM stage.tempItemSignAttribute t
+	WHERE dbo.ItemSignAttribute.ItemSignAttributeID = t.ItemSignAttributeID and t.AnimalWelfareRating is not null
 
-	UPDATE dbo.ItemSignAttribute  
-	SET MilkType = mt.[Description]
-	FROM dbo.MilkType mt
-		INNER JOIN dbo.ItemSignAttribute isa on isa.CheeseMilkTypeId = mt.MilkTypeId
+	UPDATE dbo.ItemSignAttribute SET MilkType = t.MilkType
+	FROM stage.tempItemSignAttribute t
+	WHERE dbo.ItemSignAttribute.ItemSignAttributeID = t.ItemSignAttributeID and t.MilkType is not null
 
-	UPDATE dbo.ItemSignAttribute  
-	SET EcoScaleRating = esr.[Description]
-	FROM dbo.EcoScaleRating esr
-		INNER JOIN dbo.ItemSignAttribute isa on isa.EcoScaleRatingId = esr.EcoScaleRatingId
+	UPDATE dbo.ItemSignAttribute SET EcoScaleRating = t.EcoScaleRating
+	FROM stage.tempItemSignAttribute t
+	WHERE dbo.ItemSignAttribute.ItemSignAttributeID = t.ItemSignAttributeID and t.EcoScaleRating is not null
 
-	UPDATE dbo.ItemSignAttribute  
-	SET FreshOrFrozen = sff.[Description]
-	FROM dbo.SeafoodFreshOrFrozen sff
-		INNER JOIN dbo.ItemSignAttribute isa on isa.SeafoodFreshOrFrozenId = sff.SeafoodFreshOrFrozenId
+	UPDATE dbo.ItemSignAttribute SET FreshOrFrozen = t.FreshOrFrozen
+	FROM stage.tempItemSignAttribute t
+	WHERE dbo.ItemSignAttribute.ItemSignAttributeID = t.ItemSignAttributeID and t.FreshOrFrozen is not null
 
-	UPDATE dbo.ItemSignAttribute  
-	SET SeafoodCatchType = sct.[Description]
-	FROM dbo.SeafoodCatchType sct
-		INNER JOIN dbo.ItemSignAttribute isa on isa.SeafoodCatchTypeId = sct.SeafoodCatchTypeId
+	UPDATE dbo.ItemSignAttribute SET SeafoodCatchType = t.SeafoodCatchType
+	FROM stage.tempItemSignAttribute t
+	WHERE dbo.ItemSignAttribute.ItemSignAttributeID = t.ItemSignAttributeID and t.SeafoodCatchType is not null
+	
+	-- dispose of the table used for temporarily storing data between the pre- and post-deploy
+	IF EXISTS(
+		SELECT *
+		FROM sys.tables t join sys.schemas s ON (t.schema_id = s.schema_id)
+		WHERE s.name = 'stage' and t.name = 'tempItemSignAttribute')
+	BEGIN
+		DROP TABLE stage.tempItemSignAttribute
+	END
 
-	insert into app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@scriptKey, GETDATE())
+	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE())
 END
 ELSE
 BEGIN
-	print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @scriptKey
+	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @scriptKey
 END
 GO

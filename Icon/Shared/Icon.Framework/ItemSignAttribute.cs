@@ -16,11 +16,8 @@ namespace Icon.Framework
     {
         public int ItemSignAttributeID { get; set; }
         public int ItemID { get; set; }
-        public Nullable<int> AnimalWelfareRatingId { get; set; }
         public bool Biodynamic { get; set; }
-        public Nullable<int> CheeseMilkTypeId { get; set; }
         public bool CheeseRaw { get; set; }
-        public Nullable<int> EcoScaleRatingId { get; set; }
         public string GlutenFreeAgencyName { get; set; }
         public Nullable<int> HealthyEatingRatingId { get; set; }
         public string KosherAgencyName { get; set; }
@@ -28,8 +25,6 @@ namespace Icon.Framework
         public string NonGmoAgencyName { get; set; }
         public string OrganicAgencyName { get; set; }
         public bool PremiumBodyCare { get; set; }
-        public Nullable<int> SeafoodFreshOrFrozenId { get; set; }
-        public Nullable<int> SeafoodCatchTypeId { get; set; }
         public string VeganAgencyName { get; set; }
         public bool Vegetarian { get; set; }
         public bool WholeTrade { get; set; }

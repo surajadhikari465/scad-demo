@@ -13,7 +13,7 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01 PBI 12345
 */
 
-:r .\Scripts\PopulateData\PopulateNewItemSignAttributeColumnsWithExistingData.sql -- 11/27/2018 PBI 29184
+:r .\Scripts\PopulateData\PopulateNewItemSignAttributeColumnsWithExistingData.sql -- 12/03/2018 PBI 29201 / 29184
 
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

@@ -858,11 +858,8 @@
           </Key>
           <Property Name="ItemSignAttributeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="AnimalWelfareRatingId" Type="int" />
           <Property Name="Biodynamic" Type="bit" Nullable="false" />
-          <Property Name="CheeseMilkTypeId" Type="int" />
           <Property Name="CheeseRaw" Type="bit" Nullable="false" />
-          <Property Name="EcoScaleRatingId" Type="int" />
           <Property Name="GlutenFreeAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="HealthyEatingRatingId" Type="int" />
           <Property Name="KosherAgencyName" Type="nvarchar" MaxLength="255" />
@@ -870,8 +867,6 @@
           <Property Name="NonGmoAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="OrganicAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="PremiumBodyCare" Type="bit" Nullable="false" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="int" />
-          <Property Name="SeafoodCatchTypeId" Type="int" />
           <Property Name="VeganAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="Vegetarian" Type="bit" Nullable="false" />
           <Property Name="WholeTrade" Type="bit" Nullable="false" />
@@ -5914,11 +5909,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </Key>
           <Property Name="ItemSignAttributeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="AnimalWelfareRatingId" Type="Int32" />
           <Property Name="Biodynamic" Type="Boolean" Nullable="false" />
-          <Property Name="CheeseMilkTypeId" Type="Int32" />
           <Property Name="CheeseRaw" Type="Boolean" Nullable="false" />
-          <Property Name="EcoScaleRatingId" Type="Int32" />
           <Property Name="GlutenFreeAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="HealthyEatingRatingId" Type="Int32" />
           <Property Name="KosherAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -5926,8 +5918,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PremiumBodyCare" Type="Boolean" Nullable="false" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
-          <Property Name="SeafoodCatchTypeId" Type="Int32" />
           <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Vegetarian" Type="Boolean" Nullable="false" />
           <Property Name="WholeTrade" Type="Boolean" Nullable="false" />
@@ -7338,8 +7328,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
                 <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
                 <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
                 <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
                 <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
                 <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
@@ -7347,11 +7335,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="KosherAgencyName" ColumnName="KosherAgencyName" />
                 <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
                 <ScalarProperty Name="GlutenFreeAgencyName" ColumnName="GlutenFreeAgencyName" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
                 <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
-                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
                 <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="ItemSignAttributeID" ColumnName="ItemSignAttributeID" />
               </MappingFragment>
