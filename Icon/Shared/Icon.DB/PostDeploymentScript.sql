@@ -14,6 +14,7 @@ EXAMPLE (showing Icon-DB scripts path):
 */
 
 :r .\Scripts\PopulateData\PopulateNewItemSignAttributeColumnsWithExistingData.sql -- 12/03/2018 PBI 29201 / 29184
+:r .\Scripts\PopulateData\UpdateAnimalWelfareTraitPattern.sql -- 12/04/2018 BUG 30597
 
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql
