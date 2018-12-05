@@ -18,6 +18,7 @@ namespace Icon.ApiController.Common
         public string NonReceivingSystemsProduct { get; set; }
         public string NonReceivingSystemsHierarchy { get; set; }
         public bool EnableNationalHierarchy { get; set; }
+        public bool UseSchemaWithKit { get; set; }
 
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
         {
@@ -34,7 +35,8 @@ namespace Icon.ApiController.Common
                 NonReceivingSystemsPrice = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsPrice", false),
                 NonReceivingSystemsProduct = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsProduct", false),
                 NonReceivingSystemsHierarchy = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsHierarchy", false),
-                EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy), false)
+                EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy), false),
+                UseSchemaWithKit = AppSettingsAccessor.GetBoolSetting(nameof(UseSchemaWithKit), false)
             };
         }
     }

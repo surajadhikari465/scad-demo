@@ -166,17 +166,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                             typeIdSpecified = true,
                                             typeDescription = message.ScanCodeTypeDesc
                                         }
-                                    },
-                                    kit = new Contracts.KitType
-                                    {
-                                       kitItem =  new Contracts.KitTypeKitItem
-                                        {
-                                            kitchenItem = (bool)message.KitchenItem,
-                                            kitchenDescription = message.KitchenDescription,
-                                            imageUrl = message.ImageURL,
-                                            hospitalityItem = (bool)message.HospitalityItem
-                                        }
-                                    },
+                                    }, 
                                     hierarchies = new Contracts.HierarchyType[]
                                     {
                                         BuildMerchandiseHierarchy(message),
@@ -232,16 +222,16 @@ namespace Icon.ApiController.Controller.QueueReaders
                         Action = Contracts.ActionEnum.AddOrUpdate,
                         ActionSpecified = true,
                         id = message.ItemId,
-                      @base = new Contracts.BaseItemType
-                      {
-                        type = new Contracts.ItemTypeType
+                        @base = new Contracts.BaseItemType
                         {
-                          code = message.ItemTypeCode,
-                          description = message.ItemTypeDesc
+                            type = new Contracts.ItemTypeType
+                            {
+                                code = message.ItemTypeCode,
+                                description = message.ItemTypeDesc
+                            },
+                            consumerInformation = BuildConsumerInformation(message)
                         },
-                        consumerInformation = BuildConsumerInformation(message)
-                      },
-                      locale = new Contracts.LocaleType[]
+                        locale = new Contracts.LocaleType[]
                       {
                           new Contracts.LocaleType
                           {
@@ -257,17 +247,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                   scanCodes = new Contracts.ScanCodeType[]
                                   {
                                       BuildScanCodeType(message)
-                                  },
-                                  kit = new Contracts.KitType
-                                  {
-                                     kitItem =  new Contracts.KitTypeKitItem
-                                      {
-                                          kitchenItem = message.KitchenItem == null ? false : message.KitchenItem.Value,
-                                          kitchenDescription = message.KitchenDescription,
-                                          imageUrl = message.ImageURL,
-                                          hospitalityItem = message.HospitalityItem == null ? false : message.HospitalityItem.Value 
-                                      }
-                                  },
+                                  },   
                                   hierarchies = settings.EnableNationalHierarchy ?
                                       new Contracts.HierarchyType[]
                                       {
@@ -293,9 +273,9 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                     miniBulk.item[currentMiniBulkIndex++] = miniBulkEntry;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                  HandleMiniBulkException(message, ex);
+                    HandleMiniBulkException(message, ex);
                 }
             }
 
@@ -335,7 +315,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTraitLeaveBlankIfNull(TraitCodes.Tsf365Eligible, "365 Eligible", message.TSFEligible),
                 BuildTraitLeaveBlankIfNull(TraitCodes.WfmEligilble, TraitDescriptions.WfmEligilble, message.WFMEligilble),
                 BuildTraitLeaveBlankIfNull(TraitCodes.Other3pEligible, TraitDescriptions.Other3pEligible, message.Other3PEligible),
-            };   
+            };
 
             if (ShouldSendPhysicalCharacteristicTraits(message))
             {
@@ -413,8 +393,8 @@ namespace Icon.ApiController.Controller.QueueReaders
                 BuildTrait(TraitCodes.ServingSizeDesc, TraitDescriptions.ServingSizeDesc, message.ServingSizeDesc),
                 BuildTrait(TraitCodes.ServingsPerPortion, TraitDescriptions.ServingsPerPortion, message.ServingsPerPortion),
                 BuildTrait(TraitCodes.ServingUnits, TraitDescriptions.ServingUnits, message.ServingUnits),
-                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),      
-                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),           
+                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),
+                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),
             };
 
             return nutritionTraits;

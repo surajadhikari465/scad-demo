@@ -6,6 +6,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Esb.ProductListener.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
@@ -30,9 +31,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 var traits = enterpriseItemAttributes.traits;
                 var hierarchyClasses = enterpriseItemAttributes.hierarchies;
                 var consumerInformation = item.@base.consumerInformation;
-                var hospitalityInformation = enterpriseItemAttributes.kit;
-
-
+               
                 var itemModel = new ItemModel();
 
                 // Global Product Attributes
@@ -62,8 +61,17 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 // Extended Attributes
                 itemModel.ExtendedAttributes = ParseExtendedAttributes(item, traits);
 
+                bool useSchameWithKit;
+                if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
+                    useSchameWithKit = false;
+
                 // Hospitality Attributes
-                itemModel.KitItemAttributes = ParseHospitalityElements(hospitalityInformation);
+                if (useSchameWithKit)
+                {
+                    var hospitalityInformation = enterpriseItemAttributes.kit;
+
+                    itemModel.KitItemAttributes = ParseHospitalityElements(hospitalityInformation);
+                }
 
                 itemModelCollection.Add(itemModel);
             }

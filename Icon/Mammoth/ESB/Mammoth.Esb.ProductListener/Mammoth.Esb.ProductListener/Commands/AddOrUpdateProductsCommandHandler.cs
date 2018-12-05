@@ -3,6 +3,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MoreLinq;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 
@@ -23,10 +24,19 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesSign(data);
             AddOrUpdateItemAttributesNutrition(data);
             AddOrUpdateItemAttributesExtended(data);
-            AddOrUpdateItemAttributesKit(data);
-        }
 
-    
+            bool useSchameWithKit;
+            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
+                useSchameWithKit = false;
+
+            if (useSchameWithKit)
+            {
+                {
+                    AddOrUpdateItemAttributesKit(data);
+                }
+            }
+         
+        }   
 
         private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
         {

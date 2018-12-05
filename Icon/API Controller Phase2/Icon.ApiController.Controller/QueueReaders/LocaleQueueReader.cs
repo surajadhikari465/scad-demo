@@ -7,6 +7,7 @@ using Icon.Framework;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -50,9 +51,19 @@ namespace Icon.ApiController.Controller.QueueReaders
 				Instance = ControllerType.Instance,
 				MessageQueueStatusId = MessageStatusTypes.Ready
 			};
-			return getMessageQueueQuery.Search(parameters);
-			// adding this filter --will remove it when esb is ready to accept venue types)
-			//return getMessageQueueQuery.Search(parameters).Where(m => m.LocaleTypeId != LocaleTypes.Venue).ToList();
+
+            bool useSchameWithKit;
+            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
+                useSchameWithKit = false;
+
+            if (useSchameWithKit)
+            {
+                return getMessageQueueQuery.Search(parameters);
+            }
+            else
+            {
+                return getMessageQueueQuery.Search(parameters).Where(m => m.LocaleTypeId != LocaleTypes.Venue).ToList();
+            }
 		}
 
 		public List<MessageQueueLocale> GroupMessagesForMiniBulk(List<MessageQueueLocale> messages)

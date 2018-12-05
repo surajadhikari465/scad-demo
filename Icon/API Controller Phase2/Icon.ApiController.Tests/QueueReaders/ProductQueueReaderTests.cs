@@ -904,8 +904,8 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             const string expectedTraitCode = "FXT";
             const string expectedTraitDesc = "Flexible Text";
             const string expectedTraitVal = @" AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890 `-=[]\\;',./~!@#$%^&*()_+{}|:"" <>?������﷐wC2zBG56D 7gKANBKXgC 2aJpbtBAhl vs2CY3YyjN ufAdgzLHpL sA6Rgp0JhN Mnalk2Kttf lXpOFpsuY2 KHqPghnsA0 89tdyr1FaZ 3GE6YbaHif 1HVjGnLzIo DD3dRobPZd mzOL6eChRI 19J35fJIYQ qDnBBzV8AJ!!!";
-             MessageQueueProduct fakeMessage = TestHelpers
-                .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            MessageQueueProduct fakeMessage = TestHelpers
+               .GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
             fakeMessage.FlexibleText = expectedTraitVal;
 
             var fakeMessageQueueProducts = new List<MessageQueueProduct>

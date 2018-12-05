@@ -32,6 +32,7 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
             var settings = new ApiControllerSettings();
+            settings.UseSchemaWithKit = true;
 
             var productQueueReader = new ProductQueueReader(
                 mockLoggerQueueReader.Object,
