@@ -1,0 +1,15 @@
+{
+  "extends": [],
+  "defaultSeverity": "warning",
+  "member-access": [
+    true,
+    "no-public"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  }
+}
