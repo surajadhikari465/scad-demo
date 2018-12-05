@@ -21,7 +21,8 @@ BEGIN
 		WHERE s.name = 'stage' AND t.name = 'tempItemSignAttribute')
 	BEGIN
 		CREATE TABLE stage.tempItemSignAttribute (
-			ItemSignAttributeID INT NOT NULL IDENTITY, 
+			id INT NOT NULL IDENTITY,
+			ItemSignAttributeID INT NOT NULL, 
 			AnimalWelfareRating NVARCHAR(255) NULL,
 			MilkType NVARCHAR(255) NULL,
 			EcoScaleRating NVARCHAR(255) NULL,
