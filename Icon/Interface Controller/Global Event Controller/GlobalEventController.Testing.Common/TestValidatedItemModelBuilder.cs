@@ -358,7 +358,7 @@ namespace GlobalEventController.Testing.Common
                 AnimalWelfareRating = this.animalWelfareRating,
                 HealthyEatingRating = this.healthyEatingRating,
                 Biodynamic = this.biodynamic,
-                CheeseMilkType = this.cheeseMilkType,
+                MilkType = this.cheeseMilkType,
                 CheeseRaw = this.cheeseRaw,
                 DryAged = this.dryAged,
                 EcoScaleRating = this.ecoScaleRating,

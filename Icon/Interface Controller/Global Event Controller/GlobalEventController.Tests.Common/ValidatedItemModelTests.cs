@@ -58,7 +58,7 @@ namespace GlobalEventController.Tests.Common
         public void ValidatedItemModelConstructor_GivenAScanCodeWithAllItemAttributes_ShouldPopulateAllModelProperties()
         {
             //Given
-            SetupScanCode(true);
+             SetupScanCode(true);
             scanCode.Item.ItemType = new ItemType
             {
                 itemTypeID = ItemTypes.RetailSale,
@@ -85,19 +85,19 @@ namespace GlobalEventController.Tests.Common
             Assert.AreEqual(subTeamName, model.SubTeamName);
             Assert.AreEqual(nationalClassCode, model.NationalClassCode);
             Assert.IsTrue(model.HasItemSignAttributes);
-            Assert.AreEqual(AnimalWelfareRatings.Descriptions.Step1, model.AnimalWelfareRating);
+            Assert.AreEqual("Step1", model.AnimalWelfareRating);
             Assert.IsTrue(model.Biodynamic.Value);
-            Assert.AreEqual(MilkTypes.Descriptions.CowGoatSheepMilk, model.CheeseMilkType);
+            Assert.AreEqual("CowGoatSheepMilk", model.MilkType);
             Assert.IsTrue(model.CheeseRaw.Value);
-            Assert.AreEqual(EcoScaleRatings.Descriptions.PremiumYellow, model.EcoScaleRating);
+            Assert.AreEqual("PremiumYellow", model.EcoScaleRating);
             Assert.IsTrue(model.GlutenFree.Value);
             Assert.IsTrue(model.Kosher.Value);
             Assert.IsTrue(model.Msc.Value);
             Assert.IsTrue(model.NonGmo.Value);
             Assert.IsTrue(model.Organic.Value);
             Assert.IsTrue(model.PremiumBodyCare.Value);
-            Assert.AreEqual(SeafoodFreshOrFrozenTypes.Descriptions.Frozen, model.FreshOrFrozen);
-            Assert.AreEqual(SeafoodCatchTypes.Descriptions.Wild, model.SeafoodCatchType);
+            Assert.AreEqual("Frozen", model.FreshOrFrozen);
+            Assert.AreEqual("Wild", model.SeafoodCatchType);
             Assert.IsTrue(model.Vegan.Value);
             Assert.IsTrue(model.Vegetarian.Value);
             Assert.IsTrue(model.WholeTrade.Value);
@@ -145,7 +145,7 @@ namespace GlobalEventController.Tests.Common
             Assert.IsFalse(model.HasItemSignAttributes);
             Assert.IsNull(model.AnimalWelfareRating);
             Assert.IsNull(model.Biodynamic);
-            Assert.IsNull(model.CheeseMilkType);
+            Assert.IsNull(model.MilkType);
             Assert.IsNull(model.CheeseRaw);
             Assert.IsNull(model.EcoScaleRating);
             Assert.IsNull(model.GlutenFree);
@@ -175,15 +175,15 @@ namespace GlobalEventController.Tests.Common
 
             signAttributes = new ItemSignAttribute
             {
-                AnimalWelfareRatingId = null,
+                AnimalWelfareRating = null,
                 Biodynamic = false,
-                CheeseMilkTypeId = null,
+                MilkType = null,
                 CheeseRaw = false,
-                EcoScaleRatingId = null,
+                EcoScaleRating = null,
                 Msc = false,
                 PremiumBodyCare = false,
-                SeafoodFreshOrFrozenId = null,
-                SeafoodCatchTypeId = null,
+                FreshOrFrozen = null,
+                SeafoodCatchType = null,
                 Vegetarian = false,
                 WholeTrade = false,
                 GrassFed = false,
@@ -230,7 +230,7 @@ namespace GlobalEventController.Tests.Common
             Assert.IsTrue(model.HasItemSignAttributes);
             Assert.IsNull(model.AnimalWelfareRating);
             Assert.IsFalse(model.Biodynamic.Value);
-            Assert.IsNull(model.CheeseMilkType);
+            Assert.IsNull(model.MilkType);
             Assert.IsFalse(model.CheeseRaw.Value);
             Assert.IsNull(model.EcoScaleRating);
             Assert.IsNull(model.GlutenFree);
@@ -254,7 +254,7 @@ namespace GlobalEventController.Tests.Common
 
         [TestMethod]
         public void ValidatedItemModelConstructor_GivenAScanCodeWithCFDttributes_ShouldPopulateCFDProperties()
-        {
+       {
             //Given
             SetupScanCode(true, true);
             scanCode.Item.ItemType = new ItemType
@@ -366,15 +366,15 @@ namespace GlobalEventController.Tests.Common
             {
                 signAttributes = new ItemSignAttribute
                 {
-                    AnimalWelfareRatingId = AnimalWelfareRatings.Step1,
+                    AnimalWelfareRating = "Step1",
                     Biodynamic = true,
-                    CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
+                    MilkType ="CowGoatSheepMilk",
                     CheeseRaw = true,
-                    EcoScaleRatingId = EcoScaleRatings.PremiumYellow,
+                    EcoScaleRating = "PremiumYellow",
                     Msc = true,
                     PremiumBodyCare = true,
-                    SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Frozen,
-                    SeafoodCatchTypeId = SeafoodCatchTypes.Wild,
+                    FreshOrFrozen = "Frozen",
+                    SeafoodCatchType = "Wild",
                     Vegetarian = true,
                     WholeTrade = true,
                     GrassFed = true,
@@ -387,7 +387,8 @@ namespace GlobalEventController.Tests.Common
                     KosherAgencyName = kosherAgencyName,
                     NonGmoAgencyName = nonGmoAgencyName,
                     OrganicAgencyName = organicAgencyName,
-                    VeganAgencyName = veganAgencyName
+                    VeganAgencyName = veganAgencyName,
+					CustomerFriendlyDescription = customerFriendlyDescription
                 };
                 scanCode.Item.ItemSignAttribute.Add(signAttributes);
             }

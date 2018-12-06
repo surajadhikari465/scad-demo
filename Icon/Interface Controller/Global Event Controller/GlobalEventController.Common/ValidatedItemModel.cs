@@ -29,7 +29,7 @@ namespace GlobalEventController.Common
         public int EventTypeId { get; set; }
         public string AnimalWelfareRating { get; set; }
         public bool? Biodynamic { get; set; }
-        public string CheeseMilkType { get; set; }
+        public string MilkType { get; set; }
         public bool? CheeseRaw { get; set; }
         public string EcoScaleRating { get; set; }
         public bool? GlutenFree { get; set; }
@@ -151,20 +151,20 @@ namespace GlobalEventController.Common
             else
             {
                 HasItemSignAttributes = true;
-                AnimalWelfareRating = itemSignAttributes.AnimalWelfareRatingId.HasValue ? AnimalWelfareRatings.AsDictionary[itemSignAttributes.AnimalWelfareRatingId.Value] : null;
+                AnimalWelfareRating = !String.IsNullOrEmpty(itemSignAttributes.AnimalWelfareRating) ? itemSignAttributes.AnimalWelfareRating : null;
                 HealthyEatingRating = itemSignAttributes.HealthyEatingRatingId.HasValue ? HealthyEatingRatings.AsDictionary[itemSignAttributes.HealthyEatingRatingId.Value] : null;
                 Biodynamic = itemSignAttributes.Biodynamic;
-                CheeseMilkType = itemSignAttributes.CheeseMilkTypeId.HasValue ? MilkTypes.AsDictionary[itemSignAttributes.CheeseMilkTypeId.Value] : null;
+                MilkType = !String.IsNullOrEmpty(itemSignAttributes.MilkType) ? itemSignAttributes.MilkType : null;
                 CheeseRaw = itemSignAttributes.CheeseRaw;
-                EcoScaleRating = itemSignAttributes.EcoScaleRatingId.HasValue ? EcoScaleRatings.AsDictionary[itemSignAttributes.EcoScaleRatingId.Value] : null;
+                EcoScaleRating = !String.IsNullOrEmpty(itemSignAttributes.EcoScaleRating) ? itemSignAttributes.EcoScaleRating : null;
                 GlutenFree =!String.IsNullOrEmpty(itemSignAttributes.GlutenFreeAgencyName) ? new Nullable<bool>(true) : null;
                 Kosher = !String.IsNullOrEmpty(itemSignAttributes.KosherAgencyName) ? new Nullable<bool>(true) : null;
                 Msc = itemSignAttributes.Msc;
                 NonGmo = !String.IsNullOrEmpty(itemSignAttributes.NonGmoAgencyName) ? new Nullable<bool>(true) : null;
                 Organic = !String.IsNullOrEmpty(itemSignAttributes.OrganicAgencyName) ? new Nullable<bool>(true) : null;
                 PremiumBodyCare = itemSignAttributes.PremiumBodyCare;
-                FreshOrFrozen = itemSignAttributes.SeafoodFreshOrFrozenId.HasValue ? SeafoodFreshOrFrozenTypes.AsDictionary[itemSignAttributes.SeafoodFreshOrFrozenId.Value] : null;
-                SeafoodCatchType = itemSignAttributes.SeafoodCatchTypeId.HasValue ? SeafoodCatchTypes.AsDictionary[itemSignAttributes.SeafoodCatchTypeId.Value] : null;
+                FreshOrFrozen = !String.IsNullOrEmpty(itemSignAttributes.FreshOrFrozen) ? itemSignAttributes.FreshOrFrozen : null;
+                SeafoodCatchType = !String.IsNullOrEmpty(itemSignAttributes.SeafoodCatchType) ? itemSignAttributes.SeafoodCatchType : null;
                 Vegan = !String.IsNullOrEmpty(itemSignAttributes.VeganAgencyName) ? new Nullable<bool>(true) : null;
                 Vegetarian = itemSignAttributes.Vegetarian;
                 WholeTrade = itemSignAttributes.WholeTrade;

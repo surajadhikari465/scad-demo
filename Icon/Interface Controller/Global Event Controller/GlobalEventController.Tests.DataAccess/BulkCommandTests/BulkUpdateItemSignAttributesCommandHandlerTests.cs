@@ -463,7 +463,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         {
             Assert.AreEqual(validatedItemModel.AirChilled, itemSignAttribute.AirChilled);
             Assert.AreEqual(validatedItemModel.Biodynamic, itemSignAttribute.Biodynamic);
-            Assert.AreEqual(validatedItemModel.CheeseMilkType, itemSignAttribute.CheeseMilkType);
+            Assert.AreEqual(validatedItemModel.MilkType, itemSignAttribute.CheeseMilkType);
             Assert.AreEqual(validatedItemModel.CheeseRaw, itemSignAttribute.CheeseRaw);
             Assert.AreEqual(validatedItemModel.EcoScaleRating, itemSignAttribute.EcoScaleRating);
             Assert.AreEqual(validatedItemModel.GlutenFree, itemSignAttribute.GlutenFree);

@@ -520,11 +520,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     signAttributes = new ItemSignAttribute
                     {
                         HealthyEatingRatingId = HealthyEatingRatings.Good,
-                        AnimalWelfareRatingId = AnimalWelfareRatings.Step1,
-                        CheeseMilkTypeId = MilkTypes.CowGoatSheepMilk,
-                        EcoScaleRatingId = EcoScaleRatings.PremiumYellow,
-                        SeafoodFreshOrFrozenId = SeafoodFreshOrFrozenTypes.Frozen,
-                        SeafoodCatchTypeId = SeafoodCatchTypes.Wild,
+                        AnimalWelfareRating = "Step1",
+                        MilkType = "CowGoatSheepMilk",
+                        EcoScaleRating = "PremiumYellow",
+                        FreshOrFrozen = "Frozen",
+                        SeafoodCatchType ="Wild",
                         Biodynamic = true,
                         CheeseRaw = true,
                         Msc = true,
@@ -549,12 +549,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     // assign false/off/no values to all appropriate properties
                     signAttributes = new ItemSignAttribute
                     {
-                        AnimalWelfareRatingId = null,
+                        AnimalWelfareRating = null,
                         HealthyEatingRatingId = null,
-                        CheeseMilkTypeId = null,
-                        EcoScaleRatingId = null,
-                        SeafoodFreshOrFrozenId = null,
-                        SeafoodCatchTypeId = null,
+                        MilkType = null,
+                        EcoScaleRating = null,
+                        FreshOrFrozen = null,
+                        SeafoodCatchType = null,
                         Biodynamic = false,
                         CheeseRaw = false,
                         Msc = false,
@@ -580,12 +580,12 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     // leave all nullable properties null, all others to false
                     signAttributes = new ItemSignAttribute
                     {
-                        AnimalWelfareRatingId = null,
+                        AnimalWelfareRating = null,
                         HealthyEatingRatingId = null,
-                        CheeseMilkTypeId = null,
-                        EcoScaleRatingId = null,
-                        SeafoodFreshOrFrozenId = null,
-                        SeafoodCatchTypeId = null,
+                        MilkType = null,
+                        EcoScaleRating = null,
+                        FreshOrFrozen = null,
+                        SeafoodCatchType = null,
                         Biodynamic = false,
                         CheeseRaw = false,
                         Msc = false,
@@ -695,20 +695,20 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 case SignAttributeTestDataFlag.On:
                     // set expected values for when sign attributes data is is expected to exist and have populated values
                     expectedHasItemSignAttributes = true;
-                    expectedAWR = SetExpectedPropertyValue(AnimalWelfareRatings.Descriptions.Step1, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
+                    expectedAWR = SetExpectedPropertyValue("Step1", customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
                     expectedHER = SetExpectedPropertyValue(HealthyEatingRatings.Descriptions.Good, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
                     expectedBIO = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
-                    expectedCMT = SetExpectedPropertyValue(MilkTypes.Descriptions.CowGoatSheepMilk, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCMT = SetExpectedPropertyValue("CowGoatSheepMilk", customExpectedData, nameof(ValidatedItemModel.MilkType));
                     expectedCR = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
-                    expectedECO = SetExpectedPropertyValue(EcoScaleRatings.Descriptions.PremiumYellow, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
+                    expectedECO = SetExpectedPropertyValue("PremiumYellow", customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
                     expectedGF = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
                     expectedKSH = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Kosher));
                     expectedMSC = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Msc));
                     expectedNGM = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.NonGmo));
                     expectedOG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Organic));
                     expectedPBC = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.PremiumBodyCare));
-                    expectedSFF = SetExpectedPropertyValue(SeafoodFreshOrFrozenTypes.Descriptions.Frozen, customExpectedData, nameof(ValidatedItemModel.FreshOrFrozen));
-                    expectedSFT = SetExpectedPropertyValue(SeafoodCatchTypes.Descriptions.Wild, customExpectedData, nameof(ValidatedItemModel.SeafoodCatchType));
+                    expectedSFF = SetExpectedPropertyValue("Frozen", customExpectedData, nameof(ValidatedItemModel.FreshOrFrozen));
+                    expectedSFT = SetExpectedPropertyValue("Wild", customExpectedData, nameof(ValidatedItemModel.SeafoodCatchType));
                     expectedVEG = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Vegetarian));
                     expectedVGN = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.Vegan));
                     expectedWT = SetExpectedPropertyValue((bool?)true, customExpectedData, nameof(ValidatedItemModel.WholeTrade));
@@ -726,7 +726,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     expectedAWR = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
                     expectedHER = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
                     expectedBIO = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
-                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.MilkType));
                     expectedCR  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
                     expectedECO = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
                     expectedGF  = SetExpectedPropertyValue((bool?)false, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
@@ -755,7 +755,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                     expectedAWR = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.AnimalWelfareRating));
                     expectedHER = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.HealthyEatingRating));
                     expectedBIO = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.Biodynamic));
-                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.CheeseMilkType));
+                    expectedCMT = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.MilkType));
                     expectedCR = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.CheeseRaw));
                     expectedECO = SetExpectedPropertyValue((string)null, customExpectedData, nameof(ValidatedItemModel.EcoScaleRating));
                     expectedGF = SetExpectedPropertyValue((bool?)null, customExpectedData, nameof(ValidatedItemModel.GlutenFree));
@@ -784,7 +784,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             Assert.AreEqual(expectedAWR, actual.AnimalWelfareRating, "Property: " + nameof(actual.AnimalWelfareRating));
             Assert.AreEqual(expectedHER, actual.HealthyEatingRating, "Property: " + nameof(actual.HealthyEatingRating));
             Assert.AreEqual(expectedBIO, actual.Biodynamic, "Property: " + nameof(actual.Biodynamic));
-            Assert.AreEqual(expectedCMT, actual.CheeseMilkType, "Property: " + nameof(actual.CheeseMilkType));
+            Assert.AreEqual(expectedCMT, actual.MilkType, "Property: " + nameof(actual.MilkType));
             Assert.AreEqual(expectedCR, actual.CheeseRaw, "Property: " + nameof(actual.CheeseRaw));
             Assert.AreEqual(expectedECO, actual.EcoScaleRating, "Property: " + nameof(actual.EcoScaleRating));
             Assert.AreEqual(expectedGF, actual.GlutenFree, "Property: " + nameof(actual.GlutenFree));
