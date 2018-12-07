@@ -27,12 +27,24 @@ export class Hello extends React.Component<IHelloProps, IState> {
     }
 
     return (
-      <div className="hello">
-        <div className="greeting">
-          Hello {name + " " + getExclamationMarks(this.state.currentEnthusiasm)}
+
+      <div>
+        <div className="row">
+          <pre>
+           
+              Environment Variables
+
+              {JSON.stringify(process.env, null, 2)}
+           
+          </pre>
         </div>
-        <button onClick={this.onDecrement}>-</button>
-        <button onClick={this.onIncrement}>+</button>
+        <div className="hello">
+          <div className="greeting">
+            Hello {name + " " + getExclamationMarks(this.state.currentEnthusiasm)}
+          </div>
+          <button onClick={this.onDecrement}>-</button>
+          <button onClick={this.onIncrement}>+</button>
+        </div>
       </div>
     );
   }

@@ -38,6 +38,9 @@ namespace KitBuilderWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
+
             services.AddMvc(setupAction =>
             {
                 // Web API configuration and services
@@ -83,6 +86,9 @@ namespace KitBuilderWebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            app.UseCors(builder => builder.AllowAnyOrigin());
+
             GlobalDiagnosticsContext.Set("nLogConnectionString", Configuration.GetConnectionString("KitBuilderDBConnectionString"));
 
             // middleware to log 
