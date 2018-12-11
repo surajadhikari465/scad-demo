@@ -13,13 +13,8 @@ Post-Deployment Script Template
 -- This post-deploy script is in the base post-deploy folder, so you do not need to add a path or folder reference (you just specify your script name).
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
-:r InsertOrderTypes.sql
-:r AddEnableAmazonEventGenerationIdf.sql
-:r HC_PurgeMessageArchive.sql
-:r HC_PurgeInventoryQueue.sql
-:r HC_PurgeOrderQueue.sql	
-:r HC_PurgeReceiptQueue.sql
 
--- *This is a permanent entry (keep at bottom).
+:r HC_DropTriggerOrderItemAddUpdDel.sql
+
+-- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
-:r GrantPermissionsToTibcoDataWriter.sql

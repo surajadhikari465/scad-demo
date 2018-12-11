@@ -9,5 +9,9 @@ CREATE USER [TibcoDataWriter]
 FOR LOGIN [TibcoDataWriter] WITH DEFAULT_SCHEMA=[dbo]
 GO
 
+EXEC sp_addrolemember N'db_datareader', N'TibcoDataWriter'
+GO
 EXEC sp_addrolemember N'db_datawriter', N'TibcoDataWriter'
 GO
+GRANT EXEC ON SCHEMA :: infor TO TibcoDataWriter
+go

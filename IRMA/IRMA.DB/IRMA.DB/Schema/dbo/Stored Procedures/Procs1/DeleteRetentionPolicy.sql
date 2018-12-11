@@ -8,5 +8,6 @@ END
 GO
 
 GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRSUser];
+GO
 GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRMAClientRole];
 GO

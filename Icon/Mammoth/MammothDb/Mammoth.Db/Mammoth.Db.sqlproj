@@ -799,11 +799,11 @@
     <Build Include="dbo\User Defined Types\ItemKitAttributesType.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddIrmaItemKeyAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateAppLogRetention.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulatePromoRewardItemPriceTypes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddNumberOfDigitsForCFSItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddEsbMessageTypeForCheckpointRequest.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRewardItemPriceType.sql" />
     <Build Include="dbo\Stored Procedures\GetItems.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulatePromoRewardItemPriceTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

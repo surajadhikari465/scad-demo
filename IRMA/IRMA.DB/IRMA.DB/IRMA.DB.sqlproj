@@ -3337,10 +3337,6 @@
     <None Include="Scripts\PostDeploy\Archive\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
     <Build Include="Schema\amz\Tables\DeletedOrderItem.sql" />
     <None Include="Scripts\PostDeploy\Archive\PopulateAmzEventTypeTable.sql" />
-    <None Include="Scripts\PostDeploy\HC_PurgeInventoryQueue.sql" />
-    <None Include="Scripts\PostDeploy\HC_PurgeMessageArchive.sql" />
-    <None Include="Scripts\PostDeploy\HC_PurgeOrderQueue.sql" />
-    <None Include="Scripts\PostDeploy\HC_PurgeReceiptQueue.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockReceiptEvents.sql" />
     <None Include="Scripts\PostDeploy\GrantPermissionsToTibcoDataWriter.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_PriceUpdate.sql" />
@@ -3353,13 +3349,17 @@
     <Build Include="Schema\amz\StoredProcedures\SendErrorNotificationEmail.sql" />
     <None Include="SQL Agent Job\HoneyCrisp-SendErrorNotificationEmail.sql" />
     <Build Include="Schema\amz\StoredProcedures\ResetQueueMessages.sql" />
+    <None Include="Scripts\PostDeploy\Archive\HC_PurgeInventoryQueue.sql" />
+    <None Include="Scripts\PostDeploy\Archive\HC_PurgeMessageArchive.sql" />
+    <None Include="Scripts\PostDeploy\Archive\HC_PurgeOrderQueue.sql" />
+    <None Include="Scripts\PostDeploy\Archive\HC_PurgeReceiptQueue.sql" />
+    <None Include="Scripts\PostDeploy\Archive\InsertOrderTypes.sql" />
+    <None Include="Scripts\PostDeploy\Archive\AddEnableAmazonEventGenerationIdf.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
     <None Include="IRMA.DB.publish.xml" />
     <Build Include="Schema\amz\amz.sql" />
-    <None Include="Scripts\PostDeploy\InsertOrderTypes.sql" />
-    <None Include="Scripts\PostDeploy\AddEnableAmazonEventGenerationIdf.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
   </ItemGroup>

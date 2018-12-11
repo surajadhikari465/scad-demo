@@ -1,11 +1,11 @@
-ChangeTicketNum	Change ticket number	CHG0033538
-ReleaseOwner	Change owner	Alpesh Patel
-SprintsIncluded	Sprint numbers covered	129 - 130
+ChangeTicketNum	Change ticket number	CHG0034013
+ReleaseOwner	Change owner	Tom Lux
+SprintsIncluded	Sprint numbers covered	131 - 132
 TargetEnv	Target environment	QA
 TargetEnvShort		QA
-DeployDate	Deploy date	Tuesday, November 13, 2018
-ReleaseYear		2018
-ReleaseId		12
+DeployDate	Deploy date	Tuesday, December 11, 2018
+ReleaseYear		2019
+ReleaseId		1
 IrmaClientUpdated		y
 IrmaDbUpdated		y
 IrmaLegacyUpdated		n
@@ -17,19 +17,19 @@ TibcoUpdated		y
 FullSvrList	Servers receiving updates	.
 ReleaseNotesURL	Link to release notes	.
 IconDbScriptLink	Icon DB script	N/A -- Auto deploy via VSTS
-MammothDbScriptLink	Mammoth DB script	N/A -- Auto deploy via VSTS
-MammothDbTarget		N/A -- Auto deploy via VSTS
-IconReleaseBranchName	Icon release branch name	RELEASE_2018_12_Sprints129-130
-IconBuildNum	Icon release build number	20181108.1
+MammothDbScriptLink		N/A -- Auto deploy via VSTS
+MammothDbTarget		Mammoth-DB01-QA\Mammoth.Mammoth, QA-01-Mammoth02\Mammoth02.Mammoth
+IconReleaseBranchName	Icon release branch name	RELEASE_2019_1
+IconBuildNum	Icon release build number	20181210.1
 IconBuildId	Icon release build ID	.
-IrmaReleaseBranchName	IRMA release branch name	RELEASE_2018_12_Sprints129-130
-IrmaBuildNum	IRMA release build number	20181112.1
+IrmaReleaseBranchName	IRMA release branch name	RELEASE_2019_1
+IrmaBuildNum	IRMA release build number	20181206.1
 IrmaBuildId	IRMA release build ID	.
-IrmaVer	IRMA version number	10.7
-IrmaLongVer		10.7.0
-IconVer	Icon version number	9.9
-MammothVer	Mammoth version number	3.8
-TibcoVer	TIBCO version number	2.0
+IrmaVer	IRMA version number	10.7.1
+IrmaLongVer		10.7.1
+IconVer	Icon version number	9.9.1
+MammothVer	Mammoth version number	3.8.1
+TibcoVer	TIBCO version number	2.0.1
 FullDbList	List of DBs receiving updates?	.
 IrmaDbUpdateRegionList		FL, MA, MW, NA, NC, NE, PN, RM, SO, SP, SW, UK
 IrmaDbServer		IDQ-xx\xxQ
@@ -40,13 +40,13 @@ IrmaServersAffected	This should be dynamic	IRMAQAApp[1-4]
 IconServersAffected	This should be dynamic	VM-Icon-QA[1-4]
 MammothServersAffected	This should be dynamic	Mammoth-App01-QA
 TibcoServersAffected	This should be dynamic	QA: CERD1673, CERD1674 | QA-Perf: CERD1662, CERD1663, CERD1664, CERD1665
-TibcoAppsUpdated		ExpiringTPRService,MammothPriceListener,R10PriceService,PrimeAffinityListener
+TibcoAppsUpdated		MammothPriceListener,R10PriceService
 IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
-IrmaSuitePreviousVersion		10.6.0
+IrmaSuitePreviousVersion		10.7.0
 MammothManualDeploy		Manually deploy updated apps to Perf instances on Mammoth job server
 IrmaReleaseLauncherVersionRef		.
-AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	*NONE*
-AdditionalIrmaDeployImplementerRef		.
+AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	Using release branch as source, manually upload reports into <a href="http://irmaqarpt/Reports/Pages/Folder.aspx?ItemPath=%2fIcon&ViewMode=Detail">IIS QA Icon Folder</a>: Icon IRMA Sign Attributes Comparison.rdl, IconItemSearch.rdl
+AdditionalIrmaDeployImplementerRef		IRM
 AdditionalIrmaComponentList		*NONE*
 SpecialIrmaReleaseDetails		<hr>
 SpecialIconReleaseDetails		<hr>
