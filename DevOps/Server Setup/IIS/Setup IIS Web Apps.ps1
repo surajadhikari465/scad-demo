@@ -29,6 +29,9 @@ $webAppDefs = $appDefinitionList.Split("`n")
 $legacyAppDefinitionList = Get-Content "$scriptFolder\Legacy IIS Web App Defs.tsv"
 $legacyWebAppDefs = $legacyAppDefinitionList.Split("`n")
 
+$virtualDirDefinitionList = Get-Content "$scriptFolder\IIS Virtual Directory Defs.tsv"
+$virtualDirDefs = $virtualDirDefinitionList.Split("`n")
+
 $webServersText = Get-Content "$scriptFolder\Web Server List.Dev"
 $webServers = @("IRMADevWeb01")#$webServersText.Split("`n")
 
@@ -46,6 +49,7 @@ $output
 "Loaded " + $appPoolDefs.count + " app-pool definitions."
 "Loaded " + $webAppDefs.count + " web-app definitions."
 "Loaded " + $legacyWebAppDefs.count + " legacy-app definitions."
+"Loaded " + $virtualDirDefs.count + " virtual-directory definitions."
 "Target Servers:"
 $webServers
 "-----------------------------"
@@ -62,7 +66,7 @@ Foreach ($webServer in $webServers)
 
 
     Invoke-Command -ComputerName $webSvr -ScriptBlock {
-        param($poolDefs, $appDefs, $legAppDefs, $r_previewMode)
+        param($poolDefs, $appDefs, $legAppDefs, $vdirDefs, $r_previewMode)
         $outputBreak = "---------------------------------------------------------------------"
 
         # Import WebAdministration to use IIS commandlets.
@@ -197,7 +201,29 @@ Foreach ($webServer in $webServers)
             }
         }
 
-    } -ArgumentList $appPoolDefs, $webAppDefs, $legacyWebAppDefs, $previewMode
+        ################################################
+        # Setup virtual directories for sites
+        ################################################
+        foreach($vdirDef in $vdirDefs){
+            $outputBreak
+            $vdirAttributeList = $vdirDef.Split("`t")
+            $siteName = $vdirAttributeList[0]
+            $vdirName = $vdirAttributeList[1]
+            $vdirPath = $vdirAttributeList[2]
+
+            "Creating virtual directory '$vdirName' under site '$siteName' with path '$vdirPath'..."
+            # Check if the site exists
+            if(!(Get-WebVirtualDirectory -Site $siteName -Name $vdirName)){
+                if($r_previewMode){
+                    "**Manual WHAT-IF** --> New-WebVirtualDirectory -Site $siteName -Name $vdirName -PhysicalPath $vdirPath"
+                } else {
+                    New-WebVirtualDirectory -Site $siteName -Name $vdirName -PhysicalPath $vdirPath
+                }
+            } else {
+                Write-Host -ForegroundColor yellow ("**Virtual directory [" + $vdirName + "] under site [" + $siteName + "] already exists.")
+            }
+        }
+    } -ArgumentList $appPoolDefs, $webAppDefs, $legacyWebAppDefs, $virtualDirDefs, $previewMode
 
 
     $output = "IIS setup on server " + $webServer + " is complete."
