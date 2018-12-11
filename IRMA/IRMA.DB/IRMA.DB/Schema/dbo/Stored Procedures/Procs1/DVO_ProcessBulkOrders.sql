@@ -21,6 +21,7 @@ AS
    --
    -- Modification History:
    -- Date        Init Comment
+   -- 12/07/2018  MZ   30599    Added AMZ Order number to IRMA       
    -- 08/12/2016  MZ   [TFS 20532:17702] - Corrected another bug in the code which could cause duplicate ExternalOrderInformation records to be 
    --                                      inserted if a DVO order is resent and is with a PDX order number.
    -- 07/08/2016  MZ   [TFS 20138:16741] - Corrected the issue that when an order with Predictix order number is re-sent from DVO, 
@@ -96,9 +97,10 @@ BEGIN
 --    set @DCList = '';
 --    set @debug = 0;
 
-   declare @PDXSourceID as Int, @DVOSourceID as Int;
+   declare @PDXSourceID as Int, @AMZSourceID as Int, @DVOSourceID as Int;
 
    select @PDXSourceID = ID FROM [dbo].[OrderExternalSource] where [Description] = 'PDX'
+   select @AMZSourceID = ID FROM [dbo].[OrderExternalSource] where [Description] = 'AMAZON'
    select @DVOSourceID = ID FROM [dbo].[OrderExternalSource] where [Description] = 'DVO'
 
    declare @log            as table ( msg  varchar(MAX) );
@@ -346,7 +348,8 @@ BEGIN
 		 Reason_Code_Detail_ID			  Integer,
 		 Cost_Adj_Discount                money,
          Cost_Adj_Method                  varchar(1),
-		 PDXOrderNumber                   int
+		 PDXOrderNumber                   int,
+		 AMZOrderNumber                   int
          );
 
       create index #tmpHdr on #tmpHeaders (DVOOrderId);
@@ -384,7 +387,8 @@ BEGIN
 				when '$' then '1'
 				else '0'                                
 			end																			   as Cost_Adj_Method,
-			dh.PDXOrderNumber                             								   as PDXOrderNumber
+			dh.PDXOrderNumber                             								   as PDXOrderNumber,
+			dh.AMZOrderNumber                             								   as AMZOrderNumber
          from
             ##DVO_headers dh
 
@@ -612,7 +616,8 @@ BEGIN
 		 Reason_Code_Detail_id			  Integer,
 		 Cost_Adj_Discount                money,
          Cost_Adj_Method                  varchar(1),
-		 PDXOrderNumber                   varchar(10)
+		 PDXOrderNumber                   varchar(10),
+		 AMZOrderNumber                   varchar(10)
          );
 
       create index #tmpHdrupd on #tmpHeaderUpdates (DVOOrderId);
@@ -642,7 +647,8 @@ BEGIN
 		 Reason_Code_Detail_id			  Integer,
 		 Cost_Adj_Discount                money,
          Cost_Adj_Method                  varchar(1),
-		 PDXOrderNumber                   varchar(10)
+		 PDXOrderNumber                   varchar(10),
+		 AMZOrderNumber                   varchar(10)
          );
 
       create index #tmpHdrins on #tmpHeadersInsert (DVOOrderId);
@@ -691,7 +697,8 @@ BEGIN
 			Reason_Code_Detail_ID,
 		    Cost_Adj_Discount,
             Cost_Adj_Method,
-			PDXOrderNumber
+			PDXOrderNumber,
+			AMZOrderNumber
          from #tmpHeaders 
          where DVOOrderId not in ( select DVOOrderId from #tmpHeaderUpdates);
 
@@ -782,6 +789,17 @@ BEGIN
 										AND oei.OrderHeader_Id = oh.orderheader_id )
 	 AND th.PDXOrderNumber is not NULL and th.PDXOrderNumber <>  ''
 
+	 INSERT    INTO ExternalOrderInformation ( OrderHeader_Id, ExternalSource_Id, ExternalOrder_Id )
+	 SELECT		oh.orderheader_id ,
+				@AMZSourceID ,
+                AMZOrderNumber
+	 FROM		OrderHeader oh
+	 INNER JOIN #tmpHeadersInsert th ON ( oh.DVOOrderId = th.DVOOrderId )
+	 WHERE oh.OrderHeader_ID NOT IN ( SELECT oei.OrderHeader_Id 
+									   FROM ExternalOrderInformation oei 
+									  WHERE oei.ExternalSource_Id = @AMZSourceID 
+										AND oei.OrderHeader_Id = oh.orderheader_id )
+	 AND th.AMZOrderNumber is not NULL and th.AMZOrderNumber <>  ''
       -- **************************************************************************
       -- Add messages to @log of the new orders inserted for logging
       -- **************************************************************************
@@ -867,6 +885,22 @@ BEGIN
                           AND oei.OrderHeader_Id = oh.orderheader_id
             )
 		  AND th.PDXOrderNumber is not NULL and th.PDXOrderNumber <>  ''
+
+		INSERT    INTO ExternalOrderInformation ( OrderHeader_Id, ExternalSource_Id, ExternalOrder_Id )
+		SELECT		oh.orderheader_id ,
+					@AMZSourceID ,
+					th.AMZOrderNumber
+		FROM		OrderHeader oh
+				INNER JOIN #tmpHeaderUpdates th ON ( oh.DVOOrderId = th.DVOOrderId )
+		WHERE oh.OrderHeader_ID NOT IN 
+            ( 
+				SELECT    oei.OrderHeader_Id
+				FROM      ExternalOrderInformation oei
+				WHERE     oei.ExternalOrder_Id = th.AMZOrderNumber
+						  and oei.ExternalSource_Id = @AMZSourceID 
+                          AND oei.OrderHeader_Id = oh.orderheader_id
+            )
+		  AND th.AMZOrderNumber is not NULL and th.AMZOrderNumber <>  ''
             
       -- **************************************************************************
       -- Add messages to @log of the new orders inserted for logging

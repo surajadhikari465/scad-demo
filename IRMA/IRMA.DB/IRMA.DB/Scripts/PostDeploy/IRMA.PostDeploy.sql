@@ -15,6 +15,7 @@ Post-Deployment Script Template
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
 :r HC_DropTriggerOrderItemAddUpdDel.sql
+:r PBI30599-InsertAMAZONintoOrderExternalSource.sql
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28

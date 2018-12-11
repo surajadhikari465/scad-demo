@@ -905,7 +905,7 @@ JOIN Team t on t.Team_No = sb.Team_No
 JOIN Users uc on uc.User_ID = oh.CreatedBy 
 LEFT JOIN Users ua on ua.User_ID = oh.ApprovedBy
 LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
 JOIN OrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and (IsNull(q.SecondaryKeyID, 0) = 0 or oi.OrderItem_ID = q.SecondaryKeyID)
 JOIN Item i on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
@@ -963,7 +963,7 @@ join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s on s.Store_No = psl.Store_no
 JOIN Users uc on uc.User_ID = oh.User_ID 
 LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
 JOIN dbo.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID
 JOIN Item i on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
@@ -1021,7 +1021,7 @@ JOIN OrderHeader oh ON oh.OrderHeader_ID = q.KeyID
 join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s on s.Store_No = psl.Store_no
 LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
 JOIN amz.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = q.SecondaryKeyID
 JOIN Item i on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
