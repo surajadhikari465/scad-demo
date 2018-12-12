@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ItemVendorLaneExtract-FromIrma"
   DTS:PackageType="5"
-  DTS:VersionBuild="207"
-  DTS:VersionGUID="{319A048F-2757-4697-92F8-33747FFA7356}">
+  DTS:VersionBuild="216"
+  DTS:VersionGUID="{C49589E7-6F6F-4BDD-88A7-C9CC27B1BB2D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -77,7 +77,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Data\IRMA\Full\item_vendor_lane__0_20181108.csv">
+          DTS:ConnectionString="C:\Data\IRMA\Full\item_vendor_lane__0_20181211.csv">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -86,7 +86,24 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="UPC"
-              DTS:DTSID="{C227266A-3305-4AEB-BB3D-2B53ADF36C79}"
+              DTS:DTSID="{DA78EA6C-6D11-4244-AB20-2E662E3BC3A3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="131"
+              DTS:DataPrecision="18"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ITEM_KEY"
+              DTS:DTSID="{9A80EB70-411E-4B6E-A531-C31B85B00397}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="VIN"
+              DTS:DTSID="{ED95B57A-ECE0-42C8-9FC3-31A3CCB0DA38}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -95,7 +112,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="STORE_NUMBER"
-              DTS:DTSID="{036E5202-D603-48FF-A607-A34535583697}"
+              DTS:DTSID="{25255449-780A-4211-A85A-EA28EFA35E56}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -104,7 +121,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="VENDOR_NUMBER"
-              DTS:DTSID="{79BBDDAE-4C9E-4B70-8968-53A17CF93187}"
+              DTS:DTSID="{AA86213C-9B49-4A5C-B740-97FF9BEC2BC8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -113,7 +130,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="VENDOR_NAME"
-              DTS:DTSID="{CD0FA08F-7B89-4954-AB62-65F49E2BE2F6}"
+              DTS:DTSID="{95EA153C-8930-4ECB-9B52-4529E90E9880}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -121,8 +138,8 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="CASE_SIZE"
-              DTS:DTSID="{14FCD922-F365-43C7-AE05-799CAE165902}"
+              DTS:ObjectName="VENDOR_CASE_SIZE"
+              DTS:DTSID="{EC09FBF8-18C0-4CCD-BB6B-FC683F4390FE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -130,8 +147,8 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="CASE_UOM"
-              DTS:DTSID="{B0BFF346-E5E2-4F8C-B15F-733F0B765EED}"
+              DTS:ObjectName="VENDOR_CASE_UOM"
+              DTS:DTSID="{80323FBB-D5D8-4C09-A5F4-CBE3A7A3C2A6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -139,7 +156,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="VENDOR_COST_UOM"
-              DTS:DTSID="{22022FD6-F151-4178-BAE9-56888E124734}"
+              DTS:DTSID="{F3BA0385-B1C0-47FA-9AF7-6D84DEA27062}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -148,7 +165,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="REG_COST"
-              DTS:DTSID="{B73793C3-3C66-4332-8304-0E5BD7C49C08}"
+              DTS:DTSID="{90252598-37A1-44EE-87E5-EDBEA063F6C9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -157,15 +174,24 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="RETAIL_UOM"
-              DTS:DTSID="{4250457C-926D-439E-BB03-CD4C52631138}"
+              DTS:DTSID="{E1917B28-5DC7-4A2C-8964-A5A66DEE1C13}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="RETAIL_PACK"
+              DTS:DTSID="{9DCF389A-CABD-4D5B-ACF9-C93A4EE37B8F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x000A_"
+              DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="RETAIL_PACK"
-              DTS:DTSID="{4F5D33E8-1A70-4D56-8F8B-272C1AB92AD6}"
+              DTS:ObjectName="PRIMARY_VENDOR"
+              DTS:DTSID="{C4465A62-8D31-41ED-82F3-0E0549EB6A74}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -431,7 +457,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       DTS:Namespace="User"
       DTS:ObjectName="RunAsDateString">
       <DTS:VariableValue
-        DTS:DataType="8">20181108</DTS:VariableValue>
+        DTS:DataType="8">20181211</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -460,7 +486,7 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
       DTS:Namespace="User"
       DTS:ObjectName="Today">
       <DTS:VariableValue
-        DTS:DataType="7">11/8/2018</DTS:VariableValue>
+        DTS:DataType="7">12/11/2018</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -531,6 +557,15 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
                       VSTAMinorVersion="0"
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
+                      <ProjectItem
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -650,35 +685,6 @@ RIGHT("0"+ (DT_WSTR, 2) DAY(@[User::Today]),2 )  +
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                       <ProjectItem
                         Name="ST_73bc6bbd552c42d6954621a3aa5365c1.csproj"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_73bc6bbd552c42d6954621a3aa5365c1</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
@@ -840,6 +846,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\AssemblyInfo.cs"
                         Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -869,15 +904,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -1149,6 +1175,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -1267,35 +1302,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                       <ProjectItem
                         Name="ScriptMain.cs"
                         Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -1454,6 +1460,38 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                      <ProjectItem
+                        Name="ST_7813af57dfbd426fad8d2c2840f54cbc.csproj"
+                        Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920c281-9105-49bc-9ea9-a9fc9d47d4a7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_7813af57dfbd426fad8d2c2840f54cbc</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" /><Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\AssemblyInfo.cs"
                         Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -1483,18 +1521,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                      <ProjectItem
-                        Name="ST_7813af57dfbd426fad8d2c2840f54cbc.csproj"
-                        Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920c281-9105-49bc-9ea9-a9fc9d47d4a7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_7813af57dfbd426fad8d2c2840f54cbc</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" /><Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -1764,6 +1790,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -1882,35 +1917,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                       <ProjectItem
                         Name="ScriptMain.cs"
                         Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -2156,6 +2162,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\AssemblyInfo.cs"
                         Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -2185,15 +2220,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -2459,6 +2485,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -2578,37 +2634,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </resheader>
 </root>]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
-                      <ProjectItem
-                        Name="ST_9c9fdb3616ce41af86972251eb2d9df7.csproj"
-                        Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_9c9fdb3616ce41af86972251eb2d9df7</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="ScriptMain.cs"
                         Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -2767,44 +2800,37 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="ST_9c9fdb3616ce41af86972251eb2d9df7.csproj"
+                        Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_9c9fdb3616ce41af86972251eb2d9df7</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -3074,14 +3100,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                       <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                        Name="Properties\AssemblyInfo.cs"
+                        Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -3391,35 +3438,14 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                       <ProjectItem
-                        Name="Properties\AssemblyInfo.cs"
-                        Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -3721,6 +3747,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           Language="CSharp"
                           ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                           <ProjectItem
+                            Name="Properties\Settings.settings"
+                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+                          <ProjectItem
                             Name="Properties\Resources.resx"
                             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -3840,34 +3875,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </resheader>
 </root>]]></ProjectItem>
                           <ProjectItem
-                            Name="Properties\Settings.Designer.cs"
-                            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+                            Name="ST_1ba016638d394689996d934e017f71a3.csproj"
+                            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_1ba016638d394689996d934e017f71a3</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
                           <ProjectItem
                             Name="ScriptMain.cs"
                             Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -4006,6 +4015,85 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	}
 }]]></ProjectItem>
                           <ProjectItem
+                            Name="Project"
+                            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
+		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
+		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ST_1ba016638d394689996d934e017f71a3.csproj"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="ScriptMain.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+                          <ProjectItem
+                            Name="Properties\Settings.Designer.cs"
+                            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                          <ProjectItem
+                            Name="Properties\AssemblyInfo.cs"
+                            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                          <ProjectItem
                             Name="Properties\Resources.Designer.cs"
                             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
@@ -4073,68 +4161,6 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
         }
     }
 }]]></ProjectItem>
-                          <ProjectItem
-                            Name="Project"
-                            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
-	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
-		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
-		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
-		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
-	</msb:PropertyGroup>
-	<msb:ItemGroup>
-		<msb:Project Include="ST_1ba016638d394689996d934e017f71a3.csproj"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
-		<msb:File Include="Properties\Settings.settings"/>
-		<msb:File Include="Properties\Resources.resx"/>
-		<msb:File Include="Properties\Resources.Designer.cs"/>
-		<msb:File Include="Properties\Settings.Designer.cs"/>
-		<msb:File Include="ScriptMain.cs"/>
-	</msb:ItemGroup>
-</c:Project>]]></ProjectItem>
-                          <ProjectItem
-                            Name="Properties\AssemblyInfo.cs"
-                            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                          <ProjectItem
-                            Name="Properties\Settings.settings"
-                            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
-                          <ProjectItem
-                            Name="ST_1ba016638d394689996d934e017f71a3.csproj"
-                            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_1ba016638d394689996d934e017f71a3</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
                           <BinaryItem
                             Name="ST_1ba016638d394689996d934e017f71a3.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
@@ -4297,31 +4323,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           name="Derived Column Input">
                           <inputColumns>
                             <inputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Inputs[Derived Column Input].Columns[CASE_UOM]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="25"
-                              cachedName="CASE_UOM"
-                              errorOrTruncationOperation="Computation"
-                              errorRowDisposition="FailComponent"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_UOM]"
-                              truncationRowDisposition="FailComponent"
-                              usageType="readWrite">
-                              <properties>
-                                <property
-                                  containsID="true"
-                                  dataType="System.String"
-                                  description="Derived Column Expression"
-                                  name="Expression">[RTRIM](#{Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_UOM]})</property>
-                                <property
-                                  containsID="true"
-                                  dataType="System.String"
-                                  description="Derived Column Friendly Expression"
-                                  expressionType="Notify"
-                                  name="FriendlyExpression">RTRIM(CASE_UOM)</property>
-                              </properties>
-                            </inputColumn>
-                            <inputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Inputs[Derived Column Input].Columns[RETAIL_UOM]"
                               cachedCodepage="1252"
                               cachedDataType="str"
@@ -4371,6 +4372,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   name="FriendlyExpression">RTRIM(VENDOR_COST_UOM)</property>
                               </properties>
                             </inputColumn>
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Inputs[Derived Column Input].Columns[VENDOR_CASE_UOM]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="25"
+                              cachedName="VENDOR_CASE_UOM"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_UOM]"
+                              truncationRowDisposition="FailComponent"
+                              usageType="readWrite">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">[RTRIM](#{Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_UOM]})</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">RTRIM(VENDOR_CASE_UOM)</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Inputs[Derived Column Input].Columns[PRIMARY_VENDOR]"
+                              cachedDataType="bool"
+                              cachedName="PRIMARY_VENDOR"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[PRIMARY_VENDOR]" />
                           </inputColumns>
                           <externalMetadataColumns />
                         </input>
@@ -4382,6 +4413,31 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           exclusionGroup="1"
                           name="Derived Column Output"
                           synchronousInputId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Inputs[Derived Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Outputs[Derived Column Output].Columns[DERIVED_PRIMARY_VENDOR]"
+                              dataType="wstr"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              length="1"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Outputs[Derived Column Output].Columns[DERIVED_PRIMARY_VENDOR]"
+                              name="DERIVED_PRIMARY_VENDOR"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">#{Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[PRIMARY_VENDOR]} ? "Y" : "N"</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">PRIMARY_VENDOR ? "Y" : "N"</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
                           <externalMetadataColumns />
                         </output>
                         <output
@@ -4473,22 +4529,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VENDOR_NAME]"
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_NAME]" />
                             <inputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[CASE_SIZE]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="15"
-                              cachedName="CASE_SIZE"
-                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CASE_SIZE]"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_SIZE]" />
-                            <inputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[CASE_UOM]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="25"
-                              cachedName="CASE_UOM"
-                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CASE_UOM]"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_UOM]" />
-                            <inputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[REG_COST]"
                               cachedCodepage="1252"
                               cachedDataType="str"
@@ -4520,6 +4560,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               cachedName="RETAIL_PACK"
                               externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[RETAIL_PACK]"
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[RETAIL_PACK]" />
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[ITEM_KEY]"
+                              cachedDataType="i4"
+                              cachedName="ITEM_KEY"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_KEY]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[ITEM_KEY]" />
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[VIN]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="20"
+                              cachedName="VIN"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VIN]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VIN]" />
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[VENDOR_CASE_SIZE]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="15"
+                              cachedName="VENDOR_CASE_SIZE"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VENDOR_CASE_SIZE]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_SIZE]" />
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[VENDOR_CASE_UOM]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="25"
+                              cachedName="VENDOR_CASE_UOM"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VENDOR_CASE_UOM]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_UOM]" />
+                            <inputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].Columns[DERIVED_PRIMARY_VENDOR]"
+                              cachedDataType="wstr"
+                              cachedLength="1"
+                              cachedName="DERIVED_PRIMARY_VENDOR"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRIMARY_VENDOR]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values.Outputs[Derived Column Output].Columns[DERIVED_PRIMARY_VENDOR]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -4548,18 +4625,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               length="50"
                               name="VENDOR_NAME" />
                             <externalMetadataColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CASE_SIZE]"
-                              codePage="1252"
-                              dataType="str"
-                              length="50"
-                              name="CASE_SIZE" />
-                            <externalMetadataColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[CASE_UOM]"
-                              codePage="1252"
-                              dataType="str"
-                              length="50"
-                              name="CASE_UOM" />
-                            <externalMetadataColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[REG_COST]"
                               codePage="1252"
                               dataType="str"
@@ -4583,6 +4648,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="255"
                               name="RETAIL_PACK" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[ITEM_KEY]"
+                              dataType="numeric"
+                              name="ITEM_KEY"
+                              precision="18" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VIN]"
+                              codePage="1252"
+                              dataType="str"
+                              length="255"
+                              name="VIN" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VENDOR_CASE_SIZE]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="VENDOR_CASE_SIZE" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[VENDOR_CASE_UOM]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="VENDOR_CASE_UOM" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[PRIMARY_VENDOR]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="PRIMARY_VENDOR" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -4613,16 +4707,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           description="The SQL command to be executed."
                           name="SqlCommand"
                           UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
-UPC,
+ UPC,
+ ITEM_KEY,
+ VIN,
  STORE_NUMBER ,
  VENDOR_NUMBER ,
-VENDOR_NAME,
- CASE_SIZE ,
- CASE_UOM ,
+ VENDOR_NAME,
+ VENDOR_CASE_SIZE ,
+ VENDOR_CASE_UOM ,
  VENDOR_COST_UOM ,
  REG_COST,
  RETAIL_UOM,
- RETAIL_PACK
+ RETAIL_PACK,
+ PRIMARY_VENDOR
 FROM dbo.VendorLaneExtract
 WHERE STORE_NUMBER = ?</property>
                         <property
@@ -4694,28 +4791,6 @@ WHERE STORE_NUMBER = ?</property>
                               name="VENDOR_NUMBER"
                               truncationRowDisposition="FailComponent" />
                             <outputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_SIZE]"
-                              codePage="1252"
-                              dataType="str"
-                              errorOrTruncationOperation="Conversion"
-                              errorRowDisposition="FailComponent"
-                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CASE_SIZE]"
-                              length="15"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_SIZE]"
-                              name="CASE_SIZE"
-                              truncationRowDisposition="FailComponent" />
-                            <outputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_UOM]"
-                              codePage="1252"
-                              dataType="str"
-                              errorOrTruncationOperation="Conversion"
-                              errorRowDisposition="FailComponent"
-                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CASE_UOM]"
-                              length="25"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[CASE_UOM]"
-                              name="CASE_UOM"
-                              truncationRowDisposition="FailComponent" />
-                            <outputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[REG_COST]"
                               codePage="1252"
                               dataType="str"
@@ -4770,6 +4845,57 @@ WHERE STORE_NUMBER = ?</property>
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_NAME]"
                               name="VENDOR_NAME"
                               truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[ITEM_KEY]"
+                              dataType="i4"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ITEM_KEY]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[ITEM_KEY]"
+                              name="ITEM_KEY"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VIN]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VIN]"
+                              length="20"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VIN]"
+                              name="VIN"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_SIZE]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VENDOR_CASE_SIZE]"
+                              length="15"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_SIZE]"
+                              name="VENDOR_CASE_SIZE"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_UOM]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VENDOR_CASE_UOM]"
+                              length="25"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[VENDOR_CASE_UOM]"
+                              name="VENDOR_CASE_UOM"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[PRIMARY_VENDOR]"
+                              dataType="bool"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PRIMARY_VENDOR]"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].Columns[PRIMARY_VENDOR]"
+                              name="PRIMARY_VENDOR"
+                              truncationRowDisposition="FailComponent" />
                           </outputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -4791,18 +4917,6 @@ WHERE STORE_NUMBER = ?</property>
                               dataType="str"
                               length="10"
                               name="VENDOR_NUMBER" />
-                            <externalMetadataColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CASE_SIZE]"
-                              codePage="1252"
-                              dataType="str"
-                              length="15"
-                              name="CASE_SIZE" />
-                            <externalMetadataColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CASE_UOM]"
-                              codePage="1252"
-                              dataType="str"
-                              length="25"
-                              name="CASE_UOM" />
                             <externalMetadataColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[REG_COST]"
                               codePage="1252"
@@ -4833,6 +4947,32 @@ WHERE STORE_NUMBER = ?</property>
                               dataType="str"
                               length="50"
                               name="VENDOR_NAME" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ITEM_KEY]"
+                              dataType="i4"
+                              name="ITEM_KEY" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VIN]"
+                              codePage="1252"
+                              dataType="str"
+                              length="20"
+                              name="VIN" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VENDOR_CASE_SIZE]"
+                              codePage="1252"
+                              dataType="str"
+                              length="15"
+                              name="VENDOR_CASE_SIZE" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[VENDOR_CASE_UOM]"
+                              codePage="1252"
+                              dataType="str"
+                              length="25"
+                              name="VENDOR_CASE_UOM" />
+                            <externalMetadataColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PRIMARY_VENDOR]"
+                              dataType="bool"
+                              name="PRIMARY_VENDOR" />
                           </externalMetadataColumns>
                         </output>
                         <output
@@ -4847,6 +4987,18 @@ WHERE STORE_NUMBER = ?</property>
                               length="13"
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[UPC]"
                               name="UPC" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ITEM_KEY]"
+                              dataType="i4"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ITEM_KEY]"
+                              name="ITEM_KEY" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VIN]"
+                              codePage="1252"
+                              dataType="str"
+                              length="20"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VIN]"
+                              name="VIN" />
                             <outputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[STORE_NUMBER]"
                               codePage="1252"
@@ -4869,19 +5021,19 @@ WHERE STORE_NUMBER = ?</property>
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_NAME]"
                               name="VENDOR_NAME" />
                             <outputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CASE_SIZE]"
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_CASE_SIZE]"
                               codePage="1252"
                               dataType="str"
                               length="15"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CASE_SIZE]"
-                              name="CASE_SIZE" />
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_CASE_SIZE]"
+                              name="VENDOR_CASE_SIZE" />
                             <outputColumn
-                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CASE_UOM]"
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_CASE_UOM]"
                               codePage="1252"
                               dataType="str"
                               length="25"
-                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CASE_UOM]"
-                              name="CASE_UOM" />
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_CASE_UOM]"
+                              name="VENDOR_CASE_UOM" />
                             <outputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[VENDOR_COST_UOM]"
                               codePage="1252"
@@ -4910,6 +5062,11 @@ WHERE STORE_NUMBER = ?</property>
                               length="15"
                               lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RETAIL_PACK]"
                               name="RETAIL_PACK" />
+                            <outputColumn
+                              refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PRIMARY_VENDOR]"
+                              dataType="bool"
+                              lineageId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PRIMARY_VENDOR]"
+                              name="PRIMARY_VENDOR" />
                             <outputColumn
                               refId="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                               dataType="i4"
@@ -5000,6 +5157,15 @@ WHERE STORE_NUMBER = ?</property>
                       VSTAMinorVersion="0"
                       Language="CSharp"
                       ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
+                      <ProjectItem
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -5119,35 +5285,6 @@ WHERE STORE_NUMBER = ?</property>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                       <ProjectItem
                         Name="ScriptMain.cs"
                         Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -5309,6 +5446,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\AssemblyInfo.cs"
                         Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -5338,15 +5504,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -5797,20 +5954,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </resheader>
 </root>]]></ProjectItem>
               <ProjectItem
-                Name="Properties\Settings.settings"
-                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
-              <ProjectItem
-                Name="packages.config"
-                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<packages>
-  <package id="TIBCO.EMS" version="2016.10.21.1" targetFramework="net40" />
-</packages>]]></ProjectItem>
+                Name="Properties\AssemblyInfo.cs"
+                Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_cd0cacdccfef43c28dcfc57139615002")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_cd0cacdccfef43c28dcfc57139615002")]
+[assembly: AssemblyCopyright("Copyright @  2018")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
               <ProjectItem
                 Name="ScriptMain.cs"
                 Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -6073,6 +6245,12 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
               <ProjectItem
+                Name="packages.config"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="TIBCO.EMS" version="2016.10.21.1" targetFramework="net40" />
+</packages>]]></ProjectItem>
+              <ProjectItem
                 Name="Properties\Settings.Designer.cs"
                 Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
@@ -6102,35 +6280,14 @@ namespace ST_cd0cacdccfef43c28dcfc57139615002.Properties {
     }
 }]]></ProjectItem>
               <ProjectItem
-                Name="Properties\AssemblyInfo.cs"
-                Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_cd0cacdccfef43c28dcfc57139615002")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_cd0cacdccfef43c28dcfc57139615002")]
-[assembly: AssemblyCopyright("Copyright @  2018")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
               <ProjectItem
                 Name="Properties\Resources.Designer.cs"
                 Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -6440,6 +6597,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       Language="CSharp"
                       ReadOnlyVariables="$Project::Environment">
                       <ProjectItem
+                        Name="Properties\Settings.settings"
+                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\Resources.resx"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -6561,35 +6727,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       <ProjectItem
                         Name="ST_326f9b1d83f5433590eefb503f9d9348.csproj"
                         Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_326f9b1d83f5433590eefb503f9d9348</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.Designer.cs"
-                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
-    "ings")]
-
-namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
                       <ProjectItem
                         Name="ScriptMain.cs"
                         Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -6747,6 +6884,35 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
                       <ProjectItem
+                        Name="Properties\Settings.Designer.cs"
+                        Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_982607d836ba416cb123786fa6eb8577.Properties.Settings.get_Default():ST_982607d836ba416cb123786fa6eb8577.Properties.Sett" +
+    "ings")]
+
+namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+                      <ProjectItem
                         Name="Properties\AssemblyInfo.cs"
                         Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -6776,15 +6942,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                      <ProjectItem
-                        Name="Properties\Settings.settings"
-                        Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                       <ProjectItem
                         Name="Properties\Resources.Designer.cs"
                         Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -7004,6 +7161,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               ReadOnlyVariables="User::CurrentDataSource"
               ReadWriteVariables="User::CurrentRegion">
               <ProjectItem
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+              <ProjectItem
                 Name="Properties\Resources.resx"
                 Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -7122,35 +7288,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-              <ProjectItem
-                Name="Properties\Settings.Designer.cs"
-                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_d025ad6bda6548e1be602890035a2bf1.Properties.Settings.get_Default():ST_d025ad6bda6548e1be602890035a2bf1.Properties.Sett" +
-    "ings")]
-
-namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
               <ProjectItem
                 Name="ScriptMain.cs"
                 Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -7289,6 +7426,35 @@ namespace ST_d025ad6bda6548e1be602890035a2bf1
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
               <ProjectItem
+                Name="Properties\Settings.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_d025ad6bda6548e1be602890035a2bf1.Properties.Settings.get_Default():ST_d025ad6bda6548e1be602890035a2bf1.Properties.Sett" +
+    "ings")]
+
+namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+              <ProjectItem
                 Name="Properties\AssemblyInfo.cs"
                 Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -7318,15 +7484,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-              <ProjectItem
-                Name="Properties\Settings.settings"
-                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
               <ProjectItem
                 Name="Properties\Resources.Designer.cs"
                 Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -7696,14 +7853,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                   Language="CSharp"
                   ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                   <ProjectItem
-                    Name="Properties\Settings.settings"
-                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+                    Name="Properties\AssemblyInfo.cs"
+                    Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Resources.resx"
                     Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -8013,35 +8191,14 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                   <ProjectItem
-                    Name="Properties\AssemblyInfo.cs"
-                    Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_982607d836ba416cb123786fa6eb8577")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+                    Name="Properties\Settings.settings"
+                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Resources.Designer.cs"
                     Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -8306,6 +8463,137 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   Language="CSharp"
                   ReadOnlyVariables="User::CurrentRegion,$Project::Environment">
                   <ProjectItem
+                    Name="ST_83c3870754c34df981c7e2a945aefc2f.csproj"
+                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_83c3870754c34df981c7e2a945aefc2f</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
+                  <ProjectItem
+                    Name="Properties\Resources.resx"
+                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+                  <ProjectItem
+                    Name="Properties\Settings.settings"
+                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+                  <ProjectItem
                     Name="ScriptMain.cs"
                     Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
 /* The Script Task allows you to perform virtually any operation that can be accomplished in
@@ -8442,124 +8730,25 @@ namespace ST_982607d836ba416cb123786fa6eb8577
 	}
 }]]></ProjectItem>
                   <ProjectItem
-                    Name="Properties\Resources.resx"
-                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-</root>]]></ProjectItem>
+                    Name="Project"
+                    Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
+		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
+		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ST_83c3870754c34df981c7e2a945aefc2f.csproj"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="ScriptMain.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Settings.Designer.cs"
                     Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -8590,29 +8779,6 @@ namespace ST_982607d836ba416cb123786fa6eb8577.Properties {
     }
 }]]></ProjectItem>
                   <ProjectItem
-                    Name="ST_83c3870754c34df981c7e2a945aefc2f.csproj"
-                    Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{6920C281-9105-49BC-9EA9-A9FC9D47D4A7}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_982607d836ba416cb123786fa6eb8577</RootNamespace><AssemblyName>ST_83c3870754c34df981c7e2a945aefc2f</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch><TargetFrameworkProfile></TargetFrameworkProfile></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=Neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-                  <ProjectItem
-                    Name="Project"
-                    Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
-	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
-		<msb:CodeName>ST_982607d836ba416cb123786fa6eb8577</msb:CodeName>
-		<msb:DisplayName>ST_982607d836ba416cb123786fa6eb8577</msb:DisplayName>
-		<msb:ProjectId>{FFC32C7F-2294-4313-B6DF-2616A27A517D}</msb:ProjectId>
-	</msb:PropertyGroup>
-	<msb:ItemGroup>
-		<msb:Project Include="ST_83c3870754c34df981c7e2a945aefc2f.csproj"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
-		<msb:File Include="Properties\Settings.settings"/>
-		<msb:File Include="Properties\Resources.resx"/>
-		<msb:File Include="Properties\Resources.Designer.cs"/>
-		<msb:File Include="Properties\Settings.Designer.cs"/>
-		<msb:File Include="ScriptMain.cs"/>
-	</msb:ItemGroup>
-</c:Project>]]></ProjectItem>
-                  <ProjectItem
                     Name="Properties\AssemblyInfo.cs"
                     Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -8642,15 +8808,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-                  <ProjectItem
-                    Name="Properties\Settings.settings"
-                    Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
                   <ProjectItem
                     Name="Properties\Resources.Designer.cs"
                     Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -8870,6 +9027,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           ReadOnlyVariables="$Project::Environment,$Project::RegionCode"
           ReadWriteVariables="User::DataSourceList">
           <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -8988,35 +9154,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_d025ad6bda6548e1be602890035a2bf1.Properties.Settings.get_Default():ST_d025ad6bda6548e1be602890035a2bf1.Properties.Sett" +
-    "ings")]
-
-namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
@@ -9165,68 +9302,6 @@ namespace ST_d025ad6bda6548e1be602890035a2bf1
 	}
 }]]></ProjectItem>
           <ProjectItem
-            Name="ST_980c9bcc41774031961e3e9f27434625.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{7E2B8755-E8CA-4805-A5B8-3A07A2B12C67}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_d025ad6bda6548e1be602890035a2bf1</RootNamespace><AssemblyName>ST_980c9bcc41774031961e3e9f27434625</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
-          <ProjectItem
-            Name="Project"
-            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
-	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
-		<msb:CodeName>ST_d025ad6bda6548e1be602890035a2bf1</msb:CodeName>
-		<msb:DisplayName>ST_d025ad6bda6548e1be602890035a2bf1</msb:DisplayName>
-		<msb:ProjectId>{3DA89CCA-B6B8-45DD-A175-58BFB3673B52}</msb:ProjectId>
-	</msb:PropertyGroup>
-	<msb:ItemGroup>
-		<msb:Project Include="ST_980c9bcc41774031961e3e9f27434625.csproj"/>
-		<msb:File Include="Properties\Settings.settings"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
-		<msb:File Include="Properties\Resources.resx"/>
-		<msb:File Include="Properties\Resources.Designer.cs"/>
-		<msb:File Include="Properties\Settings.Designer.cs"/>
-		<msb:File Include="ScriptMain.cs"/>
-	</msb:ItemGroup>
-</c:Project>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
-[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
-[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
-          <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
 // <auto-generated>
@@ -9294,6 +9369,88 @@ namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
         }
     }
 }]]></ProjectItem>
+          <ProjectItem
+            Name="Project"
+            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_d025ad6bda6548e1be602890035a2bf1</msb:CodeName>
+		<msb:DisplayName>ST_d025ad6bda6548e1be602890035a2bf1</msb:DisplayName>
+		<msb:ProjectId>{3DA89CCA-B6B8-45DD-A175-58BFB3673B52}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ST_980c9bcc41774031961e3e9f27434625.csproj"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="ScriptMain.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_d025ad6bda6548e1be602890035a2bf1.Properties.Settings.get_Default():ST_d025ad6bda6548e1be602890035a2bf1.Properties.Sett" +
+    "ings")]
+
+namespace ST_d025ad6bda6548e1be602890035a2bf1.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Whole Foods Market, Inc.")]
+[assembly: AssemblyProduct("ST_d025ad6bda6548e1be602890035a2bf1")]
+[assembly: AssemblyCopyright("Copyright @ Whole Foods Market, Inc. 2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="ST_980c9bcc41774031961e3e9f27434625.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?><Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"><PropertyGroup><ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids><Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration><Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform><ProductVersion>8.0.30703</ProductVersion><SchemaVersion>2.0</SchemaVersion><ProjectGuid>{7E2B8755-E8CA-4805-A5B8-3A07A2B12C67}</ProjectGuid><OutputType>Library</OutputType><AppDesignerFolder>Properties</AppDesignerFolder><RootNamespace>ST_d025ad6bda6548e1be602890035a2bf1</RootNamespace><AssemblyName>ST_980c9bcc41774031961e3e9f27434625</AssemblyName><TargetFrameworkVersion>v4.0</TargetFrameworkVersion><FileAlignment>512</FileAlignment><ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Debug' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><Optimize>false</Optimize><OutputPath>.\bin\Debug\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>DEBUG;TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><PropertyGroup Condition=" '$(Configuration)' == 'Release' "><DebugSymbols>false</DebugSymbols><Optimize>true</Optimize><OutputPath>.\bin\Release\</OutputPath><EnableUnmanagedDebugging>false</EnableUnmanagedDebugging><DefineConstants>TRACE</DefineConstants><ErrorReport>prompt</ErrorReport><WarningLevel>4</WarningLevel></PropertyGroup><ItemGroup><Reference Include="System" /><Reference Include="System.Data" /><Reference Include="System.Windows.Forms" /><Reference Include="System.Xml" /><Reference Include="Microsoft.SqlServer.ManagedDTS, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /><Reference Include="Microsoft.SqlServer.ScriptTask, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" /></ItemGroup><ItemGroup><AppDesigner Include="Properties\" /><Compile Include="Properties\AssemblyInfo.cs"><SubType>Code</SubType></Compile><EmbeddedResource Include="Properties\Resources.resx"><Generator>ResXFileCodeGenerator</Generator><LastGenOutput>Resources.Designer.cs</LastGenOutput></EmbeddedResource><Compile Include="Properties\Resources.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Resources.resx</DependentUpon></Compile><None Include="Properties\Settings.settings"><Generator>SettingsSingleFileGenerator</Generator><LastGenOutput>Settings.Designer.cs</LastGenOutput></None><Compile Include="Properties\Settings.Designer.cs"><AutoGen>True</AutoGen><DependentUpon>Settings.settings</DependentUpon></Compile><Compile Include="ScriptMain.cs"><SubType>Code</SubType></Compile></ItemGroup><!-- Include the build rules for a C# project.--><Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /><ProjectExtensions><VisualStudio><FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}"><ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" /><Host Name="ScriptTask" /><ProjectClient><HostIdentifier>SSIS_ST120</HostIdentifier></ProjectClient></FlavorProperties></VisualStudio></ProjectExtensions></Project>]]></ProjectItem>
           <BinaryItem
             Name="ST_d025ad6bda6548e1be602890035a2bf1.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
@@ -9902,31 +10059,31 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="152.8,41.6"
-          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values"
-          TopLeft="29.1428576391572,152.941178615531" />
-        <NodeLayout
           Size="171.2,41.6"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Flat File Destination"
-          TopLeft="13.6428570260807,225.358825322584" />
+          TopLeft="22.2142857434798,228.417648894895" />
+        <NodeLayout
+          Size="152.8,41.6"
+          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\Derive Values"
+          TopLeft="24.5714289898777,106.44706031641" />
         <NodeLayout
           Size="149.6,41.6"
           Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File\OLE DB Source"
           TopLeft="19.3571429057997,5.5" />
         <EdgeLayout
-          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File.Paths[Derived Column Output]"
-          TopLeft="102.392857332619,194.54117861553">
+          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File.Paths[OLE DB Source Output]"
+          TopLeft="97.5642859478387,47.1">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.8176467070534"
+              EndConnector="0,59.3470603164097"
               Start="0,0"
-              End="0,23.3176467070534">
+              End="0,51.8470603164097">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.3176467070534" />
+                    End="0,51.8470603164097" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9936,31 +10093,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File.Paths[OLE DB Source Output]"
-          TopLeft="94.1571429057997,47.1">
+          Id="Package\Foreach IRMA DB Loop\Foreach StoreList Loop\Create ItemVendorLane File.Paths[Derived Column Output]"
+          TopLeft="104.392857366679,148.04706031641">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="11.3857147333575,105.841178615531"
+              EndConnector="0,80.3705885784849"
               Start="0,0"
-              End="11.3857147333575,98.341178615531">
+              End="0,72.8705885784849">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,48.9205893077655" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,48.9205893077655"
-                    Point2="0,52.9205893077655"
-                    Point3="4,52.9205893077655" />
-                  <mssgle:LineSegment
-                    End="7.3857147333575,52.9205893077655" />
-                  <mssgle:CubicBezierSegment
-                    Point1="7.3857147333575,52.9205893077655"
-                    Point2="11.3857147333575,52.9205893077655"
-                    Point3="11.3857147333575,56.9205893077655" />
-                  <mssgle:LineSegment
-                    End="11.3857147333575,98.341178615531" />
+                    End="0,72.8705885784849" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
