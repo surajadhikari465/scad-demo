@@ -19,6 +19,9 @@ SELECT [RetentionPolicyId]
   WHERE [Table] = IsNull(@Table,[Table]) and IncludedInDailyPurge = IsNull(@IncludedInDailyPurge ,IncludedInDailyPurge)
   ORDER BY [Table]
 END 
+GO
 
-GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRSUser];
-GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRSUser];
+GO
+GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRMAClientRole];
+GO
