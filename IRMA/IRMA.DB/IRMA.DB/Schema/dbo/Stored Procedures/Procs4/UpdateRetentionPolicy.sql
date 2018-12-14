@@ -69,5 +69,9 @@ BEGIN
 	SET NOCOUNT OFF
 END
 
+GO
+
 GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRSUser];
+GO
 GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRMAClientRole];
+GO

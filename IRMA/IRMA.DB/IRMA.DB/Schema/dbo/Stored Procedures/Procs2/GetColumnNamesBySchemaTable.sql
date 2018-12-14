@@ -8,6 +8,9 @@ BEGIN
 		WHERE TABLE_NAME= @Table and TABLE_SCHEMA = @Schema and DATA_TYPE IN('date', 'datetime', 'datetime2', 'smalldatetime')
     ORDER BY COLUMN_NAME
 END
+GO
 
 GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRSUser];
+GO
 GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRMAClientRole];
+GO

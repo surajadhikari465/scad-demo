@@ -10,5 +10,9 @@ BEGIN
               AS IsExists
 END
 
-GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRSUser];
-GRANT EXECUTE ON OBJECT::dbo.GetTablesWithRetentionPolicy TO [IRMAClientRole];
+GO
+
+GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRSUser];
+GO
+GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRMAClientRole];
+GO
