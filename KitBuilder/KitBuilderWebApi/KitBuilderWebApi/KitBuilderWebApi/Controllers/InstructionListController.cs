@@ -146,9 +146,15 @@ namespace KitBuilderWebApi.Controllers
 
             var instructionList = Mapper.Map<InstructionList>(list);
             instructionList.InstructionListId = existingList.InstructionListId;
+            instructionList.InstructionTypeId = existingList.InstructionTypeId;
+            instructionList.InstructionListId = existingList.InstructionListId;
             instructionList.InsertDateUtc = existingList.InsertDateUtc;
             instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
-
+            if(instructionList.StatusId ==0)
+            {
+                instructionList.StatusId = existingList.StatusId;
+            }
+            instructionList.Name = list.Name;
             try
             {
                 instructionListRepository.Update(instructionList, existingList.InstructionListId);
@@ -179,15 +185,21 @@ namespace KitBuilderWebApi.Controllers
 
 
             var list = instructionListRepository.Find(i => i.InstructionListId == instructionListId);
+            var members = instructionListMemberRepository.FindAll(i => i.InstructionListId == instructionListId);
 
             if (list == null) return NotFound();
 
-            if (InstructionListHasMembers(list)) return NoContent();
+            //if (InstructionListHasMembers(list)) return NoContent();
 
             if (!IsInstructionInUse(instructionListId))
             {
                try
                 {
+                    foreach(InstructionListMember il in members)
+                    {
+                        instructionListMemberRepository.Delete(il);
+                    }
+                   
                     instructionListRepository.Delete(list);
                     instructionListRepository.UnitOfWork.Commit();
                     return Ok();
@@ -228,11 +240,17 @@ namespace KitBuilderWebApi.Controllers
                 logger.LogError("AddInstructionList: Unable to find default status.");
                 return BadRequest(ModelState);
             }
+            // check for duplicate name
+            var instructionListWithSameName = instructionListRepository.Find(i => i.Name.ToUpper() == instructionListAddDto.Name.ToUpper());
+            if (instructionListWithSameName != null)
+            {
+                return StatusCode(409, "Instruction List with this name alreadys exists.");
+            }
 
-            var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
-            instructionList.StatusId = defaultStatus.StatusId;
-            instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
-            instructionList.InsertDateUtc = DateTime.UtcNow;
+             var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
+             instructionList.StatusId = defaultStatus.StatusId;
+             instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+             instructionList.InsertDateUtc = DateTime.UtcNow;
 
             instructionListRepository.Add(instructionList);
 
