@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.EwicErrorResponseListener.WindowsService", "Icon.Esb.EwicErrorResponseListener.WindowsService\Icon.Esb.EwicErrorResponseListener.WindowsService.csproj", "{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}"
 EndProject
@@ -19,6 +19,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Dev|Any CPU = Dev|Any CPU
+		Perf|Any CPU = Perf|Any CPU
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
@@ -28,6 +29,8 @@ Global
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.QA|Any CPU.Build.0 = QA|Any CPU
 		{3F686CA6-90B5-4922-9AFC-97AD01FF0F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,6 +41,8 @@ Global
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.QA|Any CPU.Build.0 = Release|Any CPU
 		{6C5D8B54-D7D9-411D-AF7A-E4E03888A033}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,6 +53,8 @@ Global
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.QA|Any CPU.Build.0 = Release|Any CPU
 		{A732F70A-6CBF-427E-8D90-5C5AE20CE5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,6 +65,8 @@ Global
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.QA|Any CPU.Build.0 = Release|Any CPU
 		{AA906BC8-24E9-44FD-BA2F-B6E7A89B7528}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,6 +77,8 @@ Global
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.QA|Any CPU.Build.0 = Release|Any CPU
 		{AC2C51B6-E20D-4533-9F5A-DD18F9CB3705}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,6 +89,8 @@ Global
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.QA|Any CPU.Build.0 = Release|Any CPU
 		{AA9A803B-6296-455C-AA90-731B8B5A9BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,28 +101,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.Esb.EwicErrorResponseListener.WindowsService\\Icon.Esb.EwicErrorResponseListener.WindowsService.csproj
-		SccProjectName1 = Icon.Esb.EwicErrorResponseListener.WindowsService
-		SccLocalPath1 = Icon.Esb.EwicErrorResponseListener.WindowsService
-		SccProjectUniqueName2 = Icon.Esb.EwicErrorResponseListener\\Icon.Esb.EwicErrorResponseListener.csproj
-		SccProjectName2 = Icon.Esb.EwicErrorResponseListener
-		SccLocalPath2 = Icon.Esb.EwicErrorResponseListener
-		SccProjectUniqueName3 = Icon.Esb.EwicErrorResponseListener.Common\\Icon.Esb.EwicErrorResponseListener.Common.csproj
-		SccProjectName3 = Icon.Esb.EwicErrorResponseListener.Common
-		SccLocalPath3 = Icon.Esb.EwicErrorResponseListener.Common
-		SccProjectUniqueName4 = Icon.Esb.EwicErrorResponseListener.Tests.Unit\\Icon.Esb.EwicErrorResponseListener.Tests.Unit.csproj
-		SccProjectName4 = Icon.Esb.EwicErrorResponseListener.Tests.Unit
-		SccLocalPath4 = Icon.Esb.EwicErrorResponseListener.Tests.Unit
-		SccProjectUniqueName5 = Icon.Esb.EwicErrorResponseListener.DataAccess\\Icon.Esb.EwicErrorResponseListener.DataAccess.csproj
-		SccProjectName5 = Icon.Esb.EwicErrorResponseListener.DataAccess
-		SccLocalPath5 = Icon.Esb.EwicErrorResponseListener.DataAccess
-		SccProjectUniqueName6 = Icon.Esb.EwicErrorResponseListener.Tests.Integration\\Icon.Esb.EwicErrorResponseListener.Tests.Integration.csproj
-		SccProjectName6 = Icon.Esb.EwicErrorResponseListener.Tests.Integration
-		SccLocalPath6 = Icon.Esb.EwicErrorResponseListener.Tests.Integration
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B89622B2-C04F-4570-8182-83CDF2DF8D58}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.R10Listener", "Icon.Esb.R10Listener\Icon.Esb.R10Listener.csproj", "{E0822586-DFCC-46AF-990C-2A769E5DA64D}"
 EndProject
@@ -15,6 +15,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Dev|Any CPU = Dev|Any CPU
 		DVD-5|Any CPU = DVD-5|Any CPU
+		Perf|Any CPU = Perf|Any CPU
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		SingleImage|Any CPU = SingleImage|Any CPU
@@ -29,6 +30,8 @@ Global
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.DVD-5|Any CPU.ActiveCfg = QA|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.DVD-5|Any CPU.Build.0 = QA|Any CPU
+		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.QA|Any CPU.Build.0 = QA|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +48,8 @@ Global
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.DVD-5|Any CPU.ActiveCfg = QA|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.DVD-5|Any CPU.Build.0 = QA|Any CPU
+		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.QA|Any CPU.Build.0 = QA|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +66,8 @@ Global
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.DVD-5|Any CPU.ActiveCfg = QA|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.DVD-5|Any CPU.Build.0 = QA|Any CPU
+		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
+		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.QA|Any CPU.Build.0 = QA|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,24 +80,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/defaultcollection
-		SccProjectUniqueName0 = Icon.Esb.R10Listener\\Icon.Esb.R10Listener.csproj
-		SccProjectName0 = Icon.Esb.R10Listener
-		SccAuxPath0 = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath0 = Icon.Esb.R10Listener
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = Icon.Esb.R10Listener.Tests\\Icon.Esb.R10Listener.Tests.csproj
-		SccProjectName1 = Icon.Esb.R10Listener.Tests
-		SccAuxPath1 = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath1 = Icon.Esb.R10Listener.Tests
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName2 = Icon.Esb.R10Listener.WindowsService\\Icon.Esb.R10Listener.WindowsService.csproj
-		SccProjectName2 = Icon.Esb.R10Listener.WindowsService
-		SccAuxPath2 = https://irma.visualstudio.com/defaultcollection
-		SccLocalPath2 = Icon.Esb.R10Listener.WindowsService
-		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {570B914F-9BB7-426C-ADA0-648BEEF1E8D8}
 	EndGlobalSection
 EndGlobal
