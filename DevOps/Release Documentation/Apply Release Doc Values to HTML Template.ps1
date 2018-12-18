@@ -33,10 +33,33 @@ function BuildHtmlListItems(
 }
 
 ########################################################################################################################################
-########################################################################################################################################
-########################################################################################################################################
-########################################################################################################################################
 
+function StampAndArchive(){
+
+Param($rel_doc)
+
+    if(test-path $rel_doc){
+    
+    $rel_docObj = Get-Item $rel_doc
+    
+    [System.IO.FileInfo]$ext = Get-ChildItem ($rel_docObj) | select -ExpandProperty Extension
+    [DateTime]$modifiedDate = Get-ChildItem ($rel_docObj) | select -ExpandProperty lastwritetime
+
+    Rename-Item ($rel_docObj) ($rel_docObj.Basename + "." + (get-date $modifiedDate -f "yyyyMMdd.HHmmss") + $ext)
+    Write-Host ("Earlier Release Doc version archived: " + $rel_docObj.Basename + "." + (get-date $modifiedDate -f "yyyyMMdd.HHmmss") + $ext) -ForegroundColor Green
+
+    }
+    else{  
+    #do nothing    
+    }
+
+}
+
+########################################################################################################################################
+########################################################################################################################################
+########################################################################################################################################
+########################################################################################################################################
+########################################################################################################################################
 
 
 $gitRootFolder = "c:\tlux\dev\git\Icon"
@@ -102,7 +125,7 @@ $relDocFolder = "c:\temp\reldoc\"
 if(-not (Test-Path $relDocFolder)){
     New-Item -Verbose -ItemType Directory $relDocFolder
 }
-$relDoc = "$relDocFolder\IRMA Apps Release $relYear-$relId.$targetEnvShort.htm"
+$relDoc = ($relDocFolder + "IRMA Apps Release $relYear-$relId.$targetEnvShort.htm")
 
 # Replace values in HTML file with input values.
 foreach($keyName in $relValuesInHash.keys){
@@ -177,8 +200,14 @@ Set-Content $relDoc -Value $relDocTxt
 
 $relDocFileObj = Get-ChildItem $relDoc
 $docDest = "\\irmaqaapp1\e$\inetpub\wwwroot\reldoc"
+$archive = $docDest+"\"+$relDocFileObj.PSChildName
+
 if(AskYesNo "`n-----`nCopy doc to web server: $docDest ?"){
+
+    StampAndArchive $archive
     Copy-Item $relDoc -Destination $docDest
+
     "URL --> " + "http://irmaqaapp1/reldoc/" + $relDocFileObj.name
 }
+
 
