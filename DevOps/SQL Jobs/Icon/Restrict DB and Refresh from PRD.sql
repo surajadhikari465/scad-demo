@@ -3,7 +3,7 @@
 	USE [master]
 GO
 declare @dbname sysname
-set @dbname = 'Icon'
+set @dbname = 'IconDev'
 
 declare @spid int
 select @spid = MIN(spid) from master.dbo.sysprocesses
