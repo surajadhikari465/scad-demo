@@ -779,12 +779,6 @@
     <Compile Include="Icon\IconItemRefresh\BusinessLogic\ItemIdentifierRefreshService.vb" />
     <Compile Include="Icon\IconItemRefresh\Models\ItemRefreshModel.vb" />
     <Compile Include="Icon\IconItemRefresh\DataAccess\ItemIdentifierRefreshDAO.vb" />
-    <Compile Include="Icon\IconItemRefresh\UserInterface\SlawPriceRefresh.Designer.vb">
-      <DependentUpon>SlawPriceRefresh.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Icon\IconItemRefresh\UserInterface\SlawPriceRefresh.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Icon\IconItemRefresh\UserInterface\SlawItemLocaleRefresh.Designer.vb">
       <DependentUpon>SlawItemLocaleRefresh.vb</DependentUpon>
     </Compile>
@@ -3758,9 +3752,6 @@
     <EmbeddedResource Include="DataArchiving\UserInterface\Form_EditDataArchive.resx">
       <DependentUpon>Form_EditDataArchive.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Icon\IconItemRefresh\UserInterface\SlawPriceRefresh.resx">
-      <DependentUpon>SlawPriceRefresh.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Icon\IconItemRefresh\UserInterface\SlawItemLocaleRefresh.resx">
       <DependentUpon>SlawItemLocaleRefresh.vb</DependentUpon>

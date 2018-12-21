@@ -2394,20 +2394,13 @@ me_exit:
         logger.Debug("R10ItemRefresh_Click exit")
     End Sub
 
-    Private Sub SlawItemLocaleMenuItem_Click(sender As Object, e As EventArgs) Handles SlawItemLocaleMenuItem.Click
-        logger.Debug("SlawItemLocaleMenuItem_Click entry")
-        Dim slawItemLocaleRefreshWindow As New SlawItemLocaleRefresh()
-        slawItemLocaleRefreshWindow.ShowDialog()
-        logger.Debug("SlawItemLocaleMenuItem_Click exit")
-    End Sub
+  Private Sub SlawRefreshMenuItem_Click(sender As Object, e As EventArgs) Handles SlawItemLocaleMenuItem.Click, SlawPriceMenuItem.Click
+    Using form As New SlawItemRefresh(If(sender Is SlawItemLocaleMenuItem, SlawItemRefresh.ItemRefreshType.ItemLocale, SlawItemRefresh.ItemRefreshType.Price))
+      form.ShowDialog()
+    End Using
+  End Sub
 
-    Private Sub SlawPriceMenuItem_Click(sender As Object, e As EventArgs) Handles SlawPriceMenuItem.Click
-        logger.Debug("SlawPriceMenuItem_Click entry")
-        Dim slawPriceRefreshWindow As New SlawPriceRefresh()
-        slawPriceRefreshWindow.ShowDialog()
-        logger.Debug("SlawPriceMenuItem_Click exit")
-    End Sub
-    Private Sub NoTagLogicToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NoTagLogicToolStripMenuItem.Click
+  Private Sub NoTagLogicToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NoTagLogicToolStripMenuItem.Click
         logger.Debug("NoTagLogicToolStripMenuItem_Click entry")
 
         Cursor = Cursors.WaitCursor
