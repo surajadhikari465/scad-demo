@@ -178,6 +178,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = string.Empty;
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -194,6 +195,7 @@ namespace AmazonLoad.MammothPrice.Tests
                    saveMessages: shouldSaveMessages,
                    saveMessagesDirectory: saveMessageDir,
                    nonReceivingSysName: nonReceivingSysName,
+                   transactionType: transactionType,
                    maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -216,6 +218,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -234,6 +237,7 @@ namespace AmazonLoad.MammothPrice.Tests
                    saveMessages: shouldSaveMessages,
                    saveMessagesDirectory: saveMessageDir,
                    nonReceivingSysName: nonReceivingSysName,
+                   transactionType: transactionType,
                    maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -256,6 +260,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var gpmPriceModels = new List<PriceModelGpm>
@@ -272,6 +277,7 @@ namespace AmazonLoad.MammothPrice.Tests
                     saveMessages: shouldSaveMessages,
                     saveMessagesDirectory: saveMessageDir,
                     nonReceivingSysName: nonReceivingSysName,
+                    transactionType: transactionType,
                     maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -280,6 +286,44 @@ namespace AmazonLoad.MammothPrice.Tests
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.Is<Dictionary<string, string>>(dict => dict["nonReceivingSysName"] == nonReceivingSysName)
+                    ), Times.Once);
+            }
+        }
+
+        [TestMethod]
+        public void MammothPriceBuilder_SendMessagesToEsb_SendsExpectedMsgPropTransactionType()
+        {
+            // Given
+            int maxNumberOfRows = 10;
+            bool shouldSaveMessages = false;
+            string saveMessageDir = string.Empty;
+            string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
+            var mockEsbProducer = new Mock<IEsbProducer>();
+
+            var gpmPriceModels = new List<PriceModelGpm>
+            {
+                testData.PriceGpm_REG_10414_7777777777,
+            };
+
+            // When
+            using (var sqlConnection = new SqlConnection(connectionString))
+            {
+                MammothPriceBuilder.SendMessagesToEsb(
+                    gpmPriceModels: gpmPriceModels,
+                    esbProducer: mockEsbProducer.Object,
+                    saveMessages: shouldSaveMessages,
+                    saveMessagesDirectory: saveMessageDir,
+                    nonReceivingSysName: nonReceivingSysName,
+                    transactionType: transactionType,
+                    maxNumberOfRows: maxNumberOfRows);
+
+                // Then
+                mockEsbProducer.Verify(p =>
+                    p.Send(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.Is<Dictionary<string, string>>(dict => dict["TransactionType"] == transactionType)
                     ), Times.Once);
             }
         }
@@ -316,6 +360,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
                 maxNumberOfRows: maxNumberOfRows,
+                transactionType: "Price",
                 sendToEsb: true);
 
             // Then
@@ -353,6 +398,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
+                transactionType: "Price",
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -390,6 +436,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
+                transactionType: "Price",
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -420,6 +467,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
+                transactionType: "Price",
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -450,6 +498,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
+                transactionType: "Price",
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then

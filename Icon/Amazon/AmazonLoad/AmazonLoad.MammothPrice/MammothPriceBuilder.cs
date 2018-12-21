@@ -2,6 +2,7 @@
 using Dapper;
 using Icon.Esb.Producer;
 using MoreLinq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -18,7 +19,7 @@ namespace AmazonLoad.MammothPrice
 
         public static EsbMessageSendResult LoadMammothPricesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows,
-            bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsb = true)
+            bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName, string transactionType, string transactionTypeLegacy, bool sendToEsb = true)
         {
             IEnumerable<PriceModel> legacyPriceModels = null;
             IEnumerable<PriceModelGpm> gpmPriceModels = null;
@@ -47,6 +48,7 @@ namespace AmazonLoad.MammothPrice
                             saveMessagesDirectory: saveMessagesDirectory,
                             nonReceivingSysName: nonReceivingSysName,
                             maxNumberOfRows: maxNumberOfRows,
+                            transactionType: transactionType,
                             sendToEsb: sendToEsb);
                     }
                     else
@@ -62,6 +64,7 @@ namespace AmazonLoad.MammothPrice
                             saveMessagesDirectory: saveMessagesDirectory,
                             nonReceivingSysName: nonReceivingSysName,
                             maxNumberOfRows: maxNumberOfRows,
+                            transactionType: transactionTypeLegacy,
                             sendToEsb: sendToEsb);
                     }
                 }
@@ -170,7 +173,7 @@ namespace AmazonLoad.MammothPrice
 
         internal static void SendMessagesToEsb(IEnumerable<PriceModelGpm> gpmPriceModels,
             IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsb = true)
+            string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsb = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -182,33 +185,17 @@ namespace AmazonLoad.MammothPrice
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
                 {
                     string message = MessageBuilderForGpmPrice.BuildGpmMessage(modelGroup);
-                    string messageId = Guid.NewGuid().ToString();
+                    PublishMessage(esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, sendToEsb, message);
 
-                    if (sendToEsb)
-                    {
-                        esbProducer.Send(
-                        message,
-                        messageId,
-                        new Dictionary<string, string>
-                        {
-                            { "IconMessageID", messageId },
-                            { "Source", "Icon" },
-                            { "nonReceivingSysName", nonReceivingSysName }
-                        });
-                    }
                     NumberOfRecordsSent += modelGroup.Count();
                     NumberOfMessagesSent += 1;
-                    if (saveMessages)
-                    {
-                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
-                    }
                 }
             }
         }
 
         internal static void SendMessagesToEsb(IEnumerable<PriceModel> legacyPriceModels,
             IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-            string nonReceivingSysName, int maxNumberOfRows, bool sendToEsb = true)
+            string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsb = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -220,27 +207,42 @@ namespace AmazonLoad.MammothPrice
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.BusinessUnitId))
                 {
                     string message = MessageBuilderForPreGpmPrice.BuildPreGpmMessage(modelGroup);
-                    string messageId = Guid.NewGuid().ToString();
+                    PublishMessage(esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, sendToEsb, message);
 
-                    if (sendToEsb)
-                    {
-                        esbProducer.Send(
-                        message,
-                        messageId,
-                        new Dictionary<string, string>
-                        {
-                            { "IconMessageID", messageId },
-                            { "Source", "Icon" },
-                            { "nonReceivingSysName", nonReceivingSysName }
-                        });
-                    }
                     NumberOfRecordsSent += modelGroup.Count();
                     NumberOfMessagesSent += 1;
-                    if (saveMessages)
-                    {
-                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
-                    }
                 }
+            }
+        }
+
+        private static void PublishMessage(IEsbProducer esbProducer,
+            bool saveMessages,
+            string saveMessagesDirectory,
+            string nonReceivingSysName,
+            string transactionType,
+            bool sendToEsb,
+            string message)
+        {
+            string messageId = Guid.NewGuid().ToString();
+            var headers = new Dictionary<string, string>
+            {
+                { "IconMessageID", messageId },
+                { "Source", "Icon" },
+                { "nonReceivingSysName", nonReceivingSysName },
+                { "TransactionType", transactionType }
+            };
+
+            if (sendToEsb)
+            {
+                esbProducer.Send(
+                    message,
+                    messageId,
+                    headers);
+            }
+            
+            if (saveMessages)
+            {
+                File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
             }
         }
     }

@@ -6,6 +6,7 @@ using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Framework;
 using MoreLinq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -79,24 +80,26 @@ namespace AmazonLoad.IconLocale
             {
                 string message = BuildMessage(model);
                 string messageId = Guid.NewGuid().ToString();
+                var headers = new Dictionary<string, string>
+                {
+                    { "IconMessageID", messageId },
+                    { "Source", "Icon"},
+                    { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") },
+                    { "TransactionType", AppSettingsAccessor.GetStringSetting("TransactionType", "Locale") }
+                };
 
                 if (sendToEsb)
                 {
                     producer.Send(
-                    message,
-                    messageId,
-                    new Dictionary<string, string>
-                    {
-                        { "IconMessageID", messageId },
-                        { "Source", "Icon"},
-                        { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") }
-                    });
+                        message,
+                        messageId,
+                        headers);
                 }
                 numberOfRecordsSent += 1;
                 numberOfMessagesSent += 1;
                 if (saveMessages)
                 {
-                    File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                 }
             }
             Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");

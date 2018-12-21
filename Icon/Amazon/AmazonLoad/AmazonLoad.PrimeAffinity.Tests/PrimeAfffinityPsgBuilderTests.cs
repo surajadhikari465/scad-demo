@@ -22,6 +22,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
         const string primeAffinityPSG_type = "Consumable";
         int df_maxNumberOfRows = 10;
         string df_nonReceivingSystems = "Slaw,Mammoth,Spice,ESL,1Plum,Info";
+        string df_transactionType = "Item/Locale";
         bool df_saveMessagesFlag = false;
         string df_saveMessagesDir = "Messages";
         bool df_sendToEsbFlag = true;
@@ -457,7 +458,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             string region = "FL";
             int maxRows = 100;
             bool isGpmActive = true;
-            int maxAllowedMs = 2000;
+            int maxAllowedMs = 5000;
             string businessUnit = "10130";
 
             DateTime start = DateTime.UtcNow;
@@ -519,7 +520,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -548,7 +549,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -577,7 +578,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -606,7 +607,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -636,7 +637,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -660,7 +661,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -690,7 +691,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -727,7 +728,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -760,7 +761,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -792,7 +793,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -828,7 +829,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 Assert.AreEqual(8, PrimeAffinityPsgBuilder.NumberOfRecordsSent);
@@ -864,7 +865,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -893,7 +894,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -922,7 +923,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -951,7 +952,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -981,7 +982,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1011,7 +1012,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1041,7 +1042,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1071,7 +1072,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1103,7 +1104,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1135,7 +1136,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
             }
 
             // Then
@@ -1157,7 +1158,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
 
             // When
             PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, maxNumberOfRows,
-                df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
             // Then
             Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfMessagesSent);
@@ -1181,7 +1182,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
 
             // When
             PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, df_nonReceivingSystems, maxNumberOfRows,
-                df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
             // Then
             Assert.AreEqual(1, PrimeAffinityPsgBuilder.NumberOfMessagesSent);
@@ -1204,7 +1205,7 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
             using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
             {
                 PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, nonReceivingSysName, df_maxNumberOfRows,
-                    df_saveMessagesFlag, df_saveMessagesDir, df_sendToEsbFlag);
+                    df_saveMessagesFlag, df_saveMessagesDir, df_transactionType, df_sendToEsbFlag);
 
                 // Then
                 mockEsbProducer.Verify(p =>
@@ -1212,6 +1213,35 @@ namespace AmazonLoad.PrimeAffinityPsg.Tests
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.Is<Dictionary<string, string>>(dict => dict["nonReceivingSysName"] == nonReceivingSysName)
+                    ), Times.Once);
+            }
+        }
+
+        [TestMethod]
+        public void PrimeAffinityPsgBuilder_SendMessagesToEsb_SendsExpectedMsgPropTransactionType()
+        {
+            // Given
+            string nonReceivingSysName = "non receiving systems test";
+            string transactionType = "Test Item/Locale Psg Transaction Type";
+            var mockEsbProducer = new Mock<IEsbProducer>();
+
+            var primeAffinityModels = new List<PrimeAffinityPsgModel>
+            {
+                testData.Item_MA_10181_NonPrime_A,
+            };
+
+            // When
+            using (var mammothSqlConnection = new SqlConnection(mammothConnectionString))
+            {
+                PrimeAffinityPsgBuilder.SendMessagesToEsb(primeAffinityModels, mockEsbProducer.Object, nonReceivingSysName, df_maxNumberOfRows,
+                    df_saveMessagesFlag, df_saveMessagesDir, transactionType, df_sendToEsbFlag);
+
+                // Then
+                mockEsbProducer.Verify(p =>
+                    p.Send(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.Is<Dictionary<string, string>>(dict => dict["TransactionType"] == transactionType)
                     ), Times.Once);
             }
         }

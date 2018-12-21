@@ -27,6 +27,7 @@ namespace AmazonLoad.MammothItemLocale
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
             var mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
+            var transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
 
             Console.WriteLine("Flags:");
             Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
@@ -61,6 +62,7 @@ namespace AmazonLoad.MammothItemLocale
                 saveMessages: saveMessages,
                 saveMessagesDirectory: saveMessagesDirectory,
                 nonReceivingSysName: nonReceivingSysName,
+                transactionType: transactionType,
                 sendToEsb: sendToEsb);
 
             Console.WriteLine($"Number of records sent: {MammothItemLocaleBuilder.NumberOfRecordsSent}.");

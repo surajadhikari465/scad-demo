@@ -89,6 +89,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -105,6 +106,7 @@ namespace AmazonLoad.MammothPrice.Tests
                    saveMessages: shouldSaveMessages,
                    saveMessagesDirectory: saveMessageDir,
                    nonReceivingSysName: nonReceivingSysName,
+                   transactionType: transactionType,
                    maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -127,6 +129,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -143,6 +146,7 @@ namespace AmazonLoad.MammothPrice.Tests
                    saveMessages: shouldSaveMessages,
                    saveMessagesDirectory: saveMessageDir,
                    nonReceivingSysName: nonReceivingSysName,
+                   transactionType: transactionType,
                    maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -165,6 +169,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -182,6 +187,7 @@ namespace AmazonLoad.MammothPrice.Tests
                    saveMessages: shouldSaveMessages,
                    saveMessagesDirectory: saveMessageDir,
                    nonReceivingSysName: nonReceivingSysName,
+                   transactionType: transactionType,
                    maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -204,6 +210,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -220,6 +227,7 @@ namespace AmazonLoad.MammothPrice.Tests
                     saveMessages: shouldSaveMessages,
                     saveMessagesDirectory: saveMessageDir,
                     nonReceivingSysName: nonReceivingSysName,
+                    transactionType: transactionType,
                     maxNumberOfRows: maxNumberOfRows);
 
                 // Then
@@ -233,10 +241,49 @@ namespace AmazonLoad.MammothPrice.Tests
         }
 
         [TestMethod]
+        public void MammothPriceBuilder_SendMessagesToEsb_WhenNonGpm_SendsExpectedMsgPropTransactionType()
+        {
+            // Given
+            int maxNumberOfRows = 10;
+            bool shouldSaveMessages = false;
+            string saveMessageDir = string.Empty;
+            string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Expected Transaction Type Price";
+            var mockEsbProducer = new Mock<IEsbProducer>();
+
+            var nonGpmPriceModels = new List<PriceModel>
+            {
+                testData.PriceNonGpm_REG_10414_999999999,
+            };
+
+            // When
+            using (var sqlConnection = new SqlConnection(connectionString))
+            {
+                MammothPriceBuilder.SendMessagesToEsb(
+                    legacyPriceModels: nonGpmPriceModels,
+                    esbProducer: mockEsbProducer.Object,
+                    saveMessages: shouldSaveMessages,
+                    saveMessagesDirectory: saveMessageDir,
+                    nonReceivingSysName: nonReceivingSysName,
+                    transactionType: transactionType,
+                    maxNumberOfRows: maxNumberOfRows);
+
+                // Then
+                mockEsbProducer.Verify(p =>
+                    p.Send(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.Is<Dictionary<string, string>>(dict => dict["TransactionType"] == transactionType)
+                    ), Times.Once);
+            }
+        }
+
+        [TestMethod]
         public void MammothPriceBuilder_SendMessagesToEsb_CallsSendForNonGpmRegMessage_WithExpectedXml()
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -262,6 +309,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
+                transactionType: transactionType,
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -273,6 +321,7 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             // send an non-authorized item/locale which should create a delete message
@@ -299,6 +348,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
+                transactionType: transactionType,
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -310,6 +360,7 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -337,6 +388,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: "non receivers",
+                transactionType: transactionType,
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -353,6 +405,7 @@ namespace AmazonLoad.MammothPrice.Tests
             bool shouldSaveMessages = false;
             string saveMessageDir = string.Empty;
             string nonReceivingSysName = "non receiving systems";
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
             var nonGpmPriceModels = new List<PriceModel>
@@ -368,6 +421,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: shouldSaveMessages,
                 saveMessagesDirectory: saveMessageDir,
                 nonReceivingSysName: nonReceivingSysName,
+                transactionType: transactionType,
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then
@@ -380,6 +434,7 @@ namespace AmazonLoad.MammothPrice.Tests
         {
             // Given
             int maxNumberOfRows = 0;
+            string transactionType = "Price";
             var mockEsbProducer = new Mock<IEsbProducer>();
 
 
@@ -398,6 +453,7 @@ namespace AmazonLoad.MammothPrice.Tests
                 saveMessages: false,
                 saveMessagesDirectory: null,
                 nonReceivingSysName: expectedNonReceivingSystems,
+                transactionType: transactionType,
                 maxNumberOfRows: maxNumberOfRows);
 
             // Then

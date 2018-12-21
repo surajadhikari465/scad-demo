@@ -2,6 +2,7 @@
 using Dapper;
 using Icon.Esb.Producer;
 using MoreLinq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -21,7 +22,7 @@ namespace AmazonLoad.IconItemLocale
 
         public static EsbMessageSendResult LoadItemLocalesAndSendMessages(string irmaConnectionString,
             string iconConnectionString, IEsbProducer esbProducer, string region, int maxNumberOfRows,
-            bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsbFlag)
+            bool saveMessages, string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsbFlag, string transactionType)
         {
             List<IconStoreModel> iconStoreModels = null;
 
@@ -51,7 +52,7 @@ namespace AmazonLoad.IconItemLocale
 
                         // now send the message(s) to the eSB
                         SendMessagesToEsb(wormholeItemLocaleModels, esbProducer,
-                            saveMessages, saveMessagesDirectory, nonReceivingSysName, maxNumberOfRows, sendToEsbFlag);
+                            saveMessages, saveMessagesDirectory, nonReceivingSysName, maxNumberOfRows, transactionType, sendToEsbFlag);
                     }
                 }
             }
@@ -108,7 +109,7 @@ namespace AmazonLoad.IconItemLocale
 
         internal static void SendMessagesToEsb(IEnumerable<ItemLocaleModelForWormhole> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-           string nonReceivingSysName, int maxNumberOfRows, bool sendToEsbFlag = true)
+           string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsbFlag = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -119,24 +120,26 @@ namespace AmazonLoad.IconItemLocale
                 string message = MessageBuilderForIconItemLocale.BuildMessage(modelBatch, PsgMapper);
 
                 string messageId = Guid.NewGuid().ToString();
+                var headers = new Dictionary<string, string>
+                {
+                        { "IconMessageID", messageId },
+                        { "Source", "Icon" },
+                        { "nonReceivingSysName", nonReceivingSysName },
+                        { "TransactionType", transactionType }
+                };
 
                 if (sendToEsbFlag)
                 {
                     esbProducer.Send(
                         message,
                         messageId,
-                        new Dictionary<string, string>
-                        {
-                                { "IconMessageID", messageId },
-                                { "Source", "Icon" },
-                                { "nonReceivingSysName", nonReceivingSysName }
-                        });
+                        headers);
                 }
                 NumberOfRecordsSent += modelBatch.Count();
                 NumberOfMessagesSent += 1;
                 if (saveMessages)
                 {
-                    File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                    File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                 }
             }
         }

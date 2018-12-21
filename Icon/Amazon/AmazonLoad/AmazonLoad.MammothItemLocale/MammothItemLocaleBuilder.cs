@@ -4,6 +4,7 @@ using Icon.Common;
 using Icon.Esb;
 using Icon.Esb.Producer;
 using MoreLinq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -22,7 +23,7 @@ namespace AmazonLoad.MammothItemLocale
 
         public static void LoadMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, bool sendToEsb = true)
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, bool sendToEsb = true)
         {
             SqlConnection sqlConnection = new SqlConnection(mammothConnectionString);
 
@@ -31,7 +32,7 @@ namespace AmazonLoad.MammothItemLocale
 
             // now send the message(s) to the eSB
             SendMessagesToEsb(models, esbProducer, saveMessages, saveMessagesDirectory,
-                nonReceivingSysName, maxNumberOfRows, sendToEsb);
+                nonReceivingSysName, maxNumberOfRows, transactionType, sendToEsb);
         }
 
         internal static string GetFormattedSqlForMammothItemLocaleQuery(string region, int maxNumberOfRows)
@@ -57,7 +58,7 @@ namespace AmazonLoad.MammothItemLocale
 
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-           string nonReceivingSysName, int maxNumberOfRows, bool sendToEsbFlag = true)
+           string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsbFlag = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -69,24 +70,26 @@ namespace AmazonLoad.MammothItemLocale
                     if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
                     string message = MessageBuilderForMammothItemLocale.BuildMessage(modelGroup.ToList());
                     string messageId = Guid.NewGuid().ToString();
+                    var headers = new Dictionary<string, string>
+                    {
+                        { "IconMessageID", messageId },
+                        { "Source", "Mammoth"},
+                        { "nonReceivingSysName", nonReceivingSysName },
+                        { "TransactionType", transactionType }
+                    };
 
                     if (sendToEsbFlag)
                     {
                         esbProducer.Send(
-                        message,
-                        messageId,
-                        new Dictionary<string, string>
-                        {
-                            { "IconMessageID", messageId },
-                            { "Source", "Mammoth"},
-                            { "nonReceivingSysName", nonReceivingSysName }
-                        });
+                            message,
+                            messageId,
+                            headers);
                     }
                     NumberOfRecordsSent += modelGroup.Count();
                     NumberOfMessagesSent += 1;
                     if (saveMessages)
                     {
-                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", message);
+                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                     }
                 }
             }

@@ -24,6 +24,8 @@ namespace AmazonLoad.MammothPrice
             var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            var transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Price");
+            var transactionTypeLegacy = AppSettingsAccessor.GetStringSetting("TransactionTypeLegacy", "Legacy Price");
 
             Console.WriteLine("Flags:");
             Console.WriteLine($"  Region: \"{region}\"");
@@ -62,6 +64,8 @@ namespace AmazonLoad.MammothPrice
                     saveMessages,
                     saveMessagesDirectory,
                     nonReceivingSysName,
+                    transactionType,
+                    transactionTypeLegacy,
                     sendToEsb);
 
             Console.WriteLine($"Number of records sent: {sendResult.NumberOfRecordsSent}.");

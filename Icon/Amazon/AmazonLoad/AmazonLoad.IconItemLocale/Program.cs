@@ -24,6 +24,8 @@ namespace AmazonLoad.IconItemLocale
             var region = AppSettingsAccessor.GetStringSetting("Region");
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsbFlag = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            var transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale" );
+
             if (!sendToEsbFlag)
             {
                 Console.WriteLine($"\"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
@@ -52,7 +54,8 @@ namespace AmazonLoad.IconItemLocale
                     saveMessages,
                     saveMessagesDirectory,
                     nonReceivingSysName,
-                    sendToEsbFlag);
+                    sendToEsbFlag,
+                    transactionType);
 
             Console.WriteLine($"Number of records sent: {sendResult.NumberOfRecordsSent}.");
             Console.WriteLine($"Number of messages sent: {sendResult.NumberOfMessagesSent}.");

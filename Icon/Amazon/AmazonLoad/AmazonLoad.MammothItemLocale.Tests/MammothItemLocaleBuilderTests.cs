@@ -91,6 +91,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
             // Given
             int maxNumberOfRows = 10;
             var expectedNonReceivingSystems = "non receivers";
+            string transactionType = "Item/Locale";
 
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -99,7 +100,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxNumberOfRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(1, MammothItemLocaleBuilder.NumberOfMessagesSent);
@@ -117,6 +118,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
             // Given
             int maxNumberOfRows = 10;
             var expectedNonReceivingSystems = "non receivers";
+            string transactionType = "Item/Locale";
 
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -125,7 +127,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxNumberOfRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows, transactionType);
 
             // Then
             mockEsbProducer.Verify(p => p.Send(
@@ -134,6 +136,32 @@ namespace AmazonLoad.MammothItemLocale.Tests
                 It.Is<Dictionary<string, string>>(dict => dict["nonReceivingSysName"] == expectedNonReceivingSystems)),
             Times.Once);
         }
+
+        [TestMethod]
+        public void MammothItemLocaleBuilder_SendMessagesToEsb_SendsExpectedMsgPropTransactionType()
+        {
+            // Given
+            int maxNumberOfRows = 10;
+            var expectedNonReceivingSystems = "non receivers";
+            string expectedTransactionType = "Item/Locale";
+
+            var itemLocaleModels = new List<MammothItemLocaleModel>
+            {
+                testData.ItemLocale_10220_PaleAleWithDep
+            };
+
+            // When
+            MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
+                false, null, expectedNonReceivingSystems, maxNumberOfRows, expectedTransactionType);
+
+            // Then
+            mockEsbProducer.Verify(p => p.Send(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.Is<Dictionary<string, string>>(dict => dict["TransactionType"] == expectedTransactionType)),
+            Times.Once);
+        }
+
 
         [TestMethod]
         public void MammothItemLocaleBuilder_SendMessagesToEsb_ProducesExpectedAddMessageForSingleLocalItem()
@@ -155,7 +183,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxNumberOfRows);
+                false, null, "non receivers", maxNumberOfRows, "Item/Locale");
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -166,6 +194,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Item/Locale";
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10220_PaleAleWithDep.xml");
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -181,7 +210,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxNumberOfRows);
+                false, null, "non receivers", maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -192,6 +221,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Item/Locale";
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_10220_Pillow.xml");
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -207,7 +237,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxNumberOfRows);
+                false, null, "non receivers", maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(expectedMsg, actualXmlMsg, "esb xml message");
@@ -218,6 +248,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
         {
             // Given
             int maxNumberOfRows = 10;
+            string transactionType = "Item/Locale";
             var expectedMsg = File.ReadAllText("ExpectedTestMessage_MultipleItems.xml");
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -234,7 +265,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
                 ((message, messageId, messageProperties) => { actualXmlMsg = message; }));
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, "non receivers", maxNumberOfRows);
+                false, null, "non receivers", maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(1, MammothItemLocaleBuilder.NumberOfMessagesSent);
@@ -247,6 +278,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
         {
             // Given
             int maxNumberOfRows = 2;
+            string transactionType = "Item/Locale";
             var expectedNonReceivingSystems = "non receivers";
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -257,7 +289,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxNumberOfRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(1, MammothItemLocaleBuilder.NumberOfMessagesSent);
@@ -270,6 +302,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
             // Given
             int maxNumberOfRows = 0;
             var expectedNonReceivingSystems = "non receivers";
+            string transactionType = "Item/Locale";
 
             var itemLocaleModels = new List<MammothItemLocaleModel>
             {
@@ -280,7 +313,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
 
             // When
             MammothItemLocaleBuilder.SendMessagesToEsb(itemLocaleModels, mockEsbProducer.Object,
-                false, null, expectedNonReceivingSystems, maxNumberOfRows);
+                false, null, expectedNonReceivingSystems, maxNumberOfRows, transactionType);
 
             // Then
             Assert.AreEqual(1, MammothItemLocaleBuilder.NumberOfMessagesSent);

@@ -26,6 +26,7 @@ namespace AmazonLoad.PrimeAffinityPsg
             var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            var transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
             var mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
             Console.WriteLine("Flags:");
@@ -62,6 +63,7 @@ namespace AmazonLoad.PrimeAffinityPsg
                 nonReceivingSysName: nonReceivingSysName,
                 saveMessages: saveMessages,
                 saveMessagesDirectory: saveMessagesDirectory,
+                transactionType: transactionType,
                 sendToEsb: sendToEsb);
 
             Console.WriteLine($"Number of records sent: {PrimeAffinityPsgBuilder.NumberOfRecordsSent}.");

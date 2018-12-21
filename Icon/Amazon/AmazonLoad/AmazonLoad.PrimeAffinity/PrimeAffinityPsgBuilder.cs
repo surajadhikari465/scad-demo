@@ -23,7 +23,7 @@ namespace AmazonLoad.PrimeAffinityPsg
 
         public static void LoadPrimeItemsAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, string nonReceivingSysName,
-            bool saveMessages, string saveMessagesDirectory, bool sendToEsb = true)
+            bool saveMessages, string saveMessagesDirectory, string transactionType, bool sendToEsb = true)
         {
             // first query the GPM status for the region
             var isGpmActive = IsGpmActive(mammothConnectionString, region);
@@ -53,6 +53,7 @@ namespace AmazonLoad.PrimeAffinityPsg
                          maxNumberOfRows: maxNumberOfRows,
                          saveMessages: saveMessages,
                          saveMessagesDirectory: saveMessagesDirectory,
+                         transactionType: transactionType,
                          sendToEsbFlag: sendToEsb);
                 }
             }
@@ -138,7 +139,8 @@ namespace AmazonLoad.PrimeAffinityPsg
         }
 
         internal static void SendMessagesToEsb(IEnumerable<PrimeAffinityPsgModel> models, IEsbProducer esbProducer,
-            string nonReceivingSysName, int maxNumberOfRows, bool saveMessages, string saveMessagesDirectory, bool sendToEsbFlag = true)
+            string nonReceivingSysName, int maxNumberOfRows, bool saveMessages,
+            string saveMessagesDirectory, string transactionType, bool sendToEsbFlag = true)
         {
             var batchSize = Utils.CalcBatchSize(DefaultBatchSize, maxNumberOfRows, NumberOfRecordsSent);
             if (batchSize < 0) return;
@@ -150,18 +152,20 @@ namespace AmazonLoad.PrimeAffinityPsg
                     if (maxNumberOfRows != 0 && NumberOfRecordsSent >= maxNumberOfRows) return;
                     string message = MessageBuilderForPrimeAffinityPsg.BuildMessage(modelGroup);
                     string messageId = Guid.NewGuid().ToString();
+                    var headers = new Dictionary<string, string>
+                    {
+                        { "IconMessageID", messageId },
+                        { "Source", "Mammoth"},
+                        { "nonReceivingSysName", nonReceivingSysName },
+                        { "TransactionType", transactionType }
+                    };
 
                     if (sendToEsbFlag)
                     {
                         esbProducer.Send(
-                        message,
-                        messageId,
-                        new Dictionary<string, string>
-                        {
-                            { "IconMessageID", messageId },
-                            { "Source", "Mammoth"},
-                            { "nonReceivingSysName", nonReceivingSysName }
-                        });
+                            message,
+                            messageId,
+                            headers);
                     }
                     NumberOfRecordsSent += modelGroup.Count();
                     NumberOfMessagesSent += 1;
