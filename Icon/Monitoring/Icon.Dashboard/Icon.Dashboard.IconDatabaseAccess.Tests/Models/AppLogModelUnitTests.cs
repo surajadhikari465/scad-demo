@@ -33,7 +33,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualAppName = log.AppName;
             //Then
-            actualAppName.ShouldBeEquivalentTo(expectedAppName);
+            actualAppName.Should().BeEquivalentTo(expectedAppName);
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualAppName = log.AppName;
             //Then
-            actualAppName.ShouldBeEquivalentTo(expectedAppName);
+            actualAppName.Should().BeEquivalentTo(expectedAppName);
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualLogDate = log.LoggingTimestamp;
             //Then
-            actualLogDate.ShouldBeEquivalentTo(expectedLogDate);
+            actualLogDate.Should().Be(expectedLogDate);
         }
     }
 }

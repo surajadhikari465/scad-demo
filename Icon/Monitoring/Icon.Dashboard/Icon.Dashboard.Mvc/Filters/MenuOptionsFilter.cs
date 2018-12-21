@@ -23,7 +23,7 @@ namespace Icon.Dashboard.Mvc.Helpers
             var url = filterContext.RequestContext.HttpContext.Request.Url;
             var viewBag = filterContext.Controller.ViewBag;
 
-            viewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
+            viewBag.EnvironmentOptions = new EnvironmentSwitcher().GetWebServersForEnvironments();
 
             var allMessageTypes = IconApiControllerMessageType.GetAll();
             viewBag.MenuOptionsForApiJobs = GetMenuOptionsForApiJobs(url, controllerName, allMessageTypes);

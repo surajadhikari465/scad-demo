@@ -17,9 +17,9 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var report = new ApiJobSummaryReport(messageType, startTime, endTime);
             //Assert
-            report.MessageType.ShouldBeEquivalentTo(messageType);
-            report.StartTime.ShouldBeEquivalentTo(startTime);
-            report.EndTime.ShouldBeEquivalentTo(endTime);
+            report.MessageType.Should().BeEquivalentTo(messageType);
+            report.StartTime.Should().Be(startTime);
+            report.EndTime.Should().Be(endTime);
         }
     }
 }

@@ -1,0 +1,36 @@
+﻿@model IDictionary<string, string>
+
+@{
+    var activeEnvironment = Model
+        .FirstOrDefault(e => e.Value.Equals(Request.Url.Host, StringComparison.InvariantCultureIgnoreCase))
+        .Key;
+    var envSwitcher = new Icon.Dashboard.Mvc.Helpers.EnvironmentSwitcher();
+    var tibcoUrl = envSwitcher.GetTibcoAdminServerForEnivronment(activeEnvironment);
+    var mwsUrl = envSwitcher.GetMammothWebSupportServerForEnivronment(activeEnvironment);
+    var iconWebUrl = envSwitcher.GetIconWebServerForEnvironment(activeEnvironment);
+}
+
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        Support Apps
+    </a>
+    <ul class="dropdown-menu">
+        <li class="btn-link">
+            <a class="dropdown-item" href="@mwsUrl">
+                Mammoth Web Support
+            </a>
+        </li>
+        <li class="btn-link">
+            <a class="dropdown-item" href="@iconWebUrl">
+                Icon Web
+            </a>
+        </li>
+        <li class="btn-link">
+            <a class="dropdown-item" href="@tibcoUrl">
+                TIBCO Admin
+            </a>
+        </li>
+    </ul>
+</li>
+
+

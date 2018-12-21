@@ -31,6 +31,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             _serverUtility = serverUtility;
             DataFileName = pathToXmlDataFile ?? Utils.DataFileName;
+            ViewBag.DataFilePath = DataFileName;
             DashboardDataFileService = dataServiceWrapper ?? new DataFileServiceWrapper();
             IconDatabaseService = loggingServiceWrapper ?? new IconDatabaseServiceWrapper();
         }

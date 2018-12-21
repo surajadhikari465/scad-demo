@@ -34,7 +34,7 @@
 
                 @if (ViewBag.MenuOptionsForAppLogs != null && ViewBag.MenuOptionsForAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
                 {
-                     Html.RenderPartial("_SubMenuForAppLogs", ViewBag.MenuOptionsForAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
+                    Html.RenderPartial("_SubMenuForAppLogs", ViewBag.MenuOptionsForAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
                 }
                 else
                 {
@@ -45,7 +45,7 @@
 
                 @if (ViewBag.MenuOptionsForApiJobs != null && ViewBag.MenuOptionsForApiJobs is IDictionary<string, bool>)
                 {
-                       Html.RenderPartial("_SubMenuForApiJobs", ViewBag.MenuOptionsForApiJobs as IDictionary<string, bool>);
+                    Html.RenderPartial("_SubMenuForApiJobs", ViewBag.MenuOptionsForApiJobs as IDictionary<string, bool>);
                 }
                 else
                 {
@@ -60,6 +60,8 @@
 
                 @if (ViewBag.EnvironmentOptions != null && ViewBag.EnvironmentOptions is IDictionary<string, string>)
                 {
+                    Html.RenderPartial("_SupportAppsPartial", ViewBag.EnvironmentOptions as IDictionary<string, string>);
+
                     Html.RenderPartial("_EnvironmentSelectorPartial", ViewBag.EnvironmentOptions as IDictionary<string, string>);
                 }
             </ul>

@@ -203,31 +203,6 @@
             IconDashboardDataService.Instance.DeleteEsbEnvironment(updated, this.dataFilePath);
         }
 
-        //TODO need to allow way to mock out dependency on LoadDataFile() ( can't read file on build server & is a dependency)
-        //[TestMethod]
-        //public void WhenUsingTestDataFile_GetCurrentEsbEnvironment_GetsExpectedEnvironment()
-        //{
-        //    // Given 
-        //    // ...existing canned data file with an esb environment defined & application app.config(s) to match
-        //    // When
-        //    var currentEnvironment = IconDashboardDataService.Instance.GetCurrentEsbEnvironment(this.configPath);
-        //    // Then
-        //    Assert.IsNotNull(currentEnvironment);
-        //    Assert.AreEqual("ENV_A", currentEnvironment.Name);
-        //}
-
-        //[TestMethod]
-        //public void WhenUsingDataFileWithNoEsbEnvironmentsDefined_GetCurrentEsbEnvironment_ReturnsNull()
-        //{
-        //    // Given 
-        //    // data file with no entries for anything esb-environment related
-        //    var oldDataFile = "OldStyleDataFile.xml";
-        //    // When
-        //    var currentEnvironment = IconDashboardDataService.Instance.GetCurrentEsbEnvironment(oldDataFile);
-        //    // Then
-        //    Assert.IsNull(currentEnvironment);
-        //}
-
         [TestMethod]
         public void WhenUsingValidDataFile_GetEsbEnvironments_ShouldRetrieveExpectedEsbEnvironmentCount()
         {
@@ -253,9 +228,8 @@
             // Then
             var environmentB = ees.First(e => e.Name == "ENV_B");
             environmentB.Should().NotBeNull();
-            environmentB.ServerUrl.ShouldBeEquivalentTo(expectedServerUrl);
-            environmentB.NumberOfListenerThreads.ShouldBeEquivalentTo(expectedNumberOfListenerThreads);
-        }
-        
+            environmentB.ServerUrl.Should().BeEquivalentTo(expectedServerUrl);
+            environmentB.NumberOfListenerThreads.Should().Be(expectedNumberOfListenerThreads);
+        }        
     }
 }

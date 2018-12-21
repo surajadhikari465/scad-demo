@@ -18,9 +18,9 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var queryResult = new AppLogSummaryQueryResult(appName, appId, timeSpan);
             //Assert
-            queryResult.AppName.ShouldBeEquivalentTo(appName);
-            queryResult.AppID.ShouldBeEquivalentTo(appId);
-            queryResult.DefinitionOfRecent.ShouldBeEquivalentTo(timeSpan);
+            queryResult.AppName.Should().BeEquivalentTo(appName);
+            queryResult.AppID.Should().Be(appId);
+            queryResult.DefinitionOfRecent.Should().Be(timeSpan);
         }
 
         [TestMethod]
@@ -34,10 +34,10 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var queryResult = new AppLogSummaryQueryResult(appName, appId, timeSpan, level);
             //Assert
-            queryResult.AppName.ShouldBeEquivalentTo(appName);
-            queryResult.AppID.ShouldBeEquivalentTo(appId);
-            queryResult.DefinitionOfRecent.ShouldBeEquivalentTo(timeSpan);
-            queryResult.LogLevel.ShouldBeEquivalentTo(level);
+            queryResult.AppName.Should().BeEquivalentTo(appName);
+            queryResult.AppID.Should().Be(appId);
+            queryResult.DefinitionOfRecent.Should().Be(timeSpan);
+            queryResult.LogLevel.Should().BeEquivalentTo(level);
         }
     }
 }

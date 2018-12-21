@@ -31,7 +31,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualMessageTypeName = logEntry.MessageTypeName;
             //Then
-            actualMessageTypeName.ShouldBeEquivalentTo(expectedMessageTypeName);
+            actualMessageTypeName.Should().BeEquivalentTo(expectedMessageTypeName);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualMessageTypeName = logEntry.MessageTypeName;
             //Then
-            actualMessageTypeName.ShouldBeEquivalentTo(expectedMessageTypeName);
+            actualMessageTypeName.Should().BeEquivalentTo(expectedMessageTypeName);
         }
     }
 }

@@ -102,6 +102,7 @@ namespace Icon.Dashboard.DataFileAccess.Models
             this.Instance = new ServiceController(this.Name, this.Server);
             SetValidCommands(GetStatus());
         }
+
         /// <summary>
         /// Refreshes the information about the instance of the windows service and return the status.
         /// </summary>

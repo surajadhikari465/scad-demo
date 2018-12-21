@@ -37,9 +37,9 @@ namespace Icon.Dashboard.Mvc.Helpers
                 case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.QA:
                     environmentClass = "warning";
                     break;
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Prod:
-                    environmentClass = "danger";
-                    break;
+                //case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Prd:
+                //    environmentClass = "danger";
+                //    break;
                 case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Undefined:
                 default:
                     environmentClass = "default";

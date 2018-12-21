@@ -44,7 +44,7 @@ namespace Icon.Dashboard.MammothnDatabaseAccess.Tests
             var appLog = CreateAppLogEntityForTest(appName);
             //Act
             //Assert
-            appLog.AppName.ShouldBeEquivalentTo(appName);
+            appLog.AppName.Should().BeEquivalentTo(appName);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace Icon.Dashboard.MammothnDatabaseAccess.Tests
             appLog.LogDate = expectedDate;
             //Act
             //Assert
-            appLog.LoggingTimestamp.ShouldBeEquivalentTo(expectedDate);
+            appLog.LoggingTimestamp.Should().Be(expectedDate);
         }
 
         [TestMethod]

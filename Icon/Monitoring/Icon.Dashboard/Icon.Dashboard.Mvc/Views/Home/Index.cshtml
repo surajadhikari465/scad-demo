@@ -17,26 +17,17 @@
     <table class="table table-bordered table-condensed no-bottom-margin table-striped "  id="Config">
         <thead>
             <tr>
-                <th class="text-center hidden-xs">
-                    @Html.DisplayNameFor(model => model.TypeOfApplication)
-                </th>
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => model.DisplayName)
-                </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Server)
                 </th>
-                <th class="text-center hidden-xs hidden-sm hidden-md">
-                    @Html.DisplayNameFor(model => model.Name)
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.DisplayName)
                 </th>
                 <th class="text-center hidden-xs hidden-sm">
                     @Html.DisplayNameFor(model => model.ConfigFilePath)
                 </th>
                 <th class="text-center hidden-xs hidden-sm">
                     @Html.DisplayNameFor(model => model.CurrentEsbEnvironment)
-                </th>
-                <th class="text-center hidden-xs hidden-sm hidden-md">
-                    Data Flow
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Status)

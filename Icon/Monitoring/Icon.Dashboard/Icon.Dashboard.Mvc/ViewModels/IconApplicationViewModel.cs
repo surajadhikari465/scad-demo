@@ -85,7 +85,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DataType(DataType.MultilineText)]
         public string ConfigFilePath { get; set; }
 
-        [DisplayName("Display Name")]
+        [DisplayName("Service Display/Full Name")]
         public string DisplayName { get; set; }
 
         public string Server { get; set; }

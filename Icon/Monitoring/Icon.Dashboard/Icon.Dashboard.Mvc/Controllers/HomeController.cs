@@ -110,7 +110,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
         public ActionResult Configure(IconApplicationViewModel appViewModel)
         {
-            ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetServersForEnvironments();
+            ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetWebServersForEnvironments();
             DashboardDataFileService.SaveAppSettings(appViewModel);
             return RedirectToAction("Details", "Home", new
             {
