@@ -41,3 +41,9 @@ GRANT SELECT
     ON OBJECT::[dbo].[Version] TO [IConInterface]
     AS [dbo];
 
+GO
+
+GRANT SELECT
+    ON OBJECT::[dbo].[Version] TO [IRMAPDXExtractRole]
+    AS [dbo];
+GO
