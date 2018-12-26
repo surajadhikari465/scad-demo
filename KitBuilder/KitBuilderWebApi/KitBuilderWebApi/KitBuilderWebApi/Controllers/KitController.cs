@@ -5,12 +5,15 @@ using KitBuilder.DataAccess.Enums;
 using KitBuilder.DataAccess.Repository;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
 
@@ -33,6 +36,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaleType> localeTypeRepository;
         private IHelper<KitDto, KitSearchParameters> kitHelper;
+        private const string deleteKitSpName = "DeleteKitByKitId";
 
         public KitController(IRepository<LinkGroup> linkGroupRepository,                   
                              IRepository<Kit> kitRepository,
@@ -131,13 +135,20 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var kitsBeforePaging = from k in kitRepository.GetAll()
+                                   join i in itemsRepository.GetAll() on k.ItemId equals i.ItemId
                                    select new KitDto()
                                    {
                                        Description = k.Description,
                                        InsertDateUtc = k.InsertDateUtc,
 									   LastUpdatedDateUtc = k.LastUpdatedDateUtc,
                                        ItemId = k.ItemId,
-                                       KitId = k.KitId
+                                       KitId = k.KitId,
+                                       Item = new ItemsDto
+                                       {
+                                           ScanCode = i.ScanCode,
+                                           ProductDesc = i.ProductDesc,
+                                           CustomerFriendlyDesc = i.CustomerFriendlyDesc
+                                       }
                                    };
 
             BuildQueryToFilterKitData(kitSearchParameters, ref kitsBeforePaging);
@@ -712,7 +723,7 @@ namespace KitBuilderWebApi.Controllers
                 var scancodeForWhereClause = kitSearchParameters.ItemScanCode.Trim().ToLower();
                 kitsBeforePaging = from k in kitsBeforePaging
                                    join i in itemsRepository.GetAll() on k.ItemId equals i.ItemId
-                                   where i.ScanCode == scancodeForWhereClause
+                                   where i.ScanCode.Contains(scancodeForWhereClause)
                                    select k;
             }
 
@@ -762,6 +773,60 @@ namespace KitBuilderWebApi.Controllers
 			}
 
 			if (errorFound) throw new ValidationException(message);
+        }
+
+        [HttpDelete("{id}", Name = "DeleteKit")]
+        public IActionResult DeleteKit(int id)
+        {
+            var kitToDelete = BuildKitByKitIdQuery(id).FirstOrDefault();
+
+            if (kitToDelete == null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return NotFound();
+            }
+
+            if (!IsKitInUse(id))
+            {
+                try
+                {
+                    var param1 = new SqlParameter("kitId", SqlDbType.BigInt) { Value = id };
+                    linkGroupRepository.ExecWithStoreProcedure(deleteKitSpName + " @kitId", param1);
+
+                    return NoContent();
+                }
+
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message);
+                    return StatusCode(500, "A problem happened while handling your request.");
+                }
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status409Conflict);
+            }
+        }
+
+        internal IQueryable<Kit> BuildKitByKitIdQuery(int id)
+        {
+                return kitRepository.GetAll().Where(l => l.KitId == id);
+
+        }
+
+        internal bool IsKitInUse(int kitId)
+        {
+            var checkKitLocale = from kl in kitLocaleRepository.GetAll().Where(kl => kl.KitId == kitId)
+                        select kl;
+            var checkLinkGroupLocale = from klg in kitLinkGroupItemLocaleRepository.GetAll()
+                                       join kl in kitLinkGroupItemRepository.GetAll() on klg.KitLinkGroupItemId equals kl.KitLinkGroupItemId
+                                       join k in kitLinkGroupRepository.GetAll() on kl.KitLinkGroupId equals k.KitLinkGroupId
+                                       where k.KitId == kitId
+                                       select k;
+
+
+            return checkKitLocale.Any() || checkLinkGroupLocale.Any();
+
         }
     }
 }

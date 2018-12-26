@@ -6,7 +6,10 @@ import "@babel/polyfill";
 import axios from 'axios';
 const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
-const urlStart = 'http://localhost:55873//api/InstructionList/';
+import { KbApiMethod } from '../helpers/kbapi'
+
+var urlStart = KbApiMethod("InstructionList");
+
 interface IInstructionListsPageState {
      error: any,
      message: any

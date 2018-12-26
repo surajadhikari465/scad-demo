@@ -97,6 +97,7 @@
     <None Include="Jobs\KitBuilder_LoadLocaleDataFromIcon.sql" />
     <Build Include="dbo\Stored Procedures\ItemAddOrUpdate.sql" />
     <Build Include="dbo\User Defined Types\ItemAddOrUpdateType.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteKitByKitId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
