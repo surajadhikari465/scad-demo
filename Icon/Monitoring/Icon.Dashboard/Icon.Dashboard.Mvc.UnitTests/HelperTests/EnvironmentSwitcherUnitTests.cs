@@ -18,7 +18,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
         {
             // Arrange;
             var envSwitcher = new EnvironmentSwitcher();
-            const int expectedServerCount = 5;
+            const int expectedServerCount = 3;
             // Act
             var servers = envSwitcher.GetWebServersForEnvironments();
             // Assert
