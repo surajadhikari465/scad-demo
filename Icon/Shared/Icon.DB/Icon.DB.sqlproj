@@ -683,6 +683,8 @@
     <None Include="Scripts\PopulateData\Archive\AddIrmaItemKeyTraitCodes.sql" />
     <None Include="Scripts\PopulateData\Archive\AddHospitalityAndEstoreTraitCodes.sql" />
     <None Include="Scripts\PopulateData\StashDataForNewSignAttributeColumns.sql" />
+    <Build Include="app\Stored Procedures\GetLocationHierarchy.sql" />
+    <None Include="Scripts\PopulateData\PopulateIconWebApiApp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
