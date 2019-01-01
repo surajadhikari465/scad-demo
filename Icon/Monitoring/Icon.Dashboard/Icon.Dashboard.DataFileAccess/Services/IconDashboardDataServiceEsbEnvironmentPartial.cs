@@ -199,7 +199,7 @@
                     var appToRestart = apps.FirstOrDefault(a => a.NameAndServer.Equals(reconfigResult.Key, _strcmpOption));
                     if (appToRestart == default(IIconApplication))
                     {
-                        restartResult = String.Format("Unknown app {0} on {1} for attempted restart", reconfigResult.Key);
+                        restartResult = String.Format("Unknown app {0} on {1} for attempted restart", reconfigResult.Key, reconfigResult.Value);
                     }
                     else
                     {
@@ -271,7 +271,8 @@
                 {
                     var factories = this.EsbEnvironmentFactories.ToDictionary(af => af.GetType().Name.ToLowerInvariant());
                     var factoryName = $"{EsbEnvironmentSchema.EsbEnvironment}Factory";
-                    if (factories.TryGetValue(factoryName.ToLowerInvariant(), out EsbEnvironmentFactory esbEnvironmentFactory))
+                    EsbEnvironmentFactory esbEnvironmentFactory = new EsbEnvironmentFactory();
+                    if (factories.TryGetValue(factoryName.ToLowerInvariant(), out esbEnvironmentFactory))
                     {
                         return esbEnvironmentFactory.GetEsbEnvironment(dataFileEsbEnvironmentElement);
                     }

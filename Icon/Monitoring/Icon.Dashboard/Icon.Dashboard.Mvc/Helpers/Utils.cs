@@ -136,7 +136,9 @@ namespace Icon.Dashboard.Mvc.Helpers
             get
             {
                 var stringVal = ConfigurationManager.AppSettings["serviceCommandTimeoutMilliseconds"];
-                if (!int.TryParse(stringVal, out int val)) val = 10000;
+                int val;
+                if (!int.TryParse(stringVal, out val))
+                    val = 10000;
                 return val;
             }
         }
