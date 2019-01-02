@@ -16,6 +16,7 @@ Post-Deployment Script Template
 
 :r HC_DropTriggerOrderItemAddUpdDel.sql
 :r PBI30599-InsertAMAZONintoOrderExternalSource.sql
+:r PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql  -- PBI 30780 2018.12.28
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28

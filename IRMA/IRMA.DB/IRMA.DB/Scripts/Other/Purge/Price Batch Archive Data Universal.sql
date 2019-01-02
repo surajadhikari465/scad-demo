@@ -56,7 +56,9 @@ Date				Developer				Desc
 											'Retrieving entry IDs for latest, pushed sale dates...'
 											'Removing latest-pushed entries from processed-active-item PBD list...'
 											'Rows removed to preserve latest-pushed entries: '...
-											'Updated processed-active-item PBD rows to be purged: '...
+											'Updated processed-active-item PBD rows to be purged: '..
+2018-12-27				Ed M				Added statements to copy to-be-purged PBD & PBH data to the Purged_PriceBatchDetail and Purged_PriceBatchHeader tables
+												for use by the Data Warehouse (DW) team
 
 
 */
@@ -164,7 +166,6 @@ select
 	,@commitFrequency = 100000
 	,@getCountsOnly = 0
 	,@rowIndex = 0 -- This should always be zero.  This is the index used to track each set of price-batch rows being purged.
-
 
 -- Different limits for SO region.
 if @@servername like '%\sod' or @@servername like '%\soq' or @@servername like '%\sop'
@@ -1069,6 +1070,13 @@ begin
 			select @breakLoopNeeded = 1
 		end
 
+		-- save a copy of the PBD data being purged to DW Purged_ tables
+		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Copying PBD data to be archived to Purged_PriceBatchDetail table...'		
+		insert into dbo.Purged_PriceBatchDetail (PriceBatchDetailID)
+			select d.PriceBatchDetailID
+			from PriceBatchDetail d
+				join #pbdArchiveCurrentSet crnt on d.PriceBatchDetailID = crnt.PriceBatchDetailID
+		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'PBD copy to Purged_PriceBatchDetail table completed; rows affected: ' + convert(varchar, @@rowcount) + '.'
 
 		select @pbdStats = 'FirstID=' + convert(varchar, min(pricebatchdetailid)) + ', LastID=' + convert(varchar, max(pricebatchdetailid)) from #pbdArchiveCurrentSet
 		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Purging PBD and archiving each row to PriceBatchDetailArchive table...'
@@ -1350,7 +1358,15 @@ begin
 		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'PBH rows excluded: ' + convert(varchar, @@rowcount) + '.'
 
 		alter index all on #pbhArchiveFullListWorking rebuild
-		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Rebuilt PBH target ID list temp table indexes.'
+		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Rebuilt PBH target ID list temp table indexes.'		
+		
+		-- save a copy of the PBH data being purged to DW Purged_ tables
+		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Copying PBH data to be archived to Purged_PriceBatchHeader table...'		
+		insert into dbo.Purged_PriceBatchHeader (PriceBatchHeaderID)
+			select h.PriceBatchHeaderID
+			from dbo.PriceBatchHeader h
+				join #pbhArchiveFullListWorking crnt on crnt.PriceBatchHeaderID = h.PriceBatchHeaderID
+		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'PBH copy to Purged_PriceBatchHeader table completed; rows affected: ' + convert(varchar, @@rowcount) + '.'
 
 		print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Purging PBH and archiving each row to PriceBatchHeaderArchive table...'
 		delete pricebatchheader

@@ -3355,6 +3355,9 @@
     <None Include="Scripts\PostDeploy\Archive\HC_PurgeReceiptQueue.sql" />
     <None Include="Scripts\PostDeploy\Archive\InsertOrderTypes.sql" />
     <None Include="Scripts\PostDeploy\Archive\AddEnableAmazonEventGenerationIdf.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_PriceBatchDetail.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\Purged_PriceBatchHeader.sql" />
+    <None Include="Scripts\PostDeploy\PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
