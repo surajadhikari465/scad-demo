@@ -11,3 +11,6 @@ GO
 GRANT EXECUTE
     ON TYPE::[dbo].[IntType] TO [IRSUser];
 
+GO
+GRANT EXECUTE
+    ON TYPE::[dbo].[IntType] TO [MammothRole];

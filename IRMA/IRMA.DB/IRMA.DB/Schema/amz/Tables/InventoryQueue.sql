@@ -14,3 +14,14 @@
     [ResetBy] [nvarchar](255) NULL,
 	CONSTRAINT [CK_InventoryQueue_Status] CHECK  ([Status]='R' OR [Status]='F' OR [Status]='P' OR [Status]='I' OR [Status]='U')
 )
+
+GO
+
+GRANT SELECT
+    ON OBJECT::[amz].[InventoryQueue] TO [MammothRole]
+    AS [dbo];
+
+GO
+GRANT UPDATE
+    ON OBJECT::[amz].[InventoryQueue] TO [MammothRole]
+    AS [dbo];

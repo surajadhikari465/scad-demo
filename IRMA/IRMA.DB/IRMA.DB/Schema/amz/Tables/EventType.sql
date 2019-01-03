@@ -4,3 +4,9 @@
 	[EventTypeCode] NVARCHAR(25) NOT NULL,
 	[EventTypeDescription] NVARCHAR(100) NOT NULL
 )
+
+GO
+GRANT SELECT
+    ON OBJECT::[amz].[EventType] TO [MammothRole]
+    AS [dbo];
+
