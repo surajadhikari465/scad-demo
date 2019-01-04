@@ -317,7 +317,7 @@ BEGIN
 			-- Note: the following code is MA-specific.  MA has only two LabelTypes: NONE=1 and TAG=2
 			AND (@OmitShelfTagTypeFields = 0 OR (@OmitShelfTagTypeFields = 1 AND I.LabelType_ID = 2))
 			AND SI.Authorized = 1
-			AND CONVERT(DATE, GETDATE()) >= CONVERT(DATE, PBD.StartDate)
+			AND CONVERT(DATE, GETDATE()) >= CONVERT(DATE, PBH.StartDate)
 			-- Alternate identifiers should only be included for stores overriden in the instance data flag IncludeAllItemIdentifiersInShelfTagPush.
 			AND 
 			(EXISTS (select StoreNumber from #StoresToIncludeAllIdentifiers where StoreNumber = S.Store_No)
