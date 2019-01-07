@@ -90,7 +90,9 @@ namespace MammothWebApi
             container.RegisterDecorator<IQueryHandler<GetItemsQuery, ItemComposite>,
                 DbConnectionQueryHandlerDecorator<GetItemsQuery, ItemComposite>>(Lifestyle.Scoped);
 
-            
+            container.RegisterDecorator<IQueryHandler<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>,
+               DbConnectionQueryHandlerDecorator<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>>(Lifestyle.Scoped);
+
             container.Register<ReconnectToEsbJob>();
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);

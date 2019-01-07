@@ -11,10 +11,12 @@ namespace MammothWebApi.Controllers
     {
 
         private IQueryHandler<GetItemsQuery, ItemComposite> getItemsQueryHandler;
+        private IQueryHandler<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>> getItemsBySearchCriteriaQueryHandler;
 
-        public ItemController(IQueryHandler<GetItemsQuery, ItemComposite> itemsQueryHandler)
+        public ItemController(IQueryHandler<GetItemsQuery, ItemComposite> itemsQueryHandler, IQueryHandler<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>> itemsBySearchCriteriaQueryHandler)
         {
             getItemsQueryHandler = itemsQueryHandler;
+            getItemsBySearchCriteriaQueryHandler = itemsBySearchCriteriaQueryHandler;
         }
 
         [HttpPost]
@@ -26,5 +28,25 @@ namespace MammothWebApi.Controllers
             return Ok(results);
         }
 
+        [HttpPost]
+        [Route("api/item/GetItemsBySearchCriteria")]
+        public IHttpActionResult GetItemsBySearchCriteria([FromBody]SearchItemModel searchItemModel)
+        {
+            if (string.IsNullOrEmpty(searchItemModel.BrandName) && string.IsNullOrEmpty(searchItemModel.Supplier) && string.IsNullOrEmpty(searchItemModel.ItemDescription))
+                return BadRequest("Search Criteria is required.");
+
+            if (string.IsNullOrEmpty(searchItemModel.Region))
+                return BadRequest("Region must be passed.");
+
+            var results = getItemsBySearchCriteriaQueryHandler.Search(new GetItemsBySearchCriteriaQuery { BrandName = searchItemModel.BrandName,
+                                                                                                          Subteam = searchItemModel.Subteam,
+                                                                                                          Supplier = searchItemModel.Supplier,
+                                                                                                          ItemDescription = searchItemModel.ItemDescription,
+                                                                                                          Region = searchItemModel.Region,
+                                                                                                          IncludeLocales = searchItemModel.IncludeLocales,                                                                            
+                                                                                                          IncludedStores = searchItemModel.IncludedStores
+            });
+            return Ok(results);
+        }
     }
 }

@@ -804,6 +804,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRewardItemPriceType.sql" />
     <Build Include="dbo\Stored Procedures\GetItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulatePromoRewardItemPriceTypes.sql" />
+    <Build Include="dbo\Stored Procedures\GetItemsBySearchCriteria.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

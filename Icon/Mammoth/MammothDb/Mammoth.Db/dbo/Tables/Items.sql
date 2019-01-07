@@ -27,5 +27,12 @@ CREATE INDEX [IX_Items_ScanCode] ON [dbo].[Items] ([ScanCode]) INCLUDE ([ItemID]
 
 GO
 
+CREATE NONCLUSTERED INDEX IX_Items_DescProduct
+ON dbo.[Items]
+(   [Desc_Product] ASC
+)
+
+GO
+
 GRANT SELECT ON [dbo].[Items] TO [TibcoRole]
 GO
