@@ -18,48 +18,51 @@ Public Class Form_POSPushJobController
         Me.ugrdJobStatus.DisplayLayout.Override.AllowUpdate = Infragistics.Win.DefaultableBoolean.False
     End Sub
 
-    Private Sub Button_POSPush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_StartJob.Click
-        Dim myBinding As New WSHttpBinding
-        Dim myEndpoint As New EndpointAddress(ConfigurationServices.AppSettings("IRMAWebServiceAddress").ToString)
-        Dim myChannelFactory As ChannelFactory(Of IGatewayChannel) = New ChannelFactory(Of IGatewayChannel)(myBinding, myEndpoint)
-        Dim wcfClient1 As IGatewayChannel = myChannelFactory.CreateChannel()
-        Dim encrypted As Boolean = CType(ConfigurationManager.AppSettings("encryptedConnectionStrings"), Boolean)
-        Dim sConnectionString As String = ""
-        Dim user As UserBO = New UserBO(giUserID)
+  Private Sub Button_POSPush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_StartJob.Click
+    Dim myBinding As New WSHttpBinding
+    Dim myEndpoint As New EndpointAddress(ConfigurationServices.AppSettings("IRMAWebServiceAddress").ToString)
+    Dim myChannelFactory As ChannelFactory(Of IGatewayChannel) = New ChannelFactory(Of IGatewayChannel)(myBinding, myEndpoint)
+    Dim wcfClient1 As IGatewayChannel = myChannelFactory.CreateChannel()
+    Dim encrypted As Boolean = CType(ConfigurationManager.AppSettings("encryptedConnectionStrings"), Boolean)
+    Dim sConnectionString As String = ""
+    Dim user As UserBO = New UserBO(giUserID)
 
-        logger.Debug("Button_POSPush_Click entry")
-        Windows.Forms.Cursor.Current = Cursors.WaitCursor
+    If (String.IsNullOrWhiteSpace(user.Email)) Then
+      MessageBox.Show("User's eMail is not specified but required by this operation. Please contact your System Administrator.", "System Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+      Exit Sub
+    End If
 
-        Try
-            If encrypted Then
-                Dim encryptor As New Encryptor()
-                sConnectionString = encryptor.Decrypt(ConfigurationManager.ConnectionStrings("ItemCatalog").ConnectionString())
-            Else
-                sConnectionString = ConfigurationManager.ConnectionStrings("ItemCatalog").ConnectionString()
-            End If
+    Windows.Forms.Cursor.Current = Cursors.WaitCursor
+    Application.DoEvents()
 
-            Dim blnPush = wcfClient1.RunPOSPush(ConfigurationServices.AppSettings("POSPushApplicationPath").ToString, gsRegionCode, sConnectionString, user.Email.ToString)
+    Try
+      sConnectionString = ConfigurationManager.ConnectionStrings("ItemCatalog").ConnectionString()
 
-            'have the client sleep for 3 seconds so that the job has a chance to kick off and update the JobStatus table and so when the UI
-            'refreshes, the grid will show the job as running
-            Sleep(3000)
-            GetJobStatusList()
+      If encrypted Then
+        Dim encryptor As New Encryptor()
+        sConnectionString = encryptor.Decrypt(sConnectionString)
+      End If
 
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "POS Push Error")
-            Button_StartJob.Enabled = True
+      Dim blnPush = wcfClient1.RunPOSPush(ConfigurationServices.AppSettings("POSPushApplicationPath").ToString, gsRegionCode, sConnectionString, user.Email)
 
-            If myChannelFactory.State = CommunicationState.Opened Then myChannelFactory.Close()
+      'have the client sleep for 3 seconds so that the job has a chance to kick off and update the JobStatus table and so when the UI
+      'refreshes, the grid will show the job as running
+      Sleep(3000)
+      GetJobStatusList()
+    Catch ex As Exception
+      MsgBox(ex.Message, MsgBoxStyle.Critical, "POS Push Error")
+      Button_StartJob.Enabled = True
 
-            logger.Error("Error during processing of the Scale/POS Push job", ex)
-        Finally
-            Windows.Forms.Cursor.Current = Cursors.Default
-            Me.Refresh()
-        End Try
-        logger.Debug("Button_POSPush_Click exit")
-    End Sub
+      If myChannelFactory.State = CommunicationState.Opened Then myChannelFactory.Close()
 
-    Private Sub GetJobStatusList()
+      logger.Error("Error during processing of the Scale/POS Push job", ex)
+    Finally
+      Windows.Forms.Cursor.Current = Cursors.Default
+      Me.Refresh()
+    End Try
+  End Sub
+
+  Private Sub GetJobStatusList()
         logger.Debug("GetJobStatusList Entry")
         Dim DAO As ProcessMDAO = New ProcessMDAO
         Dim ds = DAO.GetJobStatusList()
