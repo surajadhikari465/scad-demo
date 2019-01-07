@@ -140,14 +140,14 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
         var urlParam ="";
 
         if (this.state.searchMainItemName != "")
-            urlParam = "ItemDescription=" + this.state.searchMainItemName + "&"
+            urlParam = urlParam + "ItemDescription=" + this.state.searchMainItemName + "&"
 
         if (this.state.searchScanCode != "")
-            urlParam = "ItemScanCode=" + this.state.searchScanCode + "&"
+            urlParam =urlParam + "ItemScanCode=" + this.state.searchScanCode + "&"
 
         if (this.state.searchLinkGroupName != "")
-            urlParam = "LinkGroupName=" + this.state.searchLinkGroupName
-
+            urlParam = urlParam + "LinkGroupName=" + this.state.searchLinkGroupName+ "&"
+        
             urlParam = urlParam.substring(0, urlParam.length - 1);
 
         var url = urlStart +"?"+  urlParam;
@@ -224,7 +224,7 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
                         <SearchKits
                             MainItemName={this.mainItemChange}
                             MainItemScanCode={this.scanCodeChange}
-                            LinkGroupName={this.scanCodeChange}
+                            LinkGroupName={this.linkGroupChange}
                             onSearch={this.onSearch}
                             clear={this.clear}
                             LinkGroupValue = {this.state.searchLinkGroupName}
