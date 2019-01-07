@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>jndiIconUser</value>
+			<value>#!tPX1V2f3JUuzqviXb+z+qCL7ppsoXh2xhOIxHHWCf3uXhiKfwbGP+Q==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540935305752</modTime>
+			<type>Password</type>
+			<modTime>1546636701975</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
@@ -27,11 +27,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>Pjetuc9M7Kmi</value>
+			<value>#!7aEWvFe5ljkrXRvptJ2+jDyQb/PFP0Oyc3ncXSYJzm0PpUsMGqp4tQ==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540935305894</modTime>
+			<type>Password</type>
+			<modTime>1546636702020</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>QueueConnectionFactory</name>
@@ -43,11 +43,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>esb</value>
+			<value>#!v24RH1QQBNxK63nsT2vMOg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540935306036</modTime>
+			<type>Password</type>
+			<modTime>1546636702062</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
