@@ -23,13 +23,12 @@ namespace KitBuilder.DataAccess.DatabaseModels
         public string KitchenDesc { get; set; }
         [StringLength(255, ErrorMessage = "Brand Name can have maximum length of 255.")]
         public string BrandName { get; set; }
-        public string LargeImageUrl { get; set; }
-        public string SmallImageUrl { get; set; }
-		public DateTime InsertDateUtc { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
+        public string FlexibleText { get; set; }
 
-
-		public ICollection<Kit> Kit { get; set; }
+        public ICollection<Kit> Kit { get; set; }
 
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }
