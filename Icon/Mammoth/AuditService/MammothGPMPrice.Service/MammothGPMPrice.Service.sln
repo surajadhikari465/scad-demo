@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MammothGpmService", "MammothGPMPrice.Service\MammothGpmService.csproj", "{A3EC3A56-9EB1-40E0-93D9-818233666D5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MammothGpmService.Test", "MammothGPMPriceService.Test\MammothGpmService.Test.csproj", "{87B5EBBD-C772-480E-B973-8DE49AF475D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5F19F79-844C-435F-9E22-27657C9C889C}
+	EndGlobalSection
+EndGlobal
