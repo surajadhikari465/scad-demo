@@ -1,6 +1,7 @@
 ﻿using KitBuilderWebApi.Filters;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
+using KitBuilderWebApi.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -70,7 +71,9 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
             services.AddScoped<IHelper<InstructionListDto, InstructionListsParameters>, InstructionListHelper>();
             services.AddScoped<IHelper<KitDto, KitSearchParameters>, KitHelper>();
-            
+            services.AddScoped<IHelper<ItemsDto, KitItemParameters>, KitItemHelper>();
+            services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
+
             services.AddSwaggerGen(c =>
             {
 
