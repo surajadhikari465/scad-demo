@@ -60,6 +60,7 @@ BEGIN
 --- return global information
 
 	SELECT   I.ItemID as InforItemID
+	         ,i.Desc_Product as ItemDescription
 			,nutrition.Allergens as Allergens
 			,hc_brand.HierarchyClassName as Brand
 			,i.ScanCode as UPC
@@ -145,6 +146,7 @@ BEGIN
 			WHERE ilax.Region = @Region
 
 			SELECT   InforItemID
+					,ItemDescription
 					,Allergens
 					,Brand
 					,UPC
@@ -183,6 +185,7 @@ END
 ELSE
 	BEGIN
 	SELECT   InforItemID
+			,ItemDescription
 			,Allergens
 			,Brand
 			,UPC

@@ -77,6 +77,7 @@ BEGIN
 
 		
 	SELECT I.ItemID
+	    ,I.Desc_Product as ItemDescription
 		,I.BrandHCID
 		,hc_brand.HierarchyClassName BrandName
 		,i.ScanCode

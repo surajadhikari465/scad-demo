@@ -3,6 +3,7 @@
     public class ItemInformation
     {
         public int ItemId { get; set; }
+        public string ItemDescription { get; set; }
         public int BrandHCID { get; set; }
         public string BrandName { get; set; }
         public string ScanCode { get; set; }

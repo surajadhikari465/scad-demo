@@ -9,6 +9,7 @@ namespace MammothWebApi.DataAccess.Models.DataMonster
     public class ItemDetailInformation
     {
         public string InforItemID { get; set; }
+        public string ItemDescription { get; set; }
         public string Allergens { get; set; }
         public string Brand { get; set; }
         public string UPC { get; set; }
