@@ -158,7 +158,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                 .ElementsAfterSelf().First().Descendants().Last().Value = traitValue;
         }
 
-        private void AssertItemsAreEqualToXml(IEnumerable<ItemModel> items, decimal? sequenceId = null)
+		[TestMethod]
+		private void AssertItemsAreEqualToXml(IEnumerable<ItemModel> items, decimal? sequenceId = null)
         {
             //Copied these values directly from ProductMessageWith3Items.xml. Updating that test message will require updating
             //this code.
@@ -218,8 +219,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     Paleo = "0",
                     ProductFlavorType = "0",
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
-                    BrandsHierarchyName = "365"
-                },
+                    BrandsHierarchyName = "365",
+					FlexibleText = "Test Item FlexibleText 1"
+				},
                 new ItemModel
                 {
                     ItemId = 198759,
@@ -274,8 +276,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     Paleo = "1",
                     ProductFlavorType = "1",
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
-                    BrandsHierarchyName = "365"
-                },
+                    BrandsHierarchyName = "365",
+					FlexibleText = "Test Item FlexibleText 2"
+				},
                 new ItemModel
                 {
                     ItemId = 198760,
@@ -330,8 +333,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     Paleo = "0",
                     ProductFlavorType = "0",
                     CustomerFriendlyDescription = "",
-                    BrandsHierarchyName = "Test"
-                }
+                    BrandsHierarchyName = "Test",
+					FlexibleText = "Test Item FlexibleText 3"
+				}
             };
             var listItems = items.ToList();
 

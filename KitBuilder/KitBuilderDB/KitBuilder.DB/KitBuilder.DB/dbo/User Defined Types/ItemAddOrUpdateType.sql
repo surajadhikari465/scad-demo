@@ -6,7 +6,8 @@
     [CustomerFriendlyDesc] NVARCHAR (255) NULL,
     [KitchenDesc]          NVARCHAR (255) NULL,
     [BrandName]            NVARCHAR (255) NULL,
-    [ImageUrl]			   NVARCHAR (255) NULL
+    [ImageUrl]			   NVARCHAR (255) NULL,
+	[FlexibleText]         NVARCHAR (255) NULL
 )
 GO
 

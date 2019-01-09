@@ -13,7 +13,8 @@ BEGIN
 		CustomerFriendlyDesc,
 		KitchenDesc,       
 		BrandName,           
-		ImageUrl  
+		ImageUrl,
+		FlexibleText
 	INTO #allItems
 	FROM @itemsTable
 
@@ -29,7 +30,8 @@ BEGIN
 		CustomerFriendlyDesc,
 		KitchenDesc,       
 		BrandName,           
-		ImageUrl  
+		ImageUrl,
+		FlexibleText  
 	INTO #insertItems
 	FROM #allItems ai
 	WHERE NOT EXISTS (
@@ -55,6 +57,7 @@ BEGIN
 					,i.ImageUrl = ai.ImageUrl
 					,i.InsertDateUtc = ai.InsertDateUtc
 					,i.LastUpdatedDateUtc = ai.LastUpdatedDateUtc
+					,i.FlexibleText = ai.FlexibleText
 			FROM dbo.Items i
 				INNER JOIN #allItems AI ON i.ItemId = AI.ItemId
 
@@ -68,6 +71,7 @@ BEGIN
 				,KitchenDesc
 				,BrandName
 				,ImageUrl
+				,FlexibleText
 			)
 			SELECT 
 				II.ItemId
@@ -77,6 +81,7 @@ BEGIN
 				,II.KitchenDesc
 				,II.BrandName
 				,II.ImageUrl
+				,II.FlexibleText
 			FROM #insertItems II
 		
 		COMMIT TRANSACTION
