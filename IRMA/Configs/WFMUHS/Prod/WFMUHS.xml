@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WFMUHS version="1.1">
-  <Update name="WFM Mobile" enabled="1" version="1.0.1.6">
+  <Update name="WFM Mobile" enabled="1" version="1.0.2.0">
     <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
-    <Location>http://wfmmobile-prd/Updates/ApplicationUpdates/WFMMobile/1.0.1.6/</Location>
+    <Location>http://wfmmobile-prd/Updates/ApplicationUpdates/WFMMobile/1.0.2.0/</Location>
     <File>WFMMobile.CAB</File>
   </Update>
-  <Update name="WFM Mobile GAC" enabled="1" version="1.0.1.6">
+  <Update name="WFM Mobile GAC" enabled="1" version="1.0.2.0">
     <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
-    <Location>http://wfmmobile-prd/Updates/ApplicationUpdates/WFMMobile/1.0.1.6/</Location>
+    <Location>http://wfmmobile-prd/Updates/ApplicationUpdates/WFMMobile/1.0.2.0/</Location>
     <File>WFMMobile.GAC.txt</File>
   </Update>
   <AppSettings>
@@ -24,11 +24,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-fl/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.4.0.0">http://iap-fl/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="10.4.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -44,21 +44,21 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -74,23 +74,23 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
   </Region>
@@ -103,11 +103,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-ma/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-ma/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -144,30 +144,30 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-      <Update enabled="1" version="4.3.0.11">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-        <File>DVO-PRD-PILOT.CAB</File>
+      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -192,11 +192,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-mw/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-mw/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -267,19 +267,19 @@
 		</Application>-->
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -294,12 +294,12 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -313,11 +313,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-na/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-na/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -352,30 +352,30 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -400,11 +400,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-ne/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-ne/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -431,19 +431,19 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -458,12 +458,12 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -474,23 +474,23 @@
       <add key="IdleShutdownThreshold" value="300" />
       <add key="ShowServiceURI" value="1" />
     </AppSettings>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-nc/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-nc/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -555,19 +555,19 @@
     </Application>-->
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -592,11 +592,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-pn/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-pn/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -642,28 +642,28 @@
     </Application>-->
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -688,11 +688,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -731,19 +731,19 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -758,12 +758,12 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -777,11 +777,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-so/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-so/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -808,30 +808,30 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -865,11 +865,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-sp/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-sp/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -904,30 +904,30 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://MARSscanAuditServices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://MARSscanAuditServices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-      <Update enabled="1" version="4.3.0.11">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-        <File>DVO-PRD-PILOT.CAB</File>
+      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -952,11 +952,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-sw/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-sw/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1003,30 +1003,30 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://MARSscanAuditServices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://MARSscanAuditServices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-      <Update enabled="1" version="4.3.0.11">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-        <File>DVO-PRD-PILOT.CAB</File>
+      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
 
@@ -1052,11 +1052,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1083,19 +1083,19 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.3.0.11">\Program Files\DVO-PRD-PILOT\DVO.exe</ExePath>
-        <Update enabled="1" version="4.3.0.11">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO-PILOT/4.3.0.11/</Location>
-           <File>DVO-PRD-PILOT.CAB</File>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
      <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
@@ -1110,12 +1110,12 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -1129,11 +1129,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="9.8.0.7">http://iap-uk/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.7" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="9.8.0.9">http://iap-uk/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="9.8.0.9" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="9.8.0.7">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.7/</Location>
+      <Update enabled="1" version="9.8.0.9">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/9.8.0.9/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1152,22 +1152,23 @@
     </Application>
     <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.12.0.0">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.12.0.0" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.12.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.12.0.0/</Location>
+      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
-    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
-      <Description>DVO Handheld</Description>
-      <ExePath version="4.1.0.1">\Program Files\DVO-PRD\DVO.exe</ExePath>
-      <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
-        <File>DVO-PRD.CAB</File>
-      </Update>
-    </Application>
-<!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.9">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+           <File>DVO-PRD.CAB</File>
+        </Update>
+     </Application>
+<!--
+    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
       <SecurityGroup />
       <Description>Responsibily Grown Rating App</Description>
       <Service version="1.1.0.0"></Service>
@@ -1179,14 +1180,14 @@
       </Update>
     </Application>
 -->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
-      <Service version="1.2.0.0">http://oosappprd/WebService/ScanOutOfStock.svc|http://btsprd1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
       <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
-      <Update enabled="1" version="1.2.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
