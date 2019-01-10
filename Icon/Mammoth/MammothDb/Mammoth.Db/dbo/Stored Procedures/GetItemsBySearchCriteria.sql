@@ -133,7 +133,7 @@ BEGIN
 			FROM #globalData 
 			INNER JOIN [ItemLocaleAttributes] ila on  #globalData.InforItemID = ila.itemid 
 			INNER JOIN #StoreIds si on si.BusinessUnitID  = ila.BusinessUnitID
-				INNER JOIN [dbo].[ItemLocaleSupplier] ils on #globalData.InforItemID = ils.itemid	
+				INNER JOIN [dbo].[ItemLocaleSupplier] ils on #globalData.InforItemID = ils.itemid AND ils.BusinessUnitID = si.BusinessUnitID		
 			WHERE ila.Region = @Region
 	
 			AND ils.Region = @Region
