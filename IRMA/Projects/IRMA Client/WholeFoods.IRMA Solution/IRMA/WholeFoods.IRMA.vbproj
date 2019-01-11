@@ -1012,12 +1012,6 @@
     <Compile Include="Pricing\BusinessLogic\PricingPrintSignsBO.vb" />
     <Compile Include="Pricing\DataAccess\ItemPriceBatchDetailDAO.vb" />
     <Compile Include="Pricing\DataAccess\SlawPrintBatchConfigurationDAO.vb" />
-    <Compile Include="Pricing\UserInterface\PrintRequestBatchName.Designer.vb">
-      <DependentUpon>PrintRequestBatchName.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Pricing\UserInterface\PrintRequestBatchName.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ProcessMonitor\Form_ManageScheduledJobs.Designer.vb">
       <DependentUpon>Form_ManageScheduledJobs.vb</DependentUpon>
     </Compile>
@@ -3857,9 +3851,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Planogram\UserInterface\PlanogramImport.resx">
       <DependentUpon>PlanogramImport.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pricing\UserInterface\PrintRequestBatchName.resx">
-      <DependentUpon>PrintRequestBatchName.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProcessMonitor\Form_ManageScheduledJobs.resx">
       <DependentUpon>Form_ManageScheduledJobs.vb</DependentUpon>

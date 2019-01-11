@@ -118,25 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>713, 17</value>
+    <value>95, 16</value>
   </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="cmdSearch.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
   <data name="cmdSearch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAKRJREFUWEftkQEK
-        hDAMBPv0Pq0/66lgSMPYNMcdImZgQJo1rLYkyYQ+kaDc6Vf0Wuvh/mwkonmXdxegJVYNza0haIFVQ3Nr
-        CFpg1dDcGqK31sSFe43mEXrpXyISuPiCkM4ORAJ3FJD725+9AmeOzld3bA5kgWcVuPJnBRbVHGfBHQMU
-        8NTQ3HOAAp4amnsOyO+b3F2E8L4scH+BBSPQ+9Yk2SjlA6G+rpV7VZn6AAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAApElEQVRYR+2RAQqEMAwE+/Q+rT/rqWBI
+        w9g0xx0iZmBAmjWstiTJhD6RoNzpV/Ra6+H+bCSieZd3F6AlVg3NrSFogVVDc2sIWmDV0NwaorfWxIV7
+        jeYReulfIhK4+IKQzg5EAncUkPvbn70CZ47OV3dsDmSBZxW48mcFFtUcZ8EdAxTw1NDcc4ACnhqaew7I
+        75vcXYTwvixwf4EFI9D71iTZKOUDob6ulXtVmfoAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="cmdSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>925, 17</value>
+    <value>169, 1</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cmdSearch.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
@@ -160,29 +163,32 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdSearch.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;cmdSearch.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>1</value>
+  </data>
+  <data name="cmdItemEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="cmdItemEdit.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
   <data name="cmdItemEdit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAADBQTFRFAAAAzAAA
-        /wAA/wD/mZkA//8AmZmZyLTIzMzM////yLTIAAAAAAAAAAAAAAAAAAAA2qAYLgAAAUZJREFUKM9N0j1v
-        gzAQBuCrk4IzEsGOPFRly0+ACA/dYgkP3WjUWoxsXtMOkbtZSK3wv+0dDlFvAPnR6y8OsEvBWmmEUazl
-        wY6ptWwdVyWCT+0u3Goi0D69J6YT2J3R/nwHD2MI5pVVIVRTCGKqgaabXkxThUVT+HcISWCVoMwCLnhj
-        fBViokRwBuu2T4RfM7ht27YEPcHsnHvIsqw9/gN8uSw/Elw4Aa3hPve4RsLKFcTTmRI94yssuySmPyBA
-        WTLx/IVHT67DhjtQUp5A0C7JMPjDm5ZFoTomYmLe6KxTXSFPcY1hvna6yDudNZTgCB+yVYWUhdwT4JR3
-        pWSR4YMR4NEfdauVyjXCctsZQDdSyhpW2Mmla9ucTSmM3M28w6/RNk3DvMW+8PkiCfI8hxTBjgAvMVFT
-        22Pzf7TWXZ3eIf4OOLb2D1mHlZ620xPZAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAMFBMVEUAAADMAAD/AAD/AP+ZmQD//wCZ
+        mZnItMjMzMz////ItMgAAAAAAAAAAAAAAAAAAADaoBguAAABRklEQVQoz03SPW+DMBAG4KuTgjMSwY48
+        VGXLT4AID91iCQ/daNRajGxe0w6Ru1lIrfC/7R0OUW8A+dHrLw6wS8FaaYRRrOXBjqm1bB1XJYJP7S7c
+        aiLQPr0nphPYndH+fAcPYwjmlVUhVFMIYqqBppteTFOFRVP4dwhJYJWgzAIueGN8FWKiRHAG67ZPhF8z
+        uG3btgQ9weyce8iyrD3+A3y5LD8SXDgBreE+97hGwsoVxNOZEj3jKyy7JKY/IEBZMvH8hUdPrsOGO1BS
+        nkDQLskw+MOblkWhOiZiYt7orFNdIU9xjWG+drrIO501lOAIH7JVhZSF3BPglHelZJHhgxHg0R91q5XK
+        NcJy2xlAN1LKGlbYyaVr25xNKYzczbzDr9E2TcO8xb7w+SIJ8jyHFMGOAC8xUVPbY/N/tNZdnd4h/g44
+        tvYPWYeVnrbTE9kAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="cmdItemEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>880, 576</value>
+    <value>880, 542</value>
   </data>
   <data name="cmdItemEdit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -206,26 +212,29 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdItemEdit.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel2</value>
   </data>
   <data name="&gt;&gt;cmdItemEdit.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>2</value>
+  </data>
+  <data name="cmdExit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="cmdExit.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
   </data>
   <data name="cmdExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAN5JREFUWEftkAkO
-        wjAMBPP0/KxPC7FVA3adw7ksIVYaldKSGREMS4sxL8UYpwkp+QSgGLiuswFMTJwIUMUnAqpiYkdAl5hY
-        GWASE9aA/Db+qBigSWqMBADuAVrEdAAcKq8t3AMA94Ar4xZA8iUBcJi8SkBKwD3JZQDe5+dMpgHvWFaS
-        fwfAZxi+LoUSPNKwkhx4/wP3c3xdCiV4pGEgz5eHHIUU8DmYyzSsAffaAb38A0YDJB4BbD8TQF/0wDYU
-        0DjTNFPACqFcV8AOMa0asFNMUwNOiGks4KRYbEIcwguMkVSBf8LqdAAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA3klEQVRYR+2QCQ7CMAwE8/T8rE8LsVUD
+        dp3DuSwhVhqV0pIZEQxLizEvxRinCSn5BKAYuK6zAUxMnAhQxScCqmJiR0CXmFgZYBIT1oD8Nv6oGKBJ
+        aowEAO4BWsR0ABwqry3cAwD3gCvjFkDyJQFwmLxKQErAPcllAN7n50ymAe9YVpJ/B8BnGL4uhRI80rCS
+        HHj/A/dzfF0KJXikYSDPl4cchRTwOZjLNKwB99oBvfwDRgMkHgFsPxNAX/TANhTQONM0U8AKoVxXwA4x
+        rRqwU0xTA06IaSzgpFhsQhzCC4yRVIF/wup0AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="cmdExit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>925, 576</value>
+    <value>927, 542</value>
   </data>
   <data name="cmdExit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -249,69 +258,238 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdExit.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel2</value>
   </data>
   <data name="&gt;&gt;cmdExit.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>3</value>
   </data>
-  <data name="_cmdPrintLabel_0.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="cmdPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cmdPrint.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
-  </data>		
-  <data name="_cmdPrintLabel_0.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAARVJREFUWEftkgsO
-        gzAMQzk6R+NmDJe4MyEtnwISEk+yRtPYCWjdx8fH2xgbdAnjMAzjEdAP32xvY+z73mL3A99sb8ciZ7AM
-        ar6uSE8zq7fXBUpfxu5PkcMpD2q1r6B3FYWkPw7EEP+GrAP8Rj2sMUtF/6QVUZNF/kGNA6M++FmjmAtK
-        C4TDr5AfHi2Qm+6SDvcLpMu70eHhAtHWV+rRBabkJGSz9ugCkILzowsgk2Lt0QUgBefScJCbIJxbxBwv
-        NxzK5AXwjCZv4rlUA6h5v0rv+WvPy6IaqFqNwyFk1MQe9ts5kYLOIEH5mcupfI+dM4uLo1J/NBzyM9JU
-        ITRtyYJ2qTacrEx7peFbmvrLRIYjspg30XU/TYNghWRyvB0AAAAASUVORK5CYII=
-</value>
   </data>
-  <metadata name="cmdPrintLabel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>896, 17</value>
-  </metadata>
-  <data name="_cmdPrintLabel_0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>833, 576</value>
+  <data name="cmdPrint.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="_cmdPrintLabel_0.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdPrint.Location" type="System.Drawing.Point, System.Drawing">
+    <value>554, 22</value>
+  </data>
+  <data name="cmdPrint.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="_cmdPrintLabel_0.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 41</value>
   </data>
-  <data name="_cmdPrintLabel_0.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+  <data name="cmdPrint.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
   </data>
-  <data name="_cmdPrintLabel_0.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="cmdPrint.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="_cmdPrintLabel_0.ToolTip" xml:space="preserve">
-    <value>Print Sign</value>
+  <data name="cmdPrint.ToolTip" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="&gt;&gt;_cmdPrintLabel_0.Name" xml:space="preserve">
-    <value>_cmdPrintLabel_0</value>
+  <data name="&gt;&gt;cmdPrint.Name" xml:space="preserve">
+    <value>cmdPrint</value>
   </data>
-  <data name="&gt;&gt;_cmdPrintLabel_0.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdPrint.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_cmdPrintLabel_0.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;cmdPrint.Parent" xml:space="preserve">
+    <value>grpPrint</value>
   </data>
-  <data name="&gt;&gt;_cmdPrintLabel_0.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdPrint.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="lblBrand.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblBrand.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblBrand.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 205</value>
+  </data>
+  <data name="lblBrand.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="lblBrand.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 14</value>
+  </data>
+  <data name="lblBrand.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
+  </data>
+  <data name="lblBrand.Text" xml:space="preserve">
+    <value>Brand :</value>
+  </data>
+  <data name="lblBrand.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblBrand.Name" xml:space="preserve">
+    <value>lblBrand</value>
+  </data>
+  <data name="&gt;&gt;lblBrand.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBrand.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblBrand.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lblIdentifier.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblIdentifier.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblIdentifier.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 31</value>
+  </data>
+  <data name="lblIdentifier.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="lblIdentifier.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 14</value>
+  </data>
+  <data name="lblIdentifier.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="lblIdentifier.Text" xml:space="preserve">
+    <value>Identifier :</value>
+  </data>
+  <data name="lblIdentifier.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblIdentifier.Name" xml:space="preserve">
+    <value>lblIdentifier</value>
+  </data>
+  <data name="&gt;&gt;lblIdentifier.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblIdentifier.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblIdentifier.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="lblDesc.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDesc.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblDesc.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 73</value>
+  </data>
+  <data name="lblDesc.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="lblDesc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 14</value>
+  </data>
+  <data name="lblDesc.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="lblDesc.Text" xml:space="preserve">
+    <value>Description :</value>
+  </data>
+  <data name="lblDesc.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblDesc.Name" xml:space="preserve">
+    <value>lblDesc</value>
+  </data>
+  <data name="&gt;&gt;lblDesc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDesc.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblDesc.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="lblCategory.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCategory.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblCategory.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 161</value>
+  </data>
+  <data name="lblCategory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 14</value>
+  </data>
+  <data name="lblCategory.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="lblCategory.Text" xml:space="preserve">
+    <value>Category :</value>
+  </data>
+  <data name="lblCategory.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblCategory.Name" xml:space="preserve">
+    <value>lblCategory</value>
+  </data>
+  <data name="&gt;&gt;lblCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCategory.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblCategory.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="lblSubTeam.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblSubTeam.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblSubTeam.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 117</value>
+  </data>
+  <data name="lblSubTeam.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 14</value>
+  </data>
+  <data name="lblSubTeam.TabIndex" type="System.Int32, mscorlib">
+    <value>48</value>
+  </data>
+  <data name="lblSubTeam.Text" xml:space="preserve">
+    <value>SubTeam :</value>
+  </data>
+  <data name="lblSubTeam.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblSubTeam.Name" xml:space="preserve">
+    <value>lblSubTeam</value>
+  </data>
+  <data name="&gt;&gt;lblSubTeam.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblSubTeam.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblSubTeam.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="cmbBrand.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="cmbBrand.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="cmbBrand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>667, 43</value>
+    <value>3, 220</value>
   </data>
   <data name="cmbBrand.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="cmbBrand.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
+    <value>203, 22</value>
   </data>
   <data name="cmbBrand.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -323,46 +501,22 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmbBrand.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;cmbBrand.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>5</value>
   </data>
-  <data name="cmbStore.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="cmbStore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 14</value>
-  </data>
-  <data name="cmbStore.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="cmbStore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
-  </data>
-  <data name="cmbStore.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;cmbStore.Name" xml:space="preserve">
-    <value>cmbStore</value>
-  </data>
-  <data name="&gt;&gt;cmbStore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbStore.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cmbStore.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="_txtField_0.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="_txtField_0.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <metadata name="txtField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>419, 54</value>
+    <value>21, 16</value>
   </metadata>
   <data name="_txtField_0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 14</value>
+    <value>3, 90</value>
   </data>
   <data name="_txtField_0.MaxLength" type="System.Int32, mscorlib">
     <value>60</value>
@@ -371,7 +525,7 @@
     <value>No</value>
   </data>
   <data name="_txtField_0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 20</value>
+    <value>203, 20</value>
   </data>
   <data name="_txtField_0.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -383,16 +537,19 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;_txtField_0.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;_txtField_0.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
+  </data>
+  <data name="_txtField_1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="_txtField_1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_txtField_1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 42</value>
+    <value>5, 48</value>
   </data>
   <data name="_txtField_1.MaxLength" type="System.Int32, mscorlib">
     <value>13</value>
@@ -401,7 +558,7 @@
     <value>No</value>
   </data>
   <data name="_txtField_1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 20</value>
+    <value>166, 20</value>
   </data>
   <data name="_txtField_1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -413,217 +570,22 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;_txtField_1.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;_txtField_1.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>11</value>
   </data>
-  <data name="chkSelectAll.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
+  <data name="cmbCategory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="chkSelectAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkSelectAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 535</value>
-  </data>
-  <data name="chkSelectAll.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="chkSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="chkSelectAll.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
-  </data>
-  <data name="chkSelectAll.Text" xml:space="preserve">
-    <value>Select All</value>
-  </data>
-  <data name="&gt;&gt;chkSelectAll.Name" xml:space="preserve">
-    <value>chkSelectAll</value>
-  </data>
-  <data name="&gt;&gt;chkSelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkSelectAll.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkSelectAll.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="cdbFileOpen.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>600, 17</value>
-  </metadata>
-  <metadata name="cdbFileSave.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>381, 17</value>
-  </metadata>
-  <metadata name="cdbFileFont.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>161, 17</value>
-  </metadata>
-  <metadata name="cdbFileColor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>269, 17</value>
-  </metadata>
-  <metadata name="cdbFilePrint.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>491, 17</value>
-  </metadata>
-  <data name="lblBrand.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblBrand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>593, 47</value>
-  </data>
-  <data name="lblBrand.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="lblBrand.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 17</value>
-  </data>
-  <data name="lblBrand.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
-  </data>
-  <data name="lblBrand.Text" xml:space="preserve">
-    <value>Brand :</value>
-  </data>
-  <data name="lblBrand.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lblBrand.Name" xml:space="preserve">
-    <value>lblBrand</value>
-  </data>
-  <data name="&gt;&gt;lblBrand.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblBrand.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblBrand.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="lblStore.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblStore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>33, 17</value>
-  </data>
-  <data name="lblStore.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="lblStore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 17</value>
-  </data>
-  <data name="lblStore.TabIndex" type="System.Int32, mscorlib">
-    <value>45</value>
-  </data>
-  <data name="lblStore.Text" xml:space="preserve">
-    <value>Store :</value>
-  </data>
-  <data name="lblStore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lblStore.Name" xml:space="preserve">
-    <value>lblStore</value>
-  </data>
-  <data name="&gt;&gt;lblStore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblStore.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblStore.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="lblIdentifier.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblIdentifier.Location" type="System.Drawing.Point, System.Drawing">
-    <value>38, 45</value>
-  </data>
-  <data name="lblIdentifier.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="lblIdentifier.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 17</value>
-  </data>
-  <data name="lblIdentifier.TabIndex" type="System.Int32, mscorlib">
-    <value>42</value>
-  </data>
-  <data name="lblIdentifier.Text" xml:space="preserve">
-    <value>Identifier :</value>
-  </data>
-  <data name="lblIdentifier.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lblIdentifier.Name" xml:space="preserve">
-    <value>lblIdentifier</value>
-  </data>
-  <data name="&gt;&gt;lblIdentifier.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblIdentifier.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblIdentifier.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="lblDesc.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblDesc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>299, 17</value>
-  </data>
-  <data name="lblDesc.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="lblDesc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 17</value>
-  </data>
-  <data name="lblDesc.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
-  </data>
-  <data name="lblDesc.Text" xml:space="preserve">
-    <value>Description :</value>
-  </data>
-  <data name="lblDesc.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lblDesc.Name" xml:space="preserve">
-    <value>lblDesc</value>
-  </data>
-  <data name="&gt;&gt;lblDesc.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDesc.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblDesc.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <metadata name="Frame1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>807, 17</value>
-  </metadata>
-  <metadata name="optChangeType.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1018, 17</value>
-  </metadata>
-  <metadata name="optPrintStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 54</value>
-  </metadata>
-  <metadata name="optSortBy.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>139, 54</value>
-  </metadata>
-  <metadata name="optType.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>239, 54</value>
-  </metadata>
-  <metadata name="txtDate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>331, 54</value>
-  </metadata>
   <data name="cmbCategory.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt, style=Bold</value>
   </data>
   <data name="cmbCategory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>667, 14</value>
+    <value>3, 176</value>
   </data>
   <data name="cmbCategory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
+    <value>203, 22</value>
   </data>
   <data name="cmbCategory.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -635,19 +597,22 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmbCategory.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;cmbCategory.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
+  </data>
+  <data name="cmbSubTeam.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="cmbSubTeam.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt, style=Bold</value>
   </data>
   <data name="cmbSubTeam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 42</value>
+    <value>3, 132</value>
   </data>
   <data name="cmbSubTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
+    <value>203, 22</value>
   </data>
   <data name="cmbSubTeam.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -659,70 +624,13 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmbSubTeam.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel1</value>
   </data>
   <data name="&gt;&gt;cmbSubTeam.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
-  <data name="lblCategory.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblCategory.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblCategory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>598, 17</value>
-  </data>
-  <data name="lblCategory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 14</value>
-  </data>
-  <data name="lblCategory.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
-  </data>
-  <data name="lblCategory.Text" xml:space="preserve">
-    <value>Category :</value>
-  </data>
-  <data name="&gt;&gt;lblCategory.Name" xml:space="preserve">
-    <value>lblCategory</value>
-  </data>
-  <data name="&gt;&gt;lblCategory.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblCategory.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblCategory.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblSubTeam.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblSubTeam.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblSubTeam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>326, 46</value>
-  </data>
-  <data name="lblSubTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 14</value>
-  </data>
-  <data name="lblSubTeam.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
-  </data>
-  <data name="lblSubTeam.Text" xml:space="preserve">
-    <value>SubTeam :</value>
-  </data>
-  <data name="&gt;&gt;lblSubTeam.Name" xml:space="preserve">
-    <value>lblSubTeam</value>
-  </data>
-  <data name="&gt;&gt;lblSubTeam.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblSubTeam.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblSubTeam.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="ugrdSearchResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="resource.Caption" xml:space="preserve">
     <value>Sign Description</value>
@@ -755,10 +663,10 @@
     <value>Arial, 8pt</value>
   </data>
   <data name="ugrdSearchResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 118</value>
+    <value>0, 0</value>
   </data>
   <data name="ugrdSearchResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>951, 408</value>
+    <value>976, 513</value>
   </data>
   <data name="ugrdSearchResults.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -773,70 +681,346 @@
     <value>Infragistics.Win.UltraWinGrid.UltraGrid, Infragistics2.Win.UltraWinGrid.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
   </data>
   <data name="&gt;&gt;ugrdSearchResults.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>split.Panel2</value>
   </data>
   <data name="&gt;&gt;ugrdSearchResults.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>1</value>
   </data>
-  <data name="lblTotal.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
+  <data name="btnIdentifiers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="lblTotal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="btnIdentifiers.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 48</value>
   </data>
-  <data name="lblTotal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>724, 535</value>
-  </data>
-  <data name="lblTotal.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="lblTotal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>242, 17</value>
-  </data>
-  <data name="lblTotal.TabIndex" type="System.Int32, mscorlib">
-    <value>58</value>
-  </data>
-  <data name="lblTotal.Text" xml:space="preserve">
-    <value>Total Items: 0</value>
-  </data>
-  <data name="lblTotal.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lblTotal.Name" xml:space="preserve">
-    <value>lblTotal</value>
-  </data>
-  <data name="&gt;&gt;lblTotal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTotal.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblTotal.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="ButtonIdentifiers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>252, 41</value>
-  </data>
-  <data name="ButtonIdentifiers.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnIdentifiers.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 21</value>
   </data>
-  <data name="ButtonIdentifiers.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnIdentifiers.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="ButtonIdentifiers.Text" xml:space="preserve">
+  <data name="btnIdentifiers.Text" xml:space="preserve">
     <value>...</value>
   </data>
-  <data name="&gt;&gt;ButtonIdentifiers.Name" xml:space="preserve">
-    <value>ButtonIdentifiers</value>
+  <data name="&gt;&gt;btnIdentifiers.Name" xml:space="preserve">
+    <value>btnIdentifiers</value>
   </data>
-  <data name="&gt;&gt;ButtonIdentifiers.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnIdentifiers.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ButtonIdentifiers.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnIdentifiers.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;btnIdentifiers.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="split.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="split.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="lblStores.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblStores.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8.25pt</value>
+  </data>
+  <data name="lblStores.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblStores.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 253</value>
+  </data>
+  <data name="lblStores.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="lblStores.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 14</value>
+  </data>
+  <data name="lblStores.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="lblStores.Text" xml:space="preserve">
+    <value>Store List</value>
+  </data>
+  <data name="lblStores.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblStores.Name" xml:space="preserve">
+    <value>lblStores</value>
+  </data>
+  <data name="&gt;&gt;lblStores.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblStores.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblStores.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lblInfo2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="lblInfo2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="lblInfo2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblInfo2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="lblInfo2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="lblInfo2.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="lblInfo2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 17</value>
+  </data>
+  <data name="lblInfo2.TabIndex" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="lblInfo2.Text" xml:space="preserve">
+    <value>Search Parameters</value>
+  </data>
+  <data name="lblInfo2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblInfo2.Name" xml:space="preserve">
+    <value>lblInfo2</value>
+  </data>
+  <data name="&gt;&gt;lblInfo2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblInfo2.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblInfo2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lvStore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="hdrStore.Text" xml:space="preserve">
+    <value>Store Name</value>
+  </data>
+  <data name="hdrStore.Width" type="System.Int32, mscorlib">
+    <value>200</value>
+  </data>
+  <data name="lvStore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 271</value>
+  </data>
+  <data name="lvStore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 313</value>
+  </data>
+  <data name="lvStore.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lvStore.Name" xml:space="preserve">
+    <value>lvStore</value>
+  </data>
+  <data name="&gt;&gt;lvStore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvStore.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lvStore.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;split.Panel1.Name" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;split.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;split.Panel1.Parent" xml:space="preserve">
+    <value>split</value>
+  </data>
+  <data name="&gt;&gt;split.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="grpPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="chkApplyNoTagLogic.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkApplyNoTagLogic.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="chkApplyNoTagLogic.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="chkApplyNoTagLogic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>424, 17</value>
+  </data>
+  <data name="chkApplyNoTagLogic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 18</value>
+  </data>
+  <data name="chkApplyNoTagLogic.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="chkApplyNoTagLogic.Text" xml:space="preserve">
+    <value>Apply No-Tag Logic</value>
+  </data>
+  <data name="&gt;&gt;chkApplyNoTagLogic.Name" xml:space="preserve">
+    <value>chkApplyNoTagLogic</value>
+  </data>
+  <data name="&gt;&gt;chkApplyNoTagLogic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkApplyNoTagLogic.Parent" xml:space="preserve">
+    <value>grpPrint</value>
+  </data>
+  <data name="&gt;&gt;chkApplyNoTagLogic.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="txtBatchName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS Reference Sans Serif, 9.75pt</value>
+  </data>
+  <data name="txtBatchName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>314, 39</value>
+  </data>
+  <data name="txtBatchName.MaxLength" type="System.Int32, mscorlib">
+    <value>255</value>
+  </data>
+  <data name="txtBatchName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>225, 23</value>
+  </data>
+  <data name="txtBatchName.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="&gt;&gt;txtBatchName.Name" xml:space="preserve">
+    <value>txtBatchName</value>
+  </data>
+  <data name="&gt;&gt;txtBatchName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtBatchName.Parent" xml:space="preserve">
+    <value>grpPrint</value>
+  </data>
+  <data name="&gt;&gt;txtBatchName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblInfo.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS Reference Sans Serif, 9pt</value>
+  </data>
+  <data name="lblInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 16</value>
+  </data>
+  <data name="lblInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 51</value>
+  </data>
+  <data name="lblInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="lblInfo.Text" xml:space="preserve">
+    <value>FYI: Items may be excluded from the request due to authorization, validation, deleted status, or no-tag logic (if selected).</value>
+  </data>
+  <data name="&gt;&gt;lblInfo.Name" xml:space="preserve">
+    <value>lblInfo</value>
+  </data>
+  <data name="&gt;&gt;lblInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblInfo.Parent" xml:space="preserve">
+    <value>grpPrint</value>
+  </data>
+  <data name="&gt;&gt;lblInfo.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt</value>
+  </data>
+  <data name="lbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>312, 17</value>
+  </data>
+  <data name="lbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 14</value>
+  </data>
+  <data name="lbl.TabIndex" type="System.Int32, mscorlib">
+    <value>61</value>
+  </data>
+  <data name="lbl.Text" xml:space="preserve">
+    <value>Batch name:</value>
+  </data>
+  <data name="&gt;&gt;lbl.Name" xml:space="preserve">
+    <value>lbl</value>
+  </data>
+  <data name="&gt;&gt;lbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbl.Parent" xml:space="preserve">
+    <value>grpPrint</value>
+  </data>
+  <data name="&gt;&gt;lbl.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="grpPrint.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 8pt, style=Italic</value>
+  </data>
+  <data name="grpPrint.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 515</value>
+  </data>
+  <data name="grpPrint.Size" type="System.Drawing.Size, System.Drawing">
+    <value>601, 69</value>
+  </data>
+  <data name="grpPrint.TabIndex" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="grpPrint.Text" xml:space="preserve">
+    <value>Print Options</value>
+  </data>
+  <data name="&gt;&gt;grpPrint.Name" xml:space="preserve">
+    <value>grpPrint</value>
+  </data>
+  <data name="&gt;&gt;grpPrint.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpPrint.Parent" xml:space="preserve">
+    <value>split.Panel2</value>
+  </data>
+  <data name="&gt;&gt;grpPrint.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;split.Panel2.Name" xml:space="preserve">
+    <value>split.Panel2</value>
+  </data>
+  <data name="&gt;&gt;split.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;split.Panel2.Parent" xml:space="preserve">
+    <value>split</value>
+  </data>
+  <data name="&gt;&gt;split.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="split.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1194, 591</value>
+  </data>
+  <data name="split.SplitterDistance" type="System.Int32, mscorlib">
+    <value>214</value>
+  </data>
+  <data name="split.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
+  </data>
+  <data name="&gt;&gt;split.Name" xml:space="preserve">
+    <value>split</value>
+  </data>
+  <data name="&gt;&gt;split.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;split.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;ButtonIdentifiers.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;split.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -848,7 +1032,7 @@
     <value>6, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>987, 640</value>
+    <value>1194, 591</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 8pt</value>
@@ -860,7 +1044,7 @@
     <value>No</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ad Hoc Sign Request</value>
@@ -871,83 +1055,17 @@
   <data name="&gt;&gt;ToolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cdbFileOpen.Name" xml:space="preserve">
-    <value>cdbFileOpen</value>
-  </data>
-  <data name="&gt;&gt;cdbFileOpen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cdbFileSave.Name" xml:space="preserve">
-    <value>cdbFileSave</value>
-  </data>
-  <data name="&gt;&gt;cdbFileSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cdbFileFont.Name" xml:space="preserve">
-    <value>cdbFileFont</value>
-  </data>
-  <data name="&gt;&gt;cdbFileFont.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FontDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cdbFileColor.Name" xml:space="preserve">
-    <value>cdbFileColor</value>
-  </data>
-  <data name="&gt;&gt;cdbFileColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColorDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cdbFilePrint.Name" xml:space="preserve">
-    <value>cdbFilePrint</value>
-  </data>
-  <data name="&gt;&gt;cdbFilePrint.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PrintDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Frame1.Name" xml:space="preserve">
-    <value>Frame1</value>
-  </data>
-  <data name="&gt;&gt;Frame1.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.GroupBoxArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;cmdPrintLabel.Name" xml:space="preserve">
-    <value>cmdPrintLabel</value>
-  </data>
-  <data name="&gt;&gt;cmdPrintLabel.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.ButtonArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;optChangeType.Name" xml:space="preserve">
-    <value>optChangeType</value>
-  </data>
-  <data name="&gt;&gt;optChangeType.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.RadioButtonArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;optPrintStatus.Name" xml:space="preserve">
-    <value>optPrintStatus</value>
-  </data>
-  <data name="&gt;&gt;optPrintStatus.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.RadioButtonArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;optSortBy.Name" xml:space="preserve">
-    <value>optSortBy</value>
-  </data>
-  <data name="&gt;&gt;optSortBy.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.RadioButtonArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;optType.Name" xml:space="preserve">
-    <value>optType</value>
-  </data>
-  <data name="&gt;&gt;optType.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.RadioButtonArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;txtDate.Name" xml:space="preserve">
-    <value>txtDate</value>
-  </data>
-  <data name="&gt;&gt;txtDate.Type" xml:space="preserve">
-    <value>Microsoft.VisualBasic.Compatibility.VB6.TextBoxArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="&gt;&gt;txtField.Name" xml:space="preserve">
     <value>txtField</value>
   </data>
   <data name="&gt;&gt;txtField.Type" xml:space="preserve">
     <value>Microsoft.VisualBasic.Compatibility.VB6.TextBoxArray, Microsoft.VisualBasic.Compatibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;hdrStore.Name" xml:space="preserve">
+    <value>hdrStore</value>
+  </data>
+  <data name="&gt;&gt;hdrStore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmPricingPrintSigns</value>
