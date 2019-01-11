@@ -288,7 +288,7 @@
     <value>BottomCenter</value>
   </data>
   <data name="cmdPrint.ToolTip" xml:space="preserve">
-    <value>Search</value>
+    <value>Print</value>
   </data>
   <data name="&gt;&gt;cmdPrint.Name" xml:space="preserve">
     <value>cmdPrint</value>

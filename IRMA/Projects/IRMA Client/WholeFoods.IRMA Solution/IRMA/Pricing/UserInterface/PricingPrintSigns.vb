@@ -113,7 +113,7 @@ Friend Class frmPricingPrintSigns
         businessUnitsToSend.Add(CInt((CType(item.Tag, DataRow)!BusinessUnit_ID)))
       Next
 
-      If (MessageBox.Show(String.Format("{0}{1}{2}Would you loke to proceed  ({3})?", lblInfo.Text, vbCrLf, vbCrLf, If(lvStore.SelectedItems.Count = 1, "Single store", "Multiple Stores")), "User Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) <> DialogResult.OK) Then Exit Sub
+      If (MessageBox.Show(String.Format("{0}{1}{2}Would you like to proceed  ({3})?", lblInfo.Text, vbCrLf, vbCrLf, If(lvStore.SelectedItems.Count = 1, "Single store", "Multiple Stores")), "User Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) <> DialogResult.OK) Then Exit Sub
 
       For Each businessUnit As Integer In businessUnitsToSend
         Dim storeNumber As Integer = CInt(tableStore.Select(String.Format("BusinessUnit_ID = {0}", businessUnit)).First()!Store_No)
@@ -260,7 +260,7 @@ Friend Class frmPricingPrintSigns
       MessageBox.Show(ex.Message, "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
     Finally
       Cursor = Cursors.Default
-      cmdSearch.Enabled = False
+      cmdSearch.Enabled = True
     End Try
   End Sub
 
