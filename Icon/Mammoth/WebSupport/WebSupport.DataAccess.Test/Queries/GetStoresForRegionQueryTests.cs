@@ -38,7 +38,9 @@ namespace WebSupport.DataAccess.Test.Queries
         public void GetStoresForRegion_StoreExistsInRegion_AllStoresAreReturned()
         {
             //Given
-            int initialStoreCount = context.Database.SqlQuery<int>("SELECT COUNT(*) FROM dbo.Locales_FL").First();
+            int initialStoreCount = context.Database
+                .SqlQuery<int>("SELECT COUNT(*) FROM dbo.Locales_FL WHERE LocaleCloseDate IS NULL")
+                .First();
             context.Database.ExecuteSqlCommand(@"
                 INSERT INTO dbo.Locales_FL(
                     BusinessUnitID, 
@@ -60,6 +62,35 @@ namespace WebSupport.DataAccess.Test.Queries
             var testStore = stores.Single(s => s.BusinessUnit == "9876");
             Assert.AreEqual("Test Store", testStore.Name);
             Assert.AreEqual("TST", testStore.Abbreviation);
+        }
+
+        [TestMethod]
+        public void GetStoresForRegion_ClosedStoreExistsInRegion_ClosedStoresAreNotReturned()
+        {
+            //Given
+            int initialStoreCount = context.Database.SqlQuery<int>("SELECT COUNT(*) FROM dbo.Locales_FL").First();
+            context.Database.ExecuteSqlCommand(@"
+                INSERT INTO dbo.Locales_FL(
+                    BusinessUnitID, 
+                    StoreName, 
+                    StoreAbbrev, 
+                    AddedDate,
+                    LocaleCloseDate)
+                VALUES(
+                    9876,
+                    'Test Store',
+                    'TST',
+                    GETDATE(),
+                    GETDATE())");
+            parameters.Region = "FL";
+
+            //When
+            var stores = getStoresForRegionQuery.Search(parameters);
+
+            //Then
+            Assert.AreEqual(initialStoreCount, stores.Count, "Store count should not include closed store(s)");
+            var testStore = stores.SingleOrDefault(s => s.BusinessUnit == "9876");
+            Assert.IsNull(testStore, "Closed store should not have been included in query results");
         }
     }
 }
