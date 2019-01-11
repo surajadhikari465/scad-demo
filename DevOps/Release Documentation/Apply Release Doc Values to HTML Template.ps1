@@ -112,6 +112,8 @@ foreach($valueDef in $relDocInValues){
     $varName = $values[0]
     $varDesc = $values[1]
     $value = $values[2]
+    #DEBUG -->
+    #"[RelValuesInHash] Adding to hash: [$varName]=[$value]"
     $relValuesInHash.add($varName, $value)
 }
 
@@ -168,7 +170,16 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SP___TargetEnv__.properties`n"
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SO___TargetEnv__.properties`n"
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SW___TargetEnv__.properties`n"
-        } else {
+        } elseif ($app -like "PublishInventorySpoilageService" `
+            -or $app -like "PublishPurchaseOrderService" `
+            -or $app -like "PublishReceivedOrderService" `
+            -or $app -like "PublishTransferOrderService" `
+            -or $app -like "RePublishInventoryMessagesService" `
+            ) {
+            # **Currently only PN for HC TIBCO.
+            $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_PN___TargetEnv__.properties`n"
+        }
+        else {
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "___TargetEnv__.properties`n"
         }
     }
