@@ -25,7 +25,7 @@ namespace WebSupport.DataAccess.Queries
                         StoreName AS Name 
                     FROM dbo.Locale 
                     WHERE Region = '{parameters.Region}'
-                        AND LocaleCloseDate IS NULL
+                        AND (LocaleCloseDate IS NULL OR LocaleCloseDate > CAST(GETDATE() as DATE))
                     ORDER BY BusinessUnit")
                 .ToList();
         }
