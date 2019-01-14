@@ -18,6 +18,8 @@ namespace KitBuilder.DataAccess.Dto
         [Required]
         [StringLength(500, ErrorMessage = "Group Description can have maximum length of 500.")]
         public string GroupDescription { get; set; }
+        public string ItemScanCode { get; set; }
+        public string ItemDescription { get; set; }
         public DateTime InsertDateUtc { get; set; }        
         public ICollection<LinkGroupItemDto> LinkGroupItemDto { get; set; }
     }

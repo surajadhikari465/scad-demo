@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using KitBuilderWebApi.QueryParameters;
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.Controllers
 {
+
     [Route("api/LinkGroups")]
     public class LinkGroupController : Controller
     {
@@ -24,15 +26,16 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<KitLinkGroup> kitlinkGroupRepository;
         private ILogger<LinkGroupController> logger;
         private IHelper<LinkGroupDto, LinkGroupParameters> linkGroupHelper;
-        private const string deleteLinkGroupSpName = "DeleteLinkGroupByLinkGroupId";
+        private const string DeleteLinkGroupSpName = "DeleteLinkGroupByLinkGroupId";
+        private const string LinkGroupSearchSpName = "LinkGroupsSearch";
 
         public LinkGroupController(IRepository<LinkGroup> linkGroupRepository,
-                                   IRepository<LinkGroupItem> linkGroupItemRepository,
-                                   IRepository<Items> itemsRepository,
-                                   IRepository<KitLinkGroup> kitlinkGroupRepository,
-                                   ILogger<LinkGroupController> logger,
-                                   IHelper<LinkGroupDto, LinkGroupParameters> linkGroupHelper
-                                  )
+            IRepository<LinkGroupItem> linkGroupItemRepository,
+            IRepository<Items> itemsRepository,
+            IRepository<KitLinkGroup> kitlinkGroupRepository,
+            ILogger<LinkGroupController> logger,
+            IHelper<LinkGroupDto, LinkGroupParameters> linkGroupHelper
+        )
         {
             this.linkGroupRepository = linkGroupRepository;
             this.linkGroupItemRepository = linkGroupItemRepository;
@@ -41,6 +44,42 @@ namespace KitBuilderWebApi.Controllers
             this.logger = logger;
             this.linkGroupHelper = linkGroupHelper;
         }
+
+
+
+        
+        [HttpGet("LinkGroupsSearch")]
+        public IActionResult LinkGroupSearch(LinkGroupSearchParamters parameters)
+        {
+
+            var query = from lg in linkGroupRepository.GetAll()
+                join lgi in linkGroupItemRepository.GetAll() on lg.LinkGroupId equals lgi.LinkGroupId
+                join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                select new {lg, lgi, i};
+
+            if (!string.IsNullOrEmpty(parameters.LinkGroupName))
+                query = query.Where(q => q.lg.GroupName.Contains(parameters.LinkGroupName));
+
+            if (!string.IsNullOrEmpty(parameters.LinkGroupDesc))
+                query = query.Where(q => q.lg.GroupDescription.Contains(parameters.LinkGroupDesc));
+
+            if (!string.IsNullOrEmpty(parameters.ModifierDesc))
+                query = query.Where(q => q.i.CustomerFriendlyDesc.Contains(parameters.ModifierDesc));
+
+            if (!string.IsNullOrEmpty(parameters.ModifierPlu))
+                query = query.Where(q => q.i.ScanCode.Contains(parameters.ModifierPlu));
+
+            var data = query.Select(d => new
+            {
+                LinkGroupId = d.lg.LinkGroupId,
+                GroupName = d.lg.GroupName,
+                GroupDescription = d.lg.GroupDescription
+            }).ToList();
+
+            return Ok(data);
+            
+        }
+
 
         // GET api/GetLinkGroups
         [HttpGet(Name = "GetLinkGroups")]
@@ -53,7 +92,7 @@ namespace KitBuilderWebApi.Controllers
                                                 LinkGroupId = l.LinkGroupId,
                                                 GroupName = l.GroupName,
                                                 GroupDescription = l.GroupDescription,
-                                                InsertDateUtc = l.InsertDateUtc
+                                                InsertDateUtc = l.InsertDateUtc, 
                                             };
 
             // will set order by if passed, otherwise use default orderby    
@@ -70,18 +109,19 @@ namespace KitBuilderWebApi.Controllers
             //build the query if any filter or search query critiera is passed
             BuildQueryToFilterData(linkGroupParameters, ref linkGroupListBeforePaging);
 
+
             // call the static method on the paged list to filter items
-            var instructionListsAfterPaging = PagedList<LinkGroupDto>.Create(linkGroupListBeforePaging,
+            var linkGroupsAfterPaging = PagedList<LinkGroupDto>.Create(linkGroupListBeforePaging,
                                                             linkGroupParameters.PageNumber,
                                                             linkGroupParameters.PageSize
                                                             );
-
-            var paginationMetadata = linkGroupHelper.GetPaginationData(instructionListsAfterPaging, linkGroupParameters);
+            
+            var paginationMetadata = linkGroupHelper.GetPaginationData(linkGroupsAfterPaging, linkGroupParameters);
 
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
-            return Ok(instructionListsAfterPaging.ShapeData(linkGroupParameters.Fields));
+            return Ok(linkGroupsAfterPaging.ShapeData(linkGroupParameters.Fields));
         }
 
         // GET api/GetLinkGroupById
@@ -197,7 +237,7 @@ namespace KitBuilderWebApi.Controllers
                 try
                 {
                     var param1 = new SqlParameter("linkGroupid", SqlDbType.BigInt) { Value = id };
-                    linkGroupRepository.ExecWithStoreProcedure(deleteLinkGroupSpName + " @linkGroupid", param1);
+                    linkGroupRepository.ExecWithStoreProcedure(DeleteLinkGroupSpName + " @linkGroupid", param1);
 
                     return NoContent();
                 }
@@ -265,6 +305,9 @@ namespace KitBuilderWebApi.Controllers
                 linkGroupBeforePaging = linkGroupBeforePaging
                                                .Where(i => i.GroupName.ToLower().Contains(searchQueryForWhereClause));
             }
+
+
+
         }
     }
 }

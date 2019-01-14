@@ -95,8 +95,7 @@ namespace KitBuilderWebApi.Tests.Controllers
                             CustomerFriendlyDesc = l.CustomerFriendlyDesc,
                             KitchenDesc = l.KitchenDesc,
                             BrandName = l.BrandName,
-                            LargeImageUrl = l.LargeImageUrl,
-                            SmallImageUrl = l.SmallImageUrl,
+                            ImageUrl = l.ImageUrl,
                             InsertDateUtc = l.InsertDateUtc
                         }).ToList();
 

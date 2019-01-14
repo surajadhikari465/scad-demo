@@ -160,7 +160,11 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
                .then(response => {
                     return response.json();
                 }).catch(error => {
-                    console.log(error);})
+                    console.log(error);
+                    this.setState({
+                         instructionListDto: ["error"]
+                    });
+               })
                     .then(data =>
                          this.setState({
                               instructionListDto: data
