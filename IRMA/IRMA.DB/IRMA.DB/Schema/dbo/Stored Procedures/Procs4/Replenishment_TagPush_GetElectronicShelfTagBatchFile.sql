@@ -36,24 +36,25 @@ AS
 --**************************************************************************************
 
 BEGIN
-
 	SET TRANSACTION ISOLATION LEVEL SNAPSHOT	
 	
-    DECLARE 
-		@RegionCode varchar(2),
-		@PLUDigits int,
-		@OmitShelfTagTypeFields bit,
-		@FourLevelHierarchy bit,
-		@RegionalEST as varchar(100),
-		@CurrentProcedure as varchar(100)
+  DECLARE @RegionCode varchar(2),
+           @PLUDigits int,
+           @OmitShelfTagTypeFields bit,
+           @FourLevelHierarchy bit,
+           @RegionalEST as varchar(100),
+           @CurrentProcedure as varchar(100)
+  
+  IF OBJECT_ID('tempdb..#tempESL') IS NOT NULL DROP TABLE #tempESL;
+  IF(OBJECT_ID('tempdb..#tempDetailSAL') IS NOT NULL) DROP TABLE #tempDetailSAL;
+	IF OBJECT_ID('tempdb..#ItemIdentifier') IS NOT NULL DROP TABLE #ItemIdentifier;
+	IF OBJECT_ID('tempdb..#StoresToIncludeAllIdentifiers') IS NOT NULL DROP TABLE #StoresToIncludeAllIdentifiers;
 
-	SELECT 
-		@RegionCode = PrimaryRegionCode,
-		@PLUDigits =
-			CASE ISNUMERIC(RIGHT(PluDigitsSentToScale, 1))
-				WHEN 1 THEN CONVERT(int, RIGHT(PluDigitsSentToScale, 1))
-				ELSE NULL
-			END
+  SELECT @RegionCode = PrimaryRegionCode,
+		     @PLUDigits = CASE ISNUMERIC(RIGHT(PluDigitsSentToScale, 1))
+				              WHEN 1 THEN CONVERT(int, RIGHT(PluDigitsSentToScale, 1))
+				              ELSE NULL
+			                END
 	FROM dbo.InstanceData 
 
 	SELECT 
@@ -69,55 +70,26 @@ BEGIN
 			ack.Name = 'RegionalESTStoredProcedure' and
 			SUBSTRING(ace.Name,1,1) = SUBSTRING((SELECT Environment FROM Version WHERE ApplicationName = 'IRMA CLIENT'),1,1)
 	
-	IF OBJECT_ID('tempdb..#ItemIdentifier') IS NOT NULL
-	BEGIN
-		DROP TABLE #ItemIdentifier
-	END 
-	IF OBJECT_ID('tempdb..#StoresToIncludeAllIdentifiers') IS NOT NULL
-	BEGIN
-		DROP TABLE #StoresToIncludeAllIdentifiers
-	END 
-			
-	--This table contains the data to hold the data for the non-batchable changes
-	CREATE TABLE #ItemIdentifier 
-	(
-		Identifier_ID			INT PRIMARY KEY,
-		Item_Key				INT,
-		Identifier				VARCHAR(13),
-		Default_Identifier		TINYINT,
-		Deleted_Identifier		TINYINT,
-		Add_Identifier			TINYINT,
-		Remove_Identifier		TINYINT,
-		National_Identifier		TINYINT,
-		CheckDigit				CHAR(1),
-		IdentifierType			CHAR(1),
-		NumPluDigitsSentToScale	INT,
-		Scale_Identifier		BIT
-	)
-	
-	--Jamali: created a temp table with a primary key and filtering the data before it is put into the temp table
-	INSERT INTO #ItemIdentifier
-	SELECT 	Identifier_ID, Item_Key, Identifier, Default_Identifier, Deleted_Identifier, Add_Identifier, Remove_Identifier, National_Identifier
-		, CheckDigit, IdentifierType, NumPluDigitsSentToScale, Scale_Identifier
-		FROM dbo.fn_GetItemIdentifiers() ii
-	
-	-- Stores that require both default and alternate identifiers.
-	CREATE TABLE #StoresToIncludeAllIdentifiers (
-		StoreNumber int primary key
-	)
-	
-	insert into 
-		#StoresToIncludeAllIdentifiers
-    select s.Store_No
-	  from Store s
-	 where dbo.fn_InstanceDataValue('IncludeAllItemIdentifiersInShelfTagPush', s.Store_No) = 1
+	--#ItemIdentifier: Contains the data for the non-batchable changes
+  SELECT Identifier_ID, Item_Key, Identifier, Default_Identifier, Deleted_Identifier, Add_Identifier, Remove_Identifier,
+         National_Identifier, CheckDigit, IdentifierType, NumPluDigitsSentToScale, Scale_Identifier
+  INTO #ItemIdentifier
+	FROM dbo.fn_GetItemIdentifiers()
+
+	--#StoresToIncludeAllIdentifiers: Stores that require both default and alternate identifiers.
+  CREATE TABLE #StoresToIncludeAllIdentifiers(StoreNumber INT PRIMARY KEY);
+  INSERT INTO #StoresToIncludeAllIdentifiers(StoreNumber)
+    SELECT DISTINCT Store_No
+	  FROM Store
+	  WHERE dbo.fn_InstanceDataValue('IncludeAllItemIdentifiersInShelfTagPush', Store_No) = 1
+    ORDER BY Store_No;
 	
 	SET @CurrentProcedure = object_name(@@PRocid)
-
 	IF (@CurrentProcedure = ltrim(rtrim(@RegionalEST))) or (len(@RegionalEST) = 0)
 
 	BEGIN
-		SELECT 
+    SELECT * INTO #tempESL FROM
+    (SELECT 
 			[RecordType] = CASE WHEN PBH.ItemChgTypeID = 3 THEN 'D' ELSE 'R' END,
 			[Identifier] =	II.Identifier,
 			[CurrentPrice] =																	
@@ -322,7 +294,8 @@ BEGIN
 			AND 
 			(EXISTS (select StoreNumber from #StoresToIncludeAllIdentifiers where StoreNumber = S.Store_No)
 				OR ii.Default_Identifier = 1
-			)	
+			)
+      
 		UNION
 		 
 		SELECT
@@ -533,25 +506,68 @@ BEGIN
 		WHERE
 			(@OmitShelfTagTypeFields = 0 OR (@OmitShelfTagTypeFields = 1 AND I.LabelType_ID = 2)) 
 			AND (ii.Add_Identifier = 1 OR ii.Remove_Identifier = 1 OR si.POSDeAuth = 1 OR si.Refresh = 1)
-			AND SIV.PrimaryVendor = 1
-		ORDER BY 
-			Store_No, SubTeam_No, Brand_Name, Identifier
+			AND SIV.PrimaryVendor = 1) A
+
+   --Previously processed but still active SAL
+   DECLARE @today DATE = GetDate(),
+           @salID INT =(SELECT PriceChgTypeID FROM PriceChgType WHERE PriceChgTypeDesc = 'SAL');
+   
+   CREATE TABLE #tempDetailSAL(Item_Key INT NOT NULL, 
+                               Store_No INT NOT NULL,
+                               StartDate DATE,
+                               SaleEndDate DATE,
+                               POSSale_Price SMALLMONEY,
+                               Sale_Multiple TINYINT,
+                               POSPrice SMALLMONEY,
+                               Multiple TINYINT);
+   CREATE NONCLUSTERED INDEX [ixSAL] ON #tempDetailSAL (Item_Key, Store_No);
+
+   INSERT INTO #tempDetailSAL(Item_Key, Store_No, StartDate, SaleEndDate, POSSale_Price, Sale_Multiple, POSPrice, Multiple)
+   SELECT Item_Key, Store_No, StartDate, SaleEndDate, POSSale_Price, Sale_Multiple, POSPrice, Multiple
+   FROM(
+     SELECT A.Item_Key, A.Store_No, Cast(A.StartDate AS DATE) StartDate, Cast(IsNull(A.Sale_End_Date, A.StartDate) AS DATE) SaleEndDate,
+            A.POSSale_Price, A.Sale_Multiple, A.POSPrice, A.Multiple,
+            Row_Number() over(partition by A.Item_Key, A.Store_No order by A.Sale_End_Date DESC) rowID
+     FROM PriceBatchDetail A (NOLOCK)
+     INNER JOIN PriceBatchHeader (NOLOCK) B ON B.PriceBatchHeaderID = A.PriceBatchHeaderID
+     INNER JOIN (SELECT Item_Key FROM #tempESL GROUP BY Item_Key) C on C.Item_Key = A.Item_Key
+                 WHERE A.PriceChgTypeID = @salID
+                   AND IsNull(A.CancelAllSales, 0) <> 1
+                   AND Cast(A.StartDate AS DATE) <= @today
+                   AND Cast(A.Sale_End_Date AS DATE) >= @today AND B.PriceBatchStatusID = 6
+   ) A
+   WHERE rowID = 1;
+
+   IF(Exists(SELECT 1 FROM #tempDetailSAL))
+   BEGIN
+     CREATE NONCLUSTERED INDEX ix_ItemKey on #tempESL(Item_Key) INCLUDE(Store_No);
+
+     UPDATE A SET A.CurrentPrice = B.POSSale_Price,
+                  A.CurrentMultiple = B.Sale_Multiple,
+                  A.Price = B.POSPrice,
+                  A.Multiple = B.Multiple,
+                  A.PriceChangeType = 'SAL',
+                  A.PriceType = 'SAL',
+                  A.Sale_Start_Date = B.StartDate,
+                  A.Sale_End_Date = B.SaleEndDate
+     FROM #tempESL A
+     INNER JOIN #tempDetailSAL B ON B.Item_Key = A.Item_Key AND B.Store_No = A.Store_No;
+   END
+
+    SELECT * FROM #tempESL ORDER BY Store_No, SubTeam_No, Brand_Name, Identifier;
 	END
 	ELSE
 	BEGIN
 		EXEC (@RegionalEST)
 	END
 	
-	DROP TABLE #ItemIdentifier
+	IF OBJECT_ID('tempdb..#tempESL') IS NOT NULL DROP TABLE #tempESL;
+  IF(OBJECT_ID('tempdb..#tempDetailSAL') IS NOT NULL) DROP TABLE #tempDetailSAL;
+	IF OBJECT_ID('tempdb..#ItemIdentifier') IS NOT NULL DROP TABLE #ItemIdentifier;
+	IF OBJECT_ID('tempdb..#StoresToIncludeAllIdentifiers') IS NOT NULL DROP TABLE #StoresToIncludeAllIdentifiers;
 END
-
 GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile] TO [IRMAAdminRole]
-    AS [dbo];
 
-
+GRANT EXECUTE ON OBJECT::[dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile] TO [IRMAAdminRole] AS [dbo];
 GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile] TO [IRMAClientRole]
-    AS [dbo];
+GRANT EXECUTE ON OBJECT::[dbo].[Replenishment_TagPush_GetElectronicShelfTagBatchFile] TO [IRMAClientRole] AS [dbo];

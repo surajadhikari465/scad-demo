@@ -15,504 +15,504 @@ Imports WholeFoods.Utility.Encryption
 Imports VB = Microsoft.VisualBasic
 
 Friend Class frmMain
-    Inherits System.Windows.Forms.Form
+  Inherits System.Windows.Forms.Form
 
-    Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
+  Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
-    Public Const ENVIRONMENT_LABEL_PRD As String = "Production"
+  Public Const ENVIRONMENT_LABEL_PRD As String = "Production"
 
-    Private Sub frmMain_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-        logger.Debug("frmMain_Load entry")
-        logger.Info(String.Format("Application Startup Path: {0}", Application.StartupPath))
+  Private Sub frmMain_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    logger.Debug("frmMain_Load entry")
+    logger.Info(String.Format("Application Startup Path: {0}", Application.StartupPath))
 
-        Dim sTemp As New VB6.FixedLengthString(200)
-        Dim hWindowHandle As Integer
-        Dim sNewCaption As String
-        Dim VersionDAO As New VersionDAO
-        Dim blnShowMessage As Boolean
+    Dim sTemp As New VB6.FixedLengthString(200)
+    Dim hWindowHandle As Integer
+    Dim sNewCaption As String
+    Dim VersionDAO As New VersionDAO
+    Dim blnShowMessage As Boolean
 
-        ' initially hide the toolbar container
-        ToolStripContainer1.TopToolStripPanelVisible = False
+    ' initially hide the toolbar container
+    ToolStripContainer1.TopToolStripPanelVisible = False
 
-        ' set up the version number
-        sVersion = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
+    ' set up the version number
+    sVersion = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
 
-        ' do version check
-        If String.Compare(VersionDAO.GetVersionInfo("IRMA CLIENT").ToString(), sVersion) > 0 Then
-            Dim msg As String = String.Format("Your copy of IRMA (version {0}) is not current.  Please check for an updated version and try again.{1}{1}If you continue to have problems, please contact {2} regional IRMA support.", sVersion, vbCrLf, gsRegionCode)
-            MsgBox(msg, MsgBoxStyle.Critical, Me.Text)
-            Application.Exit()
-        End If
+    ' do version check
+    If String.Compare(VersionDAO.GetVersionInfo("IRMA CLIENT").ToString(), sVersion) > 0 Then
+      Dim msg As String = String.Format("Your copy of IRMA (version {0}) is not current.  Please check for an updated version and try again.{1}{1}If you continue to have problems, please contact {2} regional IRMA support.", sVersion, vbCrLf, gsRegionCode)
+      MsgBox(msg, MsgBoxStyle.Critical, Me.Text)
+      Application.Exit()
+    End If
 
-        If My.Application.Info.Version.Revision > 0 Then
-            sVersion = sVersion & "." & My.Application.Info.Version.Revision
-        End If
+    If My.Application.Info.Version.Revision > 0 Then
+      sVersion = sVersion & "." & My.Application.Info.Version.Revision
+    End If
 
-        sNewCaption = "IRMA Client"
+    sNewCaption = "IRMA Client"
 
-        'Make sure they don't have more than two copies open
-        hWindowHandle = FindWindow(vbNullString, sNewCaption)
-        glInstance = 1
+    'Make sure they don't have more than two copies open
+    hWindowHandle = FindWindow(vbNullString, sNewCaption)
+    glInstance = 1
 
-        If hWindowHandle <> 0 Then
-            glInstance = 2
-            sNewCaption = sNewCaption & " (copy 2)"
-            hWindowHandle = FindWindow(vbNullString, sNewCaption)
+    If hWindowHandle <> 0 Then
+      glInstance = 2
+      sNewCaption = sNewCaption & " (copy 2)"
+      hWindowHandle = FindWindow(vbNullString, sNewCaption)
 
-            If hWindowHandle <> 0 Then
-                MsgBox(String.Format(ResourcesIRMA.GetString("AppAlreadyRunning"), vbCrLf, "two"), MsgBoxStyle.Critical, Me.Text)
-                End
-            End If
-        End If
+      If hWindowHandle <> 0 Then
+        MsgBox(String.Format(ResourcesIRMA.GetString("AppAlreadyRunning"), vbCrLf, "two"), MsgBoxStyle.Critical, Me.Text)
+        End
+      End If
+    End If
 
-        InitializeGlobalSettings(sNewCaption)
+    InitializeGlobalSettings(sNewCaption)
 
-        ' Set the tool status values
-        ToolStripStatusLabel_Region.Text = ToolStripStatusLabel_Region.Text & gsRegionCode & "     "
-        ToolStripStatusLabel_Environment.Text = ToolStripStatusLabel_Environment.Text & ConfigurationServices.AppSettings("environment") & "     "
-        ToolStripStatusLabel_Version.Text = ToolStripStatusLabel_Version.Text & "System: " & VersionDAO.GetVersionInfo("SYSTEM") & "     Application: " & VersionDAO.GetVersionInfo("IRMA CLIENT") & "     "
-        ToolStripStatusLabelRegionalSetting.Text = ToolStripStatusLabelRegionalSetting.Text & gsUG_CultureDisplayName
+    ' Set the tool status values
+    ToolStripStatusLabel_Region.Text = ToolStripStatusLabel_Region.Text & gsRegionCode & "     "
+    ToolStripStatusLabel_Environment.Text = ToolStripStatusLabel_Environment.Text & ConfigurationServices.AppSettings("environment") & "     "
+    ToolStripStatusLabel_Version.Text = ToolStripStatusLabel_Version.Text & "System: " & VersionDAO.GetVersionInfo("SYSTEM") & "     Application: " & VersionDAO.GetVersionInfo("IRMA CLIENT") & "     "
+    ToolStripStatusLabelRegionalSetting.Text = ToolStripStatusLabelRegionalSetting.Text & gsUG_CultureDisplayName
 
-        InitializeDatabase()
+    InitializeDatabase()
 
-        '-- Login
-        ValidateLogon()
+    '-- Login
+    ValidateLogon()
 
-        '-- Splash
-        frmSplash.Show()
-        System.Windows.Forms.Application.DoEvents()
+    '-- Splash
+    frmSplash.Show()
+    System.Windows.Forms.Application.DoEvents()
 
-        Try
-            blnShowMessage = ConfigurationServices.AppSettings("ShowMainMessage")
-        Catch ex As Exception
-            blnShowMessage = False
-        End Try
+    Try
+      blnShowMessage = ConfigurationServices.AppSettings("ShowMainMessage")
+    Catch ex As Exception
+      blnShowMessage = False
+    End Try
 
-        pnlMainMessage.Visible = blnShowMessage
+    pnlMainMessage.Visible = blnShowMessage
 
-        InitializeLocalDatabase()
+    InitializeLocalDatabase()
 
-        ' Set menu access based on user's assigned roles
-        SetMenuAccess()
-        SetToolbarAccess()
+    ' Set menu access based on user's assigned roles
+    SetMenuAccess()
+    SetToolbarAccess()
 
-        ' TFS 13036, v4.0, 7/21/2010, Tom Lux: Moved LoadItemUnits() to ItemUnitDAO class.  Fixing issue where global UOM IDs were not being reloaded if an item unit was added via UI.
-        ItemUnitDAO.LoadItemUnits()
+    ' TFS 13036, v4.0, 7/21/2010, Tom Lux: Moved LoadItemUnits() to ItemUnitDAO class.  Fixing issue where global UOM IDs were not being reloaded if an item unit was added via UI.
+    ItemUnitDAO.LoadItemUnits()
 
-        ReDim sDiscountType(4)
-        sDiscountType(0) = "No Discount"
-        sDiscountType(1) = "Cash Discount"
-        sDiscountType(2) = "Percent Discount"
-        sDiscountType(3) = "Free Items"
-        sDiscountType(4) = "Landed Percent"
+    ReDim sDiscountType(4)
+    sDiscountType(0) = "No Discount"
+    sDiscountType(1) = "Cash Discount"
+    sDiscountType(2) = "Percent Discount"
+    sDiscountType(3) = "Free Items"
+    sDiscountType(4) = "Landed Percent"
 
-        GridWidth = giGridScrollBarWidth 'GetScrollWidth
+    GridWidth = giGridScrollBarWidth 'GetScrollWidth
 
-        '-- GetItemInfo
-        PopulateAWeight()
+    '-- GetItemInfo
+    PopulateAWeight()
 
-        LoadItemUnitConversion()
+    LoadItemUnitConversion()
 
-        InitializeCurrencyCultureMapping()
+    InitializeCurrencyCultureMapping()
 
-        Sleep(1000) 'Let the splash screen display
-        frmSplash.Close()
-        frmSplash.Dispose()
+    Sleep(1000) 'Let the splash screen display
+    frmSplash.Close()
+    frmSplash.Dispose()
 
-        ' Display a warning page if this is not production
-        If ConfigurationServices.AppSettings("environment") <> ENVIRONMENT_LABEL_PRD Then
-            MsgBox(ResourcesIRMA.GetString("TestWarning"), MsgBoxStyle.Information, Me.Text)
-        End If
+    ' Display a warning page if this is not production
+    If ConfigurationServices.AppSettings("environment") <> ENVIRONMENT_LABEL_PRD Then
+      MsgBox(ResourcesIRMA.GetString("TestWarning"), MsgBoxStyle.Information, Me.Text)
+    End If
 
-        logger.Debug("frmMain_Load exit")
-    End Sub
+    logger.Debug("frmMain_Load exit")
+  End Sub
 
-    Private Sub frmMain_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        logger.Debug("frmMain_FormClosed entry")
+  Private Sub frmMain_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+    logger.Debug("frmMain_FormClosed entry")
 
-        On Error Resume Next
+    On Error Resume Next
 
-        If Not grsUnitConversion Is Nothing Then
-            If grsUnitConversion.State = ADODB.ObjectStateEnum.adStateOpen Then grsUnitConversion.Close()
-            grsUnitConversion = Nothing
-        End If
+    If Not grsUnitConversion Is Nothing Then
+      If grsUnitConversion.State = ADODB.ObjectStateEnum.adStateOpen Then grsUnitConversion.Close()
+      grsUnitConversion = Nothing
+    End If
 
-        '-- close the dao database
-        If Not gDBInventory Is Nothing Then
-            gDBInventory.Close()
-            gDBInventory = Nothing
-        End If
+    '-- close the dao database
+    If Not gDBInventory Is Nothing Then
+      gDBInventory.Close()
+      gDBInventory = Nothing
+    End If
 
-        If Not gDBReport Is Nothing Then
-            gDBReport.Close()
-            gDBReport = Nothing
-            gJetFlush = Nothing
-        End If
+    If Not gDBReport Is Nothing Then
+      gDBReport.Close()
+      gDBReport = Nothing
+      gJetFlush = Nothing
+    End If
 
-        logger.Debug("frmMain_FormClosed exit")
-    End Sub
+    logger.Debug("frmMain_FormClosed exit")
+  End Sub
 
 #Region "Menu"
 
-    Public Sub mnuCycleCountReports_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_CycleCountReports.Click
-        logger.Debug("mnuCycleCountReports_Click entry")
-        frmCycleCountMasterList.ShowDialog()
-        frmCycleCountMasterList.Dispose()
-        logger.Debug("mnuCycleCountReports_Click exit")
-    End Sub
+  Public Sub mnuCycleCountReports_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_CycleCountReports.Click
+    logger.Debug("mnuCycleCountReports_Click entry")
+    frmCycleCountMasterList.ShowDialog()
+    frmCycleCountMasterList.Dispose()
+    logger.Debug("mnuCycleCountReports_Click exit")
+  End Sub
 
-    Public Sub mnuOrderItemQueue_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_ItemQueue.Click
-        logger.Debug("mnuOrderItemQueue_Click entry")
-        frmOrderItemQueue.ShowDialog()
-        frmOrderItemQueue.Dispose()
-        logger.Debug("mnuOrderItemQueue_Click exit")
-    End Sub
+  Public Sub mnuOrderItemQueue_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_ItemQueue.Click
+    logger.Debug("mnuOrderItemQueue_Click entry")
+    frmOrderItemQueue.ShowDialog()
+    frmOrderItemQueue.Dispose()
+    logger.Debug("mnuOrderItemQueue_Click exit")
+  End Sub
 
-    Public Sub mnuLocations_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_Locations.Click
-        logger.Debug("mnuLocations_Click entry")
-        frmLocationList.ShowDialog()
-        frmLocationList.Dispose()
-        logger.Debug("mnuLocations_Click exit")
-    End Sub
+  Public Sub mnuLocations_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_Locations.Click
+    logger.Debug("mnuLocations_Click entry")
+    frmLocationList.ShowDialog()
+    frmLocationList.Dispose()
+    logger.Debug("mnuLocations_Click exit")
+  End Sub
 
-    Public Sub mnuActiveItemList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ActiveItemList.Click
-        logger.Debug("mnuActiveItemList_Click entry")
-        frmActiveItemReport.ShowDialog()
-        frmActiveItemReport.Dispose()
-        logger.Debug("mnuActiveItemList_Click exit")
-    End Sub
-
-
-    Public Sub mnuAvgCostDist_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_AverageCost_DistributionMargin.Click
-        logger.Debug("mnuAvgCostDist_Click entry")
-        frmAvgCostMarginReports.ShowDialog()
-        frmAvgCostMarginReports.Dispose()
-        logger.Debug("mnuAvgCostDist_Click exit")
-    End Sub
-
-    Public Sub mnuAvgCostList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_AverageCost_List.Click
-        logger.Debug("mnuAvgCostList_Click entry")
-        frmAvgCostReport.ShowDialog()
-        frmAvgCostReport.Dispose()
-        logger.Debug("mnuAvgCostList_Click exit")
-    End Sub
-
-    Private Sub mnuAdministration_ScheduledJobs_CloseReceiving_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAdministration_ScheduledJobs_CloseReceiving.Click
-        Form_CloseReceivingJobController.ShowDialog()
-        Form_CloseReceivingJobController.Dispose()
-    End Sub
-
-    Public Sub mnuCasesByDepartment_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Miscellaneous_CasesBySubTeam.Click
-        logger.Debug("mnuCasesByDepartment_Click entry")
-        frmCasesByDepartment.ShowDialog()
-        frmCasesByDepartment.Dispose()
-        logger.Debug("mnuCasesByDepartment_Click exit")
-    End Sub
-
-    Public Sub mnuCasesByDeptAudit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Miscellaneous_CasesBySubTeamAudit.Click
-        logger.Debug("mnuCasesByDeptAudit_Click entry")
-        frmCasesByDepartmentAudit.ShowDialog()
-        frmCasesByDepartmentAudit.Dispose()
-        logger.Debug("mnuCasesByDeptAudit_Click exit")
-    End Sub
-
-    Public Sub mnuClosedOrders_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_ClosedOrders.Click
-        logger.Debug("mnuClosedOrders_Click entry")
-        frmClosedOrdersReport.ShowDialog()
-        frmClosedOrdersReport.Dispose()
-        logger.Debug("mnuClosedOrders_Click exit")
-    End Sub
-
-    Public Sub mnuCostException_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Buyer_CostException.Click
-        logger.Debug("mnuCostException_Click entry")
-        frmCostExceptionReport.ShowDialog()
-        frmCostExceptionReport.Dispose()
-        logger.Debug("mnuCostException_Click exit")
-    End Sub
-
-    Public Sub mnuCreditReason_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_CreditReason.Click
-        logger.Debug("mnuCreditReason_Click entry")
-        'frmCreditReason.ShowDialog()
-        'frmCreditReason.Dispose()
-        MessageBox.Show("You will now be directed to Reporting Services to provide report parameters.", "Credit Reason Report", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Call ReportingServicesReport("CreditReason&rs:Command=Render&rc:Parameters=True")
-        logger.Debug("mnuCreditReason_Click exit")
-    End Sub
-
-    Public Sub mnuDeletedOrders_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_DeletedOrders.Click
-        logger.Debug("mnuDeletedOrders_Click entry")
-        frmDeletedOrderReport.ShowDialog()
-        frmDeletedOrderReport.Dispose()
-        logger.Debug("mnuDeletedOrders_Click exit")
-    End Sub
-
-    Public Sub mnuDiscontinueItemsWithInventory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_DiscontinueItemsWithInventory.Click
-        logger.Debug("mnuDiscontinueItemsWithInventory_Click entry")
-        frmDiscontinueItemsWithInventory.ShowDialog()
-        frmDiscontinueItemsWithInventory.Dispose()
-        logger.Debug("mnuDiscontinueItemsWithInventory_Click exit")
-    End Sub
-
-    Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_EditStore_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_EditStore.Click
-        logger.Debug("mnuEditStore_Click entry")
-        Dim lStore_No As Integer
-        Dim fSelStore As frmSelStore
-
-        If IsDBNull(glStore_Limit) OrElse glStore_Limit = 0 Then
-            'prompt user to select store
-            fSelStore = New frmSelStore(False)
-            fSelStore.ShowDialog()
-            lStore_No = fSelStore.Store_No
-            fSelStore.Close()
-            fSelStore.Dispose()
-        Else
-            lStore_No = glStore_Limit
-        End If
-
-        If lStore_No > 0 Then
-            frmStore.Store_No = lStore_No
-            frmStore.ShowDialog()
-            frmStore.Dispose()
-        End If
-        logger.Debug("mnuEditStore_Click exit")
-    End Sub
-
-    Public Sub mnuGLDistributionCheck_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_GLSummary_GLDistributionCheck.Click
-        logger.Debug("mnuGLDistributionCheck_Click entry")
-        frmGLDistributionCheckReport.ShowDialog()
-        frmGLDistributionCheckReport.Dispose()
-        logger.Debug("mnuGLDistributionCheck_Click exit")
-    End Sub
-
-    Public Sub mnuGLSales_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_GLSummary_GLSales.Click
-        logger.Debug("mnuGLSales_Click entry")
-        frmGLSalesReport.ShowDialog()
-        frmGLSalesReport.Dispose()
-        logger.Debug("mnuGLSales_Click exit")
-    End Sub
+  Public Sub mnuActiveItemList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ActiveItemList.Click
+    logger.Debug("mnuActiveItemList_Click entry")
+    frmActiveItemReport.ShowDialog()
+    frmActiveItemReport.Dispose()
+    logger.Debug("mnuActiveItemList_Click exit")
+  End Sub
 
 
-    Public Sub mnuCycleCounts_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_CycleCounts.Click
-        logger.Debug("mnuCycleCounts_Click entry")
-        frmCycleCountMasterList.ShowDialog()
-        frmCycleCountMasterList.Dispose()
-        logger.Debug("mnuCycleCounts_Click exit")
-    End Sub
+  Public Sub mnuAvgCostDist_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_AverageCost_DistributionMargin.Click
+    logger.Debug("mnuAvgCostDist_Click entry")
+    frmAvgCostMarginReports.ShowDialog()
+    frmAvgCostMarginReports.Dispose()
+    logger.Debug("mnuAvgCostDist_Click exit")
+  End Sub
 
-    Public Sub mnuInventoryBalance_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Buyer_InventoryBalance.Click
-        logger.Debug("mnuInventoryBalance_Click entry")
-        frmInventoryBalanceReport.ShowDialog()
-        frmInventoryBalanceReport.Dispose()
-        logger.Debug("mnuInventoryBalance_Click exit")
-    End Sub
+  Public Sub mnuAvgCostList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_AverageCost_List.Click
+    logger.Debug("mnuAvgCostList_Click entry")
+    frmAvgCostReport.ShowDialog()
+    frmAvgCostReport.Dispose()
+    logger.Debug("mnuAvgCostList_Click exit")
+  End Sub
 
-    Private Sub mnuInventoryValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReports_Inventory_InventoryValue.Click
-        logger.Debug("mnuInventoryValue_Click entry")
-        frmInventoryValueReport.ShowDialog()
-        frmInventoryValueReport.Close()
-        frmInventoryValueReport.Dispose()
-        logger.Debug("mnuInventoryValue_Click exit")
-    End Sub
+  Private Sub mnuAdministration_ScheduledJobs_CloseReceiving_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAdministration_ScheduledJobs_CloseReceiving.Click
+    Form_CloseReceivingJobController.ShowDialog()
+    Form_CloseReceivingJobController.Dispose()
+  End Sub
 
-    Public Sub mnuInventoryGuideReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_InventoryGuide.Click
-        logger.Debug("mnuInventoryGuideReport_Click entry")
-        frmInventoryGuideReport.ShowDialog()
-        frmInventoryGuideReport.Dispose()
-        logger.Debug("mnuInventoryGuideReport_Click exit")
-    End Sub
+  Public Sub mnuCasesByDepartment_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Miscellaneous_CasesBySubTeam.Click
+    logger.Debug("mnuCasesByDepartment_Click entry")
+    frmCasesByDepartment.ShowDialog()
+    frmCasesByDepartment.Dispose()
+    logger.Debug("mnuCasesByDepartment_Click exit")
+  End Sub
 
-    Public Sub mnuInvoiceManifest_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_InvoiceManifest.Click
-        logger.Debug("mnuInvoiceManifest_Click entry")
-        frmInvoiceManifest.ShowDialog()
-        frmInvoiceManifest.Dispose()
-        logger.Debug("mnuInvoiceManifest_Click exit")
-    End Sub
+  Public Sub mnuCasesByDeptAudit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Miscellaneous_CasesBySubTeamAudit.Click
+    logger.Debug("mnuCasesByDeptAudit_Click entry")
+    frmCasesByDepartmentAudit.ShowDialog()
+    frmCasesByDepartmentAudit.Dispose()
+    logger.Debug("mnuCasesByDeptAudit_Click exit")
+  End Sub
 
-    Private Sub mnuInvoiceDiscrepancies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReports_Accounting_InvoiceDiscrepancies.Click
-        logger.Debug("mnuInvoiceDiscrepancies_Click entry")
-        InvoiceDiscrepanciesReport.ShowDialog()
-        InvoiceDiscrepanciesReport.Dispose()
-        logger.Debug("mnuInvoiceDiscrepancies_Click exit")
-    End Sub
+  Public Sub mnuClosedOrders_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_ClosedOrders.Click
+    logger.Debug("mnuClosedOrders_Click entry")
+    frmClosedOrdersReport.ShowDialog()
+    frmClosedOrdersReport.Dispose()
+    logger.Debug("mnuClosedOrders_Click exit")
+  End Sub
 
-    Public Sub mnuItemOnHandComparison_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemOnHandComparisonBetweenLocation.Click
-        logger.Debug("mnuItemOnHandComparison_Click entry")
-        frmItemOnHandComparison.ShowDialog()
-        frmItemOnHandComparison.Dispose()
-        logger.Debug("mnuItemOnHandComparison_Click exit")
-    End Sub
+  Public Sub mnuCostException_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Buyer_CostException.Click
+    logger.Debug("mnuCostException_Click entry")
+    frmCostExceptionReport.ShowDialog()
+    frmCostExceptionReport.Dispose()
+    logger.Debug("mnuCostException_Click exit")
+  End Sub
 
-    Public Sub mnuItemOrderHistory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemOrderHistory.Click
-        logger.Debug("mnuItemOrderHistory_Click entry")
-        ItemOrderHistory.ShowDialog()
-        ItemOrderHistory.Dispose()
-        logger.Debug("mnuItemOrderHistory_Click exit")
-    End Sub
+  Public Sub mnuCreditReason_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_CreditReason.Click
+    logger.Debug("mnuCreditReason_Click entry")
+    'frmCreditReason.ShowDialog()
+    'frmCreditReason.Dispose()
+    MessageBox.Show("You will now be directed to Reporting Services to provide report parameters.", "Credit Reason Report", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    Call ReportingServicesReport("CreditReason&rs:Command=Render&rc:Parameters=True")
+    logger.Debug("mnuCreditReason_Click exit")
+  End Sub
 
-    Public Sub mnuItemPrice_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Price_ItemPrice.Click
-        logger.Debug("mnuItemPrice_Click entry")
-        frmItemPriceReport.ShowDialog()
-        frmItemPriceReport.Dispose()
-        logger.Debug("mnuItemPrice_Click exit")
-    End Sub
+  Public Sub mnuDeletedOrders_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_DeletedOrders.Click
+    logger.Debug("mnuDeletedOrders_Click entry")
+    frmDeletedOrderReport.ShowDialog()
+    frmDeletedOrderReport.Dispose()
+    logger.Debug("mnuDeletedOrders_Click exit")
+  End Sub
 
-    Public Sub mnuLocationItemsReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationItemsReport.Click
-        logger.Debug("mnuLocationItemsReport_Click entry")
-        frmLocationItemsReport.ShowDialog()
-        frmLocationItemsReport.Dispose()
-        logger.Debug("mnuLocationItemsReport_Click exit")
-    End Sub
+  Public Sub mnuDiscontinueItemsWithInventory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_DiscontinueItemsWithInventory.Click
+    logger.Debug("mnuDiscontinueItemsWithInventory_Click entry")
+    frmDiscontinueItemsWithInventory.ShowDialog()
+    frmDiscontinueItemsWithInventory.Dispose()
+    logger.Debug("mnuDiscontinueItemsWithInventory_Click exit")
+  End Sub
 
-    Public Sub mnuLocationManulCountSheet_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationItemsManulCountSheet.Click
-        logger.Debug("mnuLocationManulCountSheet_Click entry")
-        frmLocationItemManualCountReport.ShowDialog()
-        frmLocationItemManualCountReport.Dispose()
-        logger.Debug("mnuLocationManulCountSheet_Click exit")
-    End Sub
+  Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_EditStore_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_EditStore.Click
+    logger.Debug("mnuEditStore_Click entry")
+    Dim lStore_No As Integer
+    Dim fSelStore As frmSelStore
 
-    Public Sub mnuLocationsReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationsReport.Click
-        logger.Debug("mnuLocationsReport_Click entry")
-        frmLocationsReport.ShowDialog()
-        frmLocationsReport.Dispose()
-        logger.Debug("mnuLocationsReport_Click exit")
-    End Sub
+    If IsDBNull(glStore_Limit) OrElse glStore_Limit = 0 Then
+      'prompt user to select store
+      fSelStore = New frmSelStore(False)
+      fSelStore.ShowDialog()
+      lStore_No = fSelStore.Store_No
+      fSelStore.Close()
+      fSelStore.Dispose()
+    Else
+      lStore_No = glStore_Limit
+    End If
 
-    Public Sub mnuNotAvailableItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_NotAvailableItems.Click
-        logger.Debug("mnuNotAvailableItems_Click entry")
-        frmNotAvailableReport.ShowDialog()
-        frmNotAvailableReport.Dispose()
-        logger.Debug("mnuNotAvailableItems_Click exit")
-    End Sub
+    If lStore_No > 0 Then
+      frmStore.Store_No = lStore_No
+      frmStore.ShowDialog()
+      frmStore.Dispose()
+    End If
+    logger.Debug("mnuEditStore_Click exit")
+  End Sub
 
-    Public Sub mnuOrderGuide_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_OrderGuide.Click
-        logger.Debug("mnuOrderGuide_Click entry")
-        frmOrderGuideReport.ShowDialog()
-        frmOrderGuideReport.Dispose()
-        logger.Debug("mnuOrderGuide_Click exit")
-    End Sub
+  Public Sub mnuGLDistributionCheck_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_GLSummary_GLDistributionCheck.Click
+    logger.Debug("mnuGLDistributionCheck_Click entry")
+    frmGLDistributionCheckReport.ShowDialog()
+    frmGLDistributionCheckReport.Dispose()
+    logger.Debug("mnuGLDistributionCheck_Click exit")
+  End Sub
 
-    Public Sub mnuOrderReports_APUpload_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_APUpload.Click
-        logger.Debug("mnuOrderReports_APUpload_Click entry")
-        frmAPUploadReports.ShowDialog()
-        frmAPUploadReports.Dispose()
-        logger.Debug("mnuOrderReports_APUpload_Click exit")
-    End Sub
+  Public Sub mnuGLSales_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_GLSummary_GLSales.Click
+    logger.Debug("mnuGLSales_Click entry")
+    frmGLSalesReport.ShowDialog()
+    frmGLSalesReport.Dispose()
+    logger.Debug("mnuGLSales_Click exit")
+  End Sub
 
-    Public Sub mnuOrdersAddEdit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_AddEdit.Click, tsbEdit_Orders_AddEdit.Click
-        logger.Debug("mnuOrdersAddEdit_Click entry")
-        frmOrders.ShowDialog()
-        frmOrders.Dispose()
-        logger.Debug("mnuOrdersAddEdit_Click exit")
-    End Sub
 
-    Public Sub mnuOrdersAllocate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_Allocate.Click
-        logger.Debug("mnuOrdersAllocate_Click entry")
-        Cursor = Cursors.WaitCursor
-        frmOrdersAllocate.ShowDialog()
-        frmOrdersAllocate.Dispose()
-        Cursor = Cursors.Default
-        logger.Debug("mnuOrdersAllocate_Click exit")
-    End Sub
+  Public Sub mnuCycleCounts_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_CycleCounts.Click
+    logger.Debug("mnuCycleCounts_Click entry")
+    frmCycleCountMasterList.ShowDialog()
+    frmCycleCountMasterList.Dispose()
+    logger.Debug("mnuCycleCounts_Click exit")
+  End Sub
 
-    Public Sub mnuOutOfPeriodInvRpt_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_OutOfPeriodInvoiceReport.Click
-        logger.Debug("mnuOutOfPeriodInvRpt_Click entry")
-        ' Commented the Legacy CryStal Report
-        Dim frm As frmOutOfPeriodInvoice = New frmOutOfPeriodInvoice
+  Public Sub mnuInventoryBalance_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Buyer_InventoryBalance.Click
+    logger.Debug("mnuInventoryBalance_Click entry")
+    frmInventoryBalanceReport.ShowDialog()
+    frmInventoryBalanceReport.Dispose()
+    logger.Debug("mnuInventoryBalance_Click exit")
+  End Sub
 
-        frm.ShowDialog()
-        frm.Dispose()
-        logger.Debug("mnuOutOfPeriodInvRpt_Click exit")
-    End Sub
+  Private Sub mnuInventoryValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReports_Inventory_InventoryValue.Click
+    logger.Debug("mnuInventoryValue_Click entry")
+    frmInventoryValueReport.ShowDialog()
+    frmInventoryValueReport.Close()
+    frmInventoryValueReport.Dispose()
+    logger.Debug("mnuInventoryValue_Click exit")
+  End Sub
 
-    Public Sub mnuPricingBatches_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Pricing_Batches.Click, tsbEdit_Pricing_Batches.Click
-        logger.Debug("mnuPricingBatches_Click entry")
-        frmPricingBatch.ShowDialog()
-        frmPricingBatch.Dispose()
-        logger.Debug("mnuPricingBatches_Click exit")
-    End Sub
+  Public Sub mnuInventoryGuideReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_InventoryGuide.Click
+    logger.Debug("mnuInventoryGuideReport_Click entry")
+    frmInventoryGuideReport.ShowDialog()
+    frmInventoryGuideReport.Dispose()
+    logger.Debug("mnuInventoryGuideReport_Click exit")
+  End Sub
 
-    Public Sub mnuPricingLineDrive_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Pricing_LineDrive.Click
-        logger.Debug("mnuPricingLineDrive_Click entry")
-        frmLineDrive.ShowDialog()
-        frmLineDrive.Dispose()
-        logger.Debug("mnuPricingLineDrive_Click exit")
-    End Sub
+  Public Sub mnuInvoiceManifest_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_InvoiceManifest.Click
+    logger.Debug("mnuInvoiceManifest_Click entry")
+    frmInvoiceManifest.ShowDialog()
+    frmInvoiceManifest.Dispose()
+    logger.Debug("mnuInvoiceManifest_Click exit")
+  End Sub
 
-    Public Sub mnuReceivedNotClosed_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_OrdersReceivedNotClosed.Click
-        logger.Debug("mnuReceivedNotClosed_Click entry")
-        frmReceivedNotClosedReport.ShowDialog()
-        frmReceivedNotClosedReport.Dispose()
-        logger.Debug("mnuReceivedNotClosed_Click exit")
-    End Sub
+  Private Sub mnuInvoiceDiscrepancies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReports_Accounting_InvoiceDiscrepancies.Click
+    logger.Debug("mnuInvoiceDiscrepancies_Click entry")
+    InvoiceDiscrepanciesReport.ShowDialog()
+    InvoiceDiscrepanciesReport.Dispose()
+    logger.Debug("mnuInvoiceDiscrepancies_Click exit")
+  End Sub
 
-    Public Sub mnuPriceHistory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Price_PriceChanges.Click
-        logger.Debug("mnuPriceHistory_Click entry")
-        frmPriceHistory.ShowDialog()
-        frmPriceHistory.Dispose()
-        logger.Debug("mnuPriceHistory_Click exit")
-    End Sub
+  Public Sub mnuItemOnHandComparison_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemOnHandComparisonBetweenLocation.Click
+    logger.Debug("mnuItemOnHandComparison_Click entry")
+    frmItemOnHandComparison.ShowDialog()
+    frmItemOnHandComparison.Dispose()
+    logger.Debug("mnuItemOnHandComparison_Click exit")
+  End Sub
 
-    Public Sub mnuReceivingLog_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_ReceivingLog.Click
-        logger.Debug("mnuReceivingLog_Click entry")
-        frmReceivingLog.ShowDialog()
-        frmReceivingLog.Dispose()
-        logger.Debug("mnuReceivingLog_Click exit")
-    End Sub
+  Public Sub mnuItemOrderHistory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemOrderHistory.Click
+    logger.Debug("mnuItemOrderHistory_Click entry")
+    ItemOrderHistory.ShowDialog()
+    ItemOrderHistory.Dispose()
+    logger.Debug("mnuItemOrderHistory_Click exit")
+  End Sub
 
-    Public Sub mnuAbout_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuHelp_About.Click
-        logger.Debug("mnuAbout_Click entry")
-        frmSplash.ShowDialog()
-        frmSplash.Dispose()
-        logger.Debug("mnuAbout_Click exit")
-    End Sub
+  Public Sub mnuItemPrice_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Price_ItemPrice.Click
+    logger.Debug("mnuItemPrice_Click entry")
+    frmItemPriceReport.ShowDialog()
+    frmItemPriceReport.Dispose()
+    logger.Debug("mnuItemPrice_Click exit")
+  End Sub
 
-    Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_BrandName_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_BrandName.Click
-        logger.Debug("mnuBrandName_Click entry")
-        frmBrand.ShowDialog()
-        frmBrand.Dispose()
-        logger.Debug("mnuBrandName_Click exit")
-    End Sub
+  Public Sub mnuLocationItemsReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationItemsReport.Click
+    logger.Debug("mnuLocationItemsReport_Click entry")
+    frmLocationItemsReport.ShowDialog()
+    frmLocationItemsReport.Dispose()
+    logger.Debug("mnuLocationItemsReport_Click exit")
+  End Sub
 
-    Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_Conversion_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_Conversion.Click
-        logger.Debug("mnuConversion_Click entry")
-        frmConversion.ShowDialog()
-        frmConversion.Dispose()
-        logger.Debug("mnuConversion_Click exit")
-    End Sub
+  Public Sub mnuLocationManulCountSheet_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationItemsManulCountSheet.Click
+    logger.Debug("mnuLocationManulCountSheet_Click entry")
+    frmLocationItemManualCountReport.ShowDialog()
+    frmLocationItemManualCountReport.Dispose()
+    logger.Debug("mnuLocationManulCountSheet_Click exit")
+  End Sub
 
-    Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_InventoryAdjustmentCode_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_InventoryAdjustmentCode.Click
-        logger.Debug("mnuInventoryAdjustmentCode_Click entry")
-        selInventoryAdjustmentCode.ShowDialog()
-        selInventoryAdjustmentCode.Dispose()
-        logger.Debug("mnuInventoryAdjustmentCode_Click exit")
-    End Sub
+  Public Sub mnuLocationsReport_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Inventory_LocationsReport.Click
+    logger.Debug("mnuLocationsReport_Click entry")
+    frmLocationsReport.ShowDialog()
+    frmLocationsReport.Dispose()
+    logger.Debug("mnuLocationsReport_Click exit")
+  End Sub
 
-    Public Sub mnuDailyReceiving_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_DailyReceiving.Click
-        logger.Debug("mnuDailyReceiving_Click entry")
-        frmReportReceiving.ShowDialog()
-        frmReportReceiving.Dispose()
-        logger.Debug("mnuDailyReceiving_Click exit")
-    End Sub
+  Public Sub mnuNotAvailableItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_NotAvailableItems.Click
+    logger.Debug("mnuNotAvailableItems_Click entry")
+    frmNotAvailableReport.ShowDialog()
+    frmNotAvailableReport.Dispose()
+    logger.Debug("mnuNotAvailableItems_Click exit")
+  End Sub
 
-    Public Sub mnuExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFile_Exit.Click
-        logger.Debug("mnuExit_Click entry")
-        Me.Close()
-        logger.Debug("mnuExit_Click exit")
-    End Sub
+  Public Sub mnuOrderGuide_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_OrderGuide.Click
+    logger.Debug("mnuOrderGuide_Click entry")
+    frmOrderGuideReport.ShowDialog()
+    frmOrderGuideReport.Dispose()
+    logger.Debug("mnuOrderGuide_Click exit")
+  End Sub
 
-    Public Sub mnuInvItmAdjust_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_Adjustments.Click
-        logger.Debug("mnuInvItmAdjust_Click entry")
-        frmInventoryAdjustment.ShowDialog()
-        frmInventoryAdjustment.Dispose()
-        logger.Debug("mnuInvItmAdjust_Click exit")
-    End Sub
+  Public Sub mnuOrderReports_APUpload_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_APUpload.Click
+    logger.Debug("mnuOrderReports_APUpload_Click entry")
+    frmAPUploadReports.ShowDialog()
+    frmAPUploadReports.Dispose()
+    logger.Debug("mnuOrderReports_APUpload_Click exit")
+  End Sub
 
-    Public Sub mnuItemList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemList.Click
-        logger.Debug("mnuItemList_Click entry")
-        frmItemList.ShowDialog()
-        frmItemList.Dispose()
-        logger.Debug("mnuItemList_Click exit")
-    End Sub
+  Public Sub mnuOrdersAddEdit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_AddEdit.Click, tsbEdit_Orders_AddEdit.Click
+    logger.Debug("mnuOrdersAddEdit_Click entry")
+    frmOrders.ShowDialog()
+    frmOrders.Dispose()
+    logger.Debug("mnuOrdersAddEdit_Click exit")
+  End Sub
+
+  Public Sub mnuOrdersAllocate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Orders_Allocate.Click
+    logger.Debug("mnuOrdersAllocate_Click entry")
+    Cursor = Cursors.WaitCursor
+    frmOrdersAllocate.ShowDialog()
+    frmOrdersAllocate.Dispose()
+    Cursor = Cursors.Default
+    logger.Debug("mnuOrdersAllocate_Click exit")
+  End Sub
+
+  Public Sub mnuOutOfPeriodInvRpt_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Accounting_OutOfPeriodInvoiceReport.Click
+    logger.Debug("mnuOutOfPeriodInvRpt_Click entry")
+    ' Commented the Legacy CryStal Report
+    Dim frm As frmOutOfPeriodInvoice = New frmOutOfPeriodInvoice
+
+    frm.ShowDialog()
+    frm.Dispose()
+    logger.Debug("mnuOutOfPeriodInvRpt_Click exit")
+  End Sub
+
+  Public Sub mnuPricingBatches_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Pricing_Batches.Click, tsbEdit_Pricing_Batches.Click
+    logger.Debug("mnuPricingBatches_Click entry")
+    frmPricingBatch.ShowDialog()
+    frmPricingBatch.Dispose()
+    logger.Debug("mnuPricingBatches_Click exit")
+  End Sub
+
+  Public Sub mnuPricingLineDrive_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit_Pricing_LineDrive.Click
+    logger.Debug("mnuPricingLineDrive_Click entry")
+    frmLineDrive.ShowDialog()
+    frmLineDrive.Dispose()
+    logger.Debug("mnuPricingLineDrive_Click exit")
+  End Sub
+
+  Public Sub mnuReceivedNotClosed_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_OrdersReceivedNotClosed.Click
+    logger.Debug("mnuReceivedNotClosed_Click entry")
+    frmReceivedNotClosedReport.ShowDialog()
+    frmReceivedNotClosedReport.Dispose()
+    logger.Debug("mnuReceivedNotClosed_Click exit")
+  End Sub
+
+  Public Sub mnuPriceHistory_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Price_PriceChanges.Click
+    logger.Debug("mnuPriceHistory_Click entry")
+    frmPriceHistory.ShowDialog()
+    frmPriceHistory.Dispose()
+    logger.Debug("mnuPriceHistory_Click exit")
+  End Sub
+
+  Public Sub mnuReceivingLog_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_ReceivingLog.Click
+    logger.Debug("mnuReceivingLog_Click entry")
+    frmReceivingLog.ShowDialog()
+    frmReceivingLog.Dispose()
+    logger.Debug("mnuReceivingLog_Click exit")
+  End Sub
+
+  Public Sub mnuAbout_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuHelp_About.Click
+    logger.Debug("mnuAbout_Click entry")
+    frmSplash.ShowDialog()
+    frmSplash.Dispose()
+    logger.Debug("mnuAbout_Click exit")
+  End Sub
+
+  Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_BrandName_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_BrandName.Click
+    logger.Debug("mnuBrandName_Click entry")
+    frmBrand.ShowDialog()
+    frmBrand.Dispose()
+    logger.Debug("mnuBrandName_Click exit")
+  End Sub
+
+  Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_Conversion_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_Conversion.Click
+    logger.Debug("mnuConversion_Click entry")
+    frmConversion.ShowDialog()
+    frmConversion.Dispose()
+    logger.Debug("mnuConversion_Click exit")
+  End Sub
+
+  Public Sub mnuAdministration_IRMAConfiguration_ApplicationConfiguration_InventoryAdjustmentCode_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAdministration_IRMAConfiguration_ApplicationConfiguration_InventoryAdjustmentCode.Click
+    logger.Debug("mnuInventoryAdjustmentCode_Click entry")
+    selInventoryAdjustmentCode.ShowDialog()
+    selInventoryAdjustmentCode.Dispose()
+    logger.Debug("mnuInventoryAdjustmentCode_Click exit")
+  End Sub
+
+  Public Sub mnuDailyReceiving_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_ReceivingDistribution_DailyReceiving.Click
+    logger.Debug("mnuDailyReceiving_Click entry")
+    frmReportReceiving.ShowDialog()
+    frmReportReceiving.Dispose()
+    logger.Debug("mnuDailyReceiving_Click exit")
+  End Sub
+
+  Public Sub mnuExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFile_Exit.Click
+    logger.Debug("mnuExit_Click entry")
+    Me.Close()
+    logger.Debug("mnuExit_Click exit")
+  End Sub
+
+  Public Sub mnuInvItmAdjust_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuInventory_Adjustments.Click
+    logger.Debug("mnuInvItmAdjust_Click entry")
+    frmInventoryAdjustment.ShowDialog()
+    frmInventoryAdjustment.Dispose()
+    logger.Debug("mnuInvItmAdjust_Click exit")
+  End Sub
+
+  Public Sub mnuItemList_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_ItemList.Click
+    logger.Debug("mnuItemList_Click entry")
+    frmItemList.ShowDialog()
+    frmItemList.Dispose()
+    logger.Debug("mnuItemList_Click exit")
+  End Sub
 
   Public Sub mnuLoadTGM_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuTools_TGM_LoadTGMView.Click
     Using form As frmTGMLoad = New frmTGMLoad()
@@ -1966,10 +1966,9 @@ me_exit:
   End Sub
 
   Private Sub mnuScalePOSPush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuData_ScalePOSPush.Click
-    logger.Debug("mnuScalePOSPush_Click entry")
-    Form_POSPushJobController.ShowDialog()
-    Form_POSPushJobController.Dispose()
-    logger.Debug("mnuScalePOSPush_Click exit")
+    Using form As Form = New Form_POSPushJobController()
+      form.ShowDialog()
+    End Using
   End Sub
 
   Private Sub mnuSendOrders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAdministration_ScheduledJobs_SendOrders.Click
@@ -2415,44 +2414,44 @@ me_exit:
   End Sub
 
   Private Sub ViewClientLogFileToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewClientLogFileToolStripMenuItem.Click
-        logger.Debug("ViewClientLogFileToolStripMenuItem_Click entry")
+    logger.Debug("ViewClientLogFileToolStripMenuItem_Click entry")
 
-        Dim filePath As String = Nothing
+    Dim filePath As String = Nothing
 
-        Dim section As XmlElement = ConfigurationManager.GetSection("log4net")
+    Dim section As XmlElement = ConfigurationManager.GetSection("log4net")
 
-        For Each childNode As Object In section
-            If childNode.Name = "appender" Then
-                If childNode.Attributes IsNot Nothing Then
-                    For Each attribute As XmlAttribute In childNode.Attributes
-                        If attribute.Value.Contains("RollingFileAppender") Then
-                            Dim value As String = attribute.Value
-                            filePath = childNode.ChildNodes.Item(0).Attributes(0).Value
-                        End If
-                    Next
-                End If
+    For Each childNode As Object In section
+      If childNode.Name = "appender" Then
+        If childNode.Attributes IsNot Nothing Then
+          For Each attribute As XmlAttribute In childNode.Attributes
+            If attribute.Value.Contains("RollingFileAppender") Then
+              Dim value As String = attribute.Value
+              filePath = childNode.ChildNodes.Item(0).Attributes(0).Value
             End If
-        Next
-
-        ' Proudction file path: "./logs/logfile.txt"
-
-        If Not String.IsNullOrEmpty(filePath) Then
-            If filePath.StartsWith("./") Then
-                Dim appStartPath As String = Application.StartupPath
-                filePath = filePath.Replace("/", "\")
-                filePath = appStartPath + filePath.Substring(1)
-            End If
-
-            If File.Exists(filePath) Then
-                logger.Info(String.Format("Opening log file at path: {0}", filePath))
-                Process.Start(filePath)
-            Else
-                logger.Info(String.Format("No log file found at path: {0}", filePath))
-            End If
+          Next
         End If
+      End If
+    Next
 
-        logger.Debug("ViewClientLogFileToolStripMenuItem_Click exit")
-    End Sub
+    ' Proudction file path: "./logs/logfile.txt"
+
+    If Not String.IsNullOrEmpty(filePath) Then
+      If filePath.StartsWith("./") Then
+        Dim appStartPath As String = Application.StartupPath
+        filePath = filePath.Replace("/", "\")
+        filePath = appStartPath + filePath.Substring(1)
+      End If
+
+      If File.Exists(filePath) Then
+        logger.Info(String.Format("Opening log file at path: {0}", filePath))
+        Process.Start(filePath)
+      Else
+        logger.Info(String.Format("No log file found at path: {0}", filePath))
+      End If
+    End If
+
+    logger.Debug("ViewClientLogFileToolStripMenuItem_Click exit")
+  End Sub
 
   Private Sub ManageRetentionPoliciesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuAdministration_SystemConfiguration_ManageRetentionPolicies.Click
     Using form As frmRetentionPolicyList = New frmRetentionPolicyList()
@@ -2461,15 +2460,15 @@ me_exit:
   End Sub
 
   Private Sub mnuData_CancelAllSales_Click(sender As Object, e As EventArgs) Handles mnuData_CancelAllSales.Click
-        logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click entry")
-        CancelSalesMultipleItems.ShowDialog()
-        logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click exit")
-    End Sub
+    logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click entry")
+    CancelSalesMultipleItems.ShowDialog()
+    logger.Debug("CancelSalesMultipleItemsToolStripMenuItem_Click exit")
+  End Sub
 
-    Private Sub SupportRestoreDeleteItemToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SupportRestoreDeleteItemToolStripMenuItem.Click
-        logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click entry")
-        Dim window As New SupportRestoreDeletedItems()
-        window.ShowDialog()
-        logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click exit")
-    End Sub
+  Private Sub SupportRestoreDeleteItemToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SupportRestoreDeleteItemToolStripMenuItem.Click
+    logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click entry")
+    Dim window As New SupportRestoreDeletedItems()
+    window.ShowDialog()
+    logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click exit")
+  End Sub
 End Class
