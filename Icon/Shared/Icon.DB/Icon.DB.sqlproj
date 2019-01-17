@@ -685,6 +685,7 @@
     <None Include="Scripts\PopulateData\StashDataForNewSignAttributeColumns.sql" />
     <Build Include="app\Stored Procedures\GetLocationHierarchy.sql" />
     <None Include="Scripts\PopulateData\PopulateIconWebApiApp.sql" />
+    <None Include="Scripts\Jobs\Icon.ReseedTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
