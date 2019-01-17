@@ -184,3 +184,6 @@ GO
 
 ALTER TABLE [amz].[DeletedOrderItem] CHECK CONSTRAINT [FK_AMZDeletedOrderItem_SustainabilityRanking]
 GO
+
+GRANT SELECT ON [amz].[DeletedOrderItem] TO [IRMAReports];
+GO

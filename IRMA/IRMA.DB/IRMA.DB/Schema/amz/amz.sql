@@ -11,3 +11,6 @@ GRANT INSERT ON SCHEMA :: amz TO [IRMAClientRole];
 GO
 GRANT SELECT ON SCHEMA :: amz TO [IRMAClientRole];
 GO
+
+GRANT SELECT ON SCHEMA :: amz TO [IRMAReports];
+GO

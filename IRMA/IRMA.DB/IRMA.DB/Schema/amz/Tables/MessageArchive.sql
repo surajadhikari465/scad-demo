@@ -26,3 +26,7 @@ GO
 GRANT UPDATE
     ON OBJECT::[amz].[MessageArchive] TO [MammothRole]
     AS [dbo];
+GO
+
+GRANT SELECT ON [amz].[MessageArchive] TO [IRMAReports];
+GO

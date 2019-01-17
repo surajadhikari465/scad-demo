@@ -25,3 +25,7 @@ GO
 GRANT UPDATE
     ON OBJECT::[amz].[ReceiptQueue] TO [MammothRole]
     AS [dbo];
+GO
+
+GRANT SELECT ON [amz].[ReceiptQueue] TO [IRMAReports];
+GO
