@@ -190,5 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\R10PriceAudit.sql" />
+    <Build Include="dbo\Tables\ItemAttributes_Nutrition_Audit.sql" />
+    <Build Include="dbo\Tables\ItemAttributes_Locale_FL_Ext_Audit.sql" />
+    <Build Include="dbo\Tables\Attributes_Audit.sql" />
   </ItemGroup>
 </Project>

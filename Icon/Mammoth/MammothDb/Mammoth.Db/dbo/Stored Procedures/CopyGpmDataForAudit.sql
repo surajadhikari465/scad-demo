@@ -1,17 +1,20 @@
 ﻿CREATE PROCEDURE dbo.CopyGpmDataForAudit
 AS
 BEGIN
-	print 'Starting copy of GPM Data for Audit ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Starting copy of GPM Data for Audit ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 
-	print 'Truncating existing tables ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Truncating existing tables ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	TRUNCATE TABLE Staging.dbo.ItemAttributes_Locale_FL_Audit
 	TRUNCATE TABLE Staging.dbo.Items_Audit
 	TRUNCATE TABLE Staging.dbo.ItemTypes_Audit
 	TRUNCATE TABLE Staging.dbo.Locales_FL_Audit
 	TRUNCATE TABLE Staging.gpm.Price_FL_Audit
+	TRUNCATE TABLE Staging.dbo.ItemAttributes_Nutrition_Audit
+	TRUNCATE TABLE Staging.dbo.ItemAttributes_Locale_FL_Ext_Audit
+	TRUNCATE TABLE Staging.dbo.Attributes_Audit
 
 	--Insert ItemAttributes_Locale_FL
-	print 'Inserting ItemAttributes_Locale_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Inserting ItemAttributes_Locale_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	INSERT INTO Staging.dbo.ItemAttributes_Locale_FL_Audit (
 		Region
 		,ItemAttributeLocaleID
@@ -69,7 +72,7 @@ BEGIN
 	FROM Mammoth.dbo.ItemAttributes_Locale_FL
 
 	--Insert Items
-	print 'Inserting Items ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Inserting Items ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	INSERT INTO Staging.dbo.Items_Audit (
 		ItemID
 		,ItemTypeID
@@ -109,7 +112,7 @@ BEGIN
 	FROM Mammoth.dbo.Items
 
 	--Insert ItemTypes
-	print 'Inserting ItemTypes ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Inserting ItemTypes ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	INSERT INTO Staging.dbo.ItemTypes_Audit (
 		itemTypeID
 		,itemTypeCode
@@ -125,7 +128,7 @@ BEGIN
 	FROM Mammoth.dbo.ItemTypes
 
 	--Insert Locales_FL
-	print 'Inserting Locales_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Inserting Locales_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	INSERT INTO Staging.dbo.Locales_FL_Audit (
 		Region
 		,LocaleID
@@ -151,7 +154,7 @@ BEGIN
 	FROM Mammoth.dbo.Locales_FL
 
 	--Insert Price_FL
-	print 'Inserting Price_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	PRINT 'Inserting Price_FL ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 	INSERT INTO Staging.gpm.Price_FL_Audit (
 		Region
 		,PriceID
@@ -190,5 +193,190 @@ BEGIN
 		,ModifiedDateUtc
 	FROM Mammoth.gpm.Price_FL
 
-	print 'Finished copying GPM Data for Audit ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	-- Insert Attributes Table
+	PRINT 'Inserting Attributes ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	INSERT INTO Staging.dbo.Attributes_Audit
+		(AttributeID
+		,AttributeGroupID
+		,AttributeCode
+		,AttributeDesc
+		,AddedDate
+		,ModifiedDate)
+	SELECT AttributeID 
+		,AttributeGroupID
+		,AttributeCode
+		,AttributeDesc
+		,AddedDate
+		,ModifiedDate
+	FROM Mammoth.dbo.Attributes
+
+	-- Insert ItemLocale Extended Attributes
+	PRINT 'Inserting ItemAttributes_Locale_FL_Ext ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	INSERT INTO Staging.dbo.ItemAttributes_Locale_FL_Ext_Audit
+		(Region
+		,ItemAttributeLocaleID
+		,ItemID
+		,LocaleID
+		,AttributeID
+		,AttributeValue
+		,AddedDate
+		,ModifiedDate)
+	SELECT Region
+		  ,ItemAttributeLocaleID
+		  ,ItemID
+		  ,LocaleID
+		  ,AttributeID
+		  ,AttributeValue
+		  ,AddedDate
+		  ,ModifiedDate
+	FROM Mammoth.dbo.ItemAttributes_Locale_FL_Ext
+
+	-- Insert ItemAttributes_Nutrition
+	PRINT 'Inserting ItemAttributes_Nutrition ' + CAST(SYSDATETIME() AS NVARCHAR(100))
+	INSERT INTO Staging.dbo.ItemAttributes_Nutrition_Audit
+		(ItemAttributeID
+		,ItemID
+		,RecipeName
+		,Allergens
+		,Ingredients
+		,ServingsPerPortion
+		,ServingSizeDesc
+		,ServingPerContainer
+		,HshRating
+		,ServingUnits
+		,SizeWeight
+		,Calories
+		,CaloriesFat
+		,CaloriesSaturatedFat
+		,TotalFatWeight
+		,TotalFatPercentage
+		,SaturatedFatWeight
+		,SaturatedFatPercent
+		,PolyunsaturatedFat
+		,MonounsaturatedFat
+		,CholesterolWeight
+		,CholesterolPercent
+		,SodiumWeight
+		,SodiumPercent
+		,PotassiumWeight
+		,PotassiumPercent
+		,TotalCarbohydrateWeight
+		,TotalCarbohydratePercent
+		,DietaryFiberWeight
+		,DietaryFiberPercent
+		,SolubleFiber
+		,InsolubleFiber
+		,Sugar
+		,SugarAlcohol
+		,OtherCarbohydrates
+		,ProteinWeight
+		,ProteinPercent
+		,VitaminA
+		,Betacarotene
+		,VitaminC
+		,Calcium
+		,Iron
+		,VitaminD
+		,VitaminE
+		,Thiamin
+		,Riboflavin
+		,Niacin
+		,VitaminB6
+		,Folate
+		,VitaminB12
+		,Biotin
+		,PantothenicAcid
+		,Phosphorous
+		,Iodine
+		,Magnesium
+		,Zinc
+		,Copper
+		,Transfat
+		,CaloriesFromTransFat
+		,Om6Fatty
+		,Om3Fatty
+		,Starch
+		,Chloride
+		,Chromium
+		,VitaminK
+		,Manganese
+		,Molybdenum
+		,Selenium
+		,TransFatWeight
+		,AddedDate
+		,ModifiedDate)
+	SELECT ItemAttributeID
+		,ItemID
+		,RecipeName
+		,Allergens
+		,Ingredients
+		,ServingsPerPortion
+		,ServingSizeDesc
+		,ServingPerContainer
+		,HshRating
+		,ServingUnits
+		,SizeWeight
+		,Calories
+		,CaloriesFat
+		,CaloriesSaturatedFat
+		,TotalFatWeight
+		,TotalFatPercentage
+		,SaturatedFatWeight
+		,SaturatedFatPercent
+		,PolyunsaturatedFat
+		,MonounsaturatedFat
+		,CholesterolWeight
+		,CholesterolPercent
+		,SodiumWeight
+		,SodiumPercent
+		,PotassiumWeight
+		,PotassiumPercent
+		,TotalCarbohydrateWeight
+		,TotalCarbohydratePercent
+		,DietaryFiberWeight
+		,DietaryFiberPercent
+		,SolubleFiber
+		,InsolubleFiber
+		,Sugar
+		,SugarAlcohol
+		,OtherCarbohydrates
+		,ProteinWeight
+		,ProteinPercent
+		,VitaminA
+		,Betacarotene
+		,VitaminC
+		,Calcium
+		,Iron
+		,VitaminD
+		,VitaminE
+		,Thiamin
+		,Riboflavin
+		,Niacin
+		,VitaminB6
+		,Folate
+		,VitaminB12
+		,Biotin
+		,PantothenicAcid
+		,Phosphorous
+		,Iodine
+		,Magnesium
+		,Zinc
+		,Copper
+		,Transfat
+		,CaloriesFromTransFat
+		,Om6Fatty
+		,Om3Fatty
+		,Starch
+		,Chloride
+		,Chromium
+		,VitaminK
+		,Manganese
+		,Molybdenum
+		,Selenium
+		,TransFatWeight
+		,AddedDate
+		,ModifiedDate
+	FROM Mammoth.dbo.ItemAttributes_Nutrition
+
+	PRINT 'Finished copying GPM Data for Audit ' + CAST(SYSDATETIME() AS NVARCHAR(100))
 END
