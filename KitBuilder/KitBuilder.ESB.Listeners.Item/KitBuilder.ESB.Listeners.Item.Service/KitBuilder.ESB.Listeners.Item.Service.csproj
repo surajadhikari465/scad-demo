@@ -131,8 +131,8 @@
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
-    <Reference Include="KitBuilder.DataAccess, Version=1.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\KitBuilder.DataAccess.1.0.5\lib\netstandard2.0\KitBuilder.DataAccess.dll</HintPath>
+    <Reference Include="KitBuilder.DataAccess, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\KitBuilder.DataAccess.1.0.7\lib\netstandard2.0\KitBuilder.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
@@ -279,6 +279,7 @@
   <ItemGroup>
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
@@ -291,8 +292,11 @@
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
