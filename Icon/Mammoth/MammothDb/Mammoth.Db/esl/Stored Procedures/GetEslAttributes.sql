@@ -1141,9 +1141,9 @@ BEGIN CATCH
 		(BusinessUnitID, ItemID, InsertDateUtc)
 	SELECT
 		BusinessUnitID, ItemID, OriginalStageInsertDate
-	FROM #itemExtended
+	FROM #itemExtended;
 
-	THROW
+	THROW;
 END CATCH
 
 IF OBJECT_ID('tempdb..#regularPriceKeys') IS NOT NULL
