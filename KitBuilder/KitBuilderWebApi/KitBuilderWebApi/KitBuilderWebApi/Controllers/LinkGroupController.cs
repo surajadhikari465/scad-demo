@@ -51,35 +51,47 @@ namespace KitBuilderWebApi.Controllers
         [HttpGet("LinkGroupsSearch")]
         public IActionResult LinkGroupSearch(LinkGroupSearchParamters parameters)
         {
+            // get superset of data.
+            var query = from lg in linkGroupRepository.GetAll() select lg;
 
-            var query = from lg in linkGroupRepository.GetAll()
-                join lgi in linkGroupItemRepository.GetAll() on lg.LinkGroupId equals lgi.LinkGroupId
-                join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
-                select new {lg, lgi, i};
-
+            // filter based on parameters
             if (!string.IsNullOrEmpty(parameters.LinkGroupName))
-                query = query.Where(q => q.lg.GroupName.Contains(parameters.LinkGroupName));
+                query = query.Where(q => q.GroupName.Contains(parameters.LinkGroupName));
 
             if (!string.IsNullOrEmpty(parameters.LinkGroupDesc))
-                query = query.Where(q => q.lg.GroupDescription.Contains(parameters.LinkGroupDesc));
+                query = query.Where(q => q.GroupDescription.Contains(parameters.LinkGroupDesc));
 
             if (!string.IsNullOrEmpty(parameters.ModifierDesc))
-                query = query.Where(q => q.i.CustomerFriendlyDesc.Contains(parameters.ModifierDesc));
+                query = from q in query
+                    join lgi in linkGroupItemRepository.GetAll() on q.LinkGroupId equals lgi.LinkGroupId
+                    join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                    where i.CustomerFriendlyDesc.Contains(parameters.ModifierDesc)
+                    select q;
 
             if (!string.IsNullOrEmpty(parameters.ModifierPlu))
-                query = query.Where(q => q.i.ScanCode.Contains(parameters.ModifierPlu));
+                query = from q in query
+                    join lgi in linkGroupItemRepository.GetAll() on q.LinkGroupId equals lgi.LinkGroupId
+                    join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                    where i.ScanCode.Contains(parameters.ModifierPlu)
+                    select q;
 
-            var data = query.Select(d => new
-            {
-                LinkGroupId = d.lg.LinkGroupId,
-                GroupName = d.lg.GroupName,
-                GroupDescription = d.lg.GroupDescription
-            }).ToList();
+            // get ids for filtered results.
+            var linkGroupIds = query.Select(q => q.LinkGroupId).Distinct();
 
+            // get display data based on ids
+            var data = (from lg in linkGroupRepository.GetAll()
+                        where linkGroupIds.Contains(lg.LinkGroupId)
+                       select new
+                       {
+                           LinkGroupId = lg.LinkGroupId,
+                           GroupName = lg.GroupName,
+                           GroupDescription = lg.GroupDescription
+                       }).ToList();
+   
+            // return to client
             return Ok(data);
             
         }
-
 
         // GET api/GetLinkGroups
         [HttpGet(Name = "GetLinkGroups")]
@@ -125,8 +137,8 @@ namespace KitBuilderWebApi.Controllers
         }
 
         // GET api/GetLinkGroupById
-        [HttpGet("{id}", Name = "GetLinkGroupById")]
-        public IActionResult GetLinkGroupById(int id, bool loadChildObjects)
+        [HttpGet("{id}/{loadChildObjects}", Name = "GetLinkGroupById")]
+        public IActionResult GetLinkGroupById(int id, bool loadChildObjects = false)
         {
             var linkGroupQuery = BuildLinkGroupByItemIdQuery(id, loadChildObjects);
             var linkGroup = linkGroupQuery.FirstOrDefault();
@@ -175,8 +187,9 @@ namespace KitBuilderWebApi.Controllers
 
             var createdlinkOfGroup = Mapper.Map<LinkGroupDto>(linkGroupPassed);
 
-            return CreatedAtRoute("GetLinkGroupById", new
-            { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
+            var result = CreatedAtAction("CreateLinkGroup", new { id = createdlinkOfGroup.LinkGroupId }, createdlinkOfGroup);
+
+            return result;
         }
 
         [HttpPut("{id}")]

@@ -1,18 +1,15 @@
 import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
-import SearchLinkGroups from './SearchLinkGroups';
-import DisplayLinkGroups from './DisplayLinkGroups';
+import { withStyles } from '@material-ui/core/styles'
+import SearchLinkGroups from './Components/SearchLinkGroups';
+import DisplayLinkGroups from './Components/DisplayLinkGroups';
 import axios from 'axios'
 import { KbApiMethod } from '../helpers/kbapi';
-import { withStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
+import EditLinkGroup from './EditLinkGroup';
+import { AddNewLinkGroupModal } from './AddNewLinkGroupModal';
 
 const errorStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
-
-
 
 class SearchOptions {
     LinkGroupName: string;
@@ -29,18 +26,30 @@ interface ILinkGroupsPageState {
     error: any,
     message: any,
     searchOptions: SearchOptions,
-    linkGroupResults: [], 
-    showSearchProgress: boolean
+    linkGroupResults: [],
+    showSearchProgress: boolean,
+    showEditScreen: boolean,
+    showSearchScreen: boolean,
+    showAddNew: boolean,
+    selectedLinkGroup: any
+
 }
 interface ILinkGroupsPageProps {
+    styles: any
 }
 
-const styles = (theme: any) => ({
+const styles = () => ({
     root: {
         flexGrow: 1
     },
-    hideProgress: {
+    hidden: {
         display: "none"
+    },
+    EditButtons: {
+        width: "100%"
+    },
+    AddNewModal: {
+        width: "50%"
     }
 
 });
@@ -62,14 +71,17 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
                 Region: ""
             },
             linkGroupResults: [],
-            showSearchProgress: false
+            showSearchProgress: false,
+            showEditScreen: false,
+            showSearchScreen: true,
+            showAddNew: false,
+            selectedLinkGroup: []
         }
         this.handleSearchOptionsChange = this.handleSearchOptionsChange.bind(this);
         this.onSearch = this.onSearch.bind(this);
-    }
-
-    componentDidMount() {
-
+        this.loadLinkGroup = this.loadLinkGroup.bind(this);
+        this.switchToEditMode = this.switchToEditMode.bind(this);
+        this.switchToSearchMode = this.switchToSearchMode.bind(this);
     }
 
     handleSearchOptionsChange(event: any) {
@@ -79,8 +91,8 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
     }
 
     onSearch() {
-        
-        this.setState({...this.state, showSearchProgress: true});
+
+        this.setState({ ...this.state, showSearchProgress: true });
         var searchOptions = this.state.searchOptions;
 
         axios.get(KbApiMethod("LinkGroupsSearch"), {
@@ -93,56 +105,101 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
         })
             .then(res => {
                 this.setState({ ...this.state, linkGroupResults: res.data })
-                this.setState({...this.state, showSearchProgress: false});
             }).catch(error => {
-                this.setState({...this.state, showSearchProgress: false});
-                this.setState({...this.state, error: error});
+                this.setState({ ...this.state, error: error });
             });
-            
-
     }
+
+    switchToEditMode(linkGroupId: number) {
+        this.loadLinkGroup(linkGroupId)
+            .then(result => {
+                this.setState({ selectedLinkGroup: result, showEditScreen: true, showSearchScreen: false })
+            }).then(() => {
+
+            })
+            .catch(error => {
+                alert(error);
+            });
+    }
+
+    switchToSearchMode() {
+        this.setState({ selectedLinkGroup: [], showEditScreen: false, showSearchScreen: true })
+    }
+
+    loadLinkGroup(linkGroupId: number) {
+        return new Promise((resolve, reject) => {
+
+            //pass linkgroupid and true to return child objects.
+            axios.get(KbApiMethod("LinkGroups") + "/" + linkGroupId + "/true", {
+            }).then(res => {
+
+                resolve(res.data);
+            }).catch(error => {
+                reject(error);
+            });
+        })
+    }
+
 
     render() {
         return (
             <React.Fragment>
-                <form onSubmit={() => this.onSearch()} onKeyDown={(d) => {if (d.keyCode === 13) {this.onSearch()} }}>
-               
-                <Grid container md={12} justify='center'>
-                    <Card>
-                        <CardHeader title="Search" />
-                        <CardContent>
+                <br />
+                <form onSubmit={() => this.onSearch()} onKeyDown={(d) => { if (d.keyCode === 13) { this.onSearch() } }}>
+
+                    {!this.state.showSearchScreen ||
+                        <Grid container spacing={24} justify="center">
+                            <Grid item md={12} >
+                                <div className="error-message" >
+                                    <span style={errorStyle}> {this.state.error}</span>
+                                </div>
+                            </Grid>
+                            <Grid item md={12}>
+                                <div className="Success-message" >
+                                    <span style={sucesssStyle}> {this.state.message}</span>
+                                </div>
+                            </Grid>
+
+                            <Grid item md={12}>
+                                <SearchLinkGroups
+                                    searchOptions={this.state.searchOptions}
+                                    onChange={this.handleSearchOptionsChange}
+                                    showSearchProgress={this.state.showSearchProgress}
+                                    onSearch={this.onSearch}
+                                    onAddNew={() => {
+                                        this.setState({ ...this.state, showAddNew: !this.state.showAddNew })
+                                    }}
+                                />
+
+                            </Grid>
+
+                            <Grid item md={10}>
+                                <DisplayLinkGroups
+                                    DisplayData={this.state.linkGroupResults}
+                                    handleSearchRowClick={this.switchToEditMode} />
+                            </Grid>
+
+                        </Grid>
+                    }
+                    <br />
+                    {!this.state.showEditScreen ||
                         <Grid container justify="center">
-                    <Grid container md={12} justify="center">
-                        <div className="error-message" >
-                            <span style={errorStyle}> {this.state.error}</span>
-                        </div>
-                    </Grid>
-                    <Grid container md={12} justify="center">
-                        <div className="Success-message" >
-                            <span style={sucesssStyle}> {this.state.message}</span>
-                        </div>
-                    </Grid>
-                    <Grid container md={12} justify="center">
-                        <Grid item md={10}>
-                            <SearchLinkGroups
-                                searchOptions={this.state.searchOptions}
-                                onChange={this.handleSearchOptionsChange}
-                                showSearchProgress={this.state.showSearchProgress}
-                                onSearch={this.onSearch} 
-                            />
+                            <Grid item md={10} >
+                                <EditLinkGroup data={this.state.selectedLinkGroup}
+                                    handleCancelClick={this.switchToSearchMode} />
+                            </Grid>
+
                         </Grid>
-                    </Grid>
-                    <Grid container md={10} justify="center">
-                        <Grid item md={10}>
-                            <DisplayLinkGroups DisplayData={this.state.linkGroupResults} />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                    }
+
                 </form>
                 <br />
+
+                <AddNewLinkGroupModal
+                    open={this.state.showAddNew}
+                    closeModal={() => { this.setState({ ...this.state, showAddNew: false }) }}
+                    onCreated={this.switchToEditMode}
+                />
             </React.Fragment>
         )
     }

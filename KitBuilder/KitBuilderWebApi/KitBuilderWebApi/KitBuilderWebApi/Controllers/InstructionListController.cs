@@ -4,6 +4,7 @@ using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
@@ -46,6 +47,31 @@ namespace KitBuilderWebApi.Controllers
             this.linkGroupItemRepository = linkGroupItemRepository;
         }
 
+
+        public enum InstructionListTypeEnum
+        {
+            Cooking, 
+            General
+        }
+
+
+        [HttpGet("GetInstructionsListByType")]
+        public IActionResult GetInstructionsListByType(InstructionListTypeEnum instructionListType)
+        {
+            if (!ModelState.IsValid )
+                return BadRequest(ModelState);
+
+            var listtype = instructionListType == InstructionListTypeEnum.Cooking ? "Cooking" : "General";
+            List<InstructionList> instructionLists = new List<InstructionList>();
+
+            instructionLists = instructionListRepository.GetAll().Where(i => i.InstructionType.Name == listtype)
+                .OrderBy(o => o.Name)
+                .ToList();
+
+            return Ok(instructionLists);
+        }
+
+
         // GET api/InstructionLists
         /// <summary>
         /// InstructionList - GET
@@ -60,6 +86,8 @@ namespace KitBuilderWebApi.Controllers
             if (!ModelState.IsValid || instructionListsParameters == null)
                 return BadRequest(ModelState);
 
+
+            
 
             var instructionListsBeforePaging = from i in instructionListRepository.GetAll()
                                                join itr in instructionTypeRespository.GetAll() on i.InstructionTypeId equals itr.InstructionTypeId
