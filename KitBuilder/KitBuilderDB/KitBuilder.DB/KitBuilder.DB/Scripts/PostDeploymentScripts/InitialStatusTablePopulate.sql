@@ -16,8 +16,9 @@ BEGIN
 			-- Populate Status Table.
 			SET IDENTITY_INSERT dbo.Status ON;
 			MERGE INTO Status AS Target
-			USING(VALUES(0, N'DIS', N'Disabled'),
-						(1, N'ENA', N'Enabled')) 
+			USING(VALUES(1, N'DIS', N'Disabled'),
+						(2, N'IP', N'InProgress'),
+						(3, N'P', N'Published')) 
 			AS Source(StatusID, StatusCode, StatusDescription)
 			ON Target.StatusID=Source.StatusID
 			--update matched rows

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using KitBuilderWebApi.QueryParameters;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess.Dto;
+using LocaleType = KitBuilderWebApi.Helper.LocaleType;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -28,8 +30,7 @@ namespace KitBuilderWebApi.Controllers
     readonly IRepository<Kit> Items;
     readonly ILogger<VenueController> logger;
     readonly IHelper<VenueInfo, VenueParameters> Helper;
-    enum LocaleType { Uknown = 0, Chain = 1, Region = 2, Metro = 3, Store = 4, Venue = 5 }
-  
+   
     public VenueController(IRepository<Kit> itemsRepository, ILogger<VenueController> log, IHelper<VenueInfo, VenueParameters> itemHelper)
     {
       Items = itemsRepository;
@@ -37,6 +38,50 @@ namespace KitBuilderWebApi.Controllers
       Helper = itemHelper;
     }
 
+        [HttpGet("{kitId}", Name = "GetLocales")]
+        public IActionResult GetStoresHierarchyWithVenue(int kitId)
+        {
+           var dbContext = Items.UnitOfWork.Context;
+
+            var kitExists = dbContext.Kit.Where(k => k.KitId == kitId).ToList();
+            if(kitExists ==null)
+            {
+                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                return NotFound();
+            }
+
+           var locales=  (from l in dbContext.Locale
+                          join kl in dbContext.KitLocale 
+                          on new { localeId = l.LocaleId, kitId } equals new { localeId = kl.LocaleId, kitId = kl.KitId } into kls
+                          from p in kls.DefaultIfEmpty()
+                          select new AssignKitToLocaleDto
+                          {
+                             LocaleTypeId = l.LocaleTypeId,
+                             LocaleId = l.LocaleId,
+                             LocaleName = l.LocaleName,
+                             LocaleAbbreviation = l.StoreAbbreviation,
+                             ParentLocaleId = ( l.LocaleTypeId == (int)KitBuilderWebApi.Helper.LocaleType.Venue ?(int)l.StoreId:
+                                                l.LocaleTypeId == (int)LocaleType.Store ? (int)l.MetroId :
+                                                l.LocaleTypeId == (int)LocaleType.Metro ? (int)l.RegionId :
+                                                l.LocaleTypeId == (int)LocaleType.Region ? (int)l.ChainId :-1
+                                                ),
+                             IsAssigned = p!= null?p.Exclude ==null || (bool)p.Exclude==false ?true:false : false,
+                             IsExcluded = p != null?p.Exclude != null ?(bool) p.Exclude : false : false,
+                          }).ToList();
+
+            //this code may be used but requirements are not there yet
+            //var allLocaleTypesExceptStore = new int[] { (int)LocaleType.Chain, (int)LocaleType.Metro, (int)LocaleType.Region, (int)LocaleType.Venue };
+
+            //locales = (from l in locales where allLocaleTypesExceptStore.Contains(l.LocaleTypeId) select l).ToList()
+            //          .Union
+            //         (from l in locales
+            //          join lc in locales on l.LocaleId equals lc.ParentLocaleId
+            //          where l.LocaleTypeId == (int)LocaleType.Store
+            //          && lc.LocaleTypeId == (int)LocaleType.Venue
+            //          select l).ToList();
+
+            return Ok(locales.OrderBy(l=>l.LocaleTypeId));
+        }
     [HttpGet(Name = "GetVenue")]
     public IActionResult GetDMKits(VenueParameters Parameters)
     {

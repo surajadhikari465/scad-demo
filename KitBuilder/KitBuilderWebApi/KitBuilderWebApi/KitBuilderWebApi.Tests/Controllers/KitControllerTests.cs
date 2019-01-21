@@ -45,7 +45,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         IList<KitLinkGroupItem> KitLinkGroupItems;
         private List<KitLocale> kitLocaleList;
         private List<KitLinkGroupLocale> kitLinkGroupLocaleList;
-        private List<KitLocaleDto> kitLocaleDtoList;
+        private List<AssignKitToLocaleDto> assignKitToLocaleDtoList;
 
       [TestInitialize]
         public void InitializeTests()
@@ -189,9 +189,9 @@ namespace KitBuilderWebApi.Tests.Controllers
 
 			 };
 
-            kitLocaleDtoList = new List<KitLocaleDto> {
-							   new KitLocaleDto { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
-                               new KitLocaleDto { KitLocaleId = 2, KitId = 1, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 }
+            assignKitToLocaleDtoList = new List<AssignKitToLocaleDto> {
+							   new AssignKitToLocaleDto { LocaleId = localeList[0].LocaleId, LocaleTypeId =localeList[0].LocaleTypeId, IsExcluded = true, IsAssigned = false },
+                               new AssignKitToLocaleDto {  LocaleId = localeList[1].LocaleId, LocaleTypeId = localeList[1].LocaleTypeId, IsExcluded = true, IsAssigned = false }
              };
 
             kitsDto = (from k in kits
@@ -330,7 +330,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void KitsController_AssignUnassignLocationsNullListPassed_ReturnsBadRequest()
         {
-            var response = kitController.AssignUnassignLocations(null);
+            var response = kitController.AssignUnassignLocations(null, 0);
 
             Assert.IsInstanceOfType(response, typeof(BadRequestResult), "Bad Request Expected");
         }
@@ -345,7 +345,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockUnitWork.SetupGet(s => s.Context).Returns(mockContext.Object);
             mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
 
-            var response = kitController.AssignUnassignLocations(kitLocaleDtoList);
+            var response = kitController.AssignUnassignLocations(assignKitToLocaleDtoList, kits[0].KitId);
 
             Assert.IsInstanceOfType(response, typeof(OkResult), "Ok Result Expected");
         }

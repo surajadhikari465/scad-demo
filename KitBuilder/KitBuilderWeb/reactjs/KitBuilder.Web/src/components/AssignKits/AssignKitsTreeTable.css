@@ -1,0 +1,38 @@
+.tbl-header {
+    display: inline-block;
+    width: 100%;
+}
+
+.tbl-header > div {
+    display: inline-block;
+    border-left: 1px solid #5d5d5d;
+    padding: 3px 5px;
+    text-align: center
+}
+
+.tbl-body-item {
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.tbl-body-item > div {
+    display: inline-block;
+    padding: 0 3px;
+}
+
+
+.collapse-btn {
+    text-align: center;
+    border-radius: 20px;
+    background-color: #bee1e9;
+    width: 22px;
+    user-select: none;
+}
+
+.collapse-btn:hover {
+    cursor: pointer;
+    background-color: #91d4e3;
+}

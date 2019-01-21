@@ -16,6 +16,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
+using  LocaltypeModel = KitBuilder.DataAccess.DatabaseModels.LocaleType;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -34,7 +35,7 @@ namespace KitBuilderWebApi.Controllers
         private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
-        private IRepository<LocaleType> localeTypeRepository;
+        private IRepository<LocaltypeModel> localeTypeRepository;
         private IHelper<KitDto, KitSearchParameters> kitHelper;
         private const string deleteKitSpName = "DeleteKitByKitId";
 
@@ -48,7 +49,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository,
                              IRepository<KitLinkGroupItem> kitLinkGroupItemRepository,
                              IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository,
-                             IRepository<LocaleType> localeTypeRepository,
+                             IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
                              ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper
@@ -118,6 +119,19 @@ namespace KitBuilderWebApi.Controllers
             }
 
             return Ok(kitProperties);
+        }
+
+        [HttpGet("{kitId}",Name = "GetKitByKitId")]
+        public IActionResult GetKitbyKitId(int kitId)
+        {
+           var kit =  kitRepository.GetAll().Where(k => k.KitId == kitId).FirstOrDefault();
+            if (kit == null)
+            {
+                logger.LogWarning("Kit does not exist.");
+                return BadRequest();
+            }
+
+            return Ok(kit);
         }
 
         [HttpGet(Name = "GetKits")]
@@ -217,9 +231,9 @@ namespace KitBuilderWebApi.Controllers
 
 		[HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
         public IActionResult AssignUnassignLocations(
-                 [FromBody] List<KitLocaleDto> kitLocaleDtoList)
+                 [FromBody] List<AssignKitToLocaleDto> assignKitToLocaleDtoList, int kitId)
         {
-            if (kitLocaleDtoList == null)
+            if (assignKitToLocaleDtoList == null)
             {
                 logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return BadRequest();
@@ -230,12 +244,29 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            List<KitLocale> kitLocaleDbList = kitLocaleRepository.GetAll().Where(kl => kl.KitId == kitLocaleDtoList.FirstOrDefault().KitId).ToList();
+            var kit = kitRepository.GetAll().Where(k => k.KitId == kitId).FirstOrDefault();
+
+            if (kit == null)
+            {
+                logger.LogWarning("The kit does not exist");
+                return BadRequest();
+            }
+
+            List<KitLocale> kitLocaleDbList = kitLocaleRepository.GetAll().Where(kl => kl.KitId == kitId).ToList();
 
             List<KitLocale> kitLocaleListPassed = new List<KitLocale>();
-            foreach (var kitLocaleDto in kitLocaleDtoList)
+            foreach (var assignKitToLocaleDto in assignKitToLocaleDtoList)
             {
-                var kitLocale = Mapper.Map<KitLocale>(kitLocaleDto);
+                KitLocale kitLocale = new KitLocale
+                {
+                    KitId = kitId,
+                    LocaleId = assignKitToLocaleDto.LocaleId,
+                    Exclude = assignKitToLocaleDto.IsExcluded,
+                    StatusId = (int)StatusType.IP,
+                    MaximumCalories = null,
+                    MinimumCalories = null
+                };
+                
                 kitLocale.InsertDateUtc = DateTime.UtcNow;
                 kitLocale.LastUpdatedDateUtc = DateTime.UtcNow;
                 kitLocaleListPassed.Add(kitLocale);
@@ -260,7 +291,7 @@ namespace KitBuilderWebApi.Controllers
             foreach (KitLocale kitToUpdate in kitLocaleRecordsToUpdate)
             {
 				KitLocale currentKit = kitLocaleDbList.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
-				KitLocale toBeUpdatedKit = kitLocaleListPassed.Where(kl => kl.KitLocaleId == kitToUpdate.KitLocaleId).FirstOrDefault();
+				KitLocale toBeUpdatedKit = kitLocaleListPassed.Where(kl => kl.KitId == kitId && kl.LocaleId == kitToUpdate.LocaleId).FirstOrDefault();
 				currentKit.MaximumCalories = toBeUpdatedKit.MaximumCalories;
 				currentKit.MinimumCalories = toBeUpdatedKit.MinimumCalories;
 				currentKit.Exclude = toBeUpdatedKit.Exclude;

@@ -107,8 +107,6 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
                }) 
             }  
             
-
-
                  this.setState({
                       message: null
                  }) 
