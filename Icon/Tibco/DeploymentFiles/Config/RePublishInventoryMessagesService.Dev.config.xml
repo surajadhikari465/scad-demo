@@ -12,6 +12,10 @@
             <name>Application/BatchSize</name>
             <value>50</value>
         </NameValuePairInteger>
+        <NameValuePair>
+            <name>Application/InstanceGUID</name>
+            <value>000001F5-0000-0000-0000-000000000000</value>
+        </NameValuePair>
         <NameValuePairInteger>
             <name>Application/InstanceId</name>
             <value>501</value>
@@ -24,10 +28,6 @@
             <name>Application/ProcessDelayTimeInMinutes</name>
             <value>5</value>
         </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/PublisherTimerInMilliseconds</name>
-            <value>10000</value>
-        </NameValuePairInteger>
         <NameValuePair>
             <name>Application/TransactionTypePurchaseOrders</name>
             <value>PurchaseOrders</value>
@@ -46,15 +46,15 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedFivetimes</name>
-            <value>30</value>
+            <value>15</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedFourtimes</name>
-            <value>20</value>
+            <value>10</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedThreetimes</name>
-            <value>10</value>
+            <value>5</value>
         </NameValuePair>
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>

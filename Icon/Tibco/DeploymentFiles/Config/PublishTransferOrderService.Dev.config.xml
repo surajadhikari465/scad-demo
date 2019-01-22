@@ -13,8 +13,8 @@
             <value>50</value>
         </NameValuePairInteger>
         <NameValuePair>
-            <name>Application/ErrorDescriptionDefault</name>
-            <value>no value</value>
+            <name>Application/InstanceGUID</name>
+            <value>000000C9-0000-0000-0000-000000000000</value>
         </NameValuePair>
         <NameValuePairInteger>
             <name>Application/InstanceId</name>
@@ -33,24 +33,20 @@
             <value>10</value>
         </NameValuePairInteger>
         <NameValuePair>
-            <name>Application/PublisherTimerInMilliseconds</name>
-            <value>10000</value>
-        </NameValuePair>
-        <NameValuePair>
             <name>Application/TransactionType</name>
             <value>TransferOrders</value>
         </NameValuePair>
         <NameValuePairInteger>
             <name>Application/WaitTimeForRecordsProcessedFivetimes</name>
-            <value>30</value>
+            <value>15</value>
         </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/WaitTimeForRecordsProcessedFourtimes</name>
-            <value>20</value>
+            <value>10</value>
         </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/WaitTimeForRecordsProcessedThreetimes</name>
-            <value>10</value>
+            <value>5</value>
         </NameValuePairInteger>
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>
