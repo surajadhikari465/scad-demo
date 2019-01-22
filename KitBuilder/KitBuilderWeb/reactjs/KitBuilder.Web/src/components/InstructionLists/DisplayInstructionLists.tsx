@@ -23,25 +23,24 @@ const styles = (theme: any) => ({
 function DisplayInstructionLists(props: any) {
     return (
         <div className={props.classes.root}>
-            <Grid container alignItems="flex-end" style={marginBottom}>
-                <Grid item md={2}>
+            <Grid container alignItems="flex-start" style={marginBottom}>
+                <Grid item md={4}>
                     <span> Instruction List Name:</span>
                     <TextField variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
                 </Grid>
-                <Grid item md={3} >
-                    <Grid container justify="flex-start" alignItems="flex-end" >
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.deleteInstruction()} >
+                <Grid item md={2} alignItems="flex-end">
+                 <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.deleteInstruction()} >
                             Delete Instruction
                 </Button>
-                    </Grid>
+
                 </Grid>
 
-                <Grid item md={2} justify="flex-end">
+                <Grid item md={3} justify="center">
                     <span> Instruction Type:</span>
                     <span> {props.instructionTypeName}</span>
                 </Grid>
 
-                <Grid item md={5}>
+                <Grid item md={3}>
                     <Grid container justify="flex-end">
                         <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onAddMember()} >
                             Add Member
