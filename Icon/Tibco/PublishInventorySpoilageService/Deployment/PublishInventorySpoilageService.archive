@@ -13,7 +13,7 @@
             <authorProperty>2172690</authorProperty>
             <processProperty>/Processes/PublishInventorySpoilageService.process</processProperty>
         </processArchive>
-        <versionProperty>23</versionProperty>
+        <versionProperty>28</versionProperty>
         <authorProperty>2172690</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishInventorySpoilageService</name>

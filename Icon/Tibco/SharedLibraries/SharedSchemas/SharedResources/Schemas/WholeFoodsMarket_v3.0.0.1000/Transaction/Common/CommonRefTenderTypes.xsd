@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<!-- ================== -->
+	<!-- Complex Types               -->
+	<!-- ================== -->
+	<xs:complexType name="TenderForeignCurrencyBase">
+		<xs:annotation>
+			<xs:documentation>provides details about the foreign currency exchange rates,
+                etc.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+			<xs:element name="currencyCode" type="erf:CurrencyTypeCodeEnum" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>To be depreciated - data now contained in
+                        MonetaryAmountCommonData</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="originalFaceAmount" type="amt:AmountType" form="qualified">
+				<xs:annotation>
+					<xs:documentation>the original amount in the foreign currency the being
+                        converted to local currency. For example, converting Yen to Dollars, this
+                        amount would be the amount of Yen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="exchangeRate" type="xs:decimal" form="qualified" minOccurs="0"/>
+			<xs:element name="serviceCharge" type="amt:AmountType" form="qualified" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The amount charged to make the conversion from the foreign
+                        currency to the local currency</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

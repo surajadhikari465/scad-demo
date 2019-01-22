@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="consumerInformation" type="ConsumerInformationType"/>
+	<xs:complexType name="ConsumerInformationType">
+		<xs:sequence>
+			<xs:element name="stockItemConsumerProductLabel" type="irf:StockProductLabelType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

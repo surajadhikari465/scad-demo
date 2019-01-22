@@ -18,12 +18,12 @@
 			<modTime>1538501238818</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ErrorDescriptionDefault</name>
-			<value>No Error</value>
+			<name>InstanceGUID</name>
+			<value>00000191-0000-0000-0000-000000000000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1538679579406</modTime>
+			<modTime>1547859326192</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InstanceId</name>
@@ -42,14 +42,6 @@
 			<modTime>1538581460841</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>LastReProcessId</name>
-			<value>4</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1538674595191</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>MessageType</name>
 			<value>text</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -66,28 +58,12 @@
 			<modTime>1539795833525</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>PublisherTimerInMilliseconds</name>
-			<value>10000</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1538071296134</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>SecondaryKeyId</name>
 			<value>0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
 			<modTime>1538674595251</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>Status</name>
-			<value>Sent</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1538674595129</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionType</name>
@@ -99,27 +75,27 @@
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFivetimes</name>
-			<value>30</value>
+			<value>15</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539795833592</modTime>
+			<modTime>1547859326059</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>20</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540934905685</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedThreetimes</name>
 			<value>10</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1540934905749</modTime>
+			<modTime>1547859326104</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>WaitTimeForRecordsProcessedThreetimes</name>
+			<value>5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1547859326148</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

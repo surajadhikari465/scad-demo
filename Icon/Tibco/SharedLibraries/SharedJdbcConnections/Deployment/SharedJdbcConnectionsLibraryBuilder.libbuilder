@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedJdbcConnectionsLibraryBuilder">
-        <version>15</version>
+        <version>17</version>
         <author>2130356</author>
         <fileLocation>C:\Users\min.zhao\source\repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedJdbcConnections.projlib</fileLocation>
         <resources>/SharedResources/Connections/IRMA.sharedjdbc,/SharedResources/Connections/Mammoth.sharedjdbc</resources>

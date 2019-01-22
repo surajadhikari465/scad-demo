@@ -78,6 +78,13 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Catch</pd:from>
+            <pd:to>LogDataMapperError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogDataMapperError</pd:from>
             <pd:to>Update Queue Table With Mapping Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -372,6 +379,13 @@
             </pd:transition>
             <pd:transition>
                 <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>LogSendDataToESBError</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>LogSendDataToESBError</pd:from>
                 <pd:to>Convert-Message-to-JSON-1</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -561,8 +575,8 @@
             <pd:activity name="Convert-Message-to-JSON-1">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>985</pd:x>
-                <pd:y>418</pd:y>
+                <pd:x>1064</pd:x>
+                <pd:y>415</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -577,8 +591,8 @@
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1179</pd:x>
-                <pd:y>427</pd:y>
+                <pd:x>1193</pd:x>
+                <pd:y>424</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -755,6 +769,46 @@ And STATUS = 'I'
                     </jdbcUpdateActivityInput>
                 </pd:inputBindings>
             </pd:activity>
+            <pd:activity name="LogSendDataToESBError">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>928</pd:x>
+                <pd:y>417</pd:y>
+                <config>
+                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <LogElement>
+                        <LogDate>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                        </LogDate>
+                        <ApplicationID>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                        </ApplicationID>
+                        <HostName>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
+                        </HostName>
+                        <UserName>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                        </UserName>
+                        <Thread>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                        </Thread>
+                        <Level>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
+                        </Level>
+                        <Logger>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </Logger>
+                        <Message>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
+                        </Message>
+                        <InsertedDate>
+                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                        </InsertedDate>
+                    </LogElement>
+                </pd:inputBindings>
+            </pd:activity>
         </pd:group>
         <pd:activity name="Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
@@ -823,6 +877,46 @@ And STATUS = 'I'
                 </jdbcUpdateActivityInput>
             </pd:inputBindings>
         </pd:activity>
+        <pd:activity name="LogDataMapperError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>990</pd:x>
+            <pd:y>549</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                    </LogDate>
+                    <ApplicationID>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    </ApplicationID>
+                    <HostName>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
+                    </HostName>
+                    <UserName>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <Thread>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                    </Thread>
+                    <Level>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
+                    </Message>
+                    <InsertedDate>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                    </InsertedDate>
+                </LogElement>
+            </pd:inputBindings>
+        </pd:activity>
     </pd:group>
     <pd:activity name="Catch All">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
@@ -854,12 +948,7 @@ And STATUS = 'I'
 	oes.Description as ExternalSource,
 	EventTypeCode as EventType,
 	cast(Datediff(s, '1970-01-01', q.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber,
-	CASE oh.OrderType_ID
-		WHEN 1 THEN 'Purchase Order'
-		WHEN 2 THEN 'Distribution Order'
-		WHEN 3 THEN 'Transfer Order'
-		WHEN 4 THEN 'Flowthru'
-	END as PurchaseType,
+	'Purchase Order' as PurchaseType,
 	v.PS_Vendor_ID as SupplierNumber,
 	s.BusinessUnit_ID as LocationNumber,
 	s.Store_Name as LocationName,
@@ -868,15 +957,16 @@ And STATUS = 'I'
 	t.Team_No as OrderTeam_No,
 	t.Team_Name as OrderTeam_Name,
 	Case
-		When oh.ApprovedDate is not null Then 'Closed'
+		When oh.RefuseReceivingReasonID is not null Then 'Refused'
 		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+		When oh.ApprovedDate is not null Then 'Closed'
 		Else 'Sent'
 	End as Status,
 	oh.CreatedBy as UserId,
 	uc.UserName as UserName,
 	oh.ApprovedBy as ApproverId,
 	ua.UserName as ApproverName,
-	oh.SentDate as CreateDateTime,
+	ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime,
 	oh.ApprovedDate as ApproveDateTime,
 	oh.OriginalCloseDate as CloseDateTime,
 	oh.AdminNotes as PurchaseOrderComments,
@@ -912,7 +1002,8 @@ JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 
 JOIN SubTeam isb on isb.SubTeam_No = i.SubTeam_No
 JOIN ItemUnit iuo on iuo.Unit_ID = oi.QuantityUnit
 JOIN itemUnit iui on iui.Unit_ID = i.Retail_Unit_ID
-WHERE et.EventTypeCode not like '%_DEL%'
+WHERE oh.OrderType_ID = 1
+  AND et.EventTypeCode not like '%_DEL%'
   AND i.Retail_Sale = 1
   AND q.InProcessBy = ?
   AND q.Status = 'I' 
@@ -989,8 +1080,9 @@ SELECT
 	NULL as OrderTeam_No,
 	NULL as OrderTeam_Name,
 	Case
-		When oh.ApprovedDate is not null Then 'Closed'
+		When oh.RefuseReceivingReasonID is not null Then 'Refused'
 		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+		When oh.ApprovedDate is not null Then 'Closed'
 		Else 'Sent'
 	End as Status,
 	0 as UserId,
@@ -1372,6 +1464,46 @@ And STATUS = 'I'
             </inputs>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log Final Errors">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>796</pd:x>
+        <pd:y>659</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>UpdateOrderQueueEvents</pd:to>
@@ -1424,6 +1556,13 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>Catch All</pd:from>
+        <pd:to>Log Final Errors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Final Errors</pd:from>
         <pd:to>Update Message to Error Status</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

@@ -77,6 +77,13 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Mapper Catch</pd:from>
+            <pd:to>LogDataMapperError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogDataMapperError</pd:from>
             <pd:to>Update Queue Table With Mapping Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -186,7 +193,7 @@
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
             <pd:x>596</pd:x>
-            <pd:y>108</pd:y>
+            <pd:y>109</pd:y>
             <pd:width>692</pd:width>
             <pd:height>277</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -256,8 +263,15 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:from>LogSendDataToESBError</pd:from>
                 <pd:to>ConvertToJSon</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>LogSendDataToESBError</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
@@ -407,8 +421,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="CatchSendingToEsbException">
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>691</pd:x>
-                <pd:y>292</pd:y>
+                <pd:x>674</pd:x>
+                <pd:y>293</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <fault>localname=JMSSendException namespace=http://schemas.tibco.com/bw/plugins/jms/5.0/jmsExceptions</fault>
@@ -474,8 +488,8 @@ And STATUS = 'I'</statement>
             <pd:activity name="ConvertToJSon">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>902</pd:x>
-                <pd:y>292</pd:y>
+                <pd:x>933</pd:x>
+                <pd:y>291</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -490,7 +504,7 @@ And STATUS = 'I'</statement>
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1042</pd:x>
+                <pd:x>1045</pd:x>
                 <pd:y>300</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
@@ -530,12 +544,52 @@ And STATUS = 'I'</statement>
                     </Input>
                 </pd:inputBindings>
             </pd:activity>
+            <pd:activity name="LogSendDataToESBError">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>807</pd:x>
+                <pd:y>292</pd:y>
+                <config>
+                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <LogElement>
+                        <LogDate>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </LogDate>
+                        <ApplicationID>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                        </ApplicationID>
+                        <HostName>
+                            <xsl:value-of select="BW:getHostName()"/>
+                        </HostName>
+                        <UserName>
+                            <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                        </UserName>
+                        <Thread>
+                            <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                        </Thread>
+                        <Level>
+                            <xsl:value-of select="&quot;ERROR&quot;"/>
+                        </Level>
+                        <Logger>
+                            <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                        </Logger>
+                        <Message>
+                            <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                        </Message>
+                        <InsertedDate>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </InsertedDate>
+                    </LogElement>
+                </pd:inputBindings>
+            </pd:activity>
         </pd:group>
         <pd:activity name="Mapper Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>530</pd:x>
-            <pd:y>432</pd:y>
+            <pd:x>531</pd:x>
+            <pd:y>434</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -595,6 +649,46 @@ And STATUS = 'I'</statement>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                     </InProcessBy>
                 </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LogDataMapperError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>908</pd:x>
+            <pd:y>435</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </LogDate>
+                    <ApplicationID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    </ApplicationID>
+                    <HostName>
+                        <xsl:value-of select="BW:getHostName()"/>
+                    </HostName>
+                    <UserName>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <Thread>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                    </Thread>
+                    <Level>
+                        <xsl:value-of select="&quot;ERROR&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    </Message>
+                    <InsertedDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertedDate>
+                </LogElement>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -804,8 +898,8 @@ And STATUS = 'I'</statement>
     <pd:activity name="UpdateInventorySpoilageEvents">
         <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>248</pd:x>
-        <pd:y>35</pd:y>
+        <pd:x>247</pd:x>
+        <pd:y>36</pd:y>
         <config>
             <timeout>10</timeout>
             <maxRows>20000</maxRows>
@@ -884,6 +978,46 @@ And STATUS = 'I'</statement>
             </inputs>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log Final Errors">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>806</pd:x>
+        <pd:y>605</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>UpdateInventorySpoilageEvents</pd:to>
@@ -929,6 +1063,13 @@ And STATUS = 'I'</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>DB Catch</pd:from>
+        <pd:to>Log Final Errors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Final Errors</pd:from>
         <pd:to>Update Errors</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

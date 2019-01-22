@@ -18,6 +18,14 @@
 			<modTime>1541714180859</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>InstanceGUID</name>
+			<value>000001F5-0000-0000-0000-000000000000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1547876948671</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>InstanceId</name>
 			<value>501</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -35,20 +43,12 @@
 		</globalVariable>
 		<globalVariable>
 			<name>ProcessDelayTimeInMinutes</name>
-			<value>5</value>
+			<value>0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<constraint></constraint>
-			<modTime>1541793911976</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>PublisherTimerInMilliseconds</name>
-			<value>10000</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1541714180863</modTime>
+			<modTime>1547876948572</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionTypePurchaseOrders</name>
@@ -84,27 +84,27 @@
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFivetimes</name>
-			<value>30</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1541714181069</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>20</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1541714180940</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedThreetimes</name>
 			<value>10</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1541714180976</modTime>
+			<modTime>1547876948597</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>WaitTimeForRecordsProcessedFourtimes</name>
+			<value>5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1547876948621</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>WaitTimeForRecordsProcessedThreetimes</name>
+			<value>2</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1547876948645</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

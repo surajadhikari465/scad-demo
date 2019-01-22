@@ -70,15 +70,22 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>CatchSendingToEsbException</pd:from>
-            <pd:to>Update MessageArchive Table With ESB Error</pd:to>
+            <pd:from>SendDataToESB</pd:from>
+            <pd:to>Update MessageArchive Table</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>SendDataToESB</pd:from>
-            <pd:to>Update MessageArchive Table</pd:to>
+            <pd:from>CatchSendingToEsbException</pd:from>
+            <pd:to>LogSendDataToESBError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogSendDataToESBError</pd:from>
+            <pd:to>Update MessageArchive Table With ESB Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -278,6 +285,46 @@ And STATUS = 'I'</statement>
                         <xsl:value-of select="$GetLockedMessages/resultSet/Record[MessageArchiveID=$varCurrentMsgId]/Message"/>
                     </Body>
                 </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LogSendDataToESBError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>820</pd:x>
+            <pd:y>311</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </LogDate>
+                    <ApplicationID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    </ApplicationID>
+                    <HostName>
+                        <xsl:value-of select="BW:getHostName()"/>
+                    </HostName>
+                    <UserName>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <Thread>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                    </Thread>
+                    <Level>
+                        <xsl:value-of select="&quot;ERROR&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    </Message>
+                    <InsertedDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertedDate>
+                </LogElement>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -482,6 +529,46 @@ And STATUS = 'I'</statement>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log Final Errors">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>663</pd:x>
+        <pd:y>479</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>LockMessages</pd:to>
@@ -518,18 +605,25 @@ And STATUS = 'I'</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch All</pd:from>
-        <pd:to>Update Message to Error Status</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>GetLockedMessages</pd:from>
         <pd:to>GroupAndSendMessages</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($GetLockedMessages/resultSet/Record)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch All</pd:from>
+        <pd:to>Log Final Errors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Final Errors</pd:from>
+        <pd:to>Update Message to Error Status</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

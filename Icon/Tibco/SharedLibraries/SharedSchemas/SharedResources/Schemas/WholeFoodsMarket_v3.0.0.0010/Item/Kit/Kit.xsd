@@ -116,6 +116,7 @@
 			<xs:element name="ingredient" type="itm:ItemType"/>
 			<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
 		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
 		<xs:attribute name="DisplayIndex" type="xs:string"/>
 		<xs:attribute name="isVisible" type="xs:boolean"/>
 		<xs:attribute name="IngredientProductId" type="xs:string"/>

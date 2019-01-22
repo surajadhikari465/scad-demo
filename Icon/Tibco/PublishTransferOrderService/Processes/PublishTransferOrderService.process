@@ -30,8 +30,8 @@
     <pd:group name="GroupAndSendTransferOrders">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>532</pd:x>
-        <pd:y>136</pd:y>
+        <pd:x>533</pd:x>
+        <pd:y>135</pd:y>
         <pd:width>977</pd:width>
         <pd:height>488</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -79,6 +79,13 @@
         </pd:transition>
         <pd:transition>
             <pd:from>Catch</pd:from>
+            <pd:to>LogDataMapperError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogDataMapperError</pd:from>
             <pd:to>Update Queue Table With Mapping Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -88,7 +95,7 @@
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
             <pd:x>630</pd:x>
-            <pd:y>236</pd:y>
+            <pd:y>235</pd:y>
             <config>
                 <element ref="pfx3:transferOrders"/>
             </config>
@@ -272,7 +279,7 @@
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
             <pd:x>707</pd:x>
-            <pd:y>190</pd:y>
+            <pd:y>189</pd:y>
             <pd:width>732</pd:width>
             <pd:height>324</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -343,6 +350,13 @@
             </pd:transition>
             <pd:transition>
                 <pd:from>CatchSendingToEsbException</pd:from>
+                <pd:to>LogSendDataToESBError</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>LogSendDataToESBError</pd:from>
                 <pd:to>Convert-Message-to-JSON-1</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
@@ -352,7 +366,7 @@
                 <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
                 <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
                 <pd:x>797</pd:x>
-                <pd:y>256</pd:y>
+                <pd:y>255</pd:y>
                 <config>
                     <PermittedMessageType>XML Text</PermittedMessageType>
                     <SessionAttributes>
@@ -421,7 +435,7 @@
                 <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
                 <pd:resourceType>ae.activities.catch</pd:resourceType>
                 <pd:x>787</pd:x>
-                <pd:y>415</pd:y>
+                <pd:y>414</pd:y>
                 <pd:handler>true</pd:handler>
                 <config>
                     <catchAll>true</catchAll>
@@ -432,7 +446,7 @@
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
                 <pd:x>1124</pd:x>
-                <pd:y>262</pd:y>
+                <pd:y>261</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -517,7 +531,7 @@
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
                 <pd:x>955</pd:x>
-                <pd:y>266</pd:y>
+                <pd:y>265</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -532,8 +546,8 @@
             <pd:activity name="Convert-Message-to-JSON-1">
                 <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
                 <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>988</pd:x>
-                <pd:y>415</pd:y>
+                <pd:x>1050</pd:x>
+                <pd:y>413</pd:y>
                 <config>
                     <SchemaType>xsdType</SchemaType>
                     <BadgerfishCheck>false</BadgerfishCheck>
@@ -548,8 +562,8 @@
             <pd:activity name="Archive Message On Error">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1158</pd:x>
-                <pd:y>423</pd:y>
+                <pd:x>1177</pd:x>
+                <pd:y>422</pd:y>
                 <config>
                     <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                     <spawn>true</spawn>
@@ -629,8 +643,8 @@
             <pd:activity name="Update Queue Table">
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>1294</pd:x>
-                <pd:y>258</pd:y>
+                <pd:x>1295</pd:x>
+                <pd:y>260</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
@@ -672,7 +686,7 @@ And STATUS = 'I'
                 <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
                 <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
                 <pd:x>1318</pd:x>
-                <pd:y>423</pd:y>
+                <pd:y>422</pd:y>
                 <config>
                     <timeout>10</timeout>
                     <commit>false</commit>
@@ -726,12 +740,52 @@ And STATUS = 'I'
                     </jdbcUpdateActivityInput>
                 </pd:inputBindings>
             </pd:activity>
+            <pd:activity name="LogSendDataToESBError">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>923</pd:x>
+                <pd:y>415</pd:y>
+                <config>
+                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <LogElement>
+                        <LogDate>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </LogDate>
+                        <ApplicationID>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                        </ApplicationID>
+                        <HostName>
+                            <xsl:value-of select="BW:getHostName()"/>
+                        </HostName>
+                        <UserName>
+                            <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                        </UserName>
+                        <Thread>
+                            <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                        </Thread>
+                        <Level>
+                            <xsl:value-of select="&quot;ERROR&quot;"/>
+                        </Level>
+                        <Logger>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </Logger>
+                        <Message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </Message>
+                        <InsertedDate>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </InsertedDate>
+                    </LogElement>
+                </pd:inputBindings>
+            </pd:activity>
         </pd:group>
         <pd:activity name="Catch">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>605</pd:x>
-            <pd:y>549</pd:y>
+            <pd:x>610</pd:x>
+            <pd:y>550</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -741,8 +795,8 @@ And STATUS = 'I'
         <pd:activity name="Update Queue Table With Mapping Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1366</pd:x>
-            <pd:y>552</pd:y>
+            <pd:x>1368</pd:x>
+            <pd:y>557</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -777,8 +831,8 @@ And STATUS = 'I'
                 <jdbcUpdateActivityInput>
                     <ErrorDescription>
                         <xsl:choose>
-                            <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
-                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            <xsl:when test="exists($_error/ns3:ErrorReport/Msg)">
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -792,6 +846,46 @@ And STATUS = 'I'
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
                     </InProcessBy>
                 </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LogDataMapperError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1001</pd:x>
+            <pd:y>551</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </LogDate>
+                    <ApplicationID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    </ApplicationID>
+                    <HostName>
+                        <xsl:value-of select="BW:getHostName()"/>
+                    </HostName>
+                    <UserName>
+                        <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <Thread>
+                        <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                    </Thread>
+                    <Level>
+                        <xsl:value-of select="&quot;ERROR&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                    </Message>
+                    <InsertedDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertedDate>
+                </LogElement>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -832,15 +926,15 @@ And STATUS = 'I'
 	oh.Transfer_To_SubTeam as ToSubTeam_No,
 	tst.SubTeam_Name as ToSubTeam_Name,
 	Case
-		When oh.ApprovedDate is not null Then 'Closed'
-		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+		When oh.RefuseReceivingReasonID is not null Then 'Refused'
+		When oh.OriginalCloseDate is not null and oh.RefuseReceivingReasonID is null Then 'Closed'
 		Else 'Sent'
 	End as Status,
 	oh.CreatedBy as UserId,
 	uc.UserName as UserName,
 	oh.ApprovedBy as ApproverId,
 	ua.UserName as ApproverName,
-	oh.SentDate as CreateDateTime,
+	IsNull(oh.SentDate, oh.OrderDate) as CreateDateTime,
 	oh.ApprovedDate as ApproveDateTime,
 	oi.OrderItem_ID as TransferOrderDetailNumber,
 	oi.Item_Key as SourceItemKey,
@@ -867,7 +961,8 @@ JOIN Item i on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
 JOIN SubTeam isb on isb.SubTeam_No = i.SubTeam_No
 JOIN ItemUnit iuo on iuo.Unit_ID = oi.QuantityUnit
-WHERE et.EventTypeCode not like '%_DEL%'
+WHERE oh.OrderType_ID = 3
+  AND et.EventTypeCode not like '%_DEL%'
   AND i.Retail_Sale = 1
   AND q.InProcessBy = ?
   AND q.Status = 'I' 
@@ -960,20 +1055,6 @@ WHERE et.EventTypeCode = 'TSF_LINE_DEL'
   AND q.Status = 'I'</statement>
             <wizardData/>
             <processInSubsets>false</processInSubsets>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy_PO_Del</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy_Line_Del</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
             <oraObjects/>
             <oraTables/>
             <QueryOutputCachedSchemaColumns>QueueID</QueryOutputCachedSchemaColumns>
@@ -1092,6 +1173,20 @@ WHERE et.EventTypeCode = 'TSF_LINE_DEL'
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>InProcessBy</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>InProcessBy_PO_Del</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>InProcessBy_Line_Del</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
@@ -1137,7 +1232,7 @@ WHERE et.EventTypeCode = 'TSF_LINE_DEL'
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
         <pd:x>1594</pd:x>
-        <pd:y>667</pd:y>
+        <pd:y>668</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -1167,8 +1262,8 @@ And STATUS = 'I'
             <jdbcUpdateActivityInput>
                 <ErrorDescription>
                     <xsl:choose>
-                        <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
-                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        <xsl:when test="exists($_error/ns3:ErrorReport/Msg)">
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="xsi:nil">true</xsl:attribute>
@@ -1265,6 +1360,46 @@ And STATUS = 'I'
             </inputs>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Log Final Errors">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>855</pd:x>
+        <pd:y>662</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>UpdateOrderQueueEvents</pd:to>
@@ -1317,6 +1452,13 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>Catch All</pd:from>
+        <pd:to>Log Final Errors</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Final Errors</pd:from>
         <pd:to>Update Message to Error Status</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

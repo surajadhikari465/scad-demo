@@ -836,7 +836,7 @@
     <Build Include="schema\dbo\Stored Procedures\Procs1\DoFSAWarehouseSend.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ImportOrderDetail.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ImportOrderHeader.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ProcessBulkOrders.sql" />
+    <None Include="schema\dbo\Stored Procedures\Procs1\DVO_ProcessBulkOrders.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Dynamic_POSSearchForNonBatchedChanges.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DynamicMovement.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_AddChainNamesToIdList.sql" />

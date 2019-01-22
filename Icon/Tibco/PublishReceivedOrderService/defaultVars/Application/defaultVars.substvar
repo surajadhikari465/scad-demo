@@ -18,12 +18,12 @@
 			<modTime>1538501238818</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ErrorDescriptionDefault</name>
-			<value>No Error</value>
+			<name>InstanceGUID</name>
+			<value>0000012D-0000-0000-0000-000000000000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1538679579406</modTime>
+			<modTime>1547856750309</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InstanceId</name>
@@ -40,14 +40,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1538581460841</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>LastReProcessId</name>
-			<value>4</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1538674595191</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MessageType</name>
@@ -74,14 +66,6 @@
 			<modTime>1538071296134</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Status</name>
-			<value>Sent</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1538674595129</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>TransactionType</name>
 			<value>ReceiptOrders</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -91,27 +75,27 @@
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFivetimes</name>
-			<value>30</value>
+			<value>15</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1539625021452</modTime>
+			<modTime>1547856750154</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>20</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1540934940391</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedThreetimes</name>
 			<value>10</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1547856750206</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>WaitTimeForRecordsProcessedThreetimes</name>
+			<value>5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1540934940445</modTime>
+			<modTime>1547856750258</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
