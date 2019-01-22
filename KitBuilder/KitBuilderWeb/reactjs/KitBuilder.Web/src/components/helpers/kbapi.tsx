@@ -3,7 +3,7 @@ const ApiMethods  = {
      Kits: "/api/Kits",
      InstructionList: "/api/InstructionList/",
      LinkGroupsSearch: "/api/LinkGroups/LinkGroupsSearch",
-     AssignKit: "/api/Venues"
+     AssignKit: "/api/Venues",
      InstructionListByType: "/api/InstructionList/GetInstructionsListByType"
 
 }
