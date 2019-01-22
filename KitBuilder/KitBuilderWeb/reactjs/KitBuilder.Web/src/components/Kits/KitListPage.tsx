@@ -18,7 +18,8 @@ interface IKitListsPageState {
     kits: Array<any>,
     searchMainItemName: string,
     searchScanCode: string,
-    searchLinkGroupName: string
+    searchLinkGroupName: string,
+    searchkitDescription: string
 }
 
 interface IKitsProps {
@@ -36,7 +37,8 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
             kits: [],
             searchMainItemName: "",
             searchScanCode: "",
-            searchLinkGroupName: ""
+            searchLinkGroupName: "",
+            searchkitDescription : ""
         }
 
         this.onSearch = this.onSearch.bind(this);
@@ -44,6 +46,8 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
         this.mainItemChange = this.mainItemChange.bind(this);
         this.scanCodeChange = this.scanCodeChange.bind(this);
         this.linkGroupChange = this.linkGroupChange.bind(this);
+        this.kitDescriptionChange = this.kitDescriptionChange.bind(this);
+        
         this.onDelete = this.onDelete.bind(this);
     }
     mainItemChange(event: any) {
@@ -58,9 +62,14 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
         this.setState({ searchLinkGroupName: event.target.value });
     }
 
+    kitDescriptionChange(event: any) {
+        this.setState({ searchkitDescription: event.target.value });
+    }
+
     clear() {
         this.setState({ searchMainItemName: "" });
         this.setState({ searchScanCode: "" });
+        this.setState({ searchkitDescription: "" });
         this.setState({ searchLinkGroupName: "" });
         this.setState({ error: null });
         this.setState({ message: null });
@@ -124,7 +133,7 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
 
     onSearch() {
 
-        if (this.state.searchMainItemName == "" && this.state.searchScanCode == "" && this.state.searchLinkGroupName == "") {
+        if (this.state.searchMainItemName == "" && this.state.searchScanCode == "" && this.state.searchkitDescription == "" && this.state.searchLinkGroupName == "") {
             this.setState({
                 error: "Please enter atleast one select criteria."
             });
@@ -142,6 +151,9 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
 
         if (this.state.searchScanCode != "")
             urlParam =urlParam + "ItemScanCode=" + this.state.searchScanCode + "&"
+
+        if (this.state.searchkitDescription != "")
+            urlParam =urlParam + "KitDescription=" + this.state.searchkitDescription + "&"
 
         if (this.state.searchLinkGroupName != "")
             urlParam = urlParam + "LinkGroupName=" + this.state.searchLinkGroupName+ "&"
@@ -228,6 +240,8 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
                             LinkGroupValue = {this.state.searchLinkGroupName}
                             ScanCodeValue = {this.state.searchScanCode}
                             MainItemValue = {this.state.searchMainItemName}
+                            KitDescription = {this.kitDescriptionChange}
+                            KitDescriptionValue = {this.state.searchkitDescription}
                         />
                     </Grid>
                     <Grid item md={10}>

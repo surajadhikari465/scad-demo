@@ -28,10 +28,10 @@ function SearchKits(props: any) {
     return (
         <React.Fragment>
             <Grid container justify="center" alignItems="center" className={props.classes.root}>
-                <Grid item md={3} className={props.classes.label}>
+                <Grid item md={2} className={props.classes.label}>
                     <span>Main Item Name: </span>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={2}>
                     <TextField variant="outlined" className={props.classes.textField} onChange={props.MainItemName} value={props.MainItemValue}></TextField>
                 </Grid>
                 <Grid item md={2}>
@@ -39,7 +39,7 @@ function SearchKits(props: any) {
                         <span>  Main Item Scancode:</span>
                     </Grid>
                 </Grid>
-                <Grid item md={4}>
+                <Grid item md={6}>
                     <Grid container justify="flex-start">
                         <TextField variant="outlined" className={props.classes.textField} onChange={props.MainItemScanCode} value={props.ScanCodeValue}></TextField>
                     </Grid>
@@ -47,19 +47,26 @@ function SearchKits(props: any) {
             </Grid>
 
             <Grid container justify="center" alignItems="center" className={props.classes.root}>
-                <Grid item md={3} className={props.classes.label}>
+                <Grid item md={2} className={props.classes.label}>
                     <span>Link Group Name: </span>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={2}>
                     <TextField variant="outlined" className={props.classes.textField} onChange={props.LinkGroupName} value={props.LinkGroupValue}></TextField>
                 </Grid>
 
-                <Grid md={1} container justify="flex-start">
+                <Grid item md={2} className={props.classes.label}>
+                    <span>Kit Description: </span>
+                </Grid>
+                <Grid item md={2}>
+                    <TextField variant="outlined" className={props.classes.textField} onChange={props.KitDescription} value={props.KitDescriptionValue}></TextField>
+                </Grid>
+
+                <Grid md={2} container justify="flex-end">
                     <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onSearch()} >
                         Search
                     </Button>
                 </Grid>
-                <Grid md={5} container justify="flex-start">
+                <Grid md={2} container justify="flex-start">
                     <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.clear()} >
                         Clear
                     </Button>
