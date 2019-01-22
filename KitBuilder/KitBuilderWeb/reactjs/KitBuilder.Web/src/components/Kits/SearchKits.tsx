@@ -7,7 +7,6 @@ const styles = (theme: any) => ({
         marginTop: 20
     },
     label: {
-        fontSize: 20,
         textAlign: "right" as 'right',
         marginBottom: 0 + ' !important',
         paddingRight: 10 + 'px'
@@ -35,7 +34,7 @@ function SearchKits(props: any) {
                     <TextField variant="outlined" className={props.classes.textField} onChange={props.MainItemName} value={props.MainItemValue}></TextField>
                 </Grid>
                 <Grid item md={2}>
-                    <Grid container justify="flex-start" className={props.classes.label}>
+                    <Grid container justify="center" className={props.classes.label}>
                         <span>  Main Item Scancode:</span>
                     </Grid>
                 </Grid>

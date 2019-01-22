@@ -12,7 +12,6 @@ const styles = (theme: any) => ({
         marginTop: 20
     },
     label: {
-        fontSize: 20,
         textAlign: "right" as 'right',
         marginBottom: 0 + ' !important',
         paddingRight: 10 + 'px'
