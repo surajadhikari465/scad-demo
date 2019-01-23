@@ -29,7 +29,7 @@ function DisplayInstructionLists(props: any) {
                     <TextField variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
                 </Grid>
                 <Grid item md={2} alignItems="flex-end">
-                 <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.deleteInstruction()} >
+                 <Button variant="contained" color="secondary" className={props.classes.button} onClick={() => props.deleteInstruction()} >
                             Delete Instruction
                 </Button>
 
@@ -42,7 +42,7 @@ function DisplayInstructionLists(props: any) {
 
                 <Grid item md={3}>
                     <Grid container justify="flex-end">
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onAddMember()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddMember()} >
                             Add Member
                 </Button>
                     </Grid>
@@ -96,14 +96,14 @@ function DisplayInstructionLists(props: any) {
             <Grid container>
                 <Grid item md={6}>
                     <Grid container>
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onSaveChanges()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
                             Save Changes
                 </Button>
                     </Grid>
                 </Grid>
                 <Grid item md={6}>
                     <Grid container justify="flex-end">
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onPublishChanges()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
                             Publish Changes
                 </Button>
                     </Grid>

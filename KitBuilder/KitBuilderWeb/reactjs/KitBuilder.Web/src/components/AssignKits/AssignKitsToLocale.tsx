@@ -46,7 +46,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
 
      loadKit(kitId: number) {
           let url = urlKit;
-          url = url + '/' + kitId;
+                   url = url + '/' + kitId;
           fetch(url)
                .then(response => {
                     return response.json();
@@ -164,6 +164,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                }
              });
      }
+
      saveData() {
           var { data } = this.state;
           var dest: Array<any>;
@@ -219,7 +220,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                     </Grid>
                     <h3>Kit Name: {kitName}</h3>
                     <Grid container justify="flex-end">
-                         <Button variant="contained" color="default" onClick={() => this.saveChanges()} >
+                         <Button variant="contained" color="primary" onClick={() => this.saveChanges()} >
                               Save Changes
                          </Button>
                     </Grid>

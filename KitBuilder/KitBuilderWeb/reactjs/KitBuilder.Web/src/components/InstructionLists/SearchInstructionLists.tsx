@@ -52,14 +52,14 @@ function SearchInstructionLists(props: any) {
                 </Grid>
                 <Grid item md={5}>
                     <Grid container justify="flex-start">
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onSearch()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                             Search
                     </Button>
                     </Grid>
                 </Grid>
                 <Grid item md={10}>
                     <Grid container justify="flex-start">
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onAddNewList()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddNewList()} >
                             Add New List
                     </Button>
                     </Grid>

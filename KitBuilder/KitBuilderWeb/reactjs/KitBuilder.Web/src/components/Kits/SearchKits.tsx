@@ -61,12 +61,12 @@ function SearchKits(props: any) {
                 </Grid>
 
                 <Grid md={2} container justify="flex-end">
-                    <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.onSearch()} >
+                    <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                         Search
                     </Button>
                 </Grid>
                 <Grid md={2} container justify="flex-start">
-                    <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.clear()} >
+                    <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.clear()} >
                         Clear
                     </Button>
                 </Grid>
