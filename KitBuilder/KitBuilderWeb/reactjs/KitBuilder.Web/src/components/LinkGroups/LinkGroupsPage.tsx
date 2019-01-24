@@ -7,6 +7,7 @@ import axios from 'axios'
 import { KbApiMethod } from '../helpers/kbapi';
 import EditLinkGroup from './EditLinkGroup';
 import { AddNewLinkGroupModal } from './AddNewLinkGroupModal';
+import  {PerformLinkGroupSearch} from './LinkGroupFunctions'
 
 const errorStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
@@ -26,7 +27,7 @@ interface ILinkGroupsPageState {
     error: any,
     message: any,
     searchOptions: SearchOptions,
-    linkGroupResults: [],
+    linkGroupResults: any,
     showSearchProgress: boolean,
     showEditScreen: boolean,
     showSearchScreen: boolean,
@@ -90,21 +91,16 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
         this.setState({ ...this.state, searchOptions: temp });
     }
 
+
     onSearch() {
 
         this.setState({ ...this.state, showSearchProgress: true });
         var searchOptions = this.state.searchOptions;
 
-        axios.get(KbApiMethod("LinkGroupsSearch"), {
-            params: {
-                LinkGroupName: searchOptions.LinkGroupName,
-                LinkGroupDesc: searchOptions.LinkGroupDesc,
-                ModifierName: searchOptions.ModifierName,
-                ModifierPLU: searchOptions.ModifierPLU
-            }
-        })
-            .then(res => {
-                this.setState({ ...this.state, linkGroupResults: res.data })
+
+        PerformLinkGroupSearch(searchOptions.LinkGroupName, searchOptions.LinkGroupDesc, searchOptions.ModifierName, searchOptions.ModifierPLU)
+            .then(result => {
+                this.setState({ ...this.state, linkGroupResults: result })
             }).catch(error => {
                 this.setState({ ...this.state, error: error });
             });
@@ -114,8 +110,6 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
         this.loadLinkGroup(linkGroupId)
             .then(result => {
                 this.setState({ selectedLinkGroup: result, showEditScreen: true, showSearchScreen: false })
-            }).then(() => {
-
             })
             .catch(error => {
                 alert(error);
@@ -128,17 +122,19 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
 
     loadLinkGroup(linkGroupId: number) {
         return new Promise((resolve, reject) => {
-
             //pass linkgroupid and true to return child objects.
-            axios.get(KbApiMethod("LinkGroups") + "/" + linkGroupId + "/true", {
+            axios.get(KbApiMethod("LinkGroups") + "/" + linkGroupId + "/true", { 
             }).then(res => {
-
                 resolve(res.data);
             }).catch(error => {
                 reject(error);
             });
         })
     }
+
+ 
+
+ 
 
 
     render() {
@@ -186,7 +182,8 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
                         <Grid container justify="center">
                             <Grid item md={10} >
                                 <EditLinkGroup data={this.state.selectedLinkGroup}
-                                    handleCancelClick={this.switchToSearchMode} />
+                                    handleCancelClick={this.switchToSearchMode}
+                                />
                             </Grid>
 
                         </Grid>
