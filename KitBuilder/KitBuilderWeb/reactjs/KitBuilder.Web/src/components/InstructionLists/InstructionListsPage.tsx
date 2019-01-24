@@ -24,7 +24,7 @@ interface IInstructionListsPageState {
      snackOpen: boolean,
      instructionTypeName:"",
 }
- 
+
 interface IInstructionListsPageProps {
 }
 
@@ -164,7 +164,7 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
                     this.setState({
                          instructionListDto: ["error"]
                     });
-               })
+              })
                     .then(data =>
                          this.setState({
                               instructionListDto: data
@@ -270,7 +270,7 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
      {
              var headers = 
              {
-               'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
+              'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
               }
            var urlParam = this.state.selectedInstructionTypeIdvalue;
 
@@ -283,7 +283,7 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
                     message: null
                })   
                 return;
- 
+
            }
 
            var urlDelete = urlStart + urlParam;
@@ -484,7 +484,6 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
 
           newInstructionList.InstructionTypeId = Number(newInstructionList.InstructionTypeId);
 
-
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
            }
@@ -569,7 +568,7 @@ export class InstructionListsPage extends React.Component <IInstructionListsPage
                               onAddNewList={this.onAddNewList}
                               value = {this.state.selectedInstructionTypeIdvalue}
                               />
-                    </Grid>
+                   </Grid>
                     <Grid item md={10}>
                          <DisplayInstructionsLists
                               data={this.state.instructionList}

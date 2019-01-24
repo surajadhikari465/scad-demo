@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 const marginBottom = { marginBottom: 20 };
 const styles = (theme: any) => ({
     root: {
-        marginTop: 50
+        marginTop: 30
     },
     deleteButton: {
         margin: 0,
@@ -16,7 +16,10 @@ const styles = (theme: any) => ({
     },
     instructionValue: {
         fontSize: 24
-    }
+    },
+    input1: {
+        height: 8
+      },
 
 });
 
@@ -25,8 +28,8 @@ function DisplayInstructionLists(props: any) {
         <div className={props.classes.root}>
             <Grid container alignItems="flex-start" style={marginBottom}>
                 <Grid item md={4}>
-                    <span> Instruction List Name:</span>
-                    <TextField variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
+                <span style={{marginRight: '8px', textAlign: 'center'}}> Instruction List Name:</span>
+                    <TextField InputProps={{ classes: { input: props.classes.input1 } }} variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
                 </Grid>
                 <Grid item md={2} alignItems="flex-end">
                  <Button variant="contained" color="secondary" className={props.classes.button} onClick={() => props.deleteInstruction()} >
@@ -91,9 +94,9 @@ function DisplayInstructionLists(props: any) {
                     }
                 ]}
                 defaultPageSize={5}
-                className="-striped -highlight"
+               className="-striped -highlight"
             />
-            <Grid container>
+            <Grid container style={{marginTop: '20px'}}>
                 <Grid item md={6}>
                     <Grid container>
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >

@@ -6,7 +6,6 @@ import  Select  from '@material-ui/core/Select';
 import  MenuItem  from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 
-
 const styles = (theme: any) => ({
     root: {
         marginTop: 20
@@ -30,12 +29,11 @@ const styles = (theme: any) => ({
 function SearchInstructionLists(props: any) {
     const { options, value } = props;
 
-
     return (
         <React.Fragment>
             <Grid container justify="center" alignItems="center" className={props.classes.root}>
                 <Grid item md={3} className={props.classes.label}>
-                    <span>Instruction List Name: </span>
+                <span style={{marginLeft: '20px', textAlign: 'center'}}> Instruction List Name: </span>
                 </Grid>
                 <Grid item md={3}>
                     <FormControl className={props.classes.formControl}>
@@ -50,8 +48,8 @@ function SearchInstructionLists(props: any) {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item md={5}>
-                    <Grid container justify="flex-start">
+                <Grid item md={5} style={{marginLeft: '20px'}}>
+                    <Grid container   justify="flex-start">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                             Search
                     </Button>
