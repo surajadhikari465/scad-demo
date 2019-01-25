@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateLocaleManagerHandlerTests
     {
         private UpdateLocaleManagerHandler managerHandler;
@@ -151,6 +151,30 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 // Then.
                 Assert.IsTrue(e.Message.StartsWith("Error updating Locale"));
             }
+        }
+
+        [TestMethod]
+        public void UpdateLocaleManager_ShouldCallCommandHandlers_WithNullCloseDate()
+        {
+            // Given.
+            manager.CloseDate = null;
+            getLocaleQuery.Setup(q => q.Search(It.IsAny<GetLocaleParameters>())).Returns(new List<Locale> { new Locale { localeID = manager.LocaleId } });
+
+            // When.
+            managerHandler.Execute(manager);
+
+            // Then.
+            updateLocaleHandler.Verify(cm => cm.Execute(It.Is<UpdateLocaleCommand>(c =>
+                c.CloseDate == null )));
+
+            getLocaleQuery.Verify(q => q.Search(It.Is<GetLocaleParameters>(p => p.LocaleId == manager.LocaleId)));
+
+            addLocaleMessageHandler.Verify(cm => cm.Execute(It.Is<AddLocaleMessageCommand>(c =>
+                c.Locale.localeID == manager.LocaleId)));
+
+            addVimLocaleEventCommandHandler.Verify(m => m.Execute(It.Is<AddVimEventCommand>(c =>
+                c.EventReferenceId == manager.LocaleId
+                && c.EventTypeId == VimEventTypes.LocaleUpdate)));
         }
     }
 }

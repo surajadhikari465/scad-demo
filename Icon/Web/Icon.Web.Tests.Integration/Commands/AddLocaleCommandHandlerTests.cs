@@ -11,7 +11,7 @@ using Icon.Web.DataAccess.Queries;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddLocaleCommandHandlerTests
     {
         private AddLocaleCommandHandler addLocaleCommandHandler;
@@ -171,5 +171,32 @@ namespace Icon.Web.Tests.Integration.Commands
             // Then.
             // Expected exception.
         }
+
+        [TestMethod]
+        public void AddLocale_WhenCloseDateIsNull_NewLocaleShouldBeAdded_WithNullCloseDate()
+        {
+            // Given.
+            StageTestAgency();
+
+            addLocaleCommand.BusinessUnit = "99999";
+            addLocaleCommand.PhoneNumber = "512-555-5555";
+            addLocaleCommand.ContactPerson = "Trey D'Amico";
+            addLocaleCommand.StoreAbbreviation = "ITS";
+            addLocaleCommand.EwicAgencyId = testAgencyId;
+            addLocaleCommand.IrmaStoreId = "TestIrmaStoreId";
+            addLocaleCommand.StorePosType = "TestStorePostType";
+            addLocaleCommand.Fax = "TestFax";
+            addLocaleCommand.UserName = "Test User";
+            addLocaleCommand.CloseDate = null;
+
+            // When.
+            addLocaleCommandHandler.Execute(addLocaleCommand);
+
+            // Then.
+            var newLocale = context.Locale.Single(l => l.localeName == addLocaleCommand.LocaleName);
+
+            Assert.AreEqual(addLocaleCommand.CloseDate, newLocale.localeCloseDate);
+        }
+
     }
 }

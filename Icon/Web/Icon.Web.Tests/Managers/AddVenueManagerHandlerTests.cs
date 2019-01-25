@@ -55,7 +55,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         }
 
         [TestMethod]
-        public void AddLVenueManager_ShouldCallCommandHandlers()
+        public void AddLocaleVenueManager_ShouldCallCommandHandlers()
         {
             //Given
             getLocaleQuery.Setup(q => q.Search(It.IsAny<GetLocaleParameters>()))
@@ -88,7 +88,8 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void AddVenueManager_CommandHandlerThrowsException_ShouldThrowExceptionWithCustomMessage()
         {
             // Given.
-            addVenueCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddVenueCommand>())).Throws(new Exception("Test Exception"));
+            addVenueCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddVenueCommand>()))
+                .Throws(new Exception("Test Exception"));
 
             // When.
             try

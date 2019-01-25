@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddLocaleManagerHandlerTests
     {
         private AddLocaleManagerHandler managerHandler;

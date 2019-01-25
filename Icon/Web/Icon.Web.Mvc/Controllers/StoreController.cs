@@ -412,7 +412,7 @@ namespace Icon.Web.Controllers
             viewModel.StorePosTypes = StorePosTypes.AsDictionary.Values.Select(t => new SelectListItem { Value = t, Text = t });
             viewModel.StorePosTypes.First().Selected = true;
             viewModel.EwicAgencies = this.eWicAgencies.Select(a => new SelectListItem { Value = a.AgencyId, Text = a.AgencyId });
-            viewModel.CurrencyTypes = this.currencies.Select(c => new SelectListItem { Value = c.currencyTypeID.ToString(), Text = c.currencyTypeCode });
+            viewModel.CurrencyTypes = this.currencies?.Select(c => new SelectListItem { Value = c.currencyTypeID.ToString(), Text = c.currencyTypeCode });
 
             return viewModel;
         }

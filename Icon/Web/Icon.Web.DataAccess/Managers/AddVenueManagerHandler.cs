@@ -65,7 +65,7 @@ namespace Icon.Web.DataAccess.Managers
                 catch (Exception exception)
                 {
                     transaction.Rollback();
-                    throw new CommandException(String.Format("Error updating Locale {0}: {1}", data.LocaleName, exception.Message), exception);
+                    throw new CommandException(String.Format("Error adding Locale {0}: {1}", data.LocaleName, exception.Message), exception);
                 }
             }
         }

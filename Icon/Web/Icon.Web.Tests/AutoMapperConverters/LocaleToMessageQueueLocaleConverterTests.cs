@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.AutoMapperConverters
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class LocaleToMessageQueueLocaleConverterTests
     {
         [TestMethod]
@@ -47,6 +47,25 @@ namespace Icon.Web.Tests.Unit.AutoMapperConverters
             Assert.IsNotNull(result);
             //should convert posTimeZoneName not timezoneName
             Assert.AreEqual(result.TimezoneName, source.LocaleAddress.FirstOrDefault().Address.PhysicalAddress.Timezone.posTimeZoneName);
+        }
+
+        [TestMethod]
+        public void LocaleToMessageQueueConverter_ShouldNotConvertNullCloseDateToMaxDate()
+        {
+            // Given.
+            Mapper.CreateMap<Locale, MessageQueueLocale>().ConvertUsing<LocaleToMessageQueueLocaleConverter>();
+            Locale source = TestHelpers.GetFakeLocaleWithAddress();
+            source.localeCloseDate = null;
+            Assert.IsNotNull(source.LocaleAddress.FirstOrDefault().Address.PhysicalAddress.Timezone,
+                "LocaleAddress.Address.PhysicalAddress.Timezone must have value for a valid test");
+
+            // When.
+            var result = Mapper.Map<MessageQueueLocale>(source);
+
+            // Then.
+            Assert.IsNotNull(result);
+            //should leave close date as null
+            Assert.IsNull(result.LocaleCloseDate);
         }
     }
 }

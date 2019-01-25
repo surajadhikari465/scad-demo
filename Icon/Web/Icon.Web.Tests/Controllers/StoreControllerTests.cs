@@ -154,7 +154,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void CreateStore_ExceptionOccurred_ViewDataShouldContainErrorMessage()
         {
             // Given.
-            mockAddLocaleManager.Setup(c => c.Execute(It.IsAny<AddLocaleManager>())).Throws(new CommandException("error"));
+            mockAddLocaleManager.Setup(c => c.Execute(It.IsAny<AddLocaleManager>()))
+                .Throws(new CommandException("error"));
 
             LocaleManagementViewModel viewModel = new LocaleManagementViewModel()
             {

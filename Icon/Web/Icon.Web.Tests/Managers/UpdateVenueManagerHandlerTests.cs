@@ -67,21 +67,23 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void UpdateVenueManager_ShouldCallCommandHandlers()
         {
             // Given.
-            getLocaleQuery.Setup(q => q.Search(It.IsAny<GetLocaleParameters>())).Returns(new List<Locale> { new Locale { localeID = manager.LocaleId } });
+            getLocaleQuery.Setup(q => q.Search(It.IsAny<GetLocaleParameters>()))
+                .Returns(new List<Locale> { new Locale { localeID = manager.LocaleId } });
 
             // When.
             managerHandler.Execute(manager);
 
             // Then.
-            updateVenueHandler.Verify(cm => cm.Execute(It.Is<UpdateVenueCommand>(c =>
-               
+            updateVenueHandler.Verify(cm => cm.Execute(It.IsAny<UpdateVenueCommand>()));
+            updateVenueHandler.Verify(cm => cm.Execute(It.Is<UpdateVenueCommand>(c =>               
                 c.CloseDate == manager.CloseDate &&
                 c.VenueCode == manager.VenueCode &&
-                c.VenueOccupant == manager.VenueCode &&
-                c.LocaleSubType == manager.VenueCode &&
+                c.VenueOccupant == manager.VenueOccupant &&
+                c.LocaleSubType == manager.LocaleSubType &&
                 c.LocaleId == manager.LocaleId &&
                 c.LocaleName == manager.LocaleName &&
-                c.OpenDate == manager.OpenDate)));
+                c.OpenDate == manager.OpenDate
+                )));
 
             getLocaleQuery.Verify(q => q.Search(It.Is<GetLocaleParameters>(p => p.LocaleId == manager.LocaleId)));
 
