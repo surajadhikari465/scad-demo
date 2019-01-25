@@ -73,7 +73,6 @@ if (@Env = 'test')
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDT-SW', N'ItemCatalog_Test', N'dbo', N'IconItemChangeQueue', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDT-UK', N'ItemCatalog_Test', N'dbo', N'IConPOSPushPublish', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDT-UK', N'ItemCatalog_Test', N'dbo', N'IconItemChangeQueue', 10)
-		
 	end
 
 if (@Env = 'qa')
@@ -123,7 +122,6 @@ if (@Env = 'qa')
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDQ-SW\SWQ', N'ItemCatalog', N'dbo', N'IconItemChangeQueue', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDQ-UK\UKQ', N'ItemCatalog', N'dbo', N'IConPOSPushPublish', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDQ-UK\UKQ', N'ItemCatalog', N'dbo', N'IconItemChangeQueue', 10)
-
 	end
 
 if (@Env = 'prd')
@@ -173,5 +171,4 @@ if (@Env = 'prd')
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDP-SW\SWP', N'ItemCatalog', N'dbo', N'IconItemChangeQueue', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDP-UK\UKP', N'ItemCatalog', N'dbo', N'IConPOSPushPublish', 10)
 		INSERT [app].[RetentionPolicy] ([Server], [Database], [Schema], [Table], [DaysToKeep]) VALUES (N'IDP-UK\UKP', N'ItemCatalog', N'dbo', N'IconItemChangeQueue', 10)
-
 	end
