@@ -807,6 +807,7 @@
     <Build Include="dbo\Stored Procedures\GetItemsBySearchCriteria.sql" />
     <None Include="Scripts\PostDeploymentScripts\UpdateMammothClosedStores.sql" />
     <Build Include="dbo\Stored Procedures\AuditItemLocale.sql" />
+    <Build Include="dbo\Stored Procedures\AuditGPMPrice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
