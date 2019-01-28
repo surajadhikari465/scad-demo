@@ -61,6 +61,7 @@ namespace KitBuilderWebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+			services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
