@@ -1146,5 +1146,24 @@ namespace Icon.ApiController.Tests.QueueReaders
 			Assert.IsNull(locales);
 		}
 
-	}
+        [TestMethod]
+        public void GetLocaleMiniBulk_StoreMessageWithNullCloseDate_ReturnesStoreElementWithMinDateValue()
+        {
+            // Given.
+            var fakeMessageQueueLocales = new List<MessageQueueLocale>
+            {
+                new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Store)
+            };
+            fakeMessageQueueLocales[0].LocaleId = stores[0].localeID;
+            fakeMessageQueueLocales[0].LocaleCloseDate = null;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+            // Then.
+            var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
+            Assert.AreEqual(DateTime.MinValue, store.closeDate);
+            //Assert.IsNull(store.closeDate);
+        }
+    }
 }

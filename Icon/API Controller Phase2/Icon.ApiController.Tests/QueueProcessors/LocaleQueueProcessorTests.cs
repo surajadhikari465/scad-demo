@@ -304,7 +304,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
         }
 
         [TestMethod]
-        public void ProcessQueuedLocaleEvents_WhenSerializationErrorForAllne_ShouldCallJobMonitor_WithExpectedValues()
+        public void ProcessQueuedLocaleEvents_WhenSerializationErrorForAll_ShouldCallJobMonitor_WithExpectedValues()
         {
             // Given.
             var fakeMessageQueueLocales = new List<MessageQueueLocale> {

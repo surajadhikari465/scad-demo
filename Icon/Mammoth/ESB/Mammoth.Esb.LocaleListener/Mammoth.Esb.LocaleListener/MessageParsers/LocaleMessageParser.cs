@@ -82,7 +82,7 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
         {
             var address = store.addresses[0].type.Item as PhysicalAddressType;
 
-            return new LocaleModel
+            var localeModel =  new LocaleModel
             {
                 Region = regionNameToCodeDictionary[region.name],
                 StoreName = store.name,
@@ -100,8 +100,12 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
                 TerritoryAbbrev = address.territoryType.code,
                 Timezone = address.timezone.code,
                 LocaleOpenDate = store.openDateSpecified ? store.openDate : (DateTime?)null,
-                LocaleCloseDate = store.closeDateSpecified ? store.closeDate : (DateTime?)null
+                LocaleCloseDate = store.closeDateSpecified && store.closeDate != DateTime.MinValue
+                    ? store.closeDate 
+                    : (DateTime?)null
             };
+
+            return localeModel;
         }
 
         private static string GetTraitValue(LocaleType store, string traitCode)

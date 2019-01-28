@@ -48,5 +48,18 @@ namespace Mammoth.Esb.LocaleListener.Tests.MessageParsers
             Assert.AreEqual(new DateTime(2001, 4, 25), models[0].LocaleOpenDate.Value);
             Assert.IsFalse(models[0].LocaleCloseDate.HasValue);
         }
+
+        [TestMethod]
+        public void ParseMessage_ValidMessageWithMinCloseDate_ShouldReturnLocaleModel()
+        {
+            //Given
+            mockMessage.SetupGet(m => m.MessageText).Returns(File.ReadAllText(@"TestMessages\valid_message_with_min_close_date.xml"));
+
+            //When
+            var models = messageParser.ParseMessage(mockMessage.Object);
+
+            //Then
+            Assert.IsFalse(models[0].LocaleCloseDate.HasValue);
+        }
     }
 }

@@ -167,6 +167,9 @@
     <Compile Include="SimpleInjectorInitializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestMessages\valid_message_with_min_close_date.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestMessages\valid_message.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
