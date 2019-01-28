@@ -124,7 +124,7 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
         }
 
     createKit() {
-         window.location.hash = "#/CreateKit";
+         window.location.hash = "#/kits/CreateKit";
     }
 
     onEdit() {
@@ -215,7 +215,6 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
     }
 
     render() {
-
         return (
 
             <React.Fragment>
