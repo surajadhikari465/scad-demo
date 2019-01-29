@@ -18,35 +18,41 @@ namespace KitBuilderWebApi.Helper
         private int kitLocaleId;
         private int storeLocaleId;
         private IRepository<KitLocale> kitLocaleRepository;
-        private ILogger<CaloricCalculator> logger;
+		private IRepository<Locale> localeRepository;
+		private ILogger<CaloricCalculator> logger;
 
-        public CaloricCalculator(int kitLocaleId, int storeLocaleId, IRepository<KitLocale> kitLocaleRepository, ILogger<CaloricCalculator> logger)
+        public CaloricCalculator(int kitLocaleId, 
+							int storeLocaleId, 
+							IRepository<KitLocale> kitLocaleRepository, 
+							IRepository<Locale> localeRepository)
         {
-            this.logger = logger;
             this.kitLocaleId = kitLocaleId;
             this.storeLocaleId = storeLocaleId;
             this.kitLocaleRepository = kitLocaleRepository;
-        }
+			this.localeRepository = localeRepository;
+
+		}
 
         public async Task<KitLocaleDto> Run()
         {
-            KitLocaleDto kitLocaledto = GetKitByKitLocaleId(kitLocaleId);
-            var scanCode = from k in kitLocaledto.KitLinkGroupLocale
+            KitLocaleDto kitLocaleDto = GetKitByKitLocaleId(kitLocaleId);
+            var scanCode = from k in kitLocaleDto.KitLinkGroupLocale
                           .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
                           .Select(r => r.KitLinkGroupItem.LinkGroupItem.Item.ScanCode)
                           select k;
-            int businessUnitID = 10;
+
+			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
+			int businessUnitId = storeBusinessUnitId == null ? 0 : (int)storeBusinessUnitId;
+
             List<StoreItem> storeItemsList = new List<StoreItem>();
 
             foreach (string scancode in scanCode)
             {
-                storeItemsList.Add(new StoreItem()
-                {
-                    BusinessUnitId = businessUnitID,
-                    ScanCode = scancode
-                }
-
-                );
+				storeItemsList.Add(new StoreItem()
+				{
+					BusinessUnitId = businessUnitId, 
+					ScanCode = scancode
+				});
             }
 
             var result = GetAuthorizedStatus(storeItemsList);
@@ -55,13 +61,20 @@ namespace KitBuilderWebApi.Helper
             //update kit locale
             foreach(ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
             {
-                var kitLinkGroupItemDtos = kitLocaledto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).Select(s=>s.KitLinkGroupItem;
-                foreach(KitLinkGroupItemDto kitLinkGroupItemDto in kitLinkGroupItemDtos)
+                var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).ToList();
+                foreach(KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
                 {
-                    // kitLinkGroupItemDto.   itemStorePriceModel.Price;
-                }
+					//kitLinkGroupItemDto.   itemStorePriceModel.Price;
+
+					kitLinkGroupItemLocaleDto.ItemId = itemStorePriceModel.ItemId;
+					kitLinkGroupItemLocaleDto.RegularPrice = itemStorePriceModel.Price;
+					kitLinkGroupItemLocaleDto.Exclude = !itemStorePriceModel.Authorized;
+				}
             }
-        }
+
+			return kitLocaleDto;
+
+		}
 
         internal KitLocaleDto GetKitByKitLocaleId(int kitLocaleId)
         {
@@ -70,14 +83,23 @@ namespace KitBuilderWebApi.Helper
                     .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
                     .ThenInclude(i => i.Item)).FirstOrDefault());
 
-            return Mapper.Map<KitLocaleDto>(kitLocale);
+			try
+			{
+				KitLocaleDto kitLocaleDto = Mapper.Map<KitLocaleDto>(kitLocale);
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+
+			return Mapper.Map<KitLocaleDto>(kitLocale);
         }
 
         internal async Task<IEnumerable<ItemStorePriceModel>> GetAuthorizedStatus(ICollection<StoreItem> storeItems)
         {
             string url = "http://mammoth-test/api/price/";
 
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsJsonAsync(url, storeItems))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
 using  LocaltypeModel = KitBuilder.DataAccess.DatabaseModels.LocaleType;
 
@@ -28,7 +29,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<Kit> kitRepository;
         private IRepository<Locale> localeRepository;
         private IRepository<KitLocale> kitLocaleRepository;
-        private IRepository<LinkGroupItem> linkGroupItemRepository;
+		private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
         private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
@@ -43,7 +44,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<Kit> kitRepository,
                              IRepository<Locale> localeRepository,
                              IRepository<KitLocale> kitLocaleRepository,
-                             IRepository<LinkGroupItem> linkGroupItemRepository,
+							 IRepository<LinkGroupItem> linkGroupItemRepository,
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitLinkGroupRepository,
                              IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository,
@@ -71,9 +72,17 @@ namespace KitBuilderWebApi.Controllers
             this.kitHelper = kitHelper;
         }
 
+		[HttpGet("{kitLocaleId}/GetKitLocale/{storeLocaleId}", Name = "ViewKitByStore")]
+		public IActionResult GetKitCaloriesByIds(int kitLocaleId, int storeLocaleId)
+		{
+			CaloricCalculator calculator = new CaloricCalculator(kitLocaleId, storeLocaleId, kitLocaleRepository,localeRepository);
+			Task<KitLocaleDto> kitLocaleDto = calculator.Run();
 
-        // GET api/kits/1/ViewKit/1 GetKitByLocaleId
-        [HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
+			return Ok(kitLocaleDto.Result);
+		}
+
+		// GET api/kits/1/ViewKit/1 GetKitByLocaleId
+		[HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
         public IActionResult GetKitByLocaleId(int kitId, int localeId, bool loadChildObjects)
         {
             int? localeIdWithKitLocaleRecord = getlocaleIdAtWhichkitRecordExits(kitId, localeId);

@@ -17,7 +17,7 @@ namespace KitBuilderWebApi.Helper
 			ApiClient = new HttpClient();
 			//ApiClient.BaseAddress = new Uri(baseUri);
 			ApiClient.DefaultRequestHeaders.Accept.Clear();
-			ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/jason")); 
+			ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/jason"));
 		}
 	}
 }
