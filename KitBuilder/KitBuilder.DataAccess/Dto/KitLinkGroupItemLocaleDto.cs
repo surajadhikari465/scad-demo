@@ -11,10 +11,13 @@ namespace KitBuilder.DataAccess.Dto
 		public int KitLinkGroupItemId { get; set; }
 		[Required]
 		public int KitLinkGroupLocaleId { get; set; }
+		public int? ItemId { get; set; }
 		public string Properties { get; set; }
 		[Required]
 		public int DisplaySequence { get; set; }
 		public bool? Exclude { get; set; }
+		public int? Calories { get; set; }
+		public decimal? RegularPrice { get; set; }
 		public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
 		public string LastModifiedBy { get; set; }
@@ -23,3 +26,4 @@ namespace KitBuilder.DataAccess.Dto
 		public KitLocaleDto KitLocale { get; set; }
 	}
 }
+
