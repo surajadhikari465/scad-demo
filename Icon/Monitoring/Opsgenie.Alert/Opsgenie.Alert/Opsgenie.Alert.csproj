@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IOpsgenieAlert.cs" />
-    <Compile Include="OpsGenieAlert.cs" />
+    <Compile Include="OpsgenieAlert.cs" />
     <Compile Include="OpsgenieRequest.cs" />
     <Compile Include="OpsgenieResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
