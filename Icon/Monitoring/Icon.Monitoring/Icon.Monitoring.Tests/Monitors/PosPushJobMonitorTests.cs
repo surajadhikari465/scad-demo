@@ -2,7 +2,7 @@
 using Icon.Monitoring.Common;
 using Icon.Monitoring.Common.Constants;
 using Icon.Monitoring.Common.Enums;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess.Queries;
@@ -22,7 +22,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private const string RunningStatus = "RUNNING";
         private const string CompletedStatus = "COMPLETED";
 
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IMonitorSettings> mockSettings;
         private List<IrmaRegions> allRegions;
         private Mock<ILogger> mockLogger;
@@ -33,15 +33,15 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             this.allRegions = Enum.GetValues(typeof(IrmaRegions)).Cast<IrmaRegions>().ToList();
             this.mockSettings = new Mock<IMonitorSettings>();
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
-            JobStatusCache.PagerDutyTracker.Clear();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
+            JobStatusCache.OpsgenieTracker.Clear();
             this.mockLogger = new Mock<ILogger>();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            JobStatusCache.PagerDutyTracker.Clear();
+            JobStatusCache.OpsgenieTracker.Clear();
         }
 
         [TestMethod]
@@ -66,22 +66,23 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PosPushJobMonitor(
                 this.mockSettings.Object,
                 jobStatusQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             // When
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.FL).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
+                JobStatusCache.OpsgenieTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
         }
 
         [TestMethod]
@@ -105,21 +106,22 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PosPushJobMonitor(
                 this.mockSettings.Object,
                 jobStatusQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             // When
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
 
             Assert.AreEqual(
-                JobStatusCache.PagerDutyTracker.Count, 0);
+                JobStatusCache.OpsgenieTracker.Count, 0);
         }
 
         [TestMethod]
@@ -144,23 +146,24 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PosPushJobMonitor(
                 this.mockSettings.Object,
                 jobStatusQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
-            JobStatusCache.PagerDutyTracker.Add(IrmaJobClassNames.POSPushJob + "_" + "FL", runTime);
+            JobStatusCache.OpsgenieTracker.Add(IrmaJobClassNames.POSPushJob + "_" + "FL", runTime);
 
             // When
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
 
             Assert.AreEqual(
-                JobStatusCache.PagerDutyTracker.Count, 1);
+                JobStatusCache.OpsgenieTracker.Count, 1);
         }
 
         [TestMethod]
@@ -184,21 +187,22 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PosPushJobMonitor(
                 this.mockSettings.Object,
                 jobStatusQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             // When
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
 
             Assert.AreEqual(
-                 JobStatusCache.PagerDutyTracker.Count, 0);
+                 JobStatusCache.OpsgenieTracker.Count, 0);
         }
 
         [TestMethod]
@@ -231,26 +235,27 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PosPushJobMonitor(
                 this.mockSettings.Object,
                 jobStatusQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             // When
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.FL).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
+                JobStatusCache.OpsgenieTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.FL]);
 
             Assert.AreEqual(
                 posPushJobStatusFirstRegionShouldPage.First(x => x.Region == IrmaRegions.MA).LastRun,
-                JobStatusCache.PagerDutyTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.MA]);
+                JobStatusCache.OpsgenieTracker[IrmaJobClassNames.POSPushJob + "_" + IrmaRegions.MA]);
 
         }
     }

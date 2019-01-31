@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Moq;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Common.Settings;
@@ -15,7 +15,7 @@ namespace Icon.Monitoring.Tests.Monitors
     [TestClass]
     public class MammothApiControllerMonitorTests
     {
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int>> mockMessageQueueQuery;
         private Mock<IMonitorSettings> mockSettings;
         private MammothApiControllerMonitor mammothApiControllerMonitor;
@@ -24,7 +24,7 @@ namespace Icon.Monitoring.Tests.Monitors
         [TestInitialize]
         public void Initialize()
         {
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             this.mockMessageQueueQuery = new Mock<IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int>>();
             this.mockSettings = new Mock<IMonitorSettings>();
             this.messageQueueCache = new MammothMessageQueueCache();
@@ -32,7 +32,7 @@ namespace Icon.Monitoring.Tests.Monitors
             this.mammothApiControllerMonitor = new MammothApiControllerMonitor(
                 this.mockSettings.Object,
                 this.mockMessageQueueQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 new Mock<ILogger>().Object,
                 messageQueueCache);
 
@@ -56,34 +56,35 @@ namespace Icon.Monitoring.Tests.Monitors
         #region MessageQueueIdMatchesCacheFirstTime
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdMatchesCacheFirstTime_ShouldSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdMatchesCacheFirstTime_ShouldSendsOpsgenieAlert()
         {
-            MessageQueueIdMatchesFirstTime_ShouldSendPagerDutyAlert(MessageQueueTypes.Price);
+            MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(MessageQueueTypes.Price);
         }
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdMatchesCacheFirstTime_ShouldSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdMatchesCacheFirstTime_ShouldSendsOpsgenieAlert()
         {
-            MessageQueueIdMatchesFirstTime_ShouldSendPagerDutyAlert(MessageQueueTypes.ItemLocale);
+            MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(MessageQueueTypes.ItemLocale);
         }
 
-        private void MessageQueueIdMatchesFirstTime_ShouldSendPagerDutyAlert(string messagQueueType)
+        private void MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(string messagQueueType)
         {
             // Given
             int expectedQueueId = new Random(1).Next(27000);
             messageQueueCache.QueueTypeToIdMapper[messagQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messagQueueType))).Returns(expectedQueueId);
-            this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
+            this.mockOpsgenieTrigger.Setup(pd => pd.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new OpsgenieAlert.OpsgenieResponse());
 
             string expectedDescription = BuildTriggerDescription(messagQueueType);
             string expectedDetailKey = "Stuck MessageQueueId";
+            string expectedMessage = "Mammoth API Controller Issue";
 
             // When
             this.mammothApiControllerMonitor.CheckStatusAndNotify();
 
             // Then
-            mockPagerDutyTrigger.Verify(t =>
-                t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
+            mockOpsgenieTrigger.Verify(t =>
+                t.TriggerAlert(It.Is<string>(d => d == expectedMessage), It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Once);
             Assert.AreEqual(expectedQueueId, messageQueueCache.QueueTypeToIdMapper[messagQueueType].LastMessageQueueId);
@@ -94,35 +95,36 @@ namespace Icon.Monitoring.Tests.Monitors
 
         #region MessageQueueIdMatchesCacheASecondTime
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdMatchesCacheASecondTime_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdMatchesCacheASecondTime_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendPagerDutyAlert(MessageQueueTypes.Price);
+            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Price);
         }
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdMatchesCacheASecondTime_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdMatchesCacheASecondTime_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendPagerDutyAlert(MessageQueueTypes.ItemLocale);
+            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(MessageQueueTypes.ItemLocale);
         }
 
-        private void MessageQueueIdMatchesCacheSecondTime_ShouldNotSendPagerDutyAlert(string messageQueueType)
+        private void MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(string messageQueueType)
         {
             // Given
             int expectedQueueId = new Random(1).Next(27000);
             int expectedNumberOfTimesMatched = 2;
             messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 1 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(expectedQueueId);
-            this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
+            this.mockOpsgenieTrigger.Setup(pd => pd.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new OpsgenieAlert.OpsgenieResponse());
 
             string expectedDescription = BuildTriggerDescription(messageQueueType);
             string expectedDetailKey = "Stuck MessageQueueId";
+            string expectedMessage = "Stuck MessageQueueId";
 
             // When
             this.mammothApiControllerMonitor.CheckStatusAndNotify();
 
             // Then
-            mockPagerDutyTrigger.Verify(t =>
-                t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
+            mockOpsgenieTrigger.Verify(t =>
+                t.TriggerAlert(It.Is<string>(d => d == expectedMessage), It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
             Assert.AreEqual(expectedQueueId, messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
@@ -134,35 +136,36 @@ namespace Icon.Monitoring.Tests.Monitors
         #region MessageQueueIdIsZeroAndCacheIdIsZero
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendPagerDutyAlert(MessageQueueTypes.Price);
+            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Price);
         }
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendPagerDutyAlert(MessageQueueTypes.ItemLocale);
+            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(MessageQueueTypes.ItemLocale);
         }
 
-        private void MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendPagerDutyAlert(string messageQueueType)
+        private void MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(string messageQueueType)
         {
             //Given
             int expectedQueueId = 0;
             int expectedNumberOfTimesMatched = 0;
             messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = expectedQueueId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(expectedQueueId);
-            this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
+            this.mockOpsgenieTrigger.Setup(pd => pd.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new OpsgenieAlert.OpsgenieResponse());
 
             string expectedDescription = BuildTriggerDescription(messageQueueType);
             string expectedDetailKey = "Stuck MessageQueueId";
+            string expectedMessage = "Stuck MessageQueueId";
 
             // When
             this.mammothApiControllerMonitor.CheckStatusAndNotify();
 
             // Then
-            mockPagerDutyTrigger.Verify(t =>
-                t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
+            mockOpsgenieTrigger.Verify(t =>
+                t.TriggerAlert(It.Is<string>(d => d == expectedMessage), It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
             Assert.AreEqual(expectedQueueId, messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);
@@ -174,39 +177,40 @@ namespace Icon.Monitoring.Tests.Monitors
         #region MessageQueueIdAndCacheIdAreDifferent
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_PriceMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.Price, 0, 323);
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.Price, 311, 0);
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.Price, 556, 2);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Price, 0, 323);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Price, 311, 0);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Price, 556, 2);
         }
 
         [TestMethod]
-        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert()
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemLocaleMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert()
         {
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.ItemLocale, 0, 323);
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.ItemLocale, 311, 0);
-            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(MessageQueueTypes.ItemLocale, 556, 2);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.ItemLocale, 0, 323);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.ItemLocale, 311, 0);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.ItemLocale, 556, 2);
         }
 
-        private void MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsPagerDutyAlert(string messageQueueType, int queueId, int cacheId)
+        private void MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(string messageQueueType, int queueId, int cacheId)
         {
             //Given
             int expectedQueueId = queueId;
             int expectedNumberOfTimesMatched = 0;
             messageQueueCache.QueueTypeToIdMapper[messageQueueType] = new QueueData { LastMessageQueueId = cacheId, NumberOfTimesMatched = 0 };
             this.mockMessageQueueQuery.Setup(q => q.Search(It.Is<GetApiMessageQueueIdParameters>(v => v.MessageQueueType == messageQueueType))).Returns(queueId);
-            this.mockPagerDutyTrigger.Setup(pd => pd.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new PagerDutyResponse());
+            this.mockOpsgenieTrigger.Setup(pd => pd.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(new OpsgenieAlert.OpsgenieResponse());
 
             string expectedDescription = BuildTriggerDescription(messageQueueType);
             string expectedDetailKey = "Stuck MessageQueueId";
+            string expectedMessage = "Stuck MessageQueueId";
 
             // When
             this.mammothApiControllerMonitor.CheckStatusAndNotify();
 
             // Then
-            mockPagerDutyTrigger.Verify(t =>
-                t.TriggerIncident(It.Is<string>(d => d == expectedDescription),
+            mockOpsgenieTrigger.Verify(t =>
+                t.TriggerAlert(It.Is<string>(d => d == expectedMessage), It.Is<string>(d => d == expectedDescription),
                     It.Is<Dictionary<string, string>>(d => d[expectedDetailKey] == expectedQueueId.ToString())),
                 Times.Never);
             Assert.AreEqual(expectedQueueId, messageQueueCache.QueueTypeToIdMapper[messageQueueType].LastMessageQueueId);

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.Common.IO;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Common.DataAccess;
 using Icon.Monitoring.DataAccess.Commands;
 using Icon.Monitoring.Common.Dvo;
@@ -26,7 +26,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<IMonitorSettings> mockSettings;
         private Mock<IDvoBulkImportJobMonitorSettings> mockDvoSettings;
         private Mock<IFileInfoAccessor> mockFileInfoAccessor;
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<ICommandHandler<AddDvoErrorStatusCommand>> mockAddDvoErrorStatusCommandHandler;
         private Mock<ICommandHandler<DeleteDvoErrorStatusCommand>> mockDeleteDvoErrorStatusCommandHandler;
         private Mock<IQueryHandler<GetDvoJobStatusParameters, List<DvoRegionalJobStatus>>> mockGetDvoRegionalJobStatusQueryHandler;
@@ -39,7 +39,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockSettings = new Mock<IMonitorSettings>();
             mockDvoSettings = new Mock<IDvoBulkImportJobMonitorSettings>();
             mockFileInfoAccessor = new Mock<IFileInfoAccessor>();
-            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             mockAddDvoErrorStatusCommandHandler = new Mock<ICommandHandler<AddDvoErrorStatusCommand>>();
             mockDeleteDvoErrorStatusCommandHandler = new Mock<ICommandHandler<DeleteDvoErrorStatusCommand>>();
             mockGetDvoRegionalJobStatusQueryHandler = new Mock<IQueryHandler<GetDvoJobStatusParameters, List<DvoRegionalJobStatus>>>();
@@ -49,7 +49,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 mockSettings.Object,
                 mockDvoSettings.Object,
                 mockFileInfoAccessor.Object,
-                mockPagerDutyTrigger.Object,
+                mockOpsgenieTrigger.Object,
                 mockGetDvoRegionalJobStatusQueryHandler.Object,
                 mockDeleteDvoErrorStatusCommandHandler.Object,
                 mockAddDvoErrorStatusCommandHandler.Object,
@@ -87,7 +87,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_FileDoesNotExist_SendsPagerDuty()
+        public void TimedCheckStatusAndNotify_FileDoesNotExist_SendsOpsgenieDuty()
         {
             //Given
             SetUpEnabledValuesOnDvoMonitorSettings();
@@ -104,12 +104,12 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockAddDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<AddDvoErrorStatusCommand>()), Times.Exactly(testRegions.Count));
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_DvoFileIsOlderThanMaxMinuteThreshold_SendsPagerDuty()
+        public void TimedCheckStatusAndNotify_DvoFileIsOlderThanMaxMinuteThreshold_SendsOpsgenieDuty()
         {
             //Given
             SetUpEnabledValuesOnDvoMonitorSettings();
@@ -127,12 +127,12 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockAddDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<AddDvoErrorStatusCommand>()), Times.Exactly(testRegions.Count));
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_NoError_DeletesAnyCurrentErrorStatusAndDoesNotSendPagerDuty()
+        public void TimedCheckStatusAndNotify_NoError_DeletesAnyCurrentErrorStatusAndDoesNotSendOpsgenie()
         {
             //Given
             SetUpEnabledValuesOnDvoMonitorSettings();
@@ -150,13 +150,13 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockAddDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<AddDvoErrorStatusCommand>()), Times.Never);
             mockDeleteDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<DeleteDvoErrorStatusCommand>()), Times.Exactly(testRegions.Count));
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_CurrentErrorsExist_DoesNotSendPagerDuty()
+        public void TimedCheckStatusAndNotify_CurrentErrorsExist_DoesNotSendOpsgenie()
         {
             //Given
             SetUpEnabledValuesOnDvoMonitorSettings();
@@ -173,7 +173,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockAddDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<AddDvoErrorStatusCommand>()), Times.Never);
             mockDeleteDvoErrorStatusCommandHandler.Verify(m => m.Execute(It.IsAny<DeleteDvoErrorStatusCommand>()), Times.Never);
         }

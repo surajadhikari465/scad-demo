@@ -5,28 +5,28 @@
 
     using Icon.Common.DataAccess;
     using Icon.Logging;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
 
     public class PushControllerMonitor : TimedControllerMonitor
     {
-        private const string PagerDutyDescription = "POS Push Controller appears to be stuck or not processing data.";
+        private const string opsgenieDescription = "POS Push Controller appears to be stuck or not processing data.";
 
         private readonly IQueryHandler<GetIrmaPushIdParameters, int> pushQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         public Dictionary<int, int> IrmaPushJobTracker { get; set; }
 
         public PushControllerMonitor(IMonitorSettings settings,
             IQueryHandler<GetIrmaPushIdParameters, int> pushQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             ILogger logger)
         {
             this.IrmaPushJobTracker = new Dictionary<int, int>();
 
             this.settings = settings;
             this.pushQuery = pushQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.logger = logger;
         }
 
@@ -45,7 +45,7 @@
                 if (numberOfTimesDetected == 1)
                 {
                     this.IrmaPushJobTracker[pushQueryResultId] = 2;
-                    this.TriggerPagerDutyForPushJob(pushQueryResultId);
+                    this.TriggerOpsgenieForPushJob(pushQueryResultId);
                 }
             }
             else
@@ -55,12 +55,12 @@
             }
         }
 
-        private void TriggerPagerDutyForPushJob(int id)
+        private void TriggerOpsgenieForPushJob(int id)
         {
             logger.Info("The POS Push Controller Monitor has detected a job that is taking too long.");
 
-            var response = this.pagerDutyTrigger.TriggerIncident(
-                            PagerDutyDescription,
+            var response = this.opsgenieTrigger.TriggerAlert("POS Push Controller Issue",
+                            opsgenieDescription,
                             new Dictionary<string, string>()
                             {
                                 { id.ToString(), DateTime.Now.ToString() }

@@ -1,7 +1,7 @@
 ﻿using Icon.Logging;
 using Icon.Monitoring.Common;
 using Icon.Monitoring.Common.Enums;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
@@ -16,7 +16,7 @@ namespace Icon.Monitoring.Tests.Monitors
     [TestClass]
     public class MammothPriceControllerMonitorTests
     {
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IMonitorSettings> mockSettings;
         private List<IrmaRegions> allRegions;
         private Mock<ILogger> mockLogger;
@@ -27,7 +27,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             this.allRegions = Enum.GetValues(typeof(IrmaRegions)).Cast<IrmaRegions>().ToList();
             this.mockSettings = new Mock<IMonitorSettings>();
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             MammothPriceChangeQueueCache.IrmaRegionMapper.Clear();
             this.mockLogger = new Mock<ILogger>();
 
@@ -64,7 +64,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //create monitor
             var testee = new MammothPriceControllerMonitor(
                 this.mockSettings.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 priceChangeQueueQuery.Object,
                 this.mockLogger.Object);
 
@@ -72,8 +72,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
@@ -93,7 +94,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //create monitor
             var testee = new MammothPriceControllerMonitor(
                 this.mockSettings.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 priceChangeQueueQuery.Object,
                 this.mockLogger.Object);
 
@@ -101,8 +102,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
@@ -120,7 +122,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //create monitor
             var testee = new MammothPriceControllerMonitor(
                 this.mockSettings.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 priceChangeQueueQuery.Object,
                 this.mockLogger.Object);
 
@@ -128,8 +130,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
@@ -152,7 +155,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //create monitor
             var testee = new MammothPriceControllerMonitor(
                 this.mockSettings.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 priceChangeQueueQuery.Object,
                 this.mockLogger.Object);
 
@@ -160,8 +163,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
@@ -186,7 +190,7 @@ namespace Icon.Monitoring.Tests.Monitors
             //create monitor
             var testee = new MammothPriceControllerMonitor(
                 this.mockSettings.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 priceChangeQueueQuery.Object,
                 this.mockLogger.Object);
 
@@ -194,8 +198,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);

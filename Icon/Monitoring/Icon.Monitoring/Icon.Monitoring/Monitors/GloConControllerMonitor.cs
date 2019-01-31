@@ -5,30 +5,30 @@
 
     using Icon.Common.DataAccess;
     using Icon.Logging;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
 
     public class GloConControllerMonitor : TimedControllerMonitor
     {
-        private const string PagerDutyDescription = "GloCon Controller appears to be stuck or not processing data.";
+        private const string Description = "GloCon Controller appears to be stuck or not processing data.";
 
         private readonly IQueryHandler<GetGloConItemQueueIdParameters, int> gloConQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
 
         public Dictionary<int, int> GloConJobTracker { get; set; }
 
         public GloConControllerMonitor(
             IMonitorSettings settings,
             IQueryHandler<GetGloConItemQueueIdParameters, int> gloConQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             ILogger logger)
         {
             this.GloConJobTracker = new Dictionary<int, int>();
 
             this.settings = settings;
             this.gloConQuery = gloConQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.logger = logger;
         }
 
@@ -47,7 +47,7 @@
                 if (numberOfTimesDetected == 1)
                 {
                     this.GloConJobTracker[gloConResultId] = 2;
-                    this.TriggerPagerDutyForGloConJob(gloConResultId);
+                    this.TriggerOpsgenieForGloConJob(gloConResultId);
                 }
             }
             else
@@ -57,12 +57,12 @@
             }
         }
 
-        private void TriggerPagerDutyForGloConJob(int id)
+        private void TriggerOpsgenieForGloConJob(int id)
         {
             logger.Info("The GloCon Controller Monitor has detected a job that is taking too long.");
 
-            var response = this.pagerDutyTrigger.TriggerIncident(
-                            PagerDutyDescription,
+            var response = this.opsgenieTrigger.TriggerAlert("GloCon Controller Monitor Issue",
+                            Description,
                             new Dictionary<string, string>()
                             {
                                 { id.ToString(), DateTime.Now.ToString() }

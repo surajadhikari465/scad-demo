@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Common.DataAccess;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
@@ -15,6 +15,7 @@ using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess;
 using System.Data.SqlClient;
 using System.Configuration;
+using Icon.Monitoring.Common.Opsgenie;
 
 namespace Icon.Monitoring.Tests.Monitors
 {
@@ -25,7 +26,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<ITLogConJobMonitorSettings> mockTLogConMonitorSettings;
         private Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>> mockGetTLogConJobMonitorStatusQueryHandler;
         private Mock<IQueryHandler<GetItemMovementTableRowCountParameters, int>> mockGetItemMovementTableRowCountQueryHandler;
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<ILogger> mockLogger;
         private TLogConJobMonitor monitor;
         private const string AppName = "TLog Controller";
@@ -37,7 +38,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             mockSettings = new Mock<IMonitorSettings>();
             mockTLogConMonitorSettings = new Mock<ITLogConJobMonitorSettings>();
-            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             mockGetTLogConJobMonitorStatusQueryHandler = new Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>>();
             mockGetItemMovementTableRowCountQueryHandler = new Mock<IQueryHandler<GetItemMovementTableRowCountParameters, int>>();
             mockLogger = new Mock<ILogger>();
@@ -51,7 +52,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 mockTLogConMonitorSettings.Object,
                mockGetTLogConJobMonitorStatusQueryHandler.Object,
                 mockGetItemMovementTableRowCountQueryHandler.Object,
-               mockPagerDutyTrigger.Object,
+                mockOpsgenieTrigger.Object,
                 mockLogger.Object
                 );
         }
@@ -101,7 +102,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         // EnableTLogConJobMonitor flag is true--Set up so that number of row in app movement table is more than configured one --will send pager alert
@@ -116,7 +117,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         // EnableTLogConJobMonitor flag is true--Set up so that both app movement row count and last log valies are less than configurd value
@@ -132,7 +133,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
 
         // make sure it only send pager duty alert once if row count in app movement table is greater than configured value
@@ -149,7 +150,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         // both conditions fail--it should send pager duty alert only once
@@ -162,9 +163,9 @@ namespace Icon.Monitoring.Tests.Monitors
 
             //When
             monitor.CheckStatusAndNotify();
-   
+
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
 

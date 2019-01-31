@@ -3,11 +3,12 @@
     using Common.Constants;
     using Common.Enums;
     using Common.Settings;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.DataAccess.Model;
     using Icon.Monitoring.DataAccess.Queries;
     using Logging;
     using NodaTime;
+    using OpsgenieAlert;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -18,25 +19,25 @@
     {
         private const string PosPushStartTimeConfigPrefix = "PosPushStartTime_";
         private const string PosPushLogMessage = "Scheduled POS Push Job is starting";
-        private const string PosPushStartTimePagerDutyDescription = "POS Push has not started for the following region: ";
+        private const string PosPushStartTimeOpsgenieDescription = "POS Push has not started for the following region: ";
         private const string TimeZone = "America/Chicago";
 
         private readonly IQueryByRegionHandler<GetAppLogByAppAndMessageParameters, AppLog> appLogQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         public Dictionary<IrmaRegions, int> PosPushStartTimeTracker;
         private IDateTimeZoneProvider dateTimeZoneProvider;
         private IClock clock;
 
         public PosPushStartTimeMonitor(
             IMonitorSettings settings,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IQueryByRegionHandler<GetAppLogByAppAndMessageParameters, AppLog> appLogQuery,
             IDateTimeZoneProvider dateTimeZoneProvider,
             IClock clock,
             ILogger logger)
         {
             this.settings = settings;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.appLogQuery = appLogQuery;
             this.dateTimeZoneProvider = dateTimeZoneProvider;
             this.clock = clock;
@@ -65,8 +66,8 @@
         /// </summary>
         protected override void TimedCheckStatusAndNotify()
         {
-            var pagerDutyDetails = new Dictionary<string, string>();
-            var pagerDutyDescription = new StringBuilder(PosPushStartTimePagerDutyDescription);
+            var opsgenieDetails = new Dictionary<string, string>();
+            var opsgenieDescription = new StringBuilder(PosPushStartTimeOpsgenieDescription);
 
             var queryParameters = new GetAppLogByAppAndMessageParameters
             {
@@ -95,9 +96,9 @@
                 }
                 else if (!hasStartedOnTime && this.PosPushStartTimeTracker[region] == 0)
                 {
-                    BuildPagerDutyDetails(
-                        pagerDutyDetails,
-                        pagerDutyDescription,
+                    BuildOpsgenieDetails(
+                        opsgenieDetails,
+                        opsgenieDescription,
                         numberOfJobsNotStartedOnTime,
                         region,
                         configuredStartTime,
@@ -107,16 +108,16 @@
                 }
             }
 
-            if (pagerDutyDetails.Any())
+            if (opsgenieDetails.Any())
             {
-                PagerDutyResponse response = this.pagerDutyTrigger.TriggerIncident(pagerDutyDescription.ToString(), pagerDutyDetails);
+                OpsgenieResponse response = this.opsgenieTrigger.TriggerAlert("POS Push Job Issue", opsgenieDescription.ToString(), opsgenieDetails);
             }
         }
 
-        private void BuildPagerDutyDetails(Dictionary<string, string> pagerDutyDetails, StringBuilder pagerDutyDescription, int numberOfJobsNotStartedOnTime, IrmaRegions region, LocalTime configuredStartTime, LocalTime currentTime)
+        private void BuildOpsgenieDetails(Dictionary<string, string> opsgenieDetails, StringBuilder opsgenieDescription, int numberOfJobsNotStartedOnTime, IrmaRegions region, LocalTime configuredStartTime, LocalTime currentTime)
         {
-            pagerDutyDescription.Append(region).Append(" ");
-            pagerDutyDetails.Add(IrmaAppConfigAppNames.PosPushJob + "_" + region.ToString(),
+            opsgenieDescription.Append(region).Append(" ");
+            opsgenieDetails.Add(IrmaAppConfigAppNames.PosPushJob + "_" + region.ToString(),
                 "The current time is " + currentTime.ToString("HH:mm:ss", DateTimeFormatInfo.InvariantInfo) +
                 " and the push should have started before the configured time: " + configuredStartTime.ToString("HH:mm:ss", DateTimeFormatInfo.InvariantInfo));
         }
