@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,24 +9,26 @@ namespace OpsgenieAlert
 {
     public class OpsgenieAlert: IOpsgenieAlert
     {
-        public OpsgenieResponse CreateOpsgenieAlert(string message, string description ="", Dictionary<string,
-                                        string> details = null, string api = "", string url = "")
+        public OpsgenieResponse CreateOpsgenieAlert( string api, string url, string message, string description ="",
+                                                    Dictionary<string, string> details = null)
         {
             OpsgenieResponse opsGenieResponse = new OpsgenieResponse();
+            var serializerSettings = new JsonSerializerSettings();
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             if (details == null)
                 details = new Dictionary<string, string>();
 
             // Serialize the data to JSON
-            var postData = new
+            var opsgenieRequest = new OpsgenieRequest()
             {
-                apiKey = api,
-                message = message,
-                details = details,
-                description = description
+                ApiKey = api,
+                Message = message,
+                Details = details,
+                Description = description
             };
 
-            var json = JsonConvert.SerializeObject(postData);
+            var json = JsonConvert.SerializeObject(opsgenieRequest, serializerSettings);
 
             // Set up a client
             var client = new WebClient();
