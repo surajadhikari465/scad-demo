@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/Publish Received Order Service.process</processProperty>
         </processArchive>
-        <versionProperty>24</versionProperty>
+        <versionProperty>25</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishReceivedOrderService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\min.zhao\source\repos\Icon\Icon\Tibco\DeploymentFiles\PublishReceivedOrderService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\min.zhao\source\repos\SCAD\Icon\Tibco\DeploymentFiles\PublishReceivedOrderService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

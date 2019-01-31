@@ -752,7 +752,7 @@ And STATUS = 'I'
 	sth.SubTeam_Name as SubTeam,
 	sth.SubTeam_No as SubTeamNumber,
 	oi.DateReceived as DateReceived,
-	CAST(oi.QuantityReceived as int) as QuantityReceived,
+	CAST(ISNULL(oi.QuantityReceived, 0) as int) as QuantityReceived,
 	CAST(oi.QuantityOrdered as int) as QuantityOrdered,
 	oi.Package_Desc1 as Package_Desc1,
 	oi.Package_Desc2 as Package_Desc2,
@@ -761,7 +761,10 @@ And STATUS = 'I'
 	IsNull(u.User_ID, 0)  as RecvUSerID,
 	iu.Unit_Abbreviation as OrderUom,
 	iui.Unit_Abbreviation as ReceiptUom,
-	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered Then 'Received'  when oh.PartialShipment = 0 then 'Received' else 'Partially Received' END AS ReceiptStatus,
+	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered THEN 'Received'  
+		WHEN oh.PartialShipment = 1 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Partially Received'
+		WHEN oh.PartialShipment = 0 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Received' 
+		ELSE 'Not Received' END AS ReceiptStatus,
 	iv.item_id as VIN,
 	s.BusinessUnit_ID as StoreNumber,
     s.Store_Name as StoreName,
@@ -787,7 +790,9 @@ And STATUS = 'I'
 							then v.Vendor_ID
 						else siv.Vendor_ID
 						end
-	WHERE rq.Status in ('I') AND InProcessBy = ?
+	WHERE rq.Status in ('I') 
+	  AND id.Default_Identifier = 1
+	  AND InProcessBy = ?
        ORDER BY KeyID desc</statement>
             <wizardData/>
             <Prepared_Param_DataType>
