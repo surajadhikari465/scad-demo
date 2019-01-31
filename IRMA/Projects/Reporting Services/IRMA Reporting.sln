@@ -1,21 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "IRMA Reporting", "IRMA Reporting.rptproj", "{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2008_Reports", "2008_Reports", "{4D30D351-4854-4FA6-8C1F-554CB87B3434}"
+	ProjectSection(SolutionItems) = preProject
+		2008_Reports\IconItemSearch.rdl = 2008_Reports\IconItemSearch.rdl
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 1
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://cewp1605:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = IRMA\u0020Reporting.rptproj
-		SccProjectName0 = .
-		SccAuxPath0 = http://cewp1605:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		FL Dev|Default = FL Dev|Default
 		FL Test|Default = FL Test|Default
@@ -146,5 +141,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {123BC32A-5EA8-417B-A03B-BE8988157042}
 	EndGlobalSection
 EndGlobal
