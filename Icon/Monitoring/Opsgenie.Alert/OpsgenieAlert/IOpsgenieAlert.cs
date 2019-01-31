@@ -4,7 +4,7 @@ namespace OpsgenieAlert
 {
     public interface IOpsgenieAlert
     {
-        void CreateOpsgenieAlert(string message, string description, Dictionary<string,
+        OpsgenieResponse CreateOpsgenieAlert(string message, string description, Dictionary<string,
                                                string> details, string api, string url);
     }
 }

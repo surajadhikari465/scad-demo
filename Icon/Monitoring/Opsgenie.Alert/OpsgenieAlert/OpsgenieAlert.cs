@@ -8,9 +8,11 @@ namespace OpsgenieAlert
 {
     public class OpsgenieAlert: IOpsgenieAlert
     {
-        public void CreateOpsgenieAlert(string message, string description ="", Dictionary<string,
+        public OpsgenieResponse CreateOpsgenieAlert(string message, string description ="", Dictionary<string,
                                         string> details = null, string api = "", string url = "")
         {
+            OpsgenieResponse opsGenieResponse = new OpsgenieResponse();
+
             if (details == null)
                 details = new Dictionary<string, string>();
 
@@ -29,11 +31,12 @@ namespace OpsgenieAlert
             var client = new WebClient();
             client.Headers.Add("Content-Type", "application/json");
             client.Headers.Add("Authorization", $"GenieKey {api}");
-
+         
             try
             {
                 var response = client.UploadString(url, json);
-                OpsgenieResponse opsGenieResponse = JsonConvert.DeserializeObject<OpsgenieResponse>(response);
+                opsGenieResponse = JsonConvert.DeserializeObject<OpsgenieResponse>(response);
+                return opsGenieResponse;
             }
             catch (WebException wex)
             {
@@ -42,9 +45,11 @@ namespace OpsgenieAlert
                 {
                     // OpsGenie returns JSON responses for errors
                     var deserializedResponse = JsonConvert.DeserializeObject<IDictionary<string, object>>(reader.ReadToEnd());
-                    Console.WriteLine(deserializedResponse["error"]);
+                    opsGenieResponse.Error = deserializedResponse["error"].ToString(); ;
                 }
+                return opsGenieResponse;
             }
+           
         }
     }
 }
