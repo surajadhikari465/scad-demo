@@ -93,7 +93,7 @@
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
             <pd:x>525</pd:x>
-            <pd:y>170</pd:y>
+            <pd:y>171</pd:y>
             <config>
                 <element ref="pfx:inventoryAdjustments"/>
             </config>
@@ -163,9 +163,6 @@
                                                 <ns5:code>
                                                     <xsl:value-of select="tib:trim(AdjustmentQuantityUOMCode)"/>
                                                 </ns5:code>
-                                                <ns5:name>
-                                                    <xsl:value-of select="tib:trim(AdjustmentQuantityUOMName)"/>
-                                                </ns5:name>
                                             </ns2:uom>
                                         </ns2:units>
                                     </ns2:quantity>
@@ -516,13 +513,13 @@ And STATUS = 'I'</statement>
                             <xsl:value-of select="$ConvertToJSon/ns3:ActivityOutputClass/jsonString"/>
                         </MessageBody>
                         <EventType>
-                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/EventType"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:eventType"/>
                         </EventType>
                         <BusinessUnitID>
                             <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber"/>
                         </BusinessUnitID>
                         <KeyID>
-                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/AdjustmentNumber"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:adjustmentNumber"/>
                         </KeyID>
                         <SecondaryKeyID>
                             <xsl:value-of select="0"/>
@@ -536,7 +533,7 @@ And STATUS = 'I'</statement>
                             </ErrorDescription>
                         </xsl:if>
                         <MessageNumber>
-                            <xsl:value-of select="$GetShrinkData/resultSet/Record[1]/MessageNumber"/>
+                            <xsl:value-of select="$ShrinkDataMapper/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                         </MessageNumber>
                         <QueueID>
                             <xsl:value-of select="$CurrentQueueId/QueueId"/>
@@ -733,7 +730,6 @@ And STATUS = 'I'</statement>
         then ih.Weight
         else ih.Quantity
     End as AdjustmentQuantity,
-	SubString(iu.Unit_Name,1,5) as AdjustmentQuantityUOMName,
 	iu.Unit_Abbreviation as AdjustmentQuantityUOMCode,
 	ih.Item_Key as SourceItemKey,
 	ih.DateStamp  as CurrentDateTime,
