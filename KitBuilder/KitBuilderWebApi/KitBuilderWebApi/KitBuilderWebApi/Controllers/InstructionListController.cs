@@ -261,10 +261,10 @@ namespace KitBuilderWebApi.Controllers
             if (!ModelState.IsValid || instructionListAddDto == null)
                 return BadRequest(ModelState);
 
-            var defaultStatus = statusRespository.Find(s => s.StatusCode == "ENA");
+            var defaultStatus = statusRespository.Find(s => s.StatusId == (int)StatusType.IP);
             if (defaultStatus == null)
             {
-                ModelState.AddModelError("DefaultStatus", "Unable to find 'Enabled' Status");
+                ModelState.AddModelError("DefaultStatus", "Unable to find 'In Progress' Status");
                 logger.LogError("AddInstructionList: Unable to find default status.");
                 return BadRequest(ModelState);
             }

@@ -287,6 +287,7 @@ namespace Icon.Web.Tests
         {
             var localeTraits = new List<LocaleTrait>
             {
+                MakeTrait(Traits.LocaleSubtype, TraitCodes.LocaleSubtype, "ST"),
                 MakeTrait(Traits.PsBusinessUnitId, TraitCodes.PsBusinessUnitId, "11111"),
                 MakeTrait(Traits.PhoneNumber, TraitCodes.PhoneNumber, "5551234565"),
                 MakeTrait(Traits.ContactPerson, TraitCodes.ContactPerson, "A. Person"),
@@ -295,7 +296,9 @@ namespace Icon.Web.Tests
                 MakeTrait(Traits.StorePosType, TraitCodes.StorePosType, "1"),
                 MakeTrait(Traits.Fax, TraitCodes.Fax, "11111111"),
                 MakeTrait(Traits.InsertDate, TraitCodes.InsertDate, new DateTime(2014, 4, 24, 18, 30, 30).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)),
-                MakeTrait(Traits.ModifiedUser, TraitCodes.ModifiedUser, "test person")
+                MakeTrait(Traits.ModifiedUser, TraitCodes.ModifiedUser, "test person"),
+                MakeTrait(Traits.VenueCode, TraitCodes.VenueCode, "Test Venue Code"),
+                MakeTrait(Traits.VenueOccupant, TraitCodes.VenueOccupant, "Test Venue Occupant")
             };
             return localeTraits;
         }

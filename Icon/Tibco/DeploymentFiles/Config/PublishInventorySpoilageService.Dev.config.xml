@@ -12,10 +12,10 @@
             <name>Application/BatchSize</name>
             <value>50</value>
         </NameValuePairInteger>
-        <NameValuePair>
-            <name>Application/ErrorDescriptionDefault</name>
-            <value>No Error</value>
-        </NameValuePair>
+        <NameValuePairInteger>
+            <name>Application/InstanceGUID</name>
+            <value>00000191-0000-0000-0000-000000000000</value>
+        </NameValuePairInteger>
         <NameValuePairInteger>
             <name>Application/InstanceId</name>
             <value>401</value>
@@ -24,10 +24,6 @@
             <name>Application/InventoryAdjustmentSource</name>
             <value>IRMA</value>
         </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/LastReProcessId</name>
-            <value>4</value>
-        </NameValuePairInteger>
         <NameValuePair>
             <name>Application/MessageType</name>
             <value>text</value>
@@ -37,32 +33,24 @@
             <value>5</value>
         </NameValuePair>
         <NameValuePairInteger>
-            <name>Application/PublisherTimerInMilliseconds</name>
-            <value>10000</value>
-        </NameValuePairInteger>
-        <NameValuePairInteger>
             <name>Application/SecondaryKeyId</name>
             <value>0</value>
         </NameValuePairInteger>
-        <NameValuePair>
-            <name>Application/Status</name>
-            <value>Sent</value>
-        </NameValuePair>
         <NameValuePair>
             <name>Application/TransactionType</name>
             <value>InventorySpoilage</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedFivetimes</name>
-            <value>30</value>
+            <value>15</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedFourtimes</name>
-            <value>20</value>
+            <value>10</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/WaitTimeForRecordsProcessedThreetimes</name>
-            <value>10</value>
+            <value>5</value>
         </NameValuePair>
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>

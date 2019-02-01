@@ -344,14 +344,13 @@ namespace Icon.ApiController.DataAccess.Queries
 				VenueOccupant = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueOccupant)?.traitValue ?? string.Empty,
 				VenueSubType = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.LocaleSubtype)?.traitValue ?? string.Empty,
 				LocaleOpenDate = venue?.localeOpenDate ?? DateTime.UtcNow,
-				LocaleCloseDate = venue?.localeCloseDate ?? DateTime.MaxValue
-			};
+                LocaleCloseDate = venue?.localeCloseDate
+            };
 		}
-
 
 		private LocaleLineageModel BuildLocaleLineageModel(Locale store)
         {
-			return new LocaleLineageModel
+			var localeLineageModel =  new LocaleLineageModel
             {
                 LocaleId = store.localeID,
                 LocaleName = store.localeName,
@@ -372,9 +371,9 @@ namespace Icon.ApiController.DataAccess.Queries
 				PostalCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.PostalCode?.postalCode ?? string.Empty,
 				TimezoneName = store.LocaleAddress.Single(la => la.localeID == store.localeID).Address.PhysicalAddress.Timezone?.timezoneName ?? string.Empty,
 				LocaleOpenDate = store?.localeOpenDate??DateTime.UtcNow,
-                LocaleCloseDate = store?.localeCloseDate ?? DateTime.MaxValue
+                LocaleCloseDate = store?.localeCloseDate
 			};
+            return localeLineageModel;
         }
-
-	}
+    }
 }

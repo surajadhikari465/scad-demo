@@ -181,5 +181,25 @@ namespace Icon.ApiController.Tests.Queries
             Assert.AreEqual(testMetroName, metroName);
             Assert.AreEqual(testStoreName, storeName);
         }
+
+        [TestMethod]
+        public void GetLocaleLineage_StoreWithNoCloseDate_ReturnsStoreWithNullCloseDate()
+        {
+            // Given.
+            localeId = context.Locale.Single(l => l.localeName == testStoreName).localeID;
+
+            var parameters = new GetLocaleLineageParameters
+            {
+                LocaleTypeId = LocaleTypes.Store,
+                LocaleId = localeId
+            };
+
+            // When.
+            var localeLineage = getLocaleLineageQuery.Search(parameters);
+
+            // Then.
+            var store = localeLineage.DescendantLocales[0].DescendantLocales[0].DescendantLocales[0];
+            Assert.IsNull(store.LocaleCloseDate);
+        }
     }
 }

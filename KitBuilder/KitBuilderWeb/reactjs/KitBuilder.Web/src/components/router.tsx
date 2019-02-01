@@ -6,9 +6,8 @@ import { InstructionListsPage } from './InstructionLists/InstructionListsPage';
 import { KitListPage } from './Kits/KitListPage';
 import '../css/site.css'
 import EditKit from './Kits/EditKit';
-import CreateKit from './Kits/CreateKit';
 import { AssignKitsToLocale} from './AssignKits/AssignKitsToLocale';
-
+import { CreateKit} from './Kits/KitItemAddModal/CreateKit';
 
 class AppRouter extends React.Component {
   render() {
@@ -22,8 +21,8 @@ class AppRouter extends React.Component {
             <Route path="/LinkGroups" component={LinkGroupsPage} />
             <Route path="/Kits" component={KitListPage} />
             <Route path="/EditKit" component={EditKit} />
-            <Route path="/CreateKit" component={CreateKit} />
-            <Route path="/AssignKits" component={AssignKitsToLocale} />
+             <Route path="/AssignKits" component={AssignKitsToLocale} />
+            <Route path="/CreateKits" component={CreateKit} />
           </Switch>
         </div>
       </HashRouter>

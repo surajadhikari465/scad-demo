@@ -4,7 +4,8 @@ const ApiMethods  = {
      InstructionList: "/api/InstructionList/",
      LinkGroupsSearch: "/api/LinkGroups/LinkGroupsSearch",
      AssignKit: "/api/Venues",
-     InstructionListByType: "/api/InstructionList/GetInstructionsListByType"
+     InstructionListByType: "/api/InstructionList/GetInstructionsListByType",
+     Items: "/api/Items/"
 
 }
 

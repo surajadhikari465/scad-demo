@@ -757,8 +757,12 @@ namespace KitBuilderWebApi.Controllers
         internal void BuildQueryToFilterKitData(KitSearchParameters kitSearchParameters,
             ref IQueryable<KitDto> kitsBeforePaging)
         {
-
-            if (!string.IsNullOrEmpty(kitSearchParameters.ItemScanCode))
+            if (!string.IsNullOrEmpty(kitSearchParameters.KitDescription))
+            {
+                var kitDescriptionForWhereClause = kitSearchParameters.KitDescription.Trim().ToLower();
+                kitsBeforePaging = kitsBeforePaging.Where(k => k.Description.Contains(kitDescriptionForWhereClause));
+            }
+                if (!string.IsNullOrEmpty(kitSearchParameters.ItemScanCode))
             {
                 var scancodeForWhereClause = kitSearchParameters.ItemScanCode.Trim().ToLower();
                 kitsBeforePaging = from k in kitsBeforePaging

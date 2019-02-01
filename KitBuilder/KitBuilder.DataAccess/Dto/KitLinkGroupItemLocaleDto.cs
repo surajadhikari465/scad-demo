@@ -16,8 +16,8 @@ namespace KitBuilder.DataAccess.Dto
 		[Required]
 		public int DisplaySequence { get; set; }
 		public bool? Exclude { get; set; }
-		public int? MaximumCalories { get; set; }
-		public int? RegularPrice { get; set; }
+		public int? Calories { get; set; }
+		public decimal? RegularPrice { get; set; }
 		public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
 		public string LastModifiedBy { get; set; }
@@ -26,3 +26,4 @@ namespace KitBuilder.DataAccess.Dto
 		public KitLocaleDto KitLocale { get; set; }
 	}
 }
+

@@ -88,7 +88,7 @@ function DisplayKits(props: any) {
              <Grid container style={marginTop}>
              <Grid item md={10} justify={"flex-end"}>     </Grid>
                 <Grid item md={2} justify={"flex-end"}>
-                        <Button variant="contained" color="default" className={props.classes.button} onClick={() => props.createKit()} >
+                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.createKit()} >
                             Create New Kit
                 </Button>
                     </Grid>

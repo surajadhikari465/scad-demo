@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddLocaleMessageCommandHandlerTests
     {
         private AddLocaleMessageCommandHandler commandHandler;
@@ -42,67 +42,7 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given
             AutoMapperWebConfiguration.Configure();
-            Locale locale = new Locale
-            {
-                localeID = 12345,
-                localeCloseDate = DateTime.Now,
-                localeOpenDate = DateTime.Now,
-                localeName = "MessageGenerator Test Locale",
-                ownerOrgPartyID = 12345,
-                parentLocaleID = 12345,
-                localeTypeID = LocaleTypes.Store,
-                LocaleTrait = new List<LocaleTrait> 
-                { 
-                    new LocaleTrait 
-                    {
-                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.PsBusinessUnitId),
-                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.PsBusinessUnitId).traitID,
-                        localeID = 12345,
-                        traitValue = "MessageGenerator Test Business Value Id"
-                    },
-                    new LocaleTrait
-                    {
-                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.StoreAbbreviation),
-                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.StoreAbbreviation).traitID,
-                        localeID = 12345,
-                        traitValue = "TSA"
-                    },
-                    new LocaleTrait
-                    {
-                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.PhoneNumber),
-                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.PhoneNumber).traitID,
-                        localeID = 12345,
-                        traitValue = "123-456-7890"
-                    }
-                },
-                LocaleAddress = new List<LocaleAddress>
-                {
-                    new LocaleAddress 
-                    {
-                        addressID = 678,
-                        AddressUsage = new AddressUsage
-                        {
-                            addressUsageCode = "TST"
-                        },
-                        Address = new Address 
-                        {
-                            PhysicalAddress = new PhysicalAddress
-                            {
-                                addressLine1 = "Test AddressLine1",
-                                addressLine2 = "Test AddressLine2",
-                                addressLine3 = "Test AddressLine3",
-                                City = new City { cityName = "Test CityName"},
-                                Country = new Country { countryName = "Test CountryName", countryCode = "TCC"},
-                                latitude = (decimal)33.3333333,
-                                longitude = (decimal)44.444444,
-                                PostalCode = new PostalCode { postalCode = "TPC"},
-                                Territory = new Territory { territoryCode = "TTT", territoryName = "Test Territory" },
-                                Timezone = new Timezone { timezoneCode = "TZN", timezoneName = "Test Time zone", posTimeZoneName = "R10 Timezone Name" }
-                            }
-                        }
-                    }
-                }
-            };
+            Locale locale = CreateTestLocale();
 
             // When
             commandHandler.Execute(new AddLocaleMessageCommand { Locale = locale });
@@ -150,6 +90,93 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Cleanup
             Mapper.Reset();
+        }
+
+        [TestMethod]
+        public void AddLocaleMessage_LocaleHasNullCloseDate_MessageCreatedWithNoValueForCloseDate()
+        {
+            // Given
+            AutoMapperWebConfiguration.Configure();
+            Locale locale = CreateTestLocale();
+            locale.localeCloseDate = null;
+
+            // When
+            commandHandler.Execute(new AddLocaleMessageCommand { Locale = locale });
+
+            // Then
+            var message = context.MessageQueueLocale.Single(mql => mql.LocaleId == locale.localeID);
+
+            Assert.AreEqual(locale.localeID, message.LocaleId);
+            Assert.AreEqual(locale.localeCloseDate, message.LocaleCloseDate);
+
+            // Cleanup
+            Mapper.Reset();
+        }
+
+        private Locale CreateTestLocale()
+        {
+            Locale locale = new Locale
+            {
+                localeID = 12345,
+                localeCloseDate = null,
+                localeOpenDate = DateTime.Now,
+                localeName = "MessageGenerator Test Locale",
+                ownerOrgPartyID = 12345,
+                parentLocaleID = 12345,
+                localeTypeID = LocaleTypes.Store,
+                LocaleTrait = new List<LocaleTrait>
+                {
+                    new LocaleTrait
+                    {
+                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.PsBusinessUnitId),
+                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.PsBusinessUnitId).traitID,
+                        localeID = 12345,
+                        traitValue = "MessageGenerator Test Business Value Id"
+                    },
+                    new LocaleTrait
+                    {
+                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.StoreAbbreviation),
+                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.StoreAbbreviation).traitID,
+                        localeID = 12345,
+                        traitValue = "TSA"
+                    },
+                    new LocaleTrait
+                    {
+                        Trait = context.Trait.First(t => t.traitCode == TraitCodes.PhoneNumber),
+                        traitID = context.Trait.First(t => t.traitCode == TraitCodes.PhoneNumber).traitID,
+                        localeID = 12345,
+                        traitValue = "123-456-7890"
+                    }
+                },
+                LocaleAddress = new List<LocaleAddress>
+                {
+                    new LocaleAddress
+                    {
+                        addressID = 678,
+                        AddressUsage = new AddressUsage
+                        {
+                            addressUsageCode = "TST"
+                        },
+                        Address = new Address
+                        {
+                            PhysicalAddress = new PhysicalAddress
+                            {
+                                addressLine1 = "Test AddressLine1",
+                                addressLine2 = "Test AddressLine2",
+                                addressLine3 = "Test AddressLine3",
+                                City = new City { cityName = "Test CityName"},
+                                Country = new Country { countryName = "Test CountryName", countryCode = "TCC"},
+                                latitude = (decimal)33.3333333,
+                                longitude = (decimal)44.444444,
+                                PostalCode = new PostalCode { postalCode = "TPC"},
+                                Territory = new Territory { territoryCode = "TTT", territoryName = "Test Territory" },
+                                Timezone = new Timezone { timezoneCode = "TZN", timezoneName = "Test Time zone", posTimeZoneName = "R10 Timezone Name" }
+                            }
+                        }
+                    }
+                }
+            };
+            return locale;
         }
     }
 }

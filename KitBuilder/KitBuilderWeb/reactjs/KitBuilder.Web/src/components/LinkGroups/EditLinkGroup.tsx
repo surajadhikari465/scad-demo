@@ -1,18 +1,15 @@
 import * as React from 'react'
-//import Card from '@material-ui/core/Card';
-//import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import ReactTable from 'react-table';
-//import { CardHeader } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete'
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
-import axios from 'axios';
-import { KbApiMethod } from '../helpers/kbapi';
 import InstructionListPicker from './InstructionListPicker';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
+import CopyLinkGroupButton from './CopyLinkGroupButton';
+import * as LinkGroupFunctions from './LinkGroupFunctions';
 
 
 interface IState {
@@ -93,6 +90,7 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
     }
 
     static getDerivedStateFromProps(Props: any, State: any) {
+        
         if (Props.data !== State.data) {
 
             return {
@@ -118,22 +116,13 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
 
     loadCookingInstructionsList() {
 
-        axios.get(KbApiMethod("InstructionListByType"), {
-            params: {
-                instructionListType: "Cooking"
-            }
-        })
-            .then(res => {
-                this.setState({ InstructionsList: res.data })
-            }).catch(error => {
-
-                console.log(error)
-            });
-
+        LinkGroupFunctions.LoadCookingInstructions()
+        .then(result => {this.setState({ InstructionsList: result }) })
+      
+      
     }
 
     handleChange(name: string, event: any) {
-        console.log(name);
         this.setState({ ...this.state, [name]: event.target.value })
     }
 
@@ -162,15 +151,14 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
 
 
                     <Grid item md={3}  >
-                        <Button variant="contained" color="primary"
-                            className={this.props.classes.searchButtons}>
-                            Copy Link Group
-                        </Button>
+                        <CopyLinkGroupButton 
+                            className={this.props.classes.searchButtons} 
+                            linkGroupId={this.state.data.linkGroupId}
+                        />
                         <Button variant="contained" color="secondary"
                             className={this.props.classes.searchButtons}>
                             Add Modifier
                         </Button>
-
                     </Grid>
 
                     <Grid item md={12} >
@@ -253,8 +241,6 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
                         <Button
                             variant="contained"
                             color="primary"
-                           
-
                         >
                             Save
                             <SaveIcon className={this.props.classes.IconLeftMargin} />

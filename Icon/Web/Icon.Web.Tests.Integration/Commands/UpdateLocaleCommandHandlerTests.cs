@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateLocaleCommandHandlerTests
     {
         private IconContext context;
@@ -81,7 +81,7 @@ namespace Icon.Web.Tests.Integration.Commands
             context.Address.Add(address);
             context.SaveChanges();
 
-            var country = new Country { countryName = "Test Country", countryCode = "TCC" };
+            var country = new Country { countryName = "Canada", countryCode = "CAN" };
             context.Country.Add(country);
             context.SaveChanges();
 
@@ -741,6 +741,9 @@ namespace Icon.Web.Tests.Integration.Commands
             var originalCountyId = address.City.countyID;
             var originalPostalCodeId = address.postalCodeID;
 
+            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
+            Assert.IsNull(existing, "locale should not have had the currency trait yet");
+
             UpdateLocaleCommand command = new UpdateLocaleCommand
             {
                 LocaleId = testLocale.localeID,
@@ -751,18 +754,16 @@ namespace Icon.Web.Tests.Integration.Commands
                 AddressId = address.addressID,
                 CityName = testLocale.LocaleAddress.First().Address.PhysicalAddress.City.cityName,
                 PostalCode = address.PostalCode.postalCode,
-                CountryId = address.countryID.Value,
+                CountryId = 1, // (USA)
                 TerritoryId = address.territoryID.Value,
                 TimezoneId = address.timezoneID.Value,
                 CurrencyCode = CurrencyCodes.Usd
             };
-            var existing = testLocale.LocaleTrait.FirstOrDefault(t => t.traitID == Traits.CurrencyCode);
 
             // When.
             updateLocaleCommandHandler.Execute(command);
 
             // Then.
-            Assert.IsNull(existing, "locale should not have had the currency trait yet");
             var updatedLocale = context.Locale
                 .Include(l => l.LocaleTrait )
                 .FirstOrDefault(l => l.localeID == testLocale.localeID);
@@ -809,7 +810,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 BusinessUnitId = testLocale.LocaleTrait.First(lt => lt.traitID == Traits.PsBusinessUnitId).traitValue,
                 AddressId = address.addressID,
                 PostalCode = address.PostalCode.postalCode,
-                CountryId = address.countryID.Value,
+                CountryId = 1, //USA
                 TerritoryId = address.territoryID.Value,
                 TimezoneId = address.timezoneID.Value,
                 CurrencyCode = CurrencyCodes.Usd

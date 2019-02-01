@@ -105,7 +105,7 @@
                     <pfx3:transferOrders>
                         <xsl:choose>
                             <xsl:when test="contains($GetEvents/resultSet/Record[QueueID=$var2][1]/EventType, &quot;DEL&quot;)">
-                                <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2]">
+                                <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2][1]">
                                     <pfx3:transferOrderDelete>
                                         <pfx3:transferNumber>
                                             <xsl:value-of select="OrderHeader_ID"/>
@@ -213,60 +213,62 @@
                                                 </ns0:name>
                                             </xsl:if>
                                         </pfx3:approverInfo>
-                                        <pfx3:transferOrderDetail>
-                                            <pfx3:transferOrderDetailNumber>
-                                                <xsl:value-of select="TransferOrderDetailNumber"/>
-                                            </pfx3:transferOrderDetailNumber>
-                                            <pfx3:sourceItemKey>
-                                                <xsl:value-of select="SourceItemKey"/>
-                                            </pfx3:sourceItemKey>
-                                            <pfx3:SubTeam>
-                                                <ns0:subTeamNumber>
-                                                    <xsl:value-of select="ToSubTeam_No"/>
-                                                </ns0:subTeamNumber>
-                                                <xsl:if test="ToSubTeam_Name">
-                                                    <ns0:subTeamName>
-                                                        <xsl:value-of select="ToSubTeam_Name"/>
-                                                    </ns0:subTeamName>
-                                                </xsl:if>
-                                                <ns0:hostSubTeamNumber>
-                                                    <xsl:value-of select="HostSubTeam_No"/>
-                                                </ns0:hostSubTeamNumber>
-                                                <xsl:if test="HostSubTeam_Name">
-                                                    <ns0:hostSubTeamName>
-                                                        <xsl:value-of select="HostSubTeam_Name"/>
-                                                    </ns0:hostSubTeamName>
-                                                </xsl:if>
-                                            </pfx3:SubTeam>
-                                            <pfx3:defaultScanCode>
-                                                <xsl:value-of select="DefaultScanCode"/>
-                                            </pfx3:defaultScanCode>
-                                            <pfx3:transferQuantities>
-                                                <ns02:quantity>
-                                                    <xsl:if test="QuantityOrdered">
-                                                        <ns02:value>
-                                                            <xsl:value-of select="QuantityOrdered"/>
-                                                        </ns02:value>
+                                        <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2]">
+                                            <pfx3:transferOrderDetail>
+                                                <pfx3:transferOrderDetailNumber>
+                                                    <xsl:value-of select="TransferOrderDetailNumber"/>
+                                                </pfx3:transferOrderDetailNumber>
+                                                <pfx3:sourceItemKey>
+                                                    <xsl:value-of select="SourceItemKey"/>
+                                                </pfx3:sourceItemKey>
+                                                <pfx3:SubTeam>
+                                                    <ns0:subTeamNumber>
+                                                        <xsl:value-of select="ToSubTeam_No"/>
+                                                    </ns0:subTeamNumber>
+                                                    <xsl:if test="ToSubTeam_Name">
+                                                        <ns0:subTeamName>
+                                                            <xsl:value-of select="ToSubTeam_Name"/>
+                                                        </ns0:subTeamName>
                                                     </xsl:if>
-                                                    <ns02:units>
-                                                        <ns02:uom>
-                                                            <ns1:code>
-                                                                <xsl:value-of select="tib:trim(OrderedUnitCode)"/>
-                                                            </ns1:code>
-                                                            <ns1:name>
-                                                                <xsl:value-of select="tib:trim(OrderedUnit)"/>
-                                                            </ns1:name>
-                                                        </ns02:uom>
-                                                    </ns02:units>
-                                                </ns02:quantity>
-                                            </pfx3:transferQuantities>
-                                            <pfx3:tsfStatus>
-                                                <xsl:value-of select="Status"/>
-                                            </pfx3:tsfStatus>
-                                            <pfx3:expectedArrivalDate>
-                                                <xsl:value-of select="ExpectedArrivalDate"/>
-                                            </pfx3:expectedArrivalDate>
-                                        </pfx3:transferOrderDetail>
+                                                    <ns0:hostSubTeamNumber>
+                                                        <xsl:value-of select="HostSubTeam_No"/>
+                                                    </ns0:hostSubTeamNumber>
+                                                    <xsl:if test="HostSubTeam_Name">
+                                                        <ns0:hostSubTeamName>
+                                                            <xsl:value-of select="HostSubTeam_Name"/>
+                                                        </ns0:hostSubTeamName>
+                                                    </xsl:if>
+                                                </pfx3:SubTeam>
+                                                <pfx3:defaultScanCode>
+                                                    <xsl:value-of select="DefaultScanCode"/>
+                                                </pfx3:defaultScanCode>
+                                                <pfx3:transferQuantities>
+                                                    <ns02:quantity>
+                                                        <xsl:if test="QuantityOrdered">
+                                                            <ns02:value>
+                                                                <xsl:value-of select="QuantityOrdered"/>
+                                                            </ns02:value>
+                                                        </xsl:if>
+                                                        <ns02:units>
+                                                            <ns02:uom>
+                                                                <ns1:code>
+                                                                    <xsl:value-of select="tib:trim(OrderedUnitCode)"/>
+                                                                </ns1:code>
+                                                                <ns1:name>
+                                                                    <xsl:value-of select="tib:trim(OrderedUnit)"/>
+                                                                </ns1:name>
+                                                            </ns02:uom>
+                                                        </ns02:units>
+                                                    </ns02:quantity>
+                                                </pfx3:transferQuantities>
+                                                <pfx3:tsfStatus>
+                                                    <xsl:value-of select="Status"/>
+                                                </pfx3:tsfStatus>
+                                                <pfx3:expectedArrivalDate>
+                                                    <xsl:value-of select="ExpectedArrivalDate"/>
+                                                </pfx3:expectedArrivalDate>
+                                            </pfx3:transferOrderDetail>
+                                        </xsl:for-each>
                                     </pfx3:transferOrder>
                                 </xsl:for-each>
                             </xsl:otherwise>
