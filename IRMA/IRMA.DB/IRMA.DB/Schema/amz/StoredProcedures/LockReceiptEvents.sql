@@ -71,7 +71,8 @@ UPDATE rq
 		AND rq.EventTypeID = @ReceiptModifiedEventId  
 	    AND EXISTS( SELECT 1 FROM [amz].[ReceiptQueue] re
 				WHERE re.KeyID = rq.KeyID and re.SecondaryKeyID = rq.SecondaryKeyID
-				AND re.EventTypeID = @ReceiptCreateEventID)
+				AND re.EventTypeID = @ReceiptCreateEventID
+				AND re.Status NOT IN ('P', 'F'))
 	
 END
 
