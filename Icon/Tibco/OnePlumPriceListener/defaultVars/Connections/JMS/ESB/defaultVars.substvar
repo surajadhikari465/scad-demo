@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274398</modTime>
+			<modTime>1548954672454</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiContextUrl</name>
@@ -15,15 +15,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1511169954884</modTime>
+			<modTime>1548954672475</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>#!prEixP8OEmrez7DzIynRT2h2kR3SvBfmtjjc09kioDs=</value>
+			<value>#!iAkQusFG5K0Y37ogaelS4knbvWoIiFm9CmOThRMoxSk=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1510079274527</modTime>
+			<modTime>1548954672069</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiUsername</name>
@@ -31,15 +31,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274590</modTime>
+			<modTime>1548954672560</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!aiFIzf8epGhJA4E+1v+Y3j2MKFyC254Fcoh5gex7hBMMNby7y3Yp7w==</value>
+			<value>#!GzkzwK2lNQx4ZNj3A28az5qkSnl4dh+gdeWCrAcbaHaJFRrOCLYjkg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1511169954946</modTime>
+			<modTime>1548954672162</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>QueueConnectionFactory</name>
@@ -47,15 +47,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274653</modTime>
+			<modTime>1548954672532</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>#!DQa/Kk4v5wOTNkSRxJDm3A==</value>
+			<value>#!/qFpR9fXMSriV3xRYTDFTw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1511164807072</modTime>
+			<modTime>1548954672319</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TopicConnectionFactory</name>
@@ -63,7 +63,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274773</modTime>
+			<modTime>1548954672539</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
@@ -71,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510084998908</modTime>
+			<modTime>1548954672343</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

@@ -7,7 +7,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510832505833</modTime>
+			<modTime>1548998192924</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ArchiveRealTimePriceQueue</name>
@@ -15,7 +15,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510832505815</modTime>
+			<modTime>1548998192699</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>CLELogQueue</name>
@@ -23,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419715</modTime>
+			<modTime>1548998193226</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ErrorBODQueue</name>
@@ -31,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419666</modTime>
+			<modTime>1548998193002</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InactiveTprPriceStarterQueue</name>
@@ -39,7 +39,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1515622385985</modTime>
+			<modTime>1548998192797</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryManagementTopic</name>
@@ -47,7 +47,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1538590437042</modTime>
+			<modTime>1548998192729</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MammothErrorMessageQueue</name>
@@ -55,7 +55,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1511282079946</modTime>
+			<modTime>1548998192769</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MammothPsgQueue</name>
@@ -63,7 +63,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1515770924923</modTime>
+			<modTime>1548998192914</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceEslQueue</name>
@@ -71,7 +71,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1548955169870</modTime>
+			<modTime>1548998193354</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceInforQueue</name>
@@ -79,7 +79,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419886</modTime>
+			<modTime>1548998193021</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaFLQueue</name>
@@ -87,7 +87,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419614</modTime>
+			<modTime>1548998192748</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaMAQueue</name>
@@ -95,7 +95,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419795</modTime>
+			<modTime>1548998193307</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaMWQueue</name>
@@ -103,7 +103,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419731</modTime>
+			<modTime>1548998192817</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaNAQueue</name>
@@ -111,7 +111,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419903</modTime>
+			<modTime>1548998193122</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaNCQueue</name>
@@ -119,7 +119,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419810</modTime>
+			<modTime>1548998192933</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaNEQueue</name>
@@ -127,7 +127,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419650</modTime>
+			<modTime>1548998192838</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaPNQueue</name>
@@ -135,7 +135,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419918</modTime>
+			<modTime>1548998193139</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaRMQueue</name>
@@ -143,7 +143,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419856</modTime>
+			<modTime>1548998193284</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaSOQueue</name>
@@ -151,7 +151,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419683</modTime>
+			<modTime>1548998193200</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaSPQueue</name>
@@ -159,7 +159,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419825</modTime>
+			<modTime>1548998192964</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceIrmaSWQueue</name>
@@ -167,7 +167,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419871</modTime>
+			<modTime>1548998193320</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceMammothJustInTimeQueue</name>
@@ -175,7 +175,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419635</modTime>
+			<modTime>1548998193249</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceMammothRealTimeQueue</name>
@@ -183,7 +183,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419840</modTime>
+			<modTime>1548998192823</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceMammothTopic</name>
@@ -191,15 +191,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419748</modTime>
+			<modTime>1548998193012</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceOnePlumQueue</name>
-			<value> WFMSB1.Mammoth.Retail.JustInTimeOnePlum.MammothPrice.Queue.V1</value>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeOnePlum.MammothPrice.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1548955169844</modTime>
+			<modTime>1548998193130</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PricePushStarterQueue</name>
@@ -207,7 +207,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419699</modTime>
+			<modTime>1548998192810</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PriceR10Queue</name>
@@ -215,7 +215,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510179419764</modTime>
+			<modTime>1548998193414</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

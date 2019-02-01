@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:ns4="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns5="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns8="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns9="http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/EslPriceListener.process</pd:name>
+    <pd:startName>Esl Price Reciever</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Esl Price Reciever">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>117</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/PriceEslQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>884</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1502126172637</pd:targetNamespace>
+    <pd:activity name="InsertItemStoreKeys">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>387</pd:x>
+        <pd:y>91</pd:y>
+        <config>
+            <processName>/Processes/InsertKeysInDB.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$ParseActivePriceXML/pfx2:MammothPrices"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>246</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>419</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns6:AppLog>
+                <ns6:AppId>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/ApplicationID"/>
+                </ns6:AppId>
+                <ns6:Level>
+                    <xsl:value-of select="'Error'"/>
+                </ns6:Level>
+                <ns6:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns6:Logger>
+                <ns6:UserName>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </ns6:UserName>
+                <ns6:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </ns6:MachineName>
+                <ns6:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns6:LogDate>
+                <ns6:Thread>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns6:Thread>
+                <ns6:Message>
+                    <xsl:value-of select="concat('MessageID: ',$Esl-Price-Reciever/ns:ActivityOutput/OtherProperties/TransactionID,', MsgCode: ',$_error/ns2:ErrorReport/MsgCode, ',Msg:',$_error/ns2:ErrorReport/Msg)"/>
+                </ns6:Message>
+                <ns6:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns6:CallSite>
+                <ns6:Exception>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/FullClass"/>
+                </ns6:Exception>
+                <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                    <ns6:StackTrace>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </ns6:StackTrace>
+                </xsl:if>
+            </ns6:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Publish Error Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>587</pd:x>
+        <pd:y>255</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns5:ErrorMessage>
+                <ns5:Application>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </ns5:Application>
+                <ns5:MessageID>
+                    <xsl:value-of select="$Esl-Price-Reciever/ns:ActivityOutput/OtherProperties/TransactionID"/>
+                </ns5:MessageID>
+                <ns5:MessageProperties>
+                    <xsl:for-each select="$Esl-Price-Reciever/ns:ActivityOutput/OtherProperties/node()">
+                        <ns5:NameValuePair>
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="local-name(current())"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="current()"/>
+                            </xsl:attribute>
+                        </ns5:NameValuePair>
+                    </xsl:for-each>
+                </ns5:MessageProperties>
+                <ns5:Message>
+                    <xsl:value-of select="$Esl-Price-Reciever/ns:ActivityOutput/Body"/>
+                </ns5:Message>
+                <ns5:ErrorCode>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                </ns5:ErrorCode>
+                <ns5:ErrorDetails>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </ns5:ErrorDetails>
+                <xsl:choose>
+                    <xsl:when test="contains($_error/ns2:ErrorReport/Msg, &quot;Connection is closed&quot;)">
+                        <ns5:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns5:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns2:ErrorReport/Msg, &quot;com.microsoft.sqlserver.jdbc.SQLServerException&quot;) or&#xA;contains($_error/ns2:ErrorReport/Msg, &quot;JDBC error reported&quot;)">
+                        <ns5:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns5:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="exists($_error_ParseActivePriceXML/ActivityErrors)">
+                        <ns5:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns5:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns5:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </ns5:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns5:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ConfirmFailure">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>747</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <ConfirmEvent>Esl Price Reciever</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ConfirmSuccess">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>774</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <ConfirmEvent>Esl Price Reciever</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ParseActivePriceXML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:MammothPrices"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Esl-Price-Reciever/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>644</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns6:AppLog>
+                <ns6:AppId>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Application/ApplicationID"/>
+                </ns6:AppId>
+                <ns6:Level>
+                    <xsl:value-of select="'Info'"/>
+                </ns6:Level>
+                <ns6:Logger>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns6:Logger>
+                <ns6:UserName>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </ns6:UserName>
+                <ns6:MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </ns6:MachineName>
+                <ns6:LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns6:LogDate>
+                <ns6:Thread>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns6:Thread>
+                <ns6:Message>
+                    <xsl:value-of select="$Render-JSON/ns8:ActivityOutputClass/jsonString"/>
+                </ns6:Message>
+                <ns6:CallSite>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns6:CallSite>
+            </ns6:AppLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="ProcessedItemStoreRecords">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="keys" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="BusinessUnitId" type="xsd:int"/>
+                                        <xsd:element name="ItemId" type="xsd:int"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns8:ActivityInputClass>
+                <ProcessedItemStoreRecords>
+                    <xsl:for-each select="$InsertItemStoreKeys/root/ItemStoreKeys">
+                        <keys>
+                            <BusinessUnitId>
+                                <xsl:value-of select="BusinessUnitId"/>
+                            </BusinessUnitId>
+                            <ItemId>
+                                <xsl:value-of select="ItemId"/>
+                            </ItemId>
+                        </keys>
+                    </xsl:for-each>
+                </ProcessedItemStoreRecords>
+            </ns8:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Error</pd:from>
+        <pd:to>Publish Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmSuccess</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error Message</pd:from>
+        <pd:to>ConfirmFailure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmFailure</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Esl Price Reciever</pd:from>
+        <pd:to>ParseActivePriceXML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseActivePriceXML</pd:from>
+        <pd:to>InsertItemStoreKeys</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Message</pd:from>
+        <pd:to>ConfirmSuccess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertItemStoreKeys</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Log Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

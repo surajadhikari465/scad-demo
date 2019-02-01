@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd">
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" schemaLocation="/SharedResources/Schemas/Application/MammothDbPrice.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/Error.xsd" schemaLocation="/SharedResources/Schemas/Application/Error.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/MammothPrices.xsd"/>
+    <pd:name>Processes/InsertKeysInDB.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:MammothPrices"/>
+    <pd:startX>44</pd:startX>
+    <pd:startY>183</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:copy-of select="$Map-Data/root/ItemStoreKeys"/>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ItemStoreKeys" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="BusinessUnitId" type="xsd:int"/>
+                                <xsd:element name="ItemId" type="xsd:int"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>418</pd:endX>
+    <pd:endY>433</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1502127828895</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>319</pd:x>
+        <pd:y>43</pd:y>
+        <pd:width>379</pd:width>
+        <pd:height>259</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIndex</pd:indexSlot>
+            <pd:errorCondition>$retryIndex &lt; $_globalVariables/ns:GlobalVariables/Application/InsertRecordsMaxRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>Java Code</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Java Code</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JDBC Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>491</pd:x>
+            <pd:y>106</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO stage.ItemStoreKeysEPlum (BusinessUnitID, ItemID, InsertDateUtc)
+VALUES (?, ?, SYSDATETIME())</statement>
+                <batchUpdate>true</batchUpdate>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>BusinessUnitId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ItemID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <xsl:for-each select="$Map-Data/root/ItemStoreKeys">
+                        <Record>
+                            <BusinessUnitId>
+                                <xsl:value-of select="BusinessUnitId"/>
+                            </BusinessUnitId>
+                            <ItemID>
+                                <xsl:value-of select="ItemId"/>
+                            </ItemID>
+                        </Record>
+                    </xsl:for-each>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>510</pd:x>
+            <pd:y>223</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="round($Java-Code/javaCodeActivityOutput/exponentialDelayInSeconds)"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Java Code">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:description>Determines how long to sleep based on an exponential backoff formula.</pd:description>
+            <pd:x>410</pd:x>
+            <pd:y>224</pd:y>
+            <config>
+                <fileName>InsertKeysInDBJavaCode</fileName>
+                <packageName>Processes.InsertKeysInDB</packageName>
+                <fullsource>package Processes.InsertKeysInDB;
+import java.util.*;
+import java.io.*;
+public class InsertKeysInDBJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected int retryCount = 0;
+	protected double maxDelayInSeconds = 0.0d;
+	protected double exponentialDelayInSeconds = 0.0d;
+	public int getretryCount() {
+		return retryCount;
+	}
+	public void setretryCount(int val) {
+		retryCount = val;
+	}
+	public double getmaxDelayInSeconds() {
+		return maxDelayInSeconds;
+	}
+	public void setmaxDelayInSeconds(double val) {
+		maxDelayInSeconds = val;
+	}
+	public double getexponentialDelayInSeconds() {
+		return exponentialDelayInSeconds;
+	}
+	public void setexponentialDelayInSeconds(double val) {
+		exponentialDelayInSeconds = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public InsertKeysInDBJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : int retryCount
+	In  : double maxDelayInSeconds
+	Out : double exponentialDelayInSeconds
+* Available Variables: DO NOT MODIFY *****/
+double delayInSeconds = ((1d / 2d) * (Math.pow(2d, retryCount) - 1d));
+exponentialDelayInSeconds = maxDelayInSeconds &lt; delayInSeconds ? Integer.valueOf((int) Math.round(maxDelayInSeconds)) : Integer.valueOf((int) Math.round(delayInSeconds));
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>retryCount</fieldName>
+                        <fieldType>int</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>maxDelayInSeconds</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>exponentialDelayInSeconds</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>InsertKeysInDBJavaCode</name>
+                        <byteCode>yv66vgAAADQAQAkADQAqCQANACsJAA0ALAoADgAtBj/gAAAAAAAABkAAAAAAAAAACgAuAC8KAC4AMAoAMQAyCgAxADMHADQHADUBAApyZXRyeUNvdW50AQABSQEAEW1heERlbGF5SW5TZWNvbmRzAQABRAEAGWV4cG9uZW50aWFsRGVsYXlJblNlY29uZHMBAA1nZXRyZXRyeUNvdW50AQADKClJAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHJldHJ5Q291bnQBAAQoSSlWAQAUZ2V0bWF4RGVsYXlJblNlY29uZHMBAAMoKUQBABRzZXRtYXhEZWxheUluU2Vjb25kcwEABChEKVYBABxnZXRleHBvbmVudGlhbERlbGF5SW5TZWNvbmRzAQAcc2V0ZXhwb25lbnRpYWxEZWxheUluU2Vjb25kcwEABjxpbml0PgEAAygpVgEABmludm9rZQEADVN0YWNrTWFwVGFibGUHADQHADYBAApFeGNlcHRpb25zBwA3AQAKU291cmNlRmlsZQEAG0luc2VydEtleXNJbkRCSmF2YUNvZGUuamF2YQwADwAQDAARABIMABMAEgwAIAAhBwA4DAA5ADoMADsAPAcANgwAPQA+DAA/ABUBAC9Qcm9jZXNzZXMvSW5zZXJ0S2V5c0luREIvSW5zZXJ0S2V5c0luREJKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABFqYXZhL2xhbmcvSW50ZWdlcgEAE2phdmEvbGFuZy9FeGNlcHRpb24BAA5qYXZhL2xhbmcvTWF0aAEAA3BvdwEABShERClEAQAFcm91bmQBAAQoRClKAQAHdmFsdWVPZgEAFihJKUxqYXZhL2xhbmcvSW50ZWdlcjsBAAhpbnRWYWx1ZQAhAA0ADgAAAAMABAAPABAAAAAEABEAEgAAAAQAEwASAAAACAABABQAFQABABYAAAAdAAEAAQAAAAUqtAABrAAAAAEAFwAAAAYAAQAAAAoAAQAYABkAAQAWAAAAIgACAAIAAAAGKhu1AAGxAAAAAQAXAAAACgACAAAADQAFAA4AAQAaABsAAQAWAAAAHQACAAEAAAAFKrQAAq8AAAABABcAAAAGAAEAAAAQAAEAHAAdAAEAFgAAACIAAwADAAAABiontQACsQAAAAEAFwAAAAoAAgAAABMABQAUAAEAHgAbAAEAFgAAAB0AAgABAAAABSq0AAOvAAAAAQAXAAAABgABAAAAFgABAB8AHQABABYAAAAiAAMAAwAAAAYqJ7UAA7EAAAABABcAAAAKAAIAAAAZAAUAGgABACAAIQABABYAAAA8AAMAAQAAABQqtwAEKgO1AAEqDrUAAioOtQADsQAAAAEAFwAAABYABQAAABwABAAGAAkABwAOAAgAEwAdAAEAIgAhAAIAFgAAAIEABgADAAAAOhQABRQAByq0AAGHuAAJD2drSCoqtAACJ5icABEqtAACuAAKiLgAC6cACye4AAqIuAALtgAMh7UAA7EAAAACABcAAAAOAAMAAAAkABIAJQA5ACYAIwAAACEAAv8AKgACBwAkAwABBwAk/wAHAAIHACQDAAIHACQHACUAJgAAAAQAAQAnAAEAKAAAAAIAKQ==</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <retryCount>
+                        <xsl:value-of select="$retryIndex"/>
+                    </retryCount>
+                    <maxDelayInSeconds>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InsertRecordsMaxDelayInSeconds"/>
+                    </maxDelayInSeconds>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>623</pd:x>
+            <pd:y>228</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;Error Message: &quot;,$_error/ns1:ErrorReport/Msg,&quot;. StackTrace: &quot;, $_error/ns1:ErrorReport/StackTrace)"/>
+                    </message>
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>162</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ItemStoreKeys" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="BusinessUnitId" type="xsd:int"/>
+                                        <xsd:element name="ItemId" type="xsd:int"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each-group select="$Start/pfx4:MammothPrices/pfx4:MammothPrice" group-by="pfx4:BusinessUnit">
+                    <xsl:for-each-group select="current-group()" group-by="pfx4:ItemId">
+                        <ItemStoreKeys>
+                            <BusinessUnitId>
+                                <xsl:value-of select="pfx4:BusinessUnit"/>
+                            </BusinessUnitId>
+                            <ItemId>
+                                <xsl:value-of select="pfx4:ItemId"/>
+                            </ItemId>
+                        </ItemStoreKeys>
+                    </xsl:for-each-group>
+                </xsl:for-each-group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:xpathDescription>PricesHavePriceID</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Map-Data/root/ItemStoreKeys) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

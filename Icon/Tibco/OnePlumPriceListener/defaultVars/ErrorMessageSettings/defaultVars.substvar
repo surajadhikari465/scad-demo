@@ -2,76 +2,68 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>JndiContextFactory</name>
-			<value>com.tibco.tibjms.naming.TibjmsInitialContextFactory</value>
+			<name>CountSeperator</name>
+			<value>##</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274398</modTime>
+			<modTime>1548954672140</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>JndiContextUrl</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<name>DeliveryMode</name>
+			<value>PERSISTENT</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1511169954884</modTime>
+			<modTime>1548954672245</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>JndiPassword</name>
-			<value>#!prEixP8OEmrez7DzIynRT2h2kR3SvBfmtjjc09kioDs=</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1510079274527</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>JndiUsername</name>
-			<value>jndiMammothUser</value>
+			<name>ExceptionLogDirectory</name>
+			<value>C:\temp\Exception</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274590</modTime>
+			<modTime>1548954672145</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Password</name>
-			<value>#!aiFIzf8epGhJA4E+1v+Y3j2MKFyC254Fcoh5gex7hBMMNby7y3Yp7w==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1511169954946</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>QueueConnectionFactory</name>
-			<value>ItemQueueConnectionFactory</value>
+			<name>ExceptionLogExtension</name>
+			<value>.Exp</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274653</modTime>
+			<modTime>1548954672406</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SslPassword</name>
-			<value>#!DQa/Kk4v5wOTNkSRxJDm3A==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1511164807072</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>TopicConnectionFactory</name>
-			<value>ItemTopicConnectionFactory</value>
+			<name>JmsExpiration</name>
+			<value>0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510079274773</modTime>
+			<modTime>1548954672093</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Username</name>
-			<value>mammothUser</value>
+			<name>JmsPriority</name>
+			<value>4</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510084998908</modTime>
+			<modTime>1548954672174</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SendRetryMaxCount</name>
+			<value>3</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548954672182</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SendRetrySleepDelayMilliseconds</name>
+			<value>3000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548954672525</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

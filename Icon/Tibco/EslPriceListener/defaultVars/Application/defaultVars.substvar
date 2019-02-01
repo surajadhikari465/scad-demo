@@ -2,28 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>Password</name>
-			<value>#!jUZvUbsBvqACfLna0L6QCaxDrbUqAX8IuZysekvZ5/ZvOUisDp8pveUDPZMW9yB6+ZDB02T8m2c=</value>
+			<name>ApplicationID</name>
+			<value>24</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1510557191413</modTime>
+			<type>Integer</type>
+			<modTime>1548999293102</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Url</name>
-			<value>ssl://cerd1668.wfm.pvt:7233</value>
+			<name>InsertRecordsMaxDelayInSeconds</name>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1536077066959</modTime>
+			<modTime>1548998193036</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Username</name>
-			<value>sb1_mammothPriceUser</value>
+			<name>InsertRecordsMaxRetryCount</name>
+			<value>3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1510557191468</modTime>
+			<type>Integer</type>
+			<modTime>1548998193331</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

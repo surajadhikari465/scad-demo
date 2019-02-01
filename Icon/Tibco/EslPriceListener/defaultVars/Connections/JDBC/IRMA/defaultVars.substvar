@@ -2,28 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>ConnectionString</name>
+			<value>jdbc:sqlserver://idt-nc\nct;DatabaseName=ItemCatalog_Test;</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548998192790</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Password</name>
-			<value>#!jUZvUbsBvqACfLna0L6QCaxDrbUqAX8IuZysekvZ5/ZvOUisDp8pveUDPZMW9yB6+ZDB02T8m2c=</value>
+			<value>#!6pwW0Uo02idi5eNMHG+s2800GshE5a9TZBK+iwCkvNWkGAVEoeGJvw==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1510557191413</modTime>
+			<modTime>1548998193070</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Url</name>
-			<value>ssl://cerd1668.wfm.pvt:7233</value>
+			<name>SqlDBDriver</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1536077066959</modTime>
+			<modTime>1548998193053</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value>sb1_mammothPriceUser</value>
+			<value>TibcoDataWriter</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510557191468</modTime>
+			<modTime>1548998192942</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
