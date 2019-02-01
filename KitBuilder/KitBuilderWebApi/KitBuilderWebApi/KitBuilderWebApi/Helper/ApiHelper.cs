@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace KitBuilderWebApi.Helper
 {
@@ -12,10 +8,10 @@ namespace KitBuilderWebApi.Helper
 	{
 		public static HttpClient ApiClient { get; set; }
 
-		public static void InitializeClient()
+		public static void InitializeClient(string baseUri)
 		{
-			ApiClient = new HttpClient();
-			//ApiClient.BaseAddress = new Uri(baseUri);
+			ApiClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true });
+			ApiClient.BaseAddress = new Uri(baseUri);
 			ApiClient.DefaultRequestHeaders.Accept.Clear();
 			ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/jason"));
 		}
