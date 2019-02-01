@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Monitoring.Common;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess.Queries;
@@ -17,20 +17,20 @@ namespace Icon.Monitoring.Monitors
 
         private readonly IMammothPrimeAffinityControllerMonitorSettings primeAffinitySettings;
         private readonly IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule> getMammothJobScheduleQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private readonly IMonitorCache cache;
 
         public MammothPrimeAffinityControllerMonitor(
             IMonitorSettings settings,
             IMammothPrimeAffinityControllerMonitorSettings primeAffinitySettings,
             IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule> getMammothJobScheduleQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IMonitorCache cache,
             ILogger logger)
         {
             this.settings = settings;
             this.primeAffinitySettings = primeAffinitySettings;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.cache = cache;
             this.getMammothJobScheduleQuery = getMammothJobScheduleQuery;
             this.logger = logger;
@@ -83,7 +83,7 @@ namespace Icon.Monitoring.Monitors
                 {
                     if (jobSchedule.Status != JobScheduleStatusReady)
                     {
-                        TriggerPagerDutyIfNoCachedPagerDutyExists(
+                        TriggerOpsgenieIfNoCachedOpsgenieExists(
                             region,
                             "Mammoth Prime Affinity Controller is not in ready status for region. The job could have failed to run and needs to be restarted or this could mean that the job is taking longer than expected to run.",
                             new Dictionary<string, string>
@@ -103,7 +103,7 @@ namespace Icon.Monitoring.Monitors
                     }
                     else
                     {
-                        TriggerPagerDutyIfNoCachedPagerDutyExists(
+                        TriggerOpsgenieIfNoCachedOpsgenieExists(
                             region,
                             "Mammoth Prime Affinity Controller has not completed by expected time for region. This could mean that the job has not ran at all today and needs to been manually started or that the job's scheduled run time is incorrect and needs to change.",
                             new Dictionary<string, string>
@@ -134,14 +134,14 @@ namespace Icon.Monitoring.Monitors
             }
         }
 
-        private void TriggerPagerDutyIfNoCachedPagerDutyExists(string region, string errorMessage, Dictionary<string, string> jsonDetails)
+        private void TriggerOpsgenieIfNoCachedOpsgenieExists(string region, string errorMessage, Dictionary<string, string> jsonDetails)
         {
-            string pagerDutyCacheKey = JobName + region;
-            if (cache.Contains(pagerDutyCacheKey))
+            string opsgenieCacheKey = JobName + region;
+            if (cache.Contains(opsgenieCacheKey))
             {
                 logger.Info(JsonConvert.SerializeObject(new
                 {
-                    Message = "Skipping Mammoth Prime Affinity Controller PagerDuty alert because an alert was already triggered today.",
+                    Message = "Skipping Mammoth Prime Affinity Controller Opsgenie alert because an alert was already triggered today.",
                     Region = region,
                     Error = errorMessage
                 }));
@@ -150,21 +150,21 @@ namespace Icon.Monitoring.Monitors
             {
                 logger.Info(JsonConvert.SerializeObject(new
                 {
-                    Message = "Triggering PagerDuty alert for Mammoth Prime Affinity Controller error.",
+                    Message = "Triggering Opsgenie alert for Mammoth Prime Affinity Controller error.",
                     Region = region,
                     Error = errorMessage
                 }));
-                var response = this.pagerDutyTrigger.TriggerIncident(
+                var response = this.opsgenieTrigger.TriggerAlert("Mammoth Prime Affinity Controller Issue",
                                 errorMessage,
                                 jsonDetails);
                 logger.Info(JsonConvert.SerializeObject(new
                 {
-                    Message = "Mammoth Prime Affinity Controller Monitor PagerDuty response.",
+                    Message = "Mammoth Prime Affinity Controller Monitor Opsgenie response.",
                     Region = region,
                     Response = response
                 }));
                 cache.Set(
-                    pagerDutyCacheKey,
+                    opsgenieCacheKey,
                     DateTime.Now,
                     GetTomorrowsUtcStartDate());
             }

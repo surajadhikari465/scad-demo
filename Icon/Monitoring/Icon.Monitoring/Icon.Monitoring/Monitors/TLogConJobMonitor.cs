@@ -1,4 +1,4 @@
-﻿using Icon.Monitoring.Common.PagerDuty;
+﻿using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Common.DataAccess;
 using Icon.Monitoring.DataAccess.Queries;
@@ -16,7 +16,7 @@ namespace Icon.Monitoring.Monitors
         private const string AppName = "TLog Controller";
 
         private ITLogConJobMonitorSettings tLogConMonitorSettings;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler;
         private IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler;
         private bool _alertSentForItemTableMovement = false;
@@ -28,12 +28,12 @@ namespace Icon.Monitoring.Monitors
             ITLogConJobMonitorSettings TLogConMonitorSettings,
             IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
             IQueryHandler<GetItemMovementTableRowCountParameters, int> getItemMovementTableRowCountQueryHandler,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             ILogger logger)
         {
             this.settings = settings;
             this.tLogConMonitorSettings = TLogConMonitorSettings;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.getLatestAppLogByAppNameQueryHandler = getLatestAppLogByAppNameQueryHandler;
             this.getItemMovementTableRowCountQueryHandler = getItemMovementTableRowCountQueryHandler;
             this.logger = logger;
@@ -58,7 +58,7 @@ namespace Icon.Monitoring.Monitors
                 if (!HasTlogConLoggedSinceConfiguredAllowedMinutes(AppName))
                 {
                     logger.Info("TLog Controller Monitor has detected that TLog Controller service is not running.");
-                    TriggerPagerDutyForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
+                    TriggerOpsGenieForTLogConJob(TLogConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
 
                 }
                 // AlertSendForItemTableMovement -- to make sure we only send one
@@ -67,7 +67,7 @@ namespace Icon.Monitoring.Monitors
                 {
                     logger.Info("TLog Controller Monitor has detected that Item Movement Table is getting processed slowly.");
 
-                    TriggerPagerDutyForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaximumRows.ToString() + " Rows.", "Current Row Count: ", currentRowCount.ToString());
+                    TriggerOpsGenieForTLogConJob(ItemMovementTableRowCountExceededMessage + tLogConMonitorSettings.ItemMovementMaximumRows.ToString() + " Rows.", "Current Row Count: ", currentRowCount.ToString());
                     AlertSentForItemTableMovement = true;
                 }
                 else
@@ -118,11 +118,11 @@ namespace Icon.Monitoring.Monitors
                 return true;
         }
 
-        private void TriggerPagerDutyForTLogConJob(string errorMessage, string key, String value)
+        private void TriggerOpsGenieForTLogConJob(string errorMessage, string key, String value)
         {
             logger.Info(errorMessage);
 
-            var response = this.pagerDutyTrigger.TriggerIncident(
+            var response = this.opsgenieTrigger.TriggerAlert("TLog Controller Service Issue",
                             errorMessage,
                             new Dictionary<string, string>()
                             {

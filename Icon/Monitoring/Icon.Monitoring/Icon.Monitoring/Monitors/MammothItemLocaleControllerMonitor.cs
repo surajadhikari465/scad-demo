@@ -6,35 +6,36 @@
 
     using Icon.Monitoring.Common;
     using Icon.Monitoring.Common.Enums;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
     using Logging;
+    using OpsgenieAlert;
 
     public class MammothItemLocaleControllerMonitor : TimedControllerMonitor
     {
-        private const string MammothItemLocaleControllerPagerDutyDescription = "Mammoth Item Locale Controller is taking too long for the following regions: ";
+        private const string MammothItemLocaleControllerOpsgenieDescription = "Mammoth Item Locale Controller is taking too long for the following regions: ";
         private readonly IQueryByRegionHandler<GetMammothItemLocaleChangeQueueIdQueryParameters, int> itemLocaleChangeQueueQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
 
         public MammothItemLocaleControllerMonitor(
             IMonitorSettings settings,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IQueryByRegionHandler<GetMammothItemLocaleChangeQueueIdQueryParameters, int> itemLocaleChangeQueueQuery,
             ILogger logger)
         {
             this.settings = settings;
             this.logger = logger;
             this.itemLocaleChangeQueueQuery = itemLocaleChangeQueueQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
         }
 
         protected override void TimedCheckStatusAndNotify()
         {
             try
             {
-                var pagerDutyDetails = new Dictionary<string, string>();
-                var pagerDutyDescription = new StringBuilder(MammothItemLocaleControllerPagerDutyDescription);
+                var opsGenieDetails = new Dictionary<string, string>();
+                var opsGenieDescription = new StringBuilder(MammothItemLocaleControllerOpsgenieDescription);
                 var queryParameters = new GetMammothItemLocaleChangeQueueIdQueryParameters();
                 int numberFailed = 0;
 
@@ -45,8 +46,8 @@
 
                     if (this.CheckMessageQueueId(region))
                     {
-                        pagerDutyDescription.Append(region).Append(" ");
-                        pagerDutyDetails.Add("Region:" + region.ToString(), region.ToString());
+                        opsGenieDescription.Append(region).Append(" ");
+                        opsGenieDetails.Add("Region:" + region.ToString(), region.ToString());
                         numberFailed++;
                     }
                 }
@@ -54,8 +55,8 @@
                 if (numberFailed > 0)
                 {
                     logger.Info("The Mammoth Item Locale Controller Monitor has detected a region that is taking too long.");
-                    PagerDutyResponse response =
-                        this.pagerDutyTrigger.TriggerIncident(pagerDutyDescription.ToString(), pagerDutyDetails);
+                    OpsgenieResponse response =
+                        this.opsgenieTrigger.TriggerAlert(" Mammoth Item Locale Issue", opsGenieDescription.ToString(), opsGenieDetails);
                 }
                 else
                 {
@@ -93,11 +94,6 @@
                 MammothItemLocaleChangeQueueCache.IrmaRegionMapper[region].NumberOfTimesMatched = 0;
                 return false;
             }
-        }
-
-        private void TriggerPagerDutyIncident(string description, Dictionary<string, string> jsonDetails)
-        {
-            PagerDutyResponse response = this.pagerDutyTrigger.TriggerIncident(description, jsonDetails);
         }
     }
 }

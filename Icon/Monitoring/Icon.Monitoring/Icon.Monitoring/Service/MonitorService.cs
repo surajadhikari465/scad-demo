@@ -70,7 +70,7 @@
 
         private void RunService()
         {
-            if (!settings.SendPagerDutyNotifications) return;
+            if (!settings.SendOpsGenieAlert) return;
 
             DayOfWeek blackOutDay;
             LocalTime currentTime = GetLocalDateTimeInCentralTime(this.clock.GetCurrentInstant()).TimeOfDay;

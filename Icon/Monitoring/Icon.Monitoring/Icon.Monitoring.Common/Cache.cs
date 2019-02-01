@@ -22,7 +22,7 @@ namespace Icon.Monitoring.Common
 
     public static class JobStatusCache
     {
-        public static Dictionary<string, DateTime> PagerDutyTracker = new Dictionary<string, DateTime>();
+        public static Dictionary<string, DateTime> OpsgenieTracker = new Dictionary<string, DateTime>();
     }
 
     public static class MammothPriceChangeQueueCache

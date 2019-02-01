@@ -12,8 +12,8 @@
     public class MonitorSettings : IMonitorSettings
     {
         public string IntegrationKey { get; set; }
-        public bool SendPagerDutyNotifications { get; set; }
-        public string PagerDutyUri { get; set; }
+        public bool SendOpsGenieAlert { get; set; }
+        public string OpsGenieUri { get; set; }
         public List<string> ApiControllerMonitorRegions { get; set; }
         public string Environment { get; set; }
         public double MonitorServiceTimer { get; set; }
@@ -52,8 +52,8 @@
             MonitorSettings settings = new MonitorSettings();
             var pattern = LocalTimePattern.CreateWithInvariantCulture("HH:mm:ss");
             settings.IntegrationKey = AppSettingsAccessor.GetStringSetting("IntegrationKey");
-            settings.SendPagerDutyNotifications = AppSettingsAccessor.GetBoolSetting("SendPagerDutyNotifications");
-            settings.PagerDutyUri = AppSettingsAccessor.GetStringSetting("PagerDutyUri");
+            settings.SendOpsGenieAlert = AppSettingsAccessor.GetBoolSetting("SendOpsGenieAlert");
+            settings.OpsGenieUri = AppSettingsAccessor.GetStringSetting("OpsGenieUri");
             settings.Environment = AppSettingsAccessor.GetStringSetting("Environment");
             settings.MonitorServiceTimer = AppSettingsAccessor.GetDoubleSetting("MonitorServiceTimer");
             settings.ApiControllerMonitorRegions = AppSettingsAccessor.GetStringSetting(nameof(ApiControllerMonitorRegions)).Split(',').ToList();

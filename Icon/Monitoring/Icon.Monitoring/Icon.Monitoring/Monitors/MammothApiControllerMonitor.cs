@@ -6,27 +6,27 @@
     using Icon.Logging;
     using Icon.Monitoring.Common;
     using Icon.Monitoring.Common.ApiController;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
 
     public class MammothApiControllerMonitor : TimedControllerMonitor
     {
         private readonly IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int> messageQueueQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private MammothMessageQueueCache messageQueueCache;
 
         public MammothApiControllerMonitor(
             IMonitorSettings settings,
             IQueryHandlerMammoth<GetApiMessageQueueIdParameters, int> messageQueueQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             ILogger logger,
             MammothMessageQueueCache messageQueueCache)
         {
             this.settings = settings;
             this.logger = logger;
             this.messageQueueQuery = messageQueueQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.messageQueueCache = messageQueueCache;
         }
 
@@ -49,7 +49,7 @@
             {
                 string description = BuildTriggerDescription(queueType);
                 Dictionary<string, string> details = BuildTriggerDetails(id);
-                TriggerPagerDutyIncident(description, details);
+                TriggerOpsGenieAlert(description, details);
 
                 messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
@@ -65,9 +65,9 @@
             }
         }
 
-        private void TriggerPagerDutyIncident(string description, Dictionary<string, string> jsonDetails)
+        private void TriggerOpsGenieAlert(string description, Dictionary<string, string> jsonDetails)
         {
-            PagerDutyResponse response = this.pagerDutyTrigger.TriggerIncident(description, jsonDetails);
+            var response = this.opsgenieTrigger.TriggerAlert("Mammoth API Controller Issue", description, jsonDetails);
         }
 
         private string BuildTriggerDescription(string queueType)

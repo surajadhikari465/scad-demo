@@ -5,7 +5,7 @@
     using Icon.Common.DataAccess;
     using Icon.Common.Email;
     using Icon.Logging;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess;
     using Icon.Monitoring.DataAccess.Decorators;
@@ -33,7 +33,7 @@
             container.RegisterSingleton<IConnectionBuilder, ConnectionBuilder>();
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(IMonitorService)));
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
-            container.RegisterSingleton<IPagerDutyTrigger, PagerDutyTrigger>();
+            container.RegisterSingleton<IOpsgenieTrigger, OpsgenieTrigger>();
             container.RegisterSingleton<IEmailClient>(() => EmailClient.CreateFromConfig());
             container.RegisterSingleton<IDateTimeZoneProvider>(() => DateTimeZoneProviders.Tzdb);
             container.RegisterSingleton<IClock>(() => SystemClock.Instance);

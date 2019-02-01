@@ -1,4 +1,4 @@
-﻿using Icon.Monitoring.Common.PagerDuty;
+﻿using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Common.DataAccess;
 using Icon.Monitoring.DataAccess.Queries;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using Icon.Logging;
 using Icon.Monitoring.DataAccess.Model;
+using Icon.Monitoring.Common.Opsgenie;
 
 namespace Icon.Monitoring.Monitors
 {
@@ -14,7 +15,7 @@ namespace Icon.Monitoring.Monitors
         private const string VimLocaleConServiceNotRunningMessage = "VIM Locale Controller Service stopped running.";
         private const string AppName = "Vim Locale Controller";
         private IVimLocaleConJobMonitorSettings vimLocaleConMonitorSettings;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler;
         private DateTime lastLogDateTime;
 
@@ -22,12 +23,12 @@ namespace Icon.Monitoring.Monitors
             IMonitorSettings settings,
             IVimLocaleConJobMonitorSettings vimLocaleConMonitorSettings,
             IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog> getLatestAppLogByAppNameQueryHandler,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             ILogger logger)
         {
             this.settings = settings;
             this.vimLocaleConMonitorSettings = vimLocaleConMonitorSettings;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.getLatestAppLogByAppNameQueryHandler = getLatestAppLogByAppNameQueryHandler;
             this.logger = logger;
         }
@@ -39,7 +40,7 @@ namespace Icon.Monitoring.Monitors
                 if (!HasVimLocaleConLoggedSinceConfiguredAllowedMinutes(AppName))
                 {
                     logger.Info("VIM Locale Controller Monitor has detected that VIM Locale Controller service is not running.");
-                    TriggerPagerDutyForVimLocaleConJob(VimLocaleConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
+                    TriggerOpsgenieForVimLocaleConJob(VimLocaleConServiceNotRunningMessage, "Last Log Date Time: ", lastLogDateTime.ToString());
                 }
             }
         }
@@ -69,11 +70,11 @@ namespace Icon.Monitoring.Monitors
             }
         }
 
-        private void TriggerPagerDutyForVimLocaleConJob(string errorMessage, string key, String value)
+        private void TriggerOpsgenieForVimLocaleConJob(string errorMessage, string key, String value)
         {
             logger.Info(errorMessage);
 
-            var response = this.pagerDutyTrigger.TriggerIncident(
+            var response = this.opsgenieTrigger.TriggerAlert("VIM Locale Controller Issue",
                             errorMessage,
                             new Dictionary<string, string>()
                             {
