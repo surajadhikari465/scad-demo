@@ -752,7 +752,7 @@ And STATUS = 'I'
 	sth.SubTeam_Name as SubTeam,
 	sth.SubTeam_No as SubTeamNumber,
 	oi.DateReceived as DateReceived,
-	CAST(oi.QuantityReceived as int) as QuantityReceived,
+	CAST(ISNULL(oi.QuantityReceived, 0) as int) as QuantityReceived,
 	CAST(oi.QuantityOrdered as int) as QuantityOrdered,
 	oi.Package_Desc1 as Package_Desc1,
 	oi.Package_Desc2 as Package_Desc2,
@@ -761,8 +761,11 @@ And STATUS = 'I'
 	IsNull(u.User_ID, 0)  as RecvUSerID,
 	iu.Unit_Abbreviation as OrderUom,
 	iui.Unit_Abbreviation as ReceiptUom,
-	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered Then 'Received'  when oh.PartialShipment = 0 then 'Received' else 'Partially Received' END AS ReceiptStatus,
-	iv.item_id as VIN,
+	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered THEN 'Received'  
+		WHEN oh.PartialShipment = 1 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Partially Received'
+		WHEN oh.PartialShipment = 0 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Received' 
+		ELSE 'Not Received' END AS ReceiptStatus,
+	ISNULL(iv.item_id, 0) as VIN,
 	s.BusinessUnit_ID as StoreNumber,
     s.Store_Name as StoreName,
 	cast(Datediff(s, '1970-01-01', rq.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber
@@ -780,14 +783,17 @@ And STATUS = 'I'
 	JOIN ItemUnit iu on iu.Unit_ID = oi.QuantityUnit
 	LEFT JOIN ItemUnit iui on iui.Unit_ID = oi.InvoiceQuantityUnit
 	JOIN Vendor v on  v.Vendor_ID = oh.Vendor_ID
-	JOIN StoreItemVendor siv on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
-	JOIN ItemVendor iv on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
+	LEFT JOIN StoreItemVendor siv on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
+	LEFT JOIN ItemVendor iv on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
 						case 
 							when oh.OrderType_ID = 1
 							then v.Vendor_ID
 						else siv.Vendor_ID
 						end
-	WHERE rq.Status in ('I') AND InProcessBy = ?
+	WHERE rq.Status in ('I') 
+	  AND i.Retail_Sale = 1
+	  AND id.Default_Identifier = 1
+	  AND InProcessBy = ?
        ORDER BY KeyID desc</statement>
             <wizardData/>
             <Prepared_Param_DataType>
@@ -890,7 +896,7 @@ And STATUS = 'I'
             <QueryOutputCachedSchemaColumns>VIN</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>StoreNumber</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>

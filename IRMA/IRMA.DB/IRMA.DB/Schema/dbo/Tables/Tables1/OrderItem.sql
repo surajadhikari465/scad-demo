@@ -598,11 +598,11 @@ BEGIN
 					  FROM amz.ReceiptQueue q
 					 WHERE q.KeyID = i.OrderHeader_ID
 					   AND q.SecondaryKeyID = i.OrderItem_ID
-					   AND q.EventTypeID = @orderReceiptModificationEventTypeId
+					   AND q.EventTypeID in (@orderReceiptModificationEventTypeId, @orderReceiptCreationEventTypeId)
 					   AND q.Status = @unprocessedStatusCode
 				) 
-				AND i.QuantityReceived IS NOT NULL					----Line item receipt information is modified after the receipt info was entered
-				AND	i.QuantityReceived <> d.QuantityReceived
+				AND (i.QuantityReceived IS NOT NULL OR d.QuantityReceived IS NOT NULL)	----Line item receipt information is modified after the receipt info was entered
+				AND	ISNULL(i.QuantityReceived, 0) <> ISNULL(d.QuantityReceived, 0)
 	END
     END TRY
     BEGIN CATCH
