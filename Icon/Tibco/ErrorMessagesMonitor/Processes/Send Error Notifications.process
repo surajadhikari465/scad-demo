@@ -382,10 +382,10 @@ and ErrorSeverity = ?</statement>
         <pd:inputBindings>
             <Content>
                 <message>
-                    <xsl:value-of select="&quot;Issue&quot;"/>
+                    <xsl:value-of select="concat($Start/Input/Application, &quot;:Issue&quot;)"/>
                 </message>
                 <description>
-                    <xsl:value-of select="&quot;Description&quot;"/>
+                    <xsl:value-of select="concat('&quot;', $Start/Input/Application, &quot; &quot;, $Start/Input/NumberOfErrors, &quot; &quot;, $Start/Input/ErrorSeverity, &quot; &quot;, $Start/Input/ErrorCode, '&quot;')"/>
                 </description>
             </Content>
         </pd:inputBindings>
@@ -398,6 +398,7 @@ and ErrorSeverity = ?</statement>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
             <ActivityInputEditor>
                 <xsd:element name="Content">
                     <xsd:complexType>
@@ -483,9 +484,11 @@ and ErrorSeverity = ?</statement>
     <pd:transition>
         <pd:from>Transform Error Details to HTML for Email</pd:from>
         <pd:to>Map Content</pd:to>
+        <pd:xpathDescription>If Fatal Error</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/Input/ErrorSeverity = "Fatal" and $_globalVariables/ns4:GlobalVariables/Application/SendErrorAlerts = "true"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Map Content</pd:from>

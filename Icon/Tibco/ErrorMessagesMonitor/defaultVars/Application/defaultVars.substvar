@@ -51,11 +51,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SendEmails</name>
-			<value>false</value>
+			<value>true</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Boolean</type>
-			<modTime>1549292658983</modTime>
+			<modTime>1549303662368</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SendErrorAlerts</name>
@@ -75,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TimerTimeIntervalInMilliseconds</name>
-			<value>900</value>
+			<value>900000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1549292659071</modTime>
+			<modTime>1549304120129</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
