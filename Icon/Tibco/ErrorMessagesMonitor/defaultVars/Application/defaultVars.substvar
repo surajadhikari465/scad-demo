@@ -43,11 +43,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>ErrorAlertUri</name>
-			<value>https://events.pagerduty.com/generic/2010-04-15/create_event.json</value>
+			<value>https://api.opsgenie.com/v2/alerts</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1549300628844</modTime>
+			<modTime>1549304427029</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SendEmails</name>
@@ -75,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TimerTimeIntervalInMilliseconds</name>
-			<value>900000</value>
+			<value>9000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1549304120129</modTime>
+			<modTime>1549304451908</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

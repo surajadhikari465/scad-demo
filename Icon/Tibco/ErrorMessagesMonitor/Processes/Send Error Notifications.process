@@ -38,7 +38,7 @@
             <WADLPaths/>
             <WADLBaseURL/>
             <restMethodIDUI/>
-            <restURI>https://api.opsgenie.com/v2/alerts</restURI>
+            <restURI>%%Application/ErrorAlertUri%%</restURI>
             <restInputReferNode>
                 <xsd:element name="Parameters">
                     <xsd:complexType>
