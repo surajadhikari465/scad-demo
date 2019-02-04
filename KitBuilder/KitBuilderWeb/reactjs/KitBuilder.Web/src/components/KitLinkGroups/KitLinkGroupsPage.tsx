@@ -1,34 +1,28 @@
 import * as React from 'react';
+import axios from 'axios';
 import { KitLinkGroupProperties } from "./KitLinkGroupProperties";
+import { KbApiMethod } from '../helpers/kbapi'
 
-const API = 'http://localhost:55873/api/Kits/11/ViewKit/1105?loadChildObjects=true'
+var urlStart = KbApiMethod("Kits");
+var kitId = 12
+var localeId = 59
 
-export class KitLinkGroupPage extends React.Component<{}, {kitLinkGroupItem : any[], kitName : any, linkGroupDetails : any[], kitLinkGroupDetails: any[]}>
+export class KitLinkGroupPage extends React.Component<{}, {kitLinkGroupDetails : any[], kitName : any}>
 {   
     constructor(props: any)
     {
         super(props)
         this.state = {
             kitName : "",
-            kitLinkGroupDetails : [],
-            linkGroupDetails : [],
-            kitLinkGroupItem : []
+            kitLinkGroupDetails : []
         }
     }
 
     componentWillMount(){
-        fetch(API)
-        .then(response => response.json())
-        .then(data => 
-            {
-                let kitLinkGroups = data.kitLinkGroup.map((t:any)=>t)
-                let linkgroup = kitLinkGroups.map((t:any)=> t.linkGroup)
-                let kitLinkGroupItem = kitLinkGroups.map((t:any)=>t.kitLinkGroupItem)
-                this.setState({kitLinkGroupDetails: kitLinkGroups})
-                this.setState({ linkGroupDetails: linkgroup})
-                this.setState({kitLinkGroupItem: kitLinkGroupItem})
-                this.setState({ kitName: data.description})
-            });
+        return axios.get(urlStart+"/"+kitId+"/ViewKit/"+localeId+"?loadChildObjects="+"true",{})
+        .then(response => {
+            this.setState({kitLinkGroupDetails : response.data.kitLinkGroup.map((t:any)=>t), kitName: response.data.description})
+        })
     }
 
     render()
