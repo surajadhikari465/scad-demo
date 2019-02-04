@@ -75,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TimerTimeIntervalInMilliseconds</name>
-			<value>9000</value>
+			<value>900000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1549304451908</modTime>
+			<modTime>1549304592685</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
