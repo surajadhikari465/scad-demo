@@ -34,20 +34,20 @@
 			<modTime>1510945138189</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>PagerDutyIntegrationKey</name>
-			<value>ba11ea781e884e448a54b69c598753ee</value>
+			<name>ErrorAlertIntegrationKey</name>
+			<value>5c9df61f-ff16-4eef-8533-6fd8ed9664a3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510942441215</modTime>
+			<modTime>1549300628741</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>PagerDutyUri</name>
-			<value>https://events.pagerduty.com/generic/2010-04-15/create_event.json</value>
+			<name>ErrorAlertUri</name>
+			<value>https://api.opsgenie.com/v2/alerts</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510942390969</modTime>
+			<modTime>1549304427029</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SendEmails</name>
@@ -55,15 +55,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Boolean</type>
-			<modTime>1510941178821</modTime>
+			<modTime>1549303662368</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SendPagerDutyAlerts</name>
+			<name>SendErrorAlerts</name>
 			<value>true</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Boolean</type>
-			<modTime>1510941178759</modTime>
+			<modTime>1549300674767</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TimerStartTime</name>
@@ -79,7 +79,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1511279667757</modTime>
+			<modTime>1549304592685</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
