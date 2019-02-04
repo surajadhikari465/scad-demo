@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns12="http://xmlns.tibco.com/body" xmlns:pfx="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="http://xmlns.tibco.com/body" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd">
     <xsd:import namespace="http://www.tibco.com/schemas/ErrorMessagesMonitor/Schemas/Schema.xsd" schemaLocation="/Schemas/ErrorMessageMail.xsd"/>
     <pd:name>Processes/Send Error Notifications.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -20,16 +20,16 @@
     <pd:startY>56</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>866</pd:endX>
-    <pd:endY>60</pd:endY>
+    <pd:endX>983</pd:endX>
+    <pd:endY>52</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1509974982351</pd:targetNamespace>
-    <pd:activity name="Send Pager Duty Alert for Fatal Error">
+    <pd:activity name="Send Opsgenie Alert for Fatal Error">
         <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
         <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
-        <pd:x>640</pd:x>
-        <pd:y>119</pd:y>
+        <pd:x>756</pd:x>
+        <pd:y>95</pd:y>
         <config>
             <enableProtocolUI>None</enableProtocolUI>
             <restMethodUI>POST</restMethodUI>
@@ -38,7 +38,7 @@
             <WADLPaths/>
             <WADLBaseURL/>
             <restMethodIDUI/>
-            <restURI>https://events.pagerduty.com/generic/2010-04-15/create_event.json</restURI>
+            <restURI>https://api.opsgenie.com/v2/alerts</restURI>
             <restInputReferNode>
                 <xsd:element name="Parameters">
                     <xsd:complexType>
@@ -53,7 +53,7 @@
                             <xsd:element name="Header" minOccurs="0">
                                 <xsd:complexType>
                                     <xsd:sequence>
-                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="Authorization" type="xsd:string"/>
                                     </xsd:sequence>
                                 </xsd:complexType>
                             </xsd:element>
@@ -134,9 +134,9 @@
             <pfx2:ActivityInput>
                 <pfx2:Parameters>
                     <Header>
-                        <param>
-                            <xsl:value-of select="concat(&quot;Authorization: 'Token token=[&quot;, $_globalVariables/ns4:GlobalVariables/Application/PagerDutyIntegrationKey, &quot;]&quot;)"/>
-                        </param>
+                        <Authorization>
+                            <xsl:value-of select="concat(&quot;GenieKey  &quot;, $_globalVariables/ns4:GlobalVariables/Application/ErrorAlertIntegrationKey)"/>
+                        </Authorization>
                     </Header>
                     <Body>
                         <Text>
@@ -144,7 +144,7 @@
                                 <xsl:value-of select="&quot;application/json&quot;"/>
                             </type>
                             <content>
-                                <xsl:value-of select="concat(&#xA;&#x9;&quot;{&quot;,&#xA;&#x9;concat(&quot;service_key:&quot;, '&quot;',$_globalVariables/ns4:GlobalVariables/Application/PagerDutyIntegrationKey, '&quot;'),&#xA;&#x9;concat(&quot;event_type:&quot;, '&quot;trigger&quot;'),&#xA;&#x9;concat(&quot;description:&quot;, '&quot;', $Start/Input/Application, &quot; &quot;, $Start/Input/NumberOfErrors, &quot; &quot;, $Start/Input/ErrorSeverity, &quot; &quot;, $Start/Input/ErrorCode, '&quot;'),&#xA;&#x9;&quot;}&quot;)"/>
+                                <xsl:value-of select="$Render-JSON/pfx2:ActivityOutputClass/jsonString"/>
                             </content>
                         </Text>
                     </Body>
@@ -254,8 +254,8 @@ and ErrorSeverity = ?</statement>
     <pd:activity name="Send Mail">
         <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
         <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
-        <pd:x>647</pd:x>
-        <pd:y>207</pd:y>
+        <pd:x>489</pd:x>
+        <pd:y>424</pd:y>
         <config>
             <newMimeSupport>true</newMimeSupport>
             <inputOutputVersion>5.2.0</inputOutputVersion>
@@ -315,8 +315,8 @@ and ErrorSeverity = ?</statement>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>54</pd:x>
-        <pd:y>278</pd:y>
+        <pd:x>123</pd:x>
+        <pd:y>463</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -326,8 +326,8 @@ and ErrorSeverity = ?</statement>
     <pd:activity name="Log Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>644</pd:x>
-        <pd:y>279</pd:y>
+        <pd:x>736</pd:x>
+        <pd:y>465</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -362,6 +362,59 @@ and ErrorSeverity = ?</statement>
             </ns3:AppLog>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Map Content">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>547</pd:x>
+        <pd:y>108</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Content">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="message" type="xsd:string"/>
+                            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Content>
+                <message>
+                    <xsl:value-of select="&quot;Issue&quot;"/>
+                </message>
+                <description>
+                    <xsl:value-of select="&quot;Description&quot;"/>
+                </description>
+            </Content>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>559</pd:x>
+        <pd:y>224</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="Content">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="message" type="xsd:string"/>
+                            <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInputClass>
+                <xsl:copy-of select="$Map-Content/Content"/>
+            </pfx2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Get Error Details</pd:from>
         <pd:to>Render XML</pd:to>
@@ -393,7 +446,7 @@ and ErrorSeverity = ?</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Send Pager Duty Alert for Fatal Error</pd:from>
+        <pd:from>Send Opsgenie Alert for Fatal Error</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -405,15 +458,6 @@ and ErrorSeverity = ?</statement>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Transform Error Details to HTML for Email</pd:from>
-        <pd:to>Send Pager Duty Alert for Fatal Error</pd:to>
-        <pd:xpathDescription>If Fatal Error</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Start/Input/ErrorSeverity = "Fatal" and $_globalVariables/ns4:GlobalVariables/Application/SendPagerDutyAlerts = "true"</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Log Error</pd:from>
@@ -435,5 +479,26 @@ and ErrorSeverity = ?</statement>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform Error Details to HTML for Email</pd:from>
+        <pd:to>Map Content</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Content</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Send Opsgenie Alert for Fatal Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

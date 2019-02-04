@@ -34,36 +34,36 @@
 			<modTime>1510945138189</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>PagerDutyIntegrationKey</name>
-			<value>ba11ea781e884e448a54b69c598753ee</value>
+			<name>ErrorAlertIntegrationKey</name>
+			<value>5c9df61f-ff16-4eef-8533-6fd8ed9664a3</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510942441215</modTime>
+			<modTime>1549300628741</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>PagerDutyUri</name>
+			<name>ErrorAlertUri</name>
 			<value>https://events.pagerduty.com/generic/2010-04-15/create_event.json</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510942390969</modTime>
+			<modTime>1549300628844</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SendEmails</name>
-			<value>true</value>
+			<value>false</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Boolean</type>
-			<modTime>1510941178821</modTime>
+			<modTime>1549292658983</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SendPagerDutyAlerts</name>
+			<name>SendErrorAlerts</name>
 			<value>true</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Boolean</type>
-			<modTime>1510941178759</modTime>
+			<modTime>1549300674767</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TimerStartTime</name>
@@ -75,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>TimerTimeIntervalInMilliseconds</name>
-			<value>900000</value>
+			<value>900</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1511279667757</modTime>
+			<modTime>1549292659071</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
