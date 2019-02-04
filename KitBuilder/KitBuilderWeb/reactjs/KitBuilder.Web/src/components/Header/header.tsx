@@ -12,7 +12,6 @@ export const Header: React.StatelessComponent<{}> = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-
                             <Link className="nav-link" to="/Instructions"> Instructions</Link>
                         </li>
                         <li className="nav-item ">
@@ -26,6 +25,9 @@ export const Header: React.StatelessComponent<{}> = () => {
                         </li>
                         <li className="nav-item ">
                             <Link className="nav-link" to="/AssignKits/1"> Kit Assignment</Link>
+                        </li>
+                        <li className="nav-item ">
+                            <Link className="nav-link" to="/KitLinkGroups"> KitLinkGroup Properties </Link>
                         </li>
                     </ul>
                 </div>
