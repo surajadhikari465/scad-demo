@@ -38,46 +38,20 @@ namespace KitBuilderWebApi.Helper
 		public async Task<KitLocaleDto> Run()
 		{
 			KitLocaleDto kitLocaleDto = GetKitByKitLocaleId(kitLocaleId);
-			var scanCode = from k in kitLocaleDto.KitLinkGroupLocale
+
+			//Get each modifier's Authorization Status and REG price 
+			List<StoreItem> storeItemsList = ParseParametersForPriceCall(kitLocaleDto);
+			var resultPrice = GetAuthorizedStatus(storeItemsList);
+			var itemStorePriceModelList = await resultPrice;
+
+			//update kitlocale with Price and Store Authorization Status
+			UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
+
+			//Get each modifier's caloric info
+			var itemIds = from k in kitLocaleDto.KitLinkGroupLocale
 						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
-						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.Item.ScanCode)
-						   select k;
-
-			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
-			int businessUnitId = storeBusinessUnitId == null ? 0 : (int)storeBusinessUnitId;
-
-			List<StoreItem> storeItemsList = new List<StoreItem>();
-
-			foreach (string scancode in scanCode)
-			{
-				storeItemsList.Add(new StoreItem()
-				{
-					BusinessUnitId = businessUnitId,
-					ScanCode = scancode
-				});
-			}
-
-			var result = GetAuthorizedStatus(storeItemsList);
-			var itemStorePriceModelList = await result;
-
-			//update kit locale
-			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
-			{
-                var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupLocale
-                                                .Where(klli => klli.KitLinkGroupItemLocales.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).Count()>  0 )
-                                                 .Select(s=>s.KitLinkGroupItemLocales).ToList();
-
-				//var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).ToList();
-				
-				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
-				{
-					//kitLinkGroupItemDto.   itemStorePriceModel.Price;
-
-					kitLinkGroupItemLocaleDto.ItemId = itemStorePriceModel.ItemId;
-					kitLinkGroupItemLocaleDto.RegularPrice = itemStorePriceModel.Price;
-					kitLinkGroupItemLocaleDto.Exclude = !itemStorePriceModel.Authorized;
-				}
-			}
+						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.ItemId)
+						  select k;
 
 			return kitLocaleDto;
 
@@ -100,6 +74,48 @@ namespace KitBuilderWebApi.Helper
 			}
 
 			return Mapper.Map<KitLocaleDto>(kitLocale);
+		}
+
+		internal List<StoreItem> ParseParametersForPriceCall(KitLocaleDto kitLocaleDto)
+		{
+			var scanCode = from k in kitLocaleDto.KitLinkGroupLocale
+						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
+						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.Item.ScanCode)
+						   select k;
+
+			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
+			int businessUnitId = storeBusinessUnitId == null ? 0 : (int)storeBusinessUnitId;
+
+			List<StoreItem> storeItemsList = new List<StoreItem>();
+
+			foreach (string scancode in scanCode)
+			{
+				storeItemsList.Add(new StoreItem()
+				{
+					BusinessUnitId = businessUnitId,
+					ScanCode = scancode
+				});
+			}
+
+			return storeItemsList;
+		}
+
+		internal void UpdateKitLocaleForPrice(KitLocaleDto kitLocaleDto, IEnumerable<ItemStorePriceModel> itemStorePriceModelList)
+		{
+			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
+			{
+				var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
+												 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
+												 where (kitLinkGroupItemLocales.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId)
+												 select kitLinkGroupItemLocales;
+
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
+				{
+					kitLinkGroupItemLocaleDto.ItemId = itemStorePriceModel.ItemId;
+					kitLinkGroupItemLocaleDto.RegularPrice = itemStorePriceModel.Price;
+					kitLinkGroupItemLocaleDto.Exclude = !itemStorePriceModel.Authorized;
+				}
+			}
 		}
 
 		internal async Task<IEnumerable<ItemStorePriceModel>> GetAuthorizedStatus(IEnumerable<StoreItem> storeItems)
@@ -139,5 +155,36 @@ namespace KitBuilderWebApi.Helper
 				throw new Exception(e.Message);
 			}
 		}
+
+		//internal async Task<IEnumerable<ItemNutritionAttributes>> GetCaloricInfo(List<int> itemIds)
+		//{
+		//	string url = "http://mammoth-test/api/itemNutrition/";
+		//	//string url = "http://localhost:30680/api/price/";
+
+		//	string pricesRequestJson = JsonConvert.SerializeObject(itemIds);
+		//	HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
+
+		//	ApiHelper.InitializeClient(url);
+
+		//	try
+		//	{
+		//		using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(url, inputContent))
+		//		{
+		//			if (response.IsSuccessStatusCode)
+		//			{
+		//				IEnumerable<ItemNutritionAttributes> itemCaloricInfo = await response.Content.ReadAsAsync<IEnumerable<ItemNutritionAttributes>>();
+		//				return itemCaloricInfo;
+		//			}
+		//			else
+		//			{
+		//				throw new Exception(response.ReasonPhrase);
+		//			}
+		//		}
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		throw new Exception(e.Message);
+		//	}
+		//}
 	}
 }
