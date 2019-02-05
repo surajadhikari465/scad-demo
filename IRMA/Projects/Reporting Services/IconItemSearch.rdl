@@ -538,11 +538,11 @@ SET @selectItemsSql = N'INSERT INTO #outputTable(
           ,CASE ISNULL(isa.VeganAgencyName, '''') WHEN '''' THEN 0 ELSE 1 END as [Vegan]
           ,isa.Vegetarian as [Vegetarian]
           ,isa.WholeTrade as [WholeTrade]
-          ,irma.AnimalWelfareRating
-          ,irma.MilkType AS CheeseMilkType
-          ,irma.EcoScaleRating
-          ,irma.FreshOrFrozen
-          ,irma.SeafoodCatchType
+          ,isa.AnimalWelfareRating
+          ,isa.MilkType AS CheeseMilkType
+          ,isa.EcoScaleRating
+          ,isa.FreshOrFrozen
+          ,isa.SeafoodCatchType
           ,lmd.traitvalue as [LastModified]
           ,isa.CustomerFriendlyDescription'
 -- ================================================
@@ -567,8 +567,7 @@ SET @fromSql =
           left join ItemHierarchyClass_CTE fin on i.itemID=fin.itemID and fin.hierarchyID=@financialHierarchyID
           left join hierarchyclasstrait_cte tbr on i.itemID=tbr.itemID and tbr.traitID=@taxAbbreviationTraitID
           left join National_CTE nat on i.itemID=nat.itemID
-          left join itemsignattribute isa on i.itemid=isa.itemid
-          left join app.IRMAItem irma on irma.identifier = sc.ScanCode'
+          left join itemsignattribute isa on i.itemid=isa.itemid '
 -- ====================================================
 -- Set WHERE statement
 -- ====================================================
@@ -678,22 +677,23 @@ IF NOT isnull(@Vegan, '') = ''
 		SET @whereSql = @whereSql + ' and ISNULL(isa.VeganAgencyName, '''') = '''''
 
 IF NOT isnull(@AnimalWelfareRating, '') = ''
-	SET @whereSql = @whereSql + ' and irma.animalwelfarerating = @animalwelfarerating';
+	SET @whereSql = @whereSql + ' and isa.animalwelfarerating = @animalwelfarerating';
 
 IF NOT isnull(@MilkType, '') = ''
-	SET @whereSql = @whereSql + ' and irma.milktype = @MilkType';
+	SET @whereSql = @whereSql + ' and isa.milktype = @MilkType';
 
 IF NOT isnull(@EcoScaleRating, '') = ''
-	SET @whereSql = @whereSql + ' and irma.ecoscalerating = @EcoScaleRating';
+	SET @whereSql = @whereSql + ' and isa.ecoscalerating = @EcoScaleRating';
 
 IF NOT isnull(@SeafoodFreshFrozen, '') = ''
-	SET @whereSql = @whereSql + ' and irma.FreshOrFrozen = @SeafoodFreshFrozen';
+	SET @whereSql = @whereSql + ' and isa.FreshOrFrozen = @SeafoodFreshFrozen';
 
 IF NOT isnull(@SeafoodCatchType, '') = ''
-	SET @whereSql = @whereSql + ' and irma.SeafoodCatchType = @SeafoodCatchType';
+	SET @whereSql = @whereSql + ' and isa.SeafoodCatchType = @SeafoodCatchType';
 
 IF NOT IsNull(@CFDParam, '') = ''
 	SET @whereSql = @whereSql + ' and isa.CustomerFriendlyDescription like @CFDParam';
+
 
 
 IF EXISTS (SELECT TOP 1 NAME
@@ -1059,7 +1059,7 @@ DROP TABLE #outputTable;</CommandText>
         <DataSourceName>Icon</DataSourceName>
         <CommandText>;with cte as(SELECT '' AnimalWelfareRating
                      UNION
-                     SELECT IsNull(AnimalWelfareRating, '') FROM app.IRMAItem GROUP BY AnimalWelfareRating)
+                     SELECT IsNull(AnimalWelfareRating, '') FROM ItemSignAttribute GROUP BY AnimalWelfareRating)
   SELECT AnimalWelfareRating AS Description from cte GROUP BY AnimalWelfareRating</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -1075,7 +1075,7 @@ DROP TABLE #outputTable;</CommandText>
         <DataSourceName>Icon</DataSourceName>
         <CommandText>;with cte as(SELECT '' MilkType
                      UNION
-                     SELECT IsNull(MilkType, '') FROM app.IRMAItem GROUP BY MilkType)
+                     SELECT IsNull(MilkType, '') FROM ItemSignAttribute GROUP BY MilkType)
   SELECT MilkType AS Description from cte GROUP BY MilkType</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -1091,7 +1091,7 @@ DROP TABLE #outputTable;</CommandText>
         <DataSourceName>Icon</DataSourceName>
         <CommandText>;with cte as(SELECT '' EcoScaleRating
                      UNION
-                     SELECT IsNull(EcoScaleRating, '') FROM app.IRMAItem GROUP BY EcoScaleRating)
+                     SELECT IsNull(EcoScaleRating, '') FROM ItemSignAttribute GROUP BY EcoScaleRating)
   SELECT EcoScaleRating AS Description from cte GROUP BY EcoScaleRating</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -1107,7 +1107,7 @@ DROP TABLE #outputTable;</CommandText>
         <DataSourceName>Icon</DataSourceName>
         <CommandText>;with cte as(SELECT '' FreshOrFrozen
                      UNION
-                     SELECT IsNull(FreshOrFrozen, '') FROM app.IRMAItem GROUP BY FreshOrFrozen)
+                     SELECT IsNull(FreshOrFrozen, '') FROM ItemSignAttribute GROUP BY FreshOrFrozen)
   SELECT FreshOrFrozen AS Description from cte GROUP BY FreshOrFrozen</CommandText>
       </Query>
       <Fields>
@@ -1122,7 +1122,7 @@ DROP TABLE #outputTable;</CommandText>
         <DataSourceName>Icon</DataSourceName>
         <CommandText>;with cte as(SELECT '' SeafoodCatchType
                      UNION
-                     SELECT IsNull(SeafoodCatchType, '') FROM app.IRMAItem GROUP BY SeafoodCatchType)
+                     SELECT IsNull(SeafoodCatchType, '') FROM ItemSignAttribute GROUP BY SeafoodCatchType)
   SELECT SeafoodCatchType AS Description from cte GROUP BY SeafoodCatchType</CommandText>
       </Query>
       <Fields>

@@ -62,14 +62,14 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NodaTime, Version=2.4.2.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <HintPath>..\packages\NodaTime.2.4.2\lib\net45\NodaTime.dll</HintPath>
     </Reference>
-    <Reference Include="PagerDutyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagerDutyAPI.1.1.0\lib\net45\PagerDutyAPI.dll</HintPath>
+    <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Opsgenie.Alert.2019.1.31.8\lib\net46\Opsgenie.Alert.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
@@ -103,21 +103,19 @@
     <Compile Include="IO\IFileInfo.cs" />
     <Compile Include="IO\IFileInfoAccessor.cs" />
     <Compile Include="MonitorCache.cs" />
-    <Compile Include="PagerDuty\ConsolePagerDutyTrigger.cs" />
     <Compile Include="Settings\DvoBulkImportJobMonitorSettings.cs" />
     <Compile Include="Settings\IDvoBulkImportJobMonitorSettings.cs" />
     <Compile Include="Settings\IMammothExpiringTprServiceMonitorSettings.cs" />
     <Compile Include="Settings\IMammothActivePriceServiceMonitorSettings.cs" />
     <Compile Include="Settings\IMonitorSettings.cs" />
-    <Compile Include="PagerDuty\IPagerDutyTrigger.cs" />
+    <Compile Include="PagerDuty\IOpsgenieTrigger.cs" />
     <Compile Include="Settings\IMammothPrimeAffinityControllerMonitorSettings.cs" />
     <Compile Include="Settings\IVimLocaleConJobMonitorSettings.cs" />
     <Compile Include="Settings\ITLogConJobMonitorSettings.cs" />
     <Compile Include="Settings\MammothExpiringTprServiceMonitorSettings.cs" />
     <Compile Include="Settings\MammothActivePriceServiceMonitorSettings.cs" />
     <Compile Include="Settings\MonitorSettings.cs" />
-    <Compile Include="PagerDuty\PagerDutyResponse.cs" />
-    <Compile Include="PagerDuty\PagerDutyTrigger.cs" />
+    <Compile Include="PagerDuty\OpsgenieTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\MammothPrimeAffinityControllerMonitorSettings.cs" />
     <Compile Include="Settings\VimLocaleConJobMonitorSettings.cs" />

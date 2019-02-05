@@ -115,7 +115,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
 
 
             Try
-                'foer testing only --next line will throw an exception which will cause pager alert to raqise event
+                'foer testing only --next line will throw an exception which will cause Opsgenie alert to raqise event
                 '''''''''Throw New System.Exception("An exception has occurred.")
 
                 processMonitor.UpdateProcessMonitor("ScalePushJob", "RUNNING", Now.ToShortTimeString & " Scale Push starting", "The job is running as Process ID " & currProcess.Id.ToString, False)
@@ -375,7 +375,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 _jobExecutionMessage = msg.ToString()
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    PagerDutyUtility.TriggerPagerDutyAlert("IRMA Scale Push", "Scale Push Failure", ex.ToString())
+                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA Scale Push", "Scale Push Failure", ex.ToString())
                     _hasTriggeredAlert = True
                 End If
             End Try

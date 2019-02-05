@@ -5,7 +5,7 @@
     using Icon.Common.DataAccess;
     using Icon.Logging;
     using Icon.Monitoring.Common;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
     using System;
@@ -20,7 +20,7 @@
         private const string TimeZone = "America/Chicago";
         private readonly IQueryHandler<GetApiMessageQueueIdParameters, int> messageQueueQuery;
         private readonly IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int> messageQueueUnprocessedRowCountQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private IClock clock;
         private IDateTimeZoneProvider dateTimeZoneProvider;
         private MessageQueueCache messageQueueCache;
@@ -29,7 +29,7 @@
             IMonitorSettings settings,
             IQueryHandler<GetApiMessageQueueIdParameters, int> messageQueueQuery,
             IQueryHandler<GetApiMessageUnprocessedRowCountParameters, int> messageQueueUnprocessedRowCountQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IDateTimeZoneProvider dateTimeZoneProvider,
             IClock clock,
             ILogger logger,
@@ -41,7 +41,7 @@
             this.dateTimeZoneProvider = dateTimeZoneProvider;
             this.clock = clock;
             this.messageQueueUnprocessedRowCountQuery = messageQueueUnprocessedRowCountQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.messageQueueCache = messageQueueCache;
         }
 
@@ -70,7 +70,7 @@
             int numberOfUnprocessedMessageQueuePriceRows = CheckMessageQueuePriceTableForUnprocessedRows(region);
             if (numberOfUnprocessedMessageQueuePriceRows > 0)
             {
-                TriggerPagerDutyIncident(APIControllerRunningSlow,
+                TriggerOpsgenieAlert(APIControllerRunningSlow,
                              new Dictionary<string, string>()
                              {
                                 { "Number of unprocessed Message Queue Price Rows: ", numberOfUnprocessedMessageQueuePriceRows.ToString() }
@@ -80,7 +80,7 @@
             int numberOfUnprocessedMessageQueueItemLocaleRows = CheckMessageQueueItemLocaleForUnprocessedRows(region);
             if (numberOfUnprocessedMessageQueueItemLocaleRows > 0)
             {
-                TriggerPagerDutyIncident(APIControllerRunningSlow,
+                TriggerOpsgenieAlert(APIControllerRunningSlow,
                              new Dictionary<string, string>()
                              {
                                 { "Number of unprocessed Item Locale Queue Price Rows: ", numberOfUnprocessedMessageQueueItemLocaleRows.ToString() }
@@ -155,7 +155,7 @@
             {
                 string description = BuildTriggerDescription(queueType);
                 Dictionary<string, string> details = BuildTriggerDetails(id);
-                TriggerPagerDutyIncident(description, details);
+                TriggerOpsgenieAlert(description, details);
 
                 messageQueueCache.QueueTypeToIdMapper[queueType].NumberOfTimesMatched++;
             }
@@ -171,9 +171,9 @@
             }
         }
 
-        private void TriggerPagerDutyIncident(string description, Dictionary<string, string> jsonDetails)
+        private void TriggerOpsgenieAlert(string description, Dictionary<string, string> jsonDetails)
         {
-            PagerDutyResponse response = this.pagerDutyTrigger.TriggerIncident(description, jsonDetails);
+            var response = this.opsgenieTrigger.TriggerAlert("API Controller Issue", description, jsonDetails);
         }
 
         private string BuildTriggerDescription(string queueType)

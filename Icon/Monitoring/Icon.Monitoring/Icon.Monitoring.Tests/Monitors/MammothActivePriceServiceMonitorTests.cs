@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Monitoring.Common;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess.Queries;
@@ -24,7 +24,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<IMonitorSettings> mockSettings;
         private Mock<IMammothActivePriceServiceMonitorSettings> mockPrimeAffinitySettings;
         private Mock<IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule>> mockGetMammothJobScheduleQuery;
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IMonitorCache> mockCache;
         private Mock<ILogger> mockLogger;
         private Dictionary<string, bool> enabledRegions;
@@ -36,7 +36,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockSettings = new Mock<IMonitorSettings>();
             mockPrimeAffinitySettings = new Mock<IMammothActivePriceServiceMonitorSettings>();
             mockGetMammothJobScheduleQuery = new Mock<IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule>>();
-            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             mockCache = new Mock<IMonitorCache>();
             mockLogger = new Mock<ILogger>();
 
@@ -44,7 +44,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 mockSettings.Object,
                 mockPrimeAffinitySettings.Object,
                 mockGetMammothJobScheduleQuery.Object,
-                mockPagerDutyTrigger.Object,
+                mockOpsgenieTrigger.Object,
                 mockCache.Object,
                 mockLogger.Object);
             enabledRegions = new Dictionary<string, bool>();
@@ -82,7 +82,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"{JobName} completed on time.*Region", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
@@ -102,7 +102,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Never);
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Never);
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"Skipping {JobName}.*Monitoring for region is disabled", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
@@ -125,7 +125,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Never);
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"Skipping {JobName}.*Current time is less than expected complete time", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
@@ -155,7 +155,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"{JobName} completed on time.*Region", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
@@ -181,7 +181,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"Skipping {JobName}.*Job schedule.*does not exist or is disabled", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
@@ -211,13 +211,13 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.IsRegex($"Skipping {JobName} .* monitoring. Job schedule .* does not exist or is disabled.", RegexOptions.None)), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
 
         [TestMethod]
-        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_JobStatusIsNotReady_TriggersPagerDutyAlert()
+        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_JobStatusIsNotReady_TriggersOpsgenieAlert()
         {
             //Given
             enabledRegions.Add("FL", true);
@@ -243,12 +243,12 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Exactly(3));
         }
 
         [TestMethod]
-        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_LastRunEndTimeIsLessThenToday_TriggersPagerDutyAlert()
+        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_LastRunEndTimeIsLessThenToday_TriggersOpsgenieAlert()
         {
             //Given
             enabledRegions.Add("FL", true);
@@ -274,12 +274,12 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Exactly(3));
         }
 
         [TestMethod]
-        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_CacheForRegionIsAlreadySet_DoesNotTriggerPagerDutyAlert()
+        public void MammothActivePriceServiceMonitor_CheckStatusAndNotify_CacheForRegionIsAlreadySet_DoesNotTriggerOpsgenieAlert()
         {
             //Given
             enabledRegions.Add("FL", true);
@@ -305,7 +305,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Never);
         }
 
@@ -351,7 +351,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceMonitorEnabledByRegion, Times.Once);
             mockPrimeAffinitySettings.VerifyGet(m => m.ActivePriceServiceCompletionUtcTimeByRegion, Times.Exactly(3));
             mockGetMammothJobScheduleQuery.Verify(m => m.Search(It.IsAny<GetMammothJobScheduleParameters>()), Times.Exactly(3));
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockLogger.Verify(m => m.Info(It.IsRegex($"{JobName} completed on time.*Region", RegexOptions.None)), Times.Exactly(2));
             mockLogger.Verify(m => m.Info(It.IsRegex($"{JobName} has not completed by expected time for region.", RegexOptions.None)), Times.Once);
             mockCache.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>()), Times.Once);

@@ -5,7 +5,7 @@
     using System.Text;
     using Icon.Logging;
     using Icon.Monitoring.Common;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Model;
     using Icon.Monitoring.DataAccess.Queries;
@@ -20,20 +20,20 @@
 
         private readonly IMammothExpiringTprServiceMonitorSettings expiringTprSettings;
         private readonly IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule> getMammothJobScheduleQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
         private readonly IMonitorCache cache;
 
         public MammothExpiringTprServiceMonitor(
             IMonitorSettings settings,
             IMammothExpiringTprServiceMonitorSettings expiringTprSettings,
             IQueryHandlerMammoth<GetMammothJobScheduleParameters, JobSchedule> getMammothJobScheduleQuery,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IMonitorCache cache,
             ILogger logger)
         {
             this.settings = settings;
             this.expiringTprSettings = expiringTprSettings;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.cache = cache;
             this.getMammothJobScheduleQuery = getMammothJobScheduleQuery;
             this.logger = logger;
@@ -79,7 +79,7 @@
                 {
                     if (jobSchedule.Status != JobScheduleStatusReady)
                     {
-                        TriggerPagerDutyIfNoCachedPagerDutyExists(
+                        TriggerOpsgenieIfNoCachedOpsgenieExists(
                             region,
                             $"{JobName} is not in ready status for region. The job could have failed to run and needs to be restarted or this could mean that the job is taking longer than expected to run.",
                             new Dictionary<string, string>
@@ -95,7 +95,7 @@
                     }
                     else
                     {
-                        TriggerPagerDutyIfNoCachedPagerDutyExists(
+                        TriggerOpsgenieIfNoCachedOpsgenieExists(
                             region,
                             $"{JobName} has not completed by expected time for region. This could mean that the job has not run at all today and needs to been manually started or that the job's scheduled run time is incorrect and needs to change.",
                             new Dictionary<string, string>
@@ -117,19 +117,19 @@
             }
         }
 
-        private void TriggerPagerDutyIfNoCachedPagerDutyExists(string region, string errorMessage, Dictionary<string, string> jsonDetails)
+        private void TriggerOpsgenieIfNoCachedOpsgenieExists(string region, string errorMessage, Dictionary<string, string> jsonDetails)
         {
-            string pagerDutyCacheKey = JobName + region;
-            if (cache.Contains(pagerDutyCacheKey))
+            string opsgenieCacheKey = JobName + region;
+            if (cache.Contains(opsgenieCacheKey))
             {
-                LogInfo(logger: this.logger, message: $"Skipping {JobName} PagerDuty alert because an alert was already triggered today.", region: region, error: errorMessage);
+                LogInfo(logger: this.logger, message: $"Skipping {JobName} Opsgenie alert because an alert was already triggered today.", region: region, error: errorMessage);
             }
             else
             {
-                LogInfo(message: $"Triggering PagerDuty alert for {JobName} error.", region: region, error: errorMessage);
-                var response = this.pagerDutyTrigger.TriggerIncident(errorMessage, jsonDetails);
-                LogInfo(message: $"{JobName} Monitor PagerDuty response.", region: region, pagerDutyResponse: response);
-                cache.Set(pagerDutyCacheKey, DateTime.Now, GetTomorrowsUtcStartDate());
+                LogInfo(message: $"Triggering Opsgenie alert for {JobName} error.", region: region, error: errorMessage);
+                var response = this.opsgenieTrigger.TriggerAlert("Expiring Tpr Service Issue",errorMessage, jsonDetails);
+                LogInfo(message: $"{JobName} Monitor Opsgenie response.", region: region, opsgenieResponse: response);
+                cache.Set(opsgenieCacheKey, DateTime.Now, GetTomorrowsUtcStartDate());
             }
         }
     }

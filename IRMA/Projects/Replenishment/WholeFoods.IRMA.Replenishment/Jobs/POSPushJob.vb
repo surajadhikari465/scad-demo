@@ -699,9 +699,9 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 success = False
 
                 _jobExecutionMessage = _jobExecutionMessage + Environment.NewLine + ex.Message + Environment.NewLine + ex.StackTrace
-                'pbI 19620 --if push alert is false do not trigger pager alert
+                'pbI 19620 --if push alert is false do not trigger Opsgenie alert
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    PagerDutyUtility.TriggerPagerDutyAlert("IRMA POS Push", "POS Push Failure", ex.ToString())
+                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", ex.ToString())
                     _hasTriggeredAlert = True
                 End If
 
@@ -738,13 +738,13 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
         Private Sub CheckForBatchesInSentStatus(jobRunDate As Date)
             Dim batchesInSentStatusCount As Integer = HealthCheckDAO.GetBatchesInSentStatus(jobRunDate)
 
-            If CBool(ConfigurationServices.AppSettings("EnablePagerDutyAlertsForBatchesInSent")) And batchesInSentStatusCount > 0 Then
+            If CBool(ConfigurationServices.AppSettings("EnableErrorAlertsForBatchesInSent")) And batchesInSentStatusCount > 0 Then
                 Dim errorMessage As String = String.Format("The push has completed, but batches remain In Sent status With a StartDate Of {0}.", jobRunDate.ToString())
 
                 Logger.LogError(errorMessage, Me.GetType())
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    PagerDutyUtility.TriggerPagerDutyAlert("IRMA POS Push", "POS Push Failure", errorMessage)
+                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", errorMessage)
                     _hasTriggeredAlert = True
                 End If
             End If
@@ -759,7 +759,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 Logger.LogError(errorMessage, Me.GetType())
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    PagerDutyUtility.TriggerPagerDutyAlert("IRMA POS Push", "POS Push Failure", errorMessage)
+                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", errorMessage)
                     _hasTriggeredAlert = True
                 End If
             End If

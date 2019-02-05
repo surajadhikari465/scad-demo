@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="EslPriceListenerSharedArchive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <sharedResources/>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Esl Price Listener Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Ben.Sims</authorProperty>
+            <processProperty>/Processes/EslPriceListener.process</processProperty>
+        </processArchive>
+        <versionProperty>31</versionProperty>
+        <authorProperty>Ben.Sims</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>EslPriceListener</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\AzureDevOps\Source\Repos\SCAD\Icon\Tibco\DeploymentFiles\EslPriceListener.ear</fileLocationProperty>
+        <description>Archives active prices sent through the Active Price Topic</description>
+    </enterpriseArchive>
+</Repository:repository>

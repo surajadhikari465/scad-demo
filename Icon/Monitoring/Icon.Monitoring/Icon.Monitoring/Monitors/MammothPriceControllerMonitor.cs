@@ -6,33 +6,34 @@
 
     using Icon.Monitoring.Common;
     using Icon.Monitoring.Common.Enums;
-    using Icon.Monitoring.Common.PagerDuty;
+    using Icon.Monitoring.Common.Opsgenie;
     using Icon.Monitoring.Common.Settings;
     using Icon.Monitoring.DataAccess.Queries;
     using Logging;
+    using OpsgenieAlert;
 
     public class MammothPriceControllerMonitor : TimedControllerMonitor
     {
-        private const string MammothPriceControllerPagerDutyDescription = "Mammoth Price Controller is taking too long for the following regions: ";
+        private const string MammothPriceControllerOpsgenieDescription = "Mammoth Price Controller is taking too long for the following regions: ";
         private readonly IQueryByRegionHandler<GetMammothPriceChangeQueueIdQueryParameters, int> priceChangeQueueQuery;
-        private readonly IPagerDutyTrigger pagerDutyTrigger;
+        private readonly IOpsgenieTrigger opsgenieTrigger;
 
         public MammothPriceControllerMonitor(
             IMonitorSettings settings,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
              IQueryByRegionHandler<GetMammothPriceChangeQueueIdQueryParameters, int> priceChangeQueueQuery,
             ILogger logger)
         {
             this.settings = settings;
             this.logger = logger;
             this.priceChangeQueueQuery = priceChangeQueueQuery;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
         }
 
         protected override void TimedCheckStatusAndNotify()
         {
-            var pagerDutyDetails = new Dictionary<string, string>();
-            var pagerDutyDescription = new StringBuilder(MammothPriceControllerPagerDutyDescription);
+            var opsgenieDetails = new Dictionary<string, string>();
+            var opsgenieDescription = new StringBuilder(MammothPriceControllerOpsgenieDescription);
             var queryParameters = new GetMammothPriceChangeQueueIdQueryParameters();
             int numberFailed = 0;
 
@@ -43,8 +44,8 @@
 
                 if (this.CheckMessageQueueId(region))
                 {
-                    pagerDutyDescription.Append(region).Append(" ");
-                    pagerDutyDetails.Add("Region:" + region.ToString(), region.ToString());
+                    opsgenieDescription.Append(region).Append(" ");
+                    opsgenieDetails.Add("Region:" + region.ToString(), region.ToString());
                     numberFailed++;
                 }
             }
@@ -52,8 +53,8 @@
             if (numberFailed > 0)
             {
                 logger.Info("The Mammoth Price Controller Monitor has detected a region that is taking too long.");
-                PagerDutyResponse response =
-                    this.pagerDutyTrigger.TriggerIncident(pagerDutyDescription.ToString(), pagerDutyDetails);
+                OpsgenieResponse response =
+                    this.opsgenieTrigger.TriggerAlert("Mammoth Price Controller Monitor Issue", opsgenieDescription.ToString(), opsgenieDetails);
             }
             else
             {
@@ -86,9 +87,9 @@
             }
         }
 
-        private void TriggerPagerDutyIncident(string description, Dictionary<string, string> jsonDetails)
+        private void TriggerOpsgenieIncident(string description, Dictionary<string, string> jsonDetails)
         {
-            PagerDutyResponse response = this.pagerDutyTrigger.TriggerIncident(description, jsonDetails);
+            OpsgenieResponse response = this.opsgenieTrigger.TriggerAlert("Mammoth Price Controller Issue",description, jsonDetails);
         }
     }
 }

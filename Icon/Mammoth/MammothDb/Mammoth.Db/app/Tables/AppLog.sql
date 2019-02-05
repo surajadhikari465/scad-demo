@@ -30,7 +30,7 @@ CREATE NONCLUSTERED INDEX [IX_AppLog_InsertDate] ON [app].[AppLog]
 )
 GO
 
-CREATE TRIGGER TriggerAppLogArchive ON app.AppLog AFTER DELETE
+CREATE TRIGGER app.TriggerAppLogArchive ON app.AppLog AFTER DELETE
 AS
   INSERT INTO app.AppLogArchive(AppID, Level, Logger, UserName, MachineName, InsertDate, LogDate, Thread, Message, CallSite, Exception, StackTrace)
     SELECT AppID, Level, Logger, UserName, MachineName, InsertDate, LogDate, Thread, Message, CallSite, Exception, StackTrace

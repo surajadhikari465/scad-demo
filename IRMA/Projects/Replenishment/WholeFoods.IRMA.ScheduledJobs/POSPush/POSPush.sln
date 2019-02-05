@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "POSPush", "POSPush\POSPush.vbproj", "{7BD046AE-7470-4AF9-B681-BCB5A9B5974C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,7 +28,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WFM.UserAuthentication", ".
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA.FaxLog", "..\..\..\..\Libraries\Wholefoods.IRMA.FaxLog\Wholefoods.IRMA.FaxLog\WholeFoods.IRMA.FaxLog.vbproj", "{6F732051-5D10-4E07-9388-6AAC3E63A52A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerDutyLib", "..\..\..\PagerDutyLib\PagerDutyLib\PagerDutyLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsgenieLib", "..\..\..\PagerDutyLib\PagerDutyLib\OpsgenieLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,34 +106,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfsprd:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\WholeFoods.IRMA.Replenishment\\WholeFoods.IRMA.Replenishment.vbproj
-		SccProjectName1 = ../../WholeFoods.IRMA.Replenishment
-		SccLocalPath1 = ..\\..\\WholeFoods.IRMA.Replenishment
-		SccProjectUniqueName2 = ..\\..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility\\WholeFoods.Utility.vbproj
-		SccProjectName2 = ../../../../Utility/WholeFoods.Utility\u0020Solution/WholeFoods.Utility
-		SccLocalPath2 = ..\\..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WholeFoods.Utility
-		SccProjectUniqueName3 = ..\\..\\..\\..\\WFM\\DataAccess\\WFM.DataAccess.vbproj
-		SccProjectName3 = ../../../../WFM/DataAccess
-		SccLocalPath3 = ..\\..\\..\\..\\WFM\\DataAccess
-		SccProjectUniqueName4 = ..\\..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication\\WFM.UserAuthentication.vbproj
-		SccProjectName4 = ../../../../Utility/WholeFoods.Utility\u0020Solution/WFM.UserAuthentication
-		SccLocalPath4 = ..\\..\\..\\..\\Utility\\WholeFoods.Utility\u0020Solution\\WFM.UserAuthentication
-		SccProjectUniqueName5 = ..\\..\\..\\ItemCatalogLib\\ItemCatalogLib.vbproj
-		SccProjectName5 = ../../../ItemCatalogLib
-		SccLocalPath5 = ..\\..\\..\\ItemCatalogLib
-		SccProjectUniqueName6 = POSPush\\POSPush.vbproj
-		SccProjectName6 = POSPush
-		SccLocalPath6 = POSPush
-		SccProjectUniqueName7 = ..\\..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog\\WholeFoods.IRMA.FaxLog.vbproj
-		SccProjectName7 = ../../../../Libraries/Wholefoods.IRMA.FaxLog/Wholefoods.IRMA.FaxLog
-		SccLocalPath7 = ..\\..\\..\\..\\Libraries\\Wholefoods.IRMA.FaxLog\\Wholefoods.IRMA.FaxLog
-		SccProjectUniqueName8 = ..\\..\\..\\PagerDutyLib\\PagerDutyLib\\PagerDutyLib.csproj
-		SccProjectName8 = ../../../PagerDutyLib/PagerDutyLib
-		SccLocalPath8 = ..\\..\\..\\PagerDutyLib\\PagerDutyLib
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46A4E510-0370-4468-A248-6E235C4B5CE1}
 	EndGlobalSection
 EndGlobal

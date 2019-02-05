@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Common.DataAccess;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
@@ -24,7 +24,7 @@ namespace Icon.Monitoring.Tests.Monitors
         private Mock<IMonitorSettings> mockSettings;
         private Mock<IVimLocaleConJobMonitorSettings> mockVimLocaleConJobMonitorSettings;
         private Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>> mockGetVimLocaleConJobMonitorStatusQueryHandler;
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<ILogger> mockLogger;
         private VIMLocaleControllerMonitor monitor;
         private const string AppName = "Vim Locale Controller";
@@ -36,7 +36,7 @@ namespace Icon.Monitoring.Tests.Monitors
         {
             mockSettings = new Mock<IMonitorSettings>();
             mockVimLocaleConJobMonitorSettings = new Mock<IVimLocaleConJobMonitorSettings>();
-            mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             mockGetVimLocaleConJobMonitorStatusQueryHandler = new Mock<IQueryHandler<GetLatestAppLogByAppNameParameters, AppLog>>();
             mockLogger = new Mock<ILogger>();
             applog = new AppLog();
@@ -48,7 +48,7 @@ namespace Icon.Monitoring.Tests.Monitors
                 mockSettings.Object,
                 mockVimLocaleConJobMonitorSettings.Object,
                mockGetVimLocaleConJobMonitorStatusQueryHandler.Object,
-               mockPagerDutyTrigger.Object,
+               mockOpsgenieTrigger.Object,
                 mockLogger.Object
                 );
         }
@@ -67,7 +67,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_VimLocaleConServiceNotRunning_ShouldSendPagerDutyAlert()
+        public void TimedCheckStatusAndNotify_VimLocaleConServiceNotRunning_ShouldSendsOpsgenieAlert()
         {
             //Given -- set last log date to be 2 hours before the current time
             SetUpSettingsValue(true, 10, -2);
@@ -76,11 +76,11 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]
-        public void TimedCheckStatusAndNotify_VimLocaleConServiceRunning_NoPagerDutyAlert()
+        public void TimedCheckStatusAndNotify_VimLocaleConServiceRunning_NoOpsgenieyAlert()
         {
             //Given -- set last log date to be 2 hours before the current time
             SetUpSettingsValue(true, 70, -1);
@@ -89,7 +89,7 @@ namespace Icon.Monitoring.Tests.Monitors
             monitor.CheckStatusAndNotify();
 
             //Then
-            mockPagerDutyTrigger.Verify(m => m.TriggerIncident(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
         private void SetUpSettingsValue(Boolean enableVimLocalegConJobMonitor, int minutesAllowedSinceLastVimLocaleCon, int addHours)
         {

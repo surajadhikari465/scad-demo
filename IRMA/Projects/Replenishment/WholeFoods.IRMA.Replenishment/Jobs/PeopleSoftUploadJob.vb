@@ -137,7 +137,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
             Catch ex As Exception
                 bhasErrors = True
 
-                PagerDutyUtility.TriggerPagerDutyAlert("IRMA PeopleSoft Upload Job", "PeopleSoft Upload Failure", ex.ToString())
+                OpsGenieUtility.TriggerOpsgenieAlert("IRMA PeopleSoft Upload Job", "PeopleSoft Upload Failure", ex.ToString())
 
                 Throw New Exception(Classname & " failed at " & IIf(ex.Message.Contains("Step"), ex.Message, "Step: PeopleSoftUploadDAO.GetRegionList() " & Environment.NewLine & ex.InnerException.Message))
             End Try

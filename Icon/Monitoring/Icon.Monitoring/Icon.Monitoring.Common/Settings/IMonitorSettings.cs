@@ -10,8 +10,8 @@ namespace Icon.Monitoring.Common.Settings
         string IntegrationKey { get; set; }
 
         List<string> ApiControllerMonitorRegions { get; set; }
-        bool SendPagerDutyNotifications { get; set; }
-        string PagerDutyUri { get; set; }
+        bool SendOpsGenieAlert { get; set; }
+        string OpsGenieUri { get; set; }
         string Environment { get; set; }
         double MonitorServiceTimer { get; set; }
         LocalTime PosPushStartTime_FL { get; set; }

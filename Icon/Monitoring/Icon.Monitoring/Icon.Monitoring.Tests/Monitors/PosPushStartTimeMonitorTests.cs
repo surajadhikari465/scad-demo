@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Monitoring.Common.Constants;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess.Queries;
@@ -18,7 +18,7 @@ namespace Icon.Monitoring.Tests.Monitors
     public class PosPushStartTimeMonitorTests
     {
         private PosPushStartTimeMonitor posPushStartTimeMonitor;
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IQueryByRegionHandler<GetAppLogByAppAndMessageParameters, AppLog>> mockAppLogQuery;
         private IMonitorSettings settings;
         private IClock fakeClock;
@@ -28,7 +28,7 @@ namespace Icon.Monitoring.Tests.Monitors
         [TestInitialize]
         public void InitializeTest()
         {
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             this.mockAppLogQuery = new Mock<IQueryByRegionHandler<GetAppLogByAppAndMessageParameters, AppLog>>();
             this.fakeClock = new FakeClock(Instant.FromDateTimeUtc(DateTime.UtcNow));
             this.dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
@@ -37,7 +37,7 @@ namespace Icon.Monitoring.Tests.Monitors
             SetupMonitorSettings();
             this.posPushStartTimeMonitor = new PosPushStartTimeMonitor(
                 this.settings,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockAppLogQuery.Object,
                 this.dateTimeZoneProvider,
                 this.fakeClock,
@@ -61,7 +61,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void PosPushStartTimeMonitor_AppLogRowIsNullAndCurrentTimeIsAfterConfiguredStartTime_ShouldSendPagerDutyAlert()
+        public void PosPushStartTimeMonitor_AppLogRowIsNullAndCurrentTimeIsAfterConfiguredStartTime_ShouldSendsOpsgenieAlert()
         {
             // Given
             AppLog appLogAllOtherRegions = BuildAppLog(DateTime.Now);
@@ -85,13 +85,13 @@ namespace Icon.Monitoring.Tests.Monitors
             this.posPushStartTimeMonitor.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger
-                .Verify(pd => pd.TriggerIncident(It.Is<string>(s => s == "POS Push has not started for the following region: FL "),
+            this.mockOpsgenieTrigger
+                .Verify(pd => pd.TriggerAlert(It.Is<string>(s => s == "POS Push Job Issue"), It.Is<string>(s => s == "POS Push has not started for the following region: FL "),
                     It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]
-        public void PosPushStartTimeMonitor_AppLogRowIsNullAndCurrentTimeIsBeforeConfiguredStartTime_ShouldNotSendPagerDutyAlert()
+        public void PosPushStartTimeMonitor_AppLogRowIsNullAndCurrentTimeIsBeforeConfiguredStartTime_ShouldNotSendOpsgenieAlert()
         {
             // Given
             this.fakeClock = new FakeClock(Instant.FromDateTimeOffset(DateTime.Today.AddMinutes(5))); // current time is 00:05:00
@@ -114,7 +114,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
             this.posPushStartTimeMonitor = new PosPushStartTimeMonitor(
                 this.settings,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockAppLogQuery.Object,
                 this.dateTimeZoneProvider,
                 this.fakeClock,
@@ -124,13 +124,13 @@ namespace Icon.Monitoring.Tests.Monitors
             this.posPushStartTimeMonitor.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger
-                .Verify(pd => pd.TriggerIncident(It.Is<string>(s => s.Contains("POS Push has not started for the following region:")),
+            this.mockOpsgenieTrigger
+                .Verify(pd => pd.TriggerAlert(It.Is<string>(s => s == "POS Push Job Issue"), It.Is<string>(s => s.Contains("POS Push has not started for the following region:")),
                     It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
 
         [TestMethod]
-        public void PosPushStartTimeMonitor_AppLogRowIsNotNull_ShouldNotSendPagerDutyAlert()
+        public void PosPushStartTimeMonitor_AppLogRowIsNotNull_ShouldNotSendOpsgenieAlert()
         {
             // Given
             this.fakeClock = new FakeClock(Instant.FromDateTimeOffset(DateTime.Today.AddMinutes(5))); // current time is 00:05:00
@@ -153,7 +153,7 @@ namespace Icon.Monitoring.Tests.Monitors
 
             this.posPushStartTimeMonitor = new PosPushStartTimeMonitor(
                 this.settings,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockAppLogQuery.Object,
                 this.dateTimeZoneProvider,
                 this.fakeClock,
@@ -163,13 +163,13 @@ namespace Icon.Monitoring.Tests.Monitors
             this.posPushStartTimeMonitor.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger
-                .Verify(pd => pd.TriggerIncident(It.Is<string>(s => s.Contains("POS Push has not started for the following region:")),
+            this.mockOpsgenieTrigger
+                .Verify(pd => pd.TriggerAlert(It.Is<string>(s => s == "POS Push Job Issue"), It.Is<string>(s => s.Contains("POS Push has not started for the following region:")),
                     It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
 
         [TestMethod]
-        public void PosPushStartTimeMonitor_SentPagerDutyAlertForFloridaRegionFirstTimeAndCheckingTheSecondTime_ShouldOnlySendOneAlert()
+        public void PosPushStartTimeMonitor_SentOpsgenieAlertForFloridaRegionFirstTimeAndCheckingTheSecondTime_ShouldOnlySendOneAlert()
         {
             // Given
             DateTime logDate = DateTime.Now.AddDays(-1); // Now minus one day to simulate the log date being on a different day.
@@ -207,13 +207,13 @@ namespace Icon.Monitoring.Tests.Monitors
             this.posPushStartTimeMonitor.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger
-                .Verify(pd => pd.TriggerIncident(It.Is<string>(s => s == "POS Push has not started for the following region: FL "),
+            this.mockOpsgenieTrigger
+                .Verify(pd => pd.TriggerAlert(It.Is<string>(s => s == "POS Push Job Issue"), It.Is<string>(s => s == "POS Push has not started for the following region: FL "),
                     It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]
-        public void PosPushStartTimeMonitor_MultipleRegionsDoNotStartOnTime_ShouldSendOnePagerDutyAlertWithFailedRegionsListed()
+        public void PosPushStartTimeMonitor_MultipleRegionsDoNotStartOnTime_ShouldSendOnOpsgenieAlertWithFailedRegionsListed()
         {
             // Given
             AppLog appLogOtherRegions = BuildAppLog(DateTime.Now);
@@ -238,10 +238,10 @@ namespace Icon.Monitoring.Tests.Monitors
 
             // When
             this.posPushStartTimeMonitor.CheckStatusAndNotify();
-
+            
             // Then
-            this.mockPagerDutyTrigger
-                .Verify(pd => pd.TriggerIncident(It.Is<string>(s => s == "POS Push has not started for the following region: FL MW NC SO "),
+            this.mockOpsgenieTrigger
+                .Verify(pd => pd.TriggerAlert(It.Is<string>(s => s == "POS Push Job Issue"), It.Is<string>(s => s == "POS Push has not started for the following region: FL MW NC SO "),
                     It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 

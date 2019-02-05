@@ -1,7 +1,8 @@
 ﻿using Icon.Logging;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Newtonsoft.Json;
+using OpsgenieAlert;
 using System;
 
 namespace Icon.Monitoring.Monitors
@@ -69,9 +70,9 @@ namespace Icon.Monitoring.Monitors
             LogInfo(this.logger, message, region, error);
         }
 
-        protected void LogInfo(string message, string region, PagerDutyResponse pagerDutyResponse)
+        protected void LogInfo(string message, string region, OpsgenieResponse opsgenieResponse)
         {
-            LogInfo(this.logger, message, region, pagerDutyResponse);
+            LogInfo(this.logger, message, region, opsgenieResponse);
         }
 
         protected void LogError(string message, string region, Exception ex)
@@ -98,13 +99,13 @@ namespace Icon.Monitoring.Monitors
             }));
         }
 
-        protected void LogInfo(ILogger logger, string message, string region, PagerDutyResponse pagerDutyResponse)
+        protected void LogInfo(ILogger logger, string message, string region, OpsgenieResponse opsgenieResponse)
         {
             logger.Info(JsonConvert.SerializeObject(new
             {
                 Message = message,
                 Region = region,
-                Response = pagerDutyResponse
+                Response = opsgenieResponse
             }));
         }
 

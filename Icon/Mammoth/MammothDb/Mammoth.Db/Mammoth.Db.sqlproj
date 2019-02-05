@@ -809,6 +809,7 @@
     <Build Include="dbo\Stored Procedures\AuditItemLocale.sql" />
     <Build Include="dbo\Stored Procedures\AuditGPMPrice.sql" />
     <Build Include="app\Tables\AppLogArchive.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddEslOnePlumAppsToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

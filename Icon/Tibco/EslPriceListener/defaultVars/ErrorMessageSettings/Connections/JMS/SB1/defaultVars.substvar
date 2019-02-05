@@ -1,0 +1,30 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!FUVbBZiC96oocpHUxrEL81l8CYXdrs46pU5KPsgdeTuIWKyLZnaZRW9RKPpX9+zpycMTqKTL5eg=</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<constraint></constraint>
+			<modTime>1548998192845</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Url</name>
+			<value>ssl://cerd1668.wfm.pvt:7233</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548998192754</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>sb1_mammothPriceUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548998193028</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

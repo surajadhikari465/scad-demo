@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ConnectionString</name>
+			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548954672481</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!IKbIWV9/q83Hmp9lC6h1Bl2x9+8KRzg675pfHSVYQ2SFbMuhmZQY1A==</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1548954672325</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SqlDBDriver</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548954672495</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>Mammoth.tibco.Dev</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548954672434</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

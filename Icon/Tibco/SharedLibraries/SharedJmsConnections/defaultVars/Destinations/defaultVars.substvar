@@ -66,6 +66,14 @@
 			<modTime>1515770924923</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>PriceEslQueue</name>
+			<value>WFMSB1.Mammoth.Retail.JustInTimeEsl.MammothPrice.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548955169870</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>PriceInforQueue</name>
 			<value>WFMESB.ProductDev.ItemGateway.Price.Queue.V2</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -184,6 +192,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1510179419748</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PriceOnePlumQueue</name>
+			<value> WFMSB1.Mammoth.Retail.JustInTimeOnePlum.MammothPrice.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1548955169844</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PricePushStarterQueue</name>

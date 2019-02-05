@@ -3,7 +3,7 @@
     using Common;
     using Common.Dvo;
     using Common.IO;
-    using Common.PagerDuty;
+    using Common.Opsgenie;
     using Common.Settings;
     using DataAccess.Commands;
     using DataAccess.Queries;
@@ -17,12 +17,12 @@
 
     public class DvoBulkImportJobMonitor : TimedControllerMonitor
     {
-        private const string DvoPagerDutyMessage = "DVO Bulk Order Import Job stopped running.";
+        private const string DvoOpsgenieMessage = "DVO Bulk Order Import Job stopped running.";
         private const string DvoFileDoesNotExistError = "DVO Bulk Order Import Job parameter file does not exist.";
 
         private IDvoBulkImportJobMonitorSettings dvoSettings;
         private IFileInfoAccessor fileInfoAccessor;
-        private IPagerDutyTrigger pagerDutyTrigger;
+        private IOpsgenieTrigger opsgenieTrigger;
         private IQueryHandler<GetDvoJobStatusParameters, List<DvoRegionalJobStatus>> getDvoRegionalJobStatusQueryHandler;
         private ICommandHandler<DeleteDvoErrorStatusCommand> deleteDvoErrorStatusCommandHandler;
         private ICommandHandler<AddDvoErrorStatusCommand> addDvoErrorStatusCommandHandler;
@@ -31,7 +31,7 @@
             IMonitorSettings settings,
             IDvoBulkImportJobMonitorSettings dvoSettings,
             IFileInfoAccessor fileInfoAccessor,
-            IPagerDutyTrigger pagerDutyTrigger,
+            IOpsgenieTrigger opsgenieTrigger,
             IQueryHandler<GetDvoJobStatusParameters, List<DvoRegionalJobStatus>> getDvoRegionalJobStatusQueryHandler,
             ICommandHandler<DeleteDvoErrorStatusCommand> deleteDvoErrorStatusCommandHandler,
             ICommandHandler<AddDvoErrorStatusCommand> addDvoErrorStatusCommandHandler,
@@ -40,7 +40,7 @@
             this.settings = settings;
             this.dvoSettings = dvoSettings;
             this.fileInfoAccessor = fileInfoAccessor;
-            this.pagerDutyTrigger = pagerDutyTrigger;
+            this.opsgenieTrigger = opsgenieTrigger;
             this.getDvoRegionalJobStatusQueryHandler = getDvoRegionalJobStatusQueryHandler;
             this.deleteDvoErrorStatusCommandHandler = deleteDvoErrorStatusCommandHandler;
             this.addDvoErrorStatusCommandHandler = addDvoErrorStatusCommandHandler;
@@ -117,24 +117,24 @@
         private void ProcessErrorJobStatuses(List<DvoRegionalJobStatus> errorStatuses)
         {
             var currentErrorStatuses = getDvoRegionalJobStatusQueryHandler.Search(new GetDvoJobStatusParameters { Regions = errorStatuses.Select(e => e.Region).ToList() });
-            var pagerDutyStatuses = errorStatuses.Where(s => !currentErrorStatuses.Any(c => c.Region == s.Region)).ToList();
+            var opsgenieStatuses = errorStatuses.Where(s => !currentErrorStatuses.Any(c => c.Region == s.Region)).ToList();
 
-            //Only send pagerduty alerts for regions that don't have a current error
-            if (pagerDutyStatuses.Any())
+            //Only send alerts for regions that don't have a current error
+            if (opsgenieStatuses.Any())
             {
                 logger.Warn(JsonConvert.SerializeObject(new
                 {
-                    Message = "Triggering PagerDuty for DVO Bulk Import Job",
-                    Regions = pagerDutyStatuses.Select(s => new { s.Region, s.Error })
+                    Message = "Triggering Opsgenie Alert for DVO Bulk Import Job",
+                    Regions = opsgenieStatuses.Select(s => new { s.Region, s.Error })
                 }));
 
-                pagerDutyTrigger.TriggerIncident(
-                    DvoPagerDutyMessage,
-                    pagerDutyStatuses.ToDictionary(
+                this.opsgenieTrigger.TriggerAlert("DVO Bulk Order Job Issue",
+                    DvoOpsgenieMessage,
+                    opsgenieStatuses.ToDictionary(
                         s => s.Region,
                         s => $"{s.Region} - {s.FileInfo.Name} - {s.Error}"));
 
-                foreach (var status in pagerDutyStatuses)
+                foreach (var status in opsgenieStatuses)
                 {
                     //Add any new error statuses to the database so that other monitor instances don't send duplicate pager duty messages
                     addDvoErrorStatusCommandHandler.Execute(new AddDvoErrorStatusCommand { Region = status.Region });

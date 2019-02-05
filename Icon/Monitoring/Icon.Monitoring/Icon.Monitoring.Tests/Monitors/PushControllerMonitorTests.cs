@@ -1,5 +1,5 @@
 ﻿using Icon.Logging;
-using Icon.Monitoring.Common.PagerDuty;
+using Icon.Monitoring.Common.Opsgenie;
 using Icon.Monitoring.Common.Settings;
 using Icon.Monitoring.DataAccess.Queries;
 using Icon.Monitoring.Monitors;
@@ -13,12 +13,12 @@ namespace Icon.Monitoring.Tests.Monitors
     [TestClass]
     public class PushControllerMonitorTests
     {
-        private Mock<IPagerDutyTrigger> mockPagerDutyTrigger;
+        private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
         private Mock<IMonitorSettings> mockSettings;
         private Mock<ILogger> mockLogger;
 
         [TestMethod]
-        public void PushControllerMonitor_NoRowsInPushQueue_PagerDutyAlertNotSentAndCacheIsZero()
+        public void PushControllerMonitor_NoRowsInPushQueue_OpsgenieAlertNotSentAndCacheIsZero()
         {
             // Given
             var irmaPushIdQuery = new Mock<Icon.Common.DataAccess.IQueryHandler<GetIrmaPushIdParameters, int>>();
@@ -30,15 +30,16 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PushControllerMonitor(
                 this.mockSettings.Object,
                 irmaPushIdQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
             testee.CheckStatusAndNotify();
             Thread.Sleep(500); // Need to simulate time between checking.
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
@@ -47,7 +48,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void PushControllerMonitor_CheckFirstTimeAndRowsInQueue_PagerDutyAlertNotSentAndCacheIsZero()
+        public void PushControllerMonitor_CheckFirstTimeAndRowsInQueue_OpsgenieAlertNotSentAndCacheIsZero()
         {
             // Given
             var pushId = 1001;
@@ -59,14 +60,15 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PushControllerMonitor(
                 this.mockSettings.Object,
                 irmaPushIdQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
@@ -75,7 +77,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void PushControllerMonitor_SameRowInQueueFoundInSecondCheck_PagerDutyAlertSentOnlyOnceAndNumberOfTimesDetectedIsTwo()
+        public void PushControllerMonitor_SameRowInQueueFoundInSecondCheck_OpsgenieAlertSentOnlyOnceAndNumberOfTimesDetectedIsTwo()
         {
             // Given
             var pushId = 1001;
@@ -89,7 +91,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PushControllerMonitor(
                 this.mockSettings.Object,
                 irmaPushIdQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             testee.CheckStatusAndNotify();
@@ -97,8 +99,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
@@ -107,7 +110,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void PushControllerMonitor_SameRowInQueueFoundThirdTime_PagerDutyAlertSentOnlyOnceAndNumberOfTimesDetectedIsTwo()
+        public void PushControllerMonitor_SameRowInQueueFoundThirdTime_OpsgenieAlertSentOnlyOnceAndNumberOfTimesDetectedIsTwo()
         {
             // Given
             var pushId = 1001;
@@ -122,7 +125,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PushControllerMonitor(
                 this.mockSettings.Object,
                 irmaPushIdQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             testee.CheckStatusAndNotify();
@@ -132,8 +135,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Once);
@@ -142,7 +146,7 @@ namespace Icon.Monitoring.Tests.Monitors
         }
 
         [TestMethod]
-        public void PushControllerMonitor_NewRowIdFoundInSecondCheck_PagerDutyAlertNotSentAndTrackerDictionaryUpdated()
+        public void PushControllerMonitor_NewRowIdFoundInSecondCheck_OpsgenieAlertNotSentAndTrackerDictionaryUpdated()
         {
             // Given
             var previousPushId = 1001;
@@ -156,7 +160,7 @@ namespace Icon.Monitoring.Tests.Monitors
             var testee = new PushControllerMonitor(
                 this.mockSettings.Object,
                 irmaPushIdQuery.Object,
-                this.mockPagerDutyTrigger.Object,
+                this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object);
 
             testee.CheckStatusAndNotify();
@@ -164,8 +168,9 @@ namespace Icon.Monitoring.Tests.Monitors
             testee.CheckStatusAndNotify();
 
             // Then
-            this.mockPagerDutyTrigger.Verify(
-                x => x.TriggerIncident(
+            this.mockOpsgenieTrigger.Verify(
+                x => x.TriggerAlert(
+                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Dictionary<string, string>>()),
                 Times.Never);
@@ -178,7 +183,7 @@ namespace Icon.Monitoring.Tests.Monitors
         public void Initialize()
         {
             this.mockSettings = new Mock<IMonitorSettings>();
-            this.mockPagerDutyTrigger = new Mock<IPagerDutyTrigger>();
+            this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             this.mockLogger = new Mock<ILogger>();
         }
     }

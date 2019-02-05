@@ -11,3 +11,6 @@ GO
 
 GRANT SELECT, UPDATE, INSERT ON [stage].[ItemStoreKeysEsl] TO dds_esl_role
 GO
+
+GRANT SELECT, INSERT ON [stage].[ItemStoreKeysEsl] TO TibcoRole
+GO

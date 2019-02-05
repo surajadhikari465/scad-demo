@@ -6,7 +6,6 @@ const ApiMethods  = {
      AssignKit: "/api/Venues",
      InstructionListByType: "/api/InstructionList/GetInstructionsListByType",
      Items: "/api/Items/"
-
 }
 
 export function KbApiMethod(name: string) {
