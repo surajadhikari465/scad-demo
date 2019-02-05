@@ -16,5 +16,4 @@ See template script for hints:
 :r .\Scripts\PopulateData\Release\IconPredeploymentScript.sql
 */
 
-:r .\Scripts\PopulateData\StashDataForNewSignAttributeColumns.sql -- 12/03/2018 PBI 29201 / 29184
 
