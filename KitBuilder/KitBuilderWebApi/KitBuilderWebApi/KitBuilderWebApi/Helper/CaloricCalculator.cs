@@ -63,10 +63,13 @@ namespace KitBuilderWebApi.Helper
 			//update kit locale
 			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
 			{
-				var kitLinkGroupItemLocaleDtos = (kitLocaleDto.KitLinkGroupLocale.Select(klli => klli.KitLinkGroupItemLocales)).Select(s => s.Where(i =>i.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId)).ToList();
+                var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupLocale
+                                                .Where(klli => klli.KitLinkGroupItemLocales.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).Count()>  0 )
+                                                 .Select(s=>s.KitLinkGroupItemLocales).ToList();
+
 				//var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).ToList();
 				
-				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos.FirstOrDefault())
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
 				{
 					//kitLinkGroupItemDto.   itemStorePriceModel.Price;
 
