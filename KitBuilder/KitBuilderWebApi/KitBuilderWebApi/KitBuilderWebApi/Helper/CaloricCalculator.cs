@@ -63,8 +63,10 @@ namespace KitBuilderWebApi.Helper
 			//update kit locale
 			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
 			{
-				var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).ToList();
-				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
+				var kitLinkGroupItemLocaleDtos = (kitLocaleDto.KitLinkGroupLocale.Select(klli => klli.KitLinkGroupItemLocales)).Select(s => s.Where(i =>i.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId)).ToList();
+				//var kitLinkGroupItemLocaleDtos = kitLocaleDto.KitLinkGroupItemLocale.Where(s => s.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId).ToList();
+				
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos.FirstOrDefault())
 				{
 					//kitLinkGroupItemDto.   itemStorePriceModel.Price;
 
@@ -80,10 +82,10 @@ namespace KitBuilderWebApi.Helper
 
 		internal KitLocaleDto GetKitByKitLocaleId(int kitLocaleId)
 		{
-			var kitLocale = ((kitLocaleRepository.UnitOfWork.Context.KitLocale.Where(kl => kl.KitLocaleId == kitLocaleId)
+			var kitLocale = (kitLocaleRepository.UnitOfWork.Context.KitLocale.Where(kl => kl.KitLocaleId == kitLocaleId)
 					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
 					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
-					 .ThenInclude(i => i.Item)).FirstOrDefault());
+					 .ThenInclude(i => i.Item)).FirstOrDefault();
 
 			try
 			{
@@ -99,8 +101,8 @@ namespace KitBuilderWebApi.Helper
 
 		internal async Task<IEnumerable<ItemStorePriceModel>> GetAuthorizedStatus(IEnumerable<StoreItem> storeItems)
 		{
-			//string url = "http://mammoth-test/api/price/";
-			string url = "http://localhost:30680/api/price/";
+			string url = "http://mammoth-test/api/price/";
+			//string url = "http://localhost:30680/api/price/";
 
 			PriceCollectionRequestModel pricesRequestModel = new PriceCollectionRequestModel
 			{
