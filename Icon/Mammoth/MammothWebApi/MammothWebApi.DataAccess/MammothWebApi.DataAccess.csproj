@@ -126,10 +126,10 @@
     <Compile Include="Commands\DeletePricesCommandHandler.cs" />
     <Compile Include="Commands\DeleteStagingCommand.cs" />
     <Compile Include="Commands\DeleteStagingCommandHandler.cs" />
+    <Compile Include="Commands\StagingItemLocaleCommandHandler.cs" />
     <Compile Include="Commands\StagingItemLocaleExtendedCommand.cs" />
     <Compile Include="Commands\StagingItemLocaleCommand.cs" />
     <Compile Include="Commands\StagingItemLocaleExtendedCommandHandler.cs" />
-    <Compile Include="Commands\StagingItemLocaleCommandHandler.cs" />
     <Compile Include="Commands\StagingItemLocaleSupplierCommand.cs" />
     <Compile Include="Commands\StagingItemLocaleSupplierCommandHandler.cs" />
     <Compile Include="Commands\StagingItemLocaleSupplierDeleteCommand.cs" />

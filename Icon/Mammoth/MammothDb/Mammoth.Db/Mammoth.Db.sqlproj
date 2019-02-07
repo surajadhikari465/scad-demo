@@ -823,6 +823,8 @@
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
     <None Include="Scripts\Projects\GPM\R10PriceAudit_Pre765.sql" />
     <None Include="Scripts\PostDeploymentScripts\AppLogArchiveRetentionPolicy.sql" />
+    <None Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
+    <None Include="dbo\User Defined Types\ItemAttributesLocaleType.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
