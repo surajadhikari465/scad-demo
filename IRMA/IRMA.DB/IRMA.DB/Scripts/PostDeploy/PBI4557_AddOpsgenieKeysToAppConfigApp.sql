@@ -521,3 +521,23 @@ BEGIN
 			,@User_ID
 END
 GO
+
+DECLARE @client_name varchar(50)		 = 'POS PUSH JOB';
+DECLARE @key_1 varchar(150)            = 'PagerDutyServiceKey'    
+DECLARE @key_2 varchar(150)            = 'PagerDutyUrl'
+
+DELETE acv
+FROM [dbo].[AppConfigValue] acv
+	INNER JOIN [dbo].[AppConfigEnv] ace ON acv.EnvironmentID = ace.EnvironmentID 
+    INNER JOIN [dbo].[AppConfigApp] aca ON acv.ApplicationID = aca.ApplicationID 
+	INNER JOIN [dbo].[AppConfigKey] ack ON acv.KeyID = ack.KeyID 
+	WHERE aca.[Name]=@client_name
+		  AND (ack.[Name] = @key_1)
+
+DELETE acv
+FROM [dbo].[AppConfigValue] acv
+	INNER JOIN [dbo].[AppConfigEnv] ace ON acv.EnvironmentID = ace.EnvironmentID 
+    INNER JOIN [dbo].[AppConfigApp] aca ON acv.ApplicationID = aca.ApplicationID 
+	INNER JOIN [dbo].[AppConfigKey] ack ON acv.KeyID = ack.KeyID 
+	WHERE aca.[Name]=@client_name
+		  AND (ack.[Name] = @key_2)
