@@ -15,7 +15,8 @@ namespace KitBuilder.DataAccess.Dto
         public int LocaleId { get; set; }
         public int LocaleIdAtWhichKitExists { get; set; }
         public int KitLocaleId { get; set; }
-
+        public string LocaleName { get; set; }
+        public string ImageUrl { get; set; }
         public ICollection<KitLinkGroupPropertiesDto> KitLinkGroupLocaleList{ get; set; }
         //public List<PropertiesDto> KitLinkGroupItemLocaleList { get; set; }
     }

@@ -39,4 +39,8 @@ CREATE INDEX [IX_ItemAttributesLocale_SP_ItemID_BusinessUnitID_Region_ItemAttrib
 	[Region] ASC,
 	[ItemAttributeLocaleID] ASC
 )
-INCLUDE ([AddedDate], [Authorized]) ON [FG_SP]
+INCLUDE ([AddedDate], [Authorized]) ON [FG_SP];
+GO
+
+CREATE UNIQUE INDEX UNQ_ItemAttributesLocale_SP_ItemID_BU on dbo.ItemAttributes_Locale_SP(ItemID, BusinessUnitID) ON [FG_SP];
+GO

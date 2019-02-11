@@ -62,7 +62,7 @@ Param($rel_doc)
 ########################################################################################################################################
 
 
-$gitRootFolder = "c:\tlux\dev\git\Icon"
+$gitRootFolder = "c:\tlux\dev\git\scad"
 
 ########################################################################################################################################
 
@@ -93,17 +93,18 @@ if($relDocTxt.Contains("__$mswordSpellTag")){
     return
 }
 
-# Replace var refs inside input data.  We could add a loop here that could run this replacement a few times to allow more complex/iterative replacement.
-foreach($valueDef in $relDocInValues){
-    $values = $valueDef.split("`t") # Each field in a line.
-    $varName = $values[0]
-    $varDesc = $values[1]
-    $value = $values[2]
-    $relDocInValuesTxt = $relDocInValuesTxt.Replace(("__" + $varName + "__"), $value)
+-split "1 2 3" | foreach {
+    # Replace var refs inside input data.  We could add a loop here that could run this replacement a few times to allow more complex/iterative replacement.
+    foreach($valueDef in $relDocInValues){
+        $values = $valueDef.split("`t") # Each field in a line.
+        $varName = $values[0]
+        $varDesc = $values[1]
+        $value = $values[2]
+        $relDocInValuesTxt = $relDocInValuesTxt.Replace(("__" + $varName + "__"), $value)
+    }
+    # Reset input-values array to updated value that were just replaced.
+    $relDocInValues = $relDocInValuesTxt.split("`n") # Each line in rel-doc input file.
 }
-
-# Reset input-values array to updated value that were just replaced.
-$relDocInValues = $relDocInValuesTxt.split("`n") # Each line in rel-doc input file.
 
 # Build input-values hash so we can use values inside this script (for output filename, etc.).
 $relValuesInHash = @{}
@@ -120,14 +121,14 @@ foreach($valueDef in $relDocInValues){
 $targetEnv = $relValuesInHash.TargetEnv
 $targetEnvShort = $relValuesInHash.TargetEnvShort
 $relYear = $relValuesInHash.ReleaseYear
-$relId = $relValuesInHash.ReleaseId
+$relInst = $relValuesInHash.ReleaseInstance
 
 # Create local release-doc folder, if needed.
 $relDocFolder = "c:\temp\reldoc\"
 if(-not (Test-Path $relDocFolder)){
     New-Item -Verbose -ItemType Directory $relDocFolder
 }
-$relDoc = ($relDocFolder + "IRMA Apps Release $relYear-$relId.$targetEnvShort.htm")
+$relDoc = ($relDocFolder + "IRMA Apps Release $relYear-$relInst.$targetEnvShort.htm")
 
 # Replace values in HTML file with input values.
 foreach($keyName in $relValuesInHash.keys){

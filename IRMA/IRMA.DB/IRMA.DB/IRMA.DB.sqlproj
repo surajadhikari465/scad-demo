@@ -3361,6 +3361,7 @@
     <None Include="Scripts\PostDeploy\Archive\HC_DropTriggerOrderItemAddUpdDel.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30599-InsertAMAZONintoOrderExternalSource.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30732 - PostDeploy Grant Permission - Grant User Send Email Permission.sql" />
+    <None Include="Scripts\PostDeploy\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

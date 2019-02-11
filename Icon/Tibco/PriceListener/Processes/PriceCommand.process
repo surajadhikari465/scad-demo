@@ -51,6 +51,15 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
+            <pd:to>UpdatePrice</pd:to>
+            <pd:xpathDescription>Update</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Update")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
             <pd:to>DeletePrice</pd:to>
             <pd:xpathDescription>Delete</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
@@ -60,12 +69,12 @@
         </pd:transition>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>AddUpdatePrice</pd:to>
-            <pd:xpathDescription>AddUpdate</pd:xpathDescription>
+            <pd:to>AddPrice</pd:to>
+            <pd:xpathDescription>Add</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Update") or ($Start/Input/pfx8:MammothPrice/pfx8:Action="Add")</pd:xpath>
+            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Add")</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Map Database Error</pd:from>
@@ -89,7 +98,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>AddUpdatePrice</pd:from>
+            <pd:from>UpdatePrice</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AddPrice</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -110,7 +126,7 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>AddUpdatePrice</pd:from>
+            <pd:from>AddPrice</pd:from>
             <pd:to>Null</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-52429</pd:lineColor>
@@ -130,8 +146,10 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>exists($_error_AddUpdatePrice/ActivityErrors/pfx3:LoginTimedOutException)
-or exists($_error_AddUpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
+            <pd:xpath>exists($_error_AddPrice/ActivityErrors/pfx3:LoginTimedOutException)
+or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)
+or exists($_error_UpdatePrice/ActivityErrors/pfx3:LoginTimedOutException)
+or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Null</pd:from>
@@ -141,13 +159,13 @@ or exists($_error_AddUpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>AddUpdatePrice</pd:from>
+            <pd:from>AddPrice</pd:from>
             <pd:to>MapZeroRowsImpactedError</pd:to>
             <pd:xpathDescription>No Rows Affected</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$AddUpdatePrice/resultSet/outputSet/NumberOfRowsUpdated=0</pd:xpath>
+            <pd:xpath>$AddPrice/resultSet/outputSet/NumberOfRowsUpdated=0</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>DeletePrice</pd:from>
@@ -158,7 +176,23 @@ or exists($_error_AddUpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:
             <pd:conditionType>xpath</pd:conditionType>
             <pd:xpath>$DeletePrice/resultSet/outputSet/NumberOfRowsDeleted=0</pd:xpath>
         </pd:transition>
-        <pd:activity name="AddUpdatePrice">
+        <pd:transition>
+            <pd:from>UpdatePrice</pd:from>
+            <pd:to>AddPrice</pd:to>
+            <pd:xpathDescription>No Rows Affected</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$UpdatePrice/resultSet/outputSet/NumberOfRowsUpdated=0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>UpdatePrice</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65383</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="AddPrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
             <pd:x>551</pd:x>
@@ -168,7 +202,7 @@ or exists($_error_AddUpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:
                 <maxRows>100</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <schema>gpm</schema>
-                <ProcedureName>AddOrUpdatePrice</ProcedureName>
+                <ProcedureName>AddPrice</ProcedureName>
                 <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
                 <parameterTypes>
                     <parameter>
@@ -470,8 +504,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="DeletePrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>558</pd:x>
-            <pd:y>184</pd:y>
+            <pd:x>603</pd:x>
+            <pd:y>289</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -611,6 +645,190 @@ result=Math.pow(2,retryCount)*100L;
                         <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
                     </ExceptionCode>
                 </pfx9:ExceptionRequest>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="UpdatePrice">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>552</pd:x>
+            <pd:y>209</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Mammoth.sharedjdbc</jdbcSharedConfig>
+                <schema>gpm</schema>
+                <ProcedureName>UpdatePrice</ProcedureName>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@Region</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@GpmID</colName>
+                        <colType>1</colType>
+                        <dataType>1</dataType>
+                        <typeName>uniqueidentifier</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ItemID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@BusinessUnitID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@Price</colName>
+                        <colType>1</colType>
+                        <dataType>3</dataType>
+                        <typeName>decimal</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@StartDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime2</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@EndDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime2</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@PriceType</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@PriceTypeAttribute</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SellableUOM</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@CurrencyCode</colName>
+                        <colType>1</colType>
+                        <dataType>-9</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@Multiple</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@TagExpirationDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime2</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@PercentOff</colName>
+                        <colType>1</colType>
+                        <dataType>3</dataType>
+                        <typeName>decimal</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@NumberOfRowsUpdated</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <Region>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Region"/>
+                        </Region>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:GpmId)">
+                                <GpmID>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:GpmId"/>
+                                </GpmID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <GpmID xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ItemID>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:ItemId"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit"/>
+                        </BusinessUnitID>
+                        <Price>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Price"/>
+                        </Price>
+                        <StartDate>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:StartDate"/>
+                        </StartDate>
+                        <EndDate>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:EndDate"/>
+                        </EndDate>
+                        <PriceType>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceType"/>
+                        </PriceType>
+                        <PriceTypeAttribute>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceTypeAttribute"/>
+                        </PriceTypeAttribute>
+                        <SellableUOM>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
+                        </SellableUOM>
+                        <CurrencyCode>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
+                        </CurrencyCode>
+                        <Multiple>
+                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
+                        </Multiple>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:TagExpirationDate)">
+                                <TagExpirationDate>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:TagExpirationDate"/>
+                                </TagExpirationDate>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <TagExpirationDate xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:PercentOff)">
+                                <PercentOff>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PercentOff"/>
+                                </PercentOff>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <PercentOff xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:element name="NumberOfRowsUpdated">
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:element>
+                    </inputSet>
+                </inputs>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
