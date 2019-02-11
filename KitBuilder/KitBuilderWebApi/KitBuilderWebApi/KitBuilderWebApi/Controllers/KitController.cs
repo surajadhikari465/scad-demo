@@ -40,7 +40,7 @@ namespace KitBuilderWebApi.Controllers
         private IHelper<KitDto, KitSearchParameters> kitHelper;
         private const string deleteKitSpName = "DeleteKitByKitId";
 
-        public KitController(IRepository<LinkGroup> linkGroupRepository,                   
+		public KitController(IRepository<LinkGroup> linkGroupRepository,                   
                              IRepository<Kit> kitRepository,
                              IRepository<Locale> localeRepository,
                              IRepository<KitLocale> kitLocaleRepository,
@@ -54,7 +54,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitInstructionList> kitInstructionListRepository,
                              ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper
-                            )
+							)
         {
             this.linkGroupRepository = linkGroupRepository;
             this.kitRepository = kitRepository;

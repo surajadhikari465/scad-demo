@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Newtonsoft.Json;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace KitBuilderWebApi.Helper
 {
@@ -32,7 +33,6 @@ namespace KitBuilderWebApi.Helper
 			this.storeLocaleId = storeLocaleId;
 			this.kitLocaleRepository = kitLocaleRepository;
 			this.localeRepository = localeRepository;
-
 		}
 
 		public async Task<KitLocaleDto> Run()
@@ -48,10 +48,15 @@ namespace KitBuilderWebApi.Helper
 			UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
 
 			//Get each modifier's caloric info
-			var itemIds = from k in kitLocaleDto.KitLinkGroupLocale
-						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
-						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.ItemId)
-						  select k;
+			ItemNutritionRequestModel itemIds = ParseParametersForNutritionCall(kitLocaleDto);
+
+			var resultCalories = GetCaloricInfo(itemIds);
+			var itemCaloriesList = await resultCalories;
+
+			// update kitlocale with Nutrition info
+			UpdateKitLocaleForNutrition(kitLocaleDto, itemCaloriesList);
+
+			SetMaxCalories(kitLocaleDto);
 
 			return kitLocaleDto;
 
@@ -60,6 +65,7 @@ namespace KitBuilderWebApi.Helper
 		internal KitLocaleDto GetKitByKitLocaleId(int kitLocaleId)
 		{
 			var kitLocale = (kitLocaleRepository.UnitOfWork.Context.KitLocale.Where(kl => kl.KitLocaleId == kitLocaleId)
+					 .Include(k => k.Kit).ThenInclude(i => i.Item)
 					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
 					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
 					 .ThenInclude(i => i.Item)).FirstOrDefault();
@@ -78,17 +84,19 @@ namespace KitBuilderWebApi.Helper
 
 		internal List<StoreItem> ParseParametersForPriceCall(KitLocaleDto kitLocaleDto)
 		{
-			var scanCode = from k in kitLocaleDto.KitLinkGroupLocale
+			var scanCodes = (from k in kitLocaleDto.KitLinkGroupLocale
 						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
 						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.Item.ScanCode)
-						   select k;
+							select k).ToList();
+
+			scanCodes.Add(kitLocaleDto.Kit.Item.ScanCode);
 
 			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
 			int businessUnitId = storeBusinessUnitId == null ? 0 : (int)storeBusinessUnitId;
 
 			List<StoreItem> storeItemsList = new List<StoreItem>();
 
-			foreach (string scancode in scanCode)
+			foreach (string scancode in scanCodes)
 			{
 				storeItemsList.Add(new StoreItem()
 				{
@@ -100,6 +108,20 @@ namespace KitBuilderWebApi.Helper
 			return storeItemsList;
 		}
 
+		internal ItemNutritionRequestModel ParseParametersForNutritionCall(KitLocaleDto kitLocaleDto)
+		{
+			var itemIds = (from k in kitLocaleDto.KitLinkGroupLocale
+						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
+						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.ItemId)
+						   select k).ToList();
+			itemIds.Add(kitLocaleDto.Kit.ItemId);
+
+			ItemNutritionRequestModel itemIdList = new ItemNutritionRequestModel();
+
+			itemIdList.ItemIds = itemIds.AsEnumerable();
+
+			return itemIdList;
+		}
 		internal void UpdateKitLocaleForPrice(KitLocaleDto kitLocaleDto, IEnumerable<ItemStorePriceModel> itemStorePriceModelList)
 		{
 			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
@@ -118,11 +140,104 @@ namespace KitBuilderWebApi.Helper
 			}
 		}
 
+		internal void UpdateKitLocaleForNutrition(KitLocaleDto kitLocaleDto, IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList)
+		{
+			foreach (ItemNutritionAttributesDictionary itemNutritionModel in itemCaloriesList)
+			{
+				if (itemNutritionModel.Key == kitLocaleDto.Kit.ItemId)
+				{
+					kitLocaleDto.MinimumCalories = itemNutritionModel.Value.Calories;
+				}
+
+				var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
+												 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
+												 where (kitLinkGroupItemLocales.ItemId == itemNutritionModel.Key)
+												 select kitLinkGroupItemLocales;
+
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
+				{
+					kitLinkGroupItemLocaleDto.Calories = itemNutritionModel.Value.Calories;
+				}
+			}
+		}
+
+		internal void SetMaxCalories(KitLocaleDto kitLocaleDto)
+		{
+			foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale)
+			{
+				dynamic kitLinkGroupProperties = JsonConvert.DeserializeObject(kitLinkGroupDto.Properties);
+				int kitLinkGroupMaxCalories = 0;
+				int kitLinkGroupMaxPortion = kitLinkGroupProperties.Maximum;
+				//int kitLinkGroupItemMaxCalories = 0;
+				//int modifierCount = kitLocaleDto.KitLinkGroupLocale == null ? 0 : kitLocaleDto.KitLinkGroupLocale.Count();
+				int arrayIndex = 0;
+				int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Count();
+				int[,] modifierMax = new int[modifierCounter, 2];
+
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false))
+				{
+					dynamic kitLinkGroupItemProperties = JsonConvert.DeserializeObject(kitLinkGroupItemLocaleDto.Properties);
+					int kitLinkGroupItemMax = kitLinkGroupItemProperties.Maximum;
+					int kitLinkGroupItemMin = kitLinkGroupItemProperties.Minimum;
+					int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories.HasValue ? kitLinkGroupItemLocaleDto.Calories.Value : 0;
+
+					//If a modifier is mandatory, then the minimum portion of the modifier will be included in the caloric calculation
+					if (Convert.ToBoolean(kitLinkGroupItemProperties.MandatoryItem))
+					{
+						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + kitLinkGroupItemCalories * kitLinkGroupItemMin;
+						//Get the maximum number of portions are allowed after the minimum number of portions of a mandatory modifier is considered.
+						kitLinkGroupMaxPortion = kitLinkGroupMaxPortion - kitLinkGroupItemMin;
+
+						if (kitLinkGroupMaxPortion > 0)
+						{
+							modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
+							//In case the mandatory modifier has the highest calories, get the remaining of the number of portions left that can be used in the max calories calculation
+							//after the minimum number of portion is used in the calculation.
+							modifierMax[arrayIndex, 1] = kitLinkGroupItemMax - kitLinkGroupItemMin;
+
+							arrayIndex++;
+						}
+					}
+					else if (kitLinkGroupMaxPortion > 0)
+					{
+						modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
+						modifierMax[arrayIndex, 1] = kitLinkGroupItemMax;
+
+						arrayIndex++;
+					}
+				}
+
+				//Sort the two dimentional array modifierMax by the first element, which is modifier's calories. The second element
+				//is maximum portion of a modifier.
+				int[,] sortedByFirstElement = modifierMax.OrderByDescending(x => x[0]);
+
+				while (kitLinkGroupMaxPortion > 0)
+				{
+					for (int i = 0; i < modifierMax.GetLength(0); i++)
+					{
+						int counter = 0;
+						if (kitLinkGroupMaxPortion >= modifierMax[i, 1])
+						{
+							counter = modifierMax[i, 1];
+							kitLinkGroupMaxPortion = kitLinkGroupMaxPortion - modifierMax[i, 1];
+						}
+						else
+						{
+							counter = kitLinkGroupMaxPortion;
+							kitLinkGroupMaxPortion = 0;
+						}
+
+						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + modifierMax[i,0] * counter;
+					}
+				}
+
+				kitLinkGroupDto.MaximumCalories = kitLinkGroupMaxCalories;
+				kitLocaleDto.MaximumCalories = kitLocaleDto.MaximumCalories.HasValue ? kitLocaleDto.MaximumCalories.Value : 0 + kitLinkGroupMaxCalories;
+			}
+		}
+
 		internal async Task<IEnumerable<ItemStorePriceModel>> GetAuthorizedStatus(IEnumerable<StoreItem> storeItems)
 		{
-			string url = "http://mammoth-test/api/price/";
-			//string url = "http://localhost:30680/api/price/";
-
 			PriceCollectionRequestModel pricesRequestModel = new PriceCollectionRequestModel
 			{
 				StoreItems = storeItems,
@@ -133,11 +248,13 @@ namespace KitBuilderWebApi.Helper
 			string pricesRequestJson = JsonConvert.SerializeObject(pricesRequestModel);
 			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
 
-			ApiHelper.InitializeClient(url);
+			ApiHelper.InitializeClient();
+			string uri = ApiHelper.BasedUri + "price";
+			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
 
 			try
 			{
-				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(url, inputContent))
+				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
 				{
 					if (response.IsSuccessStatusCode)
 					{
@@ -156,35 +273,34 @@ namespace KitBuilderWebApi.Helper
 			}
 		}
 
-		//internal async Task<IEnumerable<ItemNutritionAttributes>> GetCaloricInfo(List<int> itemIds)
-		//{
-		//	string url = "http://mammoth-test/api/itemNutrition/";
-		//	//string url = "http://localhost:30680/api/price/";
+		internal async Task<IEnumerable<ItemNutritionAttributesDictionary>> GetCaloricInfo(ItemNutritionRequestModel itemIds)
+		{
+			string pricesRequestJson = JsonConvert.SerializeObject(itemIds);
+			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
 
-		//	string pricesRequestJson = JsonConvert.SerializeObject(itemIds);
-		//	HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
+			ApiHelper.InitializeClient();
+			string uri = ApiHelper.BasedUri + "itemNutrition";
+			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
 
-		//	ApiHelper.InitializeClient(url);
-
-		//	try
-		//	{
-		//		using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(url, inputContent))
-		//		{
-		//			if (response.IsSuccessStatusCode)
-		//			{
-		//				IEnumerable<ItemNutritionAttributes> itemCaloricInfo = await response.Content.ReadAsAsync<IEnumerable<ItemNutritionAttributes>>();
-		//				return itemCaloricInfo;
-		//			}
-		//			else
-		//			{
-		//				throw new Exception(response.ReasonPhrase);
-		//			}
-		//		}
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		throw new Exception(e.Message);
-		//	}
-		//}
+			try
+			{
+				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
+				{
+					if (response.IsSuccessStatusCode)
+					{
+						IEnumerable<ItemNutritionAttributesDictionary> itemCaloricInfo = await response.Content.ReadAsAsync<IEnumerable<ItemNutritionAttributesDictionary>>();
+						return itemCaloricInfo;
+					}
+					else
+					{
+						throw new Exception(response.ReasonPhrase);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 	}
 }
