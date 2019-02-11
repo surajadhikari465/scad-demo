@@ -20,7 +20,8 @@ namespace KitBuilder.DataAccess.Dto
         public int? MinimumCalories { get; set; }
         public int? MaximumCalories { get; set; }
         public bool? Exclude { get; set; }
-        [Required]
+		public bool? AuthorizedByStore { get; set; }
+		[Required]
         public int StatusId { get; set; }
         public DateTime InsertDateUtc { get; set; }
         public DateTime? LastUpdatedDateUtc { get; set; }
