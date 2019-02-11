@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE gpm.AddOrUpdatePrice
+﻿CREATE PROCEDURE gpm.AddPrice
 	@Region NVARCHAR(2),
 	@GpmID UNIQUEIDENTIFIER = NULL,
 	@ItemID INT,
@@ -19,30 +19,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @sql NVARCHAR(max) = 'IF(EXISTS(SELECT 1 FROM gpm.Price_' + @Region + '
-                                          WHERE Region = @Region
-			                                      AND ItemID = @ItemID
-			                                      AND BusinessUnitID = @BusinessUnitID
-			                                      AND CAST(StartDate AS DATE) = CAST(@StartDate AS DATE)
-			                                      AND PriceType = @PriceType))
-		  UPDATE gpm.Price_' + @Region + '
-		    SET GpmID = @GpmID,
-			      Price = @Price,
-			      PriceTypeAttribute = @PriceTypeAttribute,
-			      EndDate = @EndDate,
-			      SellableUOM = @SellableUOM,
-			      CurrencyCode = @CurrencyCode, 
-			      Multiple = @Multiple,
-			      PercentOff = @PercentOff,
-			      TagExpirationDate = ISNULL(@TagExpirationDate, TagExpirationDate),
-			      ModifiedDateUtc = SYSUTCDATETIME()
-		    WHERE Region = @Region
-			    AND ItemID = @ItemID
-			    AND	BusinessUnitID = @BusinessUnitID
-			    AND CAST(StartDate AS DATE) = CAST(@StartDate AS DATE)
-			    AND PriceType = @PriceType
-
-    else
+	DECLARE @sql NVARCHAR(max) = '
 
       INSERT INTO gpm.Price_' + @Region + '(
 			  Region,
@@ -114,5 +91,5 @@ BEGIN
 END
 GO
 
-GRANT EXEC ON gpm.AddOrUpdatePrice TO TibcoRole;
+GRANT EXEC ON gpm.AddPrice TO TibcoRole;
 GO
