@@ -668,6 +668,7 @@ namespace KitBuilderWebApi.Controllers
         {
             var KitPropertiesDto = (from kr in kitRepository.GetAll().Where(ki => ki.KitId == kitId)
                                     join i in itemsRepository.GetAll() on kr.ItemId equals i.ItemId
+                                    join l in localeRepository.GetAll() on   localeId  equals l.LocaleId 
                                     join klr in kitLocaleRepository.GetAll()
                                     on new { kr.KitId } equals new { klr.KitId }
                                     where klr.LocaleId == localeIdWithKitLocaleRecord
@@ -678,7 +679,9 @@ namespace KitBuilderWebApi.Controllers
                                         Description = kr.Description,
                                         LocaleId = localeId,
                                         LocaleIdAtWhichKitExists = localeIdWithKitLocaleRecord,
-                                        KitLocaleId = klr.KitLocaleId
+                                        KitLocaleId = klr.KitLocaleId,
+                                        ImageUrl = i.ImageUrl,
+                                        LocaleName = l.LocaleName
                                     }).FirstOrDefault();
 
             if (KitPropertiesDto == null)
@@ -688,7 +691,8 @@ namespace KitBuilderWebApi.Controllers
 
             List<KitLinkGroupPropertiesDto> KitLinkGroupLocaleList = (from klg in kitLinkGroupRepository.GetAll().Where(klgr => klgr.KitId == kitId)
                                                           join lg in linkGroupRepository.GetAll() on klg.LinkGroupId equals lg.LinkGroupId
-                                                          join kl in kitLocaleRepository.GetAll() on kitId equals kl.KitId
+                                                          join kl in kitLocaleRepository.GetAll() on kitId equals kl.KitId into s
+                                                          from kl in s.DefaultIfEmpty()
                                                           join klgl in kitLinkGroupLocaleRepository.GetAll()
                                                           on new { kl.KitLocaleId, klg.KitLinkGroupId } equals new { klgl.KitLocaleId, klgl.KitLinkGroupId } into ps
                                                           from klgl in ps.DefaultIfEmpty()
@@ -713,27 +717,45 @@ namespace KitBuilderWebApi.Controllers
 			List<PropertiesDto> KitLinkGroupItemLocaleList = (from klgl in KitLinkGroupLocaleList
 															  join klg in kitLinkGroupRepository.GetAll() on klgl.KitLinkGroupId equals klg.KitLinkGroupId
 															  join klgi in kitLinkGroupItemRepository.GetAll() on klgl.KitLinkGroupId equals klgi.KitLinkGroupId
-															  join lgi in linkGroupItemRepository.GetAll()
-															  on new { klg.LinkGroupId, klgi.LinkGroupItemId } equals new { lgi.LinkGroupId, lgi.LinkGroupItemId }
-															  join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
-															  join klgil in kitLinkGroupItemLocaleRepository.GetAll()
-															  on new { klgi.KitLinkGroupItemId, klgl.KitLinkGroupLocaleId } equals new { klgil.KitLinkGroupItemId, klgil.KitLinkGroupLocaleId } into kli
-															  from klgil in kli.DefaultIfEmpty()
-															  select new PropertiesDto
+                                                              join lgi in linkGroupItemRepository.GetAll()
+                                                              on new { klgi.LinkGroupItemId } equals new { lgi.LinkGroupItemId }
+                                                              // join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                                                              join klgil in kitLinkGroupItemLocaleRepository.GetAll()
+                                                              on new { klgi.KitLinkGroupItemId, klgl.KitLinkGroupLocaleId } equals new { klgil.KitLinkGroupItemId, klgil.KitLinkGroupLocaleId } into kli
+                                                              from klgil in kli.DefaultIfEmpty()
+                                                              select new PropertiesDto
 															  {
-																  KitLinkGroupLocaleId = klgil != null ? klgil.KitLinkGroupLocaleId : 0,
-																  KitLinkGroupItemLocaleId = klgil != null ? klgil.KitLinkGroupItemLocaleId : 0,
-																  KitLinkGroupId = klg.KitLinkGroupId,
+                                                                  KitLinkGroupLocaleId = klgil != null ? klgil.KitLinkGroupLocaleId : 0,
+                                                                  KitLinkGroupItemLocaleId = klgil != null ? klgil.KitLinkGroupItemLocaleId : 0,
+                                                                  KitLinkGroupId = klg.KitLinkGroupId,
 																  KitLinkGroupItemId = klgi.KitLinkGroupItemId,
-																  Name = i.ProductDesc,
-																  Properties = klgil != null ? klgil.Properties : null,
-																  Excluded = klgil != null ? klgil.Exclude : null,
-																  DisplaySequence = klgil != null ? (int?)klgil.DisplaySequence : null,
-															  }).ToList();
+                                                                  //  Name = i.ProductDesc,
+                                                                  Properties = klgil != null ? klgil.Properties : null,
+                                                                  Excluded = klgil != null ? klgil.Exclude : null,
+                                                                  DisplaySequence = klgil != null ? (int?)klgil.DisplaySequence : null,
+                                                              }).ToList();
 
-			foreach (KitLinkGroupPropertiesDto kitLinkGroupLocale in KitLinkGroupLocaleList)
+            List<int> KitLinkGroupItemIds = KitLinkGroupItemLocaleList.Select(s => s.KitLinkGroupItemId).ToList();
+
+            var itemsData = (from kl in kitLinkGroupItemRepository.GetAll().Where(s=> KitLinkGroupItemIds.Contains(s.KitLinkGroupItemId))
+                             join lgi in linkGroupItemRepository.GetAll() on kl.LinkGroupItemId equals lgi.LinkGroupItemId
+                             join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                             select new
+                             {
+                                 i.ItemId,
+                                 i.ProductDesc,
+                                 i.ImageUrl,
+                                 kl.KitLinkGroupItemId
+                             }).ToList();
+
+            foreach (PropertiesDto kitLinkGroupItemLocale in KitLinkGroupItemLocaleList)
+            {
+                kitLinkGroupItemLocale.Name = itemsData.Where(i=>i.KitLinkGroupItemId == kitLinkGroupItemLocale.KitLinkGroupItemId).FirstOrDefault().ProductDesc;
+            }
+
+                foreach (KitLinkGroupPropertiesDto kitLinkGroupLocale in KitLinkGroupLocaleList)
 			{
-				List<PropertiesDto> kitLinkGroupItemLocales = KitLinkGroupItemLocaleList.Where(i => i.KitLinkGroupLocaleId == kitLinkGroupLocale.KitLinkGroupLocaleId).ToList();
+				List<PropertiesDto> kitLinkGroupItemLocales = KitLinkGroupItemLocaleList.Where(i => i.KitLinkGroupId == kitLinkGroupLocale.KitLinkGroupId).ToList();
 				kitLinkGroupLocale.KitLinkGroupItemLocaleList = kitLinkGroupItemLocales;
 			};
 			KitPropertiesDto.KitLinkGroupLocaleList = KitLinkGroupLocaleList;

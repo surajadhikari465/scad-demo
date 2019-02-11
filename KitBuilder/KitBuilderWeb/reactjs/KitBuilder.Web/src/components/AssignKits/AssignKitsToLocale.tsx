@@ -8,13 +8,14 @@ const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
-var kitId = 1;
+var kitIdPassed = 1;
 var kitName = "";
 
 interface IAssignKitsToLocaleState {
      data: any,
      error: any,
-     message: any
+     message: any,
+     kitId: number
 }
 
 interface IAssignKitsToLocaleProps {
@@ -29,6 +30,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                data: [],
                error: null,
                message: null,
+               kitId:0
           }
 
           this.updateData = this.updateData.bind(this);
@@ -38,10 +40,10 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
      componentDidMount() {
           var pathArray = window.location.href.split('/');
           pathArray = pathArray.reverse();
-          kitId = parseInt(pathArray[0]);
-         
+          kitIdPassed = parseInt(pathArray[0]);
+         this.setState({kitId:kitIdPassed})
           this.loadData();
-          this.loadKit(kitId);
+          this.loadKit(kitIdPassed);
      }
 
      loadKit(kitId: number) {
@@ -76,7 +78,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
      loadData() {
           let url = urlStart;
 
-          url = url + '/' + kitId;
+          url = url + '/' + kitIdPassed;
           fetch(url)
                .then(response => {
                     return response.json();
@@ -169,7 +171,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
           var { data } = this.state;
           var dest: Array<any>;
           dest = [];
-          let urlKitSave = urlKit + "/" + kitId + "/" + "AssignUnassignLocations"
+          let urlKitSave = urlKit + "/" + kitIdPassed + "/" + "AssignUnassignLocations"
           this.putData(dest, data);
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
@@ -225,7 +227,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                          </Button>
                     </Grid>
 
-                    <AssignKitsTreeTable disabled={false} data={data} updateData={this.updateData} />
+                    <AssignKitsTreeTable kitId = {this.state.kitId} disabled={false} data={data} updateData={this.updateData} />
                </React.Fragment>
           );
      }
