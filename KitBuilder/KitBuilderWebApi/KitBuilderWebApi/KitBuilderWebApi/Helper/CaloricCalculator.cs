@@ -27,37 +27,41 @@ namespace KitBuilderWebApi.Helper
 		public CaloricCalculator(int kitLocaleId,
 							int storeLocaleId,
 							IRepository<KitLocale> kitLocaleRepository,
-							IRepository<Locale> localeRepository)
+							IRepository<Locale> localeRepository,
+							ILogger<CaloricCalculator> logger)
 		{
 			this.kitLocaleId = kitLocaleId;
 			this.storeLocaleId = storeLocaleId;
 			this.kitLocaleRepository = kitLocaleRepository;
 			this.localeRepository = localeRepository;
+			this.logger = logger;
 		}
 
 		public async Task<KitLocaleDto> Run()
 		{
 			KitLocaleDto kitLocaleDto = GetKitByKitLocaleId(kitLocaleId);
 
-			//Get each modifier's Authorization Status and REG price 
-			List<StoreItem> storeItemsList = ParseParametersForPriceCall(kitLocaleDto);
-			var resultPrice = GetAuthorizedStatus(storeItemsList);
-			var itemStorePriceModelList = await resultPrice;
+			if (kitLocaleDto != null)
+			{
+				//Get each modifier's Authorization Status and REG price 
+				List<StoreItem> storeItemsList = ParseParametersForPriceCall(kitLocaleDto);
+				var resultPrice = GetAuthorizedStatus(storeItemsList);
+				var itemStorePriceModelList = await resultPrice;
 
-			//update kitlocale with Price and Store Authorization Status
-			UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
+				//update kitlocale with Price and Store Authorization Status
+				UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
 
-			//Get each modifier's caloric info
-			ItemNutritionRequestModel itemIds = ParseParametersForNutritionCall(kitLocaleDto);
+				//Get each modifier's caloric info
+				ItemNutritionRequestModel itemIds = ParseParametersForNutritionCall(kitLocaleDto);
 
-			var resultCalories = GetCaloricInfo(itemIds);
-			var itemCaloriesList = await resultCalories;
+				var resultCalories = GetCaloricInfo(itemIds);
+				var itemCaloriesList = await resultCalories;
 
-			// update kitlocale with Nutrition info
-			UpdateKitLocaleForNutrition(kitLocaleDto, itemCaloriesList);
+				// update kitlocale with Nutrition info
+				UpdateKitLocaleForNutrition(kitLocaleDto, itemCaloriesList);
 
-			SetMaxCalories(kitLocaleDto);
-
+				SetMaxCalories(kitLocaleDto);
+			}
 			return kitLocaleDto;
 
 		}
@@ -69,15 +73,6 @@ namespace KitBuilderWebApi.Helper
 					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
 					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
 					 .ThenInclude(i => i.Item)).FirstOrDefault();
-
-			try
-			{
-				KitLocaleDto kitLocaleDto = Mapper.Map<KitLocaleDto>(kitLocale);
-			}
-			catch (Exception e)
-			{
-				throw new Exception(e.Message);
-			}
 
 			return Mapper.Map<KitLocaleDto>(kitLocale);
 		}
@@ -126,6 +121,11 @@ namespace KitBuilderWebApi.Helper
 		{
 			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
 			{
+				if (itemStorePriceModel.ItemId == kitLocaleDto.Kit.ItemId)
+				{
+					kitLocaleDto.AuthorizedByStore = itemStorePriceModel.Authorized;
+				}
+
 				var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
 												 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
 												 where (kitLinkGroupItemLocales.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId)
@@ -135,7 +135,7 @@ namespace KitBuilderWebApi.Helper
 				{
 					kitLinkGroupItemLocaleDto.ItemId = itemStorePriceModel.ItemId;
 					kitLinkGroupItemLocaleDto.RegularPrice = itemStorePriceModel.Price;
-					kitLinkGroupItemLocaleDto.Exclude = !itemStorePriceModel.Authorized;
+					kitLinkGroupItemLocaleDto.AuthorizedByStore = itemStorePriceModel.Authorized;
 				}
 			}
 		}
@@ -163,7 +163,7 @@ namespace KitBuilderWebApi.Helper
 
 		internal void SetMaxCalories(KitLocaleDto kitLocaleDto)
 		{
-			foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale)
+			foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale.Where(i => i.Exclude == false)
 			{
 				dynamic kitLinkGroupProperties = JsonConvert.DeserializeObject(kitLinkGroupDto.Properties);
 				int kitLinkGroupMaxCalories = 0;
@@ -174,7 +174,7 @@ namespace KitBuilderWebApi.Helper
 				int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Count();
 				int[,] modifierMax = new int[modifierCounter, 2];
 
-				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false))
+				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true))
 				{
 					dynamic kitLinkGroupItemProperties = JsonConvert.DeserializeObject(kitLinkGroupItemLocaleDto.Properties);
 					int kitLinkGroupItemMax = kitLinkGroupItemProperties.Maximum;
