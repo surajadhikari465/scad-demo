@@ -16,6 +16,7 @@ namespace KitBuilder.DataAccess.Dto
 		[Required]
 		public int DisplaySequence { get; set; }
 		public bool? Exclude { get; set; }
+		public bool? AuthorizedByStore { get; set; }
 		public int? Calories { get; set; }
 		public decimal? RegularPrice { get; set; }
 		public DateTime InsertDateUtc { get; set; }

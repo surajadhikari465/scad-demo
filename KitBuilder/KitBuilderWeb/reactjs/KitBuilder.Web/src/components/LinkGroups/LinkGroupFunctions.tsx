@@ -18,6 +18,21 @@ export function PerformLinkGroupSearch(groupName: string, groupDesc: string, mod
     })
 }
 
+export function PerformLinkGroupModifierSearch(modifierPlu: string, modifierName: string) {
+    return new Promise((resolve, reject) => {
+        axios.get(KbApiMethod("LinkGroupItemSearch"), {
+            params: {
+                ModiferPlu: modifierPlu,
+                ModifierName: modifierName
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(error => {
+            reject(error);
+        });
+    })
+}
+
 export function LoadCookingInstructions() {
     return new Promise((resolve, reject) => {
         axios.get(KbApiMethod("InstructionListByType"), {

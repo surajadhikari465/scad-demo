@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './AssignKitsTreeTable.css';
+// import {KitLinkGroupPage} from '../KitLinkGroups/KitLinkGroupsPage'
 
 interface IAssignKitsTreeTableState {
 }
@@ -7,7 +8,8 @@ interface IAssignKitsTreeTableState {
 interface IAssignKitsTreeTableProps {
     data: any,
     updateData: any,
-    disabled: boolean
+    disabled: boolean,
+    kitId: number
 }
 
 export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTableProps, IAssignKitsTreeTableState>
@@ -23,7 +25,8 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
     }
 
     AssignKitProperties(item: any) {
-        window.location.hash = "#/AssignKitProperties";
+        console.log("hi entered the method")
+        window.location.hash = "#/KitLinkGroups/"+ this.props.kitId +"/" +  item.localeId;
     }
 
     onAssignClicked(item: any) {
@@ -194,10 +197,10 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                 !item.collapsed ?
                                     !item.isChildDisabled ?
                                         <div className="tbl-child">
-                                            <AssignKitsTreeTable disabled={false} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
+                                            <AssignKitsTreeTable kitId ={this.props.kitId} disabled={false} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
                                         </div>
                                         : <div className="tbl-child">
-                                            <AssignKitsTreeTable disabled={true} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
+                                            <AssignKitsTreeTable  kitId ={this.props.kitId}  disabled={true} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
                                         </div>
                                     : <></>
                             }
