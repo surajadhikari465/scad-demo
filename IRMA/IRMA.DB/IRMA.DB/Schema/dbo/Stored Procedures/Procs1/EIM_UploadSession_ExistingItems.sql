@@ -1642,11 +1642,11 @@ EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates
 						AND (@Locality IS NOT NULL OR @ShortSignRomance IS NOT NULL OR @LongSignRomance IS NOT NULL OR @ChicagoBaby IS NOT NULL OR @TagUom IS NOT NULL OR @Exclusive IS NOT NULL OR @ColorAdded IS NOT NULL))
 					BEGIN
 						DECLARE
-							@AnimalWelfareRating [nvarchar](10),
+							@AnimalWelfareRating [nvarchar](255),
 							@Biodynamic [bit],
-							@CheeseMilkType [nvarchar](40),
+							@CheeseMilkType [nvarchar](255),
 							@CheeseRaw [bit],
-							@EcoScaleRating [nvarchar](30),
+							@EcoScaleRating [nvarchar](255),
 							@GlutenFree [bit],
 							@HealthyEatingRating [nvarchar](10),
 							@Kosher [bit],
@@ -1654,8 +1654,8 @@ EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates
 							@OrganicSignAttribute [bit],
 							@PremiumBodyCare [bit],
 							@ProductionClaims [nvarchar](30),
-							@FreshOrFrozen [nvarchar](30),
-							@SeafoodCatchType [nvarchar](15),
+							@FreshOrFrozen [nvarchar](255),
+							@SeafoodCatchType [nvarchar](255),
 							@Vegan [bit],
 							@Vegetarian [bit],
 							@WholeTrade [bit]
