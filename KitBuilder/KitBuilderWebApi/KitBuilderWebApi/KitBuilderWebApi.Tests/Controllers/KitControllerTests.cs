@@ -1,5 +1,6 @@
 ﻿using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Queries;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
 using KitBuilderWebApi.Controllers;
@@ -29,14 +30,15 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<Kit>> mockKitRepository;
         private Mock<IRepository<Locale>> mockLocaleRepository;
         private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
-        private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
+		private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
         private Mock<IRepository<Items>> mockItemsRepository;
         private Mock<IRepository<KitLinkGroup>> mockKitLinkGroupRepository;
         private Mock<IRepository<KitLinkGroupLocale>> mockKitLinkGroupLocaleRepository;
         private Mock<IRepository<KitLinkGroupItem>> mockKitLinkGroupItemRepository;
         private Mock<IRepository<LocaleType>> mockLocaleTypeRepository;
         private Mock<IRepository<KitLinkGroupItemLocale>> mockKitLinkGroupItemLocaleRepository;
-        private Mock<IUnitOfWork> mockUnitWork;
+		private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
+		private Mock<IUnitOfWork> mockUnitWork;
         private List<Kit> kits;
         private List<Items> items;
         private List<LinkGroup> linkGroups;
@@ -57,7 +59,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitRepository = new Mock<IRepository<Kit>>();
             mockLocaleRepository = new Mock<IRepository<Locale>>();
             mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
-            mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
+			mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
+			mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
             mockItemsRepository = new Mock<IRepository<Items>>();
             mockKitLinkGroupRepository = new Mock<IRepository<KitLinkGroup>>();
             mockKitLinkGroupLocaleRepository = new Mock<IRepository<KitLinkGroupLocale>>();
@@ -85,7 +88,8 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockKitLinkGroupItemLocaleRepository.Object,
                 mockLocaleTypeRepository.Object,
                 mockKitInstructionListRepository.Object,
-                mockLogger.Object,
+				mockGetKitLocaleQuery.Object,
+				mockLogger.Object,
                 mockKitHelper.Object
                 );
 

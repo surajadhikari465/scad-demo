@@ -12,6 +12,7 @@ using System.Linq;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess.Queries;
 
 namespace KitBuilderWebApi.Tests.Helpers
 {
@@ -21,22 +22,19 @@ namespace KitBuilderWebApi.Tests.Helpers
 		private CaloricCalculator caloricCalculator;
 		private int kitLocaleId;
 		private int storeLocaleId;
-		private Mock<ILogger<CaloricCalculator>> mockLogger;
-		private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
+		private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
 		private Mock<IRepository<Locale>> mockLocaleRepository;
 
 		[TestInitialize]
 		public void InitializeTest()
 		{
-			mockLogger = new Mock<ILogger<CaloricCalculator>>();
-			mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
+			mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
 			mockLocaleRepository = new Mock<IRepository<Locale>>();
 
 			caloricCalculator = new CaloricCalculator(kitLocaleId,
 				storeLocaleId,
-				mockKitLocaleRepository.Object,
-				mockLocaleRepository.Object,
-				mockLogger.Object);
+				mockGetKitLocaleQuery.Object,
+				mockLocaleRepository.Object);
 		}
 
 		private void SetUpDataAndRepository()

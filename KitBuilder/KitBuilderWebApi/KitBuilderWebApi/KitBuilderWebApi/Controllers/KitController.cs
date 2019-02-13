@@ -2,6 +2,7 @@
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Enums;
+using KitBuilder.DataAccess.Queries;
 using KitBuilder.DataAccess.Repository;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
@@ -33,7 +34,8 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
         private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
-        private ILogger<KitController> logger;
+		private IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery;
+		private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaltypeModel> localeTypeRepository;
@@ -52,7 +54,8 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository,
                              IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
-                             ILogger<KitController> logger,
+							 IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery,
+							 ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper
 							)
         {
@@ -68,14 +71,15 @@ namespace KitBuilderWebApi.Controllers
             this.kitLinkGroupItemLocaleRepository = kitLinkGroupItemLocaleRepository;
             this.localeTypeRepository = localeTypeRepository;
             this.kitInstructionListRepository = kitInstructionListRepository;
-            this.logger = logger;
+			this.getKitLocaleQuery = getKitLocaleQuery;
+			this.logger = logger;
             this.kitHelper = kitHelper;
         }
 
 		[HttpGet("{kitLocaleId}/GetKitLocale/{storeLocaleId}", Name = "ViewKitByStore")]
 		public IActionResult GetKitCaloriesByIds(int kitLocaleId, int storeLocaleId)
 		{
-			CaloricCalculator calculator = new CaloricCalculator(kitLocaleId, storeLocaleId, kitLocaleRepository,localeRepository);
+			CaloricCalculator calculator = new CaloricCalculator(kitLocaleId, storeLocaleId, getKitLocaleQuery, localeRepository);
 			Task<KitLocaleDto> kitLocaleDto = calculator.Run();
 
 			return Ok(kitLocaleDto.Result);

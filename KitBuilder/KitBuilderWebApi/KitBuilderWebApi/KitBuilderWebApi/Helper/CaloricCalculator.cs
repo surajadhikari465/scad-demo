@@ -13,6 +13,7 @@ using AutoMapper;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using KitBuilder.DataAccess.Queries;
 
 namespace KitBuilderWebApi.Helper
 {
@@ -20,26 +21,29 @@ namespace KitBuilderWebApi.Helper
 	{
 		private int kitLocaleId;
 		private int storeLocaleId;
-		private IRepository<KitLocale> kitLocaleRepository;
+		private IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery;
+		//private IRepository<KitLocale> kitLocaleRepository;
 		private IRepository<Locale> localeRepository;
-		private ILogger<CaloricCalculator> logger;
 
 		public CaloricCalculator(int kitLocaleId,
 							int storeLocaleId,
-							IRepository<KitLocale> kitLocaleRepository,
-							IRepository<Locale> localeRepository,
-							ILogger<CaloricCalculator> logger)
+							IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery,
+							IRepository<Locale> localeRepository)
 		{
 			this.kitLocaleId = kitLocaleId;
 			this.storeLocaleId = storeLocaleId;
-			this.kitLocaleRepository = kitLocaleRepository;
+			this.getKitLocaleQuery = getKitLocaleQuery;
 			this.localeRepository = localeRepository;
-			this.logger = logger;
 		}
 
 		public async Task<KitLocaleDto> Run()
 		{
-			KitLocaleDto kitLocaleDto = GetKitByKitLocaleId(kitLocaleId);
+			GetKitByKitLocaleIdParameters searchKitLocaleParameters = new GetKitByKitLocaleIdParameters
+			{
+				KitLocaleId = kitLocaleId
+			};
+
+			KitLocaleDto kitLocaleDto = Mapper.Map<KitLocaleDto>(getKitLocaleQuery.Search(searchKitLocaleParameters));
 
 			if (kitLocaleDto != null)
 			{
@@ -64,17 +68,6 @@ namespace KitBuilderWebApi.Helper
 			}
 			return kitLocaleDto;
 
-		}
-
-		internal KitLocaleDto GetKitByKitLocaleId(int kitLocaleId)
-		{
-			var kitLocale = (kitLocaleRepository.UnitOfWork.Context.KitLocale.Where(kl => kl.KitLocaleId == kitLocaleId)
-					 .Include(k => k.Kit).ThenInclude(i => i.Item)
-					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
-					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
-					 .ThenInclude(i => i.Item)).FirstOrDefault();
-
-			return Mapper.Map<KitLocaleDto>(kitLocale);
 		}
 
 		internal List<StoreItem> ParseParametersForPriceCall(KitLocaleDto kitLocaleDto)
@@ -163,7 +156,7 @@ namespace KitBuilderWebApi.Helper
 
 		internal void SetMaxCalories(KitLocaleDto kitLocaleDto)
 		{
-			foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale.Where(i => i.Exclude == false)
+			foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale.Where(i => i.Exclude == false))
 			{
 				dynamic kitLinkGroupProperties = JsonConvert.DeserializeObject(kitLinkGroupDto.Properties);
 				int kitLinkGroupMaxCalories = 0;

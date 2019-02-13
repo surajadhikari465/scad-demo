@@ -24,6 +24,7 @@ using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
+using KitBuilder.DataAccess.Queries;
 
 namespace KitBuilderWebApi
 {
@@ -75,7 +76,9 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<ItemsDto, KitItemParameters>, KitItemHelper>();
             services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
 
-            services.AddSwaggerGen(c =>
+			services.AddScoped<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>, GetKitByKitLocaleIdQuery>();
+
+			services.AddSwaggerGen(c =>
             {
 
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
