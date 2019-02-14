@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
+using KitBuilderWebApi.Services;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,14 +15,13 @@ using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.Queries;
 
-namespace KitBuilderWebApi.Tests.Helpers
+namespace KitBuilderWebApi.Tests.Services
 {
 	[TestClass]
 	public class CaloricCalculatorTest
 	{
 		private CaloricCalculator caloricCalculator;
-		private int kitLocaleId;
-		private int storeLocaleId;
+		private IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery;
 		private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
 		private Mock<IRepository<Locale>> mockLocaleRepository;
 
@@ -30,9 +30,9 @@ namespace KitBuilderWebApi.Tests.Helpers
 		{
 			mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
 			mockLocaleRepository = new Mock<IRepository<Locale>>();
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters();
 
-			caloricCalculator = new CaloricCalculator(kitLocaleId,
-				storeLocaleId,
+			caloricCalculator = new CaloricCalculator(parameters,
 				mockGetKitLocaleQuery.Object,
 				mockLocaleRepository.Object);
 		}

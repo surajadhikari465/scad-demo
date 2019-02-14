@@ -1,6 +1,5 @@
 ﻿using KitBuilder.DataAccess.Dto;
 using KitBuilderWebApi.QueryParameters;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,39 +7,38 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.DatabaseModels;
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using KitBuilder.DataAccess.Queries;
+using KitBuilderWebApi.Helper;
 
-namespace KitBuilderWebApi.Helper
+namespace KitBuilderWebApi.Services
 {
-	public class CaloricCalculator
+	public class CaloricCalculator : IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>
 	{
-		private int kitLocaleId;
-		private int storeLocaleId;
 		private IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery;
-		//private IRepository<KitLocale> kitLocaleRepository;
 		private IRepository<Locale> localeRepository;
+		private IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService;
+		private IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService;
 
-		public CaloricCalculator(int kitLocaleId,
-							int storeLocaleId,
-							IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery,
-							IRepository<Locale> localeRepository)
+		public CaloricCalculator(IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery,
+							IRepository<Locale> localeRepository,
+							IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService,
+							IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService)
 		{
-			this.kitLocaleId = kitLocaleId;
-			this.storeLocaleId = storeLocaleId;
 			this.getKitLocaleQuery = getKitLocaleQuery;
 			this.localeRepository = localeRepository;
+			this.getAuthorizedStatusAndPriceService = getAuthorizedStatusAndPriceService;
+			this.getNutritionService = getNutritionService;
 		}
 
-		public async Task<KitLocaleDto> Run()
+		public async Task<KitLocaleDto> Run(GetKitLocaleByStoreParameters kitLocaleByStoreParameters)
 		{
 			GetKitByKitLocaleIdParameters searchKitLocaleParameters = new GetKitByKitLocaleIdParameters
 			{
-				KitLocaleId = kitLocaleId
+				KitLocaleId = kitLocaleByStoreParameters.KitLocaleId
 			};
 
 			KitLocaleDto kitLocaleDto = Mapper.Map<KitLocaleDto>(getKitLocaleQuery.Search(searchKitLocaleParameters));
@@ -48,8 +46,9 @@ namespace KitBuilderWebApi.Helper
 			if (kitLocaleDto != null)
 			{
 				//Get each modifier's Authorization Status and REG price 
-				List<StoreItem> storeItemsList = ParseParametersForPriceCall(kitLocaleDto);
-				var resultPrice = GetAuthorizedStatus(storeItemsList);
+				List<StoreItem> storeItemsList = ParseParametersForPriceCall(kitLocaleDto, kitLocaleByStoreParameters.StoreLocaleId);
+				
+				var resultPrice = getAuthorizedStatusAndPriceService.Run(storeItemsList);
 				var itemStorePriceModelList = await resultPrice;
 
 				//update kitlocale with Price and Store Authorization Status
@@ -58,7 +57,7 @@ namespace KitBuilderWebApi.Helper
 				//Get each modifier's caloric info
 				ItemNutritionRequestModel itemIds = ParseParametersForNutritionCall(kitLocaleDto);
 
-				var resultCalories = GetCaloricInfo(itemIds);
+				var resultCalories = getNutritionService.Run(itemIds);
 				var itemCaloriesList = await resultCalories;
 
 				// update kitlocale with Nutrition info
@@ -70,13 +69,12 @@ namespace KitBuilderWebApi.Helper
 
 		}
 
-		internal List<StoreItem> ParseParametersForPriceCall(KitLocaleDto kitLocaleDto)
+		internal List<StoreItem> ParseParametersForPriceCall(KitLocaleDto kitLocaleDto, int storeLocaleId)
 		{
 			var scanCodes = (from k in kitLocaleDto.KitLinkGroupLocale
 						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
 						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.Item.ScanCode)
-							select k).ToList();
-
+							 select k).ToList();
 			scanCodes.Add(kitLocaleDto.Kit.Item.ScanCode);
 
 			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
@@ -102,6 +100,7 @@ namespace KitBuilderWebApi.Helper
 						  .SelectMany(s => s.KitLinkGroupItemLocales.ToList())
 						  .Select(r => r.KitLinkGroupItem.LinkGroupItem.ItemId)
 						   select k).ToList();
+
 			itemIds.Add(kitLocaleDto.Kit.ItemId);
 
 			ItemNutritionRequestModel itemIdList = new ItemNutritionRequestModel();
@@ -110,27 +109,31 @@ namespace KitBuilderWebApi.Helper
 
 			return itemIdList;
 		}
+
 		internal void UpdateKitLocaleForPrice(KitLocaleDto kitLocaleDto, IEnumerable<ItemStorePriceModel> itemStorePriceModelList)
 		{
-			foreach (ItemStorePriceModel itemStorePriceModel in itemStorePriceModelList)
+			var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
+											 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
+											 select kitLinkGroupItemLocales;
+			foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
 			{
-				if (itemStorePriceModel.ItemId == kitLocaleDto.Kit.ItemId)
-				{
-					kitLocaleDto.AuthorizedByStore = itemStorePriceModel.Authorized;
-				}
+				ItemStorePriceModel itemStorePriceModel = itemStorePriceModelList.Where(i => i.ItemId == kitLinkGroupItemLocaleDto.KitLinkGroupItem.LinkGroupItem.ItemId).FirstOrDefault();
 
-				var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
-												 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
-												 where (kitLinkGroupItemLocales.KitLinkGroupItem.LinkGroupItem.ItemId == itemStorePriceModel.ItemId)
-												 select kitLinkGroupItemLocales;
-
-				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
+				if (itemStorePriceModel != null)
 				{
 					kitLinkGroupItemLocaleDto.ItemId = itemStorePriceModel.ItemId;
 					kitLinkGroupItemLocaleDto.RegularPrice = itemStorePriceModel.Price;
 					kitLinkGroupItemLocaleDto.AuthorizedByStore = itemStorePriceModel.Authorized;
 				}
+				else
+				{
+					kitLinkGroupItemLocaleDto.ItemId = kitLinkGroupItemLocaleDto.KitLinkGroupItem.LinkGroupItem.ItemId;
+					kitLinkGroupItemLocaleDto.AuthorizedByStore = false;
+				}
 			}
+
+			kitLocaleDto.AuthorizedByStore = itemStorePriceModelList.Where(i => i.ItemId == kitLocaleDto.Kit.ItemId).Select(a => a.Authorized).FirstOrDefault();
+			kitLocaleDto.AuthorizedByStore = kitLocaleDto.AuthorizedByStore == null ? false : kitLocaleDto.AuthorizedByStore;
 		}
 
 		internal void UpdateKitLocaleForNutrition(KitLocaleDto kitLocaleDto, IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList)
@@ -220,79 +223,12 @@ namespace KitBuilderWebApi.Helper
 							kitLinkGroupMaxPortion = 0;
 						}
 
-						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + modifierMax[i,0] * counter;
+						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + modifierMax[i, 0] * counter;
 					}
 				}
 
 				kitLinkGroupDto.MaximumCalories = kitLinkGroupMaxCalories;
 				kitLocaleDto.MaximumCalories = kitLocaleDto.MaximumCalories.HasValue ? kitLocaleDto.MaximumCalories.Value : 0 + kitLinkGroupMaxCalories;
-			}
-		}
-
-		internal async Task<IEnumerable<ItemStorePriceModel>> GetAuthorizedStatus(IEnumerable<StoreItem> storeItems)
-		{
-			PriceCollectionRequestModel pricesRequestModel = new PriceCollectionRequestModel
-			{
-				StoreItems = storeItems,
-				IncludeFuturePrices = false,
-				PriceType = "REG"
-			};
-
-			string pricesRequestJson = JsonConvert.SerializeObject(pricesRequestModel);
-			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
-
-			ApiHelper.InitializeClient();
-			string uri = ApiHelper.BasedUri + "price";
-			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
-
-			try
-			{
-				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
-				{
-					if (response.IsSuccessStatusCode)
-					{
-						IEnumerable<ItemStorePriceModel> itemStorePrices = await response.Content.ReadAsAsync<IEnumerable<ItemStorePriceModel>>();
-						return itemStorePrices;
-					}
-					else
-					{
-						throw new Exception(response.ReasonPhrase);
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				throw new Exception(e.Message);
-			}
-		}
-
-		internal async Task<IEnumerable<ItemNutritionAttributesDictionary>> GetCaloricInfo(ItemNutritionRequestModel itemIds)
-		{
-			string pricesRequestJson = JsonConvert.SerializeObject(itemIds);
-			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
-
-			ApiHelper.InitializeClient();
-			string uri = ApiHelper.BasedUri + "itemNutrition";
-			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
-
-			try
-			{
-				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
-				{
-					if (response.IsSuccessStatusCode)
-					{
-						IEnumerable<ItemNutritionAttributesDictionary> itemCaloricInfo = await response.Content.ReadAsAsync<IEnumerable<ItemNutritionAttributesDictionary>>();
-						return itemCaloricInfo;
-					}
-					else
-					{
-						throw new Exception(response.ReasonPhrase);
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				throw new Exception(e.Message);
 			}
 		}
 	}
