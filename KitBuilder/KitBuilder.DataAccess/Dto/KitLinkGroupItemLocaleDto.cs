@@ -18,6 +18,9 @@ namespace KitBuilder.DataAccess.Dto
 		public bool? Exclude { get; set; }
 		public bool? AuthorizedByStore { get; set; }
 		public int? Calories { get; set; }
+		public decimal? ServingsPerPortion { get; set; }
+		public string ServingSizeDesc { get; set; }
+
 		public decimal? RegularPrice { get; set; }
 		public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
