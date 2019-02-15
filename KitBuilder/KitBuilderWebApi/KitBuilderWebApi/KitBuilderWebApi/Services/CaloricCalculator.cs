@@ -60,6 +60,12 @@ namespace KitBuilderWebApi.Services
 				var resultCalories = getNutritionService.Run(itemIds);
 				var itemCaloriesList = await resultCalories;
 
+				//string temp2 = JsonConvert.SerializeObject(itemCaloriesList, Formatting.None,
+				//			new JsonSerializerSettings()
+				//			{
+				//				ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+				//			});
+
 				// update kitlocale with Nutrition info
 				UpdateKitLocaleForNutrition(kitLocaleDto, itemCaloriesList);
 
@@ -77,7 +83,12 @@ namespace KitBuilderWebApi.Services
 							 select k).ToList();
 			scanCodes.Add(kitLocaleDto.Kit.Item.ScanCode);
 
-			var storeBusinessUnitId = localeRepository.UnitOfWork.Context.Locale.Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
+			//string temp2 = JsonConvert.SerializeObject(localeRepository.UnitOfWork.Context.Locale, Formatting.None,
+			//			new JsonSerializerSettings()
+			//			{
+			//				ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+			//			});
+			var storeBusinessUnitId = localeRepository.GetAll().Where(s => s.LocaleId == storeLocaleId).Select(s => s.BusinessUnitId).FirstOrDefault();
 			int businessUnitId = storeBusinessUnitId == null ? 0 : (int)storeBusinessUnitId;
 
 			List<StoreItem> storeItemsList = new List<StoreItem>();
@@ -140,7 +151,7 @@ namespace KitBuilderWebApi.Services
 		{
 			foreach (ItemNutritionAttributesDictionary itemNutritionModel in itemCaloriesList)
 			{
-				if (itemNutritionModel.Key == kitLocaleDto.Kit.ItemId)
+				if (itemNutritionModel.Key == kitLocaleDto.Kit.ItemId && kitLocaleDto.MinimumCalories != null)
 				{
 					kitLocaleDto.MinimumCalories = itemNutritionModel.Value.Calories;
 				}
@@ -153,6 +164,8 @@ namespace KitBuilderWebApi.Services
 				foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupItemLocaleDtos)
 				{
 					kitLinkGroupItemLocaleDto.Calories = itemNutritionModel.Value.Calories;
+					kitLinkGroupItemLocaleDto.ServingSizeDesc = itemNutritionModel.Value.ServingSizeDesc;
+					kitLinkGroupItemLocaleDto.ServingsPerPortion = itemNutritionModel.Value.ServingsPerPortion;
 				}
 			}
 		}

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -38,6 +39,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<LocaleType>> mockLocaleTypeRepository;
         private Mock<IRepository<KitLinkGroupItemLocale>> mockKitLinkGroupItemLocaleRepository;
 		private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
+		private Mock<IServiceProvider> mockServices;
 		private Mock<IUnitOfWork> mockUnitWork;
         private List<Kit> kits;
         private List<Items> items;
@@ -68,7 +70,9 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
             mockKitLinkGroupItemLocaleRepository = new Mock<IRepository<KitLinkGroupItemLocale>>();
             mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
-            mockUnitWork = new Mock<IUnitOfWork>();
+			mockServices = new Mock<IServiceProvider>();
+
+			mockUnitWork = new Mock<IUnitOfWork>();
 
             string locationUrl = "http://localhost:55873/api/Kits/";
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -88,10 +92,10 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockKitLinkGroupItemLocaleRepository.Object,
                 mockLocaleTypeRepository.Object,
                 mockKitInstructionListRepository.Object,
-				mockGetKitLocaleQuery.Object,
 				mockLogger.Object,
-                mockKitHelper.Object
-                );
+                mockKitHelper.Object,
+				mockServices.Object
+				);
 
             MappingHelper.InitializeMapper();
             SetUpDataAndRepository();
