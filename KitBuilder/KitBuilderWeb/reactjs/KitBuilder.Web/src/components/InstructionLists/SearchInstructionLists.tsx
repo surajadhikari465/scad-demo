@@ -38,7 +38,7 @@ function SearchInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={2} md={3} className={props.classes.label}>
+                <Grid item xs={11} sm={2} md={3} lg={3} className={props.classes.label}>
                     <span style={{ marginLeft: '20px', textAlign: 'center' }}> Instruction List Name: </span>
                 </Grid>
                 <Hidden only={['xs', 'md', 'lg', 'xl']}>
@@ -46,7 +46,7 @@ function SearchInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={9} md={3}>
+                <Grid item xs={11} sm={9} md={3} lg={3}>
                     <FormControl className={props.classes.formControl}>
                         <Select
                             onChange={props.onChange}
@@ -64,7 +64,7 @@ function SearchInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={11} md={5} style={{ marginLeft: '25px' }}>
+                <Grid item xs={11} sm={11} md={5} lg={5} style={{ marginLeft: '25px' }}>
                     <Grid container justify="flex-start">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                             Search
@@ -76,7 +76,7 @@ function SearchInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={11} md={10}>
+                <Grid item xs={11} sm={11} md={10} lg={10}>
                     <Grid container justify="flex-start">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddNewList()} >
                             Add New List

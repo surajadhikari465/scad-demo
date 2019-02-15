@@ -28,7 +28,7 @@ function DisplayInstructionLists(props: any) {
             <Grid container justify="center" spacing={8} alignItems="flex-start" style={marginBottom}>
                 <Grid item xs={1} sm={1}>
                 </Grid>
-                <Grid item xs={11} sm={2} md={1}>
+                <Grid item xs={11} sm={2} md={1} lg={1}>
 
                     <span style={{ textAlign: 'center' }}> Instruction List Name:</span>
 
@@ -39,28 +39,27 @@ function DisplayInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={3} md={2} className={props.classes.label}>
+                <Grid item xs={11} sm={3} md={3} lg={2} className={props.classes.label}>
                     <TextField InputProps={{ classes: { input: props.classes.input1 } }} variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
                 </Grid>
 
-                <Hidden only={['sm', 'md', 'lg', 'xl']}>
+                <Hidden only={['sm', 'lg', 'xl']}>
                     <Grid item sm >
-
                     </Grid>
                 </Hidden>
-                <Grid item mt-xs-3 xs={11} sm={6} md={3} >
+                <Grid item mt-xs-3 xs={11} sm={6} md={6} lg={2} >
                     <Button variant="contained" color="secondary" className={props.classes.button} onClick={() => props.deleteInstruction()} >
                         Delete Instruction
                 </Button>
 
                 </Grid>
-                <Hidden only={['md', 'lg', 'xl']}>
-                    <Grid item sm >
+                <Hidden only={['lg', 'xl']}>
+                    <Grid item sm md={1} >
 
                     </Grid>
                 </Hidden>
 
-                <Grid item xs={11} sm={2} md={1} justify="center">
+                <Grid item xs={11} sm={2} md={1} lg={1} justify="center">
                     <span> Instruction Type:</span>
 
                 </Grid>
@@ -70,11 +69,11 @@ function DisplayInstructionLists(props: any) {
 
                     </Grid>
                 </Hidden>
-                <Grid item xs={11} sm={9} md={2} justify="center">
+                <Grid item xs={11} sm={9} md={10} lg={2} justify="center">
                     <span> {props.instructionTypeName}</span>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={1}>
+                <Grid item xs={12} sm={12} md={11} lg={2} >
                     <Grid container justify="flex-end">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddMember()} >
                             Add Member
@@ -85,10 +84,10 @@ function DisplayInstructionLists(props: any) {
                 </Grid>
             </Grid>
             <Grid container justify="center">
-                <Grid item xs={12} md={10} justify="center">
+                <Grid item xs={12} md={10} lg={10} justify="center">
                     <ReactTable
                         data={props.data}
-                        
+
                         columns={[
                             {
                                 Header: "Instruction List Id",
@@ -135,14 +134,14 @@ function DisplayInstructionLists(props: any) {
                 </Grid>
             </Grid>
             <Grid container spacing={8} justify="center" style={{ marginTop: '20px' }}>
-                <Grid item xs={12} md={1}>
+                <Grid item xs={12} md={1} lg={1}>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} lg={6}>
                     <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
                         Save Changes
                 </Button>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={4} lg={4}>
                     <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
                         Publish Changes
                 </Button>
