@@ -745,11 +745,13 @@ OPTION (RECOMPILE)
 END TRY
 BEGIN CATCH
 
+	DECLARE @now datetime2(7) = SYSDATETIME();
+
 	--re-insert data back to the staging table
 	INSERT INTO stage.ItemStoreKeysEPlum
 		(BusinessUnitID, ItemID, InsertDateUtc)
 	SELECT
-		BusinessUnitID, ItemID, OriginalStageInsertDate
+		BusinessUnitID, ItemID, @now
 	FROM #itemExtended;
 
 	THROW;

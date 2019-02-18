@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CopyLinkGroupButton from './CopyLinkGroupButton';
 import * as LinkGroupFunctions from './LinkGroupFunctions';
+import AddModifiersToLinkGroupsPage from './AddModifiersToLinkGroupsPage';
 
 
 interface IState {
@@ -17,7 +18,8 @@ interface IState {
     data: any,
     LinkGroupItems: Array<any>,
     LinkGroupName: string,
-    LinkGroupDesc: string
+    LinkGroupDesc: string,
+    showAddModifiers: boolean
 }
 
 interface IProps {
@@ -75,7 +77,8 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
             data: [],
             LinkGroupItems: [],
             LinkGroupName: " ",
-            LinkGroupDesc: " "
+            LinkGroupDesc: " ",
+            showAddModifiers: false
 
         }
         this.handleChange = this.handleChange.bind(this);
@@ -86,11 +89,11 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
     componentDidMount() {
         document.addEventListener("keydown", this.escFunction, false);
         this.loadCookingInstructionsList();
-        
+
     }
 
     static getDerivedStateFromProps(Props: any, State: any) {
-        
+
         if (Props.data !== State.data) {
 
             return {
@@ -103,23 +106,23 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
         return null;
     }
 
-    escFunction(event:any){
-        if(event.keyCode === 27) {
-          this.props.handleCancelClick();
+    escFunction(event: any) {
+        if (event.keyCode === 27) {
+            this.props.handleCancelClick();
         }
-      }
+    }
 
-    
-      componentWillUnmount(){
+
+    componentWillUnmount() {
         document.removeEventListener("keydown", this.escFunction, false);
-      }
+    }
 
     loadCookingInstructionsList() {
 
         LinkGroupFunctions.LoadCookingInstructions()
-        .then(result => {this.setState({ InstructionsList: result }) })
-      
-      
+            .then(result => { this.setState({ InstructionsList: result }) })
+
+
     }
 
     handleChange(name: string, event: any) {
@@ -151,12 +154,14 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
 
 
                     <Grid item md={3}  >
-                        <CopyLinkGroupButton 
-                            className={this.props.classes.searchButtons} 
+                        <CopyLinkGroupButton
+                            className={this.props.classes.searchButtons}
                             linkGroupId={this.state.data.linkGroupId}
                         />
                         <Button variant="contained" color="secondary"
-                            className={this.props.classes.searchButtons}>
+                            className={this.props.classes.searchButtons}
+                            onClick={() => { this.setState({ showAddModifiers: !this.state.showAddModifiers }) }}
+                        >
                             Add Modifier
                         </Button>
                     </Grid>
@@ -226,28 +231,31 @@ export class EditLinkGroup extends React.Component<IProps, IState> {
                         />
                     </Grid>
                     <Grid container justify="space-between" >
-                    <Grid item >
-                         
-                        <Button variant="contained" color="default"
-                         
-                            onClick={this.props.handleCancelClick}
-                        >
-                            Cancel (Esc)
-                         <CancelIcon  className={this.props.classes.IconLeftMargin} />
-                        </Button>
-                    </Grid>
-                    <Grid item  >
+                        <Grid item >
 
-                        <Button
-                            variant="contained"
-                            color="primary"
-                        >
-                            Save
+                            <Button variant="contained" color="default"
+
+                                onClick={this.props.handleCancelClick}
+                            >
+                                Cancel (Esc)
+                         <CancelIcon className={this.props.classes.IconLeftMargin} />
+                            </Button>
+                        </Grid>
+                        <Grid item  >
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                            >
+                                Save
                             <SaveIcon className={this.props.classes.IconLeftMargin} />
-                        </Button> 
-                    </Grid>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
+
+                {!this.state.showAddModifiers ||
+                    <AddModifiersToLinkGroupsPage onCancel={() =>{this.setState({showAddModifiers: !this.state.showAddModifiers})}} />}
 
                 {/* <pre>{JSON.stringify(this.state, null, 4)}</pre> */}
             </React.Fragment>

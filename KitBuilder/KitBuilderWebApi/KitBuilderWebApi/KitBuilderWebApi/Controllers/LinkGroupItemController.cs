@@ -11,6 +11,13 @@ using KitBuilder.DataAccess.Repository;
 
 namespace KitBuilderWebApi.Controllers
 {
+
+    public class LinkGroupItemSearchParameters
+    {
+        public string ModiferPlu { get; set; }
+        public string ModifierName { get; set; }
+    }
+
     [Route("api/LinkGroups")]
     public class LinkGroupItemController : Controller
     {
@@ -44,6 +51,35 @@ namespace KitBuilderWebApi.Controllers
 
             var linkGroupItemDto = Mapper.Map<LinkGroupItemDto>(linkGroupItem);
             return Ok(linkGroupItemDto);
+        }
+
+
+        [HttpGet("LinkGroupItemSearch")]
+        public IActionResult LinkGroupItemSearch(LinkGroupItemSearchParameters parameters)
+        {
+
+            // get superset of data.
+            var query = from lgi in linkGroupItemRepository.GetAll() join i in itemsRepository.GetAll() on lgi.ItemId equals i.ItemId
+                        select new { lgi, i };
+
+            // filter based on parameters
+            if (!string.IsNullOrEmpty(parameters.ModiferPlu))
+
+                query = query.Where(q => q.i.ScanCode.Contains(parameters.ModiferPlu));
+
+            if (!string.IsNullOrEmpty(parameters.ModifierName))
+                query = query.Where(q => q.i.ProductDesc.Contains(parameters.ModifierName));
+
+            var result = query.Select(s => new
+            {
+                s.lgi.LinkGroupItemId,
+                s.lgi.ItemId,
+                s.i.ProductDesc,
+                s.i.ScanCode,
+                s.i.BrandName
+            }).ToList();
+
+            return Ok(result);
         }
 
         [HttpPost("{linkGroupId}/LinkGroupItem", Name = "CreateLinkGroupItem")]

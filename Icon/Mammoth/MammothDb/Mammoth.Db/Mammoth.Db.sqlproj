@@ -662,7 +662,7 @@
     <Build Include="stage\Stored Procedures\GpmInsertPriceDataConversion.sql" />
     <Build Include="gpm\Tables\MessageSequence.sql" />
     <Build Include="gpm\Tables\MessageSequenceHistory.sql" />
-    <Build Include="gpm\Stored Procedures\AddOrUpdatePrice.sql" />
+    <Build Include="gpm\Stored Procedures\AddPrice.sql" />
     <Build Include="gpm\Stored Procedures\DeletePrice.sql" />
     <Build Include="gpm\Tables\PriceErrorLog.sql" />
     <Build Include="gpm\Stored Procedures\LogPriceError.sql" />
@@ -810,6 +810,7 @@
     <Build Include="dbo\Stored Procedures\AuditGPMPrice.sql" />
     <Build Include="app\Tables\AppLogArchive.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEslOnePlumAppsToAppTable.sql" />
+    <Build Include="gpm\Stored Procedures\UpdatePrice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -825,6 +826,7 @@
     <None Include="Scripts\PostDeploymentScripts\AppLogArchiveRetentionPolicy.sql" />
     <None Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="dbo\User Defined Types\ItemAttributesLocaleType.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Deduplicate_ItemAttributesLocale_Tables.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

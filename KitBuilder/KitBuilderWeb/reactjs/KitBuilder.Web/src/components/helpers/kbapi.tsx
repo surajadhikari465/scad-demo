@@ -5,7 +5,9 @@ const ApiMethods  = {
      LinkGroupsSearch: "/api/LinkGroups/LinkGroupsSearch",
      AssignKit: "/api/Venues",
      InstructionListByType: "/api/InstructionList/GetInstructionsListByType",
-     Items: "/api/Items/"
+     Items: "/api/Items/",
+     LinkGroupItemSearch:"/api/LinkGroups/LinkGroupItemSearch"
+
 }
 
 export function KbApiMethod(name: string) {

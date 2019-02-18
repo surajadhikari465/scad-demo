@@ -15,15 +15,19 @@ namespace NutritionWebApi.Controllers
     {
         private IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>> getNutritionItemQuery;
         private ICommandHandler<AddOrUpdateNutritionItemCommand> addOrUpdateNutritionItemCommandHandler;
+        private ICommandHandler<DeleteNutritionCommand> deleteNutritionCommandHandler;
         private ILogger logger;
+        public const string INVALID_REQUEST = "Request was in a format unsupported by the server.";
 
         public NutritionController(
             IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>> getNutritionItemQuery,
             ICommandHandler<AddOrUpdateNutritionItemCommand> addOrUpdateNutritionItemCommandHandler,
+            ICommandHandler<DeleteNutritionCommand> deleteNutritionCommandHandler,
             ILogger logger)
         {
             this.getNutritionItemQuery = getNutritionItemQuery;
             this.addOrUpdateNutritionItemCommandHandler = addOrUpdateNutritionItemCommandHandler;
+            this.deleteNutritionCommandHandler = deleteNutritionCommandHandler;
             this.logger = logger;
         }
 
@@ -71,8 +75,8 @@ namespace NutritionWebApi.Controllers
         {
             if (value == null || value.Count == 0)
             {
-                logger.Error(string.Format("Request was in a format unsupported by the server. ", Request?.Content?.ReadAsStringAsync().Result));
-                return BadRequest("Request was in a format unsupported by the server.");
+                logger.Error(string.Format("{0} {1}", INVALID_REQUEST, Request?.Content?.ReadAsStringAsync().Result));
+                return BadRequest(INVALID_REQUEST);
             }
             try
             {
@@ -80,10 +84,33 @@ namespace NutritionWebApi.Controllers
                 logger.Info(string.Format(result + " PLUs: {0}", string.Join(", ", value.Select(v => v.Plu))));
                 return Ok(result);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                logger.Error("Error: " + exception.GetBaseException().Message);
-                throw;
+                logger.Error($"Error: {ex.GetBaseException().Message} Trace: {ex.StackTrace}");
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteNutritionItem([FromUri]List<string> plu)
+        {
+            if (plu == null || plu.Count == 0)
+            {
+            	logger.Error(string.Format("{0} {1}. Expecting list of PLUs codes.", INVALID_REQUEST, Request?.Content?.ReadAsStringAsync().Result));
+              return BadRequest(INVALID_REQUEST);
+            }
+            
+            try
+            {
+                var result = deleteNutritionCommandHandler.Execute(new DeleteNutritionCommand() { Plus = plu });
+								var message = $"{result} records have been deleted";
+                logger.Info(message);
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"Error: {ex.GetBaseException().Message} Trace: {ex.StackTrace}");
+                return BadRequest($"Error: {ex.Message}");
             }
         }
     }

@@ -1,68 +1,214 @@
 import * as React from 'react';
 import axios from 'axios';
+import {Grid} from '@material-ui/core';
 import { KitLinkGroupProperties } from "./KitLinkGroupProperties";
 import { KbApiMethod } from '../helpers/kbapi'
 
 var urlStart = KbApiMethod("Kits");
-var kitId = 12
-var localeId = 59
+var imageSrc = "https://images.pexels.com/photos/247685/pexels-photo-247685.png?cs=srgb&dl=assorted-diet-edible-247685.jpg&fm=jpg";
 
-export class KitLinkGroupPage extends React.Component<{}, {kitLinkGroupDetails : any[], kitName : any}>
+interface IKitLinkGroupPageState {
+    error : any,
+    message : any,
+    kitDetails: any
+}
+
+interface IKitLinkGroupPageProps {
+    kitId: number,
+    localeId : number
+}
+
+export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IKitLinkGroupPageState >
 {   
     constructor(props: any)
     {
         super(props)
         this.state = {
-            kitName : "",
-            kitLinkGroupDetails : []
+            error: "",
+            message: "",
+            kitDetails : {}
         }
+        this.handleSaveButton = this.handleSaveButton.bind(this);
     }
 
-    componentWillMount(){
-        return axios.get(urlStart+"/"+kitId+"/ViewKit/"+localeId+"?loadChildObjects="+"true",{})
-        .then(response => {
-            this.setState({kitLinkGroupDetails : response.data.kitLinkGroup.map((t:any)=>t), kitName: response.data.description})
+    loadData() 
+    {
+                // render the kitId and localeId from hierarchy page
+                var pathArray = window.parent.location.href.split('/');
+                pathArray = pathArray.reverse();
+                // calling the API to get the required information
+                let url =urlStart+"/"+parseInt(pathArray[1])+"/GetKitProperties/"+parseInt(pathArray[0]);
+                axios.get(url,{})
+                .then(response => {
+                    let kitLinkGroupsDetail = response.data;  
+                    kitLinkGroupsDetail.kitLinkGroupLocaleList.map((linkGroup:any)=>{
+              
+                        if(linkGroup.properties == null)
+                        {
+                            let newLinkGroupProperties = {
+                                Minimum : "0",
+                                Maximum : "0",
+                                NumOfFreeToppings : "0",
+                            }
+                            linkGroup.properties = newLinkGroupProperties
+                            linkGroup.excluded = false
+                            linkGroup.displaySequence = 0 // default display sequence
+                        }
+                        else
+                        {
+                            linkGroup.properties = JSON.parse(linkGroup.properties)
+                        }
+                        linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
+                            if(linkGroupItem.properties == null)
+                            {
+                                let newLinkGroupItemProps = {
+                                    Minimum:"0",
+                                    Maximum:"0",
+                                    NumOfFreePortions:"0",
+                                    DefaultPortions:"0",
+                                    MandatoryItem:"false",
+                                }
+                                linkGroupItem.properties = newLinkGroupItemProps
+                                linkGroupItem.excluded = false
+                                linkGroupItem.displaySequence = 0 // default display sequence
+                            }
+                            else
+                            {
+                                linkGroupItem.properties = JSON.parse(linkGroupItem.properties)
+                            }
+                        })
+                    })
+                    this.setState({kitDetails :kitLinkGroupsDetail});
+                   
+                }).catch((error) => {
+                 
+                    this.setState({
+                         error: "Error in getting data from API."
+                    }) 
+                    this.setState({
+                         message: null
+                    }) 
+                  
+                    return;
+                  })  
+
+    }
+
+    componentDidMount ()
+    {
+      this.loadData()
+    }
+
+    handleSaveButton(event:any)
+    {
+        //setting the properties
+        this.state.kitDetails.kitLinkGroupLocaleList.map((linkGroup:any)=>{
+            if(linkGroup.properties != null)
+            {
+                linkGroup.properties = JSON.stringify(linkGroup.properties)
+                linkGroup.lastModifiedBy = "Priyanka"
+            }
+            linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
+                if(linkGroupItem.properties != null)
+                {
+                    linkGroupItem.properties = JSON.stringify(linkGroupItem.properties)
+                    linkGroupItem.lastModifiedBy = "Priyanka"
+                }
+            })
         })
+        let { kitDetails } = this.state;
+        //alert(JSON.stringify(kitDetails))
+        //sending data into database
+        let urlKitSave = urlStart + "/" + kitDetails.kitId 
+        var headers = {
+             'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
+        }
+        axios.post(urlKitSave, JSON.stringify(kitDetails),
+             {
+                  headers: headers
+             }).then(response => {
+                  this.setState({
+                       error: null
+                  })
+
+                  this.setState({
+                       message: "Data Saved Succesfully."
+                  })
+             }).catch(error => {
+                  this.setState({
+                       error: "Error in Saving Data."
+                  })
+
+                  this.setState({
+                       message: null
+                  })
+             });
+        this.loadData()
     }
 
     render()
-    {
+    { const kitLinkGroupLocaleList = this.state.kitDetails.kitLinkGroupLocaleList;
+
+        if(typeof kitLinkGroupLocaleList =="undefined")
+        {
+          return <div></div>
+        }
+        else
+        {
+
         return  <React.Fragment> 
             {/*add the inner components into this components
             1. Location search dropdown
             2. KitLinkGroup
             3. KitLinkGroupItem
             4. buttons to perform save */} 
-            <div className = "mt-md-4 mb-md-4">
-                <div className = "row mt-md-4">
-                    <div className="col-lg-6 col-md-6 col-sm-6">  {/* logo spacing */}
-                        <h4 className="text-center">image / logo of the kit</h4>
+       
+            <Grid container justify="center">
+                <Grid container md={12}  justify="center">
+                    <div className="error-message" >
+                    <span className = "text-danger"> {this.state.error}</span>
                     </div>
-                    <div className="col-lg-6 col-md-6 col-sm-6"> {/* location dropdown */}
-                        <h4 className="text-center">Location<br></br></h4>
+                </Grid>
+                <Grid container md={12}  justify="center">
+                    <div className="Suncess-message" >
+                    <span className = "text-success"> {this.state.message}</span>
+                    </div>
+                </Grid>
+            </Grid>
+            <div className = "mt-md-4 mb-md-4">
+                <div className = "row">
+                    <div className="col-lg-4 col-md-4">{/* logo spacing */}
+                        <img className = "col-6 rounded mx-auto d-block" src = {imageSrc} alt={this.state.kitDetails.imageUrl + "image"}/>
+                    </div>
+                    <div className="col-lg-4 col-md-5">  {/* Kit Name*/}
+                        <h2 className="text-center font-italic font-weight-bold mt-md-5">{this.state.kitDetails.description}</h2>
+                    </div>
+                    <div className="col-lg-4 col-md-3"> {/* location dropdown */}
+                        <h5 className="text-center mt-md-3">{this.state.kitDetails.localeName}<br></br></h5>
                     </div> 
                 </div>
-                <div className = "row mb-md-4">
+                <div className = "row">
                     <div className="col-lg-1 col-md-1 col-sm-1"></div> {/* added for the right spacing */}      
                     <div className="col-lg-10 col-md-10 col-sm-10">  {/* add main components here */}
-                        <h2 className="text-center">{this.state.kitName}</h2>
-                        <form className = "mt-md-4 mb-md-4">
-                            {this.state.kitLinkGroupDetails.map((kitLG)=> <KitLinkGroupProperties kitLinkGroupDetails = {kitLG}/> )}
-                            {/* <ul>{this.state.linkGroupDetails.map((x)=> <li>{x.groupName}</li>)}</ul> */}
+                        <form className = "mb-md-4 border-top">
+                           {
+                                this.state.kitDetails.kitLinkGroupLocaleList.map((kitLG:any)=><KitLinkGroupProperties kitLinkGroupDetails = {kitLG}/>)
+                            }
                         </form> 
-                        <div className = "row">{/* buttons  */}
+                        <div className = "row">{/* Save and Publish buttons  */}
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
-                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-primary" type = "button"> Publish </button>
+                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-primary" type = "button" onClick = {this.handleSaveButton}> Publish </button>
                             <div className = "col-lg-4 col-md-4 col-sm-4"></div>
-                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button"> Save Changes </button>
+                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button" onClick = {this.handleSaveButton}> Save Changes </button>
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
                         </div> 
                     </div>
-                    <div className="col-lg-1 col-md-1 col-sm-1"></div>    {/* added for the left spacing */}
+                    <div className="col-lg-1 col-md-1 col-sm-1"></div> {/* added for the left spacing*/} 
                 </div>
             </div>
         </React.Fragment>;
+        }
+        } 
     }
-}
 
 export default KitLinkGroupPage;
