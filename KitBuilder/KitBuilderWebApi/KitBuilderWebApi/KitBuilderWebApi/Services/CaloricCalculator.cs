@@ -151,7 +151,7 @@ namespace KitBuilderWebApi.Services
 		{
 			foreach (ItemNutritionAttributesDictionary itemNutritionModel in itemCaloriesList)
 			{
-				if (itemNutritionModel.Key == kitLocaleDto.Kit.ItemId && kitLocaleDto.MinimumCalories != null)
+				if (itemNutritionModel.Key == kitLocaleDto.Kit.ItemId && kitLocaleDto.MinimumCalories == null)
 				{
 					kitLocaleDto.MinimumCalories = itemNutritionModel.Value.Calories;
 				}
@@ -222,13 +222,13 @@ namespace KitBuilderWebApi.Services
 
 				while (kitLinkGroupMaxPortion > 0)
 				{
-					for (int i = 0; i < modifierMax.GetLength(0); i++)
+					for (int i = 0; i < sortedByFirstElement.GetLength(0); i++)
 					{
 						int counter = 0;
-						if (kitLinkGroupMaxPortion >= modifierMax[i, 1])
+						if (kitLinkGroupMaxPortion >= sortedByFirstElement[i, 1])
 						{
-							counter = modifierMax[i, 1];
-							kitLinkGroupMaxPortion = kitLinkGroupMaxPortion - modifierMax[i, 1];
+							counter = sortedByFirstElement[i, 1];
+							kitLinkGroupMaxPortion = kitLinkGroupMaxPortion - sortedByFirstElement[i, 1];
 						}
 						else
 						{
@@ -236,12 +236,12 @@ namespace KitBuilderWebApi.Services
 							kitLinkGroupMaxPortion = 0;
 						}
 
-						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + modifierMax[i, 0] * counter;
+						kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + sortedByFirstElement[i, 0] * counter;
 					}
 				}
 
 				kitLinkGroupDto.MaximumCalories = kitLinkGroupMaxCalories;
-				kitLocaleDto.MaximumCalories = kitLocaleDto.MaximumCalories.HasValue ? kitLocaleDto.MaximumCalories.Value : 0 + kitLinkGroupMaxCalories;
+				kitLocaleDto.MaximumCalories = (kitLocaleDto.MaximumCalories.HasValue ? kitLocaleDto.MaximumCalories.Value : 0) + kitLinkGroupMaxCalories;
 			}
 		}
 	}

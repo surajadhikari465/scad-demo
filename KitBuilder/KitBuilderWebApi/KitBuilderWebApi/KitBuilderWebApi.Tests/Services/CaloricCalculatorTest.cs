@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.Services;
 using KitBuilderWebApi.QueryParameters;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -15,7 +12,6 @@ using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.Queries;
 using System.Threading.Tasks;
-using System.Reflection;
 using System.IO;
 using Newtonsoft.Json;
 using Microsoft.DotNet.PlatformAbstractions;
@@ -55,11 +51,17 @@ namespace KitBuilderWebApi.Tests.Services
 			SetUpDataAndRepository();
 		}
 
+		[TestCleanup]
+		public void Cleanup()
+		{
+			Mapper.Reset();
+		}
+
 		[TestMethod]
-		public void CaloricCalculator_ValidKitLocale_ReturnsMinMaxKitLocaleCalories()
+		public void CaloricCalculator_AllIncludedAndAuthorized_ReturnsMinMaxKitLocaleCalories()
 		{
 			//Given
-			string filePath = Path.Combine(projectPath, "TestData", "KitLocale.Json");
+			string filePath = Path.Combine(projectPath, "TestData", "KitLocale_AllIncluded.Json");
 			string json = System.IO.File.ReadAllText(filePath);
 			KitLocale kitLocale = JsonConvert.DeserializeObject<KitLocale>(json);
 
@@ -69,22 +71,23 @@ namespace KitBuilderWebApi.Tests.Services
 
 			filePath = Path.Combine(projectPath, "TestData", "ItemCaloriesList.Json");
 			json = System.IO.File.ReadAllText(filePath);
-			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
-
-			
+			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);		
 
 			mockGetKitLocaleQuery.Setup(k => k.Search(It.IsAny<GetKitByKitLocaleIdParameters>())).Returns(kitLocale);
 			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
 			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
-
-			
 
 			//When
 			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters();
 
 			Task<KitLocaleDto> kitLocaleDto = caloricCalculator.Run(parameters);
 
-			Assert.AreEqual(110, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
+			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
+			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
+			Assert.AreEqual(830, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k =>  k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(330, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
+			Assert.AreEqual(400, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
+			Assert.AreEqual(1560, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
 		}
 
 		private void SetUpDataAndRepository()
@@ -115,12 +118,6 @@ namespace KitBuilderWebApi.Tests.Services
 			mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(objectPassed.AsQueryable().GetEnumerator());
 
 			return mockSet;
-
-		}
-		[TestCleanup]
-		public void Cleanup()
-		{
-			Mapper.Reset();
 		}
 	}
 }

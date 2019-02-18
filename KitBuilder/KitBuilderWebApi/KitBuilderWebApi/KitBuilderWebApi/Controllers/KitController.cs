@@ -77,8 +77,8 @@ namespace KitBuilderWebApi.Controllers
 			this.services = services;
         }
 
-		[HttpGet("{kitLocaleId}/GetKitLocale/{storeLocaleId}", Name = "ViewKitByStore")]
-		public IActionResult GetKitCaloriesByIds(int kitLocaleId, int storeLocaleId)
+		[HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
+		public IActionResult GetKitCalories(int kitLocaleId, int storeLocaleId)
 		{
 			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
 			{
