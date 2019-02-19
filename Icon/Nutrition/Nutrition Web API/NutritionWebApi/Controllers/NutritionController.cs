@@ -94,12 +94,17 @@ namespace NutritionWebApi.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteNutritionItem([FromUri]List<string> plu)
         {
-            if (plu == null || plu.Count == 0)
+            if (plu == null)
             {
             	logger.Error(string.Format("{0} {1}. Expecting list of PLUs codes.", INVALID_REQUEST, Request?.Content?.ReadAsStringAsync().Result));
               return BadRequest(INVALID_REQUEST);
             }
             
+						if(plu.Count == 0)
+						{
+							return Ok("0 records deleted. No PLUs have been specified");
+						}
+
             try
             {
                 var result = deleteNutritionCommandHandler.Execute(new DeleteNutritionCommand() { Plus = plu });
