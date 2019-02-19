@@ -51,6 +51,8 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
 									If a region has a store on GPM, the Retail Size and Retail UOM update will be blocked
 									after the item is validated.
 EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates if the validated Customer Friendly Description is in use
+MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required for regions except for MW and PN. Therefore, default the 
+                                    @IsDefaultJurisdiction value to 1 (true) if it's not specified on the uploaded item maintenance sheet. 
 ***********************************************************************************************/
 	
 	SET NOCOUNT ON
@@ -258,7 +260,7 @@ EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates
 
 		EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.0.1 Update Existing Item - [Get Initial Jurisdictional Data]'
 
-		SET @IsDefaultJurisdiction = CAST(@IsDefaultJurisdictionValue as bit)
+		SET @IsDefaultJurisdiction = CAST(ISNULL(@IsDefaultJurisdictionValue, 1) as bit) -- If @IsDefaultJurisdictionValue is not on the upload sheet, default it to 1.
 		SET @StoreJurisdictionID = CAST(@StoreJurisdictionIDValue as int)
 
 		IF @UseStoreJurisdictions = 0
