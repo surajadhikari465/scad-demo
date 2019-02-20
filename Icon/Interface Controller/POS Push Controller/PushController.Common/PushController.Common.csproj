@@ -65,23 +65,22 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Icon.Common">
+      <HintPath>..\..\packages\Icon.Common.2018.8.16.2\lib\net46\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\..\packages\Icon.Framework.2019.1.31.1\lib\net46\Icon.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
+    <Reference Include="Irma.Framework">
+      <HintPath>..\..\packages\Irma.Framework.2018.8.16.1\lib\net46\Irma.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -98,6 +97,7 @@
     <Compile Include="Exceptions\BusinessUnitNotFoundException.cs" />
     <Compile Include="Exceptions\ScanCodeNotFoundException.cs" />
     <Compile Include="Models\CurrentLinkedScanCodeModel.cs" />
+    <Compile Include="Models\InstanceDataFlagStoreValues.cs" />
     <Compile Include="Models\IrmaPushModel.cs" />
     <Compile Include="Models\ItemLinkModel.cs" />
     <Compile Include="Models\ItemPriceModel.cs" />

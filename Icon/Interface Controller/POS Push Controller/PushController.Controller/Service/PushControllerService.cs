@@ -8,8 +8,11 @@ namespace PushController.Controller.Service
     using InterfaceController.Common;
     using Irma.Framework;
     using PushController.Common;
+    using PushController.Common.Models;
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
+    using System.Linq;
     using System.Timers;
 
     public class PushControllerService : IPushControllerService
@@ -18,6 +21,7 @@ namespace PushController.Controller.Service
         private Timer timer;
         private const string flagKey = "GlobalPriceManagement";
         private PushController.DataAccess.Interfaces.IQueryHandler<GetInstanceDataFlagValueByFlagKeyQuery, bool> getInstanceDataFlagsByFlagKeyQueryHandler = new GetInstanceDataFlagValueByFlagKeyQueryHandler();
+        private PushController.DataAccess.Interfaces.IQueryHandler<GetInstanceDataFlagStoreValuesQuery, IEnumerable<InstanceDataFlagStoreValues>> getInstanceDataFlagStoreValueList = new GetInstanceDataFlagStoreValuesQueryHandler();
 
         public PushControllerService()
         {
@@ -57,33 +61,34 @@ namespace PushController.Controller.Service
                     return;
                 }
 
-                string[] regionsToCheckForGPM = ConfigurationManager.AppSettings["RegionsToCheckForGPM"].Split(',');
+                string[] regionsToCheckForGpm = ConfigurationManager.AppSettings["RegionsToCheckForGPM"].Split(',');
 
-                if (regionsToCheckForGPM.Length > 0)
+                if (regionsToCheckForGpm.Length > 0)
                 {
-                    foreach (string region in regionsToCheckForGPM)
+                    foreach (string region in regionsToCheckForGpm)
                     {
                         try
                         {
                             string connectionString = ConnectionBuilder.GetConnection(region);
                             IrmaContext context = new IrmaContext(ConnectionBuilder.GetConnection(region));
 
-                            var query = new GetInstanceDataFlagValueByFlagKeyQuery
+                            // Populate the non-gpm store list
+                            var getGpmInstanceDataFlagStoreQuery = new GetInstanceDataFlagStoreValuesQuery
                             {
                                 FlagKey = flagKey,
-                                StoreNo = null,
                                 Context = context
                             };
 
-
-                            if (!Cache.regionCodeToGPMInstanceDataFlag.ContainsKey(region))
-                            {
-                                Cache.regionCodeToGPMInstanceDataFlag.Add(region, getInstanceDataFlagsByFlagKeyQueryHandler.Execute(query));
-                            }
+                            IEnumerable<InstanceDataFlagStoreValues> gpmFlagStoreValues = getInstanceDataFlagStoreValueList.Execute(getGpmInstanceDataFlagStoreQuery);
+                            var nonGpmFlagValuesByStore = gpmFlagStoreValues
+                                .Where(fsv => !fsv.FlagValue)
+                                .Select(x => x.BusinessUnitId)
+                                .Distinct();
+                            Cache.nonGpmStores.UnionWith(nonGpmFlagValuesByStore);
                         }
                         catch (Exception error)
                         {
-                            logger.Error("Not able to connect to Irma Database: " + region +".Error is:"+ error.Message.ToString());
+                            logger.Error("Not able to connect to Irma Database: " + region +". Error is:"+ error.Message.ToString());
                             continue;
                         }
                     }
