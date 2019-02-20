@@ -11,30 +11,30 @@ const successStyle = { color: 'blue' };
 const ModalStyle = { margin: "auto", marginTop: "10px", overlay: { zIndex: 10 } }
 
 function LinkgroupKitAddModal(props: any) {
-     return (
-     
+    return (
+
         <React.Fragment>
-            <Dialog fullWidth = {true}
-                maxWidth = 'lg'
+            <Dialog fullWidth={true}
+                maxWidth='lg'
                 open={props.open}
             >
-            < Grid container justify="center">
-                <DialogTitle id="form-dialog-title" >Link Group Add to Kit Screen</DialogTitle>
+                < Grid container justify="center">
+                    <DialogTitle id="form-dialog-title" >Link Group Add to Kit Screen</DialogTitle>
                 </Grid>
                 <DialogContent >
-                < Grid container justify="center">
-                    <Grid container justify="center">
-                        <div className="error-message" >
-                            <span style={hStyle}> {props.errorlinkGroupAdd}</span>
-                        </div>
+                    < Grid container justify="center">
+                        <Grid container justify="center">
+                            <div className="error-message" >
+                                <span style={hStyle}> {props.errorlinkGroupAdd}</span>
+                            </div>
+                        </Grid>
+                        <Grid container justify="center">
+                            <div className="Success-message" >
+                                <span style={successStyle}> {props.messagelinkGroupAdd}</span>
+                            </div>
+                        </Grid>
                     </Grid>
-                    <Grid container justify="center">
-                        <div className="Success-message" >
-                            <span style={successStyle}> {props.messagelinkGroupAdd}</span>
-                        </div>
-                    </Grid>
-                </Grid>
-                    <Grid container justify="center" style={ModalStyle}>  
+                    <Grid container justify="center" style={ModalStyle}>
                         <Grid item md={10}>
                             <LinkGroupKitAddModalSearch
                                 linkGroupName={props.linkGroupName}
@@ -45,20 +45,20 @@ function LinkgroupKitAddModal(props: any) {
                                 onModifierPluChange={props.onModifierPluChange}
                                 onLinkGroupSearch={props.onLinkGroupSearch}
                                 searchLinkGroupText={props.searchLinkGroupText}
-                                searchModifierPluText={props.searchModifierPluText}               
+                                searchModifierPluText={props.searchModifierPluText}
                             />
                         </Grid>
                         {
-                                <Grid item md={12}>
-                                    < KitItemAddModalDisplay
-                                        linkGroupData={props.linkGroupData}
-                                        selectedData={props.selectedData}
-                                        onRemove={props.onRemove}
-                                        onSelect={props.onSelect}
-                                        queueLinkGroups = {props.queueLinkGroups}
-                                        addToKit = {props.addToKit}
-                                    />
-                                </Grid>
+                            <Grid item md={12}>
+                                < KitItemAddModalDisplay
+                                    linkGroupData={props.linkGroupData}
+                                    selectedData={props.selectedData}
+                                    onRemove={props.onRemove}
+                                    onSelect={props.onSelect}
+                                    queueLinkGroups={props.queueLinkGroups}
+                                    addToKit={props.addToKit}
+                                />
+                            </Grid>
                         }
                     </Grid>
                 </DialogContent>

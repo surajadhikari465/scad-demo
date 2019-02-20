@@ -168,12 +168,12 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
                     })
                 }
                 else {
-                    let linkGroupDataWithSelect: any[] = response.data 
-                    linkGroupDataWithSelect.forEach((linkGroup)=>{
+                    let linkGroupDataWithSelect: any[] = response.data
+                    linkGroupDataWithSelect.forEach((linkGroup) => {
                         linkGroup.select = false;
                         linkGroup.remove = false;
                     })
-        
+
                     this.setState({ linkGroupData: linkGroupDataWithSelect })
                     this.setState({
                         errorlinkGroupAdd: null, messagelinkGroupAdd: null
@@ -187,26 +187,24 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
         let selected: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
             return linkGroup.select == true;
         });
-  
+
         let remaining: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
             return linkGroup.select != true;
         });
-        
-        remaining.forEach(function(linkGroup)
-        {
+
+        remaining.forEach(function (linkGroup) {
             linkGroup.select = false;
         })
 
         let result: any[] = alreadySelected.concat(selected);
-        this.setState({ selectedData: result, linkGroupData: remaining  })
+        this.setState({ selectedData: result, linkGroupData: remaining })
     }
 
     addToKit() {
         let alreadySelected: any[] = this.state.selectedData
-        alreadySelected.forEach((elements=>
-            {
-                  alert(elements.linkGroupId)
-            }))
+        alreadySelected.forEach((elements => {
+            alert(elements.linkGroupId)
+        }))
 
     }
     onModifierPluChange(event: any) {
@@ -214,7 +212,7 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
     }
 
     onLinkGroupClose() {
-        this.setState({ linkGroupData: [], selectedData:[] , searchLinkGroupText:"", searchModifierPluText:"" } );
+        this.setState({ linkGroupData: [], selectedData: [], searchLinkGroupText: "", searchModifierPluText: "" });
         this.setState({ openLinkGroup: false });
     }
     onLinkGroupChange(event: any) {
@@ -226,22 +224,22 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
 
         let remainingLinkGroups = alreadySelected.filter((linkGroup: any) => {
             return linkGroup.linkGroupId != row.row._original.linkGroupId;
-           });
+        });
 
-        
+
         this.setState({ selectedData: remainingLinkGroups })
     }
 
     onSelect(row: any) {
         let linkGroupDataBeforeUpdate: any[] = this.state.linkGroupData;
-       let selected: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
+        let selected: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
             return linkGroup.linkGroupId == row.row._original.linkGroupId;
         });
-      
-        selected.forEach(function(linkGroup){
-            linkGroup.select = !linkGroup.select ;
+
+        selected.forEach(function (linkGroup) {
+            linkGroup.select = !linkGroup.select;
         })
-       
+
         this.setState({ linkGroupData: linkGroupDataBeforeUpdate });
     }
 
@@ -257,7 +255,7 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
         this.setState({ openLinkGroup: true });
     }
     onClose() {
-        this.setState({ itemsdata:  [], scanCodeValue:"" , mainItemValue:"" } );
+        this.setState({ itemsdata: [], scanCodeValue: "", mainItemValue: "" });
         this.setState({ open: false });
     }
 
