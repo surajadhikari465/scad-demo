@@ -2,13 +2,13 @@ import * as React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import KitItemAddModal from './KitItemAddModal';
 import { KbApiMethod } from '../../helpers/kbapi'
-var urlStart = KbApiMethod("Items");
-var urlLinkgroupSearch = KbApiMethod("LinkGroupsSearch:");
 import { Grid, Button } from '@material-ui/core';
 const hStyle = { color: 'red' };
 const successStyle = { color: 'blue' };
 import axios from 'axios';
 import LinkgroupKitAddModal from '../LinkGroupAddKitModal/LinkgroupKitAddModal'
+var urlStart = KbApiMethod("Items");
+var urlLinkgroupSearch = KbApiMethod("LinkGroupsSearch");
 
 const styles = (theme: any) => ({
     root: {
@@ -56,9 +56,9 @@ interface ICreateKitPageState {
     modifierPlulabelName: string,
     searchLinkGroupText: string,
     searchModifierPluText: string,
-    linkGroupData:any[],
-    selectedData:any[],
-    openLinkGroup:Boolean,
+    linkGroupData: any[],
+    selectedData: any[],
+    openLinkGroup: Boolean,
     errorlinkGroupAdd: any,
     messagelinkGroupAdd: any,
 }
@@ -85,19 +85,19 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
             scanCodeValue: "",
             selectedItemiId: 0,
             showDisplay: false,
-            linkGrouplabelName: "Link Group Name",
-            modifierPluName: "Modifier PLU",
-            modifierPlulabelName: "Modifier PLU",
+            linkGrouplabelName: "Link Group Name:",
+            modifierPluName: "Modifier PLU:",
+            modifierPlulabelName: "Modifier PLU:",
             searchLinkGroupText: "",
             searchModifierPluText: "",
             linkGroupData: [],
             selectedData: [],
-            linkGroupName: "Link Group Name",
+            linkGroupName: "Link Group Name:",
             errorKitItem: "",
             messageKitItem: "",
             errorlinkGroupAdd: "",
             messagelinkGroupAdd: "",
-            openLinkGroup:false
+            openLinkGroup: false
 
         }
 
@@ -112,10 +112,10 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
         this.onSelect = this.onSelect.bind(this);
         this.onLinkGroupChange = this.onLinkGroupChange.bind(this);
         this.onModifierPluChange = this.onModifierPluChange.bind(this);
-        this.onLinkGroupClose =  this.onLinkGroupClose.bind(this);
-        this.queueLinkGroups =  this.queueLinkGroups.bind(this);
-        this.addToKit =  this.addToKit.bind(this);
-        this.showLinkGroupPopUp =  this.showLinkGroupPopUp.bind(this);
+        this.onLinkGroupClose = this.onLinkGroupClose.bind(this);
+        this.queueLinkGroups = this.queueLinkGroups.bind(this);
+        this.addToKit = this.addToKit.bind(this);
+        this.showLinkGroupPopUp = this.showLinkGroupPopUp.bind(this);
     }
 
     onChecked(row: any) {
@@ -131,20 +131,20 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
             this.setState({
                 errorlinkGroupAdd: "Please enter atleast one select criteria."
             });
-          
+
             this.setState({
                 messagelinkGroupAdd: null
             })
             return;
         }
-        else{
+        else {
             this.setState({
                 errorlinkGroupAdd: null,
                 messagelinkGroupAdd: null
             });
-           
-            }
-            
+
+        }
+
         var urlParam = "";
 
         if (linkGroupName != "")
@@ -156,54 +156,65 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
         urlParam = urlParam.substring(0, urlParam.length - 1);
 
         var url = urlLinkgroupSearch + "?" + urlParam;
+        return axios.get(url)
+            .then(response => {
+                if (typeof (response.data) == undefined || response.data == null || response.data.length == 0) {
+                    this.setState({
+                        errorlinkGroupAdd: "No Data Found."
+                    });
 
-         return axios.get(url)
-        .then(response => {
-            if (typeof (response.data) == undefined || response.data == null || response.data.length == 0) 
-            {
-                this.setState({
-                    errorlinkGroupAdd: "No Data Found."
-                });
+                    this.setState({
+                        messagelinkGroupAdd: null
+                    })
+                }
+                else {
+                    let linkGroupDataWithSelect: any[] = response.data 
+                    linkGroupDataWithSelect.forEach((linkGroup)=>{
+                        linkGroup.select = false;
+                        linkGroup.remove = false;
+                    })
+        
+                    this.setState({ linkGroupData: linkGroupDataWithSelect })
+                    this.setState({
+                        errorlinkGroupAdd: null, messagelinkGroupAdd: null
+                    });
+                }
+            })
+    }
 
-                this.setState({
-                    messagelinkGroupAdd: null
-                })
-            }
-            else{
-                this.setState({linkGroupData: response.data})        
-               
-            }        
+    queueLinkGroups() {
+        let alreadySelected: any[] = this.state.selectedData
+        let selected: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
+            return linkGroup.select == true;
+        });
+  
+        let remaining: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
+            return linkGroup.select != true;
+        });
+        
+        remaining.forEach(function(linkGroup)
+        {
+            linkGroup.select = false;
         })
+
+        let result: any[] = alreadySelected.concat(selected);
+        this.setState({ selectedData: result, linkGroupData: remaining  })
     }
 
-    queueLinkGroups()
-    {
-       let alreadySelected:any[]  = this.state.selectedData
-
-       let selected:any[] = this.state.linkGroupData.filter((linkGroup:any)=>{
-           return linkGroup.Select == true;
-       });
-
-       let remaining:any[] = this.state.linkGroupData.filter((linkGroup:any)=>{
-        return linkGroup.Select != true;
-    });
-
-       alreadySelected.push(selected);
-
-       this.setState({selectedData: alreadySelected})
-       this.setState({linkGroupData: remaining})
-    }
-   
-    addToKit()
-    {
+    addToKit() {
+        let alreadySelected: any[] = this.state.selectedData
+        alreadySelected.forEach((elements=>
+            {
+                  alert(elements.linkGroupId)
+            }))
 
     }
     onModifierPluChange(event: any) {
         this.setState({ searchModifierPluText: event.target.value });
     }
 
-    onLinkGroupClose()
-    {
+    onLinkGroupClose() {
+        this.setState({ linkGroupData: [], selectedData:[] , searchLinkGroupText:"", searchModifierPluText:"" } );
         this.setState({ openLinkGroup: false });
     }
     onLinkGroupChange(event: any) {
@@ -211,24 +222,34 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
     }
 
     onRemove(row: any) {
-        row.Remove = !row.Remove;       
-        let alreadySelected:any[]  = this.state.selectedData;
+        let alreadySelected: any[] = this.state.selectedData;
 
-        var remaining = alreadySelected.filter((linkGroup:any)=>{
-                return linkGroup.Remove == false;
-            });
-            this.setState({selectedData: remaining})
+        let remainingLinkGroups = alreadySelected.filter((linkGroup: any) => {
+            return linkGroup.linkGroupId != row.row._original.linkGroupId;
+           });
+
+        
+        this.setState({ selectedData: remainingLinkGroups })
     }
 
     onSelect(row: any) {
-       row.Select = !row.Select;       
+        let linkGroupDataBeforeUpdate: any[] = this.state.linkGroupData;
+       let selected: any[] = this.state.linkGroupData.filter((linkGroup: any) => {
+            return linkGroup.linkGroupId == row.row._original.linkGroupId;
+        });
+      
+        selected.forEach(function(linkGroup){
+            linkGroup.select = !linkGroup.select ;
+        })
+       
+        this.setState({ linkGroupData: linkGroupDataBeforeUpdate });
     }
 
     showPopUp() {
         this.setState({
-            errorKitItem: null, messageKitItem:null
+            errorKitItem: null, messageKitItem: null
         });
-       
+
         this.setState({ open: true });
     }
 
@@ -236,6 +257,7 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
         this.setState({ openLinkGroup: true });
     }
     onClose() {
+        this.setState({ itemsdata:  [], scanCodeValue:"" , mainItemValue:"" } );
         this.setState({ open: false });
     }
 
@@ -248,10 +270,10 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
     }
 
     onSearch() {
-  
+
         let scanCode = this.state.scanCodeValue;
         let mainItem = this.state.mainItemValue;
- 
+
         if (scanCode == "" && mainItem == "") {
 
             this.setState({
@@ -303,9 +325,9 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
                     });
 
                     this.setState({
-                        errorKitItem: null, messageKitItem:null
+                        errorKitItem: null, messageKitItem: null
                     });
-                   
+
                     this.setState({
                         message: null
                     })
@@ -361,28 +383,30 @@ export class CreateKit extends React.Component<ICreateKitPageProps, ICreateKitPa
                     onScanCodeChange={this.onScanCodeChange}
                     onMainItemChange={this.onMainItemChange}
                     onClose={this.onClose}
-                    errorKitItem = {this.state.errorKitItem}
-                    messageKitItem = {this.state.messageKitItem}
+                    errorKitItem={this.state.errorKitItem}
+                    messageKitItem={this.state.messageKitItem}
                 />
 
-            <LinkgroupKitAddModal
-                        linkGrouplabelName = {this.state.linkGrouplabelName}
-                        onLinkGroupChange = {this.onLinkGroupChange}
-                        modifierPluName = {this.state.modifierPluName}
-                        modifierPlulabelName = {this.state.modifierPlulabelName}
-                        onModifierPluChange = {this.onModifierPluChange}
-                        onLinkGroupSearch = {this.onLinkGroupSearch}
-                        searchLinkGroupText = {this.state.searchLinkGroupText}
-                        searchModifierPluText = {this.state.searchModifierPluText}
-                        linkGroupData = {this.state.linkGroupData}
-                        selectedData = {this.state.linkGroupData}
-                        onRemove = {this.onRemove}
-                        onSelect={this.onSelect}
-                        onLinkGroupClose = {this.onLinkGroupClose}
-                        queueLinkGroups = {this.queueLinkGroups}
-                        addToKit = {this.addToKit}
-                        open={this.state.openLinkGroup}
-                    />   
+                <LinkgroupKitAddModal
+                    linkGrouplabelName={this.state.linkGrouplabelName}
+                    onLinkGroupChange={this.onLinkGroupChange}
+                    modifierPluName={this.state.modifierPluName}
+                    modifierPlulabelName={this.state.modifierPlulabelName}
+                    onModifierPluChange={this.onModifierPluChange}
+                    onLinkGroupSearch={this.onLinkGroupSearch}
+                    searchLinkGroupText={this.state.searchLinkGroupText}
+                    searchModifierPluText={this.state.searchModifierPluText}
+                    linkGroupData={this.state.linkGroupData}
+                    selectedData={this.state.selectedData}
+                    onRemove={this.onRemove}
+                    onSelect={this.onSelect}
+                    onLinkGroupClose={this.onLinkGroupClose}
+                    queueLinkGroups={this.queueLinkGroups}
+                    addToKit={this.addToKit}
+                    open={this.state.openLinkGroup}
+                    errorlinkGroupAdd={this.state.errorlinkGroupAdd}
+                    messagelinkGroupAdd={this.state.messagelinkGroupAdd}
+                />
             </React.Fragment>
         )
     }

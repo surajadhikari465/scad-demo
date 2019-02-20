@@ -13,12 +13,15 @@ const ModalStyle = { margin: "auto", width:"500px", marginTop: "10px", overlay: 
 function KitItemAddModal(props: any) {
 
     return (
+      
         <React.Fragment>
-            <Dialog
+            <Dialog 
                 
                 open={props.open}
             >
-                <DialogTitle id="form-dialog-title">Kit Item Add Screen</DialogTitle>
+             < Grid container justify="center">
+                <DialogTitle  id="form-dialog-title">Kit Item Add Screen</DialogTitle>
+                </Grid>
                 <DialogContent >
                 <Grid container justify="center">
                     <Grid container justify="center">

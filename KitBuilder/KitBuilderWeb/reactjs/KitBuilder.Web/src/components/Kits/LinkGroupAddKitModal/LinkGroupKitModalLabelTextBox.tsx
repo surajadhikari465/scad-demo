@@ -2,19 +2,22 @@ import * as React from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 const styles1 = (theme: any) => ({
-    marginbottom: {
+    marginBottom: {
         marginBottom: 10+ 'px',
         zIndex:1000
-    }
+    }  ,
+    marginTop: {
+        marginTop:10+ 'px',
+    }  
 });
 function LinkGroupKitModalLabelTextBox(props: any) {
     return (
         <React.Fragment>
-            <Grid container justify="flex-start" className={props.classes.marginbottom} >
-                <Grid item md={3}>
-                    <span>{props.labelValue} </span>
+            <Grid container justify="flex-start" className={props.classes.marginBottom} >
+                <Grid item md={4} className={props.classes.marginTop}>
+                    <span >{props.labelValue} </span>
                 </Grid>
-                <Grid item md={6}>
+                <Grid item md={5}>
                     <TextField id={props.name}
                         label={props.labelName}
                         variant="outlined"

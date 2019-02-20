@@ -5,33 +5,48 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
 
+
 const styles = (theme: any) => ({
     root: {
         marginTop: 50
+    },
+    searchButtons: {
+        marginTop: '10px',
+        marginBottom: '10px'
     }
+    
 });
 
 function KitItemAddModalDisplay(props: any) {
+
     return (
+   
         <React.Fragment>
+
             <ReactTable
-                data={props.linkGroupdata}
+                data={props.linkGroupData}
                 columns={[
                     {
                         Header: "LinkGroupId",
-                        accessor: "LinkGroupId",
+                        accessor: "linkGroupId",
                         show: false
                     },
-                    {
-                        Header: "Link Group Name",
-                        accessor: "GroupName"
+                    { 
+                        Header: () => (
+                        <div style={{ textAlign: "center" }}> Link Group Name</div>
+                      ),
+                      Cell: row => (
+                        <div style={{ textAlign: "center" }}>{row.value}</div>
+                      ),
+               
+                        accessor: "groupName"
                     },
                     {
                         Header: "Select",
-                        id: "Select",
-                        Cell: row => (
+                        accessor:"select",
+                                  Cell: row => (
                             <Grid container justify="center" alignItems="center">
-                                <Checkbox color="primary" value="false" onChange={() => props.onSelect(row)} />
+                                 <Checkbox color="primary" checked = {row.value} onChange={() => props.onSelect(row)} />   
                             </Grid>
                         )
                     }
@@ -40,39 +55,46 @@ function KitItemAddModalDisplay(props: any) {
                 className="-striped -highlight"
             />
 
-            < Grid container justify="flex-end">
-            < Grid item xs={12}>
-            </ Grid>
-                < Grid item xs={12}>
+            < Grid container justify="flex-end">       
+             
                     <Button
                         variant="contained"
                         color="primary"
                         className={props.classes.searchButtons}
-                        onClick={() => props.queueLinkGroups()}
+                        onClick={() =>
+                            {
+                            props.queueLinkGroups()}} 
                     >
                         Queue Link Groups
                             </Button>
 
-                </Grid>
+              
             </Grid>
             <ReactTable
                 data={props.selectedData}
                 columns={[
                     {
                         Header: "SelectedLinkGroupID",
-                        accessor: "LinkGroupId",
+                        accessor: "linkGroupId",
                         show: false
                     },
                     {
-                        Header: "Selected Link Groups",
-                        accessor: "GroupName"
+                        Header: () => (
+                            <div style={{ textAlign: "center" }}> Selected Link Groups</div>
+                          ),
+                          Cell: row => (
+                            <div style={{ textAlign: "center" }}>{row.value}</div>
+                          ),
+                        accessor: "groupName"
                     },
                     {
                         Header: "Remove",
-                        id: "Remove",
+                        id: "remove",
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
-                                <Checkbox color="primary" value="false" onChange={() => props.onRemove(row)} />
+                                <Button variant="contained" color="primary"  onClick = {() => props.onRemove(row)} >
+                                Remove
+                            </Button>
                             </Grid>
                         )
                     }
@@ -81,8 +103,7 @@ function KitItemAddModalDisplay(props: any) {
                 className="-striped -highlight"
             />
             < Grid container justify="flex-end">
-                < Grid item md={12}>
-                    <Button
+                   <Button
                         variant="contained"
                         color="primary"
                         className={props.classes.searchButtons}
@@ -91,7 +112,6 @@ function KitItemAddModalDisplay(props: any) {
                         Add to Kit
                             </Button>
 
-                </Grid>
             </Grid>
         </React.Fragment>
     )

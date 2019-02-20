@@ -16,7 +16,7 @@ function LinkGroupKitAddModalSearch(props: any) {
     return (
         <React.Fragment>
             <Grid container justify="flex-start">
-                < Grid item md={12}>
+                < Grid item xs = {12} sm={12}  md={5}>
                     <KitItemAddModalLabelTextBox
                         Name={props.linkGroupName}
                         labelName={props.linkGrouplabelName}
@@ -25,7 +25,7 @@ function LinkGroupKitAddModalSearch(props: any) {
                         labelValue = {props.linkGrouplabelName}
                     />
                 </Grid>
-            < Grid item md={12}>
+            < Grid item xs = {12} sm={12} md={5}>
                 <KitItemAddModalLabelTextBox
                     Name={props.modifierPluName}
                     labelName={props.modifierPlulabelName}
@@ -35,8 +35,8 @@ function LinkGroupKitAddModalSearch(props: any) {
                 />
                             </Grid>
             
-              < Grid item md={12}>
-                < Grid container justify="flex-end">                   
+              < Grid item xs = {12} sm={12}  md={2}>
+                < Grid container justify="flex-start">                   
                     <Button
                         variant="contained"
                         color="primary"
