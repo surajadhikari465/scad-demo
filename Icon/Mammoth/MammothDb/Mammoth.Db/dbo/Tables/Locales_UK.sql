@@ -12,3 +12,9 @@
     CONSTRAINT [PK_Locales_UK] PRIMARY KEY CLUSTERED ([Region] ASC, [LocaleID] ASC) WITH (FILLFACTOR = 100) ON [FG_UK],
     CONSTRAINT [CK_Locales_UK_Region] CHECK ([Region] = 'UK')
 );
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Locales_UK_BusinessUnitId]
+    ON [dbo].[Locales_UK]([BusinessUnitID] ASC) WITH (FILLFACTOR = 80)
+    ON [FG_UK];
+GO

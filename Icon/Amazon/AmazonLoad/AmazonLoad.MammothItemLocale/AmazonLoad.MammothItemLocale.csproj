@@ -119,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroupRange.cs" />
     <Compile Include="MammothItemLocaleBuilder.cs" />
     <Compile Include="MammothItemLocaleModel.cs" />
     <Compile Include="MessageBuilderForMammothItemLocale.cs" />

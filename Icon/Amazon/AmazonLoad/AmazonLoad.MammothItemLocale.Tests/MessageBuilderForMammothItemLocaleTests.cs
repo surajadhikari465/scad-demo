@@ -41,8 +41,8 @@ namespace AmazonLoad.MammothItemLocale.Tests
         public void MessageBuilderForMammothItemLocale_CreateTraitsForItemLocale_CreatesExpectedColorAddedTrait_WithValueFalse()
         {
             // Given
-            var traitValue = false;
-            var expectedTraitTypeValue = traitValue ? "1" : "0";
+            var traitValue = "false";
+            var expectedTraitTypeValue = "false";
             var expectedActionSpecified = true;
             var expectedAction = Contracts.ActionEnum.AddOrUpdate;
             var expectedTraitCode = "CLA";
@@ -68,8 +68,8 @@ namespace AmazonLoad.MammothItemLocale.Tests
         public void MessageBuilderForMammothItemLocale_CreateTraitsForItemLocale_CreatesExpectedPrimeAffinityPSGTrait_WithValueTrue()
         {
             // Given
-            var traitValue = true;
-            var expectedTraitTypeValue = traitValue ? "1" : "0";
+            var traitValue = "true";
+            var expectedTraitTypeValue = "true";
             var expectedActionSpecified = true;
             var expectedAction = Contracts.ActionEnum.AddOrUpdate;
             var expectedTraitCode = "CLA";

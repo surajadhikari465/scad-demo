@@ -45,45 +45,7 @@ namespace AmazonLoad.MammothItemLocale.Tests
             set { region = value; }
         }
 
-        [TestMethod]
-        public void MammothItemLocaleBuilder_LoadMammothtemLocales_LoadsExpectedModelCount()
-        {
-            // Given
-            TestRegion = "NE";
-            int maxNumberOfRows = 60;
-
-
-            using (SqlConnection mammothSqlConnection = new SqlConnection(mammothConnectionString))
-            {
-                // When
-                var itemLocaleData = MammothItemLocaleBuilder.LoadMammothtemLocales(mammothSqlConnection, TestRegion, maxNumberOfRows);
-
-                // Then
-                Assert.IsNotNull(itemLocaleData);
-                Assert.AreEqual(maxNumberOfRows, itemLocaleData.Count());
-            }
-        }
-
-        [TestMethod]
-        public void MammothItemLocaleBuilder_GetFormattedSqlForQuery_ReplacesRegionAndTop()
-        {
-            // Given
-            string region = "XY";
-            int maxNumberOfRows = 60;
-            string expectedTop = $"select top {maxNumberOfRows}";
-            string expectedItamAttributes_Locale = $"dbo.ItemAttributes_Locale_{region} s";
-            string expectedLocales = $"join dbo.Locales_{ region} l";
-            string expectedItemLocaleSupplier = $"join dbo.ItemLocale_Supplier_{ region} ils";
-
-            // When
-            var result = MammothItemLocaleBuilder.GetFormattedSqlForMammothItemLocaleQuery(region, maxNumberOfRows);
-
-            // Then
-            Assert.IsTrue(result.Contains(expectedTop));
-            Assert.IsTrue(result.Contains(expectedItamAttributes_Locale));
-            Assert.IsTrue(result.Contains(expectedLocales));
-            Assert.IsTrue(result.Contains(expectedItemLocaleSupplier));
-        }
+     
 
         [TestMethod]
         public void MammothItemLocaleBuilder_SendMessagesToEsb_SingleMessageCallsSend()
