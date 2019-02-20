@@ -32,6 +32,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         private Mock<ICommandHandler<UpdateStagingTableDatesForEsbCommand>> mockUpdateStagingTableDatesForEsbCommandHandler;
         private Mock<IMessageGenerator<MessageQueueItemLocale>> mockMessageGeneratorItemLocale;
         private Mock<IMessageGenerator<MessageQueuePrice>> mockMessageGeneratorPrice;
+        private List<IRMAPush> mockPosData;
 
         [TestInitialize]
         public void Initialize()
@@ -48,7 +49,6 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockMessageGeneratorPrice = new Mock<IMessageGenerator<MessageQueuePrice>>();
 
             StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
-            SetUpCache(false);
 
             processorModule = new ProcessDataForEsbModule(
                 mockIconContext.Object,
@@ -67,11 +67,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_InitialExecutionOfProcessingLoop_CachesShouldBePopulated()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -104,11 +104,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_PosDataIsMarkedAndReady_ItemLocaleMessagesShouldBeBuilt()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -126,11 +126,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_ItemLocaleMessagesAreBuilt_ItemLocaleMessagesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -148,11 +148,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_NoItemLocaleMessagesAreSuccessfullyBuilt_NoItemLocaleMessagesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -170,11 +170,14 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_PosDataIsMarkedAndReady_PriceMessagesShouldBeBuilt()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            // setup cache to have Bu not part of Gpm to verify MessageGeneratorPrice.BuildMessages is called
+            this.mockPosData.ForEach(x => SetUpNonGpmStoreListCache(x.BusinessUnit_ID));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -192,11 +195,14 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_PriceMessagesAreBuilt_PriceMessagesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            // setup cache to have Bu not part of Gpm to verify MessageGeneratorPrice.SaveMessages is called
+            this.mockPosData.ForEach(x => SetUpNonGpmStoreListCache(x.BusinessUnit_ID));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -214,11 +220,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_NoPriceMessagesAreSuccessfullyBuilt_NoPriceMessagesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -236,11 +242,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForEsb_AfterItemLocaleAndPriceMessagesAreBuilt_StagingTableDateShouldBeUpdated()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -255,16 +261,17 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForEsb_AllRegionsOnGPM__SaveMessagesForPriceShouldNotBeCalled()
+        public void ProcessDataForEsb_AllStoresOnGpm_SaveMessagesForPriceShouldNotBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
             Cache.ClearAll();
-            SetUpCache(true);
+            // input businessUnitId that isn't part of data being processed.
+            this.mockPosData.ForEach(x => SetUpNonGpmStoreListCache(x.BusinessUnit_ID + 1)); 
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
             mockMessageGeneratorItemLocale.Setup(mg => mg.BuildMessages(It.IsAny<List<IRMAPush>>())).Returns(new List<MessageQueueItemLocale> { new TestItemLocaleMessageBuilder() });
@@ -278,14 +285,17 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForEsb_NoRegionOnGPM__SaveMessagesForPriceShouldBeCalled()
+        public void ProcessDataForEsb_NoStoresOnGpm_SaveMessagesForPriceShouldBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            // make sure BUs being processed are not marked on GPM
+            this.mockPosData.ForEach(x => SetUpNonGpmStoreListCache(x.BusinessUnit_ID)); 
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForEsbQuery>())).Returns(queuedPosData.Dequeue);
@@ -299,19 +309,9 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             mockMessageGeneratorPrice.Verify(mg => mg.SaveMessages(It.IsAny<List<MessageQueuePrice>>()), Times.Once);
         }
 
-        private void SetUpCache(Boolean isRegionGPM)
+        private void SetUpNonGpmStoreListCache(int businessUnitId)
         {
-            Cache.regionCodeToGPMInstanceDataFlag.Add("FL", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("MA", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("MW", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NA", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NC", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NE", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("PN", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("RM", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SO", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SP", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SW", isRegionGPM);
+            Cache.nonGpmStores.Add(businessUnitId);
         }
     }
 }

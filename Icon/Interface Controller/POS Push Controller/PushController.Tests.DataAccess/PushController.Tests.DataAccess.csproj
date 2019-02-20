@@ -80,9 +80,8 @@
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
     </Reference>
-    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Icon.Framework.2018.5.10.4\lib\net46\Icon.Framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Icon.Framework">
+      <HintPath>..\..\packages\Icon.Framework.2019.1.31.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -92,14 +91,14 @@
       <HintPath>..\..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Icon.Testing.2016.10.27.2\lib\net45\Icon.Testing.dll</HintPath>
+    <Reference Include="Icon.Testing">
+      <HintPath>..\..\packages\Icon.Testing.2018.10.5.4\lib\net46\Icon.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Irma.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Irma.Testing.2017.6.6.3\lib\net45\Irma.Testing.dll</HintPath>
+    <Reference Include="Irma.Testing">
+      <HintPath>..\..\packages\Irma.Testing.2018.8.16.1\lib\net46\Irma.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">

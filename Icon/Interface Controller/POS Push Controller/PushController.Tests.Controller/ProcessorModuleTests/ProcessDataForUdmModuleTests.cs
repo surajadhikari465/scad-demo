@@ -37,6 +37,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         private Mock<IUdmDeleteService<IRMAItemSubscription>> mockItemSubscriptionDeleteService;
         private Mock<IUdmDeleteService<TemporaryPriceReductionModel>> mockTemporaryPriceReductionDeleteService;
         private Mock<IUdmDeleteService<ItemLinkModel>> mockItemLinkDeleteService;
+        private List<IRMAPush> mockPosData;
 
         [TestInitialize]
         public void Initialize()
@@ -56,7 +57,6 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             this.mockItemLinkDeleteService = new Mock<IUdmDeleteService<ItemLinkModel>>();
 
             StartupOptions.RegionsToProcess = ConfigurationManager.AppSettings["RegionsToProcess"].Split(',');
-            SetUpCache(false);
 
             processorModule = new ProcessDataForUdmModule(
                 mockIconContext.Object,
@@ -91,11 +91,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_PosDataIsMarkedAndReady_ItemLinkEntitiesShouldBeBuilt()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -113,11 +113,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_ItemLinkEntitiesAreBuilt_ItemLinkEntitiesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithLinkedIdentifier("12345555") };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithLinkedIdentifier("12345555") };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -128,8 +128,8 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             processorModule.Execute();
 
             // Then.
-            var childScanCodes = mockPosData.Select(ip => ip.Identifier).ToList();
-            var parentScanCodes = mockPosData.Select(ip => ip.LinkedIdentifier).ToList();
+            var childScanCodes = this.mockPosData.Select(ip => ip.Identifier).ToList();
+            var parentScanCodes = this.mockPosData.Select(ip => ip.LinkedIdentifier).ToList();
             mockScanCodeCacheHelper.Verify(m => m.Populate(It.Is<List<string>>(l => l.SequenceEqual(childScanCodes))), Times.Once);
             mockScanCodeCacheHelper.Verify(m => m.Populate(It.Is<List<string>>(l => l.SequenceEqual(parentScanCodes))), Times.Once);
             mockItemLinkEntityGenerator.Verify(eg => eg.SaveEntities(It.IsAny<List<ItemLinkModel>>()), Times.Once);
@@ -139,11 +139,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_NoItemLinkEntitiesAreSuccessfullyBuilt_ItemLinkEntitiesShouldNotBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -161,11 +161,14 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_PosDataIsMarkedAndReady_ItemPriceEntitiesShouldBeBuilt()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            // setup cache to have stores that are not part of data being processed
+            this.mockPosData.ForEach(x => SetupNonGpmStoresCache(x.BusinessUnit_ID));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -183,11 +186,13 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_ItemPriceEntitiesAreBuilt_ItemPriceEntitiesShouldBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            this.mockPosData.ForEach(x => SetupNonGpmStoresCache(x.BusinessUnit_ID));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -205,11 +210,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_PosDataHasScanCodeDeauthorizeChangeType_BulkSubscriptionDeleteServiceShouldNotBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDeauthorization) };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDeauthorization) };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -228,11 +233,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_PosDataHasScanCodeDeleteChangeType_BulkSubscriptionDeleteServiceShouldBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDelete) };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDelete) };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -251,7 +256,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_PosDataHasAnyChangeTypeOtherThanDeleteOrDeauthorize_BulkSubscriptionDeleteServiceShouldNotBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush>
+            this.mockPosData = new List<IRMAPush>
             {
                 new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ItemLocaleAttributeChange),
                 new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange),
@@ -263,7 +268,7 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -281,11 +286,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_BulkSubscriptionDeleteThrowsException_RowByRowSubscriptionDeleteServiceShouldBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDelete) };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder().WithChangeType(Constants.IrmaPushChangeTypes.ScanCodeDelete) };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -306,11 +311,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_NoItemPriceEntitiesAreSuccessfullyBuilt_ItemPriceEntitiesShouldNotBeSaved()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -328,11 +333,11 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         public void ProcessDataForUdm_AfterItemLinkAndItemPriceEntitiesAreGenerated_StagingTableDateShouldBeUpdated()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -346,16 +351,17 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             mockUpdateStagingTableDatesCommandHandler.Verify(c => c.Execute(It.IsAny<UpdateStagingTableDatesForUdmCommand>()), Times.Once);
         }
         [TestMethod]
-        public void ProcessDataForUdm_AllRegionsOnGPM__SaveEntitiesForPriceShouldNotBeCalled()
+        public void ProcessDataForUdm_AllStoresOnGpm_SaveEntitiesForPriceShouldNotBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
             Cache.ClearAll();
-            SetUpCache(true);
+            // setup cache to have stores that are not part of data being processed
+            this.mockPosData.ForEach(x => SetupNonGpmStoresCache(x.BusinessUnit_ID + 1));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -370,14 +376,17 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
         }
 
         [TestMethod]
-        public void ProcessDataForUdm_NoRegionOnGPM__SaveEntitiesForPriceShouldBeCalled()
+        public void ProcessDataForUdm_NoStoresOnGpm_SaveEntitiesForPriceShouldBeCalled()
         {
             // Given.
-            var mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
+            this.mockPosData = new List<IRMAPush> { new TestIrmaPushBuilder() };
             var mockEmptyPosData = new List<IRMAPush>();
+            Cache.ClearAll();
+            // setup cache to have stores that are of data being processed
+            this.mockPosData.ForEach(x => SetupNonGpmStoresCache(x.BusinessUnit_ID));
 
             var queuedPosData = new Queue<List<IRMAPush>>();
-            queuedPosData.Enqueue(mockPosData);
+            queuedPosData.Enqueue(this.mockPosData);
             queuedPosData.Enqueue(mockEmptyPosData);
 
             mockGetIconPosDataQueryHandler.Setup(q => q.Execute(It.IsAny<GetIconPosDataForUdmQuery>())).Returns(queuedPosData.Dequeue);
@@ -390,19 +399,9 @@ namespace PushController.Tests.Controller.ProcessorModuleTests
             // Then.
             mockItemPriceEntityGenerator.Verify(eg => eg.SaveEntities(It.IsAny<List<ItemPriceModel>>()), Times.Once);
         }
-        private void SetUpCache(Boolean isRegionGPM)
+        private void SetupNonGpmStoresCache(int businessUnitId)
         {
-            Cache.regionCodeToGPMInstanceDataFlag.Add("FL", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("MA", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("MW", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NA", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NC", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("NE", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("PN", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("RM", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SO", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SP", isRegionGPM);
-            Cache.regionCodeToGPMInstanceDataFlag.Add("SW", isRegionGPM);
+            Cache.nonGpmStores.Add(businessUnitId);
         }
     }
 }
