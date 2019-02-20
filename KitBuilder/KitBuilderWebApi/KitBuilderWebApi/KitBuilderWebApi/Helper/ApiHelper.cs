@@ -14,7 +14,7 @@ namespace KitBuilderWebApi.Helper
 		public static void InitializeClient()
 		{
 			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("appsettings.Local.json");
+			configurationBuilder.AddJsonFile("appsettings.json");
 			IConfiguration configuration = configurationBuilder.Build();
 
 			BasedUri = configuration["WebApiBaseAddress:MammothBaseAddress"];

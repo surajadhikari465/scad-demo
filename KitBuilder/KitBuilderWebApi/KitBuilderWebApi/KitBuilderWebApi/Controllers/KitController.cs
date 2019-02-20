@@ -89,6 +89,12 @@ namespace KitBuilderWebApi.Controllers
 			CaloricCalculator calculator = (CaloricCalculator)services.GetService(typeof(IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>));
 			Task<KitLocaleDto> kitLocaleDto = calculator.Run(parameters);
 
+			if (kitLocaleDto.Result.KitLocaleId == 0)
+			{
+				logger.LogWarning("No KitLocale can be found by KitLocaleId: " + kitLocaleId.ToString());
+				return NotFound();
+			}
+
 			return Ok(kitLocaleDto.Result);
 		}
 

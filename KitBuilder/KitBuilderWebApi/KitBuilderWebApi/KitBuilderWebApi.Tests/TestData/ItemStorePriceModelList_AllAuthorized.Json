@@ -9,8 +9,63 @@
 		"Currency": "USD"
 	},
 	{
-		"ItemId": 2214753,
-		"ScanCode": "22043900000",
+		"ItemId": 108561,
+		"ScanCode": "22139100000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.25,
+		"Currency": "USD"
+	},
+	{
+		"ItemId": 1849257,
+		"ScanCode": "22022000000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.79,
+		"Currency": "USD"
+	},
+	{
+		"ItemId": 1879314,
+		"ScanCode": "22052800000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.49,
+		"Currency": "USD"
+	},
+	{
+		"ItemId": 2137082,
+		"ScanCode": "22294800000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.60,
+		"Currency": "USD"
+	},
+	{
+		"ItemId": 2208285,
+		"ScanCode": "22002200000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.75,
+		"Currency": "USD"
+	},
+	{
+		"ItemId": 2211226,
+		"ScanCode": "22007800000",
+		"BusinessUnitID": 10316,
+		"Authorized": true,
+		"Multiple": 1,
+		"Price": 0.50,
+		"Currency": "USD"
+	},
+
+	{
+		"ItemId": 2214747,
+		"ScanCode": "22043600000",
 		"BusinessUnitID": 10316,
 		"Authorized": true,
 		"Multiple": 1,
@@ -27,66 +82,13 @@
 		"Currency": "USD"
 	},
 	{
-		"ItemId": 2214747,
-		"ScanCode": "22043600000",
+		"ItemId": 2214753,
+		"ScanCode": "22043900000",
 		"BusinessUnitID": 10316,
 		"Authorized": true,
 		"Multiple": 1,
 		"Price": 0.30,
 		"Currency": "USD"
-	},
-	{
-		"ItemId": 1879314,
-		"ScanCode": "22052800000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.49,
-		"Currency": "USD"
-	},
-	{
-		"ItemId": 108561,
-		"ScanCode": "22139100000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.25,
-		"Currency": "USD"
-	},
-	{
-		"ItemId": 2211226,
-		"ScanCode": "22007800000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.50,
-		"Currency": "USD"
-	},
-	{
-		"ItemId": 2208285,
-		"ScanCode": "22002200000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.75,
-		"Currency": "USD"
-	},
-	{
-		"ItemId": 2137082,
-		"ScanCode": "22294800000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.60,
-		"Currency": "USD"
-	},
-	{
-		"ItemId": 1849257,
-		"ScanCode": "22022000000",
-		"BusinessUnitID": 10316,
-		"Authorized": true,
-		"Multiple": 1,
-		"Price": 0.79,
-		"Currency": "USD"
 	}
 ]
+

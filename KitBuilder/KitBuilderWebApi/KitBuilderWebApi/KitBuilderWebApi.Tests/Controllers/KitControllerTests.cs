@@ -386,25 +386,25 @@ namespace KitBuilderWebApi.Tests.Controllers
 
         }
 
-        [TestMethod]
-        public void KitsController_Save_InvalidLinkGroupItemIds_ReturnsBadRequest()
-        {
-            var kitSaveParameters = new KitDto()
-            {
-                KitId = 1,
-                Description = "Bad Kit",
-                ItemId = 99,
-                KitLinkGroup = new List<KitLinkGroupDto>(),
-                KitInstructionList = new List<KitInstructionListDto>()
+        //[TestMethod]
+        //public void KitsController_Save_InvalidLinkGroupItemIds_ReturnsBadRequest()
+        //{
+        //    var kitSaveParameters = new KitDto()
+        //    {
+        //        KitId = 1,
+        //        Description = "Bad Kit",
+        //        ItemId = 99,
+        //        KitLinkGroup = new List<KitLinkGroupDto>(),
+        //        KitInstructionList = new List<KitInstructionListDto>()
 
-            };
+        //    };
 
-            var response = kitController.KitSaveDetails(kitSaveParameters);
+        //    var response = kitController.KitSaveDetails(kitSaveParameters);
 
-            Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
-            Assert.IsTrue(((BadRequestObjectResult)response).Value.ToString().Contains("LinkGroupItemIds"), "LinkGroupItemIds parameter validation");
+        //    Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult), "Bad Request Expected");
+        //    Assert.IsTrue(((BadRequestObjectResult)response).Value.ToString().Contains("LinkGroupItemIds"), "LinkGroupItemIds parameter validation");
 
-        }
+        //}
 
         [TestMethod]
         public void KitsController_Save_InvalidLinkGroupIds_ReturnsBadRequest()
