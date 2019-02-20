@@ -9,10 +9,12 @@ using NutritionWebApi.DataAccess.Commands;
 using NutritionWebApi.DataAccess.Queries;
 using NutritionWebApi.Controllers;
 using NutritionWebApi.Common.Interfaces;
-using  NutritionWebApi.Tests.Common;
 using Icon.Logging;
 using NutritionWebApi.Tests.Common.Builders;
-using  System.Data.SqlClient;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Data;
+using Dapper;
 
 namespace NutritionWebApi.Tests.Integration.Controllers
 {
@@ -23,6 +25,7 @@ namespace NutritionWebApi.Tests.Integration.Controllers
         private string connectionString; 
         private IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>> getNutritionItemQuery;
         private ICommandHandler<AddOrUpdateNutritionItemCommand> updateNutritionItemCommandHandler;
+        private ICommandHandler<DeleteNutritionCommand> deleteNutritionCommandHandler;
         private Mock<ILogger> logger;
         private NutritionController controller;
 
@@ -36,9 +39,10 @@ namespace NutritionWebApi.Tests.Integration.Controllers
 
             getNutritionItemQuery = new GetNutritionItemQueryHandler(this.connectionProvider);
             updateNutritionItemCommandHandler = new AddOrUpdateNutritionItemCommandHandler(this.connectionProvider);
+						deleteNutritionCommandHandler = new DeleteNutritionCommandHandler(this.connectionProvider);
             logger = new Mock<ILogger>();
 
-            controller = new NutritionController(getNutritionItemQuery, updateNutritionItemCommandHandler, logger.Object);
+            controller = new NutritionController(getNutritionItemQuery, updateNutritionItemCommandHandler, deleteNutritionCommandHandler, logger.Object);
         }
         
         [TestMethod]
@@ -68,5 +72,21 @@ namespace NutritionWebApi.Tests.Integration.Controllers
             return itemList;
         }
 
+        [TestMethod]
+        public void DeleteNutritionItems_FivePlus_RemovesRecordsFromDatabase()
+        {
+            // Given.
+            var list = BuildNutritionItemList(5);
+            controller.Request = new System.Net.Http.HttpRequestMessage();
+            controller.Configuration = new HttpConfiguration();
+
+            // When
+            controller.AddOrUpdateNutritionItem(list);
+            var plu = this.connectionProvider.Connection.Query<string>(sql: "SELECT Plu FROM nutrition.ItemNutrition WHERE PLU IN('1','2','3','4','5');", commandType: CommandType.Text).ToList();
+            var response = controller.DeleteNutritionItem(plu) as OkNegotiatedContentResult<string>;
+
+            // Assert  
+            Assert.IsNotNull(response);
+        }
     }
 }

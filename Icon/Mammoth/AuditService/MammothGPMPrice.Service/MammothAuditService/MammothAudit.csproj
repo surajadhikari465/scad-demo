@@ -101,18 +101,23 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+	  <TransformOnBuild>true</TransformOnBuild>
     </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
+	  <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
+	  <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
+	  <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
+	  <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -143,4 +148,5 @@
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
-</Project>
+  <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
+  </Project>

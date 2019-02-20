@@ -1,10 +1,11 @@
 import * as React from 'react'
-import  Grid  from '@material-ui/core/Grid';
-import  Button  from '@material-ui/core/Button';
-import  FormControl  from '@material-ui/core/FormControl';
-import  Select  from '@material-ui/core/Select';
-import  MenuItem  from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 
 const styles = (theme: any) => ({
     root: {
@@ -32,10 +33,20 @@ function SearchInstructionLists(props: any) {
     return (
         <React.Fragment>
             <Grid container justify="center" alignItems="center" className={props.classes.root}>
-                <Grid item md={3} className={props.classes.label}>
-                <span style={{marginLeft: '20px', textAlign: 'center'}}> Instruction List Name: </span>
+                <Hidden only={['md', 'lg', 'xl']}>
+                    <Grid item xs >
+
+                    </Grid>
+                </Hidden>
+                <Grid item xs={11} sm={2} md={3} lg={3} className={props.classes.label}>
+                    <span style={{ marginLeft: '20px', textAlign: 'center' }}> Instruction List Name: </span>
                 </Grid>
-                <Grid item md={3}>
+                <Hidden only={['xs', 'md', 'lg', 'xl']}>
+                    <Grid item xs >
+
+                    </Grid>
+                </Hidden>
+                <Grid item xs={11} sm={9} md={3} lg={3}>
                     <FormControl className={props.classes.formControl}>
                         <Select
                             onChange={props.onChange}
@@ -48,14 +59,24 @@ function SearchInstructionLists(props: any) {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item md={5} style={{marginLeft: '20px'}}>
-                    <Grid container   justify="flex-start">
+                <Hidden only={['md', 'lg', 'xl']}>
+                    <Grid item xs >
+
+                    </Grid>
+                </Hidden>
+                <Grid item xs={11} sm={11} md={5} lg={5} style={{ marginLeft: '25px' }}>
+                    <Grid container justify="flex-start">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                             Search
                     </Button>
                     </Grid>
                 </Grid>
-                <Grid item md={10}>
+                <Hidden only={['md', 'lg', 'xl']}>
+                    <Grid item xs >
+
+                    </Grid>
+                </Hidden>
+                <Grid item xs={11} sm={11} md={10} lg={10}>
                     <Grid container justify="flex-start">
                         <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddNewList()} >
                             Add New List

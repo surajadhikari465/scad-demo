@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Commands\AddOrUpdateNutritionItemCommand.cs" />
     <Compile Include="Commands\AddOrUpdateNutritionItemCommandHandler.cs" />
+    <Compile Include="Commands\DeleteNutritionCommand.cs" />
+    <Compile Include="Commands\DeleteNutritionCommandHandler.cs" />
     <Compile Include="Decorators\DbCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\DbQueryHandlerDecorator.cs" />
     <Compile Include="Extensions\Extensions.cs" />

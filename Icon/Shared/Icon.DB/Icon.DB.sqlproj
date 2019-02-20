@@ -689,6 +689,9 @@
     <None Include="Scripts\PopulateData\Archive\StashDataForNewSignAttributeColumns.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateAnimalWelfareTraitPattern.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateNewItemSignAttributeColumnsWithExistingData.sql" />
+    <Build Include="nutrition\User Defined Types\Plu.sql" />
+    <Build Include="nutrition\Stored Procedures\DeleteNutritionItems.sql" />
+    <None Include="Scripts\PopulateData\AddDeleteNutritionToEventType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
