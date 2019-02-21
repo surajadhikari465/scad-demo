@@ -39,7 +39,7 @@
 	[Use By EAB] [nvarchar](max) NULL,
 	[Wrapped Tare Weight] [nvarchar](max) NULL,
 	[Msrp] [smallmoney] NOT NULL,
-	[SupplierName] [nvarchar](255) NOT NULL,
+	[SupplierName] [nvarchar](255) NULL,
 	[IrmaVendorKey] [nvarchar](10) NULL,
 	[SupplierItemID] [nvarchar](20) NULL,
 	[SupplierCaseSize] [decimal](9, 4) NULL,
@@ -49,6 +49,5 @@
 	[DefaultScanCode] [bit] NOT NULL,
 	[IrmaItemKey] [int] NULL, 
 	[GroupId] INT NULL, 
-	[Processed] BIT NOT NULL
-		CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0)
+	[Processed] BIT NOT NULL CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0)
 )
