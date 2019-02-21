@@ -1,0 +1,41 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-PRD\MAMMOTH;DatabaseName=Mammoth;                                          
+Connections/JDBC/Mammoth/Username=Mammoth.tibco.prd
+Connections/JDBC/Mammoth/Password=#!b3EuEXTsqEzl6ESJkG6JPdkty7B0j1HwwBDpsgPcnywbB4+SAlJrig==
+
+Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+Connections/JMS/SB1/Username=sb1_mammothPriceEslUser
+Connections/JMS/SB1/Password=#!amqE0oOSY/IXx1h2/g5ap+tOQEeVNNSgoFt+o44Q4eJKiKyjmApmNw==
+
+ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_mammothPriceUser
+ErrorMessageSettings/Connections/JMS/SB1/Password=#!pxUTqjbG2a9GG+4QlgdEv2sxEm4i1KLx00tfV3qH7K773rwHC8WOKQ==
+
+LoggerSettings/Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+LoggerSettings/Connections/JMS/SB1/Username=sb1_cleUser
+LoggerSettings/Connections/JMS/SB1/Password=#!eX4qFjzKXKQcKtxm7VB/KzIJZ0mUXsEMsfGBEJolctv73PPVmgVY9w==
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- Esl Price Listener Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Esl Price Listener Process Archive,Esl Price Listener Process Archive-1,machine=cerp1643
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- Esl Price Listener Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Esl Price Listener Process Archive,Esl Price Listener Process Archive-2,machine=cerp1644
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- Esl Price Listener Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Esl Price Listener Process Archive,Esl Price Listener Process Archive-3,machine=odrp1634
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- Esl Price Listener Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Esl Price Listener Process Archive,Esl Price Listener Process Archive-4,machine=odrp1635

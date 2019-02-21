@@ -28,13 +28,22 @@ namespace AmazonLoad.MammothItemLocale
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
             var mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
             var transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
+            var connectionTimeoutSeconds = AppSettingsAccessor.GetIntSetting("ConnectionTimeoutSeconds", 3600);
+            var numberOfRecordsPerEsbMessage = AppSettingsAccessor.GetIntSetting("numberOfRecordsPerESBMessage", 100);
+            var clientSideProcessGroupCount = AppSettingsAccessor.GetIntSetting("ClientSideProcessGroupCount", 1000);
 
             Console.WriteLine("Flags:");
+            Console.WriteLine($"  connectionTimeoutSeconds: {connectionTimeoutSeconds}");
             Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
             Console.WriteLine($"  SaveMessages: {saveMessages}");
             Console.WriteLine($"  SaveMessages: \"{saveMessagesDirectory}\"");
             Console.WriteLine($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
             Console.WriteLine($"  SendMessagesToEsb: {sendToEsb}");
+            Console.WriteLine($"  NumberOfRecordsPerESBMessage: {numberOfRecordsPerEsbMessage}");
+            Console.WriteLine($"  ClientSideProcessGroupCount: {clientSideProcessGroupCount}");
+
+
+
             if (!sendToEsb)
             {
                 Console.WriteLine($"\"SendMessagesToEsb\" flag is OFF: messages not actually sending to ESB queue!");
@@ -63,6 +72,9 @@ namespace AmazonLoad.MammothItemLocale
                 saveMessagesDirectory: saveMessagesDirectory,
                 nonReceivingSysName: nonReceivingSysName,
                 transactionType: transactionType,
+                connectionTimeoutSeconds: connectionTimeoutSeconds,
+                clientSideProcessGroupCount: clientSideProcessGroupCount, 
+                numberOfRecordsPerEsbMessage: numberOfRecordsPerEsbMessage,
                 sendToEsb: sendToEsb);
 
             Console.WriteLine($"Number of records sent: {MammothItemLocaleBuilder.NumberOfRecordsSent}.");

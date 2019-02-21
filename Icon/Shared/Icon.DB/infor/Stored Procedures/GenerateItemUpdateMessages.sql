@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [infor].[GenerateItemUpdateMessages] 
-	@updatedItemIDs app.UpdatedItemIDsType readonly
+	@updatedItemIDs app.UpdatedItemIDsType readonly,
+  @isDeleteNutrition bit = 0
 AS
 
 --************************************************************************
@@ -10,6 +11,11 @@ AS
 BEGIN
 	set nocount on;
 	
+  IF(object_id('tempdb..#itemIDs') is not null) DROP TABLE #itemIDs;
+
+  SELECT DISTINCT itemID INTO #itemIDs
+  FROM @updatedItemIDs;
+
 	declare
 		@localeID int,
 		@productDescriptionTraitID int,
@@ -257,7 +263,7 @@ BEGIN
 		i.ImageURL																		AS ImageURL
 
 	from 
-		@updatedItemIDs					ui
+		#itemIDs					ui
 		JOIN Item						i			ON	ui.itemID					= i.itemID
 		JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
 		JOIN ScanCode					sc			ON	i.itemID					= sc.itemID
@@ -339,81 +345,95 @@ BEGIN
 		LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID	
 	where
 		it.itemTypeID <> @couponItemTypeId
-
-	insert into app.MessageQueueNutrition select 
-		 [MessageQueueId] AS [MessageQueueId]
-		,[Plu] AS [Plu]
-		,[RecipeName] AS [RecipeName]
-		,[Allergens] AS [Allergens]
-		,[Ingredients] AS [Ingredients]
-		,[ServingsPerPortion] AS [ServingsPerPortion]
-		,[ServingSizeDesc] AS [ServingSizeDesc]
-		,[ServingPerContainer] AS [ServingPerContainer]
-		,[HshRating] AS [HshRating]
-		,[ServingUnits] AS [ServingUnits]
-		,[SizeWeight] AS [SizeWeight]
-		,[Calories] AS [Calories]
-		,[CaloriesFat] AS [CaloriesFat]
-		,[CaloriesSaturatedFat] AS [CaloriesSaturatedFat]
-		,[TotalFatWeight] AS [TotalFatWeight]
-		,[TotalFatPercentage] AS [TotalFatPercentage]
-		,[SaturatedFatWeight] AS [SaturatedFatWeight]
-		,[SaturatedFatPercent] AS [SaturatedFatPercent]
-		,[PolyunsaturatedFat] AS [PolyunsaturatedFat]
-		,[MonounsaturatedFat] AS [MonounsaturatedFat]
-		,[CholesterolWeight] AS [CholesterolWeight]
-		,[CholesterolPercent] AS [CholesterolPercent]
-		,[SodiumWeight] AS [SodiumWeight]
-		,[SodiumPercent] AS [SodiumPercent]
-		,[PotassiumWeight] AS [PotassiumWeight]
-		,[PotassiumPercent] AS [PotassiumPercent]
-		,[TotalCarbohydrateWeight] AS [TotalCarbohydrateWeight]
-		,[TotalCarbohydratePercent] AS [TotalCarbohydratePercent]
-		,[DietaryFiberWeight] AS [DietaryFiberWeight]
-		,[DietaryFiberPercent] AS [DietaryFiberPercent]
-		,[SolubleFiber] AS [SolubleFiber]
-		,[InsolubleFiber] AS [InsolubleFiber]
-		,[Sugar] AS [Sugar]
-		,[SugarAlcohol] AS [SugarAlcohol]
-		,[OtherCarbohydrates] AS [OtherCarbohydrates]
-		,[ProteinWeight] AS [ProteinWeight]
-		,[ProteinPercent] AS [ProteinPercent]
-		,[VitaminA] AS [VitaminA]
-		,[Betacarotene] AS [Betacarotene]
-		,[VitaminC] AS [VitaminC]
-		,[Calcium] AS [Calcium]
-		,[Iron] AS [Iron]
-		,[VitaminD] AS [VitaminD]
-		,[VitaminE] AS [VitaminE]
-		,[Thiamin] AS [Thiamin]
-		,[Riboflavin] AS [Riboflavin]
-		,[Niacin] AS [Niacin]
-		,[VitaminB6] AS [VitaminB6]
-		,[Folate] AS [Folate]
-		,[VitaminB12] AS [VitaminB12]
-		,[Biotin] AS [Biotin]
-		,[PantothenicAcid] AS [PantothenicAcid]
-		,[Phosphorous] AS [Phosphorous]
-		,[Iodine] AS [Iodine]
-		,[Magnesium] AS [Magnesium]
-		,[Zinc] AS [Zinc]
-		,[Copper] AS [Copper]
-		,[Transfat] AS [Transfat]
-		,[CaloriesFromTransfat] AS [CaloriesFromTransfat]
-		,[Om6Fatty] AS [Om6Fatty]
-		,[Om3Fatty] AS [Om3Fatty]
-		,[Starch] AS [Starch]
-		,[Chloride] AS [Chloride]
-		,[Chromium] AS [Chromium]
-		,[VitaminK] AS [VitaminK]
-		,[Manganese] AS [Manganese]
-		,[Molybdenum] AS [Molybdenum]
-		,[Selenium] AS [Selenium]
-		,[TransfatWeight] AS [TransfatWeight]
-		,0 AS [HazardousMaterialFlag]
-		,NULL AS [HazardousMaterialTypeCode],
-		sysdatetime() AS InsertDate
-	from 
-		@distinctProductMessageIDs dpm
-		JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu	
+ 
+  IF(@isDeleteNutrition = 1)
+  BEGIN
+    INSERT INTO app.MessageQueueNutrition(
+        MessageQueueId
+       ,RecipeName
+       ,InsertDate)
+	  SELECT MessageQueueId
+          ,'DELETED'
+		     ,SysDateTime()
+	  FROM @distinctProductMessageIDs
+  END
+  ELSE
+  BEGIN
+	  insert into app.MessageQueueNutrition select 
+	  	 [MessageQueueId] AS [MessageQueueId]
+	  	,[Plu] AS [Plu]
+	  	,[RecipeName] AS [RecipeName]
+	  	,[Allergens] AS [Allergens]
+	  	,[Ingredients] AS [Ingredients]
+	  	,[ServingsPerPortion] AS [ServingsPerPortion]
+	  	,[ServingSizeDesc] AS [ServingSizeDesc]
+	  	,[ServingPerContainer] AS [ServingPerContainer]
+	  	,[HshRating] AS [HshRating]
+	  	,[ServingUnits] AS [ServingUnits]
+	  	,[SizeWeight] AS [SizeWeight]
+	  	,[Calories] AS [Calories]
+	  	,[CaloriesFat] AS [CaloriesFat]
+	  	,[CaloriesSaturatedFat] AS [CaloriesSaturatedFat]
+	  	,[TotalFatWeight] AS [TotalFatWeight]
+	  	,[TotalFatPercentage] AS [TotalFatPercentage]
+	  	,[SaturatedFatWeight] AS [SaturatedFatWeight]
+	  	,[SaturatedFatPercent] AS [SaturatedFatPercent]
+	  	,[PolyunsaturatedFat] AS [PolyunsaturatedFat]
+	  	,[MonounsaturatedFat] AS [MonounsaturatedFat]
+	  	,[CholesterolWeight] AS [CholesterolWeight]
+	  	,[CholesterolPercent] AS [CholesterolPercent]
+	  	,[SodiumWeight] AS [SodiumWeight]
+	  	,[SodiumPercent] AS [SodiumPercent]
+	  	,[PotassiumWeight] AS [PotassiumWeight]
+	  	,[PotassiumPercent] AS [PotassiumPercent]
+	  	,[TotalCarbohydrateWeight] AS [TotalCarbohydrateWeight]
+	  	,[TotalCarbohydratePercent] AS [TotalCarbohydratePercent]
+	  	,[DietaryFiberWeight] AS [DietaryFiberWeight]
+	  	,[DietaryFiberPercent] AS [DietaryFiberPercent]
+	  	,[SolubleFiber] AS [SolubleFiber]
+	  	,[InsolubleFiber] AS [InsolubleFiber]
+	  	,[Sugar] AS [Sugar]
+	  	,[SugarAlcohol] AS [SugarAlcohol]
+	  	,[OtherCarbohydrates] AS [OtherCarbohydrates]
+	  	,[ProteinWeight] AS [ProteinWeight]
+	  	,[ProteinPercent] AS [ProteinPercent]
+	  	,[VitaminA] AS [VitaminA]
+	  	,[Betacarotene] AS [Betacarotene]
+	  	,[VitaminC] AS [VitaminC]
+	  	,[Calcium] AS [Calcium]
+	  	,[Iron] AS [Iron]
+	  	,[VitaminD] AS [VitaminD]
+	  	,[VitaminE] AS [VitaminE]
+	  	,[Thiamin] AS [Thiamin]
+	  	,[Riboflavin] AS [Riboflavin]
+	  	,[Niacin] AS [Niacin]
+	  	,[VitaminB6] AS [VitaminB6]
+	  	,[Folate] AS [Folate]
+	  	,[VitaminB12] AS [VitaminB12]
+	  	,[Biotin] AS [Biotin]
+	  	,[PantothenicAcid] AS [PantothenicAcid]
+	  	,[Phosphorous] AS [Phosphorous]
+	  	,[Iodine] AS [Iodine]
+	  	,[Magnesium] AS [Magnesium]
+	  	,[Zinc] AS [Zinc]
+	  	,[Copper] AS [Copper]
+	  	,[Transfat] AS [Transfat]
+	  	,[CaloriesFromTransfat] AS [CaloriesFromTransfat]
+	  	,[Om6Fatty] AS [Om6Fatty]
+	  	,[Om3Fatty] AS [Om3Fatty]
+	  	,[Starch] AS [Starch]
+	  	,[Chloride] AS [Chloride]
+	  	,[Chromium] AS [Chromium]
+	  	,[VitaminK] AS [VitaminK]
+	  	,[Manganese] AS [Manganese]
+	  	,[Molybdenum] AS [Molybdenum]
+	  	,[Selenium] AS [Selenium]
+	  	,[TransfatWeight] AS [TransfatWeight]
+	  	,0 AS [HazardousMaterialFlag]
+	  	,NULL AS [HazardousMaterialTypeCode],
+	  	sysdatetime() AS InsertDate
+	  from 
+	  	@distinctProductMessageIDs dpm
+	  	JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu
+  END
 END
