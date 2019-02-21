@@ -4,6 +4,7 @@ import "react-table/react-table.css";
 import Checkbox from '@material-ui/core/Checkbox';
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+
 const styles = (theme: any) => ({
     root: {
         marginTop: 50
@@ -22,12 +23,19 @@ function KitItemAddModalDisplay(props: any) {
                 },
                 {
                     Header: "Main Item",
-                    accessor: "ProductDesc"
+                    accessor: "ProductDesc",
+                    Cell: row => (
+                        <div style={{ textAlign: "center" }}>{row.value}</div>
+                      ),
                 },
                 {
                     Header: "Scan Code",
-                    accessor: "ScanCode"
+                    accessor: "ScanCode",
+                    Cell: row => (
+                        <div style={{ textAlign: "center" }}>{row.value}</div>
+                      ),
                 },
+               
                 {
                     Header: "Select",
                     id: "select",
