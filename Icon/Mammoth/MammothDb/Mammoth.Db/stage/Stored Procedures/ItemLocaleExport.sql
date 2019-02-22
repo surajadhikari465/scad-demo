@@ -1,15 +1,13 @@
-﻿create procedure stage.ItemLocaleExport
-	@Region char(2), @GroupSize int, @MaxRows int
-	as
-	begin
-
+﻿CREATE PROCEDURE [stage].[ItemLocaleExport]
+	@Region char(2), @GroupSize int = 100, @MaxRows int = 0
+	AS
+BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	declare @rowCount int 
+	DECLARE @rowCount int 
 
-
-	if @MaxRows = 0 
-		set @MaxRows = 2147483647 -- max int
+	IF IsNull(@MaxRows, 0) = 0 
+		SET @MaxRows = 2147483647 -- max int
 
 	DECLARE @ColorAddedId INT = (
 			SELECT AttributeID
@@ -89,10 +87,10 @@
 	WITH NOWAIT
 
 	INSERT INTO [stage].[ItemLocaleExportStaging]
-	SELECT top (@MaxRows) s.Region,
+	SELECT TOP (@MaxRows) s.Region,
 		s.BusinessUnitId,
-		l.localeid AS LocaleId,
-		i.ItemID AS ItemId,
+		l.LocaleID,
+		i.ItemID,
 		it.ItemTypeCode,
 		it.ItemTypeDesc,
 		l.StoreName AS LocaleName,
@@ -128,10 +126,10 @@
 		NULL [Use By EAB],
 		NULL [Wrapped Tare Weight],
 		s.Msrp [Msrp],
-		ils.SupplierName [SupplierName],
-		ils.IrmaVendorKey [IrmaVendorKey],
-		ils.SupplierItemID [SupplierItemID],
-		ils.SupplierCaseSize [SupplierCaseSize],
+		NULL [SupplierName],
+		NULL [IrmaVendorKey],
+		NULL [SupplierItemID],
+		NULL [SupplierCaseSize],
 		s.OrderedByInfor [OrderedByInfor],
 		s.AltRetailSize [AltRetailSize],
 		s.AltRetailUOM [AltRetailUOM],
@@ -139,17 +137,14 @@
 		s.IrmaItemKey [IrmaItemKey],
 		NULL Groupid,
 		0 Processed
-	FROM dbo.ItemLocaleSupplier ils
-	INNER JOIN Items i ON  ils.ItemID = i.ItemID
-	INNER JOIN Locale l ON  l.region = @region and ils.BusinessUnitID = l.BusinessUnitID 
-	INNER JOIN itemlocaleattributes s ON s.region = @region and ils.ItemID = s.ItemID  
-		AND ils.BusinessUnitID = s.BusinessUnitID
-	INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID
-	where ils.Region = @region
-	 option (recompile)
+  FROM dbo.ItemLocaleAttributes s
+  INNER JOIN dbo.Items i ON s.ItemID = i.ItemID
+  INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID
+  INNER JOIN dbo.Locale l ON l.Region = @region AND s.BusinessUnitID = l.BusinessUnitID
+  WHERE s.Region = @region
+	option (recompile)
 
-	 set @rowCount = @@ROWCOUNT
-
+	SET @rowCount = @@ROWCOUNT;
 	SET @timestamp = GETDATE();
 	SET @msg = CONVERT(VARCHAR, @timestamp, 120) + ': items staged'
 
@@ -303,7 +298,29 @@
 	WHERE ext.AttributeId = @WrappedTareWeight
 	option (recompile)
 
+  UPDATE il
+  SET [SupplierName] = ils.SupplierName
+  FROM [stage].ItemLocaleExportStaging il
+  INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId
+  option (recompile);
 
+  UPDATE il
+  SET [IrmaVendorKey] = ils.IrmaVendorKey
+  FROM [stage].ItemLocaleExportStaging il
+  INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId
+  option (recompile);
+
+  UPDATE il
+  SET [SupplierItemID] = ils.SupplierItemID
+  FROM [stage].ItemLocaleExportStaging il
+  INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId
+  option (recompile);
+
+  UPDATE il
+  SET [SupplierCaseSize] = ils.SupplierCaseSize
+  FROM [stage].ItemLocaleExportStaging il
+  INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId
+  option (recompile);
 
 
 	SET @timestamp = GETDATE();
@@ -314,10 +331,9 @@
 			0,
 			1
 			)
-	WITH NOWAIT
-		-- assign batches based on @GroupSize
-		;
-
+	WITH NOWAIT;
+		
+  -- assign batches based on @GroupSize
 	WITH cte
 	AS (
 		SELECT ItemId,
@@ -343,4 +359,5 @@
 			)
 	WITH NOWAIT
 
-	select @rowCount as [rowCount]	end
+	SELECT @rowCount AS [rowCount]
+END
