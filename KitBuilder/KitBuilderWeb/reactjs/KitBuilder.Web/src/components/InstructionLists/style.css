@@ -1,0 +1,29 @@
+.search-textfield [role='button'] {
+    padding: 10px !important;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.search-container {
+    border: 1px solid  rgba(0,0,0, 0.1);
+    background-color: white;
+    border-bottom: none;
+    box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.1);
+    padding: 16px !important;
+}
+
+.ReactTable {
+    background-color: white !important;
+}
+
+.instructions-avatar {
+    margin-left: 16px !important;
+    margin-right: 0px !important;
+}
+body {
+    background-color: linen !important;
+}
+

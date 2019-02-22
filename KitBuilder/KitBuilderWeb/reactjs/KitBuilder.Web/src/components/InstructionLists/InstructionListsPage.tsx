@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Dialog, DialogActions, DialogContent, DialogTitle, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, TextField, Snackbar } from '@material-ui/core';
+import { Grid, Dialog, DialogActions, DialogContent, DialogTitle, Button, Radio, RadioGroup, FormControlLabel, FormControl, TextField, Snackbar, FormLabel } from '@material-ui/core';
 import SearchInstructionLists from './SearchInstructionLists';
 import DisplayInstructionsLists from './DisplayInstructionLists';
 import "@babel/polyfill";
@@ -8,6 +8,9 @@ const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
 import { KbApiMethod } from '../helpers/kbapi'
 import Swal from 'sweetalert2'
+import './style.css';
+import PageStyle from './PageStyle';
+import PageTitle from '../PageTitle';
 
 var urlStart = KbApiMethod("InstructionList");
 
@@ -24,6 +27,9 @@ interface IInstructionListsPageState {
      newInstructionList: any,
      snackOpen: boolean,
      instructionTypeName: "",
+     isEditInstructions: boolean,
+     isSaveDisabled: boolean,
+     isPublishDisabled: boolean,
 }
 
 interface IInstructionListsPageProps {
@@ -47,6 +53,9 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                newInstructionList: {},
                snackOpen: false,
                instructionTypeName: "",
+               isEditInstructions: false,
+               isSaveDisabled: true,
+               isPublishDisabled: true,
           }
 
           this.onChange = this.onChange.bind(this);
@@ -62,7 +71,7 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
      }
 
      onChange(event: any) {
-          this.setState({ selectedInstructionTypeIdvalue: event.target.value });
+          this.setState({ selectedInstructionTypeIdvalue: event.target.value }, this.onSearch)
           this.setState({
                error: null
           })
@@ -137,7 +146,7 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
      renderEditable(cellInfo: any) {
           return (
                <div
-                    style={{ backgroundColor: "#fafafa" }}
+                    // style={{ backgroundColor: "#fafafa" }}
                     contentEditable
                     suppressContentEditableWarning
                     onBlur={e => {
@@ -530,7 +539,8 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
      handleDialogClose = () => {
           this.setState({
-               dialogOpen: false
+               dialogOpen: false,
+               isEditInstructions: false
           });
      };
 
@@ -551,7 +561,8 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
           }
 
           this.setState({
-               dialogOpen: false
+               dialogOpen: false,
+               isEditInstructions: false
           });
 
           newInstructionList.InstructionTypeId = Number(newInstructionList.InstructionTypeId);
@@ -595,6 +606,10 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
      };
 
+     onEdit = () => {
+          this.setState({ isEditInstructions: true }, this.onAddNewList);
+     }
+
      handleInstructionTypeIdChange = (event: any) => {
           this.setState({
                newInstructionList: {
@@ -622,21 +637,25 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
                <React.Fragment>
                     <Grid container justify="center">
-                         <Grid container md={12} justify="center">
+                         <Grid container justify="center">
                               <div className="error-message" >
                                    <span style={hStyle}> {this.state.error}</span>
                               </div>
                          </Grid>
-                         <Grid container md={12} justify="center">
+                         <Grid container justify="center">
                               <div className="Suncess-message" >
                                    <span style={sucesssStyle}> {this.state.message}</span>
                               </div>
                          </Grid>
                     </Grid>
+                    <PageStyle>
+                    <PageTitle icon="format_list_bulleted">Instructions</PageTitle>
                     <SearchInstructionLists
+                         className = 'search-container'
                          onChange={this.onChange}
                          options={instructionListDto}
                          onSearch={this.onSearch}
+                         onEdit={this.onEdit}
                          onAddNewList={this.onAddNewList}
                          value={this.state.selectedInstructionTypeIdvalue}
                     />
@@ -653,23 +672,40 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                          InstuctionNameChange={this.InstructionNameChange}
                          onPublishChanges={this.onPublishChanges}
                          onSaveChanges={this.onSaveChanges} />
+                    </PageStyle>
 
                     <Dialog
                          open={this.state.dialogOpen}
                          onClose={this.handleDialogClose}
                          aria-labelledby="form-dialog-title"
                     >
-                         <DialogTitle id="form-dialog-title">Add New Instruction List</DialogTitle>
+                         <DialogTitle id="form-dialog-title">{ this.state.isEditInstructions ? "Edit" : "New" } Instruction List</DialogTitle>
                          <DialogContent>
+                              <Grid container className="form-container">
+                              <Grid item xs={12}>
                               <FormControl >
+                                   <TextField
+                                        id="standard-name"
+                                        label="Name"
+                                        variant="outlined"
+                                        InputLabelProps = {{shrink: true}}
+                                        value={ this.state.isEditInstructions ? this.state.currentInstructionTypeValue : this.state.newInstructionList.Name}
+                                        onChange={this.handleInstructionNameChange}
+                                   />
+                              </FormControl>
+                              </Grid>
+                              <Grid item xs={12}>
+                                   
+                              <FormControl >
+                                   <Grid container justify="space-between" alignItems = "center">
+                                        
                                    <FormLabel>Type</FormLabel>
                                    <RadioGroup
                                         aria-label="type"
                                         name="type"
                                         value={this.state.newInstructionList.InstructionTypeId}
                                         onChange={this.handleInstructionTypeIdChange}
-                                        row
-                                   >
+                                        row>
                                         <FormControlLabel
                                              value="1"
                                              control={<Radio color="primary" />}
@@ -681,24 +717,33 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                                              label="General"
                                         />
                                    </RadioGroup>
+                                   </Grid>
                               </FormControl>
-                              <br />
-                              <FormControl >
-                                   <TextField
-                                        id="standard-name"
-                                        label="Name"
-                                        value={this.state.newInstructionList.Name}
-                                        onChange={this.handleInstructionNameChange}
-                                   />
-                              </FormControl>
+                              </Grid>
+                              <Grid container id='add-edit-buttons'>
+                                   <Grid item xs={12} md={this.state.isEditInstructions ? 12 : 6} className={`mb-3 ${this.state.isEditInstructions ? "" : "pr-3"}`}>
+                                        <Button onClick={this.handleDialogSave} variant="contained" color="primary" className="full-width">
+                                             Save
+                                        </Button>
+                                   </Grid>
+                                   <Grid item xs={12} md={6} className='pr-2'>
+                                        <Button onClick={this.handleDialogClose} variant="outlined" color="primary" className="full-width">
+                                             Cancel
+                                        </Button>
+                                   </Grid>
+                                   { /* only show delete button in edit mode */}
+                                   { this.state.isEditInstructions && 
+                                   <Grid item xs={12} md={6} className='pl-2'>
+                                        <Button onClick={this.deleteInstruction} variant="outlined" color="secondary" className="full-width">
+                                             Delete
+                                        </Button>
+                                   </Grid> }
+                              </Grid>
+                         </Grid>
                          </DialogContent>
                          <DialogActions>
-                              <Button onClick={this.handleDialogClose} color="primary">
-                                   Cancel
-                         </Button>
-                              <Button onClick={this.handleDialogSave} color="primary">
-                                   Save
-                         </Button>
+                             
+                              
                          </DialogActions>
                     </Dialog>
 

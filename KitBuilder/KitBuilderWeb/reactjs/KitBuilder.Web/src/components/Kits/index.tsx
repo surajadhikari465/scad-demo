@@ -10,6 +10,8 @@ var urlStart = KbApiMethod("Kits");
 
 import "@babel/polyfill";
 import axios from 'axios';
+import KitFooter from './KitFooter';
+import PageTitle from '../PageTitle';
 
 interface IKitListsPageState {
     error: any,
@@ -25,7 +27,7 @@ interface IKitListsPageState {
 interface IKitsProps {
 }
 
-export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
+export default class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
 {
     constructor(props: any) {
         super(props);
@@ -219,17 +221,18 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
 
             <React.Fragment>
                 <Grid container justify="center">
-                    <Grid container md={12} justify="center">
+                    <Grid container justify="center">
                         <div className="error-message" >
                             <span style={hStyle}> {this.state.error}</span>
                         </div>
                     </Grid>
-                    <Grid container md={12} justify="center">
+                    <Grid container justify="center">
                         <div className="Suncess-message" >
                             <span style={sucesssStyle}> {this.state.message}</span>
                         </div>
                     </Grid>
                     <Grid item md={10}>
+                    <PageTitle icon="search">Search Kits</PageTitle>
                         <SearchKits
                             MainItemName={this.mainItemChange}
                             MainItemScanCode={this.scanCodeChange}
@@ -244,12 +247,14 @@ export class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
                         />
                     </Grid>
                     <Grid item md={10}>
-                        <DisplayKits
-                            createKit={this.createKit}
+                        <DisplayKits 
                             onDelete={this.onDelete}
                             onEdit={this.onEdit}
                             data = {this.state.kits}
                         />
+                    </Grid>
+                    <Grid item md = {10}>
+                        <KitFooter createKit={this.createKit}/>
                     </Grid>
                 </Grid>
             </React.Fragment>
