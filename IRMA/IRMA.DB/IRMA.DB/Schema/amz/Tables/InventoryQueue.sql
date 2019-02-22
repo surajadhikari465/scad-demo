@@ -16,6 +16,10 @@
 )
 
 GO
+CREATE CLUSTERED INDEX [idxInventoryQueue_InsertDateID]
+    ON [amz].[InventoryQueue]([InsertDate], [QueueID]);
+
+GO
 
 GRANT SELECT
     ON OBJECT::[amz].[InventoryQueue] TO [MammothRole]

@@ -16,7 +16,10 @@
 )
 
 GO
+CREATE CLUSTERED INDEX [idxReceiptQueue_InsertDateID]
+    ON [amz].[ReceiptQueue]([InsertDate], [QueueID]);
 
+GO
 GRANT SELECT
     ON OBJECT::[amz].[ReceiptQueue] TO [MammothRole]
     AS [dbo];
