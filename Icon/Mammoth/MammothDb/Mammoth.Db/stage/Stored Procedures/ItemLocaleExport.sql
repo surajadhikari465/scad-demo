@@ -361,3 +361,7 @@ BEGIN
 
 	SELECT @rowCount AS [rowCount]
 END
+GO
+
+GRANT EXECUTE ON stage.ItemLocaleExport TO [MammothRole];
+GO

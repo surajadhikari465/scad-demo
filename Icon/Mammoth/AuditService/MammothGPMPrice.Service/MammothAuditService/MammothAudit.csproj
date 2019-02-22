@@ -71,6 +71,7 @@
     <Reference Include="System.Data.SqlClient, Version=4.2.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.4.3\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -101,23 +102,23 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
-	  <TransformOnBuild>true</TransformOnBuild>
+      <TransformOnBuild>true</TransformOnBuild>
     </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -149,4 +150,4 @@
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
   </Target>
   <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
-  </Project>
+</Project>
