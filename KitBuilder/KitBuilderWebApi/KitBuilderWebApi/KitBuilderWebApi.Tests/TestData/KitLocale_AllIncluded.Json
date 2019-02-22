@@ -1,492 +1,494 @@
-﻿{
-	"KitLocaleId": 179,
-	"KitId": 17,
-	"LocaleId": 12,
-	"MinimumCalories": null,
-	"MaximumCalories": null,
-	"Exclude": null,
-	"StatusId": 2,
-	"InsertDateUtc": "2019-02-02T00:49:51.5133333",
-	"LastUpdatedDateUtc": null,
-	"Kit": {
+﻿[
+	{
+		"KitLocaleId": 179,
 		"KitId": 17,
-		"ItemId": 1862661,
-		"Description": "Min Kit 1",
-		"InsertDateUtc": "2019-02-02T00:07:42.55",
+		"LocaleId": 12,
+		"MinimumCalories": null,
+		"MaximumCalories": null,
+		"Exclude": null,
+		"StatusId": 2,
+		"InsertDateUtc": "2019-02-02T00:49:51.5133333",
 		"LastUpdatedDateUtc": null,
-		"Item": {
+		"Kit": {
+			"KitId": 17,
 			"ItemId": 1862661,
-			"ScanCode": "28838000000",
-			"ProductDesc": "GRILLED SALMON AVOCADO ROLL QBR",
-			"CustomerFriendlyDesc": "Quinoa BR Grilled Salmon Avocado Roll",
-			"KitchenDesc": "28838000000",
-			"BrandName": "GENJI SUSHI",
-			"ImageUrl": "Link",
-			"InsertDateUtc": "2018-11-02T16:43:24.137",
-			"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-			"FlexibleText": null,
-			"Kit": [],
-			"LinkGroupItem": []
+			"Description": "Min Kit 1",
+			"InsertDateUtc": "2019-02-02T00:07:42.55",
+			"LastUpdatedDateUtc": null,
+			"Item": {
+				"ItemId": 1862661,
+				"ScanCode": "28838000000",
+				"ProductDesc": "GRILLED SALMON AVOCADO ROLL QBR",
+				"CustomerFriendlyDesc": "Quinoa BR Grilled Salmon Avocado Roll",
+				"KitchenDesc": "28838000000",
+				"BrandName": "GENJI SUSHI",
+				"ImageUrl": "Link",
+				"InsertDateUtc": "2018-11-02T16:43:24.137",
+				"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+				"FlexibleText": null,
+				"Kit": [],
+				"LinkGroupItem": []
+			},
+			"KitInstructionList": [],
+			"KitLinkGroup": [],
+			"KitLocale": []
 		},
-		"KitInstructionList": [],
-		"KitLinkGroup": [],
-		"KitLocale": []
-	},
-	"Locale": null,
-	"Status": null,
-	"KitLinkGroupLocale": [
-		{
-			"KitLinkGroupLocaleId": 50,
-			"KitLinkGroupId": 22,
-			"KitLocaleId": 179,
-			"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"4\",\"NumOfFreeToppings\":\"1\"}",
-			"DisplaySequence": 1,
-			"MinimumCalories": null,
-			"MaximumCalories": null,
-			"Exclude": false,
-			"InsertDateUtc": "2019-02-08T19:03:51.737807",
-			"LastUpdatedDateUtc": "2019-02-08T19:03:51.737807",
-			"LastModifiedBy": null,
-			"KitLinkGroup": null,
-			"KitLinkGroupItemLocale": [
-				{
-					"KitLinkGroupItemLocaleId": 89,
-					"KitLinkGroupItemId": 25,
-					"KitLinkGroupLocaleId": 50,
-					"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"3\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"1\",\"MandatoryItem\":\"true\"}",
-					"DisplaySequence": 1,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+		"Locale": null,
+		"Status": null,
+		"KitLinkGroupLocale": [
+			{
+				"KitLinkGroupLocaleId": 50,
+				"KitLinkGroupId": 22,
+				"KitLocaleId": 179,
+				"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"4\",\"NumOfFreeToppings\":\"1\"}",
+				"DisplaySequence": 1,
+				"MinimumCalories": null,
+				"MaximumCalories": null,
+				"Exclude": false,
+				"InsertDateUtc": "2019-02-08T19:03:51.737807",
+				"LastUpdatedDateUtc": "2019-02-08T19:03:51.737807",
+				"LastModifiedBy": null,
+				"KitLinkGroup": null,
+				"KitLinkGroupItemLocale": [
+					{
+						"KitLinkGroupItemLocaleId": 89,
 						"KitLinkGroupItemId": 25,
-						"KitLinkGroupId": 22,
-						"LinkGroupItemId": 62,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 50,
+						"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"3\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"1\",\"MandatoryItem\":\"true\"}",
+						"DisplaySequence": 1,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 25,
+							"KitLinkGroupId": 22,
 							"LinkGroupItemId": 62,
-							"LinkGroupId": 113,
-							"ItemId": 108561,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 62,
+								"LinkGroupId": 113,
 								"ItemId": 108561,
-								"ScanCode": "22139100000",
-								"ProductDesc": "BREAD BATARD NINE GRAIN",
-								"CustomerFriendlyDesc": "Nine Grain Batard",
-								"KitchenDesc": "22139100000",
-								"BrandName": "EASY TIGER BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 108561,
+									"ScanCode": "22139100000",
+									"ProductDesc": "BREAD BATARD NINE GRAIN",
+									"CustomerFriendlyDesc": "Nine Grain Batard",
+									"KitchenDesc": "22139100000",
+									"BrandName": "EASY TIGER BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 90,
-					"KitLinkGroupItemId": 26,
-					"KitLinkGroupLocaleId": 50,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"2\",\"DefaultPortions\":\"2\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 2,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 90,
 						"KitLinkGroupItemId": 26,
-						"KitLinkGroupId": 22,
-						"LinkGroupItemId": 63,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 50,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"2\",\"DefaultPortions\":\"2\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 2,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 26,
+							"KitLinkGroupId": 22,
 							"LinkGroupItemId": 63,
-							"LinkGroupId": 113,
-							"ItemId": 1849257,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 63,
+								"LinkGroupId": 113,
 								"ItemId": 1849257,
-								"ScanCode": "22022000000",
-								"ProductDesc": "SCONE BLUEBERRY SWEET CREAM EA",
-								"CustomerFriendlyDesc": "Blueberry Sweet Cream Scone",
-								"KitchenDesc": "22022000000",
-								"BrandName": "JACQUELINES BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 1849257,
+									"ScanCode": "22022000000",
+									"ProductDesc": "SCONE BLUEBERRY SWEET CREAM EA",
+									"CustomerFriendlyDesc": "Blueberry Sweet Cream Scone",
+									"KitchenDesc": "22022000000",
+									"BrandName": "JACQUELINES BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 91,
-					"KitLinkGroupItemId": 27,
-					"KitLinkGroupLocaleId": 50,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 2,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 91,
 						"KitLinkGroupItemId": 27,
-						"KitLinkGroupId": 22,
-						"LinkGroupItemId": 64,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 50,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 2,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 27,
+							"KitLinkGroupId": 22,
 							"LinkGroupItemId": 64,
-							"LinkGroupId": 113,
-							"ItemId": 1879314,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 64,
+								"LinkGroupId": 113,
 								"ItemId": 1879314,
-								"ScanCode": "22052800000",
-								"ProductDesc": "CAKE CREAM ITALIAN 8IN",
-								"CustomerFriendlyDesc": "Italian Cream Cake 8 Inch",
-								"KitchenDesc": "22052800000",
-								"BrandName": "BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 1879314,
+									"ScanCode": "22052800000",
+									"ProductDesc": "CAKE CREAM ITALIAN 8IN",
+									"CustomerFriendlyDesc": "Italian Cream Cake 8 Inch",
+									"KitchenDesc": "22052800000",
+									"BrandName": "BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
+							"KitLinkGroupItemLocale": []
+						}
 					}
-				}
-			]
-		},
-		{
-			"KitLinkGroupLocaleId": 51,
-			"KitLinkGroupId": 23,
-			"KitLocaleId": 179,
-			"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"1\",\"NumOfFreeToppings\":\"0\"}",
-			"DisplaySequence": 0,
-			"MinimumCalories": null,
-			"MaximumCalories": null,
-			"Exclude": false,
-			"InsertDateUtc": "2019-02-08T19:03:51.7378085",
-			"LastUpdatedDateUtc": "2019-02-08T19:03:51.7378088",
-			"LastModifiedBy": null,
-			"KitLinkGroup": null,
-			"KitLinkGroupItemLocale": [
-				{
-					"KitLinkGroupItemLocaleId": 92,
-					"KitLinkGroupItemId": 28,
-					"KitLinkGroupLocaleId": 51,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+				]
+			},
+			{
+				"KitLinkGroupLocaleId": 51,
+				"KitLinkGroupId": 23,
+				"KitLocaleId": 179,
+				"Properties": "{\"Minimum\":\"1\",\"Maximum\":\"1\",\"NumOfFreeToppings\":\"0\"}",
+				"DisplaySequence": 0,
+				"MinimumCalories": null,
+				"MaximumCalories": null,
+				"Exclude": false,
+				"InsertDateUtc": "2019-02-08T19:03:51.7378085",
+				"LastUpdatedDateUtc": "2019-02-08T19:03:51.7378088",
+				"LastModifiedBy": null,
+				"KitLinkGroup": null,
+				"KitLinkGroupItemLocale": [
+					{
+						"KitLinkGroupItemLocaleId": 92,
 						"KitLinkGroupItemId": 28,
-						"KitLinkGroupId": 23,
-						"LinkGroupItemId": 65,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 51,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 28,
+							"KitLinkGroupId": 23,
 							"LinkGroupItemId": 65,
-							"LinkGroupId": 114,
-							"ItemId": 2137082,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 65,
+								"LinkGroupId": 114,
 								"ItemId": 2137082,
-								"ScanCode": "22294800000",
-								"ProductDesc": "ROLL POTATO KNOT 6PK",
-								"CustomerFriendlyDesc": "Potato Knot Roll 6 Pk",
-								"KitchenDesc": "22294800000",
-								"BrandName": "GUTTENPLANS",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2137082,
+									"ScanCode": "22294800000",
+									"ProductDesc": "ROLL POTATO KNOT 6PK",
+									"CustomerFriendlyDesc": "Potato Knot Roll 6 Pk",
+									"KitchenDesc": "22294800000",
+									"BrandName": "GUTTENPLANS",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 93,
-					"KitLinkGroupItemId": 29,
-					"KitLinkGroupLocaleId": 51,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 93,
 						"KitLinkGroupItemId": 29,
-						"KitLinkGroupId": 23,
-						"LinkGroupItemId": 66,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 51,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 29,
+							"KitLinkGroupId": 23,
 							"LinkGroupItemId": 66,
-							"LinkGroupId": 114,
-							"ItemId": 2208285,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 66,
+								"LinkGroupId": 114,
 								"ItemId": 2208285,
-								"ScanCode": "22002200000",
-								"ProductDesc": "TEA BREAD PUMPKIN",
-								"CustomerFriendlyDesc": "Pumpkin Tea Bread",
-								"KitchenDesc": "22002200000",
-								"BrandName": "MAIN STREET",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2208285,
+									"ScanCode": "22002200000",
+									"ProductDesc": "TEA BREAD PUMPKIN",
+									"CustomerFriendlyDesc": "Pumpkin Tea Bread",
+									"KitchenDesc": "22002200000",
+									"BrandName": "MAIN STREET",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 94,
-					"KitLinkGroupItemId": 30,
-					"KitLinkGroupLocaleId": 51,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 94,
 						"KitLinkGroupItemId": 30,
-						"KitLinkGroupId": 23,
-						"LinkGroupItemId": 67,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 51,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 30,
+							"KitLinkGroupId": 23,
 							"LinkGroupItemId": 67,
-							"LinkGroupId": 114,
-							"ItemId": 2211226,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 67,
+								"LinkGroupId": 114,
 								"ItemId": 2211226,
-								"ScanCode": "22007800000",
-								"ProductDesc": "MOUSSE DULCE DE LECHE LB",
-								"CustomerFriendlyDesc": "Dulce De Leche Mousse",
-								"KitchenDesc": "22007800000",
-								"BrandName": "TASTE IT",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2211226,
+									"ScanCode": "22007800000",
+									"ProductDesc": "MOUSSE DULCE DE LECHE LB",
+									"CustomerFriendlyDesc": "Dulce De Leche Mousse",
+									"KitchenDesc": "22007800000",
+									"BrandName": "TASTE IT",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
+							"KitLinkGroupItemLocale": []
+						}
 					}
-				}
-			]
-		},
-		{
-			"KitLinkGroupLocaleId": 52,
-			"KitLinkGroupId": 24,
-			"KitLocaleId": 179,
-			"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreeToppings\":\"0\"}",
-			"DisplaySequence": 0,
-			"MinimumCalories": null,
-			"MaximumCalories": null,
-			"Exclude": false,
-			"InsertDateUtc": "2019-02-08T19:03:51.7378088",
-			"LastUpdatedDateUtc": "2019-02-08T19:03:51.7378088",
-			"LastModifiedBy": null,
-			"KitLinkGroup": null,
-			"KitLinkGroupItemLocale": [
-				{
-					"KitLinkGroupItemLocaleId": 95,
-					"KitLinkGroupItemId": 31,
-					"KitLinkGroupLocaleId": 52,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+				]
+			},
+			{
+				"KitLinkGroupLocaleId": 52,
+				"KitLinkGroupId": 24,
+				"KitLocaleId": 179,
+				"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreeToppings\":\"0\"}",
+				"DisplaySequence": 0,
+				"MinimumCalories": null,
+				"MaximumCalories": null,
+				"Exclude": false,
+				"InsertDateUtc": "2019-02-08T19:03:51.7378088",
+				"LastUpdatedDateUtc": "2019-02-08T19:03:51.7378088",
+				"LastModifiedBy": null,
+				"KitLinkGroup": null,
+				"KitLinkGroupItemLocale": [
+					{
+						"KitLinkGroupItemLocaleId": 95,
 						"KitLinkGroupItemId": 31,
-						"KitLinkGroupId": 24,
-						"LinkGroupItemId": 68,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 52,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 31,
+							"KitLinkGroupId": 24,
 							"LinkGroupItemId": 68,
-							"LinkGroupId": 115,
-							"ItemId": 2214747,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 68,
+								"LinkGroupId": 115,
 								"ItemId": 2214747,
-								"ScanCode": "22043600000",
-								"ProductDesc": "MOUSSE CHOCOLATE CUP",
-								"CustomerFriendlyDesc": "Chocolate Mousse Cup",
-								"KitchenDesc": "22043600000",
-								"BrandName": "BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2214747,
+									"ScanCode": "22043600000",
+									"ProductDesc": "MOUSSE CHOCOLATE CUP",
+									"CustomerFriendlyDesc": "Chocolate Mousse Cup",
+									"KitchenDesc": "22043600000",
+									"BrandName": "BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 96,
-					"KitLinkGroupItemId": 32,
-					"KitLinkGroupLocaleId": 52,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 96,
 						"KitLinkGroupItemId": 32,
-						"KitLinkGroupId": 24,
-						"LinkGroupItemId": 69,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 52,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 32,
+							"KitLinkGroupId": 24,
 							"LinkGroupItemId": 69,
-							"LinkGroupId": 115,
-							"ItemId": 2214752,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 69,
+								"LinkGroupId": 115,
 								"ItemId": 2214752,
-								"ScanCode": "22043800000",
-								"ProductDesc": "PARFAIT STRAWBERRY",
-								"CustomerFriendlyDesc": "Strawberry Parfait",
-								"KitchenDesc": "22043800000",
-								"BrandName": "BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2214752,
+									"ScanCode": "22043800000",
+									"ProductDesc": "PARFAIT STRAWBERRY",
+									"CustomerFriendlyDesc": "Strawberry Parfait",
+									"KitchenDesc": "22043800000",
+									"BrandName": "BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
-					}
-				},
-				{
-					"KitLinkGroupItemLocaleId": 97,
-					"KitLinkGroupItemId": 33,
-					"KitLinkGroupLocaleId": 52,
-					"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
-					"DisplaySequence": 0,
-					"Exclude": false,
-					"InsertDateUtc": "2019-02-08T19:03:52.1423248",
-					"LastUpdatedDateUtc": null,
-					"LastModifiedBy": "Priyanka",
-					"KitLinkGroupItem": {
+							"KitLinkGroupItemLocale": []
+						}
+					},
+					{
+						"KitLinkGroupItemLocaleId": 97,
 						"KitLinkGroupItemId": 33,
-						"KitLinkGroupId": 24,
-						"LinkGroupItemId": 70,
-						"InsertDateUtc": "2019-02-02T00:45:28.2066667",
+						"KitLinkGroupLocaleId": 52,
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"2\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"DisplaySequence": 0,
+						"Exclude": false,
+						"InsertDateUtc": "2019-02-08T19:03:52.1423248",
 						"LastUpdatedDateUtc": null,
-						"KitLinkGroup": null,
-						"LinkGroupItem": {
+						"LastModifiedBy": "Priyanka",
+						"KitLinkGroupItem": {
+							"KitLinkGroupItemId": 33,
+							"KitLinkGroupId": 24,
 							"LinkGroupItemId": 70,
-							"LinkGroupId": 115,
-							"ItemId": 2214753,
-							"InstructionListId": null,
-							"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+							"InsertDateUtc": "2019-02-02T00:45:28.2066667",
 							"LastUpdatedDateUtc": null,
-							"InstructionList": null,
-							"Item": {
+							"KitLinkGroup": null,
+							"LinkGroupItem": {
+								"LinkGroupItemId": 70,
+								"LinkGroupId": 115,
 								"ItemId": 2214753,
-								"ScanCode": "22043900000",
-								"ProductDesc": "PARFAIT TRES LECHE",
-								"CustomerFriendlyDesc": "Tres Leches Parfait",
-								"KitchenDesc": "22043900000",
-								"BrandName": "BAKERY",
-								"ImageUrl": "Link",
-								"InsertDateUtc": "2018-11-02T16:43:24.137",
-								"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
-								"FlexibleText": null,
-								"Kit": [],
-								"LinkGroupItem": []
+								"InstructionListId": null,
+								"InsertDateUtc": "2019-02-02T00:21:40.7266667",
+								"LastUpdatedDateUtc": null,
+								"InstructionList": null,
+								"Item": {
+									"ItemId": 2214753,
+									"ScanCode": "22043900000",
+									"ProductDesc": "PARFAIT TRES LECHE",
+									"CustomerFriendlyDesc": "Tres Leches Parfait",
+									"KitchenDesc": "22043900000",
+									"BrandName": "BAKERY",
+									"ImageUrl": "Link",
+									"InsertDateUtc": "2018-11-02T16:43:24.137",
+									"LastUpdatedDateUtc": "2018-11-02T16:43:24.137",
+									"FlexibleText": null,
+									"Kit": [],
+									"LinkGroupItem": []
+								},
+								"LinkGroup": null,
+								"KitLinkGroupItem": []
 							},
-							"LinkGroup": null,
-							"KitLinkGroupItem": []
-						},
-						"KitLinkGroupItemLocale": []
+							"KitLinkGroupItemLocale": []
+						}
 					}
-				}
-			]
-		}
-	]
-}
+				]
+			}
+		]
+	}
+]

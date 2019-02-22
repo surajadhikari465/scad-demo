@@ -27,22 +27,25 @@ namespace KitBuilderWebApi.Tests.Services
 		private CaloricCalculator caloricCalculator;
 		private string projectPath;
 		private Mock<IUnitOfWork> mockUnitWork;
-		private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
+		private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
 		private Mock<IRepository<Locale>> mockLocaleRepository;
 		private Mock<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>> mockGetAuthorizedStatusAndPriceService;
 		private Mock<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>> mockGetNutritionService;
 		private Mock<ILogger<CaloricCalculator>> mockLogger;
 
+		private const int KITLOCALEID = 179;
+		private const int STORELOCALElEID = 924;
+
 		[TestInitialize]
 		public void InitializeTest()
 		{
-			mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
+			mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
 			mockLocaleRepository = new Mock<IRepository<Locale>>();
 			mockGetAuthorizedStatusAndPriceService = new Mock<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>>();
 			mockGetNutritionService = new Mock<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>>();
 			mockLogger = new Mock<ILogger<CaloricCalculator>>();
 
-			caloricCalculator = new CaloricCalculator(mockGetKitLocaleQuery.Object,
+			caloricCalculator = new CaloricCalculator(mockKitLocaleRepository.Object,
 				mockLocaleRepository.Object,
 				mockGetAuthorizedStatusAndPriceService.Object,
 				mockGetNutritionService.Object,
@@ -67,7 +70,7 @@ namespace KitBuilderWebApi.Tests.Services
 			//Given
 			string filePath = Path.Combine(projectPath, "TestData", "KitLocale_AllIncluded.Json");
 			string json = System.IO.File.ReadAllText(filePath);
-			KitLocale kitLocale = JsonConvert.DeserializeObject<KitLocale>(json);
+			List<KitLocale> kitLocales = JsonConvert.DeserializeObject<List<KitLocale>>(json);
 
 			filePath = Path.Combine(projectPath, "TestData", "ItemStorePriceModelList_AllAuthorized.Json");
 			json = System.IO.File.ReadAllText(filePath);
@@ -75,15 +78,24 @@ namespace KitBuilderWebApi.Tests.Services
 
 			filePath = Path.Combine(projectPath, "TestData", "ItemCaloriesList.Json");
 			json = System.IO.File.ReadAllText(filePath);
-			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);		
+			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
 
-			mockGetKitLocaleQuery.Setup(k => k.Search(It.IsAny<GetKitByKitLocaleIdParameters>())).Returns(kitLocale);
+			var mockContext = new Mock<KitBuilderContext>();
+			var mockDbSet = GetMockDbSet<KitLocale>(kitLocales);
+			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+
+			mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocales.AsQueryable());
+			mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+
 			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
 			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
 
 			//When
-			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters();
-
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+			{
+				KitLocaleId = KITLOCALEID,
+				StoreLocaleId = STORELOCALElEID
+			};
 			Task<KitLocaleDto> kitLocaleDto = caloricCalculator.Run(parameters);
 
 			//Then
@@ -101,7 +113,7 @@ namespace KitBuilderWebApi.Tests.Services
 			//Given
 			string filePath = Path.Combine(projectPath, "TestData", "KitLocale_ExcludedAndUnauthorized.Json");
 			string json = System.IO.File.ReadAllText(filePath);
-			KitLocale kitLocale = JsonConvert.DeserializeObject<KitLocale>(json);
+			List<KitLocale> kitLocales = JsonConvert.DeserializeObject<List<KitLocale>>(json);
 
 			filePath = Path.Combine(projectPath, "TestData", "ItemStorePriceModelList_Unauthorized.Json");
 			json = System.IO.File.ReadAllText(filePath);
@@ -116,13 +128,22 @@ namespace KitBuilderWebApi.Tests.Services
 			json = System.IO.File.ReadAllText(filePath);
 			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
 
-			mockGetKitLocaleQuery.Setup(k => k.Search(It.IsAny<GetKitByKitLocaleIdParameters>())).Returns(kitLocale);
+			var mockContext = new Mock<KitBuilderContext>();
+			var mockDbSet = GetMockDbSet<KitLocale>(kitLocales);
+			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+
+			mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocales.AsQueryable());
+			mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+
 			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
 			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
 
 			//When
-			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters();
-
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+			{
+				KitLocaleId = KITLOCALEID,
+				StoreLocaleId = STORELOCALElEID
+			};
 			Task<KitLocaleDto> kitLocaleDto = caloricCalculator.Run(parameters);
 
 			//Then
@@ -140,7 +161,7 @@ namespace KitBuilderWebApi.Tests.Services
 			//Given
 			string filePath = Path.Combine(projectPath, "TestData", "KitLocale_ExcludedAndUnauthorized.Json");
 			string json = System.IO.File.ReadAllText(filePath);
-			KitLocale kitLocale = JsonConvert.DeserializeObject<KitLocale>(json);
+			List<KitLocale> kitLocales = JsonConvert.DeserializeObject<List<KitLocale>>(json);
 
 			//In this file, the kit main item is not on the file; therefore it will be treated as the main item is not authorized for the store.
 			filePath = Path.Combine(projectPath, "TestData", "ItemStorePriceModelList_Unauthorized.Json");
@@ -151,13 +172,22 @@ namespace KitBuilderWebApi.Tests.Services
 			json = System.IO.File.ReadAllText(filePath);
 			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
 
-			mockGetKitLocaleQuery.Setup(k => k.Search(It.IsAny<GetKitByKitLocaleIdParameters>())).Returns(kitLocale);
+			var mockContext = new Mock<KitBuilderContext>();
+			var mockDbSet = GetMockDbSet<KitLocale>(kitLocales);
+			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+
+			mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocales.AsQueryable());
+			mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+
 			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
 			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
 
 			//When
-			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters();
-
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+			{
+				KitLocaleId = KITLOCALEID,
+				StoreLocaleId = STORELOCALElEID
+			};
 			Task<KitLocaleDto> kitLocaleDto = caloricCalculator.Run(parameters);
 
 			//Then

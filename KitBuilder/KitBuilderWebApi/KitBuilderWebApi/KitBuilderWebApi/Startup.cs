@@ -80,7 +80,6 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
 
 			services.AddScoped<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>, CaloricCalculator>();
-			services.AddScoped<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>, GetKitByKitLocaleIdQuery>();
 			services.AddScoped<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>, GetAuthorizedStatusAndPriceService>();
 			services.AddScoped<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>, GetNutritionService>();
 

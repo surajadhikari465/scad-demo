@@ -12,24 +12,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using KitBuilder.DataAccess.Queries;
 using KitBuilderWebApi.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.Services
 {
 	public class CaloricCalculator : IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>
 	{
-		private IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery;
+		private IRepository<KitLocale> kitLocaleRepository;
 		private IRepository<Locale> localeRepository;
 		private IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService;
 		private IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService;
 		private ILogger<CaloricCalculator> logger;
 
-		public CaloricCalculator(IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale> getKitLocaleQuery,
+		public CaloricCalculator(IRepository<KitLocale> kitLocaleRepository,
 							IRepository<Locale> localeRepository,
 							IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService,
 							IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService,
 							ILogger<CaloricCalculator> logger)
 		{
-			this.getKitLocaleQuery = getKitLocaleQuery;
+			this.kitLocaleRepository = kitLocaleRepository;
 			this.localeRepository = localeRepository;
 			this.getAuthorizedStatusAndPriceService = getAuthorizedStatusAndPriceService;
 			this.getNutritionService = getNutritionService;
@@ -42,12 +43,11 @@ namespace KitBuilderWebApi.Services
 
 			try
 			{
-				GetKitByKitLocaleIdParameters searchKitLocaleParameters = new GetKitByKitLocaleIdParameters
-				{
-					KitLocaleId = kitLocaleByStoreParameters.KitLocaleId
-				};
-
-				KitLocale kitLocale = getKitLocaleQuery.Search(searchKitLocaleParameters);
+				KitLocale kitLocale = (kitLocaleRepository.GetAll().Where(kl => kl.KitLocaleId == kitLocaleByStoreParameters.KitLocaleId)
+					 .Include(k => k.Kit).ThenInclude(i => i.Item)
+					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
+					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
+					 .ThenInclude(i => i.Item)).FirstOrDefault();
 
 				if (kitLocale != null)
 				{
@@ -209,14 +209,14 @@ namespace KitBuilderWebApi.Services
 						dynamic kitLinkGroupItemProperties = JsonConvert.DeserializeObject(kitLinkGroupItemLocaleDto.Properties);
 						int kitLinkGroupItemMax = kitLinkGroupItemProperties.Maximum;
 						int kitLinkGroupItemMin = kitLinkGroupItemProperties.Minimum;
-						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories.HasValue ? kitLinkGroupItemLocaleDto.Calories.Value : 0;
+						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
 						//If a modifier is mandatory, then the minimum portion of the modifier will be included in the caloric calculation
 						if (Convert.ToBoolean(kitLinkGroupItemProperties.MandatoryItem))
 						{
-							kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + kitLinkGroupItemCalories * kitLinkGroupItemMin;
+							kitLinkGroupMaxCalories += (kitLinkGroupItemCalories * kitLinkGroupItemMin);
 							//Get the maximum number of portions are allowed after the minimum number of portions of a mandatory modifier is considered.
-							kitLinkGroupMaxPortion = kitLinkGroupMaxPortion - kitLinkGroupItemMin;
+							kitLinkGroupMaxPortion -= kitLinkGroupItemMin;
 
 							if (kitLinkGroupMaxPortion > 0)
 							{
@@ -257,12 +257,12 @@ namespace KitBuilderWebApi.Services
 								kitLinkGroupMaxPortion = 0;
 							}
 
-							kitLinkGroupMaxCalories = kitLinkGroupMaxCalories + sortedByFirstElement[i, 0] * counter;
+							kitLinkGroupMaxCalories += sortedByFirstElement[i, 0] * counter;
 						}
 					}
 
 					kitLinkGroupDto.MaximumCalories = kitLinkGroupMaxCalories;
-					kitLocaleDto.MaximumCalories = (kitLocaleDto.MaximumCalories.HasValue ? kitLocaleDto.MaximumCalories.Value : 0) + kitLinkGroupMaxCalories;
+					kitLocaleDto.MaximumCalories = (kitLocaleDto.MaximumCalories ?? 0) + kitLinkGroupMaxCalories;
 				}
 			}
 			catch (Exception e)
