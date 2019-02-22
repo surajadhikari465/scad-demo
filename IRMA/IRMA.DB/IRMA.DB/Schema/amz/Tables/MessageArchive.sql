@@ -17,6 +17,10 @@
   [ResetBy] [nvarchar](255) NULL
 )
 GO
+CREATE CLUSTERED INDEX [idxMessageArchive_InsertDateID]
+    ON [amz].[MessageArchive]([InsertDate], [MessageArchiveID]);
+
+GO
 
 GRANT SELECT
     ON OBJECT::[amz].[MessageArchive] TO [MammothRole]
