@@ -279,7 +279,7 @@ where				InsertedData.Item_Key = OnHand.Item_Key AND
 
 	IF @Error_No = 0 AND (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
-		DECLARE @invAdjEvenTypeID INT = (SELECT EventTypeID FROM amz.EventType WHERE EventTypeCode = 'INV_ADJ')
+		DECLARE @invAdjEvenTypeID INT = 1 -- 'INV_ADJ'
 		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U'
 
 		INSERT INTO amz.InventoryQueue(EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
@@ -290,9 +290,7 @@ where				InsertedData.Item_Key = OnHand.Item_Key AND
 			@unprocessedStatusCode,
 			SYSUTCDATETIME()
 		FROM inserted
-		JOIN Item i on inserted.Item_Key = i.Item_Key
 		WHERE inserted.Adjustment_ID = 1
-		  AND i.Retail_Sale = 1
 		
 		SELECT @Error_No = @@ERROR
 	END

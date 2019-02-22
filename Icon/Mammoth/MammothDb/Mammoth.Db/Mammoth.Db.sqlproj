@@ -180,6 +180,9 @@
     <Folder Include="eplum\Tables" />
     <Folder Include="Scripts\Projects" />
     <Folder Include="Scripts\Projects\GPM" />
+    <Folder Include="amazonload" />
+    <Folder Include="amazonload\Tables" />
+    <Folder Include="amazonload\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -811,6 +814,9 @@
     <Build Include="app\Tables\AppLogArchive.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddEslOnePlumAppsToAppTable.sql" />
     <Build Include="gpm\Stored Procedures\UpdatePrice.sql" />
+    <Build Include="stage\Tables\ItemLocaleExportStaging.sql" />
+    <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
+    <Build Include="stage\Tables\GPMPriceExport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

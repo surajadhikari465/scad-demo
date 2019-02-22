@@ -71,12 +71,9 @@ namespace PushController.Controller.ProcessorModules
                 {
                     SaveItemLocaleMessages(itemLocaleMessages);
                 }
-                List<String> nonGpmRegionList = Cache.regionCodeToGPMInstanceDataFlag
-                                                      .Where(rg => rg.Value == false)
-                                                      .Select(idf =>idf.Key)
-                                                      .ToList();
-                // get data for regions that are not on GPM 
-                var posDataForNonGPMRegions = posDataReadyForEsb.Where(pdr => nonGpmRegionList.Contains(pdr.RegionCode)).ToList();
+                
+                // Exclude non-gpm stores by businessUnit
+                var posDataForNonGPMRegions = posDataReadyForEsb.Where(pdr => Cache.nonGpmStores.Contains(pdr.BusinessUnit_ID)).ToList();
 
                 if (posDataForNonGPMRegions.Count > 0)
                 {

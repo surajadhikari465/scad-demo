@@ -27,6 +27,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_FL
 UNION ALL
 SELECT
@@ -56,6 +57,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_MA
 UNION ALL
 SELECT
@@ -85,6 +87,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_MW
 UNION ALL
 SELECT
@@ -114,6 +117,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_NA
 UNION ALL
 SELECT
@@ -143,6 +147,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_NC
 UNION ALL
 SELECT
@@ -172,6 +177,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_NE
 UNION ALL
 SELECT
@@ -201,6 +207,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_PN
 UNION ALL
 SELECT
@@ -230,6 +237,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_RM
 UNION ALL
 SELECT
@@ -259,6 +267,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_SO
 UNION ALL
 SELECT
@@ -288,6 +297,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_SP
 UNION ALL
 SELECT
@@ -317,6 +327,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_SW
 UNION ALL
 SELECT
@@ -346,6 +357,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_TS
 UNION ALL
 SELECT
@@ -375,6 +387,7 @@ SELECT
 	,[MSRP]
 	,[AddedDate]
 	,[ModifiedDate]
+	,[IrmaItemKey]
 FROM ItemAttributes_Locale_UK
 GO
 

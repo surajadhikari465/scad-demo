@@ -7,6 +7,7 @@ using MoreLinq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -21,39 +22,93 @@ namespace AmazonLoad.MammothItemLocale
         public static int NumberOfMessagesSent = 0;
         internal static int DefaultBatchSize = 100;
 
+    
+
         public static void LoadMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, bool sendToEsb = true)
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  bool sendToEsb = true )
         {
+
             SqlConnection sqlConnection = new SqlConnection(mammothConnectionString);
 
-            // load data
-            var models = LoadMammothtemLocales(sqlConnection, region, maxNumberOfRows);
+            // stage data
+           StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerEsbMessage, connectionTimeoutSeconds);
 
-            // now send the message(s) to the eSB
-            SendMessagesToEsb(models, esbProducer, saveMessages, saveMessagesDirectory,
-                nonReceivingSysName, maxNumberOfRows, transactionType, sendToEsb);
+            var numberOfGroups =
+                sqlConnection.QueryFirst<int>("select max(GroupID) from stage.ItemLocaleExportStaging where processed = 0", commandTimeout: connectionTimeoutSeconds) + 1;
+
+            Console.WriteLine($"{numberOfGroups} esb message group(s) created");
+
+            var GroupRanges = CalculateRanges(numberOfGroups, clientSideProcessGroupCount);
+
+            Console.WriteLine($"{GroupRanges.Count()} client side data sets will be processed.");
+
+            foreach (var groupRange in GroupRanges)
+            {
+                Console.WriteLine($"message group range {groupRange.Start}-{groupRange.End}");
+                var models =
+                    sqlConnection.Query<MammothItemLocaleModel>($"select * from stage.ItemLocaleExportStaging where groupid >= {groupRange.Start} and groupid <= {groupRange.End}  and processed = 0", commandTimeout: connectionTimeoutSeconds).ToList();
+
+                for (int i = groupRange.Start; i <= groupRange.End; i++)
+                {
+                    var chunk = models.Where(w => w.GroupId == i);
+                    // now send the message(s) to the eSB
+                    SendMessagesToEsbServerSideGroups(chunk.ToList(), esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, sendToEsb);
+                }
+               
+            }
+
         }
 
-        internal static string GetFormattedSqlForMammothItemLocaleQuery(string region, int maxNumberOfRows)
+        internal static IEnumerable<GroupRange> CalculateRanges(int numberOfGroups, int batchSize)
         {
-            string formattedSql = SqlQueries.MammothItemLocaleSql.Replace("{region}", region);
-            if (maxNumberOfRows != 0)
-            {
-                formattedSql = formattedSql.Replace("{top query}", $"top {maxNumberOfRows}");
-            }
-            else
-            {
-                formattedSql = formattedSql.Replace("{top query}", "");
-            }
-            return formattedSql;
+            return Enumerable.Range(0, numberOfGroups + 1).Batch(batchSize).Select(e => new GroupRange { Start = e.First(), End = e.Last() });
         }
         
-        internal static IEnumerable<MammothItemLocaleModel> LoadMammothtemLocales(SqlConnection irmaSqlConnection, string region, int maxNumberOfRows)
+        
+        internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerEsbMessage, int connectionTimeoutSeconds)
         {
-            var sql = GetFormattedSqlForMammothItemLocaleQuery(region, maxNumberOfRows);
-            var mamothItemLocaleModels = irmaSqlConnection.Query<MammothItemLocaleModel>(sql, buffered: false, commandTimeout: 60);
-            return mamothItemLocaleModels;
+            mammothSqlConnection.FireInfoMessageEventOnUserErrors = true;
+            mammothSqlConnection.InfoMessage += (s, e) => { Console.Out.WriteLineAsync($"(sql) {e.Message}"); };
+
+            var paramters = new DynamicParameters();
+            paramters.Add("Region", dbType: DbType.String, direction: ParameterDirection.Input, value: region);
+            paramters.Add("GroupSize", dbType: DbType.Int32, direction: ParameterDirection.Input, value: numberOfRecordsPerEsbMessage);
+            paramters.Add("MaxRows", dbType: DbType.Int32, direction: ParameterDirection.Input, value: maxNumberOfRows);
+
+            var rowCount = mammothSqlConnection.QueryFirst<int>("stage.ItemLocaleExport", paramters, commandTimeout: connectionTimeoutSeconds, commandType: CommandType.StoredProcedure); 
+            return rowCount;
+        }
+
+        internal static void SendMessagesToEsbServerSideGroups(List<MammothItemLocaleModel> models,
+            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
+            string nonReceivingSysName, string transactionType, bool sendToEsbFlag = true)
+        {
+            string message = MessageBuilderForMammothItemLocale.BuildMessage(models);
+            string messageId = Guid.NewGuid().ToString();
+            var headers = new Dictionary<string, string>
+            {
+                { "IconMessageID", messageId },
+                { "Source", "Mammoth"},
+                { "nonReceivingSysName", nonReceivingSysName },
+                { "TransactionType", transactionType }
+            };
+
+            if (!models.Any()) return;
+
+            if (sendToEsbFlag)
+            {
+                esbProducer.Send(
+                    message,
+                    messageId,
+                    headers);
+            }
+            NumberOfRecordsSent += models.Count();
+            NumberOfMessagesSent += 1;
+            if (saveMessages)
+            {
+                File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+            }
         }
 
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,

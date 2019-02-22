@@ -4,10 +4,10 @@ namespace AmazonLoad.MammothItemLocale
 {
     internal class MammothItemLocaleModel
     {
-        public bool? ColorAdded { get; set; }
+        public string ColorAdded { get; set; }
         public string CountryOfProcessing { get; set; }
         public string Origin { get; set; }
-        public bool? ElectronicShelfTag { get; set; }
+        public string ElectronicShelfTag { get; set; }
         public DateTime? Exclusive { get; set; }
         public int? NumberOfDigitsSentToScale { get; set; }
         public string ChicagoBaby { get; set; }
@@ -45,5 +45,6 @@ namespace AmazonLoad.MammothItemLocale
         public string RetailUnit { get; set; }
         public bool DefaultScanCode { get; set; }
         public int? IrmaItemKey { get; set; }
+        public int GroupId { get; set; }
     }
 }

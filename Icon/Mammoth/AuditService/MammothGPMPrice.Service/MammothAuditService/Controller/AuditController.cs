@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
@@ -40,6 +41,7 @@ namespace Audit
 			const string DATE_FORMAT = "yyyyMMdd_HHmm";
 			if(this.spec == null || !this.spec.IsValid) return;
 
+			int groupId, rowCount;
 			bool hasData = false;
 			string delimiter = this.spec.Config.Delimiter.ToString();
 
@@ -51,7 +53,7 @@ namespace Audit
 																																	argRegion: new Region(){ Id = 0, Code = "Global", Name = "Global" })}
 
 										: this.spec.Regions.Where(x => IsReady(x))
-													.Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}';",
+													.Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}'",
 																													argFileName: Path.Combine(this.spec.DirPath, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
 																													argRegion: x))
 													.ToArray();
@@ -60,43 +62,71 @@ namespace Audit
 				{
 					try
 					{
+						groupId = -1;
 						hasData = false;
-						if(File.Exists(item.FileName)) { File.Delete(item.FileName); }
+						DeleteFile(item.FileName);
 
 						using(var conn = new SqlConnection(this.spec.ConnectionString))
-						using(var sqlCommand = new SqlCommand(item.Query, conn) { CommandTimeout = this.spec.CommandTimeOut })
+						using(var sqlCommand = new SqlCommand($"{item.Query} , @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}, @maxRows = {this.spec.Config.MaxRows}", conn) { CommandTimeout = this.spec.CommandTimeOut })
 						{
 							conn.Open();
-							var names = new List<string>();
-							var reader = sqlCommand.ExecuteReader();
+							rowCount = (int)sqlCommand.ExecuteScalar();
+						}
 
-							hasData = reader.HasRows;
-							if(hasData)
+						if(rowCount == 0) continue; //No data in stage.Table
+
+						while(true)
+						{
+							using(var conn = new SqlConnection(this.spec.ConnectionString))
+							using(var sqlCommand = new SqlCommand($"{item.Query}, @action = 'Get', @groupID = {++groupId}", conn) { CommandTimeout = this.spec.CommandTimeOut })
 							{
-								var data = new object[reader.FieldCount];
-			
-								using(var writer = new StreamWriter(item.FileName))
+								conn.Open();
+								var reader = sqlCommand.ExecuteReader();
+
+								if(!reader.HasRows)
 								{
-									for(int i = 0; i < reader.FieldCount; i++)
+									break;
+								}
+
+								hasData = true;
+								var data = new object[reader.FieldCount];
+								using(var writer = new StreamWriter(item.FileName, true))
+								{
+									if(groupId == 0) //Write header
 									{
-										names.Add(reader.GetName(i));
+										var names = new List<string>();
+										for(int i = 0; i < reader.FieldCount; i++)
+										{
+											names.Add(reader.GetName(i));
+										}
+										writer.WriteLine(String.Join(delimiter, names));
 									}
-									writer.WriteLine(String.Join(delimiter, names));
-			
+
 									while(reader.Read())
 									{
 										Array.Clear(data, 0, data.Length);
 										reader.GetValues(data);
 										writer.WriteLine(String.Join(delimiter, data.Select(x => x is DBNull ? String.Empty : x.ToString().Replace(spec.Config.Delimiter, SPACE).Trim())));
 									}
+
+									writer.Flush();
+									writer.Dispose();
 								}
+								reader = null;
 							}
-							reader = null;
 						}
 
 						if(hasData)
 						{
-							UploadFileAsync(item).Wait();
+							if(this.spec.Config.EnableUpload)
+							{
+								UploadFileAsync(item).Wait();
+							}
+
+							if(this.spec.Config.DeleteFileAfterTransfer)
+							{
+								DeleteFile(item.FileName);
+							}
 						}
 						SetStatus(item.Region);
 					}

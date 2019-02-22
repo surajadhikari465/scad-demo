@@ -15,6 +15,10 @@
 	CONSTRAINT [CK_OrderQueue_Status] CHECK  ([Status]='R' OR [Status]='F' OR [Status]='P' OR [Status]='I' OR [Status]='U')
 )
 GO
+CREATE CLUSTERED INDEX [idxOrderQueue_InsertDateID]
+    ON [amz].[OrderQueue]([InsertDate], [QueueID]);
+
+GO
 
 GRANT SELECT
     ON OBJECT::[amz].[OrderQueue] TO [MammothRole]

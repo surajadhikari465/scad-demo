@@ -73,5 +73,26 @@ namespace Audit
         get { return (bool)base["enableUpload"]; }
         set { base["enableUpload"] = value; }
     }
+
+		[ConfigurationProperty("deleteFileAfterTransfer", IsRequired = false)]
+    public bool DeleteFileAfterTransfer
+    {
+        get { return (bool)base["deleteFileAfterTransfer"]; }
+        set { base["deleteFileAfterTransfer"] = value; }
+    }
+
+		[ConfigurationProperty("groupSize", IsRequired = true)]
+    public int GroupSize
+    {
+        get { return (int)base["groupSize"]; }
+        set { base["groupSize"] = value; }
+    }
+
+		[ConfigurationProperty("maxRows", IsRequired = false)]
+    public int MaxRows
+    {
+        get { return (int)base["maxRows"]; }
+        set { base["maxRows"] = value; }
+    }
   }
 }

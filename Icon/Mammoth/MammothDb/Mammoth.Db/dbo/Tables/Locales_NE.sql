@@ -17,3 +17,8 @@ GO
 
 GRANT SELECT ON [dbo].[Locales_NE] TO [TibcoRole]
 GO
+
+CREATE NONCLUSTERED INDEX [IX_Locales_NE_BusinessUnitId]
+    ON [dbo].[Locales_NE]([BusinessUnitID] ASC) WITH (FILLFACTOR = 80)
+    ON [FG_NE];
+GO
