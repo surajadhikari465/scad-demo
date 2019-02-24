@@ -39,20 +39,5 @@ END
 GO
 
 GRANT EXECUTE
-	ON OBJECT::[dbo].[GetInstanceDataFlagsStoreOverrideList]
-	TO [IRMAAdminRole] AS [dbo];
-GO
-
-GRANT EXECUTE
-	ON OBJECT::[dbo].[GetInstanceDataFlagsStoreOverrideList]
-	TO [IRMASupportRole] AS [dbo];
-GO
-
-GRANT EXECUTE
-	ON OBJECT::[dbo].[GetInstanceDataFlagsStoreOverrideList]
-	TO [IRMAClientRole] AS [dbo];
-GO
-
-GRANT EXECUTE
-	ON OBJECT::[dbo].[GetInstanceDataFlagsStoreOverrideList]
-	TO [IRMASchedJobsRole] AS [dbo];
+    ON OBJECT::[dbo].[GetInstanceDataFlagStoreValues] TO [IConInterface]
+    AS [dbo];
