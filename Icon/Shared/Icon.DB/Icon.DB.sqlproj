@@ -727,6 +727,8 @@
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
     <None Include="Scripts\PopulateData\AppLogArchiveRetentionPolicy.sql" />
+    <None Include="Scripts\PopulateData\IconLocale_365StoreMetroChange_DataSurgery.sql" />
+    <None Include="Scripts\PopulateData\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

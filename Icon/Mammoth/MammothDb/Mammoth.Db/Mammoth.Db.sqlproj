@@ -833,6 +833,8 @@
     <None Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="dbo\User Defined Types\ItemAttributesLocaleType.sql" />
     <None Include="Scripts\PreDeploymentScripts\Deduplicate_ItemAttributesLocale_Tables.sql" />
+    <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion.sql" />
+    <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
