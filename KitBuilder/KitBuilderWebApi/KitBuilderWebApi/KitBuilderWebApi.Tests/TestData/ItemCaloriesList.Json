@@ -1,0 +1,102 @@
+﻿[
+	{
+		"Key": 1862661,
+		"Value": {
+			"ItemId": 1862661,
+			"Calories": 850,
+			"ServingsPerPortion": 1.0,
+			"ServingSizeDesc": "1 ea",
+			"ServingPerContainer": "1"
+		}
+	},
+{
+		"Key": 108561,
+		"Value": {
+			"ItemId": 108561,
+			"Calories": 110,
+			"ServingsPerPortion": 7.0,
+			"ServingSizeDesc": "2 oz",
+			"ServingPerContainer": "7"
+		}
+	},
+	{
+		"Key": 1849257,
+		"Value": {
+			"ItemId": 1849257,
+			"Calories": 200,
+			"ServingsPerPortion": 1.0,
+			"ServingSizeDesc": "1 ea",
+			"ServingPerContainer": "1"
+		}
+	},
+	{
+		"Key": 1879314,
+		"Value": {
+			"ItemId": 1879314,
+			"Calories": 320,
+			"ServingsPerPortion": 10.0,
+			"ServingSizeDesc": "1 slice",
+			"ServingPerContainer": "10"
+		}
+	},
+	{
+		"Key": 2137082,
+		"Value": {
+			"ItemId": 2137082,
+			"Calories": 190,
+			"ServingsPerPortion": 6.0,
+			"ServingSizeDesc": "1 ea",
+			"ServingPerContainer": "6"
+		}
+	},
+	{
+		"Key": 2208285,
+		"Value": {
+			"ItemId": 2208285,
+			"Calories": 200,
+			"ServingsPerPortion": 8.5,
+			"ServingSizeDesc": "2 oz",
+			"ServingPerContainer": "about 8"
+		}
+	},
+	{
+		"Key": 2211226,
+		"Value": {
+			"ItemId": 2211226,
+			"Calories": 330,
+			"ServingsPerPortion": 2.66669988632202,
+			"ServingSizeDesc": "6 oz",
+			"ServingPerContainer": "varied"
+		}
+	},
+	{
+		"Key": 2214747,
+			"Value": {
+				"ItemId": 2214747,
+				"Calories": 140,
+				"ServingsPerPortion": 1.0,
+				"ServingSizeDesc": "1 ea",
+				"ServingPerContainer": "1"
+			}
+	},
+	{
+		"Key": 2214752,
+		"Value": {
+			"ItemId": 2214752,
+			"Calories": 200,
+			"ServingsPerPortion": 1.0,
+			"ServingSizeDesc": "1 ea",
+			"ServingPerContainer": "1"
+		}
+	},
+	{
+		"Key": 2214753,
+		"Value": {
+			"ItemId": 2214753,
+			"Calories": 180,
+			"ServingsPerPortion": 1.0,
+			"ServingSizeDesc": "1 ea",
+			"ServingPerContainer": "1"
+		}
+	}
+]
