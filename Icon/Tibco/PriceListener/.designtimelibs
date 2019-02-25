@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Fri Feb 08 15:13:06 CST 2019
+#Sat Feb 23 15:32:21 CST 2019
 6=SharedArchivePriceMessage.projlib\=
 5=SharedConfirmBODPublisher.projlib\=
 4=SharedErrorPublisher.projlib\=

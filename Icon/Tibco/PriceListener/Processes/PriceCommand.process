@@ -60,21 +60,21 @@
         </pd:transition>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>DeletePrice</pd:to>
-            <pd:xpathDescription>Delete</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Delete"</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
             <pd:to>AddPrice</pd:to>
             <pd:xpathDescription>Add</pd:xpathDescription>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
             <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Add")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DeletePrice</pd:to>
+            <pd:xpathDescription>Delete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Delete"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Map Database Error</pd:from>
@@ -350,9 +350,16 @@ or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpa
                         <SellableUOM>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
                         </SellableUOM>
-                        <CurrencyCode>
-                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
-                        </CurrencyCode>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode)">
+                                <CurrencyCode>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
+                                </CurrencyCode>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <CurrencyCode xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <Multiple>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
                         </Multiple>
@@ -786,9 +793,16 @@ result=Math.pow(2,retryCount)*100L;
                         <StartDate>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:StartDate"/>
                         </StartDate>
-                        <EndDate>
-                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:EndDate"/>
-                        </EndDate>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:EndDate)">
+                                <EndDate>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:EndDate"/>
+                                </EndDate>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <EndDate xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <PriceType>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:PriceType"/>
                         </PriceType>
@@ -798,9 +812,16 @@ result=Math.pow(2,retryCount)*100L;
                         <SellableUOM>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:SellableUom"/>
                         </SellableUOM>
-                        <CurrencyCode>
-                            <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
-                        </CurrencyCode>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode)">
+                                <CurrencyCode>
+                                    <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:CurrencyCode"/>
+                                </CurrencyCode>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <CurrencyCode xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <Multiple>
                             <xsl:value-of select="$Start/Input/pfx8:MammothPrice/pfx8:Multiple"/>
                         </Multiple>
