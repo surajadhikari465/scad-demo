@@ -1,5 +1,6 @@
 Imports System.Text
 Imports WholeFoods.Utility
+Imports WholeFoods.Utility.DataAccess
 
 Friend Class frmReceivingLog
     Inherits System.Windows.Forms.Form
@@ -108,8 +109,11 @@ Friend Class frmReceivingLog
     Private Sub cmdClose_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdClose.Click
 
         Dim storeNumber As Integer = VB6.GetItemData(cmbStore, cmbStore.SelectedIndex)
+        Dim factory As New DataFactory(DataFactory.ItemCatalog)
+        Dim isReceivingInProgress As Boolean = False
 
-        Dim isReceivingInProgress As Boolean = CheckReceivingInProgress(storeNumber, giUserID)
+        ' Execute the SP
+        isReceivingInProgress = CType(factory.ExecuteScalar((String.Format("exec dbo.CheckReceivingInProgress {0},{1}", storeNumber, giUserID))), Boolean)
 
         If (isReceivingInProgress) Then
             If MessageBox.Show("Close receiving is in progress by other user. Do you still want to proceed and close receiving for " & cmbStore.Text.TrimEnd & "?", "Close Receiving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
