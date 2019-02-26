@@ -47,7 +47,7 @@ function DisplayInstructionLists(props: any) {
                     <Grid item sm >
                     </Grid>
                 </Hidden>
-                <Grid item mt-xs-3 xs={11} sm={6} md={6} lg={2} >
+                <Grid item xs={11} sm={6} md={6} lg={2} >
                     <Button variant="contained" color="secondary" className={props.classes.button} onClick={() => props.deleteInstruction()} >
                         Delete Instruction
                 </Button>
