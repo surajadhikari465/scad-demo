@@ -371,5 +371,5 @@ BEGIN
 END
 GO
 
-GRANT EXECUTE ON [dbo].AddOrUpdateItems TO [MammothRole]
+GRANT EXECUTE ON dbo.AuditGlobalItem TO [MammothRole]
 GO
