@@ -32,55 +32,55 @@ show user sb1_HCTransferOrderUser
 show group sb1_HCReceiptOrderGroup
 show user sb1_HCReceiptOrderUser
 
-showacl topic WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1
+showacl topic WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1
 
 echo on ################################################################################
 echo on ### USERS AND GROUPS                                                         ###
@@ -117,259 +117,259 @@ echo on #######################################################################
 
 ## Topic - Inventory Management topic for real-time - from all IRMA amz.*Quene records to this topic, IRMA as sender
 
-create topic WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 secure,expiration=8hour,store=$sys.failsafe
-grant topic WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 group=sb1_HCInventoryMgmtPublisherGroup publish
+create topic WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 secure,expiration=8hour,store=$sys.failsafe
+grant topic WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 group=sb1_HCInventoryMgmtPublisherGroup publish
 
 ## FL InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## MA InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## MW InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## NA InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## NC InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## NE InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## PN InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## RM InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## SO InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## SP InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 ## SW InventoryMgmt Queues 
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
-create queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
-grant queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=15
+create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
 
 echo on #######################################################################
 echo on ### BRIDGES                                                         ###
 echo on #######################################################################
 ###Bridge between SB1_ Topic and All R10Price and R10PriceComplete Queues
 
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='InventorySpoilage'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='InventorySpoilage'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='InventorySpoilage'"
 
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='PurchaseOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='PurchaseOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='PurchaseOrders'"
 
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='TransferOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='TransferOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='TransferOrders'"
 
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='ReceiptOrders'"
-create bridge source=topic:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 selector="RegionCode='FL' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 selector="RegionCode='MA' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 selector="RegionCode='MW' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 selector="RegionCode='NA' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 selector="RegionCode='NC' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 selector="RegionCode='NE' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 selector="RegionCode='PN' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 selector="RegionCode='RM' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 selector="RegionCode='SO' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 selector="RegionCode='SP' AND TransactionType='ReceiptOrders'"
+create bridge source=topic:WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 target=queue:WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 selector="RegionCode='SW' AND TransactionType='ReceiptOrders'"
 
 echo on ################################################################################
 echo on ### POST-SHOW                                                                ###
@@ -390,54 +390,54 @@ show user HCTransferOrderUser
 show group sb1_HCReceiptOrderGroup
 show user sb1_HCReceiptOrderUser
 
-showacl topic WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Topic.V1
+showacl topic WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.Adjustments.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.PurchaseOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.TransferOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1
 
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.FL.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.MW.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NA.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NC.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.NE.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.PN.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.RM.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SO.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SP.Queue.V1
-showacl queue WFMSB1.Irma.SupplyChain.Retail.InventoryMgmt.ReceiptOrder.SW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1
+showacl queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1
 
 commit
