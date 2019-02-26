@@ -8,13 +8,9 @@ AS
 BEGIN
   SET NOCOUNT ON;
 
-  DECLARE @msg varchar(Max) = null,
-          @cols NVARCHAR(Max) = null,
-          @query NVARCHAR(Max) = null;
-
   IF(Not Exists(SELECT 1 FROM Regions WHERE Region = @region))
   BEGIN
-    SET @msg = 'Invalid region specified ' + @region + '.';
+    DECLARE @msg varchar(255) = 'Invalid region specified ' + @region + '.';
     RAISERROR (@msg, 16, 1);
     RETURN;
   END
@@ -37,3 +33,7 @@ BEGIN
 
   SET NOCOUNT OFF;
 END
+GO
+
+GRANT EXECUTE ON [dbo].AddOrUpdateItems TO [MammothRole]
+GO

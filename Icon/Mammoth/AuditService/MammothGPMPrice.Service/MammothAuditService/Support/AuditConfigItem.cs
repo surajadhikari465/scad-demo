@@ -67,20 +67,6 @@ namespace Audit
         set { base["profileName"] = value; }
     }
 
-    [ConfigurationProperty("enableUpload", IsRequired = true)]
-    public bool EnableUpload
-    {
-        get { return (bool)base["enableUpload"]; }
-        set { base["enableUpload"] = value; }
-    }
-
-		[ConfigurationProperty("deleteFileAfterTransfer", IsRequired = false)]
-    public bool DeleteFileAfterTransfer
-    {
-        get { return (bool)base["deleteFileAfterTransfer"]; }
-        set { base["deleteFileAfterTransfer"] = value; }
-    }
-
 		[ConfigurationProperty("groupSize", IsRequired = true)]
     public int GroupSize
     {

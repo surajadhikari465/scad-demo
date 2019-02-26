@@ -817,6 +817,7 @@
     <Build Include="stage\Tables\ItemLocaleExportStaging.sql" />
     <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
     <Build Include="stage\Tables\GPMPriceExport.sql" />
+    <Build Include="dbo\Stored Procedures\AuditGlobalItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
