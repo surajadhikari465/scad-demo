@@ -41,21 +41,6 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
     };
   }
 
-  componentDidUpdate(prevProps: CreateEdiInstructionDialogProps) {
-    // we want to make sure we change our state if the prop changes
-    if (this.props.currentInstructionTypeValue !== prevProps.currentInstructionTypeValue) {
-      this.setState({
-        instructionName: this.props.currentInstructionTypeValue
-      });
-    } 
-    // if we change the dialog to new mode, we should clear the list name input
-    else if (this.props.isEditInstructions === false && prevProps.isEditInstructions === true) {
-        this.setState({
-            instructionName: "",
-          }); 
-    }
-  }
-
   handleCreateNewInstruction = (event: React.MouseEvent<HTMLElement>) => {
     this.props.createNewInstruction(
       this.state.instructionName,
@@ -84,8 +69,18 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
   };
 
   handleCancel = (event: React.MouseEvent<HTMLElement>) => {
-    const { currentInstructionTypeValue, onCancel } = this.props;
-    this.setState({ instructionName: currentInstructionTypeValue }, onCancel);
+    const { currentInstructionTypeValue, onCancel, isEditInstructions } = this.props;
+    onCancel();
+    if(isEditInstructions) this.setState({ instructionName: currentInstructionTypeValue });
+  }
+
+
+  handleOpen = () => {
+    if(this.props.isEditInstructions) {
+      this.setState({ instructionName: this.props.currentInstructionTypeValue });
+    } else {
+      this.setState({ instructionName: "" });
+    }
   }
 
   render() {
@@ -101,6 +96,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
       <Dialog
         open={isOpen}
         onClose={onClose}
+        onEntering={this.handleOpen}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
@@ -108,7 +104,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
         </DialogTitle>
         <DialogContent>
           <Grid container className="form-container">
-            <Grid item xs={12}>
+            <Grid item xs={12} className = "pb-3">
               <FormControl>
                 <TextField
                   id="standard-name"
@@ -121,7 +117,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
               </FormControl>
             </Grid>
             {!isEditInstructions && (
-              <Grid item xs={12}>
+              <Grid item xs={12} className = "pb-3">
                 <FormControl>
                   <Grid container justify="space-between" alignItems="center">
                     <FormLabel>Type</FormLabel>
@@ -147,8 +143,8 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
                 </FormControl>
               </Grid>
             )}
-            <Grid container id="add-edit-buttons">
-              <Grid item xs={12} md={6} className="mb-3 pr-3">
+            <Grid container spacing={16} id="add-edit-buttons">
+              <Grid item xs={12} md={6}>
                 <Button
                   onClick={
                     isEditInstructions
@@ -162,7 +158,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
                   {isEditInstructions ? "Done" : "Create"}
                 </Button>
               </Grid>
-              <Grid item xs={12} md={6} className="pr-2">
+              <Grid item xs={12} md={6}>
                 <Button
                   onClick={this.handleCancel}
                   variant="outlined"
@@ -173,7 +169,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
                 </Button>
               </Grid>
               {isEditInstructions && (
-                <Grid item xs={12} md={6} className="pl-2">
+                <Grid item xs={12}>
                   <Button
                     onClick={onDelete}
                     variant="outlined"
