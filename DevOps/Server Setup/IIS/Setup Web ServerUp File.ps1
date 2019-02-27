@@ -1,5 +1,5 @@
 ﻿$drop = $true
-$svrAlias = "IRMADevWeb02"
+$svrAlias = "IRMADevWeb01"
 $svrHostname = ([System.Net.Dns]::GetHostByName($svrAlias)).HostName
 
 $serverupFilePath = "c:\inetpub\wwwroot\serverup.html"

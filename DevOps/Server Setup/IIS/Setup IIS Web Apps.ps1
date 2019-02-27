@@ -8,15 +8,73 @@
 
 # Creates a set of app pools and sites based on input files.
 
+<#
+HISTORY:
+2019.02.25 - Tom Lux - Standardized to determine its own script folder, load functions script, and create transcript log.
+#>
+
 
 #######################################################################################
 
-$PreviewMode = $false
-
-$gitRootFolder = "c:\tlux\dev\git\Icon"
-$scriptFolder = "$gitRootFolder\DevOps\Server Setup\IIS"
-
+$scriptFullPath = $MyInvocation.MyCommand.Definition
+$scriptFileObj = new-object system.io.fileinfo $MyInvocation.MyCommand.Definition
+$scriptFolder = $scriptFileObj.directoryname
 $outputBreak = "---------------------------------------------------------------------"
+
+########################################################################################################################################
+
+">>> Loading functions..."
+">>> Trying common location...
+
+"
+$fnScript = "$scriptFolder\..\..\common\ps\Functions.ps1"
+
+if (-not (Test-Path $fnScript)) {
+
+"
+******************************************************************
+Cannot Continue -- Expected Functions Script Not Found
+--> '" + $fnScript + "'
+
+Ensure this script exists in the relative common folder and try again.
+******************************************************************
+"
+    Read-Host "Press enter to exit..."
+    return
+}
+
+# Functions file must be in the assumed 'common' directory.
+. $fnScript
+
+########################################################################################################################################
+
+$outputBreak
+$logFile = "\\irmaprdfile2\e$\devops\server setup\logs\" + $scriptFileObj.Name + "." + (Get-Date -Format "yyyyMMdd.HHmmss") + ".log"
+Start-Transcript -Path $logFile -Append
+
+$prompt = "Enable preview mode?"
+"
+[[ PROMPT ]]
+----------------------------
+$prompt
+----------------------------
+"
+$previewMode = AskYesNo -MainPrompt $prompt
+# Force preview mode, if variable is null or not boolean (so IF statements don't evaluate to TRUE just because the variable has some value).
+if($previewMode -eq $null){ $previewMode = $true }
+if($previewMode.GetType() -ne [bool]){ $previewMode = $true }
+
+$previewMsg = "
+*********************************
+>>>>>>>>>>>> PREVIEW MODE
+*********************************
+"
+
+if($previewMode){
+    Write-Host -ForegroundColor Cyan $previewMsg
+} else {
+    Write-Host -ForegroundColor Magenta "** Running in UPDATE Mode ** -- Changes will be made to target servers!"
+}
 
 ########################################################################################################################################
 
@@ -33,16 +91,12 @@ $virtualDirDefinitionList = Get-Content "$scriptFolder\IIS Virtual Directory Def
 $virtualDirDefs = $virtualDirDefinitionList.Split("`n")
 
 $webServersText = Get-Content "$scriptFolder\Web Server List.Dev"
-$webServers = @("IRMADevWeb01")#$webServersText.Split("`n")
+$webServers = @("IRMADevWeb02")#$webServersText.Split("`n")
 
 #######################################################################################
 
-if($PreviewMode){
-    Write-Host -ForegroundColor DarkYellow "<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n<< PREVIEW MODE >>`n"
-}
 
-$output = "Starting pool and app setup in IIS..."
-$output
+"[Starting pool and app setup in IIS]"
 
 "
 -----------------------------"
@@ -54,19 +108,22 @@ $output
 $webServers
 "-----------------------------"
 
-Read-Host "Press <ENTER> to continue..."
+$outputBreak
+Write-Host -ForegroundColor Yellow "Next: All Web Setup"
+If (-not (UserWantsToContinue))
+{ ExitProcess }
+$outputBreak
 
-Foreach ($webServer in $webServers)
+foreach ($webServer in $webServers)
 { 
-    "`n========================================================="
+    $outputBreak
     $webSvr = ([System.Net.Dns]::GetHostByName($webServer)).HostName
 
-    $output = "Starting IIS setup on server " + $webServer
-    $output
-
+    "Starting IIS setup on server [" + $webServer + "]"
 
     Invoke-Command -ComputerName $webSvr -ScriptBlock {
         param($poolDefs, $appDefs, $legAppDefs, $vdirDefs, $r_previewMode)
+        # Hard-coding the output-break here on the remote server (don't remove this line).
         $outputBreak = "---------------------------------------------------------------------"
 
         # Import WebAdministration to use IIS commandlets.
@@ -93,6 +150,7 @@ Foreach ($webServer in $webServers)
             $extProperty = $poolAttributeList[4]
 
             $hasExtProp = $false
+            $extPropMsg = ""
             # Check if field has equals sign, which means there's an extended attribute defined.
             if($extProperty -like "*=*"){
                 $hasExtProp = $true
@@ -226,8 +284,12 @@ Foreach ($webServer in $webServers)
     } -ArgumentList $appPoolDefs, $webAppDefs, $legacyWebAppDefs, $virtualDirDefs, $previewMode
 
 
-    $output = "IIS setup on server " + $webServer + " is complete."
-    $output
+    "IIS setup on server [" + $webServer + "] is complete."
 }
 
 
+$outputBreak
+"**SCRIPT COMPLETE**"
+$outputBreak
+Read-Host "Press <ENTER> to close log exit..."
+ExitProcess

@@ -3,8 +3,13 @@ Mammoth Web Support	MammothWebSupportDev	Mammoth	E:\WebApps\MammothWebSupport\
 Icon	IconWebDev	Icon	E:\WebApps\Icon\
 Nutrition	IconNutritionAPIDev	Nutrition	E:\WebApps\Nutrition\
 IRMA Client	IRMAClientDev	IRMA Client	E:\WebApps\IRMAClient\
-RM	IRMAWebFLDev	RM	E:\Regions\RM\
 WFM Mobile	WFMMblSvcDev	WFM Mobile	E:\WebApps\WFMMobile\Service\
-POET	POETWebDev	POET	E:\WebApps\POET\
 WFM Mobile Config	WFMMblDev	WFM Mobile Config	E:\Webapps\WFMMobile\Config\
-SPO Reports	SPOReportsDev	SPOReport	E:\Webapps\SuspendedPOReports
+POET	POETWebDev	POET	E:\WebApps\POET\
+SPO Reports	SPOReportsDev	SPO Reports	E:\Webapps\SuspendedPOReports\
+FL	IRMAWebFLDev	FL	E:\Regions\FL\
+MW	IRMAWebMWDev	MW	E:\Regions\MW\
+RM	IRMAWebRMDev	RM	E:\Regions\RM\
+SO	IRMAWebSODev	SO	E:\Regions\SO\
+UK	IRMAWebUKDev	UK	E:\Regions\UK\
+XX	IRMAWebXXDev	RM	E:\Regions\RM\
