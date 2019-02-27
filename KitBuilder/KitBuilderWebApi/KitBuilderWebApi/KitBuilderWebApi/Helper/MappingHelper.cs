@@ -1,5 +1,6 @@
 ﻿using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
+using System.Collections.Generic;
 
 namespace KitBuilderWebApi.Helper
 {
@@ -25,7 +26,13 @@ namespace KitBuilderWebApi.Helper
                 cfg.CreateMap<InstructionListMemberDto, InstructionListMember>();
                 cfg.CreateMap<InstructionListMember, InstructionListMemberDto>();
                 cfg.CreateMap<KitLocale, KitLocaleDto>();
+				cfg.CreateMap<KitLinkGroupItemLocale, KitLinkGroupItemLocaleDto>();
                 cfg.CreateMap<KitLinkGroupItemDto, KitLinkGroupItem>();
+                cfg.CreateMap<KitLinkGroupItem, KitLinkGroupItemDto>();
+                cfg.CreateMap<KitLinkGroupLocale, KitLinkGroupLocaleDto>()
+						.ForMember(dest => dest.KitLinkGroupItemLocales,
+								opts => opts.MapFrom(src => src.KitLinkGroupItemLocale));
+                cfg.CreateMap<KitLinkGroup, KitLinkGroupDto>();
                 cfg.CreateMap<KitLinkGroupDto, KitLinkGroup>();
                 cfg.CreateMap<KitInstructionListDto, KitInstructionList>();
                 cfg.CreateMap<KitDto, Kit>();

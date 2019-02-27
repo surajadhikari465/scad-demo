@@ -24,6 +24,10 @@ using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
+using KitBuilder.DataAccess.Queries;
+using KitBuilderWebApi.Services;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace KitBuilderWebApi
 {
@@ -61,6 +65,7 @@ namespace KitBuilderWebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+			services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
@@ -74,7 +79,11 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<ItemsDto, KitItemParameters>, KitItemHelper>();
             services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
 
-            services.AddSwaggerGen(c =>
+			services.AddScoped<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>, CaloricCalculator>();
+			services.AddScoped<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>, GetAuthorizedStatusAndPriceService>();
+			services.AddScoped<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>, GetNutritionService>();
+
+				  services.AddSwaggerGen(c =>
             {
 
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });

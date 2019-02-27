@@ -20,6 +20,12 @@
     "noUnusedLocals": true,
     "skipLibCheck": true
   },
+  "jsRules": {
+    "no-empty": true
+  },
+  "rules": {
+    "no-empty": true
+  },
   "exclude": [
     "node_modules",
     "build",

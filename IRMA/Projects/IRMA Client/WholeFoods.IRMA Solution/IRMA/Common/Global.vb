@@ -4614,75 +4614,34 @@ me_err:
     End If
   End Function
 
-  Public Function CheckReceivingInProgress(ByVal StoreNumber As Int64, ByVal UserId As Int64) As Boolean
+    Public Function SystemDateTime(Optional ByRef bDateOnly As Boolean = False) As Date
+        '-----------------------------------------------------
+        ' Purpose: Returns system date and time from database.
+        '-----------------------------------------------------
 
-    logger.Debug("CheckReceivingInProgress Entry")
-
-    Dim cmd As SqlClient.SqlCommand
-    Dim prm As SqlClient.SqlParameter
-
-    cmd = New SqlClient.SqlCommand
-    cmd.CommandType = CommandType.StoredProcedure
-    cmd.CommandText = "CheckReceivingInProgress"
-
-    'add input parameter
-    prm = New SqlClient.SqlParameter("@Store_No", SqlDbType.Int)
-    prm.Direction = ParameterDirection.Input
-    prm.Value = System.Math.Abs(CInt(StoreNumber))
-    cmd.Parameters.Add(prm)
-
-    prm = New SqlClient.SqlParameter("@User_Id", SqlDbType.Int)
-    prm.Direction = ParameterDirection.Input
-    prm.Value = System.Math.Abs(CInt(UserId))
-    cmd.Parameters.Add(prm)
-
-    'set the database connection
-    cmd.Connection = GetAdoNetConnection()
-
-    Try
-      isReceivingInProgress = cmd.ExecuteScalar()
-
-    Catch ex As Exception
-      'use the date/time from the computer as the fallback
-      logger.Error(ex.Message)
-    Finally
-      prm = Nothing
-      cmd.Dispose()
-    End Try
-
-    logger.Debug("CheckReceivingInProgress Exit")
-
-    Return isReceivingInProgress
-  End Function
-
-  Public Function SystemDateTime(Optional ByRef bDateOnly As Boolean = False) As Date
-    '-----------------------------------------------------
-    ' Purpose: Returns system date and time from database.
-    '-----------------------------------------------------
-
-    If gbUseLocalTime Then
-      'This would be used for testing purposes only.
-      'It is activated by starting the applicaiton and passing "uselocaltime" as a command line parameter.
-      SystemDateTime = Now
-    Else
-      Try
-        gRSRecordset = SQLOpenRecordSet("EXEC GetSystemDate", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-        SystemDateTime = gRSRecordset.Fields("SystemDate").Value
-      Finally
-        If gRSRecordset IsNot Nothing Then
-          gRSRecordset.Close()
-          gRSRecordset = Nothing
+        If gbUseLocalTime Then
+            'This would be used for testing purposes only.
+            'It is activated by starting the applicaiton and passing "uselocaltime" as a command line parameter.
+            SystemDateTime = Now
+        Else
+            Try
+                gRSRecordset = SQLOpenRecordSet("EXEC GetSystemDate", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+                SystemDateTime = gRSRecordset.Fields("SystemDate").Value
+            Finally
+                If gRSRecordset IsNot Nothing Then
+                    gRSRecordset.Close()
+                    gRSRecordset = Nothing
+                End If
+            End Try
         End If
-      End Try
-    End If
 
-    If bDateOnly Then
-      SystemDateTime = FormatDateTime(SystemDateTime, DateFormat.ShortDate)
-    End If
+        If bDateOnly Then
+            SystemDateTime = FormatDateTime(SystemDateTime, DateFormat.ShortDate)
+        End If
 
-  End Function
+    End Function
 
-  Public Sub ReportingServicesReport(ByRef sReportURL As String)
+    Public Sub ReportingServicesReport(ByRef sReportURL As String)
     '-------------------------------------------
     ' Purpose: Runs a Reporting Services report.
     '-------------------------------------------

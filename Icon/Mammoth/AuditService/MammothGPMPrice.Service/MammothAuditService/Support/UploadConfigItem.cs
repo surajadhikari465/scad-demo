@@ -45,5 +45,12 @@ namespace Audit
         get { return (string)base["destinationDir"]; }
         set { base["destinationDir"] = value; }
     }
+
+		[ConfigurationProperty("isS3Bucket", IsRequired = true)]
+    public bool IsS3Bucket
+    {
+        get { return (bool)base["isS3Bucket"]; }
+        set { base["isS3Bucket"] = value; }
+    }
   }
 }

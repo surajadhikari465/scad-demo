@@ -2,8 +2,10 @@
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Enums;
+using KitBuilder.DataAccess.Queries;
 using KitBuilder.DataAccess.Repository;
 using KitBuilderWebApi.Helper;
+using KitBuilderWebApi.Services;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
 using LocaltypeModel = KitBuilder.DataAccess.DatabaseModels.LocaleType;
 
@@ -28,22 +31,23 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<Kit> kitRepository;
         private IRepository<Locale> localeRepository;
         private IRepository<KitLocale> kitLocaleRepository;
-        private IRepository<LinkGroupItem> linkGroupItemRepository;
+		private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
         private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
-        private ILogger<KitController> logger;
+		private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaltypeModel> localeTypeRepository;
         private IHelper<KitDto, KitSearchParameters> kitHelper;
-        private const string deleteKitSpName = "DeleteKitByKitId";
+		private const string deleteKitSpName = "DeleteKitByKitId";
+		private IServiceProvider services;
 
-        public KitController(IRepository<LinkGroup> linkGroupRepository,
+		public KitController(IRepository<LinkGroup> linkGroupRepository,                   
                              IRepository<Kit> kitRepository,
                              IRepository<Locale> localeRepository,
                              IRepository<KitLocale> kitLocaleRepository,
-                             IRepository<LinkGroupItem> linkGroupItemRepository,
+							 IRepository<LinkGroupItem> linkGroupItemRepository,
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitLinkGroupRepository,
                              IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository,
@@ -51,9 +55,10 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository,
                              IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
-                             ILogger<KitController> logger,
-                             IHelper<KitDto, KitSearchParameters> kitHelper
-                            )
+							 ILogger<KitController> logger,
+                             IHelper<KitDto, KitSearchParameters> kitHelper,
+							 IServiceProvider services
+							)
         {
             this.linkGroupRepository = linkGroupRepository;
             this.kitRepository = kitRepository;
@@ -67,13 +72,34 @@ namespace KitBuilderWebApi.Controllers
             this.kitLinkGroupItemLocaleRepository = kitLinkGroupItemLocaleRepository;
             this.localeTypeRepository = localeTypeRepository;
             this.kitInstructionListRepository = kitInstructionListRepository;
-            this.logger = logger;
+			this.logger = logger;
             this.kitHelper = kitHelper;
+			this.services = services;
         }
 
+		[HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
+		public IActionResult GetKitCalories(int kitLocaleId, int storeLocaleId)
+		{
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+			{
+				KitLocaleId = kitLocaleId,
+				StoreLocaleId = storeLocaleId
+			};
 
-        // GET api/kits/1/ViewKit/1 GetKitByLocaleId
-        [HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
+			CaloricCalculator calculator = (CaloricCalculator)services.GetService(typeof(IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>));
+			Task<KitLocaleDto> kitLocaleDto = calculator.Run(parameters);
+
+			if (kitLocaleDto.Result.KitLocaleId == 0)
+			{
+				logger.LogWarning("No KitLocale can be found by KitLocaleId: " + kitLocaleId.ToString());
+				return NotFound();
+			}
+
+			return Ok(kitLocaleDto.Result);
+		}
+
+		// GET api/kits/1/ViewKit/1 GetKitByLocaleId
+		[HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
         public IActionResult GetKitByLocaleId(int kitId, int localeId, bool loadChildObjects)
         {
             int? localeIdWithKitLocaleRecord = getlocaleIdAtWhichkitRecordExits(kitId, localeId);

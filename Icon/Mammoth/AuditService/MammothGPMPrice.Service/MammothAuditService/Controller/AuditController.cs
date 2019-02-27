@@ -19,6 +19,7 @@ namespace Audit
 		readonly SpecInfo spec;
 		readonly ILogger logger = new NLogLogger(typeof(AuditService));
 
+		const string GLOBAL = "Global";
 		const char SPACE = ' ';
 		const string AUDIT_SERVICE = "AuditService";
 
@@ -48,15 +49,15 @@ namespace Audit
 			try
 			{
 				var items = this.spec.Config.IsGlobal
-										? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc};",
-																																	argFileName: Path.Combine(this.spec.DirPath, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
-																																	argRegion: new Region(){ Id = 0, Code = "Global", Name = "Global" })}
-
-										: this.spec.Regions.Where(x => IsReady(x))
-													.Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}'",
-																													argFileName: Path.Combine(this.spec.DirPath, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
-																													argRegion: x))
-													.ToArray();
+					? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} ",
+					                                              argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
+					                                              argRegion: new Region(){ Id = 0, Code = GLOBAL, Name = GLOBAL })}
+					
+					: this.spec.Regions.Where(x => IsReady(x))
+					      .Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}',",
+					                                       argFileName: Path.Combine(this.spec.DirPath, x.Code, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
+					                                       argRegion: x))
+					.ToArray();
 
 				foreach(var item in items)
 				{
@@ -64,10 +65,13 @@ namespace Audit
 					{
 						groupId = -1;
 						hasData = false;
+						if(!Directory.Exists(Path.GetDirectoryName(item.FileName)))
+						{
+							Directory.CreateDirectory(Path.GetDirectoryName(item.FileName));
+						}
 						DeleteFile(item.FileName);
-
 						using(var conn = new SqlConnection(this.spec.ConnectionString))
-						using(var sqlCommand = new SqlCommand($"{item.Query} , @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}, @maxRows = {this.spec.Config.MaxRows}", conn) { CommandTimeout = this.spec.CommandTimeOut })
+						using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}, @maxRows = {this.spec.Config.MaxRows}", conn) { CommandTimeout = this.spec.CommandTimeOut })
 						{
 							conn.Open();
 							rowCount = (int)sqlCommand.ExecuteScalar();
@@ -78,7 +82,7 @@ namespace Audit
 						while(true)
 						{
 							using(var conn = new SqlConnection(this.spec.ConnectionString))
-							using(var sqlCommand = new SqlCommand($"{item.Query}, @action = 'Get', @groupID = {++groupId}", conn) { CommandTimeout = this.spec.CommandTimeOut })
+							using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Get', @groupID = {++groupId}", conn) { CommandTimeout = this.spec.CommandTimeOut })
 							{
 								conn.Open();
 								var reader = sqlCommand.ExecuteReader();
@@ -118,14 +122,18 @@ namespace Audit
 
 						if(hasData)
 						{
-							if(this.spec.Config.EnableUpload)
+							CreateZip(item);
+							if(this.spec.Profile.IsS3Bucket)
 							{
 								UploadFileAsync(item).Wait();
 							}
-
-							if(this.spec.Config.DeleteFileAfterTransfer)
+							else
 							{
-								DeleteFile(item.FileName);
+								if(!Directory.Exists(this.spec.Profile.DestinationDir))
+								{
+									Directory.CreateDirectory(this.spec.Profile.DestinationDir);
+									File.Move(item.ZipFile, Path.Combine(this.spec.Profile.DestinationDir, Path.GetFileName(item.ZipFile)));
+								}
 							}
 						}
 						SetStatus(item.Region);
@@ -137,6 +145,17 @@ namespace Audit
 				}
 			}
 			catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE} Exception:", ex); }
+		}
+
+		void CreateZip(AuditOutputInfo outputInfo)
+		{
+			var dirFrom = Path.GetDirectoryName(outputInfo.FileName);
+			var zipDir = Path.Combine(this.spec.DirPath, $"{this.spec.Config.Proc}_{outputInfo.Region.Code}_Zip");
+			outputInfo.ZipFile = Path.Combine(zipDir, Path.ChangeExtension(Path.GetFileName(outputInfo.FileName), "zip"));
+
+			if(!Directory.Exists(zipDir)) Directory.CreateDirectory(zipDir);
+      ZipFile.CreateFromDirectory(dirFrom, outputInfo.ZipFile);
+			DeleteFile(outputInfo.FileName);
 		}
 
 		DataRow GetStatusRecord(Region region)
@@ -172,7 +191,7 @@ namespace Audit
 		{
 			try
 			{
-				if(!this.spec.Config.EnableUpload || !File.Exists(outputInfo.FileName)) return;
+				if(outputInfo == null || !File.Exists(outputInfo.FileName)) return;
 
 				var config = new AmazonS3Config()
 				{
@@ -191,7 +210,7 @@ namespace Audit
 				{
 					BucketName = spec.Profile.BucketName,
 					Key = Path.Combine(spec.Profile.DestinationDir, Path.GetFileName(outputInfo.FileName)),
-					FilePath = outputInfo.FileName
+					FilePath = outputInfo.ZipFile
 				};
 
 				var response = await client.PutObjectAsync(request);

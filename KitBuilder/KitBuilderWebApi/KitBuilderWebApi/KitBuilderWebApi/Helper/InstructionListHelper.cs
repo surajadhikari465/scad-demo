@@ -18,8 +18,6 @@ namespace KitBuilderWebApi.Helper
             this.urlHelper = urlHelper;
         }
 
-
-
         public IQueryable<InstructionListDto> SetOrderBy(IQueryable<InstructionListDto> DataBeforePaging, InstructionListsParameters Parameters)
         {
             try

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles'
-import SearchLinkGroups from './Components/SearchLinkGroups';
-import DisplayLinkGroups from './Components/DisplayLinkGroups';
+import SearchLinkGroups from './SearchLinkGroups';
+import DisplayLinkGroups from './DisplayLinkGroups';
 import axios from 'axios'
 import { KbApiMethod } from '../helpers/kbapi';
 import EditLinkGroup from './EditLinkGroup';
@@ -93,7 +93,7 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
 
 
     onSearch() {
-
+        console.log("searching...")
         this.setState({ ...this.state, showSearchProgress: true });
         var searchOptions = this.state.searchOptions;
 
@@ -172,6 +172,7 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
                             <Grid item md={10}>
                                 <DisplayLinkGroups
                                     DisplayData={this.state.linkGroupResults}
+                                    onSearch={this.onSearch}
                                     handleSearchRowClick={this.switchToEditMode} />
                             </Grid>
 
