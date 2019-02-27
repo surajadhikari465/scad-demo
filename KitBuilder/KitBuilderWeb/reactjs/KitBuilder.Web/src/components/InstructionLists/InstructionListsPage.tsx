@@ -38,7 +38,7 @@ interface IInstructionListsPageProps {
 
 export class InstructionListsPage extends React.PureComponent<IInstructionListsPageProps, IInstructionListsPageState>
 {
-     constructor(props: any) {
+     constructor(props: IInstructionListsPageProps) {
           super(props);
 
           this.state = {
@@ -60,15 +60,12 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           }
      }
 
-     onChange = (event: any) => {
-          this.setState({ selectedInstructionTypeIdvalue: event.target.value }, this.onSearch)
-          this.setState({
-               error: null
-          })
-
-          this.setState({
-               message: null
-          })
+     onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          this.setState({ 
+               selectedInstructionTypeIdvalue: event.target.value,
+               error: null,
+               message: null,
+          }, this.onSearch);
      }
 
      updateCurrentInstructionName = (name: string) => {
