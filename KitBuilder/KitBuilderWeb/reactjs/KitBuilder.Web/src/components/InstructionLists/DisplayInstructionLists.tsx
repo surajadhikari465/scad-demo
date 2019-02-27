@@ -21,7 +21,24 @@ const styles = (theme: any) => ({
     }
 });
 
-function DisplayInstructionLists(props: any) {
+interface DisplayInstructionListsProps {
+    data: Array<any>,
+    renderEditable: any,
+    onDelete: Function,
+    instructionValue: string,
+    instructionTypeName: string, 
+    onAddMember: Function,
+    deleteInstruction: Function,
+    onPublishChanges: Function,
+    onSaveChanges: Function,
+    isLoaded: boolean,
+    isPublishDisabled: boolean,
+    isSaveDisabled: boolean,
+
+    classes: any,
+}
+
+function DisplayInstructionLists(props: DisplayInstructionListsProps) {
     return (
         <div >
 
@@ -67,8 +84,16 @@ function DisplayInstructionLists(props: any) {
                                             DELETE
                                         </Button>
                                     </Grid>
-                                )
+                                ),
+                                Footer: row => (
+                                    <Grid container justify="center" alignItems="center">
+                                        <Button disabled={!props.isLoaded} variant="text" color='primary' className={props.classes.deleteButton} onClick={() => props.onAddMember(row)}>
+                                            ADD MEMBER
+                                        </Button>
+                                    </Grid>
+                                )                                   
                             }
+
                         ]}
                         defaultPageSize={10}
                     />
@@ -89,12 +114,12 @@ function DisplayInstructionLists(props: any) {
 </Grid>
             <Grid container justify="flex-end">
                 <Grid item xs={12} md={3} className='pr-3'>
-                    <Button disabled={true} variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
+                    <Button disabled={props.isSaveDisabled} variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
                         Save Changes
                 </Button>
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <Button disabled={true} variant="outlined" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
+                    <Button disabled={props.isPublishDisabled} variant="outlined" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
                         Publish Changes
                 </Button>
                 </Grid>
