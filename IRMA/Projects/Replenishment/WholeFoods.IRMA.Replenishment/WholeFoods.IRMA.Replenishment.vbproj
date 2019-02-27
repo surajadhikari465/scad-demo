@@ -359,7 +359,9 @@
       <SubType>
       </SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Wholefoods.IRMA.FaxLog\Wholefoods.IRMA.FaxLog\WholeFoods.IRMA.FaxLog.vbproj">
@@ -374,7 +376,7 @@
       <Project>{3374040D-5A0F-412A-A32A-E70B90339F94}</Project>
       <Name>ItemCatalogLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PagerDutyLib\PagerDutyLib\OpsgenieLib.csproj">
+    <ProjectReference Include="..\..\OpsGenie\OpsGenieLib\OpsgenieLib.csproj">
       <Project>{d2f2e337-45a4-4406-8e87-db87880eb919}</Project>
       <Name>OpsgenieLib</Name>
     </ProjectReference>

@@ -46,10 +46,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA.FaxLog", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRMAUnitTests", "IRMAUnitTests\IRMAUnitTests.csproj", "{BE9E41C4-6289-4789-B02B-2C4AF481A560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagerDutyLib", "..\..\PagerDutyLib\PagerDutyLib\PagerDutyLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsgenieLib", "..\..\OpsGenie\OpsGenieLib\OpsgenieLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
