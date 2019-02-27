@@ -231,7 +231,7 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
                             <span style={sucesssStyle}> {this.state.message}</span>
                         </div>
                     </Grid>
-                    <Grid item md={10}>
+                    <Grid item xs={10}>
                     <PageTitle icon="search">Search Kits</PageTitle>
                         <SearchKits
                             MainItemName={this.mainItemChange}
@@ -246,14 +246,14 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
                             KitDescriptionValue = {this.state.searchkitDescription}
                         />
                     </Grid>
-                    <Grid item md={10}>
+                    <Grid item xs={10}>
                         <DisplayKits 
                             onDelete={this.onDelete}
                             onEdit={this.onEdit}
                             data = {this.state.kits}
                         />
                     </Grid>
-                    <Grid item md = {10}>
+                    <Grid item xs = {10}>
                         <KitFooter createKit={this.createKit}/>
                     </Grid>
                 </Grid>

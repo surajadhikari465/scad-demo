@@ -8,7 +8,6 @@ const styles = (theme: any) => ({
         padding: theme.spacing.unit,
     },
     button: {
-        margin: theme.spacing.unit,
         width: '100%',
     },
     clearButton: {
@@ -26,21 +25,20 @@ function SearchKits(props: any) {
     return (
         <React.Fragment>
             <Grid container justify="space-between" alignItems="center" className={props.classes.root + ' kit-search-container'}>
-                <Grid item md={2}>
-                    <TextField className = 'search-textfield ml-2' margin="dense" variant="outlined" label="Main Item Name" InputLabelProps={{ shrink: true }} onChange={props.MainItemName} value={props.MainItemValue}></TextField>
+                <Grid item xs = {12} md={2}>
+                    <TextField className = 'search-textfield' margin="dense" variant="outlined" label="Main Item Name" InputLabelProps={{ shrink: true }} onChange={props.MainItemName} value={props.MainItemValue}></TextField>
                 </Grid>
-                <Grid item md={2}>
+                <Grid item xs = {12} md={2}>
                     <TextField className = 'search-textfield' margin="dense" variant="outlined" label='Main Item Scancode' InputLabelProps={{ shrink: true }} onChange={props.MainItemScanCode} value={props.ScanCodeValue}></TextField>
                 </Grid>
                 
-                <Grid item md={2}>
+                <Grid item xs = {12} md={2}>
                     <TextField className = 'search-textfield' margin="dense" variant="outlined" label='Link Group Name' InputLabelProps={{ shrink: true }} onChange={props.LinkGroupName} value={props.LinkGroupValue}></TextField>
                 </Grid>
-                <Grid item md={2}>
+                <Grid item xs = {12} md={2}>
                     <TextField className = 'search-textfield' margin="dense" variant="outlined" label='Kit Description' InputLabelProps={{ shrink: true }} onChange={props.KitDescription} value={props.KitDescriptionValue}></TextField>
                 </Grid>
-
-                <Grid md={2} container justify="flex-end">
+                <Grid xs = {12} md={2} item>
                     <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSearch()} >
                         Search
                     </Button>

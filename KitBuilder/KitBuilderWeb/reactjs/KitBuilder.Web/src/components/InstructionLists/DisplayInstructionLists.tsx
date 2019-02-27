@@ -112,8 +112,8 @@ function DisplayInstructionLists(props: DisplayInstructionListsProps) {
 </Grid>
 
 </Grid>
-            <Grid container justify="flex-end">
-                <Grid item xs={12} md={3} className='pr-3'>
+            <Grid container justify="flex-end" spacing={16}>
+                <Grid item xs={12} md={3}>
                     <Button disabled={props.isSaveDisabled} variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
                         Save Changes
                 </Button>

@@ -37,10 +37,10 @@ const getAllMenuItems = (options: Array<any>) =>
 function SearchInstructionLists(props: any) {
     const { options, value } = props;
 
-    return (
-            <Grid container justify="space-between" alignItems="center" className='search-container'>
+    return (<div className="search-container">
+            <Grid container justify="space-between" alignItems="center" spacing={16}>
                 <Grid item xs={12} sm={9} md={5}>
-                <Grid container justify="space-between">
+                <Grid container spacing={16}>
                         <Grid item xs={12} sm={8}>
                             <FormControl className={props.classes.formControl}>
                                 <TextField
@@ -56,7 +56,7 @@ function SearchInstructionLists(props: any) {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <Button variant="outlined" disabled={!value} className={props.classes.editButton}  color="primary" onClick={props.onEdit}>
+                            <Button variant="outlined" disabled={!value} className = "full-width" color="primary" onClick={props.onEdit}>
                                 Edit
                             </Button>
                         </Grid>
@@ -68,7 +68,7 @@ function SearchInstructionLists(props: any) {
                     </Button>
                 </Grid>
             </Grid>
-    )
+        </div>)
 }
 
 export default withStyles(styles, { withTheme: true })(SearchInstructionLists);

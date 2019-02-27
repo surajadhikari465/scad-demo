@@ -5,8 +5,8 @@ import './style.css';
 
 export default function KitFooter(props: any) {
     return <React.Fragment>
-         <Grid className='kit-footer-root' container justify={"flex-end"}>
-                <Grid item md={4}>
+         <Grid className="kit-footer-root" container justify="flex-end">
+                <Grid item xs={12} md={4}>
                         <Button className='kit-footer-button' variant="outlined" color="primary" onClick={() => props.createKit()} >
                             Create New Kit
                 </Button>
