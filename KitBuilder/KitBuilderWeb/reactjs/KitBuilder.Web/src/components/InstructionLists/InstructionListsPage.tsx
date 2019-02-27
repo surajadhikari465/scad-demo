@@ -597,6 +597,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          onEdit={this.onEdit}
                          onAddNewList={this.onAddNewList}
                          value={this.state.selectedInstructionTypeIdvalue}
+                         type={this.state.instructionTypeName}
                     />
 
 
