@@ -5,7 +5,6 @@ import { KitLinkGroupProperties } from "./KitLinkGroupProperties";
 import { KbApiMethod } from '../helpers/kbapi'
 
 var urlStart = KbApiMethod("Kits");
-var imageSrc = "https://images.pexels.com/photos/247685/pexels-photo-247685.png?cs=srgb&dl=assorted-diet-edible-247685.jpg&fm=jpg";
 
 interface IKitLinkGroupPageState {
     error : any,
@@ -37,12 +36,13 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                 var pathArray = window.parent.location.href.split('/');
                 pathArray = pathArray.reverse();
                 // calling the API to get the required information
+
                 let url =urlStart+"/"+parseInt(pathArray[1])+"/GetKitProperties/"+parseInt(pathArray[0]);
                 axios.get(url,{})
                 .then(response => {
                     let kitLinkGroupsDetail = response.data;  
                     kitLinkGroupsDetail.kitLinkGroupLocaleList.map((linkGroup:any)=>{
-              
+                        let disableControls:boolean = false;
                         if(linkGroup.properties == null)
                         {
                             let newLinkGroupProperties = {
@@ -52,12 +52,14 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                             }
                             linkGroup.properties = newLinkGroupProperties
                             linkGroup.excluded = false
+                            linkGroup.childDisabled = false;
                             linkGroup.displaySequence = 0 // default display sequence
                         }
                         else
-                        {
+                        {   linkGroup.childDisabled = linkGroup.excluded;
                             linkGroup.properties = JSON.parse(linkGroup.properties)
                         }
+                        disableControls = linkGroup.childDisabled;
                         linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
                             if(linkGroupItem.properties == null)
                             {
@@ -70,10 +72,11 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                                 }
                                 linkGroupItem.properties = newLinkGroupItemProps
                                 linkGroupItem.excluded = false
+                                linkGroupItem.isDisabled = disableControls
                                 linkGroupItem.displaySequence = 0 // default display sequence
                             }
                             else
-                            {
+                            {   linkGroupItem.isDisabled = disableControls;
                                 linkGroupItem.properties = JSON.parse(linkGroupItem.properties)
                             }
                         })
@@ -133,7 +136,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
 
                   this.setState({
                        message: "Data Saved Succesfully."
-                  })
+                  },  ()=>this.loadData())
              }).catch(error => {
                   this.setState({
                        error: "Error in Saving Data."
@@ -143,7 +146,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                        message: null
                   })
              });
-        this.loadData()
+      
     }
 
     render()
@@ -177,9 +180,6 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
             </Grid>
             <div className = "mt-md-4 mb-md-4">
                 <div className = "row">
-                    <div className="col-lg-4 col-md-4">{/* logo spacing */}
-                        <img className = "col-6 rounded mx-auto d-block" src = {imageSrc} alt={this.state.kitDetails.imageUrl + "image"}/>
-                    </div>
                     <div className="col-lg-4 col-md-5">  {/* Kit Name*/}
                         <h2 className="text-center font-italic font-weight-bold mt-md-5">{this.state.kitDetails.description}</h2>
                     </div>
