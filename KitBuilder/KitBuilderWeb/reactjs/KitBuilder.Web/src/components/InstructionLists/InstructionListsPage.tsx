@@ -141,7 +141,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          this.setState({ instructionList: data });
                     }}
                     dangerouslySetInnerHTML={{
-                         __html: this.state.instructionList[cellInfo.index][cellInfo.column.id]
+                         __html: `<center>${this.state.instructionList[cellInfo.index][cellInfo.column.id]}</center>`
                     }}
                />
           );
