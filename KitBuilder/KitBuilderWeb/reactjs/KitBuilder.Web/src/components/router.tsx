@@ -3,7 +3,7 @@ import { Route, HashRouter, Switch } from 'react-router-dom';
 import { App } from '../App';
 import { LinkGroupsPage } from './LinkGroups/LinkGroupsPage';
 import { InstructionListsPage } from './InstructionLists/InstructionListsPage';
-import { KitListPage } from './Kits/KitListPage';
+import KitListPage from './Kits';
 import '../css/site.css'
 import EditKit from './Kits/EditKit';
 import { AssignKitsToLocale} from './AssignKits/AssignKitsToLocale';

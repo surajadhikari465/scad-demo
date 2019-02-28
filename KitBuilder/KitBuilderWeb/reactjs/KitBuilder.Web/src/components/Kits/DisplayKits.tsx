@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 const styles = (theme: any) => ({
     root: {
-        marginTop: 50
+      //  marginTop: theme.spacing.unit*2,
     },
     deleteButton: {
         margin: 0,
@@ -18,8 +18,6 @@ const styles = (theme: any) => ({
     }
 
 });
-
-const marginTop = { marginTop: 20 };
 
 function DisplayKits(props: any) {
     return (
@@ -62,7 +60,7 @@ function DisplayKits(props: any) {
                         id: "action",
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
-                                <Button variant="contained" color="secondary" className={props.classes.editbutton} onClick={() => props.onEdit(row)}>
+                                <Button color="primary" className={props.classes.editbutton} onClick={() => props.onEdit(row)}>
                                     Edit
                     </Button>
                             </Grid>
@@ -74,7 +72,7 @@ function DisplayKits(props: any) {
                         id: "action",
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
-                                <Button variant="contained" color="secondary" className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
+                                <Button color="secondary" className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
                                     Delete
                     </Button>
                             </Grid>
@@ -84,15 +82,6 @@ function DisplayKits(props: any) {
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
-            
-             <Grid container style={marginTop}>
-             <Grid item md={10} justify={"flex-end"}>     </Grid>
-                <Grid item md={2} justify={"flex-end"}>
-                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.createKit()} >
-                            Create New Kit
-                </Button>
-                    </Grid>
-                </Grid>
            </div>
     );
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Dialog, DialogActions, DialogContent, DialogTitle, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, TextField, Snackbar } from '@material-ui/core';
+import { Grid, Snackbar } from '@material-ui/core';
 import SearchInstructionLists from './SearchInstructionLists';
 import DisplayInstructionsLists from './DisplayInstructionLists';
 import "@babel/polyfill";
@@ -8,6 +8,10 @@ const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
 import { KbApiMethod } from '../helpers/kbapi'
 import Swal from 'sweetalert2'
+import './style.css';
+import PageStyle from './PageStyle';
+import PageTitle from '../PageTitle';
+import CreateEdiInstructionDialog from './CreateEditInstructionsDialog';
 
 var urlStart = KbApiMethod("InstructionList");
 
@@ -24,14 +28,17 @@ interface IInstructionListsPageState {
      newInstructionList: any,
      snackOpen: boolean,
      instructionTypeName: "",
+     isEditInstructions: boolean,
+     isSaveDisabled: boolean,
+     isPublishDisabled: boolean,
 }
 
 interface IInstructionListsPageProps {
 }
 
-export class InstructionListsPage extends React.Component<IInstructionListsPageProps, IInstructionListsPageState>
+export class InstructionListsPage extends React.PureComponent<IInstructionListsPageProps, IInstructionListsPageState>
 {
-     constructor(props: any) {
+     constructor(props: IInstructionListsPageProps) {
           super(props);
 
           this.state = {
@@ -47,39 +54,28 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                newInstructionList: {},
                snackOpen: false,
                instructionTypeName: "",
+               isEditInstructions: false,
+               isSaveDisabled: true,
+               isPublishDisabled: true,
           }
-
-          this.onChange = this.onChange.bind(this);
-          this.renderEditable = this.renderEditable.bind(this);
-          this.onInstructionDelete = this.onInstructionDelete.bind(this);
-          this.onSearch = this.onSearch.bind(this);
-          this.onAddNewList = this.onAddNewList.bind(this);
-          this.onAddMember = this.onAddMember.bind(this);
-          this.deleteInstruction = this.deleteInstruction.bind(this);
-          this.InstructionNameChange = this.InstructionNameChange.bind(this);
-          this.onSaveChanges = this.onSaveChanges.bind(this);
-          this.onPublishChanges = this.onPublishChanges.bind(this);
      }
 
-     onChange(event: any) {
-          this.setState({ selectedInstructionTypeIdvalue: event.target.value });
-          this.setState({
-               error: null
-          })
-
-          this.setState({
-               message: null
-          })
+     onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          this.setState({ 
+               selectedInstructionTypeIdvalue: event.target.value,
+               error: null,
+               message: null,
+          }, this.onSearch);
      }
 
-     InstructionNameChange(event: any) {
-          this.setState({ currentInstructionTypeValue: event.target.value });
+     updateCurrentInstructionName = (name: string) => {
+          this.setState({ currentInstructionTypeValue: name, isSaveDisabled: false }, this.handleDialogClose);
      }
      componentDidMount() {
           this.getInstructionTypes();
      }
 
-     onInstructionDelete(row: any) {
+     onInstructionDelete = (row: any) => {
           let data = this.state.instructionList;
           if (row.row._original.instructionListId == 0) {
                for (let i = 0; i < data.length; i++) {
@@ -134,10 +130,9 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
      }
 
-     renderEditable(cellInfo: any) {
+     renderEditable = (cellInfo: any) => {
           return (
                <div
-                    style={{ backgroundColor: "#fafafa" }}
                     contentEditable
                     suppressContentEditableWarning
                     onBlur={e => {
@@ -146,42 +141,48 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                          this.setState({ instructionList: data });
                     }}
                     dangerouslySetInnerHTML={{
-                         __html: this.state.instructionList[cellInfo.index][cellInfo.column.id]
+                         __html: `<center>${this.state.instructionList[cellInfo.index][cellInfo.column.id]}</center>`
                     }}
                />
           );
      }
 
-     getInstructionTypes() {
+     getInstructionTypes = () => {
 
           fetch(urlStart)
                .then(response => {
                     return response.json();
-               }).catch(error => {
+               })
+               .then(data =>
+                    this.setState({
+                         instructionListDto: data
+                    }))
+               .catch(error => {
                     console.log(error);
                     this.setState({
-                         instructionListDto: ["error"]
+                         error: "Error loading Instruction Lists."
                     });
                })
-               .then(data =>
-                    this.setState({
-                         instructionListDto: data
-                    }));
+
      }
-     Refresh(name: any) {
+     Refresh = (name: any) => {
           fetch(urlStart)
                .then(response => {
                     return response.json();
-               }).catch(error => {
-                    console.log(error);
                })
                .then(data =>
                     this.setState({
                          instructionListDto: data
-                    }, () => { this.setControl(name) }));
+                    }, () => { this.setControl(name) }))
+               .catch(error => {
+                    console.log(error);
+                    this.setState({
+                         error: "Error refreshing Instruction Lists."
+                    });
+               });
      }
 
-     setControl(name: any) {
+     setControl = (name: any) => {
           var result = this.state.instructionListDto.find(obj => {
                return obj.Name === name
           })
@@ -197,29 +198,23 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
      }
 
-     onSearch() {
+     onSearch = () => {
           if (this.state.selectedInstructionTypeIdvalue == "") {
                this.setState({
-                    error: "Please Select Instruction List Name."
+                    error: "Please Select Instruction List Name.",
+                    message: null,
                });
-
-               this.setState({
-                    message: null
-               })
                return;
-
           }
 
           var result = this.state.instructionListDto.find(obj => {
                return obj.InstructionListId === this.state.selectedInstructionTypeIdvalue
           })
           this.setState({
-               currentInstructionTypeValue: result.Name
+               currentInstructionTypeValue: result.Name,
+               instructionTypeName: result.InstructionTypeName,
+               isLoaded: true,
           });
-          this.setState({
-               instructionTypeName: result.InstructionTypeName
-          });
-
 
           var urlParam = this.state.selectedInstructionTypeIdvalue;
 
@@ -239,16 +234,13 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                .catch((error) => {
                     console.log(error.response.data);
                     this.setState({
-                         error: error.response.data
-                    });
-
-                    this.setState({
-                         message: null
+                         error: error.response.data,
+                         message: null,
                     })
                });
      }
 
-     onAddMember() {
+     onAddMember = () => {
           let data = this.state.instructionList;
           if (navigator.userAgent.indexOf("Firefox") != -1) {
                data.push({
@@ -263,12 +255,14 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
           }
           this.setState({
-               instructionList: data
+               instructionList: data,
+               isSaveDisabled: false,
           })
      }
 
 
-     deleteInstruction() {
+     deleteInstruction = () => {
+          this.setState({ dialogOpen: false, }, () => {
           Swal({
                title: 'Are you sure that you want to delete this Instructions list?',
                type: 'info',
@@ -283,17 +277,15 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                     }
                     else {
                          this.setState({
-                              error: null
-                         })
-
-                         this.setState({
-                              message: null
-                         })
+                              error: null,
+                              message: null,
+                         });
                     }
                });
+          });
      }
 
-     deleteInstructionData() {
+     deleteInstructionData = () => {
           var headers =
           {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
@@ -302,10 +294,8 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
           if (this.state.selectedInstructionTypeIdvalue == "") {
                this.setState({
-                    error: "Please Select Instruction List Name."
-               });
-               this.setState({
-                    message: null
+                    error: "Please Select Instruction List Name.",
+                    message: null,
                })
                return;
 
@@ -316,41 +306,33 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
           axios.delete(urlDelete, { headers },
           ).then(() => {
                this.setState({
-                    message: "Data Deleted Successfully."
-               })
-               this.setState({
-                    error: null
-               })
-               this.setState({
-                    selectedInstructionTypeIdvalue: ""
-               })
-
-               this.setState({
-                    currentInstructionTypeValue: ""
+                    message: "Data Deleted Successfully.",
+                    error: null,
+                    selectedInstructionTypeIdvalue: "",
+                    currentInstructionTypeValue: "",
+                    isLoaded: false,
                }, () => this.Refresh(this.state.currentInstructionTypeValue))
-
           })
                .catch((error) => {
                     console.log(error);
                     this.setState({
-                         error: "Error in Deleting Instruction List."
-                    })
-                    this.setState({
-                         message: null
+                         error: "Error in Deleting Instruction List.",
+                         message: null,
                     })
                })
      }
-     onAddNewList() {
+     onAddNewList = () => {
           this.setState({
                dialogOpen: true,
                newInstructionList: {
                     InstructionTypeId: "0",
                     Name: ""
-               }
+               },
+               isEditInstructions: false,
           });
      }
      
-     validateData(row: any) {
+     validateData = (row: any) => {
           var data;
 
           if(row.group.length>60)
@@ -370,7 +352,7 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
           return  "";
      }
 
-     onSaveChanges() {
+     onSaveChanges = () => {
           let data = this.state.instructionList;
           let dataUpdate = [];
           let dataInsert: any[] = [];
@@ -383,15 +365,12 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                     if (error == "") {
                          dataInsert.push(data[i]);
                     }
-
                     else {
                          this.setState({
-                              message: null
-                         })
-                         this.setState({
-                              error: error
-                         })
-                         return ;
+                              message: null,
+                              error: error,
+                         });
+                         return;
                     }
 
                }
@@ -404,10 +383,8 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                     else {
                          {
                               this.setState({
-                                   message: null
-                              })
-                              this.setState({
-                                   error: error
+                                   message: null,
+                                   error: error,
                               })
                               return ;
                          }
@@ -431,20 +408,18 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                     })
                     .then(() => {
                          this.setState({
-                              message: "Data Saved Sucessfully."
-                         })
-                         this.setState({
-                              error: null
+                              message: "Data Saved Sucessfully.",
+                              error: null,
+                              isSaveDisabled: true,
+                              isPublishDisabled: false,
                          })
                          this.insertMembers(dataInsert, urlAdd, headers);
                     })
                     .catch((error) => {
                          console.log(error);
                          this.setState({
-                              error: "Error in Saving new Instruction List and members."
-                         })
-                         this.setState({
-                              message: null
+                              error: "Error in Saving new Instruction List and members.",
+                              message: null,
                          })
 
                          return;
@@ -460,7 +435,7 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
      };
 
-     saveInstructionName() {
+     saveInstructionName = () => {
 
           var updatedInstructionList = {
                InstructionListId: this.state.selectedInstructionTypeIdvalue,
@@ -500,44 +475,40 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                });
      }
 
-     insertMembers(dataInsert: any[], urlAdd: any, headers: any) {
+     insertMembers = (dataInsert: any[], urlAdd: any, headers: any) => {
           axios.post(urlAdd, JSON.stringify(dataInsert),
                {
                     headers: headers
                })
                .then(() => {
                     this.setState({
-                         message: "Data Saved Sucessfully."
-                    })
-                    this.setState({
-                         error: null
+                         message: "Data Saved Sucessfully.",
+                         error: null,
                     })
                     this.saveInstructionName();
                })
                .catch((error) => {
                     console.log(error);
                     this.setState({
-                         error: "Error in Saving new Instruction List and members."
-                    })
-                    this.setState({
-                         message: null
+                         error: "Error in Saving new Instruction List and members.",
+                         message: null,
                     })
                })
 
      }
-     onPublishChanges() {
+     onPublishChanges = () => {
+          // TODO: Add logic for publishing data
+          this.setState({ isPublishDisabled: true, message: 'List Published Successfully.' });
      }
 
      handleDialogClose = () => {
           this.setState({
-               dialogOpen: false
-          });
+                    dialogOpen: false,
+               });
      };
 
-     handleDialogSave = () => {
-          let newInstructionList = this.state.newInstructionList;
-
-          if (newInstructionList.Name == "") {
+     handleCreateNewInstructionList = (name: string, type: string) => {
+          if (name == "") {
                this.setState({
                     snackOpen: true
                });
@@ -550,11 +521,13 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                return;
           }
 
-          this.setState({
-               dialogOpen: false
-          });
+          this.handleDialogClose();
 
-          newInstructionList.InstructionTypeId = Number(newInstructionList.InstructionTypeId);
+          const newInstructionList = 
+          {
+               Name: name,
+               InstructionTypeId: Number(type),
+          }
 
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
@@ -576,42 +549,23 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                     this.setState({
                          message: null
                     })
-                    this.setState({
-                         message: null
-                    })
+
                     this.Refresh(newInstructionList.Name)
 
                })
                .catch((error) => {
                     this.setState({
-                         error: error.response.data
-                    }
-                    )
-                    this.setState({
-                         message: null
+                         error: error.response.data,
+                         message: null,
                     })
                     return;
                });
 
      };
 
-     handleInstructionTypeIdChange = (event: any) => {
-          this.setState({
-               newInstructionList: {
-                    InstructionTypeId: event.target.value,
-                    Name: this.state.newInstructionList.Name
-               }
-          });
-     };
-
-     handleInstructionNameChange = (event: any) => {
-          this.setState({
-               newInstructionList: {
-                    InstructionTypeId: this.state.newInstructionList.InstructionTypeId,
-                    Name: event.target.value
-               }
-          });
-     };
+     onEdit = () => {
+          this.setState({ isEditInstructions: true, dialogOpen: true });
+     }
 
      render() {
           const { instructionListDto } = this.state;
@@ -622,23 +576,28 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
 
                <React.Fragment>
                     <Grid container justify="center">
-                         <Grid container md={12} justify="center">
+                         <Grid container justify="center">
                               <div className="error-message" >
                                    <span style={hStyle}> {this.state.error}</span>
                               </div>
                          </Grid>
-                         <Grid container md={12} justify="center">
+                         <Grid container justify="center">
                               <div className="Suncess-message" >
                                    <span style={sucesssStyle}> {this.state.message}</span>
                               </div>
                          </Grid>
                     </Grid>
+                    <PageStyle>
+                    <PageTitle icon="format_list_bulleted">Instructions</PageTitle>
                     <SearchInstructionLists
+                         className = 'search-container'
                          onChange={this.onChange}
                          options={instructionListDto}
                          onSearch={this.onSearch}
+                         onEdit={this.onEdit}
                          onAddNewList={this.onAddNewList}
                          value={this.state.selectedInstructionTypeIdvalue}
+                         type={this.state.instructionTypeName}
                     />
 
 
@@ -650,57 +609,24 @@ export class InstructionListsPage extends React.Component<IInstructionListsPageP
                          instructionTypeName={this.state.instructionTypeName}
                          onAddMember={this.onAddMember}
                          deleteInstruction={this.deleteInstruction}
-                         InstuctionNameChange={this.InstructionNameChange}
                          onPublishChanges={this.onPublishChanges}
-                         onSaveChanges={this.onSaveChanges} />
+                         onSaveChanges={this.onSaveChanges}
+                         isLoaded={this.state.isLoaded}
+                         isSaveDisabled = {this.state.isSaveDisabled}
+                         isPublishDisabled = {this.state.isPublishDisabled}
+                          />
+                    </PageStyle>
 
-                    <Dialog
-                         open={this.state.dialogOpen}
-                         onClose={this.handleDialogClose}
-                         aria-labelledby="form-dialog-title"
-                    >
-                         <DialogTitle id="form-dialog-title">Add New Instruction List</DialogTitle>
-                         <DialogContent>
-                              <FormControl >
-                                   <FormLabel>Type</FormLabel>
-                                   <RadioGroup
-                                        aria-label="type"
-                                        name="type"
-                                        value={this.state.newInstructionList.InstructionTypeId}
-                                        onChange={this.handleInstructionTypeIdChange}
-                                        row
-                                   >
-                                        <FormControlLabel
-                                             value="1"
-                                             control={<Radio color="primary" />}
-                                             label="Cooking"
-                                        />
-                                        <FormControlLabel
-                                             value="2"
-                                             control={<Radio color="primary" />}
-                                             label="General"
-                                        />
-                                   </RadioGroup>
-                              </FormControl>
-                              <br />
-                              <FormControl >
-                                   <TextField
-                                        id="standard-name"
-                                        label="Name"
-                                        value={this.state.newInstructionList.Name}
-                                        onChange={this.handleInstructionNameChange}
-                                   />
-                              </FormControl>
-                         </DialogContent>
-                         <DialogActions>
-                              <Button onClick={this.handleDialogClose} color="primary">
-                                   Cancel
-                         </Button>
-                              <Button onClick={this.handleDialogSave} color="primary">
-                                   Save
-                         </Button>
-                         </DialogActions>
-                    </Dialog>
+                    <CreateEdiInstructionDialog 
+                         isOpen = { this.state.dialogOpen}
+                         isEditInstructions = {this.state.isEditInstructions}
+                         currentInstructionTypeValue = {this.state.currentInstructionTypeValue}
+                         onCancel = {this.handleDialogClose}
+                         updateCurrentInstructionName = {this.updateCurrentInstructionName}
+                         createNewInstruction = {this.handleCreateNewInstructionList}
+                         onDelete = {this.deleteInstruction}
+                         onClose = {this.handleDialogClose}
+                    />
 
                     <Snackbar
                          anchorOrigin={{ vertical, horizontal }}

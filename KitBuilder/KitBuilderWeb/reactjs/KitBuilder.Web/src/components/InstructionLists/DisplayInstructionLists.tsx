@@ -1,93 +1,52 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import Hidden from '@material-ui/core/Hidden';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 const marginBottom = { marginBottom: 20 };
 const styles = (theme: any) => ({
-    root: {
-        marginTop: 30
-    },
     deleteButton: {
         margin: 0,
         padding: 0
     },
     instructionValue: {
-        fontSize: 24
+        fontSize: 24,
     },
     input1: {
         height: 8
+    },
+    button: {
+        width: '100%'
     }
 });
 
-function DisplayInstructionLists(props: any) {
+interface DisplayInstructionListsProps {
+    data: Array<any>,
+    renderEditable: any,
+    onDelete: Function,
+    instructionValue: string,
+    instructionTypeName: string, 
+    onAddMember: Function,
+    deleteInstruction: Function,
+    onPublishChanges: Function,
+    onSaveChanges: Function,
+    isLoaded: boolean,
+    isPublishDisabled: boolean,
+    isSaveDisabled: boolean,
+
+    classes: any,
+}
+
+function DisplayInstructionLists(props: DisplayInstructionListsProps) {
     return (
-        <div className={props.classes.root}>
-            <Grid container justify="center" spacing={8} alignItems="flex-start" style={marginBottom}>
-                <Grid item xs={1} sm={1}>
-                </Grid>
-                <Grid item xs={11} sm={2} md={1} lg={1}>
+        <div >
 
-                    <span style={{ textAlign: 'center' }}> Instruction List Name:</span>
-
-                </Grid>
-
-                <Hidden only={['sm', 'md', 'lg', 'xl']}>
-                    <Grid item sm >
-
-                    </Grid>
-                </Hidden>
-                <Grid item xs={11} sm={3} md={3} lg={2} className={props.classes.label}>
-                    <TextField InputProps={{ classes: { input: props.classes.input1 } }} variant="outlined" className={props.classes.textField} onChange={props.InstuctionNameChange} value={props.instructionValue}></TextField>
-                </Grid>
-
-                <Hidden only={['sm', 'lg', 'xl']}>
-                    <Grid item sm >
-                    </Grid>
-                </Hidden>
-                <Grid item xs={11} sm={6} md={6} lg={2} >
-                    <Button variant="contained" color="secondary" className={props.classes.button} onClick={() => props.deleteInstruction()} >
-                        Delete Instruction
-                </Button>
-
-                </Grid>
-                <Hidden only={['lg', 'xl']}>
-                    <Grid item sm md={1} >
-
-                    </Grid>
-                </Hidden>
-
-                <Grid item xs={11} sm={2} md={1} lg={1} justify="center">
-                    <span> Instruction Type:</span>
-
-                </Grid>
-
-                <Hidden only={['sm', 'md', 'lg', 'xl']}>
-                    <Grid item sm >
-
-                    </Grid>
-                </Hidden>
-                <Grid item xs={11} sm={9} md={10} lg={2} justify="center">
-                    <span> {props.instructionTypeName}</span>
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={11} lg={2} >
-                    <Grid container justify="flex-end">
-                        <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddMember()} >
-                            Add Member
-                </Button>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12} sm={1}>
-                </Grid>
-            </Grid>
             <Grid container justify="center">
-                <Grid item xs={12} md={10} lg={10} justify="center">
+                <Grid item xs={12}>
                     <ReactTable
                         data={props.data}
-
+                        className = '-striped -highlight instructions-table'
                         columns={[
                             {
                                 Header: "Instruction List Id",
@@ -121,28 +80,46 @@ function DisplayInstructionLists(props: any) {
                                 id: "action",
                                 Cell: row => (
                                     <Grid container justify="center" alignItems="center">
-                                        <Button variant="contained" color="secondary" className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
-                                            Delete
-                    </Button>
+                                        <Button variant="text" color='secondary' className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
+                                            DELETE
+                                        </Button>
                                     </Grid>
-                                )
+                                ),
+                                Footer: row => (
+                                    <Grid container justify="center" alignItems="center">
+                                        <Button disabled={!props.isLoaded} variant="text" color='primary' className={props.classes.deleteButton} onClick={() => props.onAddMember(row)}>
+                                            ADD MEMBER
+                                        </Button>
+                                    </Grid>
+                                )                                   
                             }
+
                         ]}
-                        defaultPageSize={5}
-                        className="-striped -highlight"
+                        defaultPageSize={10}
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={8} justify="center" style={{ marginTop: '20px' }}>
-                <Grid item xs={12} md={1} lg={1}>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                    <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
+            <Grid container justify="center" alignItems="flex-start" style={marginBottom}>
+
+<Grid item xs={12}>
+    <Grid container justify="flex-end">
+        <Grid item xs={12} sm={12} md={5} lg={2} >
+           {/*<Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onAddMember()} >
+                Add Member
+                    </Button>*/}
+        </Grid>
+    </Grid>
+</Grid>
+
+</Grid>
+            <Grid container justify="flex-end" spacing={16}>
+                <Grid item xs={12} md={3}>
+                    <Button disabled={props.isSaveDisabled} variant="contained" color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
                         Save Changes
                 </Button>
                 </Grid>
-                <Grid item xs={12} md={4} lg={4}>
-                    <Button variant="contained" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
+                <Grid item xs={12} md={3}>
+                    <Button disabled={props.isPublishDisabled} variant="outlined" color="primary" className={props.classes.button} onClick={() => props.onPublishChanges()} >
                         Publish Changes
                 </Button>
                 </Grid>
