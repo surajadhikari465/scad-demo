@@ -9,7 +9,8 @@ var urlStart = KbApiMethod("Kits");
 interface IKitLinkGroupPageState {
     error : any,
     message : any,
-    kitDetails: any
+    kitDetails: any,
+    disableSaveButton:boolean
 }
 
 interface IKitLinkGroupPageProps {
@@ -25,13 +26,14 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
         this.state = {
             error: "",
             message: "",
-            kitDetails : {}
+            kitDetails : {},
+            disableSaveButton:false
         }
         this.handleSaveButton = this.handleSaveButton.bind(this);
     }
 
-    loadData() 
-    {
+    loadData(isSavingData:Boolean) 
+    {    
                 // render the kitId and localeId from hierarchy page
                 var pathArray = window.parent.location.href.split('/');
                 pathArray = pathArray.reverse();
@@ -81,8 +83,15 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                             }
                         })
                     })
-                    this.setState({kitDetails :kitLinkGroupsDetail});
-                   
+                
+                    this.setState({kitDetails :kitLinkGroupsDetail},()=>{
+                        if(isSavingData)
+                        {
+                        this.setState({
+                            error: null, message: "Data Saved Succesfully.",  disableSaveButton:false
+                       })
+                    }})
+     
                 }).catch((error) => {
                  
                     this.setState({
@@ -99,12 +108,10 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
 
     componentDidMount ()
     {
-      this.loadData()
+      this.loadData(false)
     }
-
-    handleSaveButton(event:any)
+    saveData()
     {
-        //setting the properties
         this.state.kitDetails.kitLinkGroupLocaleList.map((linkGroup:any)=>{
             if(linkGroup.properties != null)
             {
@@ -130,23 +137,21 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
              {
                   headers: headers
              }).then(response => {
-                  this.setState({
-                       error: null
-                  })
-
-                  this.setState({
-                       message: "Data Saved Succesfully."
-                  },  ()=>this.loadData())
+                this.loadData(true)
+         
              }).catch(error => {
                   this.setState({
-                       error: "Error in Saving Data."
-                  })
-
-                  this.setState({
-                       message: null
+                       error: "Error in Saving Data.", message: null, disableSaveButton:false
                   })
              });
       
+    }
+    handleSaveButton(event:any)
+    {
+        //setting the properties
+        this.setState({disableSaveButton:true},()=>{
+            this.saveData();
+        })
     }
 
     render()
@@ -199,7 +204,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
                             <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-primary" type = "button" onClick = {this.handleSaveButton}> Publish </button>
                             <div className = "col-lg-4 col-md-4 col-sm-4"></div>
-                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button" onClick = {this.handleSaveButton}> Save Changes </button>
+                            <button disabled={this.state.disableSaveButton} className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button" onClick = {this.handleSaveButton}> Save Changes </button>
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
                         </div> 
                     </div>
