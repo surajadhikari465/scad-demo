@@ -7,7 +7,6 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Mammoth.Logging;
-using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -191,30 +190,21 @@ namespace Audit
 		{
 			try
 			{
-				if(outputInfo == null || !File.Exists(outputInfo.FileName)) return;
+				if(outputInfo == null || !File.Exists(outputInfo.ZipFile)) return;
 
-				var config = new AmazonS3Config()
-				{
-					RegionEndpoint = RegionEndpoint.USWest2,
-					ServiceURL = this.spec.Profile.BucketRegion
-				};
 				var client = new AmazonS3Client(awsAccessKeyId: this.spec.Profile.AccessKey,
-																				awsSecretAccessKey: this.spec.Profile.SecretKey,
-																				clientConfig: new AmazonS3Config()
-																				{
-																					RegionEndpoint = RegionEndpoint.USWest2,
-																					ServiceURL = this.spec.Profile.BucketRegion
-																				});
+				                                awsSecretAccessKey: this.spec.Profile.SecretKey,
+				                                clientConfig: new AmazonS3Config(){ ServiceURL = this.spec.Profile.BucketRegion	});
 
 				var request = new PutObjectRequest
 				{
 					BucketName = spec.Profile.BucketName,
-					Key = Path.Combine(spec.Profile.DestinationDir, Path.GetFileName(outputInfo.FileName)),
+					Key = Path.Combine(spec.Profile.DestinationDir, Path.GetFileName(outputInfo.ZipFile)),
 					FilePath = outputInfo.ZipFile
 				};
 
 				var response = await client.PutObjectAsync(request);
-				logger.Info($"Audit file {Path.GetFileName(outputInfo.FileName)} has been successfuly uploaded to {request.Key}. Http status code {response.HttpStatusCode.ToString()}");
+				logger.Info($"Audit file {Path.GetFileName(outputInfo.ZipFile)} has been successfuly uploaded to {request.Key}. Http status code {response.HttpStatusCode.ToString()}");
 			}
 			catch(Exception ex) { logger.Error("AmazonS3Exception: UploadFileAsync.", ex); }
 		}

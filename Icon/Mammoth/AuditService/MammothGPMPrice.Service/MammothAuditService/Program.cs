@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Reflection;
 
-namespace Audit //MammothGpmPrice.Service
+namespace Audit
 {
   class Program
 	{
@@ -36,7 +36,6 @@ namespace Audit //MammothGpmPrice.Service
 			var mods = Assembly.GetExecutingAssembly().GetModules();
 			var cnfg = ConfigurationManager.OpenExeConfiguration(mods[0].FullyQualifiedName);
 			var settings = cnfg.GetSection(section);
-			if(settings == null) return;
 
 			if(settings != null && !settings.SectionInformation.IsProtected)
 			{
