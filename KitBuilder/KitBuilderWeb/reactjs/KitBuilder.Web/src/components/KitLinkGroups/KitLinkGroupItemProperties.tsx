@@ -65,10 +65,11 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                 <div className ="row col-lg-12"> 
                     <div className = "col-lg-2 col-md-2 mt-md-3">{/* Kit Link Group Item Name */}
                         <h6 className = "text-left ">{this.props.kitLinkGroupItemsJson.name}</h6>
-                    </div>
-                    <div className = "col-lg-10 col-md-10 mt-md-3">{/* Kit Link Group Details */}
-                        <form className ="wrapper"> 
-                            <label className="col-lg-3 col-md-3">
+                    </div> 
+                    <div  className = "col-lg-10 col-md-10 mt-md-3">{/* Kit Link Group Details */}
+                        <form  className ="wrapper"> 
+                        <fieldset disabled={this.props.kitLinkGroupItemsJson.isDisabled}>
+                              <label className="col-lg-3 col-md-3">
                                 <input className="col-lg-4 col-md-4" type ="text" value = {this.props.kitLinkGroupItemsJson.properties.Minimum} onChange = {this.handleLinkGroupItemMinimum.bind(this)}/> Minimum
                             </label>
                             <label className="col-lg-3 col-md-3">
@@ -87,8 +88,9 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                                 <input className="col-lg-2 col-md-2" type ="checkbox" checked = {this.props.kitLinkGroupItemsJson.properties.MandatoryItem == "true" ? true : false} onClick = {this.handleLinkGroupItemMandatoryItem.bind(this)}/> Mandatory Item 
                             </label>
                             <label className="col-lg-3 col-md-3">
-                                <input className="col-lg-2 col-md-2" type ="checkbox" checked = {this.props.kitLinkGroupItemsJson.exclude} onClick = {this.handleLinkGroupItemExclude.bind(this)} /> Exclude
+                                <input   className="col-lg-2 col-md-2" type ="checkbox" checked = {this.props.kitLinkGroupItemsJson.excluded} onClick = {this.handleLinkGroupItemExclude.bind(this)} /> Exclude
                             </label>
+                            </fieldset>
                         </form> 
                     </div>
                 </div>

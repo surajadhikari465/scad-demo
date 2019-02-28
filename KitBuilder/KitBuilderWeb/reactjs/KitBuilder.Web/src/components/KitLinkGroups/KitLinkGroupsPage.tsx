@@ -5,12 +5,12 @@ import { KitLinkGroupProperties } from "./KitLinkGroupProperties";
 import { KbApiMethod } from '../helpers/kbapi'
 
 var urlStart = KbApiMethod("Kits");
-var imageSrc = "https://images.pexels.com/photos/247685/pexels-photo-247685.png?cs=srgb&dl=assorted-diet-edible-247685.jpg&fm=jpg";
 
 interface IKitLinkGroupPageState {
     error : any,
     message : any,
-    kitDetails: any
+    kitDetails: any,
+    disableSaveButton:boolean
 }
 
 interface IKitLinkGroupPageProps {
@@ -26,23 +26,25 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
         this.state = {
             error: "",
             message: "",
-            kitDetails : {}
+            kitDetails : {},
+            disableSaveButton:false
         }
         this.handleSaveButton = this.handleSaveButton.bind(this);
     }
 
-    loadData() 
-    {
+    loadData(isSavingData:Boolean) 
+    {    
                 // render the kitId and localeId from hierarchy page
                 var pathArray = window.parent.location.href.split('/');
                 pathArray = pathArray.reverse();
                 // calling the API to get the required information
+
                 let url =urlStart+"/"+parseInt(pathArray[1])+"/GetKitProperties/"+parseInt(pathArray[0]);
                 axios.get(url,{})
                 .then(response => {
                     let kitLinkGroupsDetail = response.data;  
                     kitLinkGroupsDetail.kitLinkGroupLocaleList.map((linkGroup:any)=>{
-              
+                        let disableControls:boolean = false;
                         if(linkGroup.properties == null)
                         {
                             let newLinkGroupProperties = {
@@ -52,12 +54,14 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                             }
                             linkGroup.properties = newLinkGroupProperties
                             linkGroup.excluded = false
+                            linkGroup.childDisabled = false;
                             linkGroup.displaySequence = 0 // default display sequence
                         }
                         else
-                        {
+                        {   linkGroup.childDisabled = linkGroup.excluded;
                             linkGroup.properties = JSON.parse(linkGroup.properties)
                         }
+                        disableControls = linkGroup.childDisabled;
                         linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
                             if(linkGroupItem.properties == null)
                             {
@@ -70,16 +74,24 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                                 }
                                 linkGroupItem.properties = newLinkGroupItemProps
                                 linkGroupItem.excluded = false
+                                linkGroupItem.isDisabled = disableControls
                                 linkGroupItem.displaySequence = 0 // default display sequence
                             }
                             else
-                            {
+                            {   linkGroupItem.isDisabled = disableControls;
                                 linkGroupItem.properties = JSON.parse(linkGroupItem.properties)
                             }
                         })
                     })
-                    this.setState({kitDetails :kitLinkGroupsDetail});
-                   
+                
+                    this.setState({kitDetails :kitLinkGroupsDetail},()=>{
+                        if(isSavingData)
+                        {
+                        this.setState({
+                            error: null, message: "Data Saved Succesfully.",  disableSaveButton:false
+                       })
+                    }})
+     
                 }).catch((error) => {
                  
                     this.setState({
@@ -96,12 +108,10 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
 
     componentDidMount ()
     {
-      this.loadData()
+      this.loadData(false)
     }
-
-    handleSaveButton(event:any)
+    saveData()
     {
-        //setting the properties
         this.state.kitDetails.kitLinkGroupLocaleList.map((linkGroup:any)=>{
             if(linkGroup.properties != null)
             {
@@ -127,23 +137,21 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
              {
                   headers: headers
              }).then(response => {
-                  this.setState({
-                       error: null
-                  })
-
-                  this.setState({
-                       message: "Data Saved Succesfully."
-                  })
+                this.loadData(true)
+         
              }).catch(error => {
                   this.setState({
-                       error: "Error in Saving Data."
-                  })
-
-                  this.setState({
-                       message: null
+                       error: "Error in Saving Data.", message: null, disableSaveButton:false
                   })
              });
-        this.loadData()
+      
+    }
+    handleSaveButton(event:any)
+    {
+        //setting the properties
+        this.setState({disableSaveButton:true},()=>{
+            this.saveData();
+        })
     }
 
     render()
@@ -177,9 +185,6 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
             </Grid>
             <div className = "mt-md-4 mb-md-4">
                 <div className = "row">
-                    <div className="col-lg-4 col-md-4">{/* logo spacing */}
-                        <img className = "col-6 rounded mx-auto d-block" src = {imageSrc} alt={this.state.kitDetails.imageUrl + "image"}/>
-                    </div>
                     <div className="col-lg-4 col-md-5">  {/* Kit Name*/}
                         <h2 className="text-center font-italic font-weight-bold mt-md-5">{this.state.kitDetails.description}</h2>
                     </div>
@@ -199,7 +204,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps ,IK
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
                             <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-primary" type = "button" onClick = {this.handleSaveButton}> Publish </button>
                             <div className = "col-lg-4 col-md-4 col-sm-4"></div>
-                            <button className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button" onClick = {this.handleSaveButton}> Save Changes </button>
+                            <button disabled={this.state.disableSaveButton} className = "col-lg-2 col-md-2 col-sm-2 btn btn-success" type = "button" onClick = {this.handleSaveButton}> Save Changes </button>
                             <div className = "col-lg-2 col-md-2 col-sm-2"></div>
                         </div> 
                     </div>

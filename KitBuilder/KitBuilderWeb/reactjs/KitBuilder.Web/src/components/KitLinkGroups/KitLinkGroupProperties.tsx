@@ -28,6 +28,10 @@ export class KitLinkGroupProperties extends React.Component<any>
 
     handleLinkGroupExclude(){
         let changedState = !this.props.kitLinkGroupDetails.excluded
+        this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.forEach(function(element:any) {
+            element.isDisabled = changedState;
+        });
+        this.setState({kitLinkGroupDetails:  this.props.kitLinkGroupDetails})
         this.setState({kitLinkGroupDetails: this.props.kitLinkGroupDetails.excluded = changedState})
         
     }
@@ -43,7 +47,7 @@ export class KitLinkGroupProperties extends React.Component<any>
             4. Display Order
             5. Exclude
              */}  
-             <div className="row mt-md-1 border-bottom">
+             <div  className="row mt-md-1 border-bottom">
                     <div className = "col-lg-2 col-md-2 mt-md-3"> {/* Kit Link Group Name */}
                         <h4 className = "text-left">{this.props.kitLinkGroupDetails.name}</h4>
                     </div>
@@ -68,7 +72,7 @@ export class KitLinkGroupProperties extends React.Component<any>
                     </div>
                     <div className = "col-lg-1 col-md-1"></div>
                     <div className = "col-lg-11 mb-1"> {/* Kit Link Group Items */}
-                        {this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.map((kitLGI:any)=><KitLinkGroupItemProperties kitLinkGroupItemsJson = {kitLGI}></KitLinkGroupItemProperties>)}
+                        {this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.map((kitLGI:any)=><KitLinkGroupItemProperties  kitLinkGroupItemsJson = {kitLGI}></KitLinkGroupItemProperties>)}
                     </div>
              </div> 
         </React.Fragment>;

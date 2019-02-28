@@ -737,7 +737,8 @@ namespace KitBuilderWebApi.Controllers
                                                                           MaximumCalories = klgl != null ? (int?)klgl.MaximumCalories : null,
                                                                           DisplaySequence = klgl != null ? (int?)klgl.DisplaySequence : null,
                                                                           KitLinkGroupItemLocaleList = new HashSet<PropertiesDto>(),
-                                                                      }).ToList();
+                                                                      }).OrderByDescending(s => s.DisplaySequence.HasValue)
+                                                                        .ThenBy(p => p.DisplaySequence).ThenBy(p=>p.Name).ToList();
 
 
             List<PropertiesDto> KitLinkGroupItemLocaleList = (from klgl in KitLinkGroupLocaleList
@@ -782,7 +783,8 @@ namespace KitBuilderWebApi.Controllers
             foreach (KitLinkGroupPropertiesDto kitLinkGroupLocale in KitLinkGroupLocaleList)
             {
                 List<PropertiesDto> kitLinkGroupItemLocales = KitLinkGroupItemLocaleList.Where(i => i.KitLinkGroupId == kitLinkGroupLocale.KitLinkGroupId).ToList();
-                kitLinkGroupLocale.KitLinkGroupItemLocaleList = kitLinkGroupItemLocales;
+                kitLinkGroupLocale.KitLinkGroupItemLocaleList = kitLinkGroupItemLocales.OrderByDescending(s => s.DisplaySequence.HasValue)
+                                                                        .ThenBy(p => p.DisplaySequence).ThenBy(p => p.Name).ToList();
             };
             KitPropertiesDto.KitLinkGroupLocaleList = KitLinkGroupLocaleList;
             //KitPropertiesDto.KitLinkGroupItemLocaleList = KitLinkGroupItemLocaleList;
