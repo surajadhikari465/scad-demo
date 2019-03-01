@@ -12,6 +12,7 @@ import './style.css';
 import PageStyle from './PageStyle';
 import PageTitle from '../PageTitle';
 import CreateEdiInstructionDialog from './CreateEditInstructionsDialog';
+import EditableContent from '../EditableInput';
 
 var urlStart = KbApiMethod("InstructionList");
 
@@ -75,8 +76,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           this.getInstructionTypes();
      }
 
-     onInstructionDelete = (row: any) => {
-          let data = this.state.instructionList;
+     onMemberDelete = (row: any) => {
+          let data = [...this.state.instructionList];
           if (row.row._original.instructionListId == 0) {
                for (let i = 0; i < data.length; i++) {
                     if (data[i] != row.row._original) {
@@ -113,8 +114,9 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          instructionList: data
                     });
                })
-                    .then(() => this.setState({ message: "Instruction Member Deleted Sucessfully" }))
-                    .then(() => this.setState({ error: null }))
+                    .then(() => {
+                         this.setState({ message: "Instruction Member Deleted Sucessfully",  error: null}, this.onSearch);
+                    })
                     .catch((error) => {
                          console.log("Error in deleting Instruction list member");
                          this.setState({
@@ -130,21 +132,23 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
 
      }
 
-     renderEditable = (cellInfo: any) => {
-          return (
-               <div
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={e => {
-                         const data = [...this.state.instructionList];
-                         data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                         this.setState({ instructionList: data });
-                    }}
-                    dangerouslySetInnerHTML={{
-                         __html: `<center>${this.state.instructionList[cellInfo.index][cellInfo.column.id]}</center>`
-                    }}
-               />
-          );
+     handleRowChange = (value: string, index: any, id: any) => {
+          const data = [...this.state.instructionList];
+          data[index][id] = value;
+          this.setState({ instructionList: data });
+     }
+
+     renderEditable = (filter : (value : string) => string, emptyLabel = "Empty") => {
+          return (cellInfo: any) => {
+               return (
+                    <EditableContent
+                    isValid={filter}
+                    emptyLabel = {emptyLabel}
+                    value = {this.state.instructionList[cellInfo.index][cellInfo.column.id]} 
+                    onChange ={(value: string) => this.handleRowChange(value, cellInfo.index, cellInfo.column.id)}
+                    />
+               );
+          }
      }
 
      getInstructionTypes = () => {
@@ -241,19 +245,12 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
      }
 
      onAddMember = () => {
-          let data = this.state.instructionList;
-          if (navigator.userAgent.indexOf("Firefox") != -1) {
-               data.push({
-                    instructionListId: "0", instructionListMemberId: "0", group: "Group", sequence: "0", member: "Member", action: ""
-               });
+          let data = [...this.state.instructionList];
 
-          }
-          else {
                data.push({
                     instructionListId: "0", instructionListMemberId: "0", group: "", sequence: "", member: "", action: ""
                });
 
-          }
           this.setState({
                instructionList: data,
                isSaveDisabled: false,
@@ -604,7 +601,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     <DisplayInstructionsLists
                          data={this.state.instructionList}
                          renderEditable={this.renderEditable}
-                         onDelete={this.onInstructionDelete}
+                         onMemberDelete={this.onMemberDelete}
                          instructionValue={this.state.currentInstructionTypeValue}
                          instructionTypeName={this.state.instructionTypeName}
                          onAddMember={this.onAddMember}

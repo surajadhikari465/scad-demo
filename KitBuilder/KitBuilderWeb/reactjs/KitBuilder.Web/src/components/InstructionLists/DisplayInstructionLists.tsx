@@ -4,6 +4,7 @@ import "react-table/react-table.css";
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { isNumberError, isLettersNumbers } from '../EditableInput';
 const marginBottom = { marginBottom: 20 };
 const styles = (theme: any) => ({
     deleteButton: {
@@ -24,7 +25,7 @@ const styles = (theme: any) => ({
 interface DisplayInstructionListsProps {
     data: Array<any>,
     renderEditable: any,
-    onDelete: Function,
+    onMemberDelete: Function,
     instructionValue: string,
     instructionTypeName: string, 
     onAddMember: Function,
@@ -34,7 +35,6 @@ interface DisplayInstructionListsProps {
     isLoaded: boolean,
     isPublishDisabled: boolean,
     isSaveDisabled: boolean,
-
     classes: any,
 }
 
@@ -51,36 +51,36 @@ function DisplayInstructionLists(props: DisplayInstructionListsProps) {
                             {
                                 Header: "Instruction List Id",
                                 accessor: "instructionListId",
-                                Cell: props.renderEditable,
+                                Cell: props.renderEditable(() => {}),
                                 show: false
                             },
                             {
                                 Header: "Instruction List Member Id",
                                 accessor: "instructionListMemberId",
-                                Cell: props.renderEditable,
+                                Cell: props.renderEditable(() => {}),
                                 show: false
                             },
                             {
                                 Header: "Group",
                                 accessor: "group",
-                                Cell: props.renderEditable
+                                Cell: props.renderEditable(isLettersNumbers, 'Group Id')
                             },
                             {
                                 Header: "Sequence",
                                 accessor: "sequence",
-                                Cell: props.renderEditable
+                                Cell: props.renderEditable(isNumberError, 'Sequence')
                             },
                             {
                                 Header: "Member",
                                 accessor: "member",
-                                Cell: props.renderEditable
+                                Cell: props.renderEditable(isLettersNumbers, "Member Desc")
                             },
                             {
                                 Header: "Action",
                                 id: "action",
                                 Cell: row => (
                                     <Grid container justify="center" alignItems="center">
-                                        <Button variant="text" color='secondary' className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
+                                        <Button variant="text" color='secondary' className={props.classes.deleteButton} onClick={() => props.onMemberDelete(row)}>
                                             DELETE
                                         </Button>
                                     </Grid>

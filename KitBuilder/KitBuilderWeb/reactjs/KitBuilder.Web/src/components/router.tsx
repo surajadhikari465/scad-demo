@@ -9,11 +9,31 @@ import EditKit from './Kits/EditKit';
 import { AssignKitsToLocale} from './AssignKits/AssignKitsToLocale';
 import { CreateKit} from './Kits/KitItemAddModal/CreateKit';
 import {KitLinkGroupPage} from './KitLinkGroups/KitLinkGroupsPage';
+import { MuiThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#88BDBC',
+      main: '#254E58',
+      dark: '#112D32',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+  },
+});
 
 class AppRouter extends React.Component {
   render() {
     return (
       <HashRouter>
+        <MuiThemeProvider theme = {theme}>
         <div className="container-fluid">
           <Route component={App} />
           <Switch>
@@ -27,6 +47,7 @@ class AppRouter extends React.Component {
             <Route path="/KitLinkGroups" component ={KitLinkGroupPage}/>
           </Switch>
         </div>
+        </MuiThemeProvider>
       </HashRouter>
     )
   }

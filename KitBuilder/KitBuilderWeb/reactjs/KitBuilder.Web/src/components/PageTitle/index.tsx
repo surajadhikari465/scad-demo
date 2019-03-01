@@ -15,7 +15,7 @@ export default function PageTitle(props: any) {
       className="search-title"
     >
       <Grid item>
-        <Avatar className="instructions-avatar">
+        <Avatar className="page-title-avatar">
           <Icon>{props.icon}</Icon>
         </Avatar>
       </Grid>
