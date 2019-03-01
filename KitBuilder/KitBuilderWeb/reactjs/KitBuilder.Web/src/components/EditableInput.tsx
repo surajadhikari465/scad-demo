@@ -20,7 +20,7 @@ export const isNumberError = (value: string) => {
 };
 
 export const isLettersNumbers = (value: string) => {
-  const result = /^[a-zA-Z0-9-_!]+$/.test(value);
+  const result = /^[a-zA-Z0-9-_! '"*)(]+$/.test(value);
   return result ? "" : "Invalid input";
 };
 
