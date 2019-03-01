@@ -6,6 +6,7 @@ AS
 BEGIN
 
 SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 -- Set Attribute IDs
 DECLARE @nutritionRequiredId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'NR');

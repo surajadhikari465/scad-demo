@@ -3,6 +3,8 @@
 	@ItemStores AS [dbo].[ScanCodeBusinessUnitIdType] READONLY
 AS
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
 DECLARE @sql NVARCHAR(MAX);
 SET @sql = N'
 SELECT ScanCode, BusinessUnitID
