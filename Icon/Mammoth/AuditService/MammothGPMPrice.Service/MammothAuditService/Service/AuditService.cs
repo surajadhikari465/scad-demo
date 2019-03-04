@@ -14,6 +14,7 @@ namespace Audit
 	{
 		string dirPath;
 		int timeOutSec = 900;
+		int timeInterval;
 		DataTable statusTable;
 		Timer auditTimer = null;
 		DateTime scheduleTimeStart;
@@ -27,8 +28,6 @@ namespace Audit
 
 		public AuditService()
 		{
-			int timeInterval;
-
 			this.sqlConnection = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
 			if(!DateTime.TryParse(ConfigurationManager.AppSettings["ScheduledTimeStart"], out this.scheduleTimeStart))
@@ -53,7 +52,8 @@ namespace Audit
 			}
 
 			this.Logger = new NLogLogger(typeof(AuditService));
-			this.auditTimer = new Timer() { Interval = !int.TryParse(ConfigurationManager.AppSettings["RunIntervalInMilliseconds"], out timeInterval) ? 3600000 : timeInterval };
+			if(!int.TryParse(ConfigurationManager.AppSettings["RunIntervalInMilliseconds"], out this.timeInterval)) timeInterval = 3600000;
+			this.auditTimer = new Timer() { Interval = 30000 }; //Initial interval
 		}
 
 		public void Start()
@@ -76,6 +76,8 @@ namespace Audit
 
 			try
 			{
+				if(DateTime.Now.Hour < this.scheduleTimeStart.Hour || DateTime.Now.Hour > this.scheduleTimeEnd.Hour) return;
+
 				Region[] Regions;
 				var audits = AuditConfigSection.Config.SettingsList.Where(x => x.IsActive).ToArray();
 				var uploads = UploadConfigSection.Config.SettingsList.ToArray();
@@ -111,6 +113,7 @@ namespace Audit
 			finally
 			{
 				SaveStatus();
+				this.auditTimer.Interval = this.timeInterval;
 				this.auditTimer.Start();
 			}
 		}

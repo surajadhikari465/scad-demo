@@ -199,7 +199,7 @@ namespace Audit
 				var request = new PutObjectRequest
 				{
 					BucketName = spec.Profile.BucketName,
-					Key = Path.Combine(spec.Profile.DestinationDir, Path.GetFileName(outputInfo.ZipFile)),
+					Key = $"{spec.Profile.DestinationDir}/{Path.GetFileName(outputInfo.ZipFile)}",
 					FilePath = outputInfo.ZipFile
 				};
 
