@@ -61,6 +61,18 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           }
      }
 
+     setInstructionListHack = (data: Array<any>) => {
+          // This is a hack to fix a bug in ReactTable
+          // that is caused by the table using index as the key
+          // for the rows.
+          this.setState({
+               instructionList: [],
+          }, () => {
+          this.setState({
+               instructionList: data
+          });});
+     }
+
      onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           this.setState({ 
                selectedInstructionTypeIdvalue: event.target.value,
@@ -87,10 +99,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     data.splice(i, 1);
                     break;
                }
-
-               this.setState({
-                    instructionList: data
-               });
+               this.setInstructionListHack(data);
           }
 
           else {
@@ -110,9 +119,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          break;
                     }
 
-                    this.setState({
-                         instructionList: data
-                    });
+                    this.setInstructionListHack(data);
                })
                     .then(() => {
                          this.setState({ message: "Instruction Member Deleted Sucessfully",  error: null}, this.onSearch);
@@ -135,7 +142,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
      handleRowChange = (value: string, index: any, id: any) => {
           const data = [...this.state.instructionList];
           data[index][id] = value;
-          this.setState({ instructionList: data });
+          this.setState({ instructionList: data, isSaveDisabled: false });
      }
 
      renderEditable = (filter : (value : string) => string, emptyLabel = "Empty") => {
@@ -226,10 +233,9 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           fetch(url)
                .then(response => {
                     return response.json();
-               }).then(data => this.setState({
-                    instructionList: data
-               }))
-               .then(() => {
+               }).then(data => 
+                    this.setInstructionListHack(data)
+               ).then(() => {
 
                     this.setState({
                          error: null
@@ -251,8 +257,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     instructionListId: "0", instructionListMemberId: "0", group: "", sequence: "", member: "", action: ""
                });
 
+          this.setInstructionListHack(data);
           this.setState({
-               instructionList: data,
                isSaveDisabled: false,
           })
      }
@@ -456,7 +462,9 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          error: null
                     })
                     this.setState({
-                         message: "Data Saved Sucessfully."
+                         message: "Data Saved Sucessfully.",
+                         isSaveDisabled: true,
+                         isPublishDisabled: false,
                     })
                })
                .catch((error) => {
@@ -481,6 +489,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     this.setState({
                          message: "Data Saved Sucessfully.",
                          error: null,
+                         isSaveDisabled: true,
+                         isPublishDisabled: false,
                     })
                     this.saveInstructionName();
                })
