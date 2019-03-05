@@ -55,6 +55,9 @@
     <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
+    <OutputPath>bin\Test1\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
@@ -138,7 +141,7 @@
     </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
       <SubType>Designer</SubType>
     </None>
     <None Include="App.Dev.config">
@@ -146,19 +149,23 @@
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
-	<None Include="App.Perf.config">
+    <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Test1.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.CchTax", "Icon.Esb.CchTaxListener\Icon.Esb.CchTax.csproj", "{7291D488-07D1-49A7-BBEA-0AFB94597535}"
 EndProject
@@ -21,6 +21,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		SingleImage|Any CPU = SingleImage|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Test1|Any CPU = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +40,8 @@ Global
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -55,6 +58,8 @@ Global
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.Test|Any CPU.Build.0 = Test|Any CPU
+		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{1341479B-FCF2-47D9-BC69-8E18FC971F87}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -71,6 +76,8 @@ Global
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -87,26 +94,13 @@ Global
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.Test|Any CPU.Build.0 = Test|Any CPU
+		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{D0D7DF87-FD14-439A-89E5-93547DA6FD1A}.Test1|Any CPU.Build.0 = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Icon.Esb.CchTaxListener\\Icon.Esb.CchTax.csproj
-		SccProjectName1 = Icon.Esb.CchTaxListener
-		SccLocalPath1 = Icon.Esb.CchTaxListener
-		SccProjectUniqueName2 = Icon.Esb.CchTaxListener.WindowsService\\Icon.Esb.CchTax.WindowsService.csproj
-		SccProjectName2 = Icon.Esb.CchTaxListener.WindowsService
-		SccLocalPath2 = Icon.Esb.CchTaxListener.WindowsService
-		SccProjectUniqueName3 = Icon.Esb.CchTaxListener.Tests\\Icon.Esb.CchTax.Tests.csproj
-		SccProjectName3 = Icon.Esb.CchTaxListener.Tests
-		SccLocalPath3 = Icon.Esb.CchTaxListener.Tests
-		SccProjectUniqueName4 = Icon.Esb.CchTax.Integration\\Icon.Esb.CchTax.Tests.Integration.csproj
-		SccProjectName4 = Icon.Esb.CchTax.Integration
-		SccLocalPath4 = Icon.Esb.CchTax.Integration
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A0087AB-7C43-41E8-9FDF-0A4FBC8C7138}
 	EndGlobalSection
 EndGlobal

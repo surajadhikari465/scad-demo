@@ -16,6 +16,7 @@ Global
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Test1|Any CPU = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,6 +29,8 @@ Global
 		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{F2505DE6-0DE1-46B7-9D60-3D3A93C18155}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
@@ -38,6 +41,8 @@ Global
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{F69D1672-BA42-4E73-B855-002673566C1C}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F69D1672-BA42-4E73-B855-002673566C1C}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{F69D1672-BA42-4E73-B855-002673566C1C}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Perf|Any CPU.ActiveCfg = Perf|Any CPU
@@ -48,6 +53,8 @@ Global
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{0E28E047-5807-423C-85EC-AFF66645AA26}.Test|Any CPU.Build.0 = Test|Any CPU
+		{0E28E047-5807-423C-85EC-AFF66645AA26}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{0E28E047-5807-423C-85EC-AFF66645AA26}.Test1|Any CPU.Build.0 = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

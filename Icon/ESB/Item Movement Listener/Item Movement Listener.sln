@@ -21,6 +21,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		SingleImage|Any CPU = SingleImage|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Test1|Any CPU = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,6 +44,8 @@ Global
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,6 +66,8 @@ Global
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test|Any CPU.Build.0 = Test|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -83,6 +88,8 @@ Global
 		{B6439E9A-6139-4189-9198-63AF6555E701}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Test|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.Test1|Any CPU.Build.0 = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

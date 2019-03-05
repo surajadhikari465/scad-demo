@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionWebApi", "NutritionWebApi\NutritionWebApi.csproj", "{0D76778F-8546-4A64-9B05-062E26550DE6}"
 EndProject
@@ -23,6 +23,7 @@ Global
 		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Test1|Any CPU = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0D76778F-8546-4A64-9B05-062E26550DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,6 +34,8 @@ Global
 		{0D76778F-8546-4A64-9B05-062E26550DE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D76778F-8546-4A64-9B05-062E26550DE6}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{0D76778F-8546-4A64-9B05-062E26550DE6}.Test|Any CPU.Build.0 = Test|Any CPU
+		{0D76778F-8546-4A64-9B05-062E26550DE6}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{0D76778F-8546-4A64-9B05-062E26550DE6}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.QA|Any CPU.ActiveCfg = QA|Any CPU
@@ -41,6 +44,8 @@ Global
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Test|Any CPU.Build.0 = Test|Any CPU
+		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{BE5E4821-4A5B-4408-B5C5-15EA268F7D88}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{B8706499-F05D-473F-B0DF-7918E8073302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8706499-F05D-473F-B0DF-7918E8073302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8706499-F05D-473F-B0DF-7918E8073302}.QA|Any CPU.ActiveCfg = QA|Any CPU
@@ -49,6 +54,8 @@ Global
 		{B8706499-F05D-473F-B0DF-7918E8073302}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8706499-F05D-473F-B0DF-7918E8073302}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{B8706499-F05D-473F-B0DF-7918E8073302}.Test|Any CPU.Build.0 = Test|Any CPU
+		{B8706499-F05D-473F-B0DF-7918E8073302}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{B8706499-F05D-473F-B0DF-7918E8073302}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +64,8 @@ Global
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Test|Any CPU.Build.0 = Release|Any CPU
+		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{2E3C6679-9A2E-4ADF-A2A1-12F8FD5D044D}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,6 +74,8 @@ Global
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Test|Any CPU.Build.0 = Release|Any CPU
+		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{4C6B8E80-853D-4F84-88A0-7FE9066AC38D}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,6 +84,8 @@ Global
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Test|Any CPU.Build.0 = Release|Any CPU
+		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{FFCC6798-E2CD-45BE-A898-1FEAE3661916}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.QA|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,35 +94,13 @@ Global
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{78EFF570-2ACF-4C21-B36F-0BA1AC7E504F}.Test1|Any CPU.Build.0 = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://irma.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = NutritionWebApi.Common\\NutritionWebApi.Common.csproj
-		SccProjectName1 = NutritionWebApi.Common
-		SccLocalPath1 = NutritionWebApi.Common
-		SccProjectUniqueName2 = NutritionWebApi.DataAccess\\NutritionWebApi.DataAccess.csproj
-		SccProjectName2 = NutritionWebApi.DataAccess
-		SccLocalPath2 = NutritionWebApi.DataAccess
-		SccProjectUniqueName3 = NutritionWebApi\\NutritionWebApi.csproj
-		SccProjectName3 = NutritionWebApi
-		SccLocalPath3 = NutritionWebApi
-		SccProjectUniqueName4 = NutritionWebApi.Tests.Integration\\NutritionWebApi.Tests.Integration.csproj
-		SccProjectName4 = NutritionWebApi.Tests.Integration
-		SccLocalPath4 = NutritionWebApi.Tests.Integration
-		SccProjectUniqueName5 = NutritionWebApi.Tests.Unit\\NutritionWebApi.Tests.Unit.csproj
-		SccProjectName5 = NutritionWebApi.Tests.Unit
-		SccLocalPath5 = NutritionWebApi.Tests.Unit
-		SccProjectUniqueName6 = NutritionWebApi.Tests.Common\\NutritionWebApi.Tests.Common.csproj
-		SccProjectName6 = NutritionWebApi.Tests.Common
-		SccLocalPath6 = NutritionWebApi.Tests.Common
-		SccProjectUniqueName7 = NutriChefSimulator\\NutriChefSimulator.csproj
-		SccProjectName7 = NutriChefSimulator
-		SccLocalPath7 = NutriChefSimulator
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BA77BC7-9E19-4BD6-BD92-EB7CB361BE3C}
 	EndGlobalSection
 EndGlobal

@@ -63,6 +63,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
+    <OutputPath>bin\Test1\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
@@ -145,7 +148,7 @@
     </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Dev.config">
       <DependentUpon>App.config</DependentUpon>
@@ -153,19 +156,23 @@
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
-	   <None Include="App.Perf.config">
+    <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Test1.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

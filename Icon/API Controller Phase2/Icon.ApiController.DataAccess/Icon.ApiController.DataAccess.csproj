@@ -53,6 +53,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
     <OutputPath>bin\Perf\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
+    <OutputPath>bin\Test1\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config">

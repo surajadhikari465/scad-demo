@@ -20,6 +20,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		SingleImage|Any CPU = SingleImage|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Test1|Any CPU = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,6 +41,8 @@ Global
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{E0822586-DFCC-46AF-990C-2A769E5DA64D}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -58,6 +61,8 @@ Global
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Test|Any CPU.Build.0 = Test|Any CPU
+		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{BAF1CDC1-83CE-4C2D-A9B4-10E29D4E3AA4}.Test1|Any CPU.Build.0 = Test1|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -76,6 +81,8 @@ Global
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Test|Any CPU.Build.0 = Test|Any CPU
+		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Test1|Any CPU.ActiveCfg = Test1|Any CPU
+		{FACDB45A-9C7C-4D2A-9E3F-A92F50F3FC55}.Test1|Any CPU.Build.0 = Test1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
