@@ -683,7 +683,6 @@
     <None Include="Scripts\PopulateData\Archive\AddIrmaItemKeyTraitCodes.sql" />
     <None Include="Scripts\PopulateData\Archive\AddHospitalityAndEstoreTraitCodes.sql" />
     <Build Include="app\Stored Procedures\GetLocationHierarchy.sql" />
-    <None Include="Scripts\PopulateData\PopulateIconWebApiApp.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedTables.sql" />
     <Build Include="app\Tables\AppLogArchive.sql" />
     <None Include="Scripts\PopulateData\Archive\StashDataForNewSignAttributeColumns.sql" />
@@ -692,6 +691,10 @@
     <Build Include="nutrition\User Defined Types\Plu.sql" />
     <Build Include="nutrition\Stored Procedures\DeleteNutritionItems.sql" />
     <None Include="Scripts\PopulateData\AddDeleteNutritionToEventType.sql" />
+    <None Include="Scripts\PopulateData\Archive\AppLogArchiveRetentionPolicy.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateIconWebApiApp.sql" />
+    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
+    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -726,9 +729,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\AppLogArchiveRetentionPolicy.sql" />
-    <None Include="Scripts\PopulateData\IconLocale_365StoreMetroChange_DataSurgery.sql" />
-    <None Include="Scripts\PopulateData\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

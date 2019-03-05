@@ -808,7 +808,6 @@
     <Build Include="dbo\Stored Procedures\GetItems.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulatePromoRewardItemPriceTypes.sql" />
     <Build Include="dbo\Stored Procedures\GetItemsBySearchCriteria.sql" />
-    <None Include="Scripts\PostDeploymentScripts\UpdateMammothClosedStores.sql" />
     <Build Include="dbo\Stored Procedures\AuditItemLocale.sql" />
     <Build Include="dbo\Stored Procedures\AuditGPMPrice.sql" />
     <Build Include="app\Tables\AppLogArchive.sql" />
@@ -818,6 +817,7 @@
     <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
     <Build Include="stage\Tables\GPMPriceExport.sql" />
     <Build Include="dbo\Stored Procedures\AuditGlobalItem.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\UpdateMammothClosedStores.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

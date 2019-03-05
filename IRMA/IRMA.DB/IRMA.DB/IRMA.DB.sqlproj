@@ -3356,13 +3356,13 @@
     <None Include="Scripts\PostDeploy\Archive\AddEnableAmazonEventGenerationIdf.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Purged_PriceBatchDetail.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Purged_PriceBatchHeader.sql" />
-    <None Include="Scripts\PostDeploy\PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql" />
     <None Include="Scripts\PostDeploy\Archive\GrantPermissionsToTibcoDataWriter.sql" />
     <None Include="Scripts\PostDeploy\Archive\HC_DropTriggerOrderItemAddUpdDel.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30599-InsertAMAZONintoOrderExternalSource.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30732 - PostDeploy Grant Permission - Grant User Send Email Permission.sql" />
     <None Include="Scripts\PostDeploy\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagStoreValues.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
