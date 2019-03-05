@@ -27,8 +27,9 @@ namespace KitBuilder.DataAccess.DatabaseModels
 		public virtual DbSet<Locale> Locale { get; set; }
 		public virtual DbSet<LocaleType> LocaleType { get; set; }
 		public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<AvailablePluNumber> AvailablePluNumber { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<InstructionList>(entity =>
 			{

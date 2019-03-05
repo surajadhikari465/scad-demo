@@ -13,5 +13,7 @@ namespace KitBuilder.DataAccess.Dto
         public string Group { get; set; }
         [Required]
         public string Member { get; set; }
+        [Required]
+        public int? InstructionMemberPluNumber { get; set; }
     }
 }
