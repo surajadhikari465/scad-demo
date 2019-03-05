@@ -12,11 +12,11 @@ using System.Data.SqlClient;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
+using KitBuilderWebApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace KitBuilderWebApi.Controllers
 {
-
     [Route("api/LinkGroups")]
     public class LinkGroupController : Controller
     {
@@ -47,7 +47,7 @@ namespace KitBuilderWebApi.Controllers
 
 
 
-        
+
         [HttpGet("LinkGroupsSearch")]
         public IActionResult LinkGroupSearch(LinkGroupSearchParamters parameters)
         {
@@ -76,20 +76,64 @@ namespace KitBuilderWebApi.Controllers
                     select q;
 
             // get ids for filtered results.
-            var linkGroupIds = query.Select(q => q.LinkGroupId).Distinct();
+            var linkGroupIds = query.Select(q => q.LinkGroupId).Distinct().ToArray();
+            var context = kitlinkGroupRepository.UnitOfWork.Context;
+
+            var allRegions = (from l in context.Locale
+                join lt in context.LocaleType
+                    on l.LocaleTypeId equals lt.LocaleTypeId
+                where lt.LocaleTypeDesc == "Region"
+                orderby l.RegionCode
+                select l.RegionCode).ToArray();
+
+            // get all locales for all kits this each link group is associated with.
+            var kitLocalesByLinkGroup = from klg in kitlinkGroupRepository.GetAll()
+                join kl in context.KitLocale on klg.KitId equals kl.KitId
+                join l in context.Locale on kl.LocaleId equals l.LocaleId
+                where linkGroupIds.Contains(klg.LinkGroupId)
+                select new {klg.LinkGroupId, klg.KitId, kl.LocaleId, l.RegionCode, isAllRegions = l.LocaleTypeId == 1};
+
+            // get a distinct list of regions each link group is used in.
+            var linkGroupsWithRegions = (from l in kitLocalesByLinkGroup
+                group l by l.LinkGroupId
+                into g
+                select new LinkGroupWithRegions
+                {
+                    LinkGroupId = g.Key,
+                    Regions = g.Any(a => a.isAllRegions)
+                        ? allRegions
+                        : g.Select(s => s.RegionCode).Distinct().ToArray()
+                }).ToList();
+
+            // filter down the linkGroups if we are searching by region. Otherwise keep them all.
+            if (parameters.Regions != null && parameters.Regions.Any())
+                linkGroupIds = FilterLinkGroupsByRegions(parameters.Regions, linkGroupsWithRegions).ToArray();
+            
 
             // get display data based on ids
             var data = (from lg in linkGroupRepository.GetAll()
-                        where linkGroupIds.Contains(lg.LinkGroupId)
-                       select new
-                       {
-                           LinkGroupId = lg.LinkGroupId,
-                           GroupName = lg.GroupName,
-                           GroupDescription = lg.GroupDescription
-                       }).ToList();
-   
+                join regionData in linkGroupsWithRegions on lg.LinkGroupId equals regionData.LinkGroupId
+                where linkGroupIds.Contains(lg.LinkGroupId)
+                select new
+                {
+                    lg.LinkGroupId,
+                    lg.GroupName,
+                    lg.GroupDescription,
+                    Regions = regionData.FormattedRegions()
+                }).ToList();
+
             // return to client
             return Ok(data);
+
+        }
+
+        private IEnumerable<int> FilterLinkGroupsByRegions(string[] regionParameters,
+            IEnumerable<LinkGroupWithRegions> linkGroupsWithRegions)
+        {
+            // return if the 2 arrays intersect.
+            foreach (var linkGroup in linkGroupsWithRegions)
+                if (linkGroup.Regions.Intersect(regionParameters).Any())
+                    yield return linkGroup.LinkGroupId;
             
         }
 

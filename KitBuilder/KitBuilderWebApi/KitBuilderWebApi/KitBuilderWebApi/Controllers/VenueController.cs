@@ -8,22 +8,12 @@ using KitBuilderWebApi.QueryParameters;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.Dto;
+using KitBuilderWebApi.Models;
 using LocaleType = KitBuilderWebApi.Helper.LocaleType;
 
 namespace KitBuilderWebApi.Controllers
 {
-  public class VenueInfo
-  {
-    public int? VenueID               { get; set; }
-    public int? StoreBU               { get; set; }
-    public string VenueDisplayName    { get; set; }
-    public int MainItemID             { get; set; }
-    public string KitStatus           { get; set; }
-    public string MainItemScanCode    { get; set; }
-    public string MainItemDescription { get; set; }
-  }
-
-  [Produces("application/json")]
+    [Produces("application/json")]
   [Route("api/Venues")]
   public class VenueController : Controller
   {

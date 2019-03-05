@@ -28,6 +28,7 @@ using KitBuilder.DataAccess.Queries;
 using KitBuilderWebApi.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using KitBuilderWebApi.Models;
 
 namespace KitBuilderWebApi
 {

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using KitBuilder.DataAccess.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KitBuilder.DataAccess.Repository
 {
@@ -147,7 +151,35 @@ namespace KitBuilder.DataAccess.Repository
 
         public int ExecWithStoreProcedure(string StoredProcedureName, params object[] parameters)
         {
+            
+           
             return UnitOfWork.Context.Database.ExecuteSqlCommand("EXEC " + StoredProcedureName, parameters);
+        }
+
+        public DataTable ExectuteWithStoredProcedureDataTable(string storedProcedureName, SqlParameter[] parameters)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection cn = (SqlConnection) UnitOfWork.Context.Database.GetDbConnection())
+            {
+                cn.Open();
+                using (SqlCommand cmd = cn.CreateCommand())
+                {
+                    cmd.CommandText = storedProcedureName;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+
+                }
+            }
+
+            return dt;
+
         }
 
         private bool disposed = false;

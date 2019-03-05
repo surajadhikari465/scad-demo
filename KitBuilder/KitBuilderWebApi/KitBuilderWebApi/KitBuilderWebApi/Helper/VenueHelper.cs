@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using KitBuilderWebApi.Controllers;
+using KitBuilderWebApi.Models;
 using KitBuilderWebApi.QueryParameters;
 
 namespace KitBuilderWebApi.Helper

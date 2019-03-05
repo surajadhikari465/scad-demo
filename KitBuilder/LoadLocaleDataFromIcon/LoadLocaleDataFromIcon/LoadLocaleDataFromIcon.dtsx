@@ -7,12 +7,12 @@
   DTS:CreatorName="WFM\2096654"
   DTS:DTSID="{87F509AD-4FAF-4E2F-9164-E2884B3A2A65}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.0900.30"
+  DTS:LastModifiedProductVersion="15.0.1100.123"
   DTS:LocaleID="1033"
   DTS:ObjectName="LoadLocaleDataFromIcon"
   DTS:PackageType="5"
-  DTS:VersionBuild="34"
-  DTS:VersionGUID="{AE76EA0B-5979-4235-9B73-30CA884F42EF}">
+  DTS:VersionBuild="35"
+  DTS:VersionGUID="{2E864C40-1AFD-4FCD-9DA7-FAB551F4629D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -413,7 +413,7 @@ SELECT l.localeID,
        0 AS Hospitality
 
   FROM [iCON].[dbo].[Locale] l
-  left join LocaleTrait lt ON lt.localeID = l.localeID and lt.traitID = @RegionTraitID
+  inner join LocaleTrait lt ON lt.localeID = l.localeID and lt.traitID = @RegionTraitID
   Inner Join Locale c on l.parentLocaleID = c.localeID
   WHERE l.LocaleTypeID=2
 
@@ -428,7 +428,7 @@ SELECT l.localeID,
        c.localeID AS ChainId,
        l.localeOpenDate,
        l.localeCloseDate,
-	   NULL AS RegionCode,
+	   regionTrait.traitValue AS RegionCode,
 	   NULL AS BusinessUnitId,
        NULL AS StoreAbbreviation,
        NULL AS CurrencyCode,
@@ -437,6 +437,7 @@ SELECT l.localeID,
   FROM [iCON].[dbo].[Locale] l
    Inner Join Locale rg on l.parentLocaleID = rg.localeID
    Inner Join Locale c on rg.parentLocaleID = c.localeID
+   inner join LocaleTrait regionTrait  on rg.localeID = regionTrait.localeID and regionTrait.traitID = @RegionTraitID
   WHERE l.LocaleTypeID=3
  
 UNION
@@ -450,7 +451,7 @@ SELECT l.localeID,
        c.localeID AS ChainId,
        l.localeOpenDate,
        l.localeCloseDate,
-	   NULL AS RegionCode,
+	   regionTrait.traitValue AS RegionCode,
 	   Bu.traitValue AS BusinessUnitId,
        s.traitValue AS StoreAbbreviation,
        cur.traitValue AS CurrencyCode,
@@ -460,11 +461,13 @@ SELECT l.localeID,
   	Inner Join Locale mt on l.parentLocaleID = mt.localeID
     Inner Join Locale rg on mt.parentLocaleID = rg.localeID
 	Inner Join Locale c on rg.parentLocaleID = c.localeID
+	inner join LocaleTrait regionTrait  on rg.localeID = regionTrait.localeID and regionTrait.traitID = @RegionTraitID
 	Inner join LocaleTrait Bu ON Bu.localeID = l.localeID and Bu.traitID = @BusinessUnitID
 	Inner join LocaleTrait s ON s.localeID = l.localeID and s.traitID = @StoreAbbreviationID
 	left join LocaleTrait cur ON cur.localeID = l.localeID and cur.traitID = @CurrencyTraitId
 
   WHERE l.LocaleTypeID=4
+
   
 UNION
 
@@ -477,9 +480,9 @@ SELECT l.localeID,
        c.localeID AS ChainId,
        l.localeOpenDate,
        l.localeCloseDate,
-	   NULL AS RegionCode,
+	   regionTrait.traitValue AS RegionCode,
 	   NULL AS BusinessUnitId,
-       NULL AS StoreAbbreviation,
+       storeTrait.traitValue AS StoreAbbreviation,
        NULL AS CurrencyCode,
        1 AS Hospitality
 
@@ -488,7 +491,9 @@ FROM [iCON].[dbo].[Locale] l
   	Inner Join Locale mt on s.parentLocaleID = mt.localeID
     Inner Join Locale rg on mt.parentLocaleID = rg.localeID
 	Inner Join Locale c on rg.parentLocaleID = c.localeID
-  
+	inner join LocaleTrait regionTrait  on rg.localeID = regionTrait.localeID and regionTrait.traitID = @RegionTraitID  
+	Inner join LocaleTrait storeTrait ON s.localeID = l.localeID and storeTrait.traitID = @StoreAbbreviationID
+
   WHERE l.LocaleTypeID=5</property>
                 <property
                   dataType="System.String"
@@ -1242,21 +1247,21 @@ FROM [iCON].[dbo].[Locale] l
         <NodeLayout
           Size="216.8,49.6"
           Id="Package\Update Locale\OLE DB Destination"
-          TopLeft="189.6,135.2" />
+          TopLeft="188.8,136" />
         <EdgeLayout
           Id="Package\Update Locale.Paths[OLE DB Source Output]"
-          TopLeft="300.6,65.6">
+          TopLeft="300.2,65.6">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,69.6"
+              EndConnector="0,70.4"
               Start="0,0"
-              End="0,62.1">
+              End="0,62.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,62.1" />
+                    End="0,62.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>

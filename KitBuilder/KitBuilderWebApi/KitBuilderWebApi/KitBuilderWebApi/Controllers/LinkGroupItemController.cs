@@ -8,16 +8,10 @@ using System.Net;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
+using KitBuilderWebApi.Models;
 
 namespace KitBuilderWebApi.Controllers
 {
-
-    public class LinkGroupItemSearchParameters
-    {
-        public string ModiferPlu { get; set; }
-        public string ModifierName { get; set; }
-    }
-
     [Route("api/LinkGroups")]
     public class LinkGroupItemController : Controller
     {
