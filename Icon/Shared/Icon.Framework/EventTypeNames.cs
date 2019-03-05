@@ -24,5 +24,6 @@ namespace Icon.Framework
         public static string BrandDelete = "Brand Delete";
         public static string NationalClassUpdate = "National Class Update";
         public static string NationalClassDelete = "National Class Delete";
+        public static string NutritionDelete = "Nutrition Delete";
 	}
 }

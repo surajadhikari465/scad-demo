@@ -24,5 +24,6 @@ namespace Icon.Framework
         public static int BrandDelete = 11;
         public static int NationalClassUpdate = 12;
         public static int NationalClassDelete = 13;
+        public static int NutritionDelete = 14;
 	}
 }
