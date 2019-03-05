@@ -12,7 +12,7 @@
             <row>
                 <PropertyName>TransactionType</PropertyName>
                 <Type>string</Type>
-                <Cardinality>optional</Cardinality>
+                <Cardinality>required</Cardinality>
             </row>
             <row>
                 <PropertyName>Source</PropertyName>
@@ -28,6 +28,11 @@
                 <PropertyName>MessageNumber</PropertyName>
                 <Type>string</Type>
                 <Cardinality>optional</Cardinality>
+            </row>
+            <row>
+                <PropertyName>RegionCode</PropertyName>
+                <Type>string</Type>
+                <Cardinality>required</Cardinality>
             </row>
         </Properties>
     </config>
