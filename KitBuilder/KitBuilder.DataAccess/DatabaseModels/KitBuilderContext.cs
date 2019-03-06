@@ -54,11 +54,25 @@ namespace KitBuilder.DataAccess.DatabaseModels
 					.OnDelete(DeleteBehavior.ClientSetNull);
 			});
 
-			modelBuilder.Entity<InstructionListMember>(entity =>
+            modelBuilder.Entity<AvailablePluNumber>(entity =>
+            {
+                entity.HasKey(e => e.PluNumber);
+
+                entity.Property(e => e.PluNumber).ValueGeneratedNever();
+
+                entity.Property(e => e.InsertDateUtc).HasDefaultValueSql("(sysutcdatetime())");
+            });
+
+
+            modelBuilder.Entity<InstructionListMember>(entity =>
 			{
 				entity.HasIndex(e => e.InstructionListId);
 
-				entity.Property(e => e.Group)
+                entity.HasIndex(e => e.PluNumber)
+                  .HasName("UQ__Instruct__980234FB85BFE7C6")
+                  .IsUnique();
+
+                entity.Property(e => e.Group)
 					.IsRequired()
 					.HasMaxLength(60);
 
@@ -71,7 +85,13 @@ namespace KitBuilder.DataAccess.DatabaseModels
 					.HasForeignKey(d => d.InstructionListId)
 					.OnDelete(DeleteBehavior.ClientSetNull)
 					.HasConstraintName("FK_InstructionListMember_InstructionList");
-			});
+
+                entity.HasOne(d => d.PluNumberNavigation)
+                  .WithOne(p => p.InstructionListMember)
+                  .HasForeignKey<InstructionListMember>(d => d.PluNumber)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_InstructionListMember_AvailablePluNumber");
+            });
 
 			modelBuilder.Entity<InstructionType>(entity =>
 			{

@@ -8,7 +8,7 @@ namespace KitBuilder.DataAccess
     {
         public AvailablePluNumber()
         {
-            InstructionListMember = new HashSet<InstructionListMember>();
+            InstructionListMember = new InstructionListMember();
         }
 
         public int PluNumber { get; set; }
@@ -16,6 +16,6 @@ namespace KitBuilder.DataAccess
         public DateTime InsertDateUtc { get; set; }
         public DateTime? LastUpdatedDateUtc { get; set; }
 
-        public ICollection<InstructionListMember> InstructionListMember { get; set; }
+        public InstructionListMember InstructionListMember { get; set; }
     }
 }

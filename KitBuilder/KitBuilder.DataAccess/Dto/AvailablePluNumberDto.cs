@@ -7,7 +7,7 @@ namespace KitBuilder.DataAccess.Dto
     {
         public AvailablePluNumberDto()
         {
-            InstructionListMemberDto = new HashSet<InstructionListMemberDto>();
+            InstructionListMemberDto = new InstructionListMemberDto();
         }
 
         public int PluNumber { get; set; }
@@ -15,6 +15,6 @@ namespace KitBuilder.DataAccess.Dto
         public DateTime InsertDateUtc { get; set; }
         public DateTime? LastUpdatedDateUtc { get; set; }
 
-        public ICollection<InstructionListMemberDto> InstructionListMemberDto { get; set; }
+        public InstructionListMemberDto InstructionListMemberDto { get; set; }
     }
 }
