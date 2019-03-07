@@ -85,10 +85,15 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
             if (!isNumber(String(element.displaySequence)) || !checkValueMoreThanOrEqualToMinValue(element.displaySequence, 1)) {
                 error.push("Display Order for link group:".concat(element.name, " must be numeric and greater than 0."));
             }
-            ;
+            
             if (!isNumber(String(element.properties.NumOfFreeToppings)) || (isMaxLgNumber && !checkValueLessThanOrEqualToMaxValue(element.properties.NumOfFreeToppings, element.properties.Maximum))) {
                 error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and cannot be more than maximum."));
             }
+
+            if (!isNumber(String(element.properties.NumOfFreeToppings)) ||!checkValueMoreThanOrEqualToMinValue(element.properties.NumOfFreeToppings, 0)) {
+                error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and greater than 0."));
+            }
+
             let sumOfMinimum: number = 0;
             let sumOfDefaults: number = 0;
             let sumOfMaximum: number = 0;
@@ -127,6 +132,11 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
                 if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.NumOfFreePortions, innerElement.properties.Maximum))) {
 
                     error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and cannot be more than Maximum."));
+                }
+
+                if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.NumOfFreePortions, 0)) {
+
+                    error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and greater than 0."));
                 }
 
                 if (!isNumber(String(innerElement.properties.DefaultPortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.DefaultPortions, innerElement.properties.Maximum))) {

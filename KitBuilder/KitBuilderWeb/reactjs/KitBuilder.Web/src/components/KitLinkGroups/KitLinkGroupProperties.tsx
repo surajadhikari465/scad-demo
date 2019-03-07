@@ -83,16 +83,16 @@ export class KitLinkGroupProperties extends React.Component<any>
                 <div className="col-lg-10 col-md-10 mt-md-3">{/* Kit Link Group Details */}
                     <form className="wrapper">
                         <label className="col-lg-2 col-md-2">
-                            <input className="col-lg-5 col-md-5" type="number" value={this.props.kitLinkGroupDetails.properties.Minimum} onChange={this.handleLinkGroupMinimum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Minimum
+                            <input className="col-lg-5 col-md-5" type="number" min="0" value={this.props.kitLinkGroupDetails.properties.Minimum} onChange={this.handleLinkGroupMinimum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Minimum
                             </label>
                         <label className="col-lg-2 col-md-2">
-                            <input className="col-lg-5 col-md-5 ml-md-1"type="number"  value={this.props.kitLinkGroupDetails.properties.Maximum} onChange={this.handleLinkGroupMaximum.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Maximum
+                            <input className="col-lg-5 col-md-5 ml-md-1"type="number" min="1" max="10" value={this.props.kitLinkGroupDetails.properties.Maximum} onChange={this.handleLinkGroupMaximum.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Maximum
                             </label>
                         <label className="col-lg-3 col-md-3">
-                            <input className="col-lg-3 col-md-3 ml-md-4"type="number"  value={this.props.kitLinkGroupDetails.displaySequence} onChange={this.handleLinkGroupDisplayOrder.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Display Order
+                            <input className="col-lg-3 col-md-3 ml-md-4"type="number" min="1" value={this.props.kitLinkGroupDetails.displaySequence} onChange={this.handleLinkGroupDisplayOrder.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Display Order
                             </label>
                         <label className="col-lg-3 col-md-3">
-                            <input className="col-lg-3 col-md-3" type="number"  value={this.props.kitLinkGroupDetails.properties.NumOfFreeToppings} onChange={this.handleLinkGroupNumOfFreeToppings.bind(this)} onBlur={this.onfocusOut.bind(this)}/> # of Free Toppings
+                            <input className="col-lg-3 col-md-3" type="number" min="0"  value={this.props.kitLinkGroupDetails.properties.NumOfFreeToppings} onChange={this.handleLinkGroupNumOfFreeToppings.bind(this)} onBlur={this.onfocusOut.bind(this)}/> # of Free Toppings
                             </label>
                         <label className="col-lg-2 col-md-2">
                             <input className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupDetails.excluded} onClick={this.handleLinkGroupExclude.bind(this)} /> Exclude

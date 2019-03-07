@@ -112,7 +112,7 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                                     <input className="col-lg-4 col-md-4" type="number" min="0" max="10" value={this.props.kitLinkGroupItemsJson.properties.Minimum} onChange={this.handleLinkGroupItemMinimum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Minimum
                             </label>
                                 <label className="col-lg-3 col-md-3">
-                                    <input className="col-lg-4 col-md-4" type="number" min="0" max="10" value={this.props.kitLinkGroupItemsJson.properties.Maximum} onChange={this.handleLinkGroupItemMaximum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Maximum
+                                    <input className="col-lg-4 col-md-4" type="number" min="1" max="10" value={this.props.kitLinkGroupItemsJson.properties.Maximum} onChange={this.handleLinkGroupItemMaximum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Maximum
                             </label>
                                 <label className="col-lg-3 col-md-3">
                                     <input className="col-lg-4 col-md-4" type="number" min="1"  value={this.props.kitLinkGroupItemsJson.displaySequence} onChange={this.handleLinkGroupItemDisplayOrder.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Display Order
@@ -121,7 +121,7 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                                     <input className="col-lg-4 col-md-4" type="number" min="0" max="10"  value={this.props.kitLinkGroupItemsJson.properties.NumOfFreePortions} onChange={this.handleLinkGroupItemNumOfFreePortions.bind(this)} onBlur={this.onfocusOut.bind(this)}/> # of Free Portions
                             </label>
                                 <label className="col-lg-3 col-md-3">
-                                    <input className="col-lg-4 col-md-4" type="text"  min="0" max="10" value={this.props.kitLinkGroupItemsJson.properties.DefaultPortions} onChange={this.handleLinkGroupItemDefaultPortions.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Default Portions
+                                    <input className="col-lg-4 col-md-4" type="number"  min="0" max="10" value={this.props.kitLinkGroupItemsJson.properties.DefaultPortions} onChange={this.handleLinkGroupItemDefaultPortions.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Default Portions
                             </label>
                                 <label className="col-lg-3 col-md-3">
                                     <input disabled={true} className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupItemsJson.properties.MandatoryItem == "true" ? true : false} onClick={this.handleLinkGroupItemMandatoryItem.bind(this)} /> Mandatory Item
