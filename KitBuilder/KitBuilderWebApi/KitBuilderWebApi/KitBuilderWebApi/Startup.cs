@@ -24,7 +24,6 @@ using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
-using KitBuilder.DataAccess.Queries;
 using KitBuilderWebApi.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;

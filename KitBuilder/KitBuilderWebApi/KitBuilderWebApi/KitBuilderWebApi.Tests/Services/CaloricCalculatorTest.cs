@@ -10,7 +10,6 @@ using System.Linq;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
-using KitBuilder.DataAccess.Queries;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;

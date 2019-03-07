@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
+using KitBuilder.DataAccess;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
@@ -11,6 +12,7 @@ using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -29,6 +31,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IUrlHelper> mockUrlHelper;
         private Mock<IHelper<InstructionListDto, InstructionListsParameters>> mockInstructionListHelper;
         private Mock<IUnitOfWork> mockUnitWork;
+        private Mock<IRepository<AvailablePluNumber>> mockAvailablePluNumberRespository;
 
         private IList<InstructionListDto> instructionListsDto;
         private IList<InstructionList> instructionLists;
@@ -51,6 +54,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockInstructionListMemberRepository = new Mock<IRepository<InstructionListMember>>();
             mockInstructionTypeRespository = new Mock<IRepository<InstructionType>>();
             mockStatusRespository = new Mock<IRepository<Status>>();
+            mockAvailablePluNumberRespository = new Mock<IRepository<AvailablePluNumber>>();
             mockUnitWork = new Mock<IUnitOfWork>();
             mockUrlHelper = new Mock<IUrlHelper>();  
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>()))
@@ -66,7 +70,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockInstructionListRepository.Object,
             mockInstructionListMemberRepository.Object,
             mockInstructionTypeRespository.Object,
-            mockStatusRespository.Object);
+            mockStatusRespository.Object,
+            mockAvailablePluNumberRespository.Object);
 
 
             InitializeMapper();
@@ -146,12 +151,17 @@ namespace KitBuilderWebApi.Tests.Controllers
         [TestMethod]
         public void InstructionListMemberController_AddInstructionListMember_ValidILM()
         {
+            var mockContext = new Mock<KitBuilderContext>();
+            List<AvailablePluNumber> availablePluNumber = new List<AvailablePluNumber> { new AvailablePluNumber {PluNumber =1, InUse=false } };
             mockInstructionListRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
             var instructionListId = 1;
             var InstructionListMemberDto = new InstructionListMemberDto { InstructionListId  = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0};
+            var mockDbSet = GetMockDbSet<AvailablePluNumber>(availablePluNumber);
+            mockContext.Setup(c => c.Set<AvailablePluNumber>()).Returns(mockDbSet.Object);
+            mockAvailablePluNumberRespository.Setup(x => x.GetAll()).Returns(availablePluNumber.AsQueryable());
 
             //When
-            
+
             var response = instructionListMemberController.AddInstructionListMember(instructionListId,InstructionListMemberDto);
 
             // Then
@@ -316,6 +326,16 @@ namespace KitBuilderWebApi.Tests.Controllers
         }
 
 
+        private Mock<DbSet<T>> GetMockDbSet<T>(List<T> objectPassed) where T : class
+        {
+            var mockSet = new Mock<DbSet<T>>();
+            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(objectPassed.AsQueryable().Provider);
+            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(objectPassed.AsQueryable().Expression);
+            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(objectPassed.AsQueryable().ElementType);
+            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(objectPassed.AsQueryable().GetEnumerator());
 
+            return mockSet;
+
+        }
     }
 }

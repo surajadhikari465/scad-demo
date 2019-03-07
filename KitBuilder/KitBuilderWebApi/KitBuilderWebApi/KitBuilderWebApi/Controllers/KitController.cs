@@ -2,7 +2,6 @@
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Enums;
-using KitBuilder.DataAccess.Queries;
 using KitBuilder.DataAccess.Repository;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.Services;
@@ -350,12 +349,12 @@ namespace KitBuilderWebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var kitLocaleID = kitPropertiesDto.KitLinkGroupLocaleList.FirstOrDefault().KitLocaleId;
 
             var passedInKitLinkGroupItemLocales = kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(x => x.KitLinkGroupItemLocaleList);
 
-            var existingKitLinkGroupLocals = from klgl in kitLinkGroupLocaleRepository.GetAll()
-                                             join klg in kitPropertiesDto.KitLinkGroupLocaleList on klgl.KitLocaleId equals klg.KitLocaleId
-                                             select klgl;
+            var existingKitLinkGroupLocals = kitLinkGroupLocaleRepository.GetAll().Where(klgl=>klgl.KitLocaleId == kitLocaleID);
+            
 
             var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
                                                  join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupLocaleId equals klg.KitLinkGroupLocaleId
@@ -752,7 +751,7 @@ namespace KitBuilderWebApi.Controllers
                                                               from klgil in kli.DefaultIfEmpty()
                                                               select new PropertiesDto
                                                               {
-                                                                  KitLinkGroupLocaleId = klgil != null ? klgil.KitLinkGroupLocaleId : 0,
+                                                                  KitLinkGroupLocaleId = klgl != null ? klgl.KitLinkGroupLocaleId : 0,
                                                                   KitLinkGroupItemLocaleId = klgil != null ? klgil.KitLinkGroupItemLocaleId : 0,
                                                                   KitLinkGroupId = klg.KitLinkGroupId,
                                                                   KitLinkGroupItemId = klgi.KitLinkGroupItemId,

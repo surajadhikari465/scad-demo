@@ -10,6 +10,7 @@ using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using KitBuilder.DataAccess;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -23,13 +24,15 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<Status> statusRespository;
         private ILogger<InstructionListMemberController> logger;
         private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
+        private IRepository<AvailablePluNumber> availablePluNumberRespository;
 
         public InstructionListMemberController(ILogger<InstructionListMemberController> logger,
             IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper,
             IRepository<InstructionList> instructionListRepository,
             IRepository<InstructionListMember> instructionListMemberRepository,
             IRepository<InstructionType> instructionTypeRespository,
-            IRepository<Status> statusRespository)
+            IRepository<Status> statusRespository,
+            IRepository<AvailablePluNumber> availablePluNumberRespository)
         {
             this.logger = logger;
             this.instructionListHelper = instructionListHelper;
@@ -37,6 +40,7 @@ namespace KitBuilderWebApi.Controllers
             this.instructionListMemberRepository = instructionListMemberRepository;
             this.instructionTypeRespository = instructionTypeRespository;
             this.statusRespository = statusRespository;
+            this.availablePluNumberRespository = availablePluNumberRespository;
         }
 
         /// <summary>
@@ -102,15 +106,24 @@ namespace KitBuilderWebApi.Controllers
 
             if (instructionList == null)
             {
-                logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
+                logger.LogWarning($"The Instruction" +
+                    $"List with Id {instructionListId} was not found.");
                 return NotFound();
+            }
+           var  firstAvailablePluNumber = availablePluNumberRespository.GetAll().Where(a => a.InUse == false).OrderByDescending(p=>p.PluNumber).Take(1).FirstOrDefault();
+
+            if (firstAvailablePluNumber == null)
+            {
+                return StatusCode(500, "No Plu Numbers available.");
             }
 
             var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
             instructionListMember.InstructionListId = instructionListId;
             instructionListMember.InsertDateUtc = DateTime.UtcNow;
             instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
-            
+            instructionListMember.PluNumber = firstAvailablePluNumber.PluNumber;
+            firstAvailablePluNumber.InUse = true;
+            firstAvailablePluNumber.LastUpdatedDateUtc = DateTime.UtcNow; ;
             instructionList.InstructionListMember.Add(instructionListMember);
 
             try
@@ -146,14 +159,27 @@ namespace KitBuilderWebApi.Controllers
                 logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
                 return NotFound();
             }
+            var availablePluNumbers = availablePluNumberRespository.GetAll().Where(a => a.InUse == false).Take(instructionListMembersDto.Count()).ToList();
+
+            int numberOfPlu = availablePluNumbers.Count();
+
+            if(numberOfPlu == 0)
+            {
+                return StatusCode(500, "No Plu Numbers available.");
+            }
 
             foreach (var instructionListMemberDto in instructionListMembersDto)
             {
+                int count = 0;
+
                 var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
                 instructionListMember.InstructionListId = instructionListId;
                 instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
                 instructionListMember.InsertDateUtc = DateTime.UtcNow;
+                instructionListMember.PluNumber = availablePluNumbers[count].PluNumber;
                 instructionList.InstructionListMember.Add(instructionListMember);
+                availablePluNumbers[count].InUse = true;
+                availablePluNumbers[count].LastUpdatedDateUtc =  DateTime.UtcNow;
             }
 
             try
@@ -191,9 +217,15 @@ namespace KitBuilderWebApi.Controllers
                 instructionListMemberRepository.Find(ilm =>
                     ilm.InstructionListId == instructionListId &&
                     ilm.InstructionListMemberId == instructionListMemberId);
-            
+
             if (instructionListMember != null)
-                   instructionListMemberRepository.Delete(instructionListMember);
+            {
+                var pluNumber = availablePluNumberRespository.GetAll().Where(p => p.PluNumber == instructionListMember.PluNumber).FirstOrDefault();
+                instructionListMemberRepository.Delete(instructionListMember);
+                pluNumber.InUse = false;
+                pluNumber.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
+
             try
             {
                 instructionListMemberRepository.UnitOfWork.Commit();
@@ -232,6 +264,8 @@ namespace KitBuilderWebApi.Controllers
 
             foreach (var instructionListMember in instructionListMembersToDelete)
             {
+                var pluNumber = availablePluNumberRespository.GetAll().Where(p => p.PluNumber == instructionListMember.PluNumber).FirstOrDefault();
+                pluNumber.InUse = false;
                 instructionListMemberRepository.Delete(instructionListMember);
             }
 
@@ -283,8 +317,9 @@ namespace KitBuilderWebApi.Controllers
                     Group = instructionListMemberDto.Group,
                     Member = instructionListMemberDto.Member,
                     Sequence = instructionListMemberDto.Sequence,
-                    LastUpdatedDateUtc = DateTime.UtcNow, 
-                    InsertDateUtc = existingInstructionListMemeber.InsertDateUtc
+                    LastUpdatedDateUtc = DateTime.UtcNow,
+                    InsertDateUtc = existingInstructionListMemeber.InsertDateUtc,
+                    PluNumber = existingInstructionListMemeber.PluNumber
                 };
 
                 instructionListMemberRepository.Update(instructionListMember, instructionListMemberDto.InstructionListMemberId);

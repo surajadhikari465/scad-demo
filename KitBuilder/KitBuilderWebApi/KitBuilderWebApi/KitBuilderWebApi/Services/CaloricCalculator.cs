@@ -10,7 +10,6 @@ using AutoMapper;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using KitBuilder.DataAccess.Queries;
 using KitBuilderWebApi.Helper;
 using Microsoft.EntityFrameworkCore;
 
