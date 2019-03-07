@@ -1,738 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/OrderReceipt.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
     <pd:name>Processes/Publish Received Order Service.process</pd:name>
-    <pd:startName>Timer</pd:startName>
+    <pd:startName>JMS Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="Timer">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>48</pd:x>
-        <pd:y>243</pd:y>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>70</pd:x>
+        <pd:y>236</pd:y>
         <config>
-            <StartTime>1538028264000</StartTime>
-            <Frequency>false</Frequency>
-            <TimeInterval>%%Application/PublisherTimerInMilliseconds%%</TimeInterval>
-            <FrequencyIndex>Millisecond</FrequencyIndex>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Application/ReceiptEventQueueName%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1407</pd:endX>
-    <pd:endY>38</pd:endY>
+    <pd:endX>901</pd:endX>
+    <pd:endY>374</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1538071349052</pd:targetNamespace>
-    <pd:group name="GroupAndSendReceiptData">
-        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-        <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>368</pd:x>
-        <pd:y>105</pd:y>
-        <pd:width>1015</pd:width>
-        <pd:height>458</pd:height>
-        <pd:collapsedWidth>57</pd:collapsedWidth>
-        <pd:collapsedHeight>70</pd:collapsedHeight>
-        <pd:groupVariables/>
-        <pd:joinToggle>inherit</pd:joinToggle>
+    <pd:activity name="ReceiptDataMapper">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>639</pd:x>
+        <pd:y>245</pd:y>
         <config>
-            <pd:groupType>inputLoop</pd:groupType>
-            <pd:serializable>false</pd:serializable>
-            <pd:over>$UniqueKeyID/root/OrderHeaderId</pd:over>
-            <pd:iterationElementSlot>CurrentOrderHeaderId</pd:iterationElementSlot>
-            <pd:indexSlot>i</pd:indexSlot>
-            <pd:activityOutputName/>
-            <pd:accumulateOutput>false</pd:accumulateOutput>
+            <element ref="pfx2:orderReceipts"/>
         </config>
-        <pd:inputBindings/>
-        <pd:expanded>true</pd:expanded>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>ReceiptDataMapper</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Update Queue Table With Mapping Error</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Group</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>ReceiptDataMapper</pd:from>
-            <pd:to>Map First Queue ID</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Map First Queue ID</pd:from>
-            <pd:to>Group</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Catch</pd:from>
-            <pd:to>LogDataMapperError</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>LogDataMapperError</pd:from>
-            <pd:to>Update Queue Table With Mapping Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:activity name="ReceiptDataMapper">
-            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>464</pd:x>
-            <pd:y>194</pd:y>
-            <config>
-                <element ref="pfx2:orderReceipts"/>
-            </config>
-            <pd:inputBindings>
-                <xsl:variable name="var2" select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                <xsl:for-each select="$GetEvents/resultSet/Record[OrderHeader_ID = $var2][1]">
-                    <pfx2:orderReceipts>
-                        <pfx2:orderReceipt>
-                            <pfx2:receiptNumber>
-                                <xsl:value-of select="OrderHeader_ID"/>
-                            </pfx2:receiptNumber>
-                            <pfx2:purchaseOrderNumber>
-                                <xsl:value-of select="OrderHeader_ID"/>
-                            </pfx2:purchaseOrderNumber>
-                            <pfx2:locationNumber>
-                                <xsl:value-of select="StoreNumber"/>
-                            </pfx2:locationNumber>
-                            <pfx2:locationName>
-                                <xsl:value-of select="StoreName"/>
-                            </pfx2:locationName>
-                            <pfx2:eventType>
-                                <xsl:value-of select="EventTypeCode"/>
-                            </pfx2:eventType>
-                            <pfx2:messageNumber>
-                                <xsl:value-of select="MessageNumber"/>
-                            </pfx2:messageNumber>
-                            <pfx2:receiptStatus>
-                                <xsl:value-of select="ReceiptStatus"/>
-                            </pfx2:receiptStatus>
-                            <xsl:variable name="var" select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                            <xsl:for-each select="$GetEvents/resultSet/Record[OrderHeader_ID = $var]">
-                                <pfx2:receiptDetail>
-                                    <pfx2:receiptDetailNumber>
-                                        <xsl:value-of select="OrderItem_ID"/>
-                                    </pfx2:receiptDetailNumber>
-                                    <pfx2:purchaseOrderDetailNumber>
-                                        <xsl:value-of select="OrderHeader_ID"/>
-                                    </pfx2:purchaseOrderDetailNumber>
-                                    <pfx2:sourceItemKey>
-                                        <xsl:value-of select="ItemKey"/>
-                                    </pfx2:sourceItemKey>
-                                    <pfx2:SubTeam>
-                                        <ns0:subTeamNumber>
-                                            <xsl:value-of select="SubTeamNumber"/>
-                                        </ns0:subTeamNumber>
-                                        <xsl:if test="SubTeam">
-                                            <ns0:subTeamName>
-                                                <xsl:value-of select="SubTeam"/>
-                                            </ns0:subTeamName>
-                                        </xsl:if>
-                                        <ns0:hostSubTeamNumber>
-                                            <xsl:value-of select="HostSubTeam"/>
-                                        </ns0:hostSubTeamNumber>
-                                        <ns0:hostSubTeamName>
-                                            <xsl:value-of select="HostSubTeamNumber"/>
-                                        </ns0:hostSubTeamName>
-                                    </pfx2:SubTeam>
-                                    <pfx2:itemVIN>
-                                        <xsl:value-of select="VIN"/>
-                                    </pfx2:itemVIN>
-                                    <pfx2:defaultScanCode>
-                                        <xsl:value-of select="Identifier"/>
-                                    </pfx2:defaultScanCode>
-                                    <pfx2:quantityOrdered>
-                                        <xsl:value-of select="QuantityOrdered"/>
-                                    </pfx2:quantityOrdered>
-                                    <pfx2:quantityReceived>
-                                        <xsl:value-of select="QuantityReceived"/>
-                                    </pfx2:quantityReceived>
-                                    <pfx2:receiptStatus>
-                                        <xsl:value-of select="ReceiptStatus"/>
-                                    </pfx2:receiptStatus>
-                                    <pfx2:receiptUoM>
-                                        <xsl:value-of select="ReceiptUom"/>
-                                    </pfx2:receiptUoM>
-                                    <pfx2:receiptUserInfo>
-                                        <ns0:idNumber>
-                                            <xsl:value-of select="RecvLogUser_ID"/>
-                                        </ns0:idNumber>
-                                        <ns0:name>
-                                            <xsl:value-of select="RecvUserName"/>
-                                        </ns0:name>
-                                    </pfx2:receiptUserInfo>
-                                    <pfx2:createDateTime>
-                                        <xsl:value-of select="current-dateTime()"/>
-                                    </pfx2:createDateTime>
-                                </pfx2:receiptDetail>
-                            </xsl:for-each>
-                        </pfx2:orderReceipt>
-                    </pfx2:orderReceipts>
-                </xsl:for-each>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:group name="Group">
-            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-            <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>581</pd:x>
-            <pd:y>142</pd:y>
-            <pd:width>663</pd:width>
-            <pd:height>322</pd:height>
-            <pd:collapsedWidth>57</pd:collapsedWidth>
-            <pd:collapsedHeight>70</pd:collapsedHeight>
-            <pd:groupVariables/>
-            <pd:joinToggle>inherit</pd:joinToggle>
-            <config>
-                <pd:groupType>simpleGroup</pd:groupType>
-                <pd:serializable>false</pd:serializable>
-            </config>
-            <pd:inputBindings/>
-            <pd:expanded>true</pd:expanded>
-            <pd:transition>
-                <pd:from>start</pd:from>
-                <pd:to>SendDataToESB</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Receipt Queue Table</pd:from>
-                <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Receipt Queue Table With Error</pd:from>
-                <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>ConvertToJSon</pd:from>
-                <pd:to>Archive Message On Error</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>SendDataToESB</pd:from>
-                <pd:to>Convert Message to JSON</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Convert Message to JSON</pd:from>
-                <pd:to>Archive Message</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Archive Message</pd:from>
-                <pd:to>Update Receipt Queue Table</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Archive Message On Error</pd:from>
-                <pd:to>Update Receipt Queue Table With Error</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>CatchSendingToEsbException</pd:from>
-                <pd:to>LogSendDataToESBError</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>LogSendDataToESBError</pd:from>
-                <pd:to>ConvertToJSon</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:activity name="SendDataToESB">
-                <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
-                <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-                <pd:x>656</pd:x>
-                <pd:y>214</pd:y>
-                <config>
-                    <PermittedMessageType>XML Text</PermittedMessageType>
-                    <SessionAttributes>
-                        <transacted>false</transacted>
-                        <acknowledgeMode>1</acknowledgeMode>
-                        <maxSessions>1</maxSessions>
-                        <destination>%%Destinations/InventoryManagementTopic%%</destination>
-                    </SessionAttributes>
-                    <ConfigurableHeaders>
-                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                        <JMSExpiration>0</JMSExpiration>
-                        <JMSPriority>4</JMSPriority>
-                    </ConfigurableHeaders>
-                    <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                    <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
-                    <InDataxsdString ref="pfx2:orderReceipts"/>
-                </config>
-                <pd:inputBindings>
-                    <ns1:ActivityInput>
-                        <OtherProperties>
-                            <TransactionID>
-                                <xsl:value-of select="concat($ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:locationNumber, $_globalVariables/ns:GlobalVariables/Application/TransactionType,$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:messageNumber)"/>
-                            </TransactionID>
-                            <TransactionType>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/TransactionType"/>
-                            </TransactionType>
-                            <Source>
-                                <xsl:value-of select="&quot;IRMA&quot;"/>
-                            </Source>
-                            <MessageType>
-                                <xsl:value-of select="&quot;Text&quot;"/>
-                            </MessageType>
-                            <MessageNumber>
-                                <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:messageNumber"/>
-                            </MessageNumber>
-                        </OtherProperties>
-                        <Body>
-                            <xsl:copy-of select="$ReceiptDataMapper/pfx2:orderReceipts"/>
-                        </Body>
-                    </ns1:ActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="CatchSendingToEsbException">
-                <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-                <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>648</pd:x>
-                <pd:y>361</pd:y>
-                <pd:handler>true</pd:handler>
-                <config>
-                    <catchAll>true</catchAll>
-                </config>
-                <pd:inputBindings/>
-            </pd:activity>
-            <pd:activity name="Update Receipt Queue Table With Error">
-                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>1133</pd:x>
-                <pd:y>376</pd:y>
-                <config>
-                    <timeout>10</timeout>
-                    <commit>false</commit>
-                    <emptyStrAsNil>false</emptyStrAsNil>
-                    <statement>UPDATE [amz].[ReceiptQueue]
-SET InProcessBy = NULL,
-        Status ='P',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription = ?
- WHERE keyId =?
-AND InProcessBy = ?
-And STATUS = 'I'
-
-
-</statement>
-                    <Prepared_Param_DataType>
-                        <parameter>
-                            <parameterName>ErrorDescription</parameterName>
-                            <dataType>VARCHAR</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>KeyId</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>InProcessBy</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                    </Prepared_Param_DataType>
-                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                </config>
-                <pd:inputBindings>
-                    <jdbcUpdateActivityInput>
-                        <ErrorDescription>
-                            <xsl:choose>
-                                <xsl:when test="exists($_error/ns2:ErrorReport/Msg)">
-                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </ErrorDescription>
-                        <KeyId>
-                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                        </KeyId>
-                        <InProcessBy>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </InProcessBy>
-                    </jdbcUpdateActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Archive Message">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>945</pd:x>
-                <pd:y>214</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <Input>
-                        <MessageBody>
-                            <xsl:value-of select="$Convert-Message-to-JSON/ns4:ActivityOutputClass/jsonString"/>
-                        </MessageBody>
-                        <EventType>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:eventType"/>
-                        </EventType>
-                        <BusinessUnitID>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:locationNumber"/>
-                        </BusinessUnitID>
-                        <KeyID>
-                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                        </KeyID>
-                        <SecondaryKeyID>
-                            <xsl:value-of select="0"/>
-                        </SecondaryKeyID>
-                        <Status>
-                            <xsl:value-of select="'P'"/>
-                        </Status>
-                        <MessageNumber>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:messageNumber"/>
-                        </MessageNumber>
-                        <QueueID>
-                            <xsl:value-of select="$Map-First-Queue-ID/QueueID"/>
-                        </QueueID>
-                    </Input>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Convert Message to JSON">
-                <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-                <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>796</pd:x>
-                <pd:y>222</pd:y>
-                <config>
-                    <SchemaType>xsdType</SchemaType>
-                    <BadgerfishCheck>false</BadgerfishCheck>
-                    <ActivityInputEditor ref="pfx2:orderReceipts"/>
-                </config>
-                <pd:inputBindings>
-                    <ns4:ActivityInputClass>
-                        <xsl:copy-of select="$ReceiptDataMapper/pfx2:orderReceipts"/>
-                    </ns4:ActivityInputClass>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="ConvertToJSon">
-                <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-                <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>898</pd:x>
-                <pd:y>362</pd:y>
-                <config>
-                    <SchemaType>xsdType</SchemaType>
-                    <BadgerfishCheck>false</BadgerfishCheck>
-                    <ActivityInputEditor ref="pfx2:orderReceipts"/>
-                </config>
-                <pd:inputBindings>
-                    <ns4:ActivityInputClass>
-                        <xsl:copy-of select="$ReceiptDataMapper/pfx2:orderReceipts"/>
-                    </ns4:ActivityInputClass>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Archive Message On Error">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1012</pd:x>
-                <pd:y>369</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <Input>
-                        <MessageBody>
-                            <xsl:value-of select="$ConvertToJSon/ns4:ActivityOutputClass/jsonString"/>
-                        </MessageBody>
-                        <EventType>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:eventType"/>
-                        </EventType>
-                        <BusinessUnitID>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:locationNumber"/>
-                        </BusinessUnitID>
-                        <KeyID>
-                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                        </KeyID>
-                        <SecondaryKeyID>
-                            <xsl:value-of select="0"/>
-                        </SecondaryKeyID>
-                        <Status>
-                            <xsl:value-of select="'U'"/>
-                        </Status>
-                        <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
-                            <ErrorDescription>
-                                <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
-                            </ErrorDescription>
-                        </xsl:if>
-                        <MessageNumber>
-                            <xsl:value-of select="$ReceiptDataMapper/pfx2:orderReceipts/pfx2:orderReceipt[1]/pfx2:messageNumber"/>
-                        </MessageNumber>
-                        <QueueID>
-                            <xsl:value-of select="$Map-First-Queue-ID/QueueID"/>
-                        </QueueID>
-                    </Input>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Update Receipt Queue Table">
-                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>1098</pd:x>
-                <pd:y>222</pd:y>
-                <config>
-                    <timeout>10</timeout>
-                    <commit>false</commit>
-                    <emptyStrAsNil>false</emptyStrAsNil>
-                    <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='P',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription =''
- WHERE keyId =?
-AND InProcessBy = ?
-And STATUS = 'I'</statement>
-                    <Prepared_Param_DataType>
-                        <parameter>
-                            <parameterName>KeyId</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>InProcessBy</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                    </Prepared_Param_DataType>
-                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                </config>
-                <pd:inputBindings>
-                    <jdbcUpdateActivityInput>
-                        <KeyId>
-                            <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                        </KeyId>
-                        <InProcessBy>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </InProcessBy>
-                    </jdbcUpdateActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="LogSendDataToESBError">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>778</pd:x>
-                <pd:y>360</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
-                </config>
-                <pd:inputBindings>
-                    <LogElement>
-                        <LogDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </LogDate>
-                        <ApplicationID>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
-                        </ApplicationID>
-                        <HostName>
-                            <xsl:value-of select="BW:getHostName()"/>
-                        </HostName>
-                        <UserName>
-                            <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
-                        </UserName>
-                        <Thread>
-                            <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
-                        </Thread>
-                        <Level>
-                            <xsl:value-of select="&quot;ERROR&quot;"/>
-                        </Level>
-                        <Logger>
-                            <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
-                        </Logger>
-                        <Message>
-                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
-                        </Message>
-                        <InsertedDate>
-                            <xsl:value-of select="current-dateTime()"/>
-                        </InsertedDate>
-                    </LogElement>
-                </pd:inputBindings>
-            </pd:activity>
-        </pd:group>
-        <pd:activity name="Catch">
-            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-            <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>608</pd:x>
-            <pd:y>498</pd:y>
-            <pd:handler>true</pd:handler>
-            <config>
-                <catchAll>true</catchAll>
-            </config>
-            <pd:inputBindings/>
-        </pd:activity>
-        <pd:activity name="Update Queue Table With Mapping Error">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1197</pd:x>
-            <pd:y>501</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='F',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-        ErrorDescription = ?
- WHERE keyId =?
-AND InProcessBy = ?
-And STATUS = 'I'
-</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>ErrorDescription</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>KeyId</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>InProcessBy</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <ErrorDescription>
-                        <xsl:choose>
-                            <xsl:when test="exists($_error/ns2:ErrorReport/StackTrace)">
-                                <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </ErrorDescription>
-                    <KeyId>
-                        <xsl:value-of select="$CurrentOrderHeaderId/OrderHeaderId"/>
-                    </KeyId>
-                    <InProcessBy>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </InProcessBy>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Map First Queue ID">
-            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>479</pd:x>
-            <pd:y>307</pd:y>
-            <config>
-                <element>
-                    <xsd:element name="QueueID" type="xsd:int"/>
-                </element>
-            </config>
-            <pd:inputBindings>
-                <QueueID>
-                    <xsl:value-of select="$GetEvents/resultSet/Record[OrderHeader_ID = $CurrentOrderHeaderId/OrderHeaderId][1]/QueueID"/>
-                </QueueID>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="LogDataMapperError">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>877</pd:x>
-            <pd:y>496</pd:y>
-            <config>
-                <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            </config>
-            <pd:inputBindings>
-                <LogElement>
-                    <LogDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </LogDate>
-                    <ApplicationID>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
-                    </ApplicationID>
-                    <HostName>
-                        <xsl:value-of select="BW:getHostName()"/>
-                    </HostName>
-                    <UserName>
-                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
-                    </UserName>
-                    <Thread>
-                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
-                    </Thread>
-                    <Level>
-                        <xsl:value-of select="&quot;ERROR&quot;"/>
-                    </Level>
-                    <Logger>
-                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
-                    </Logger>
-                    <Message>
-                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
-                    </Message>
-                    <InsertedDate>
-                        <xsl:value-of select="current-dateTime()"/>
-                    </InsertedDate>
-                </LogElement>
-            </pd:inputBindings>
-        </pd:activity>
-    </pd:group>
-    <pd:activity name="Catch-All">
+        <pd:inputBindings>
+            <xsl:for-each select="$GetEvents/resultSet/Record[1]">
+                <pfx2:orderReceipts>
+                    <pfx2:orderReceipt>
+                        <pfx2:receiptNumber>
+                            <xsl:value-of select="OrderHeader_ID"/>
+                        </pfx2:receiptNumber>
+                        <pfx2:purchaseOrderNumber>
+                            <xsl:value-of select="OrderHeader_ID"/>
+                        </pfx2:purchaseOrderNumber>
+                        <pfx2:locationNumber>
+                            <xsl:value-of select="StoreNumber"/>
+                        </pfx2:locationNumber>
+                        <pfx2:locationName>
+                            <xsl:value-of select="StoreName"/>
+                        </pfx2:locationName>
+                        <pfx2:eventType>
+                            <xsl:value-of select="$Parse-XML/pfx3:Event/pfx3:EventTypeCode"/>
+                        </pfx2:eventType>
+                        <pfx2:messageNumber>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/MessageNumber"/>
+                        </pfx2:messageNumber>
+                        <pfx2:receiptStatus>
+                            <xsl:value-of select="ReceiptStatus"/>
+                        </pfx2:receiptStatus>
+                        <xsl:for-each select="$GetEvents/resultSet/Record">
+                            <pfx2:receiptDetail>
+                                <pfx2:receiptDetailNumber>
+                                    <xsl:value-of select="OrderItem_ID"/>
+                                </pfx2:receiptDetailNumber>
+                                <pfx2:purchaseOrderDetailNumber>
+                                    <xsl:value-of select="OrderHeader_ID"/>
+                                </pfx2:purchaseOrderDetailNumber>
+                                <pfx2:sourceItemKey>
+                                    <xsl:value-of select="ItemKey"/>
+                                </pfx2:sourceItemKey>
+                                <pfx2:SubTeam>
+                                    <ns0:subTeamNumber>
+                                        <xsl:value-of select="SubTeamNumber"/>
+                                    </ns0:subTeamNumber>
+                                    <xsl:if test="SubTeam">
+                                        <ns0:subTeamName>
+                                            <xsl:value-of select="SubTeam"/>
+                                        </ns0:subTeamName>
+                                    </xsl:if>
+                                    <ns0:hostSubTeamNumber>
+                                        <xsl:value-of select="HostSubTeam"/>
+                                    </ns0:hostSubTeamNumber>
+                                    <ns0:hostSubTeamName>
+                                        <xsl:value-of select="HostSubTeamNumber"/>
+                                    </ns0:hostSubTeamName>
+                                </pfx2:SubTeam>
+                                <pfx2:itemVIN>
+                                    <xsl:value-of select="VIN"/>
+                                </pfx2:itemVIN>
+                                <pfx2:defaultScanCode>
+                                    <xsl:value-of select="Identifier"/>
+                                </pfx2:defaultScanCode>
+                                <pfx2:quantityOrdered>
+                                    <xsl:value-of select="QuantityOrdered"/>
+                                </pfx2:quantityOrdered>
+                                <pfx2:quantityReceived>
+                                    <xsl:value-of select="QuantityReceived"/>
+                                </pfx2:quantityReceived>
+                                <pfx2:receiptStatus>
+                                    <xsl:value-of select="ReceiptStatus"/>
+                                </pfx2:receiptStatus>
+                                <pfx2:receiptUoM>
+                                    <xsl:value-of select="ReceiptUom"/>
+                                </pfx2:receiptUoM>
+                                <pfx2:receiptUserInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="RecvLogUser_ID"/>
+                                    </ns0:idNumber>
+                                    <ns0:name>
+                                        <xsl:value-of select="RecvUserName"/>
+                                    </ns0:name>
+                                </pfx2:receiptUserInfo>
+                                <pfx2:createDateTime>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </pfx2:createDateTime>
+                            </pfx2:receiptDetail>
+                        </xsl:for-each>
+                    </pfx2:orderReceipt>
+                </pfx2:orderReceipts>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>155</pd:x>
-        <pd:y>619</pd:y>
+        <pd:x>61</pd:x>
+        <pd:y>450</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
+    <pd:activity name="LogDataMapperError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>399</pd:x>
+        <pd:y>526</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="GetEvents">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>156</pd:x>
-        <pd:y>35</pd:y>
+        <pd:x>360</pd:x>
+        <pd:y>242</pd:y>
         <config>
             <timeout>120</timeout>
             <commit>false</commit>
@@ -740,11 +197,9 @@ And STATUS = 'I'
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             <statement>SELECT  
-	QueueID,
-	et.[EventTypeCode] as EventTypeCode,
-	et.EventTypeID as EventTypeID,
-	KeyID as OrderHeader_ID,
-	SecondaryKeyID as OrderItem_ID,
+	
+	oh.OrderHeader_ID as OrderHeader_ID,
+	oi.OrderItem_ID as OrderItem_ID,
 	id.Identifier as Identifier,
 	id.Item_Key as ItemKey,
 	st.SubTeam_Name as HostSubTeam,
@@ -767,56 +222,42 @@ And STATUS = 'I'
 		ELSE 'Not Received' END AS ReceiptStatus,
 	ISNULL(iv.item_id, 0) as VIN,
 	s.BusinessUnit_ID as StoreNumber,
-    s.Store_Name as StoreName,
-	cast(Datediff(s, '1970-01-01', rq.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber
-	FROM amz.ReceiptQueue as rq
-	JOIN dbo.OrderHeader as oh on rq.KeyID = oh.OrderHeader_ID
-	JOIN Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-	JOIN Store s on s.Store_No = psl.Store_no 
-	JOIN dbo.OrderItem as oi on rq.SecondaryKeyId = oi.OrderItem_ID
-	JOIN amz.EventType et on et.EventTypeID = rq.EventTypeID
-	JOIN ItemIdentifier id on id.Item_Key = oi.Item_Key
-	JOIN item i on i.Item_key = id.Item_Key
-	JOIN SubTeam st on st.SubTeam_No = i.SubTeam_No
-	JOIN SubTeam sth on sth.Subteam_No = oh.Transfer_To_SubTeam
-	LEFT JOIN dbo.Users u on oh.ApprovedBy = u.User_ID
-	JOIN ItemUnit iu on iu.Unit_ID = oi.QuantityUnit
-	LEFT JOIN ItemUnit iui on iui.Unit_ID = oi.InvoiceQuantityUnit
-	JOIN Vendor v on  v.Vendor_ID = oh.Vendor_ID
-	LEFT JOIN StoreItemVendor siv on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
-	LEFT JOIN ItemVendor iv on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
+    s.Store_Name as StoreName
+	FROM 
+	dbo.OrderHeader oh WITH (NOLOCK)
+	JOIN Vendor psl WITH (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID 
+	JOIN Store s  WITH (NOLOCK) on s.Store_No = psl.Store_no 
+	JOIN dbo.OrderItem as oi  WITH (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID
+	JOIN ItemIdentifier id WITH (NOLOCK) on id.Item_Key = oi.Item_Key
+	JOIN item i WITH (NOLOCK) on i.Item_key = id.Item_Key
+	JOIN SubTeam st WITH (NOLOCK) on st.SubTeam_No = i.SubTeam_No
+	JOIN SubTeam sth WITH (NOLOCK) on sth.Subteam_No = oh.Transfer_To_SubTeam
+	LEFT JOIN dbo.Users u WITH (NOLOCK) on oh.ApprovedBy = u.User_ID
+	JOIN ItemUnit iu WITH (NOLOCK) on iu.Unit_ID = oi.QuantityUnit
+	LEFT JOIN ItemUnit iui WITH (NOLOCK) on iui.Unit_ID = oi.InvoiceQuantityUnit
+	JOIN Vendor v WITH (NOLOCK) on  v.Vendor_ID = oh.Vendor_ID
+	LEFT JOIN StoreItemVendor siv WITH (NOLOCK) on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
+	LEFT JOIN ItemVendor iv WITH (NOLOCK) on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
 						case 
 							when oh.OrderType_ID = 1
 							then v.Vendor_ID
 						else siv.Vendor_ID
 						end
-	WHERE rq.Status in ('I') 
-	  AND i.Retail_Sale = 1
+	WHERE 
+	  i.Retail_Sale = 1
 	  AND id.Default_Identifier = 1
-	  AND InProcessBy = ?
-       ORDER BY KeyID desc</statement>
+	  AND oh.OrderHeader_ID = ?
+	  AND QuantityReceived IS NOT NULL</statement>
             <wizardData/>
+            <processInSubsets>false</processInSubsets>
             <Prepared_Param_DataType>
                 <parameter>
-                    <parameterName>InProcessBy</parameterName>
+                    <parameterName>KeyId</parameterName>
                     <dataType>INTEGER</dataType>
                 </parameter>
             </Prepared_Param_DataType>
-            <processInSubsets>false</processInSubsets>
             <oraObjects/>
             <oraTables/>
-            <QueryOutputCachedSchemaColumns>QueueID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventTypeCode</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventTypeID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -824,7 +265,7 @@ And STATUS = 'I'
             <QueryOutputCachedSchemaColumns>OrderItem_ID</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>Identifier</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
@@ -905,240 +346,210 @@ And STATUS = 'I'
             <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
-                <InProcessBy>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy>
+                <KeyId>
+                    <xsl:value-of select="$Parse-XML/pfx3:Event/pfx3:KeyID"/>
+                </KeyId>
             </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="LockReceiptQueueEvents">
-        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>155</pd:x>
-        <pd:y>243</pd:y>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>239</pd:y>
         <config>
-            <timeout>10</timeout>
-            <maxRows>20000</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <schema>amz</schema>
-            <ProcedureName>LockReceiptEvents</ProcedureName>
-            <catalog/>
-            <useSchema>false</useSchema>
-            <parameterTypes>
-                <parameter>
-                    <colName>@RETURN_VALUE</colName>
-                    <colType>5</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@NumberOfOrdersToProcess</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@Instance</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@ProcessDelayTimeInMinutes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedThreetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFourtimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFivetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-            </parameterTypes>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Event"/>
         </config>
         <pd:inputBindings>
-            <inputs>
-                <inputSet>
-                    <NumberOfOrdersToProcess>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
-                    </NumberOfOrdersToProcess>
-                    <Instance>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Instance>
-                    <ProcessDelayTimeInMinutes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessDelayTimeInMinutes"/>
-                    </ProcessDelayTimeInMinutes>
-                    <WaitTimeForRecordsProcessedThreetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedThreetimes"/>
-                    </WaitTimeForRecordsProcessedThreetimes>
-                    <WaitTimeForRecordsProcessedFourtimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFourtimes"/>
-                    </WaitTimeForRecordsProcessedFourtimes>
-                    <WaitTimeForRecordsProcessedFivetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFivetimes"/>
-                    </WaitTimeForRecordsProcessedFivetimes>
-                </inputSet>
-            </inputs>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body"/>
+            </xmlString>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="UniqueKeyID">
-        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>281</pd:x>
-        <pd:y>304</pd:y>
-        <config>
-            <element>
-                <xsd:element name="root">
-                    <xsd:complexType>
-                        <xsd:sequence maxOccurs="unbounded">
-                            <xsd:element name="OrderHeaderId" type="xsd:int"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </element>
-        </config>
-        <pd:inputBindings>
-            <root>
-                <xsl:for-each-group select="$GetEvents/resultSet/Record" group-by="OrderHeader_ID">
-                    <OrderHeaderId>
-                        <xsl:value-of select="OrderHeader_ID"/>
-                    </OrderHeaderId>
-                </xsl:for-each-group>
-            </root>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Update Message to Error Status">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1418</pd:x>
-        <pd:y>627</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>UPDATE [amz].[ReceiptQueue]
-SET Status ='F',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription = ?
- WHERE InProcessBy = ?
-And STATUS = 'I'
-</statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>ErrorDescription</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <ErrorDescription>
-                    <xsl:choose>
-                        <xsl:when test="exists($_error/ns2:ErrorReport/StackTrace)">
-                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </ErrorDescription>
-                <InProcessBy>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Log Final Errors">
+    <pd:activity name="Send to Esb">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>841</pd:x>
-        <pd:y>616</pd:y>
+        <pd:x>785</pd:x>
+        <pd:y>245</pd:y>
         <config>
-            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <processName>/Processes/SendToEsb.process</processName>
         </config>
         <pd:inputBindings>
-            <LogElement>
-                <LogDate>
-                    <xsl:value-of select="current-dateTime()"/>
-                </LogDate>
-                <ApplicationID>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
-                </ApplicationID>
-                <HostName>
-                    <xsl:value-of select="BW:getHostName()"/>
-                </HostName>
-                <UserName>
-                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
-                </UserName>
-                <Thread>
-                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
-                </Thread>
-                <Level>
-                    <xsl:value-of select="&quot;ERROR&quot;"/>
-                </Level>
-                <Logger>
-                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
-                </Logger>
-                <Message>
-                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
-                </Message>
-                <InsertedDate>
-                    <xsl:value-of select="current-dateTime()"/>
-                </InsertedDate>
-            </LogElement>
+            <Input>
+                <RegionCode>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/RegionCode"/>
+                </RegionCode>
+                <xsl:copy-of select="$ReceiptDataMapper/pfx2:orderReceipts"/>
+            </Input>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>894</pd:x>
+        <pd:y>246</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm After Max Attempts">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>388</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Publish Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>493</pd:x>
+        <pd:y>387</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ErrorMessage>
+                <pfx4:Application>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                </pfx4:Application>
+                <pfx4:MessageID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/MessageNumber"/>
+                </pfx4:MessageID>
+                <pfx4:MessageProperties>
+                    <pfx4:NameValuePair>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="local-name(current())"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="current()"/>
+                        </xsl:attribute>
+                    </pfx4:NameValuePair>
+                </pfx4:MessageProperties>
+                <pfx4:Message>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body"/>
+                </pfx4:Message>
+                <pfx4:ErrorCode>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                </pfx4:ErrorCode>
+                <pfx4:ErrorDetails>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </pfx4:ErrorDetails>
+                <xsl:choose>
+                    <xsl:when test="contains( $_error/ns2:ErrorReport/MsgCode, &quot;Connection is closed&quot;)">
+                        <pfx4:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx4:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains( $_error/ns2:ErrorReport/MsgCode, &quot;com.microsoft.sqlserver.jdbc.SQLServerException:&quot;)">
+                        <pfx4:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </pfx4:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx4:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </pfx4:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx4:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm-NoData">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>547</pd:x>
+        <pd:y>310</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
-        <pd:from>Timer</pd:from>
-        <pd:to>LockReceiptQueueEvents</pd:to>
+        <pd:from>Catch</pd:from>
+        <pd:to>LogDataMapperError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>LockReceiptQueueEvents</pd:from>
+        <pd:from>Parse XML</pd:from>
         <pd:to>GetEvents</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>UniqueKeyID</pd:from>
-        <pd:to>GroupAndSendReceiptData</pd:to>
+        <pd:from>GetEvents</pd:from>
+        <pd:to>ReceiptDataMapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($GetEvents/resultSet/Record[1])</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReceiptDataMapper</pd:from>
+        <pd:to>Send to Esb</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GroupAndSendReceiptData</pd:from>
+        <pd:from>Send to Esb</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogDataMapperError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Confirm After Max Attempts</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($JMS-Queue-Receiver/ns1:ActivityOutput/JMSProperties/ns1:JMSXDeliveryCount)
+and ($JMS-Queue-Receiver/ns1:ActivityOutput/JMSProperties/ns1:JMSXDeliveryCount =$_globalVariables/ns:GlobalVariables/Application/MaxRedeliveryCount)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm After Max Attempts</pd:from>
+        <pd:to>Publish Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -1146,36 +557,15 @@ And STATUS = 'I'
     </pd:transition>
     <pd:transition>
         <pd:from>GetEvents</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Confirm-NoData</pd:to>
+        <pd:xpathDescription>Confirm-NoData</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetEvents</pd:from>
-        <pd:to>UniqueKeyID</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($GetEvents/resultSet/Record)</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Update Message to Error Status</pd:from>
+        <pd:from>Confirm-NoData</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Catch-All</pd:from>
-        <pd:to>Log Final Errors</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log Final Errors</pd:from>
-        <pd:to>Update Message to Error Status</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

@@ -23,7 +23,6 @@
                     <xsd:element name="MessageNumber" type="xsd:string"/>
                     <xsd:element name="LastReprocess" type="xsd:time" minOccurs="0"/>
                     <xsd:element name="LastReprocessID" type="xsd:string" minOccurs="0"/>
-                    <xsd:element name="QueueID" type="xsd:int" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -60,9 +59,9 @@
       ,LastProcessedTime
       ,MessageNumber
       ,LastReprocess
-      ,LastReprocessID,
-      QueueID)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
+      ,LastReprocessID
+    )
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
             <Prepared_Param_DataType>
                 <parameter>
                     <parameterName>MessageBody</parameterName>
@@ -112,10 +111,6 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
                     <parameterName>LastReprocessID</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
-                <parameter>
-                    <parameterName>QueueID</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
             </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
@@ -157,16 +152,6 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
                     <LastReprocessID>
                         <xsl:value-of select="$Start/Input/LastReprocessID"/>
                     </LastReprocessID>
-                    <QueueID>
-                        <xsl:choose>
-                            <xsl:when test="exists($Start/Input/QueueID)">
-                                <xsl:value-of select="$Start/Input/QueueID"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </QueueID>
                 </Record>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>

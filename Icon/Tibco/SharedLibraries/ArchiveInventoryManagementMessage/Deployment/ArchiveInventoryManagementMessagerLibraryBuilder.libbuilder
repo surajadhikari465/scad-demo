@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="ArchiveInventoryManagementMessagerLibraryBuilder">
-        <version>45</version>
+        <version>46</version>
         <author>Lakshmi.Priyanka</author>
-        <fileLocation>C:\Users\min.zhao\source\repos\Icon\Icon\Tibco\SharedLibraries\Libraries\SharedArchiveInventoryManagementMessage.projlib</fileLocation>
+        <fileLocation>C:\AzureIcon\Icon\Tibco\SharedLibraries\Libraries\SharedArchiveInventoryManagementMessage.projlib</fileLocation>
         <resources>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</resources>
     </name>
 </Repository:repository>

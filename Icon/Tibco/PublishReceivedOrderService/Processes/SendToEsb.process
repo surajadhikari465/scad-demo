@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/OrderReceipt.xsd"/>
+    <pd:name>Processes/SendToEsb.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="RegionCode" type="xsd:string"/>
+                    <xsd:element ref="pfx:orderReceipts"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>317</pd:startX>
+    <pd:startY>178</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1151</pd:endX>
+    <pd:endY>161</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551808776710</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>459</pd:x>
+        <pd:y>22</pd:y>
+        <pd:width>550</pd:width>
+        <pd:height>302</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>simpleGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Render XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Archive Message</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Archive Message On Error</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CatchSendingToEsbException</pd:from>
+            <pd:to>LogSendDataToESBError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render XML</pd:from>
+            <pd:to>SendDataToESB</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendDataToESB</pd:from>
+            <pd:to>Archive Message</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogSendDataToESBError</pd:from>
+            <pd:to>Archive Message On Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SendDataToESB">
+            <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+            <pd:x>681</pd:x>
+            <pd:y>105</pd:y>
+            <config>
+                <PermittedMessageType>Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%Destinations/InventoryManagementTopic%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput>
+                    <OtherProperties>
+                        <TransactionID>
+                            <xsl:value-of select="concat($Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber, $_globalVariables/ns:GlobalVariables/Application/TransactionType,$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber)"/>
+                        </TransactionID>
+                        <TransactionType>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/TransactionType"/>
+                        </TransactionType>
+                        <Source>
+                            <xsl:value-of select="&quot;IRMA&quot;"/>
+                        </Source>
+                        <MessageType>
+                            <xsl:value-of select="&quot;Text&quot;"/>
+                        </MessageType>
+                        <MessageNumber>
+                            <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                        </MessageNumber>
+                        <RegionCode>
+                            <xsl:value-of select="$Start/Input/RegionCode"/>
+                        </RegionCode>
+                    </OtherProperties>
+                    <Body>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </Body>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CatchSendingToEsbException">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>539</pd:x>
+            <pd:y>233</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Archive Message">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>891</pd:x>
+            <pd:y>105</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <MessageBody>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </MessageBody>
+                    <EventType>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:eventType"/>
+                    </EventType>
+                    <BusinessUnitID>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber"/>
+                    </BusinessUnitID>
+                    <KeyID>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:receiptNumber"/>
+                    </KeyID>
+                    <SecondaryKeyID>
+                        <xsl:value-of select="0"/>
+                    </SecondaryKeyID>
+                    <Status>
+                        <xsl:value-of select="'P'"/>
+                    </Status>
+                    <MessageNumber>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                    </MessageNumber>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Archive Message On Error">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>903</pd:x>
+            <pd:y>241</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <MessageBody>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </MessageBody>
+                    <EventType>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:eventType"/>
+                    </EventType>
+                    <BusinessUnitID>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber"/>
+                    </BusinessUnitID>
+                    <KeyID>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:receiptNumber"/>
+                    </KeyID>
+                    <SecondaryKeyID>
+                        <xsl:value-of select="0"/>
+                    </SecondaryKeyID>
+                    <Status>
+                        <xsl:value-of select="'U'"/>
+                    </Status>
+                    <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                        <ErrorDescription>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                        </ErrorDescription>
+                    </xsl:if>
+                    <MessageNumber>
+                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                    </MessageNumber>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LogSendDataToESBError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>669</pd:x>
+            <pd:y>232</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            </config>
+            <pd:inputBindings>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </LogDate>
+                    <ApplicationID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    </ApplicationID>
+                    <HostName>
+                        <xsl:value-of select="BW:getHostName()"/>
+                    </HostName>
+                    <UserName>
+                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <Thread>
+                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                    </Thread>
+                    <Level>
+                        <xsl:value-of select="&quot;ERROR&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                    </Message>
+                    <InsertedDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertedDate>
+                </LogElement>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Render XML">
+            <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+            <pd:x>544</pd:x>
+            <pd:y>104</pd:y>
+            <config>
+                <renderAsText>text</renderAsText>
+                <validateInput>false</validateInput>
+                <renderDefaultPrefix>true</renderDefaultPrefix>
+                <textEncoding>UTF-16</textEncoding>
+                <term ref="pfx:orderReceipts"/>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$Start/Input/pfx:orderReceipts"/>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
