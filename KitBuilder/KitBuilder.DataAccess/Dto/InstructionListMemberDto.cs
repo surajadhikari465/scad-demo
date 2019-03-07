@@ -14,6 +14,6 @@ namespace KitBuilder.DataAccess.Dto
         [Required]
         public string Member { get; set; }
         [Required]
-        public int? InstructionMemberPluNumber { get; set; }
+        public int PluNumber { get; set; }
     }
 }
