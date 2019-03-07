@@ -20,7 +20,7 @@ using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System;
 using System.Collections.Generic;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using MammothDataAccess = Mammoth.ApiController.DataAccess;
 
 namespace Mammoth.ApiController

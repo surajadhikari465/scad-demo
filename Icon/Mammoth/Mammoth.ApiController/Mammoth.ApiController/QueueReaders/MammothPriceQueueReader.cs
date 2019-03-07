@@ -4,7 +4,6 @@ using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Framework;
@@ -12,7 +11,7 @@ using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Mammoth.ApiController.QueueReaders
 {
@@ -147,12 +146,12 @@ namespace Mammoth.ApiController.QueueReaders
                 type = new Contracts.PriceTypeType
                 {
                     description = ItemPriceTypes.Descriptions.ByCode[priceTypeCode],
-                    id = (PriceTypeIdType)Enum.Parse(typeof(PriceTypeIdType) ,priceTypeCode),
+                    id = priceTypeCode,
                     type = string.IsNullOrWhiteSpace(message.SubPriceTypeCode) ? null
                         : new Contracts.PriceTypeType
                             {
                                 description = message.SubPriceTypeCode,
-                                id = (PriceTypeIdType)Enum.Parse(typeof(PriceTypeIdType), message.SubPriceTypeCode),
+                                id = message.SubPriceTypeCode,
                             }
                 },
                 uom = new Contracts.UomType

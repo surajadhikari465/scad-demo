@@ -13,7 +13,7 @@ using Moq;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.Testing.Builders;
 using System.Linq;
-using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Mammoth.ApiController.Tests.QueueReaders
 {

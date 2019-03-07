@@ -1,5 +1,6 @@
 ﻿using Icon.ApiController.Common;
 using Icon.Esb.Schemas.Wfm.Contracts;
+using PreGpm = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 using System;
 using System.Xml.Serialization;
 
@@ -11,7 +12,7 @@ namespace Icon.ApiController.Controller.Serializers
         {
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
 
-            if (t == typeof(items))
+            if (t == typeof(items) || t == typeof(PreGpm.items))
             {
                 AddItemNamespaces(namespaces);
             }
