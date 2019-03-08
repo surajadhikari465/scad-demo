@@ -83,7 +83,7 @@ namespace KitBuilderWebApi.Controllers
 
             var instructionListMembers =
                 instructionListMemberRepository.FindAll(il =>
-                    il.InstructionListId == instructionListId);
+                    il.InstructionListId == instructionListId).OrderBy(i=> i.Group).ThenBy(i=>i.Sequence);
 
             var instructionListMembersDto = Mapper.Map<List<InstructionListMemberDto>>(instructionListMembers);
             return Ok(instructionListMembersDto);
@@ -167,11 +167,9 @@ namespace KitBuilderWebApi.Controllers
             {
                 return StatusCode(500, "No Plu Numbers available.");
             }
-
+            int count = 0;
             foreach (var instructionListMemberDto in instructionListMembersDto)
             {
-                int count = 0;
-
                 var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
                 instructionListMember.InstructionListId = instructionListId;
                 instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
@@ -180,6 +178,7 @@ namespace KitBuilderWebApi.Controllers
                 instructionList.InstructionListMember.Add(instructionListMember);
                 availablePluNumbers[count].InUse = true;
                 availablePluNumbers[count].LastUpdatedDateUtc =  DateTime.UtcNow;
+                count = count + 1;
             }
 
             try
