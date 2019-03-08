@@ -21,19 +21,19 @@
             <value>irma.developers@wholefoods.com</value>
         </NameValuePair>
         <NameValuePair>
-            <name>Application/PagerDutyIntegrationKey</name>
-            <value>ba11ea781e884e448a54b69c598753ee</value>
+            <name>Application/ErrorAlertIntegrationKey</name>
+            <value>5c9df61f-ff16-4eef-8533-6fd8ed9664a3</value>
         </NameValuePair>
         <NameValuePair>
-            <name>Application/PagerDutyUri</name>
-            <value>https://events.pagerduty.com/generic/2010-04-15/create_event.json</value>
+            <name>Application/ErrorAlertUri</name>
+            <value>https://api.opsgenie.com/v2/alerts</value>
         </NameValuePair>
         <NameValuePairBoolean>
             <name>Application/SendEmails</name>
             <value>true</value>
         </NameValuePairBoolean>
         <NameValuePairBoolean>
-            <name>Application/SendPagerDutyAlerts</name>
+            <name>Application/SendErrorAlerts</name>
             <value>true</value>
         </NameValuePairBoolean>
         <NameValuePair>
