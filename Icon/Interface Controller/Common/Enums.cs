@@ -1,5 +1,4 @@
-﻿
-namespace InterfaceController.Common
+﻿namespace InterfaceController.Common
 {
     public static class Enums
     {
@@ -18,6 +17,7 @@ namespace InterfaceController.Common
             IconToIrmaBrandDelete = 11,
             IconToIrmaNationalHierarchyUpdate = 12,
             IconToIrmaNationalHierarchyDelete = 13,
+						IconToIrmaNutritionDelete = 14
         }
 
         public enum IrmaRegion

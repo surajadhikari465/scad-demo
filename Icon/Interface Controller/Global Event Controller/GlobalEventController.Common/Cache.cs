@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Icon.Framework;
 using InterfaceController.Common;
-using Irma.Framework;
-using System.Configuration;
 
 namespace GlobalEventController.Common
 {

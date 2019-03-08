@@ -27,7 +27,6 @@ namespace GlobalEventController.DataAccess.BulkCommands
             dataTable.Columns.Add("ScanCode");
             foreach (var e in parameters.Events)
             {
-                dataTable.NewRow();
                 dataTable.Rows.Add(e.EventMessage);
             }
 

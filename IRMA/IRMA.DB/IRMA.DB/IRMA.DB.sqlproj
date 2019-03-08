@@ -3363,6 +3363,7 @@
     <None Include="Scripts\PostDeploy\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagStoreValues.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteNutriFactsFromIcon.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

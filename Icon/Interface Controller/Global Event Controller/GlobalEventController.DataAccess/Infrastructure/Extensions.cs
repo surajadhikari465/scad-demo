@@ -22,6 +22,7 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { EventConstants.IconToIrmaBrandDelete, Enums.EventNames.IconToIrmaBrandDelete.ToString() },
             { EventConstants.IcontoIrmaNationalHierarchyUpdate, Enums.EventNames.IconToIrmaNationalHierarchyUpdate.ToString() },
             { EventConstants.IconToIrmaNationalHierarchyDelete, Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString() },
+						{ EventConstants.ItemNutritionDelete, Enums.EventNames.IconToIrmaNutritionDelete.ToString() }
         };
 
         private static IDictionary<string, string> reversedEventMap = new Dictionary<string, string>
@@ -38,7 +39,8 @@ namespace GlobalEventController.DataAccess.Infrastructure
             { Enums.EventNames.IconToIrmaNutritionAdd.ToString(), EventConstants.ItemNutritionAdd },
             { Enums.EventNames.IconToIrmaBrandDelete.ToString(), EventConstants.IconToIrmaBrandDelete },
             { Enums.EventNames.IconToIrmaNationalHierarchyUpdate.ToString(), EventConstants.IcontoIrmaNationalHierarchyUpdate },
-            { Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString(), EventConstants.IconToIrmaNationalHierarchyDelete }
+            { Enums.EventNames.IconToIrmaNationalHierarchyDelete.ToString(), EventConstants.IconToIrmaNationalHierarchyDelete },
+						{ Enums.EventNames.IconToIrmaNutritionDelete.ToString(), EventConstants.ItemNutritionDelete }
         };
 
         public static string MapToRegisteredEvent(this string eventName)

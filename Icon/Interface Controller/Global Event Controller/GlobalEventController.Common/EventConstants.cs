@@ -15,6 +15,7 @@
         public static string ItemSubTeamUpdate = "Item Sub Team Update";
         public static string ItemNutritionUpdate = "Nutrition Update";
         public static string ItemNutritionAdd = "Nutrition Add";
+				public static string ItemNutritionDelete = "Nutrition Delete";
         public static string MammothItemLocaleAddOrUpdateEvent = "ItemLocaleAddOrUpdate";
         public static string MammothItemPriceEvent = "Price";
         public static string IconToIrmaBrandDelete = "Brand Delete";

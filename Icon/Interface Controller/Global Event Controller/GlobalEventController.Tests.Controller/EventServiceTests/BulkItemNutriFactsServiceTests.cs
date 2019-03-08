@@ -19,6 +19,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
         private Mock<ICommandHandler<BulkAddUpdateLastChangeCommand>> mockLastChangeHandler; 
         private Mock<IQueryHandler<BulkGetItemsWithTaxClassQuery, List<ValidatedItemModel>>> bulkGetValidatedItemsWithTax;
         private Mock<ICommandHandler<BulkUpdateNutriFactsCommand>> mockBulkUpdateNutriFactsHandler;
+				private Mock<ICommandHandler<BulkDeleteNutriFactsCommand>> mockBulkDeleteNutriFactsHandler;
 
         [TestInitialize]
         public void InitializeData()
@@ -30,6 +31,7 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             this.bulkService = new BulkItemNutriFactsService(
                 this.mockBulkUpdateNutriFactsHandler.Object,
                 this.mockLastChangeHandler.Object,
+								this.mockBulkDeleteNutriFactsHandler.Object,
                 this.bulkGetValidatedItemsWithTax.Object);
         }
 

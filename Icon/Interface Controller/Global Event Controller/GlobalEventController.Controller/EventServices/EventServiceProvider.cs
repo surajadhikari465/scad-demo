@@ -138,6 +138,7 @@ namespace GlobalEventController.Controller.EventServices
             return new BulkItemNutriFactsService(
                 new BulkUpdateNutrifactsCommandHandler(irmaContextFactory),
                 new BulkAddUpdateLastChangeCommandHandler(irmaContextFactory),
+								new BulkDeleteNutriFactsCommandHandler(irmaContextFactory),
                 new BulkGetItemsWithTaxClassQueryHandler(irmaContextFactory));
         }
 

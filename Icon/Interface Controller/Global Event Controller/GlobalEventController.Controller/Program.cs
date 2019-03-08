@@ -1,11 +1,8 @@
-﻿
-namespace GlobalEventController.Controller
+﻿namespace GlobalEventController.Controller
 {
     using Service;
     using System.Configuration;
     using Topshelf;
-    using System;
-
 
     class Program
     {

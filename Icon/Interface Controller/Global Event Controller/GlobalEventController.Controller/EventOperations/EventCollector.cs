@@ -49,21 +49,21 @@ namespace GlobalEventController.Controller.EventOperations
         private List<EventQueue> GetQueuedEventsFromIcon()
         {
             int maxQueueEventsToProcess;
-            bool successfulParse = Int32.TryParse(ConfigurationManager.AppSettings["MaxQueueEntriesToProcess"], out maxQueueEventsToProcess);
 
-            if (!successfulParse)
+            if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxQueueEntriesToProcess"], out maxQueueEventsToProcess))
             {
-                logger.Error("Unable to retrieve configuration: MaxQueueEntriesToProcess.  Using default value of 100.");
+                logger.Error("Unable to retrieve configuration: MaxQueueEntriesToProcess. Using default value of 100.");
                 maxQueueEventsToProcess = 100;
             }
 
-            BulkUpdateEventQueueInProcessCommand inProcessQuery = new BulkUpdateEventQueueInProcessCommand();
-            inProcessQuery.RegisteredEventNames = EventRegistrationService.RegisteredEvents;
-            inProcessQuery.MaxRows = maxQueueEventsToProcess;
-            inProcessQuery.Instance = StartupOptions.Instance.ToString();
+            var inProcessQuery = new BulkUpdateEventQueueInProcessCommand()
+						{
+							RegisteredEventNames = EventRegistrationService.RegisteredEvents,
+							MaxRows = maxQueueEventsToProcess,
+							Instance = StartupOptions.Instance.ToString()
+						};
 
-            List<EventQueueCustom> custom = getInProcessEventsHandler.Handle(inProcessQuery);
-            return custom.Select(c => new EventQueue
+            return getInProcessEventsHandler.Handle(inProcessQuery).Select(c => new EventQueue
                 {
                     QueueId = c.QueueId,
                     EventId = c.EventId,

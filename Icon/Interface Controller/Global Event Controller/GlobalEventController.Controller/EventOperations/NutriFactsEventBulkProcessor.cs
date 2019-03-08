@@ -22,6 +22,7 @@ namespace GlobalEventController.Controller.EventOperations
         private ExceptionHandler<ItemEventBulkProcessor> exceptionHandler;
         private IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler;
         private IEventArchiver eventArchiver;
+				HashSet<int> hsEventIDs = new HashSet<int>{EventTypes.NutritionAdd, EventTypes.NutritionUpdate, EventTypes.NutritionDelete};
 
         public NutriFactsEventBulkProcessor(IEventQueues queues,
             ILogger<ItemEventBulkProcessor> logger,
@@ -41,32 +42,39 @@ namespace GlobalEventController.Controller.EventOperations
 
         public void BulkProcessEvents()
         {
-            // Filter Queued Events to Item Event Types
-            IEnumerable<EventQueue> nutritionQueuedEvents = FilterEventQueueByEventTypes(new List<int> { EventTypes.NutritionAdd, EventTypes.NutritionUpdate });
+            //Filter Queued Events to Item Event Types. In case of multiple events for the same item the last item will processed.
+            var nutritionQueuedEvents = this.queues.QueuedEvents.Where(x => hsEventIDs.Contains(x.EventId))
+																						.GroupBy(x => new { x.EventMessage, Region = x.RegionCode ?? String.Empty })
+																						.Select(x => x.MaxBy(y => y.QueueId))
+																						.ToArray();
 
             if (!nutritionQueuedEvents.Any())
             {
                 logger.Info("There are no item events to process.");
-                return;
+								return;
             }
 
-            // Populate Dictionary with Region as the Key and List of EventQueues as the value
-            this.queues.RegionToEventQueueDictionary = nutritionQueuedEvents
-                .GroupBy(e => e.RegionCode)
-                .ToDictionary(group => group.Key, g => g.ToList());
+						// Populate Dictionary with Region as the Key and List of EventQueues as the value
+						this.queues.RegionToEventQueueDictionary = nutritionQueuedEvents
+								.Where(x => x.EventId != EventTypes.NutritionDelete)
+							  .GroupBy(e => e.RegionCode)
+								.ToDictionary(group => group.Key, g => g.ToList());
 
-            // Iterate Dictionary and perform Bulk Updates for All Regions
-            foreach (KeyValuePair<string, List<EventQueue>> entry in this.queues.RegionToEventQueueDictionary)
-            {
-                ProcessEvents(entry.Key, entry.Value);
-            }
+						// Iterate Dictionary and perform Bulk Updates for All Regions
+						foreach (KeyValuePair<string, List<EventQueue>> entry in this.queues.RegionToEventQueueDictionary)
+						{
+               ProcessEvents(entry.Key, entry.Value);
+						}
+
+						//Process Delete events. Nutrition deletes applies to all regions
+						ExecuteDeleteEventService(nutritionQueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToList(), false);
         }
 
         private void ProcessEvents(string region, IEnumerable<EventQueue> eventsToProcess)
         {
             try
             {
-                ExecuteBulkEventService(region, eventsToProcess.ToList(), false);
+               ExecuteAddUpdateEventService(region, eventsToProcess.ToList(), false);
             }
             catch (Exception ex)
             {
@@ -92,7 +100,7 @@ namespace GlobalEventController.Controller.EventOperations
             }
         }
 
-        private void ExecuteBulkEventService(string regionCode, List<EventQueue> queuedEvents, bool markFailedEvents = true)
+        private void ExecuteAddUpdateEventService(string regionCode, List<EventQueue> queuedEvents, bool markFailedEvents = true)
         {
             // Instantiate BulkEventService
             IBulkEventService bulkNutritionEventService = eventServiceProvider.GetBulkItemNutriFactsEventService(regionCode);
@@ -106,7 +114,7 @@ namespace GlobalEventController.Controller.EventOperations
                 bulkNutritionEventService.ItemNutriFacts = iconNutriFacts.Select(nf => new NutriFactsModel(nf)).ToList();
             }
 
-            logger.Info(String.Format("Begin Updating {0} rows in IRMA for {1} region.", queuedEvents.Count.ToString(), regionCode));
+            logger.Info(String.Format("Begin Updating {0} rows in IRMA for {1} region.", queuedEvents.Count().ToString(), regionCode));
 
             // Run Service
             bulkNutritionEventService.Run();
@@ -116,13 +124,53 @@ namespace GlobalEventController.Controller.EventOperations
                 eventArchiver.Events.AddRange(bulkNutritionEventService.ItemNutriFacts.ToEventArchiveList(queuedEvents));
             }
 
-            logger.Info(String.Format("Successfully processed {0} events for {1} region.", queuedEvents.Count.ToString(), regionCode));
+            logger.Info($"Successfully processed {queuedEvents.Count().ToString()} events for {regionCode} region.");
 
-            // Add to ProcessedEvents List
-            this.queues.ProcessedEvents.AddRange(queuedEvents);
+						var hsScanCode = new HashSet<string>(queuedEvents.Select(x => x.EventMessage), StringComparer.InvariantCultureIgnoreCase);
+						var allApplicableEvents = this.queues.QueuedEvents.Where(x => hsScanCode.Contains(x.EventMessage) && hsEventIDs.Contains(x.EventId) && x.EventId != EventTypes.NutritionDelete).ToArray();
+            
+						// Add to ProcessedEvents List
+            this.queues.ProcessedEvents.AddRange(allApplicableEvents);
 
             // Remove from QueuedEvents List so that they do not get processed again with single item process
-            this.queues.QueuedEvents.RemoveAll(qe => queuedEvents.Contains(qe));
+            this.queues.QueuedEvents.RemoveAll(qe => allApplicableEvents.Contains(qe));
+        }
+
+				private void ExecuteDeleteEventService(List<EventQueue> queuedEvents, bool markFailedEvents = true)
+        {
+					if(queuedEvents == null || queuedEvents.Count() == 0) return;
+
+					var isFailed = false;
+					foreach(var region in Enum.GetNames(typeof(Enums.IrmaRegion)))
+					{
+						try
+						{
+							var bulkNutritionEventService = eventServiceProvider.GetBulkItemNutriFactsEventService(region);
+							bulkNutritionEventService.Region = region;
+							bulkNutritionEventService.ValidatedItemList = queuedEvents.Select(x => new ValidatedItemModel(){ ScanCode = x.EventMessage, EventTypeId = x.EventId }).ToList();
+
+							logger.Info($"Begin deleting {queuedEvents.Count().ToString()} nutrition scan codes in IRMA for {region} region.");
+							bulkNutritionEventService.Run();
+
+							logger.Info($"Successfully processed {queuedEvents.Count().ToString()} events for {region} region.");
+						}
+						catch(Exception ex)
+						{
+							isFailed = true;
+							this.logger.Error($"DeleteNutrition failed for {region}. {ex.Message}");
+						}
+					}
+					
+					if(!isFailed)
+					{
+						var events = this.queues.QueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToArray();
+
+						//Add to ProcessedEvents List
+						this.queues.ProcessedEvents.AddRange(events);
+
+						//Remove from QueuedEvents List so that they do not get processed again with single item process
+						this.queues.QueuedEvents = this.queues.QueuedEvents.Except(events).ToList();
+					}
         }
 
         private IEnumerable<EventQueue> FilterEventQueueByEventTypes(List<int> eventTypes)
