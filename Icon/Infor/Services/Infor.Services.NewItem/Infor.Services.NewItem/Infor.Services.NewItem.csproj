@@ -233,6 +233,7 @@
     </None>
     <None Include="App.Test.config" />
     <None Include="App.Perf.config" />
+    <None Include="App.Test1.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

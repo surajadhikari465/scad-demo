@@ -170,6 +170,7 @@
     <None Include="App.Qa..config" />
     <None Include="App.Prd.config" />
     <None Include="App.config" />
+    <None Include="App.Test1.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

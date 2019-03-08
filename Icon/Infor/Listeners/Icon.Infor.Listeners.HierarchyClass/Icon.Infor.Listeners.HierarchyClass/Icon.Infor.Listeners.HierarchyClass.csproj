@@ -212,6 +212,7 @@
     <None Include="App.Perf.config" />
     <None Include="App.Release.config" />
     <None Include="App.Debug.config" />
+    <None Include="App.Test1.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
