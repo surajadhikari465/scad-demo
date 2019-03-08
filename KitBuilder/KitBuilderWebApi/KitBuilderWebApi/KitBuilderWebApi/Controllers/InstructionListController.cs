@@ -12,6 +12,7 @@ using KitBuilder.DataAccess.Repository;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using KitBuilder.DataAccess;
 
 namespace KitBuilderWebApi.Controllers
 { 
@@ -26,6 +27,8 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<Status> statusRespository;
         private ILogger<InstructionListController> logger;
         private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
+        private IRepository<AvailablePluNumber> availablePluNumberRespository;
+
 
         public InstructionListController(IRepository<InstructionList> instructionListRepository,
                                          IRepository<InstructionListMember> instructionListMemberRepository,
@@ -34,8 +37,8 @@ namespace KitBuilderWebApi.Controllers
                                          ILogger<InstructionListController> logger,
                                          IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper,
                                          IRepository<KitInstructionList> kitInstructionListRepository,
-                                         IRepository<LinkGroupItem> linkGroupItemRepository
-                                         )
+                                         IRepository<LinkGroupItem> linkGroupItemRepository,
+                                          IRepository<AvailablePluNumber> availablePluNumberRespository)
         {
             this.instructionListRepository = instructionListRepository;
             this.instructionListMemberRepository = instructionListMemberRepository;
@@ -45,6 +48,7 @@ namespace KitBuilderWebApi.Controllers
             this.instructionListHelper = instructionListHelper;
             this.kitInstructionListRepository = kitInstructionListRepository;
             this.linkGroupItemRepository = linkGroupItemRepository;
+            this.availablePluNumberRespository = availablePluNumberRespository;
         }
 
 
@@ -227,7 +231,15 @@ namespace KitBuilderWebApi.Controllers
                     {
                         instructionListMemberRepository.Delete(il);
                     }
-                   
+                    var pluNumbersList = members.Select(s => s.PluNumber).ToList();
+
+                    var pluNumbers = availablePluNumberRespository.GetAll().Where(p => pluNumbersList.Contains(p.PluNumber)).ToList();
+
+                    foreach (AvailablePluNumber plu in pluNumbers)
+                    {
+                        plu.InUse = false;
+                        plu.LastUpdatedDateUtc = DateTime.UtcNow; ;
+                    }
                     instructionListRepository.Delete(list);
                     instructionListRepository.UnitOfWork.Commit();
                     return Ok();

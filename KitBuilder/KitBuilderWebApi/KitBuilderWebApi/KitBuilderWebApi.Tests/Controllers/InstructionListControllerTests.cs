@@ -12,6 +12,7 @@ using System.Linq;
 using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
 using KitBuilder.DataAccess.Repository;
+using KitBuilder.DataAccess;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
@@ -33,6 +34,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private List<Status> statuses;
         private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
         private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
+        private Mock<IRepository<AvailablePluNumber>> mockAvailablePluNumberRespository;
 
         [TestInitialize]
         public void InitializeTest()
@@ -45,6 +47,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockInstructionTypeRespository = new Mock<IRepository<InstructionType>>();
             mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
             mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
+            mockAvailablePluNumberRespository = new Mock<IRepository<AvailablePluNumber>>();
             mockStatusRespository = new Mock<IRepository<Status>>();
             mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
@@ -59,7 +62,8 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockLogger.Object,
                 mockLinkGroupHelper.Object,
                 mockKitInstructionListRepository.Object,
-                mockLinkGroupItemRepository.Object);
+                mockLinkGroupItemRepository.Object,
+                mockAvailablePluNumberRespository.Object);
         }
 
         private void SetUpDataAndRepository()
