@@ -124,199 +124,199 @@ grant topic WFMSB1.Irma.SupplyChain.InventoryMgmt.Topic.V1 group=sb1_HCInventory
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.FL.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## MA InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## MW InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## NA InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NA.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## NC InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NC.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## NE InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.NE.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## PN InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.PN.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## RM InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.RM.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## SO InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SO.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## SP InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SP.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 ## SW InventoryMgmt Queues 
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 group=sb1_HCAdjustmentGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 group=sb1_HCPurchaseOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.PurchaseOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 group=sb1_HCTransferOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 create queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 group=sb1_HCReceiptOrderGroup receive,browse
-addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10000
+addprop queue WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1 maxRedelivery=6, redeliveryDelay=10
 
 echo on #######################################################################
 echo on ### BRIDGES                                                         ###

@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
+    <pd:name>Processes/GetIrmaData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Events"/>
+    <pd:startX>93</pd:startX>
+    <pd:startY>229</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <xsl:copy-of select="$Map-PO-Data/PO/POData"/>
+            <DataExists>
+                <xsl:value-of select="count($Map-PO-Data/PO/POData) > 0"/>
+            </DataExists>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="POData" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="OrderHeader_ID" type="xsd:int"/>
+                                <xsd:element name="ExternalOrder_Id" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="ExternalSource" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="PurchaseType" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="SupplierNumber" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="LocationNumber" type="xsd:int"/>
+                                <xsd:element name="LocationName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="OrderSubTeam_No" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="OrderSubTeam_Name" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="OrderTeam_No" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="OrderTeam_Name" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Status" type="xsd:string"/>
+                                <xsd:element name="UserId" type="xsd:int"/>
+                                <xsd:element name="UserName" type="xsd:string"/>
+                                <xsd:element name="ApproverId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="ApproverName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="CreateDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="ApproveDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="CloseDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="PurchaseOrderComments" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int"/>
+                                <xsd:element name="SourceItemKey" type="xsd:int"/>
+                                <xsd:element name="DefaultScanCode" type="xsd:string"/>
+                                <xsd:element name="HostSubTeam_No" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="HostSubTeam_Name" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="QuantityOrdered" type="xsd:float" minOccurs="0"/>
+                                <xsd:element name="OrderedUnitCode" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="OrderedUnit" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="PackSize1" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="PackSize2" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="RetailUnit" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ItemCost" type="xsd:float" minOccurs="0"/>
+                                <xsd:element name="EarliestArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="DataExists" type="xsd:boolean"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>932</pd:endX>
+    <pd:endY>247</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551806088663</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>219</pd:x>
+        <pd:y>22</pd:y>
+        <pd:width>578</pd:width>
+        <pd:height>470</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>simpleGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetNonDeleteEvent</pd:to>
+            <pd:xpathDescription>Non-Delete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>not(contains($Start/pfx:Events/pfx:EventType[1]/pfx:EventTypeCode, "DEL" ))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetLineDeleteEvent</pd:to>
+            <pd:xpathDescription>Line Delete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>contains($Start/pfx:Events/pfx:EventType[1]/pfx:EventTypeCode, "PO_LINE_DEL")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetPODeleteEvent</pd:to>
+            <pd:xpathDescription>PO Delete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>contains($Start/pfx:Events/pfx:EventType[1]/pfx:EventTypeCode, "PO_DEL")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map PO Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetNonDeleteEvent</pd:from>
+            <pd:to>Map PO Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetLineDeleteEvent</pd:from>
+            <pd:to>Map PO Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetPODeleteEvent</pd:from>
+            <pd:to>Map PO Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GetNonDeleteEvent">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>455</pd:x>
+            <pd:y>124</pd:y>
+            <config>
+                <timeout>120</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT
+	oh.OrderHeader_ID,
+	e.ExternalOrder_Id,
+	oes.Description as ExternalSource,
+	'Purchase Order' as PurchaseType,
+	v.PS_Vendor_ID as SupplierNumber,
+	s.BusinessUnit_ID as LocationNumber,
+	s.Store_Name as LocationName,
+	oh.Transfer_To_SubTeam as OrderSubTeam_No,
+	sb.SubTeam_Name as OrderSubTeam_Name,
+	t.Team_No as OrderTeam_No,
+	t.Team_Name as OrderTeam_Name,
+	Case
+		When oh.RefuseReceivingReasonID is not null Then 'Refused'
+		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+		When oh.ApprovedDate is not null Then 'Closed'
+		Else 'Sent'
+	End as Status,
+	oh.CreatedBy as UserId,
+	uc.UserName as UserName,
+	oh.ApprovedBy as ApproverId,
+	ua.UserName as ApproverName,
+	ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime,
+	oh.ApprovedDate as ApproveDateTime,
+	oh.OriginalCloseDate as CloseDateTime,
+	oh.AdminNotes as PurchaseOrderComments,
+	oi.OrderItem_ID as PurchaseOrderDetailNumber,
+	oi.Item_Key as SourceItemKey,
+	ii.Identifier as DefaultScanCode,
+	isb.SubTeam_No as HostSubTeam_No,
+	isb.SubTeam_Name as HostSubTeam_Name,
+	oi.QuantityOrdered,
+	iuo.Unit_Abbreviation as OrderedUnitCode,
+	iuo.Unit_Name as OrderedUnit,
+	CAST(oi.Package_Desc1 as int) as PackSize1,
+	CAST(oi.Package_Desc2 as int) as PackSize2,
+	iui.Unit_Name as RetailUnit,
+	oi.UnitCost as ItemCost,
+	oi.DateReceived as EarliestArrivalDate,
+	oh.Expected_Date as ExpectedArrivalDate
+FROM OrderHeader oh
+join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s on s.Store_No = psl.Store_no
+JOIN Vendor v on oh.Vendor_ID = v.Vendor_ID
+JOIN SubTeam sb on sb.SubTeam_No = oh.Transfer_To_SubTeam
+JOIN Team t on t.Team_No = sb.Team_No
+JOIN Users uc on uc.User_ID = oh.CreatedBy 
+LEFT JOIN Users ua on ua.User_ID = oh.ApprovedBy
+LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN OrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID 
+JOIN Item i on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+JOIN SubTeam isb on isb.SubTeam_No = i.SubTeam_No
+JOIN ItemUnit iuo on iuo.Unit_ID = oi.QuantityUnit
+JOIN itemUnit iui on iui.Unit_ID = i.Retail_Unit_ID
+WHERE oh.OrderHeader_ID = ?
+ AND i.Retail_Sale = 1</statement>
+                <wizardData/>
+                <processInSubsets>false</processInSubsets>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KeyId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalOrder_Id</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalSource</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SupplierNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproveDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CloseDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderComments</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderDetailNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnitCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize1</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize2</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>RetailUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ItemCost</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>money</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>EarliestArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <KeyId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:Events/pfx:EventType[1]/pfx:KeyID)">
+                                <xsl:value-of select="$Start/pfx:Events/pfx:EventType[1]/pfx:KeyID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KeyId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetLineDeleteEvent">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>458</pd:x>
+            <pd:y>260</pd:y>
+            <config>
+                <timeout>120</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT
+	oh.OrderHeader_ID,
+	e.ExternalOrder_Id,
+	oes.Description as ExternalSource,
+	NULL as PurchaseType,
+	NULL as SupplierNumber,
+	s.BusinessUnit_ID as LocationNumber,
+	NULL as LocationName,
+	NULL as OrderSubTeam_No,
+	NULL as OrderSubTeam_Name,
+	NULL as OrderTeam_No,
+	NULL as OrderTeam_Name,
+	Case
+		When oh.RefuseReceivingReasonID is not null Then 'Refused'
+		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+		When oh.ApprovedDate is not null Then 'Closed'
+		Else 'Sent'
+	End as Status,
+	0 as UserId,
+	NULL as UserName,
+	NULL as ApproverId,
+	NULL as ApproverName,
+	NULL as CreateDateTime,
+	NULL as ApproveDateTime,
+	NULL as CloseDateTime,
+	NULL as PurchaseOrderComments,
+	oi.OrderItem_ID as PurchaseOrderDetailNumber,
+	oi.Item_Key as SourceItemKey,
+	ii.Identifier as DefaultScanCode,
+	NULL as HostSubTeam_No,
+	NULL as HostSubTeam_Name,
+	NULL as QuantityOrdered,
+	NULL as OrderedUnitCode,
+	NULL as OrderedUnit,
+	NULL as PackSize1,
+	NULL as PackSize2,
+	NULL as RetailUnit,
+	NULL as ItemCost,
+	NULL as EarliestArrivalDate,
+	NULL as ExpectedArrivalDate
+FROM OrderHeader oh
+join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s on s.Store_No = psl.Store_no
+LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN amz.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = ?
+JOIN Item i on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+WHERE oh.OrderHeader_ID = ?
+ AND i.Retail_Sale = 1</statement>
+                <wizardData/>
+                <processInSubsets>false</processInSubsets>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>SecondaryKeyId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>KeyId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalOrder_Id</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalSource</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SupplierNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproveDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CloseDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderComments</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderDetailNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnitCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize1</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize2</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>RetailUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ItemCost</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>EarliestArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <SecondaryKeyId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:Events/pfx:EventType[1]/pfx:SecondaryKeyID)">
+                                <xsl:value-of select="$Start/pfx:Events/pfx:EventType[1]/pfx:SecondaryKeyID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </SecondaryKeyId>
+                    <KeyId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:Events/pfx:EventType[1]/pfx:KeyID)">
+                                <xsl:value-of select="$Start/pfx:Events/pfx:EventType[1]/pfx:KeyID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KeyId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetPODeleteEvent">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>464</pd:x>
+            <pd:y>384</pd:y>
+            <config>
+                <timeout>120</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT
+	oh.OrderHeader_ID,
+	e.ExternalOrder_Id,
+	oes.Description as ExternalSource,
+	NULL as PurchaseType,
+	NULL as SupplierNumber,
+	s.BusinessUnit_ID as LocationNumber,
+	NULL as LocationName,
+	NULL as OrderSubTeam_No,
+	NULL as OrderSubTeam_Name,
+	NULL as OrderTeam_No,
+	NULL as OrderTeam_Name,
+	'Deleted' as Status,
+	oh.User_ID as UserId,
+	uc.UserName as UserName,
+	NULL as ApproverId,
+	NULL as ApproverName,
+	NULL as CreateDateTime,
+	NULL as ApproveDateTime,
+	NULL as CloseDateTime,
+	NULL as PurchaseOrderComments,
+	oi.OrderItem_ID as PurchaseOrderDetailNumber,
+	oi.Item_Key as SourceItemKey,
+	ii.Identifier as DefaultScanCode,
+	NULL as HostSubTeam_No,
+	NULL as HostSubTeam_Name,
+	NULL as QuantityOrdered,
+	NULL as OrderedUnitCode,
+	NULL as OrderedUnit,
+	NULL as PackSize1,
+	NULL as PackSize2,
+	NULL as RetailUnit,
+	NULL as ItemCost,
+	NULL as EarliestArrivalDate,
+	NULL as ExpectedArrivalDate
+FROM DeletedOrder oh
+join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s on s.Store_No = psl.Store_no
+JOIN Users uc on uc.User_ID = oh.User_ID 
+LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN dbo.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID
+JOIN Item i on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+WHERE oh.OrderHeader_ID = ?
+ AND i.Retail_Sale = 1</statement>
+                <wizardData/>
+                <processInSubsets>false</processInSubsets>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KeyId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalOrder_Id</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExternalSource</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SupplierNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>LocationName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>UserName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproverName</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ApproveDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>CloseDateTime</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderComments</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PurchaseOrderDetailNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>HostSubTeam_Name</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnitCode</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderedUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize1</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>PackSize2</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>RetailUnit</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ItemCost</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>EarliestArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <KeyId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx:Events/pfx:EventType[1]/pfx:KeyID)">
+                                <xsl:value-of select="$Start/pfx:Events/pfx:EventType[1]/pfx:KeyID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KeyId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map PO Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>713</pd:x>
+            <pd:y>254</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="PO">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="POData" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="OrderHeader_ID" type="xsd:int"/>
+                                            <xsd:element name="ExternalOrder_Id" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="ExternalSource" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="PurchaseType" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="SupplierNumber" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="LocationNumber" type="xsd:int"/>
+                                            <xsd:element name="LocationName" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="OrderSubTeam_No" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="OrderSubTeam_Name" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="OrderTeam_No" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="OrderTeam_Name" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="Status" type="xsd:string"/>
+                                            <xsd:element name="UserId" type="xsd:int"/>
+                                            <xsd:element name="UserName" type="xsd:string"/>
+                                            <xsd:element name="ApproverId" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="ApproverName" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="CreateDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                            <xsd:element name="ApproveDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                            <xsd:element name="CloseDateTime" type="xsd:dateTime" minOccurs="0"/>
+                                            <xsd:element name="PurchaseOrderComments" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int"/>
+                                            <xsd:element name="SourceItemKey" type="xsd:int"/>
+                                            <xsd:element name="DefaultScanCode" type="xsd:string"/>
+                                            <xsd:element name="HostSubTeam_No" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="HostSubTeam_Name" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="QuantityOrdered" type="xsd:float" minOccurs="0"/>
+                                            <xsd:element name="OrderedUnitCode" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="OrderedUnit" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="PackSize1" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="PackSize2" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="RetailUnit" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="ItemCost" type="xsd:float" minOccurs="0"/>
+                                            <xsd:element name="EarliestArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                            <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="not(contains($Start/pfx:Events/pfx:EventType[1]/pfx:EventTypeCode, &quot;DEL&quot; ))">
+                        <PO>
+                            <xsl:for-each select="$GetNonDeleteEvent/resultSet/Record">
+                                <POData>
+                                    <OrderHeader_ID>
+                                        <xsl:value-of select="OrderHeader_ID"/>
+                                    </OrderHeader_ID>
+                                    <xsl:if test="ExternalOrder_Id">
+                                        <ExternalOrder_Id>
+                                            <xsl:value-of select="ExternalOrder_Id"/>
+                                        </ExternalOrder_Id>
+                                    </xsl:if>
+                                    <xsl:if test="ExternalSource">
+                                        <ExternalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </ExternalSource>
+                                    </xsl:if>
+                                    <PurchaseType>
+                                        <xsl:value-of select="PurchaseType"/>
+                                    </PurchaseType>
+                                    <xsl:if test="SupplierNumber">
+                                        <SupplierNumber>
+                                            <xsl:value-of select="SupplierNumber"/>
+                                        </SupplierNumber>
+                                    </xsl:if>
+                                    <LocationNumber>
+                                        <xsl:value-of select="LocationNumber"/>
+                                    </LocationNumber>
+                                    <LocationName>
+                                        <xsl:value-of select="LocationName"/>
+                                    </LocationName>
+                                    <OrderSubTeam_No>
+                                        <xsl:value-of select="OrderSubTeam_No"/>
+                                    </OrderSubTeam_No>
+                                    <xsl:if test="OrderSubTeam_Name">
+                                        <OrderSubTeam_Name>
+                                            <xsl:value-of select="OrderSubTeam_Name"/>
+                                        </OrderSubTeam_Name>
+                                    </xsl:if>
+                                    <OrderTeam_No>
+                                        <xsl:value-of select="OrderTeam_No"/>
+                                    </OrderTeam_No>
+                                    <xsl:if test="OrderTeam_Name">
+                                        <OrderTeam_Name>
+                                            <xsl:value-of select="OrderTeam_Name"/>
+                                        </OrderTeam_Name>
+                                    </xsl:if>
+                                    <Status>
+                                        <xsl:value-of select="Status"/>
+                                    </Status>
+                                    <UserId>
+                                        <xsl:value-of select="UserId"/>
+                                    </UserId>
+                                    <UserName>
+                                        <xsl:value-of select="UserName"/>
+                                    </UserName>
+                                    <xsl:if test="ApproverId">
+                                        <ApproverId>
+                                            <xsl:value-of select="ApproverId"/>
+                                        </ApproverId>
+                                    </xsl:if>
+                                    <xsl:if test="ApproverName">
+                                        <ApproverName>
+                                            <xsl:value-of select="ApproverName"/>
+                                        </ApproverName>
+                                    </xsl:if>
+                                    <CreateDateTime>
+                                        <xsl:value-of select="CreateDateTime"/>
+                                    </CreateDateTime>
+                                    <xsl:if test="ApproveDateTime">
+                                        <ApproveDateTime>
+                                            <xsl:value-of select="ApproveDateTime"/>
+                                        </ApproveDateTime>
+                                    </xsl:if>
+                                    <xsl:if test="CloseDateTime">
+                                        <CloseDateTime>
+                                            <xsl:value-of select="CloseDateTime"/>
+                                        </CloseDateTime>
+                                    </xsl:if>
+                                    <xsl:if test="PurchaseOrderComments">
+                                        <PurchaseOrderComments>
+                                            <xsl:value-of select="PurchaseOrderComments"/>
+                                        </PurchaseOrderComments>
+                                    </xsl:if>
+                                    <PurchaseOrderDetailNumber>
+                                        <xsl:value-of select="PurchaseOrderDetailNumber"/>
+                                    </PurchaseOrderDetailNumber>
+                                    <SourceItemKey>
+                                        <xsl:value-of select="SourceItemKey"/>
+                                    </SourceItemKey>
+                                    <DefaultScanCode>
+                                        <xsl:value-of select="DefaultScanCode"/>
+                                    </DefaultScanCode>
+                                    <HostSubTeam_No>
+                                        <xsl:value-of select="HostSubTeam_No"/>
+                                    </HostSubTeam_No>
+                                    <xsl:if test="HostSubTeam_Name">
+                                        <HostSubTeam_Name>
+                                            <xsl:value-of select="HostSubTeam_Name"/>
+                                        </HostSubTeam_Name>
+                                    </xsl:if>
+                                    <QuantityOrdered>
+                                        <xsl:value-of select="QuantityOrdered"/>
+                                    </QuantityOrdered>
+                                    <xsl:if test="OrderedUnitCode">
+                                        <OrderedUnitCode>
+                                            <xsl:value-of select="OrderedUnitCode"/>
+                                        </OrderedUnitCode>
+                                    </xsl:if>
+                                    <OrderedUnit>
+                                        <xsl:value-of select="OrderedUnit"/>
+                                    </OrderedUnit>
+                                    <xsl:if test="PackSize1">
+                                        <PackSize1>
+                                            <xsl:value-of select="PackSize1"/>
+                                        </PackSize1>
+                                    </xsl:if>
+                                    <xsl:if test="PackSize2">
+                                        <PackSize2>
+                                            <xsl:value-of select="PackSize2"/>
+                                        </PackSize2>
+                                    </xsl:if>
+                                    <RetailUnit>
+                                        <xsl:value-of select="RetailUnit"/>
+                                    </RetailUnit>
+                                    <ItemCost>
+                                        <xsl:value-of select="ItemCost"/>
+                                    </ItemCost>
+                                    <xsl:if test="EarliestArrivalDate">
+                                        <EarliestArrivalDate>
+                                            <xsl:value-of select="EarliestArrivalDate"/>
+                                        </EarliestArrivalDate>
+                                    </xsl:if>
+                                    <xsl:if test="ExpectedArrivalDate">
+                                        <ExpectedArrivalDate>
+                                            <xsl:value-of select="ExpectedArrivalDate"/>
+                                        </ExpectedArrivalDate>
+                                    </xsl:if>
+                                </POData>
+                            </xsl:for-each>
+                        </PO>
+                    </xsl:when>
+                    <xsl:when test="contains($Start/pfx:Events/pfx:EventType[1]/pfx:EventTypeCode, &quot;PO_LINE_DEL&quot;)">
+                        <PO>
+                            <xsl:for-each select="$GetLineDeleteEvent/resultSet/Record">
+                                <POData>
+                                    <OrderHeader_ID>
+                                        <xsl:value-of select="OrderHeader_ID"/>
+                                    </OrderHeader_ID>
+                                    <xsl:if test="ExternalOrder_Id">
+                                        <ExternalOrder_Id>
+                                            <xsl:value-of select="ExternalOrder_Id"/>
+                                        </ExternalOrder_Id>
+                                    </xsl:if>
+                                    <xsl:if test="ExternalSource">
+                                        <ExternalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </ExternalSource>
+                                    </xsl:if>
+                                    <PurchaseType>
+                                        <xsl:value-of select="PurchaseType"/>
+                                    </PurchaseType>
+                                    <LocationNumber>
+                                        <xsl:value-of select="LocationNumber"/>
+                                    </LocationNumber>
+                                    <LocationName>
+                                        <xsl:value-of select="LocationName"/>
+                                    </LocationName>
+                                    <Status>
+                                        <xsl:value-of select="Status"/>
+                                    </Status>
+                                    <UserId>
+                                        <xsl:value-of select="UserId"/>
+                                    </UserId>
+                                    <UserName>
+                                        <xsl:value-of select="UserName"/>
+                                    </UserName>
+                                    <xsl:if test="PurchaseOrderComments">
+                                        <PurchaseOrderComments>
+                                            <xsl:value-of select="PurchaseOrderComments"/>
+                                        </PurchaseOrderComments>
+                                    </xsl:if>
+                                    <PurchaseOrderDetailNumber>
+                                        <xsl:value-of select="PurchaseOrderDetailNumber"/>
+                                    </PurchaseOrderDetailNumber>
+                                    <SourceItemKey>
+                                        <xsl:value-of select="SourceItemKey"/>
+                                    </SourceItemKey>
+                                    <DefaultScanCode>
+                                        <xsl:value-of select="DefaultScanCode"/>
+                                    </DefaultScanCode>
+                                </POData>
+                            </xsl:for-each>
+                        </PO>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PO>
+                            <xsl:for-each select="$GetPODeleteEvent/resultSet/Record">
+                                <POData>
+                                    <OrderHeader_ID>
+                                        <xsl:value-of select="OrderHeader_ID"/>
+                                    </OrderHeader_ID>
+                                    <xsl:if test="ExternalOrder_Id">
+                                        <ExternalOrder_Id>
+                                            <xsl:value-of select="ExternalOrder_Id"/>
+                                        </ExternalOrder_Id>
+                                    </xsl:if>
+                                    <xsl:if test="ExternalSource">
+                                        <ExternalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </ExternalSource>
+                                    </xsl:if>
+                                    <PurchaseType>
+                                        <xsl:value-of select="PurchaseType"/>
+                                    </PurchaseType>
+                                    <LocationNumber>
+                                        <xsl:value-of select="LocationNumber"/>
+                                    </LocationNumber>
+                                    <LocationName>
+                                        <xsl:value-of select="LocationName"/>
+                                    </LocationName>
+                                    <Status>
+                                        <xsl:value-of select="Status"/>
+                                    </Status>
+                                    <UserId>
+                                        <xsl:value-of select="UserId"/>
+                                    </UserId>
+                                    <UserName>
+                                        <xsl:value-of select="UserName"/>
+                                    </UserName>
+                                    <PurchaseOrderDetailNumber>
+                                        <xsl:value-of select="PurchaseOrderDetailNumber"/>
+                                    </PurchaseOrderDetailNumber>
+                                    <SourceItemKey>
+                                        <xsl:value-of select="SourceItemKey"/>
+                                    </SourceItemKey>
+                                    <DefaultScanCode>
+                                        <xsl:value-of select="DefaultScanCode"/>
+                                    </DefaultScanCode>
+                                </POData>
+                            </xsl:for-each>
+                        </PO>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

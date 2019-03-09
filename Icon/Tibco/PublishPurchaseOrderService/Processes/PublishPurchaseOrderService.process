@@ -1,1569 +1,553 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/OrderReceipt.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/PurchaseOrder.xsd"/>
     <pd:name>Processes/PublishPurchaseOrderService.process</pd:name>
-    <pd:startName>Timer</pd:startName>
+    <pd:startName>Purchase Order Event Reciever</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="Timer">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>47</pd:x>
-        <pd:y>377</pd:y>
+    <pd:starter name="Purchase Order Event Reciever">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>62</pd:x>
+        <pd:y>186</pd:y>
         <config>
-            <StartTime>1538028264000</StartTime>
-            <Frequency>false</Frequency>
-            <TimeInterval>%%Application/PublisherTimerInMilliseconds%%</TimeInterval>
-            <FrequencyIndex>Millisecond</FrequencyIndex>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>%%Destinations/PriceEslQueue%%231<destination>%%Application/IrmaPurchaseOrderQueue%%</destination>
+                <acknowledgeMode>23</acknowledgeMode>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1589</pd:endX>
-    <pd:endY>102</pd:endY>
+    <pd:endX>817</pd:endX>
+    <pd:endY>309</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1539792159152</pd:targetNamespace>
-    <pd:group name="GroupAndSendPurchaseOrders">
-        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-        <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>532</pd:x>
-        <pd:y>136</pd:y>
-        <pd:width>977</pd:width>
-        <pd:height>488</pd:height>
-        <pd:collapsedWidth>57</pd:collapsedWidth>
-        <pd:collapsedHeight>70</pd:collapsedHeight>
-        <pd:groupVariables/>
-        <pd:joinToggle>inherit</pd:joinToggle>
+    <pd:activity name="Parse Event Message">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>189</pd:x>
+        <pd:y>186</pd:y>
         <config>
-            <pd:groupType>inputLoop</pd:groupType>
-            <pd:serializable>false</pd:serializable>
-            <pd:over>$UniqueEvent/root/QueueId</pd:over>
-            <pd:iterationElementSlot>CurrentQueueId</pd:iterationElementSlot>
-            <pd:indexSlot>i</pd:indexSlot>
-            <pd:activityOutputName/>
-            <pd:accumulateOutput>false</pd:accumulateOutput>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Events"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetIrmaData">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>324</pd:x>
+        <pd:y>176</pd:y>
+        <config>
+            <processName>/Processes/GetIrmaData.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Events>
+                <pfx3:EventType>
+                    <pfx3:QueueID>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:QueueID"/>
+                    </pfx3:QueueID>
+                    <pfx3:EventTypeCode>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
+                    </pfx3:EventTypeCode>
+                    <pfx3:MessageType>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:MessageType"/>
+                    </pfx3:MessageType>
+                    <pfx3:KeyID>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:KeyID"/>
+                    </pfx3:KeyID>
+                    <xsl:if test="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:SecondaryKeyID">
+                        <pfx3:SecondaryKeyID>
+                            <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:SecondaryKeyID"/>
+                        </pfx3:SecondaryKeyID>
+                    </xsl:if>
+                    <pfx3:InsertDate>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:InsertDate"/>
+                    </pfx3:InsertDate>
+                    <pfx3:MessageTimestampUtc>
+                        <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:MessageTimestampUtc"/>
+                    </pfx3:MessageTimestampUtc>
+                </pfx3:EventType>
+            </pfx3:Events>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Purchase Order Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>326</pd:x>
+        <pd:y>317</pd:y>
+        <config>
+            <element ref="pfx:PurchaseOrders"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:PurchaseOrders>
+                <xsl:choose>
+                    <xsl:when test="contains($Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode, &quot;DEL&quot;)">
+                        <xsl:for-each select="$GetIrmaData/Output/POData[1]">
+                            <pfx:PurchaseOrderDelete>
+                                <pfx:purchaseOrderNumber>
+                                    <xsl:value-of select="OrderHeader_ID"/>
+                                </pfx:purchaseOrderNumber>
+                                <xsl:if test="ExternalOrder_Id">
+                                    <pfx:externalPurchaseOrderNumber>
+                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                    </pfx:externalPurchaseOrderNumber>
+                                </xsl:if>
+                                <xsl:if test="ExternalSource">
+                                    <pfx:externalSource>
+                                        <xsl:value-of select="ExternalSource"/>
+                                    </pfx:externalSource>
+                                </xsl:if>
+                                <pfx:eventType>
+                                    <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
+                                </pfx:eventType>
+                                <pfx:messageNumber>
+                                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                                </pfx:messageNumber>
+                                <pfx:locationNumber>
+                                    <xsl:value-of select="LocationNumber"/>
+                                </pfx:locationNumber>
+                                <pfx:locationName>
+                                    <xsl:value-of select="LocationName"/>
+                                </pfx:locationName>
+                                <pfx:cancelUserInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="if (current()/UserId > 0) then current()/UserId else &quot;&quot;"/>
+                                    </ns0:idNumber>
+                                    <ns0:name>
+                                        <xsl:value-of select="if (current()/UserId > 0) then current()/UserName else &quot;&quot;"/>
+                                    </ns0:name>
+                                </pfx:cancelUserInfo>
+                                <xsl:for-each select="$GetIrmaData/Output/POData">
+                                    <pfx:purchaseOrderDeletionDetail>
+                                        <xsl:if test="OrderHeader_ID">
+                                            <pfx:PurchaseOrderDetailNumber>
+                                                <xsl:value-of select="OrderHeader_ID"/>
+                                            </pfx:PurchaseOrderDetailNumber>
+                                        </xsl:if>
+                                        <pfx:sourceItemKey>
+                                            <xsl:value-of select="SourceItemKey"/>
+                                        </pfx:sourceItemKey>
+                                        <pfx:defaultScanCode>
+                                            <xsl:value-of select="DefaultScanCode"/>
+                                        </pfx:defaultScanCode>
+                                    </pfx:purchaseOrderDeletionDetail>
+                                </xsl:for-each>
+                            </pfx:PurchaseOrderDelete>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:for-each select="$GetIrmaData/Output/POData[1]">
+                            <pfx:PurchaseOrder>
+                                <pfx:purchaseOrderNumber>
+                                    <xsl:value-of select="OrderHeader_ID"/>
+                                </pfx:purchaseOrderNumber>
+                                <xsl:if test="ExternalSource">
+                                    <pfx:externalSource>
+                                        <xsl:value-of select="ExternalSource"/>
+                                    </pfx:externalSource>
+                                </xsl:if>
+                                <pfx:eventType>
+                                    <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
+                                </pfx:eventType>
+                                <pfx:messageNumber>
+                                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                                </pfx:messageNumber>
+                                <pfx:purchaseType>
+                                    <xsl:value-of select="PurchaseType"/>
+                                </pfx:purchaseType>
+                                <pfx:supplierNumber>
+                                    <xsl:value-of select="SupplierNumber"/>
+                                </pfx:supplierNumber>
+                                <pfx:locationNumber>
+                                    <xsl:value-of select="LocationNumber"/>
+                                </pfx:locationNumber>
+                                <pfx:locationName>
+                                    <xsl:value-of select="LocationName"/>
+                                </pfx:locationName>
+                                <pfx:OrderSubTeam>
+                                    <pfx:orderSubTeamNumber>
+                                        <xsl:value-of select="OrderSubTeam_No"/>
+                                    </pfx:orderSubTeamNumber>
+                                    <pfx:orderSubTeamName>
+                                        <xsl:value-of select="OrderSubTeam_Name"/>
+                                    </pfx:orderSubTeamName>
+                                    <pfx:orderTeamNumber>
+                                        <xsl:value-of select="OrderTeam_No"/>
+                                    </pfx:orderTeamNumber>
+                                    <pfx:orderTeamName>
+                                        <xsl:value-of select="OrderTeam_Name"/>
+                                    </pfx:orderTeamName>
+                                </pfx:OrderSubTeam>
+                                <pfx:status>
+                                    <xsl:value-of select="Status"/>
+                                </pfx:status>
+                                <pfx:userInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="UserId"/>
+                                    </ns0:idNumber>
+                                    <ns0:name>
+                                        <xsl:value-of select="UserName"/>
+                                    </ns0:name>
+                                </pfx:userInfo>
+                                <pfx:createDateTime>
+                                    <xsl:value-of select="CreateDateTime"/>
+                                </pfx:createDateTime>
+                                <xsl:if test="ApproveDateTime">
+                                    <pfx:approveDateTime>
+                                        <xsl:value-of select="ApproveDateTime"/>
+                                    </pfx:approveDateTime>
+                                </xsl:if>
+                                <xsl:if test="CloseDateTime">
+                                    <pfx:closeDateTime>
+                                        <xsl:value-of select="CloseDateTime"/>
+                                    </pfx:closeDateTime>
+                                </xsl:if>
+                                <xsl:if test="PurchaseOrderComments">
+                                    <pfx:purchaseOrderComments>
+                                        <xsl:value-of select="PurchaseOrderComments"/>
+                                    </pfx:purchaseOrderComments>
+                                </xsl:if>
+                                <xsl:for-each select="$GetIrmaData/Output/POData">
+                                    <pfx:PurchaseOrderDetail>
+                                        <pfx:PurchaseOrderDetailNumber>
+                                            <xsl:value-of select="PurchaseOrderDetailNumber"/>
+                                        </pfx:PurchaseOrderDetailNumber>
+                                        <pfx:sourceItemKey>
+                                            <xsl:value-of select="SourceItemKey"/>
+                                        </pfx:sourceItemKey>
+                                        <pfx:locationId>
+                                            <xsl:value-of select="LocationNumber"/>
+                                        </pfx:locationId>
+                                        <pfx:SubTeam>
+                                            <ns0:subTeamNumber>
+                                                <xsl:value-of select="OrderTeam_No"/>
+                                            </ns0:subTeamNumber>
+                                            <xsl:if test="OrderSubTeam_Name">
+                                                <ns0:subTeamName>
+                                                    <xsl:value-of select="OrderSubTeam_Name"/>
+                                                </ns0:subTeamName>
+                                            </xsl:if>
+                                            <ns0:hostSubTeamNumber>
+                                                <xsl:value-of select="HostSubTeam_No"/>
+                                            </ns0:hostSubTeamNumber>
+                                            <xsl:if test="HostSubTeam_Name">
+                                                <ns0:hostSubTeamName>
+                                                    <xsl:value-of select="HostSubTeam_Name"/>
+                                                </ns0:hostSubTeamName>
+                                            </xsl:if>
+                                        </pfx:SubTeam>
+                                        <pfx:defaultScanCode>
+                                            <xsl:value-of select="DefaultScanCode"/>
+                                        </pfx:defaultScanCode>
+                                        <pfx:packSize1>
+                                            <xsl:value-of select="PackSize1"/>
+                                        </pfx:packSize1>
+                                        <pfx:packSize2>
+                                            <xsl:value-of select="PackSize2"/>
+                                        </pfx:packSize2>
+                                        <pfx:itemCost>
+                                            <xsl:value-of select="ItemCost"/>
+                                        </pfx:itemCost>
+                                        <xsl:if test="EarliestArrivalDate">
+                                            <pfx:earliestArrivalDate>
+                                                <xsl:value-of select="EarliestArrivalDate"/>
+                                            </pfx:earliestArrivalDate>
+                                        </xsl:if>
+                                        <xsl:if test="ExpectedArrivalDate">
+                                            <pfx:expectedArrivalDate>
+                                                <xsl:value-of select="ExpectedArrivalDate"/>
+                                            </pfx:expectedArrivalDate>
+                                        </xsl:if>
+                                    </pfx:PurchaseOrderDetail>
+                                </xsl:for-each>
+                            </pfx:PurchaseOrder>
+                        </xsl:for-each>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx:PurchaseOrders>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm-NoData">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <ConfirmEvent>Purchase Order Event Reciever</ConfirmEvent>
         </config>
         <pd:inputBindings/>
-        <pd:expanded>true</pd:expanded>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>PurchaseOrderDataMapper</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Group</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Update Queue Table With Mapping Error</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>PurchaseOrderDataMapper</pd:from>
-            <pd:to>Group</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Catch</pd:from>
-            <pd:to>LogDataMapperError</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>LogDataMapperError</pd:from>
-            <pd:to>Update Queue Table With Mapping Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:activity name="PurchaseOrderDataMapper">
-            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>630</pd:x>
-            <pd:y>236</pd:y>
-            <config>
-                <element ref="pfx:PurchaseOrders"/>
-            </config>
-            <pd:inputBindings>
-                <xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="var2" select="$CurrentQueueId/QueueId"/>
-                <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2][1]">
-                    <pfx:PurchaseOrders>
-                        <xsl:choose>
-                            <xsl:when test="contains($GetEvents/resultSet/Record[QueueID=$var2][1]/EventType, &quot;DEL&quot;)">
-                                <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2][1]">
-                                    <pfx:PurchaseOrderDelete>
-                                        <pfx:purchaseOrderNumber>
-                                            <xsl:value-of select="OrderHeader_ID"/>
-                                        </pfx:purchaseOrderNumber>
-                                        <pfx:externalPurchaseOrderNumber>
-                                            <xsl:value-of select="ExternalOrder_Id"/>
-                                        </pfx:externalPurchaseOrderNumber>
-                                        <pfx:externalSource>
-                                            <xsl:value-of select="ExternalSource"/>
-                                        </pfx:externalSource>
-                                        <pfx:eventType>
-                                            <xsl:value-of select="EventType"/>
-                                        </pfx:eventType>
-                                        <pfx:messageNumber>
-                                            <xsl:value-of select="MessageNumber"/>
-                                        </pfx:messageNumber>
-                                        <pfx:locationNumber>
-                                            <xsl:value-of select="LocationNumber"/>
-                                        </pfx:locationNumber>
-                                        <pfx:cancelUserInfo>
-                                            <ns0:idNumber>
-                                                <xsl:value-of select="if (current()/UserId > 0) then current()/UserId else &quot;&quot;"/>
-                                            </ns0:idNumber>
-                                            <ns0:name>
-                                                <xsl:value-of select="if (current()/UserId > 0) then current()/UserName else &quot;&quot;"/>
-                                            </ns0:name>
-                                        </pfx:cancelUserInfo>
-                                        <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2]">
-                                            <pfx:purchaseOrderDeletionDetail>
-                                                <pfx:PurchaseOrderDetailNumber>
-                                                    <xsl:value-of select="PurchaseOrderDetailNumber"/>
-                                                </pfx:PurchaseOrderDetailNumber>
-                                                <pfx:sourceItemKey>
-                                                    <xsl:value-of select="SourceItemKey"/>
-                                                </pfx:sourceItemKey>
-                                                <pfx:defaultScanCode>
-                                                    <xsl:value-of select="DefaultScanCode"/>
-                                                </pfx:defaultScanCode>
-                                            </pfx:purchaseOrderDeletionDetail>
-                                        </xsl:for-each>
-                                    </pfx:PurchaseOrderDelete>
-                                </xsl:for-each>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2][1]">
-                                    <pfx:PurchaseOrder>
-                                        <pfx:purchaseOrderNumber>
-                                            <xsl:value-of select="OrderHeader_ID"/>
-                                        </pfx:purchaseOrderNumber>
-                                        <pfx:externalPurchaseOrderNumber>
-                                            <xsl:value-of select="ExternalOrder_Id"/>
-                                        </pfx:externalPurchaseOrderNumber>
-                                        <pfx:externalSource>
-                                            <xsl:value-of select="ExternalSource"/>
-                                        </pfx:externalSource>
-                                        <pfx:eventType>
-                                            <xsl:value-of select="EventType"/>
-                                        </pfx:eventType>
-                                        <pfx:messageNumber>
-                                            <xsl:value-of select="MessageNumber"/>
-                                        </pfx:messageNumber>
-                                        <pfx:purchaseType>
-                                            <xsl:value-of select="PurchaseType"/>
-                                        </pfx:purchaseType>
-                                        <pfx:supplierNumber>
-                                            <xsl:value-of select="SupplierNumber"/>
-                                        </pfx:supplierNumber>
-                                        <pfx:locationNumber>
-                                            <xsl:value-of select="LocationNumber"/>
-                                        </pfx:locationNumber>
-                                        <pfx:locationName>
-                                            <xsl:value-of select="LocationName"/>
-                                        </pfx:locationName>
-                                        <pfx:OrderSubTeam>
-                                            <pfx:orderSubTeamNumber>
-                                                <xsl:value-of select="OrderSubTeam_No"/>
-                                            </pfx:orderSubTeamNumber>
-                                            <pfx:orderSubTeamName>
-                                                <xsl:value-of select="OrderSubTeam_Name"/>
-                                            </pfx:orderSubTeamName>
-                                            <pfx:orderTeamNumber>
-                                                <xsl:value-of select="OrderTeam_No"/>
-                                            </pfx:orderTeamNumber>
-                                            <pfx:orderTeamName>
-                                                <xsl:value-of select="OrderTeam_Name"/>
-                                            </pfx:orderTeamName>
-                                        </pfx:OrderSubTeam>
-                                        <pfx:status>
-                                            <xsl:value-of select="Status"/>
-                                        </pfx:status>
-                                        <pfx:userInfo>
-                                            <ns0:idNumber>
-                                                <xsl:value-of select="UserId"/>
-                                            </ns0:idNumber>
-                                            <ns0:name>
-                                                <xsl:value-of select="UserName"/>
-                                            </ns0:name>
-                                        </pfx:userInfo>
-                                        <pfx:approverInfo>
-                                            <ns0:idNumber>
-                                                <xsl:value-of select="ApproverId"/>
-                                            </ns0:idNumber>
-                                            <xsl:if test="ApproverName">
-                                                <ns0:name>
-                                                    <xsl:value-of select="ApproverName"/>
-                                                </ns0:name>
-                                            </xsl:if>
-                                        </pfx:approverInfo>
-                                        <pfx:createDateTime>
-                                            <xsl:value-of select="CreateDateTime"/>
-                                        </pfx:createDateTime>
-                                        <xsl:if test="ApproveDateTime">
-                                            <pfx:approveDateTime>
-                                                <xsl:value-of select="ApproveDateTime"/>
-                                            </pfx:approveDateTime>
-                                        </xsl:if>
-                                        <xsl:if test="CloseDateTime">
-                                            <pfx:closeDateTime>
-                                                <xsl:value-of select="CloseDateTime"/>
-                                            </pfx:closeDateTime>
-                                        </xsl:if>
-                                        <xsl:if test="PurchaseOrderComments">
-                                            <pfx:purchaseOrderComments>
-                                                <xsl:value-of select="PurchaseOrderComments"/>
-                                            </pfx:purchaseOrderComments>
-                                        </xsl:if>
-                                        <xsl:for-each select="$GetEvents/resultSet/Record[QueueID=$var2]">
-                                            <pfx:PurchaseOrderDetail>
-                                                <pfx:PurchaseOrderDetailNumber>
-                                                    <xsl:value-of select="PurchaseOrderDetailNumber"/>
-                                                </pfx:PurchaseOrderDetailNumber>
-                                                <pfx:sourceItemKey>
-                                                    <xsl:value-of select="SourceItemKey"/>
-                                                </pfx:sourceItemKey>
-                                                <pfx:locationId>
-                                                    <xsl:value-of select="LocationNumber"/>
-                                                </pfx:locationId>
-                                                <pfx:SubTeam>
-                                                    <ns0:subTeamNumber>
-                                                        <xsl:value-of select="OrderSubTeam_No"/>
-                                                    </ns0:subTeamNumber>
-                                                    <xsl:if test="OrderSubTeam_Name">
-                                                        <ns0:subTeamName>
-                                                            <xsl:value-of select="OrderSubTeam_Name"/>
-                                                        </ns0:subTeamName>
-                                                    </xsl:if>
-                                                    <ns0:hostSubTeamNumber>
-                                                        <xsl:value-of select="HostSubTeam_No"/>
-                                                    </ns0:hostSubTeamNumber>
-                                                    <xsl:if test="HostSubTeam_Name">
-                                                        <ns0:hostSubTeamName>
-                                                            <xsl:value-of select="HostSubTeam_Name"/>
-                                                        </ns0:hostSubTeamName>
-                                                    </xsl:if>
-                                                </pfx:SubTeam>
-                                                <pfx:defaultScanCode>
-                                                    <xsl:value-of select="DefaultScanCode"/>
-                                                </pfx:defaultScanCode>
-                                                <pfx:quantities>
-                                                    <ns02:quantity>
-                                                        <ns02:value>
-                                                            <xsl:value-of select="QuantityOrdered"/>
-                                                        </ns02:value>
-                                                        <ns02:units>
-                                                            <ns02:uom>
-                                                                <xsl:if test="OrderedUnitCode">
-                                                                    <ns1:code>
-                                                                        <xsl:value-of select="tib:trim(OrderedUnitCode)"/>
-                                                                    </ns1:code>
-                                                                </xsl:if>
-                                                                <ns1:name>
-                                                                    <xsl:value-of select="tib:trim(OrderedUnit)"/>
-                                                                </ns1:name>
-                                                            </ns02:uom>
-                                                        </ns02:units>
-                                                    </ns02:quantity>
-                                                </pfx:quantities>
-                                                <pfx:packSize1>
-                                                    <xsl:value-of select="PackSize1"/>
-                                                </pfx:packSize1>
-                                                <pfx:packSize2>
-                                                    <xsl:value-of select="PackSize2"/>
-                                                </pfx:packSize2>
-                                                <pfx:itemCost>
-                                                    <xsl:value-of select="ItemCost"/>
-                                                </pfx:itemCost>
-                                                <pfx:expectedArrivalDate>
-                                                    <xsl:value-of select="ExpectedArrivalDate"/>
-                                                </pfx:expectedArrivalDate>
-                                            </pfx:PurchaseOrderDetail>
-                                        </xsl:for-each>
-                                    </pfx:PurchaseOrder>
-                                </xsl:for-each>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </pfx:PurchaseOrders>
-                </xsl:for-each>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:group name="Group">
-            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
-            <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>707</pd:x>
-            <pd:y>190</pd:y>
-            <pd:width>732</pd:width>
-            <pd:height>324</pd:height>
-            <pd:collapsedWidth>57</pd:collapsedWidth>
-            <pd:collapsedHeight>70</pd:collapsedHeight>
-            <pd:groupVariables/>
-            <pd:joinToggle>inherit</pd:joinToggle>
-            <config>
-                <pd:groupType>simpleGroup</pd:groupType>
-                <pd:serializable>false</pd:serializable>
-            </config>
-            <pd:inputBindings/>
-            <pd:expanded>true</pd:expanded>
-            <pd:transition>
-                <pd:from>start</pd:from>
-                <pd:to>SendDataToESB</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update OrderQueue Table With Error</pd:from>
-                <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Update Queue Table</pd:from>
-                <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Convert Message to JSON</pd:from>
-                <pd:to>Archive Message</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Convert-Message-to-JSON-1</pd:from>
-                <pd:to>Archive Message On Error</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>SendDataToESB</pd:from>
-                <pd:to>Convert Message to JSON</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Archive Message</pd:from>
-                <pd:to>Update Queue Table</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>Archive Message On Error</pd:from>
-                <pd:to>Update OrderQueue Table With Error</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>CatchSendingToEsbException</pd:from>
-                <pd:to>LogSendDataToESBError</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>LogSendDataToESBError</pd:from>
-                <pd:to>Convert-Message-to-JSON-1</pd:to>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
-            </pd:transition>
-            <pd:activity name="SendDataToESB">
-                <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
-                <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-                <pd:x>798</pd:x>
-                <pd:y>255</pd:y>
-                <config>
-                    <PermittedMessageType>XML Text</PermittedMessageType>
-                    <SessionAttributes>
-                        <transacted>false</transacted>
-                        <acknowledgeMode>1</acknowledgeMode>
-                        <maxSessions>1</maxSessions>
-                        <destination>%%Destinations/InventoryManagementTopic%%</destination>
-                    </SessionAttributes>
-                    <ConfigurableHeaders>
-                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                        <JMSExpiration>0</JMSExpiration>
-                        <JMSPriority>4</JMSPriority>
-                    </ConfigurableHeaders>
-                    <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                    <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
-                    <InDataxsdString ref="pfx:PurchaseOrders"/>
-                </config>
-                <pd:inputBindings>
-                    <ns12:ActivityInput>
-                        <OtherProperties>
-                            <xsl:choose>
-                                <xsl:when test="exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder)">
-                                    <TransactionID>
-                                        <xsl:value-of select="concat($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:locationNumber, $_globalVariables/ns:GlobalVariables/Application/TransactionType, $PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:messageNumber)"/>
-                                    </TransactionID>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <TransactionID>
-                                        <xsl:value-of select="concat($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:locationNumber, $_globalVariables/ns:GlobalVariables/Application/TransactionType, $PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:messageNumber)"/>
-                                    </TransactionID>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            <TransactionType>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/TransactionType"/>
-                            </TransactionType>
-                            <Source>
-                                <xsl:value-of select="&quot;IRMA&quot;"/>
-                            </Source>
-                            <MessageType>
-                                <xsl:value-of select="&quot;TEXT&quot;"/>
-                            </MessageType>
-                            <xsl:choose>
-                                <xsl:when test="exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder)">
-                                    <xsl:if test="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:messageNumber">
-                                        <MessageNumber>
-                                            <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:messageNumber"/>
-                                        </MessageNumber>
-                                    </xsl:if>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:if test="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:messageNumber">
-                                        <MessageNumber>
-                                            <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:messageNumber"/>
-                                        </MessageNumber>
-                                    </xsl:if>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </OtherProperties>
-                        <Body>
-                            <xsl:copy-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders"/>
-                        </Body>
-                    </ns12:ActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="CatchSendingToEsbException">
-                <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-                <pd:resourceType>ae.activities.catch</pd:resourceType>
-                <pd:x>787</pd:x>
-                <pd:y>419</pd:y>
-                <pd:handler>true</pd:handler>
-                <config>
-                    <catchAll>true</catchAll>
-                </config>
-                <pd:inputBindings/>
-            </pd:activity>
-            <pd:activity name="Archive Message">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1124</pd:x>
-                <pd:y>262</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <Input>
-                        <MessageBody>
-                            <xsl:value-of select="$Convert-Message-to-JSON/ns2:ActivityOutputClass/jsonString"/>
-                        </MessageBody>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <EventType>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:eventType"/>
-                                </EventType>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <EventType>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:eventType"/>
-                                </EventType>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder)">
-                                <BusinessUnitID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:locationNumber"/>
-                                </BusinessUnitID>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <BusinessUnitID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:locationNumber"/>
-                                </BusinessUnitID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <KeyID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:purchaseOrderNumber"/>
-                                </KeyID>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <KeyID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:purchaseOrderNumber"/>
-                                </KeyID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="exists($GetEvents/resultSet/Record[QueueID=$CurrentQueueId/QueueId]/SecondaryKeyID)">
-                                <xsl:if test="$GetEvents/resultSet/Record[QueueID=$CurrentQueueId/QueueId]/SecondaryKeyID">
-                                    <SecondaryKeyID>
-                                        <xsl:value-of select="$GetEvents/resultSet/Record[QueueID=$CurrentQueueId/QueueId]/SecondaryKeyID"/>
-                                    </SecondaryKeyID>
-                                </xsl:if>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <SecondaryKeyID>
-                                    <xsl:value-of select="0"/>
-                                </SecondaryKeyID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <Status>
-                            <xsl:value-of select="'P'"/>
-                        </Status>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <MessageNumber>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:messageNumber"/>
-                                </MessageNumber>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <MessageNumber>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:messageNumber"/>
-                                </MessageNumber>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <QueueID>
-                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
-                        </QueueID>
-                    </Input>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Convert Message to JSON">
-                <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-                <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>955</pd:x>
-                <pd:y>266</pd:y>
-                <config>
-                    <SchemaType>xsdType</SchemaType>
-                    <BadgerfishCheck>false</BadgerfishCheck>
-                    <ActivityInputEditor ref="pfx:PurchaseOrders"/>
-                </config>
-                <pd:inputBindings>
-                    <ns2:ActivityInputClass>
-                        <xsl:copy-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders"/>
-                    </ns2:ActivityInputClass>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Convert-Message-to-JSON-1">
-                <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-                <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-                <pd:x>1064</pd:x>
-                <pd:y>415</pd:y>
-                <config>
-                    <SchemaType>xsdType</SchemaType>
-                    <BadgerfishCheck>false</BadgerfishCheck>
-                    <ActivityInputEditor ref="pfx:PurchaseOrders"/>
-                </config>
-                <pd:inputBindings>
-                    <ns2:ActivityInputClass>
-                        <xsl:copy-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders"/>
-                    </ns2:ActivityInputClass>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Archive Message On Error">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>1193</pd:x>
-                <pd:y>424</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
-                    <spawn>true</spawn>
-                </config>
-                <pd:inputBindings>
-                    <Input>
-                        <MessageBody>
-                            <xsl:value-of select="$Convert-Message-to-JSON/ns2:ActivityOutputClass/jsonString"/>
-                        </MessageBody>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <EventType>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:eventType"/>
-                                </EventType>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <EventType>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:eventType"/>
-                                </EventType>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder)">
-                                <BusinessUnitID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:locationNumber"/>
-                                </BusinessUnitID>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <BusinessUnitID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:locationNumber"/>
-                                </BusinessUnitID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <KeyID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:purchaseOrderNumber"/>
-                                </KeyID>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <KeyID>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:purchaseOrderNumber"/>
-                                </KeyID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:if test="exists($GetEvents/resultSet/Record[QueueID=$CurrentQueueId/QueueId ]/SecondaryKeyID)">
-                            <SecondaryKeyID>
-                                <xsl:value-of select="$GetEvents/resultSet/Record[QueueID=$CurrentQueueId/QueueId ]/SecondaryKeyID"/>
-                            </SecondaryKeyID>
-                        </xsl:if>
-                        <Status>
-                            <xsl:value-of select="'U'"/>
-                        </Status>
-                        <xsl:if test="$_error/ns3:ErrorReport/StackTrace">
-                            <ErrorDescription>
-                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
-                            </ErrorDescription>
-                        </xsl:if>
-                        <xsl:choose>
-                            <xsl:when test="not(exists($PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder))">
-                                <MessageNumber>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrderDelete[1]/pfx:messageNumber"/>
-                                </MessageNumber>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <MessageNumber>
-                                    <xsl:value-of select="$PurchaseOrderDataMapper/pfx:PurchaseOrders/pfx:PurchaseOrder[1]/pfx:messageNumber"/>
-                                </MessageNumber>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <QueueID>
-                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
-                        </QueueID>
-                    </Input>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Update Queue Table">
-                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>1294</pd:x>
-                <pd:y>258</pd:y>
-                <config>
-                    <timeout>10</timeout>
-                    <commit>false</commit>
-                    <emptyStrAsNil>false</emptyStrAsNil>
-                    <statement>UPDATE [amz].[OrderQueue]
-SET Status ='P',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription =''
- WHERE QueueId =?
-AND InProcessBy = ?
-And STATUS = 'I'
-</statement>
-                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                    <Prepared_Param_DataType>
-                        <parameter>
-                            <parameterName>QueueId</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>InProcessBy</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                    </Prepared_Param_DataType>
-                </config>
-                <pd:inputBindings>
-                    <jdbcUpdateActivityInput>
-                        <QueueId>
-                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
-                        </QueueId>
-                        <InProcessBy>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </InProcessBy>
-                    </jdbcUpdateActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="Update OrderQueue Table With Error">
-                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-                <pd:x>1318</pd:x>
-                <pd:y>427</pd:y>
-                <config>
-                    <timeout>10</timeout>
-                    <commit>false</commit>
-                    <emptyStrAsNil>false</emptyStrAsNil>
-                    <statement>UPDATE [amz].[OrderQueue]
-SET InProcessBy = NULL,
-        Status ='P',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription = ?
- WHERE QueueId =?
-AND InProcessBy = ?
-And STATUS = 'I'
-
-
-</statement>
-                    <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                    <Prepared_Param_DataType>
-                        <parameter>
-                            <parameterName>ErrorDescription</parameterName>
-                            <dataType>VARCHAR</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>QueueId</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                        <parameter>
-                            <parameterName>InProcessBy</parameterName>
-                            <dataType>INTEGER</dataType>
-                        </parameter>
-                    </Prepared_Param_DataType>
-                </config>
-                <pd:inputBindings>
-                    <jdbcUpdateActivityInput>
-                        <ErrorDescription>
-                            <xsl:choose>
-                                <xsl:when test="exists($_error/ns3:ErrorReport/Msg)">
-                                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </ErrorDescription>
-                        <QueueId>
-                            <xsl:value-of select="$CurrentQueueId/QueueId"/>
-                        </QueueId>
-                        <InProcessBy>
-                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                        </InProcessBy>
-                    </jdbcUpdateActivityInput>
-                </pd:inputBindings>
-            </pd:activity>
-            <pd:activity name="LogSendDataToESBError">
-                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-                <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>928</pd:x>
-                <pd:y>417</pd:y>
-                <config>
-                    <processName>/SharedResources/Processes/LogPublisher.process</processName>
-                </config>
-                <pd:inputBindings>
-                    <LogElement>
-                        <LogDate>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                        </LogDate>
-                        <ApplicationID>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
-                        </ApplicationID>
-                        <HostName>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
-                        </HostName>
-                        <UserName>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                        </UserName>
-                        <Thread>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
-                        </Thread>
-                        <Level>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
-                        </Level>
-                        <Logger>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
-                        </Logger>
-                        <Message>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
-                        </Message>
-                        <InsertedDate>
-                            <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                        </InsertedDate>
-                    </LogElement>
-                </pd:inputBindings>
-            </pd:activity>
-        </pd:group>
-        <pd:activity name="Catch">
-            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-            <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>605</pd:x>
-            <pd:y>549</pd:y>
-            <pd:handler>true</pd:handler>
-            <config>
-                <catchAll>true</catchAll>
-            </config>
-            <pd:inputBindings/>
-        </pd:activity>
-        <pd:activity name="Update Queue Table With Mapping Error">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1366</pd:x>
-            <pd:y>552</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-                <statement>UPDATE [amz].[OrderQueue]
-SET Status ='F',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-        ErrorDescription = ?
- WHERE QueueId =?
-And InProcessBy = ?
-And STATUS = 'I'
-</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>ErrorDescription</parameterName>
-                        <dataType>VARCHAR</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>QueueId</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>InProcessBy</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <ErrorDescription>
-                        <xsl:choose>
-                            <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
-                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </ErrorDescription>
-                    <QueueId>
-                        <xsl:value-of select="$CurrentQueueId/QueueId"/>
-                    </QueueId>
-                    <InProcessBy>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </InProcessBy>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="LogDataMapperError">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>990</pd:x>
-            <pd:y>549</pd:y>
-            <config>
-                <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            </config>
-            <pd:inputBindings>
-                <LogElement>
-                    <LogDate>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                    </LogDate>
-                    <ApplicationID>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
-                    </ApplicationID>
-                    <HostName>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
-                    </HostName>
-                    <UserName>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                    </UserName>
-                    <Thread>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
-                    </Thread>
-                    <Level>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
-                    </Level>
-                    <Logger>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
-                    </Logger>
-                    <Message>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
-                    </Message>
-                    <InsertedDate>
-                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
-                    </InsertedDate>
-                </LogElement>
-            </pd:inputBindings>
-        </pd:activity>
-    </pd:group>
-    <pd:activity name="Catch All">
+    </pd:activity>
+    <pd:activity name="Send to Esb">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>477</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <processName>/Processes/SendtoEsb.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <RegionCode>
+                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/RegionCode"/>
+                </RegionCode>
+                <EventType>
+                    <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
+                </EventType>
+                <BusinessUnitID>
+                    <xsl:value-of select="$GetIrmaData/Output/POData[1]/LocationNumber"/>
+                </BusinessUnitID>
+                <KeyID>
+                    <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:KeyID"/>
+                </KeyID>
+                <MessageNumber>
+                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                </MessageNumber>
+                <xsl:copy-of select="$Map-Purchase-Order-Data/pfx:PurchaseOrders"/>
+                <TransactionId>
+                    <xsl:value-of select="concat($GetIrmaData/Output/POData[1]/LocationNumber, $Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode,$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber)"/>
+                </TransactionId>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>620</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <ConfirmEvent>Purchase Order Event Reciever</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>266</pd:x>
-        <pd:y>660</pd:y>
+        <pd:x>80</pd:x>
+        <pd:y>487</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="GetEvents">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>206</pd:x>
-        <pd:y>96</pd:y>
+    <pd:activity name="Confirm After Max Attempts">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>319</pd:x>
+        <pd:y>405</pd:y>
         <config>
-            <timeout>120</timeout>
-            <commit>false</commit>
-            <maxRows>0</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT
-	q.QueueID,
-	q.SecondaryKeyID,
-	oh.OrderHeader_ID,
-	e.ExternalOrder_Id,
-	oes.Description as ExternalSource,
-	EventTypeCode as EventType,
-	cast(Datediff(s, '1970-01-01', q.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber,
-	'Purchase Order' as PurchaseType,
-	v.PS_Vendor_ID as SupplierNumber,
-	s.BusinessUnit_ID as LocationNumber,
-	s.Store_Name as LocationName,
-	oh.Transfer_To_SubTeam as OrderSubTeam_No,
-	sb.SubTeam_Name as OrderSubTeam_Name,
-	t.Team_No as OrderTeam_No,
-	t.Team_Name as OrderTeam_Name,
-	Case
-		When oh.RefuseReceivingReasonID is not null Then 'Refused'
-		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
-		When oh.ApprovedDate is not null Then 'Closed'
-		Else 'Sent'
-	End as Status,
-	oh.CreatedBy as UserId,
-	uc.UserName as UserName,
-	oh.ApprovedBy as ApproverId,
-	ua.UserName as ApproverName,
-	ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime,
-	oh.ApprovedDate as ApproveDateTime,
-	oh.OriginalCloseDate as CloseDateTime,
-	oh.AdminNotes as PurchaseOrderComments,
-	oi.OrderItem_ID as PurchaseOrderDetailNumber,
-	oi.Item_Key as SourceItemKey,
-	ii.Identifier as DefaultScanCode,
-	isb.SubTeam_No as HostSubTeam_No,
-	isb.SubTeam_Name as HostSubTeam_Name,
-	oi.QuantityOrdered,
-	iuo.Unit_Abbreviation as OrderedUnitCode,
-	iuo.Unit_Name as OrderedUnit,
-	CAST(oi.Package_Desc1 as int) as PackSize1,
-	CAST(oi.Package_Desc2 as int) as PackSize2,
-	iui.Unit_Name as RetailUnit,
-	oi.UnitCost as ItemCost,
-	oi.DateReceived as EarliestArrivalDate,
-	oh.Expected_Date as ExpectedArrivalDate
-FROM amz.OrderQueue q
-JOIN amz.EventType et on q.EventTypeID = et.EventTypeID
-JOIN OrderHeader oh ON oh.OrderHeader_ID = q.KeyID
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-JOIN Vendor v on oh.Vendor_ID = v.Vendor_ID
-JOIN SubTeam sb on sb.SubTeam_No = oh.Transfer_To_SubTeam
-JOIN Team t on t.Team_No = sb.Team_No
-JOIN Users uc on uc.User_ID = oh.CreatedBy 
-LEFT JOIN Users ua on ua.User_ID = oh.ApprovedBy
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN OrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and (IsNull(q.SecondaryKeyID, 0) = 0 or oi.OrderItem_ID = q.SecondaryKeyID)
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-JOIN SubTeam isb on isb.SubTeam_No = i.SubTeam_No
-JOIN ItemUnit iuo on iuo.Unit_ID = oi.QuantityUnit
-JOIN itemUnit iui on iui.Unit_ID = i.Retail_Unit_ID
-WHERE oh.OrderType_ID = 1
-  AND et.EventTypeCode not like '%_DEL%'
-  AND i.Retail_Sale = 1
-  AND q.InProcessBy = ?
-  AND q.Status = 'I' 
-UNION
-SELECT
-	q.QueueID,
-	q.SecondaryKeyID,
-	oh.OrderHeader_ID,
-	e.ExternalOrder_Id,
-	oes.Description as ExternalSource,
-	EventTypeCode as EventType,
-	cast(Datediff(s, '1970-01-01', q.MessageTimestampUtc) AS bigint) * 1000 AS MessageNumber,
-	NULL as PurchaseType,
-	NULL as SupplierNumber,
-	s.BusinessUnit_ID as LocationNumber,
-	NULL as LocationName,
-	NULL as OrderSubTeam_No,
-	NULL as OrderSubTeam_Name,
-	NULL as OrderTeam_No,
-	NULL as OrderTeam_Name,
-	'Deleted' as Status,
-	oh.User_ID as UserId,
-	uc.UserName as UserName,
-	NULL as ApproverId,
-	NULL as ApproverName,
-	NULL as CreateDateTime,
-	NULL as ApproveDateTime,
-	NULL as CloseDateTime,
-	NULL as PurchaseOrderComments,
-	oi.OrderItem_ID as PurchaseOrderDetailNumber,
-	oi.Item_Key as SourceItemKey,
-	ii.Identifier as DefaultScanCode,
-	NULL as HostSubTeam_No,
-	NULL as HostSubTeam_Name,
-	NULL as QuantityOrdered,
-	NULL as OrderedUnitCode,
-	NULL as OrderedUnit,
-	NULL as PackSize1,
-	NULL as PackSize2,
-	NULL as RetailUnit,
-	NULL as ItemCost,
-	NULL as EarliestArrivalDate,
-	NULL as ExpectedArrivalDate
-FROM amz.OrderQueue q
-JOIN amz.EventType et on q.EventTypeID = et.EventTypeID
-JOIN DeletedOrder oh ON oh.OrderHeader_ID = q.KeyID
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-JOIN Users uc on uc.User_ID = oh.User_ID 
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN dbo.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-WHERE et.EventTypeCode = 'PO_DEL'
-  AND i.Retail_Sale = 1
-  AND q.InProcessBy = ?
-  AND q.Status = 'I'
-UNION
-SELECT
-	q.QueueID,
-	q.SecondaryKeyID,
-	oh.OrderHeader_ID,
-	e.ExternalOrder_Id,
-	oes.Description as ExternalSource,
-	EventTypeCode as EventType,
-	cast(cast(Datediff(s, '1970-01-01', q.MessageTimestampUtc) AS bigint) * 1000 as varchar(20)) AS MessageNumber,
-	NULL as PurchaseType,
-	NULL as SupplierNumber,
-	s.BusinessUnit_ID as LocationNumber,
-	NULL as LocationName,
-	NULL as OrderSubTeam_No,
-	NULL as OrderSubTeam_Name,
-	NULL as OrderTeam_No,
-	NULL as OrderTeam_Name,
-	Case
-		When oh.RefuseReceivingReasonID is not null Then 'Refused'
-		When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
-		When oh.ApprovedDate is not null Then 'Closed'
-		Else 'Sent'
-	End as Status,
-	0 as UserId,
-	NULL as UserName,
-	NULL as ApproverId,
-	NULL as ApproverName,
-	NULL as CreateDateTime,
-	NULL as ApproveDateTime,
-	NULL as CloseDateTime,
-	NULL as PurchaseOrderComments,
-	oi.OrderItem_ID as PurchaseOrderDetailNumber,
-	oi.Item_Key as SourceItemKey,
-	ii.Identifier as DefaultScanCode,
-	NULL as HostSubTeam_No,
-	NULL as HostSubTeam_Name,
-	NULL as QuantityOrdered,
-	NULL as OrderedUnitCode,
-	NULL as OrderedUnit,
-	NULL as PackSize1,
-	NULL as PackSize2,
-	NULL as RetailUnit,
-	NULL as ItemCost,
-	NULL as EarliestArrivalDate,
-	NULL as ExpectedArrivalDate
-FROM amz.OrderQueue q
-JOIN amz.EventType et on q.EventTypeID = et.EventTypeID
-JOIN OrderHeader oh ON oh.OrderHeader_ID = q.KeyID
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN amz.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = q.SecondaryKeyID
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-WHERE et.EventTypeCode = 'PO_LINE_DEL'
-  AND i.Retail_Sale = 1
-  AND q.InProcessBy = ?
-  AND q.Status = 'I'</statement>
-            <wizardData/>
-            <processInSubsets>false</processInSubsets>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy_PO_Del</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy_Line_Del</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>QueueID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>SecondaryKeyID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderHeader_ID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ExternalOrder_Id</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ExternalSource</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventType</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>PurchaseType</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>SupplierNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>LocationNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>LocationName</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderSubTeam_No</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderSubTeam_Name</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderTeam_No</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderTeam_Name</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>UserId</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>UserName</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ApproverId</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ApproverName</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ApproveDateTime</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>CloseDateTime</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>PurchaseOrderComments</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>PurchaseOrderDetailNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>HostSubTeam_Name</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderedUnitCode</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>OrderedUnit</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>PackSize1</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>PackSize2</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>RetailUnit</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ItemCost</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>money</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EarliestArrivalDate</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <ConfirmEvent>Purchase Order Event Reciever</ConfirmEvent>
         </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput>
-                <InProcessBy>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy>
-                <InProcessBy_PO_Del>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy_PO_Del>
-                <InProcessBy_Line_Del>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy_Line_Del>
-            </jdbcQueryActivityInput>
-        </pd:inputBindings>
+        <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="UniqueEvent">
-        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>404</pd:x>
-        <pd:y>212</pd:y>
-        <config>
-            <element>
-                <xsd:element name="root">
-                    <xsd:complexType>
-                        <xsd:sequence maxOccurs="unbounded">
-                            <xsd:element name="QueueId" type="xsd:int"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </element>
-        </config>
-        <pd:inputBindings>
-            <root>
-                <xsl:for-each-group select="$GetEvents/resultSet/Record" group-by="QueueID">
-                    <QueueId>
-                        <xsl:value-of select="QueueID"/>
-                    </QueueId>
-                </xsl:for-each-group>
-            </root>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Update Message to Error Status">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1594</pd:x>
-        <pd:y>667</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <statement>UPDATE [amz].[OrderQueue]
-SET Status ='F',
-        InProcessBy = NULL,
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-        ErrorDescription = ?
- WHERE InProcessBy = ?
-And STATUS = 'I'
-</statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>ErrorDescription</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>InProcessBy</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <ErrorDescription>
-                    <xsl:choose>
-                        <xsl:when test="exists($_error/ns3:ErrorReport/StackTrace)">
-                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </ErrorDescription>
-                <InProcessBy>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </InProcessBy>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="UpdateOrderQueueEvents">
-        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>202</pd:x>
-        <pd:y>373</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <maxRows>20000</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <schema>amz</schema>
-            <ProcedureName>LockPurchaseOrderEvents</ProcedureName>
-            <catalog/>
-            <useSchema>false</useSchema>
-            <parameterTypes>
-                <parameter>
-                    <colName>@RETURN_VALUE</colName>
-                    <colType>5</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@NumberOfOrdersToProcess</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@Instance</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@ProcessDelayTimeInMinutes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedThreetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFourtimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFivetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-            </parameterTypes>
-        </config>
-        <pd:inputBindings>
-            <inputs>
-                <inputSet>
-                    <NumberOfOrdersToProcess>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
-                    </NumberOfOrdersToProcess>
-                    <Instance>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Instance>
-                    <ProcessDelayTimeInMinutes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessDelayTimeInMinutes"/>
-                    </ProcessDelayTimeInMinutes>
-                    <WaitTimeForRecordsProcessedThreetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedThreetimes"/>
-                    </WaitTimeForRecordsProcessedThreetimes>
-                    <WaitTimeForRecordsProcessedFourtimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFourtimes"/>
-                    </WaitTimeForRecordsProcessedFourtimes>
-                    <WaitTimeForRecordsProcessedFivetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFivetimes"/>
-                    </WaitTimeForRecordsProcessedFivetimes>
-                </inputSet>
-            </inputs>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Log Final Errors">
+    <pd:activity name="LogDataMapperError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>796</pd:x>
-        <pd:y>659</pd:y>
+        <pd:x>343</pd:x>
+        <pd:y>540</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>true</spawn>
         </config>
         <pd:inputBindings>
             <LogElement>
                 <LogDate>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                    <xsl:value-of select="current-dateTime()"/>
                 </LogDate>
                 <ApplicationID>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
                 </ApplicationID>
                 <HostName>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
+                    <xsl:value-of select="BW:getHostName()"/>
                 </HostName>
                 <UserName>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
                 </UserName>
                 <Thread>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
                 </Thread>
                 <Level>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
                 </Level>
                 <Logger>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/ProcessStack"/>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
                 </Logger>
                 <Message>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns3:ErrorReport/Msg"/>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
                 </Message>
                 <InsertedDate>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
+                    <xsl:value-of select="current-dateTime()"/>
                 </InsertedDate>
             </LogElement>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Publish Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>483</pd:x>
+        <pd:y>407</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns1:ErrorMessage xmlns:ns1="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd">
+                <ns1:Application>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
+                </ns1:Application>
+                <ns1:MessageID>
+                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                </ns1:MessageID>
+                <ns1:MessageProperties>
+                    <ns1:NameValuePair>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="name">
+                            <xsl:value-of select="local-name(current())"/>
+                        </xsl:attribute>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="value">
+                            <xsl:value-of select="current()"/>
+                        </xsl:attribute>
+                    </ns1:NameValuePair>
+                </ns1:MessageProperties>
+                <ns1:Message>
+                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/Body"/>
+                </ns1:Message>
+                <ns1:ErrorCode>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                </ns1:ErrorCode>
+                <ns1:ErrorDetails>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                </ns1:ErrorDetails>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="contains($_error/ns3:ErrorReport/MsgCode, &quot;Connection is closed&quot;)">
+                        <ns1:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns1:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:when test="contains($_error/ns3:ErrorReport/MsgCode, &quot;com.microsoft.sqlserver.jdbc.SQLServerException:&quot;)">
+                        <ns1:ErrorSeverity>
+                            <xsl:value-of select="&quot;Fatal&quot;"/>
+                        </ns1:ErrorSeverity>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns1:ErrorSeverity>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </ns1:ErrorSeverity>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns1:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
-        <pd:from>Timer</pd:from>
-        <pd:to>UpdateOrderQueueEvents</pd:to>
+        <pd:from>Purchase Order Event Reciever</pd:from>
+        <pd:to>Parse Event Message</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>UpdateOrderQueueEvents</pd:from>
-        <pd:to>GetEvents</pd:to>
+        <pd:from>Parse Event Message</pd:from>
+        <pd:to>GetIrmaData</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>UniqueEvent</pd:from>
-        <pd:to>GroupAndSendPurchaseOrders</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>GroupAndSendPurchaseOrders</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>GetEvents</pd:from>
-        <pd:to>UniqueEvent</pd:to>
+        <pd:from>GetIrmaData</pd:from>
+        <pd:to>Map Purchase Order Data</pd:to>
+        <pd:xpathDescription>Data Exists</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($GetEvents/resultSet/Record)</pd:xpath>
+        <pd:xpath>count($GetIrmaData/Output/POData) &gt; 0</pd:xpath>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetEvents</pd:from>
-        <pd:to>End</pd:to>
+        <pd:from>GetIrmaData</pd:from>
+        <pd:to>Confirm-NoData</pd:to>
+        <pd:xpathDescription>No Data Pulled</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Update Message to Error Status</pd:from>
+        <pd:from>Confirm-NoData</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch All</pd:from>
-        <pd:to>Log Final Errors</pd:to>
+        <pd:from>Map Purchase Order Data</pd:from>
+        <pd:to>Send to Esb</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log Final Errors</pd:from>
-        <pd:to>Update Message to Error Status</pd:to>
+        <pd:from>Send to Esb</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Confirm After Max Attempts</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Purchase-Order-Event-Reciever/ns12:ActivityOutput/JMSProperties/ns12:JMSXDeliveryCount)
+and ($Purchase-Order-Event-Reciever/ns12:ActivityOutput/JMSProperties/ns12:JMSXDeliveryCount = $_globalVariables/ns:GlobalVariables/Application/MaxRedeliveryCount)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>LogDataMapperError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm After Max Attempts</pd:from>
+        <pd:to>Publish Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Publish Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogDataMapperError</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

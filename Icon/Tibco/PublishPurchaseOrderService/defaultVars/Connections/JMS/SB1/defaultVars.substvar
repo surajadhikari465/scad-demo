@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!5FR7Z0IF6n6issbKztDy3uHCi12qQGfllexFnFAQ8T3hf5ST+Pu7BULQctmL5ejxp0jgx6mcElc=</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1552001019738</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Url</name>
+			<value>ssl://cerd1668.wfm.pvt:7233</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1551974067085</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>sb1_HCPurchaseOrderUser</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1552001019823</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
