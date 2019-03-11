@@ -372,6 +372,9 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Web.Dev1.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Perf.Config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -415,9 +418,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< master
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
+========================================================================
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 14408_NewEnv_Devconfigs
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
