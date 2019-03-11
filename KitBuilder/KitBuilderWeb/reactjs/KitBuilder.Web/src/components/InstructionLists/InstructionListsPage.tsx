@@ -62,6 +62,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
      }
 
      setInstructionListHack = (data: Array<any>) => {
+      
           // This is a hack to fix a bug in ReactTable
           // that is caused by the table using index as the key
           // for the rows.
@@ -122,7 +123,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     this.setInstructionListHack(data);
                })
                     .then(() => {
-                         this.setState({ message: "Instruction Member Deleted Sucessfully",  error: null}, this.onSearch);
+                         this.setState({ message: "Instruction Member Deleted Sucessfully.",  error: null}, this.onSearch);
                     })
                     .catch((error) => {
                          console.log("Error in deleting Instruction list member");
@@ -203,6 +204,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                this.setState({ instructionList: [] });
           }
           else {
+               
                this.setState({ selectedInstructionTypeIdvalue: result.InstructionListId }, () => { this.onSearch() });
           }
 
@@ -230,11 +232,14 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           var urlParam = this.state.selectedInstructionTypeIdvalue;
 
           var url = urlStart + urlParam + '/InstructionListMembers';
+
           fetch(url)
                .then(response => {
                     return response.json();
                }).then(data => 
+                       { 
                     this.setInstructionListHack(data)
+                       }
                ).then(() => {
 
                     this.setState({
@@ -309,7 +314,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           axios.delete(urlDelete, { headers },
           ).then(() => {
                this.setState({
-                    message: "Data Deleted Successfully.",
+                    message: "Instruction List Deleted Successfully.",
                     error: null,
                     selectedInstructionTypeIdvalue: "",
                     currentInstructionTypeValue: "",
@@ -318,10 +323,18 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           })
                .catch((error) => {
                     console.log(error);
-                    this.setState({
-                         error: "Error in Deleting Instruction List.",
-                         message: null,
-                    })
+                    if (error.response.status === 409) {
+                         this.setState({
+                              error: "Instruction List is in use.",  message: null
+                         })
+                     }
+                    else{
+                         this.setState({
+                              error: "Error in Deleting Instruction List.",
+                              message: null
+                         })
+                    }
+                   
                })
      }
      onAddNewList = () => {
@@ -411,12 +424,13 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     })
                     .then(() => {
                          this.setState({
-                              message: "Data Saved Sucessfully.",
+                              message: "Instruction List Saved Sucessfully.",
                               error: null,
                               isSaveDisabled: true,
                               isPublishDisabled: false,
                          })
                          this.insertMembers(dataInsert, urlAdd, headers);
+                        
                     })
                     .catch((error) => {
                          console.log(error);
@@ -431,11 +445,10 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           else if (dataInsert.length > 0) {
                this.insertMembers(dataInsert, urlAdd, headers);
           }
-
-          else {
+          else
+          {
                this.saveInstructionName();
           }
-
      };
 
      saveInstructionName = () => {
@@ -455,6 +468,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     headers: headers
                })
                .then(response => {
+
                     this.Refresh(this.state.currentInstructionTypeValue)
                })
                .then(() => {
@@ -462,7 +476,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          error: null
                     })
                     this.setState({
-                         message: "Data Saved Sucessfully.",
+                         message: "Instruction List  Saved Sucessfully.",
                          isSaveDisabled: true,
                          isPublishDisabled: false,
                     })
@@ -481,13 +495,15 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
      }
 
      insertMembers = (dataInsert: any[], urlAdd: any, headers: any) => {
+          if(dataInsert.length > 0)
+          {
           axios.post(urlAdd, JSON.stringify(dataInsert),
                {
                     headers: headers
                })
                .then(() => {
                     this.setState({
-                         message: "Data Saved Sucessfully.",
+                         message: "Instruction List Saved Sucessfully.",
                          error: null,
                          isSaveDisabled: true,
                          isPublishDisabled: false,
@@ -501,7 +517,11 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          message: null,
                     })
                })
-
+          }
+          else
+          {
+               this.saveInstructionName();
+          }
      }
      onPublishChanges = () => {
           // TODO: Add logic for publishing data

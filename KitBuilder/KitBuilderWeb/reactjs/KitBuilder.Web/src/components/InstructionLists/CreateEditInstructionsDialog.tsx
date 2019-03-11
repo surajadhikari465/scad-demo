@@ -136,7 +136,7 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
                       <FormControlLabel
                         value="2"
                         control={<Radio color="primary" />}
-                        label="General"
+                        label="Generic"
                       />
                     </RadioGroup>
                   </Grid>
