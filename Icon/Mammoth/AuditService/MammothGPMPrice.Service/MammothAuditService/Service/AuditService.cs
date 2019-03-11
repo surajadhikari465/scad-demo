@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Data;
+using System.Collections;
 using System.Data.SqlClient;
 using System.Timers;
 using System.Configuration;
@@ -17,8 +18,9 @@ namespace Audit
 		int timeInterval;
 		DataTable statusTable;
 		Timer auditTimer = null;
-		DateTime scheduleTimeStart;
-		DateTime scheduleTimeEnd;
+		TimeSpan scheduleTimeStart;
+		TimeSpan scheduleTimeEnd;
+		Hashtable hsVariables;
 
 		readonly string sqlConnection;
 		readonly ILogger Logger = new NLogLogger(typeof(AuditService));
@@ -28,19 +30,19 @@ namespace Audit
 
 		public AuditService()
 		{
+			TimeSpan timeStamp;
+			this.hsVariables = Utility.GetVariables();
 			this.sqlConnection = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
-			if(!DateTime.TryParse(ConfigurationManager.AppSettings["ScheduledTimeStart"], out this.scheduleTimeStart))
+			foreach(var value in this.hsVariables.Cast<DictionaryEntry>().Where(x => this.sqlConnection.IndexOf(x.Key.ToString()) >= 0)) //Verify/Replace variables in connection string, if any 
 			{
-				this.scheduleTimeStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 5, 0, 0);
+				this.sqlConnection = this.sqlConnection.Replace(value.Key.ToString(), value.Value.ToString());
 			}
 
-			if(!DateTime.TryParse(ConfigurationManager.AppSettings["ScheduledTimeEnd"], out this.scheduleTimeEnd))
-			{
-				this.scheduleTimeEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 0, 0);
-			}
+			this.scheduleTimeStart = !TimeSpan.TryParse(ConfigurationManager.AppSettings["ScheduledTimeStart"], out timeStamp) ? new TimeSpan(5, 0, 0) : timeStamp;
+			this.scheduleTimeEnd = !TimeSpan.TryParse(ConfigurationManager.AppSettings["ScheduledTimeEnd"], out timeStamp) ? 	new TimeSpan(8, 0, 0) : timeStamp;
 
-			if(!int.TryParse(ConfigurationManager.AppSettings["CommandTimeout"], out this.timeOutSec))
+		  if(!int.TryParse(ConfigurationManager.AppSettings["CommandTimeout"], out this.timeOutSec))
 			{
 				this.timeOutSec = 9000;
 			}
@@ -76,7 +78,8 @@ namespace Audit
 
 			try
 			{
-				if(DateTime.Now.Hour < this.scheduleTimeStart.Hour || DateTime.Now.Hour > this.scheduleTimeEnd.Hour) return;
+				this.Logger.Info("AuditService: Executing Run()");
+				if(DateTime.Now.Hour < this.scheduleTimeStart.Hours || DateTime.Now.Hour > this.scheduleTimeEnd.Hours) return;
 
 				Region[] Regions;
 				var audits = AuditConfigSection.Config.SettingsList.Where(x => x.IsActive).ToArray();
@@ -84,10 +87,11 @@ namespace Audit
 
 				if(audits.Length == 0 || uploads.Length == 0)
 				{
-					this.Logger.Error("AuditService: No active audits found or upload profiles not specified");
+					this.Logger.Info("AuditService: No active audits found or upload profiles not specified");
 					return;
 				}
 
+				this.Logger.Info($"AuditService: Active profiles: {audits.Length.ToString()} found");
 				try { if(Directory.Exists(this.dirPath)) { Directory.Delete(this.dirPath, true); } }
 				catch { }
 
@@ -104,7 +108,7 @@ namespace Audit
 																														sourceRegions: Regions,
 																														tempDirPath: this.dirPath,
 																														sqlConnection: this.sqlConnection,
-																														commandTimeout: this.timeOutSec)).Where(x => x.IsValid).Select(x => new AuditController(x, this.statusTable)))
+																														commandTimeout: this.timeOutSec)).Where(x => x.IsValid).Select(x => new AuditController(x, this.statusTable, this.hsVariables)))
 				{
 					item.Execute();
 				}

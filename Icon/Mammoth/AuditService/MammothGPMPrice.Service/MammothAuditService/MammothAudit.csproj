@@ -107,6 +107,7 @@
     <Compile Include="Support\UploadConfigConfigItems.cs" />
     <Compile Include="Support\UploadConfigItem.cs" />
     <Compile Include="Support\UploadConfigSection.cs" />
+    <Compile Include="Support\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -1,6 +1,5 @@
 ﻿using Topshelf;
 using System.Configuration;
-using System.Reflection;
 
 namespace Audit
 {
@@ -9,8 +8,7 @@ namespace Audit
 		static void Main(string[] args)
 		{
 			//Grant FULL access permission to account the service is running under to this folder:  \Users\All Users\Microsoft\Crypto\RSA\MachineKeys
-			EncryptAppSettings("Upload");
-			EncryptAppSettings("connectionStrings");
+		  Utility.EncryptAppSettings(Utility.VARIABLES, Utility.SQL_CONNECTIONS);
 
 			HostFactory.Run(configure =>
 			{
@@ -29,20 +27,6 @@ namespace Audit
 				configure.SetDisplayName(ConfigurationManager.AppSettings["DisplayName"]);
 				configure.SetDescription(ConfigurationManager.AppSettings["Description"]);
 			});
-		}
-
-		static void EncryptAppSettings(string section)
-		{
-			var mods = Assembly.GetExecutingAssembly().GetModules();
-			var cnfg = ConfigurationManager.OpenExeConfiguration(mods[0].FullyQualifiedName);
-			var settings = cnfg.GetSection(section);
-
-			if(settings != null && !settings.SectionInformation.IsProtected)
-			{
-				settings.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
-				settings.SectionInformation.ForceSave = true;
-				cnfg.Save(ConfigurationSaveMode.Modified);
-			}
 		}
 	}
 }

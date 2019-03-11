@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using Mammoth.Logging;
 using Amazon.S3;
@@ -16,16 +17,18 @@ namespace Audit
 	{
 		DataTable statusTable;
 		readonly SpecInfo spec;
+		readonly Hashtable hsVariables;
 		readonly ILogger logger = new NLogLogger(typeof(AuditService));
 
 		const string GLOBAL = "Global";
 		const char SPACE = ' ';
 		const string AUDIT_SERVICE = "AuditService";
 
-		public AuditController(SpecInfo spec, DataTable statTable = null)
+		public AuditController(SpecInfo spec, DataTable statTable = null, Hashtable tableVariable = null)
 		{
 			this.spec = spec;
 			this.statusTable = statTable;
+			this.hsVariables = tableVariable ?? new Hashtable();
 		}
 
 		void DeleteFile(string filePath)
@@ -47,6 +50,8 @@ namespace Audit
 
 			try
 			{
+				this.logger.Info($"Processing {this.spec.Config.Name}");
+				
 				var items = this.spec.Config.IsGlobal
 					? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} ",
 					                                              argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
@@ -192,8 +197,8 @@ namespace Audit
 			{
 				if(outputInfo == null || !File.Exists(outputInfo.ZipFile)) return;
 
-				var client = new AmazonS3Client(awsAccessKeyId: this.spec.Profile.AccessKey,
-				                                awsSecretAccessKey: this.spec.Profile.SecretKey,
+				var client = new AmazonS3Client(awsAccessKeyId: this.hsVariables.ContainsKey(this.spec.Profile.AccessKey) ? this.hsVariables[this.spec.Profile.AccessKey].ToString() : this.spec.Profile.AccessKey,
+				                                awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
 				                                clientConfig: new AmazonS3Config(){ ServiceURL = this.spec.Profile.BucketRegion	});
 
 				var request = new PutObjectRequest
