@@ -180,9 +180,6 @@
     <Folder Include="eplum\Tables" />
     <Folder Include="Scripts\Projects" />
     <Folder Include="Scripts\Projects\GPM" />
-    <Folder Include="amazonload" />
-    <Folder Include="amazonload\Tables" />
-    <Folder Include="amazonload\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">

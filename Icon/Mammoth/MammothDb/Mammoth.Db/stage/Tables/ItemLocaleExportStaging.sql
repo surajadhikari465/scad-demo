@@ -51,3 +51,7 @@
 	[GroupId] INT NULL, 
 	[Processed] BIT NOT NULL CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0)
 )
+GO
+
+GRANT ALTER ON [stage].[ItemLocaleExportStaging] TO [MammothRole]
+GO
