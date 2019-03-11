@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Infor.Listeners.Price", "Icon.Infor.Listeners.Price\Icon.Infor.Listeners.Price.csproj", "{8D87EBE2-1ED4-4A45-A9A8-E950EFBDA8D6}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Infor.Listeners.Price.DataAccess", "Icon.Infor.Listeners.Price.DataAccess\Icon.Infor.Listeners.Price.DataAccess.csproj", "{B624ABA7-DA65-4EC5-9F92-4DE0C78B8177}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Infor.Listeners.Price.DataAccess.Tests", "Icon.Infor.Listeners.Price.DataAccess.Tests\Icon.Infor.Listeners.Price.DataAccess.Tests.csproj", "{27DF260C-B707-49EA-AB73-1182944DED1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2315C881-4584-4356-AAE5-BF57AF22E52E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A988ECA-943A-4B7F-8C55-BC0E9CBC049B}
 	EndGlobalSection
 EndGlobal

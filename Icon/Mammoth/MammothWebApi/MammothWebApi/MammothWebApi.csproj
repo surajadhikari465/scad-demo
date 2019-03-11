@@ -197,7 +197,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Dev1.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Test1.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.UnitTest.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
@@ -306,6 +312,9 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

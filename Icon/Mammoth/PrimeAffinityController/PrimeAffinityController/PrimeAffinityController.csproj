@@ -175,6 +175,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="App.Dev1.config" />
     <None Include="App.Release.config" />
     <None Include="App.QA.config" />
     <None Include="App.Perf.config" />

@@ -226,6 +226,7 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
+    <None Include="App.Dev1.config" />
     <None Include="App.QA.config" />
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
