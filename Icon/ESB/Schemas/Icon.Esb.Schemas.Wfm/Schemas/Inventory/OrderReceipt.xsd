@@ -26,7 +26,7 @@
 							<xs:element name="locationNumber" type="crf:IdIntType"/>
 							<xs:element name="locationName" type="crf:NameType"/>
 							<xs:element name="eventType" type="crf:WfmStrType"/>
-							<xs:element name="messageNumber" type="crf:IdIntType">
+							<xs:element name="messageNumber" type="crf:WfmStrType">
 								<xs:annotation>
 									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 								</xs:annotation>
@@ -40,28 +40,21 @@
 										<xs:sequence>
 											<xs:element name="receiptDetailNumber" type="crf:IdIntType"/>
 											<xs:element name="purchaseOrderDetailNumber" type="crf:IdIntType"/>
-											<xs:element name="Item" type="itm:ItemType" minOccurs="0"/>
+											<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
 											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
-											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0">
-												<xs:annotation>
-													<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
-												</xs:annotation>
-											</xs:element>
-											<xs:element name="itemVIN" type="crf:WfmStrType"/>
-											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0">
-												<xs:annotation>
-													<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
-												</xs:annotation>
-											</xs:element>
+											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="itemVIN" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
 											<xs:element name="quantityOrdered" type="crf:WfmIntType"/>
 											<xs:element name="quantityReceived" type="crf:WfmIntType"/>
 											<xs:element name="receiptStatus" type="crf:WfmStrType"/>
-											<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+											<xs:element name="receiptUoM" type="crf:WfmStrType"/>
 											<xs:element name="cartonNumber" type="crf:WfmIntType" minOccurs="0"/>
 											<xs:element name="conversionRetailUoM" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="receiptItemCost" type="crf:WfmStrType" minOccurs="0"/>
-											<xs:element name="dispositionCode" type="crf:WfmStrType" minOccurs="0"/>
-											<xs:element name="Party" type="prt:PartyType" minOccurs="0"/>
+											<xs:element name="toDispositionCode" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="receiptUserInfo" type="ivf:UserType" minOccurs="0"/>
 											<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
 											<xs:element name="documentNumber" type="crf:WfmIntType" minOccurs="0"/>
 											<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>

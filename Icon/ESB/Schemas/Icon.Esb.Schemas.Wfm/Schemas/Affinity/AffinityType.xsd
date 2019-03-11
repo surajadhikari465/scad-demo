@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amf="http://schemas.wfm.com/Enterprise/AffinityMgmt/CommonRefTypes/V1"  targetNamespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amf="http://schemas.wfm.com/Enterprise/AffinityMgmt/CommonRefTypes/V1" xmlns:aff="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1"  targetNamespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/AffinityType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AffinityMgmt/Affinity/V1" schemaLocation="Affinity.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -13,6 +14,11 @@
 		<xs:sequence>
 			<xs:element name="code" type="crf:IdStrType"/>
 			<xs:element name="description" type="crf:DescriptionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AffinitiesType">
+		<xs:sequence>
+			<xs:element name="affinity" type="aff:AffinitiesType"/>			
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:lit="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:ttf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1"
+	xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+	xmlns:lit="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1"
+	xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+	xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2"
+	xmlns:ttf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1"
+	xmlns:prf="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1"
+	xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+	xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+	targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/V1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.2">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1" schemaLocation="../LineItem/LineItem.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1" schemaLocation="TotalBaseType.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1" schemaLocation="../../Promotion/TransactionPromotion.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+		schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+		schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2"
+		schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/V1"
+		schemaLocation="../LineItem/LineItem.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Retail/TotalBaseType/V1"
+		schemaLocation="TotalBaseType.xsd"/>
+	<xs:import
+		namespace="http://schemas.wfm.com/Enterprise/Transactions/RetailTransaction/LineItemType/TransactionPromotion/V1"
+		schemaLocation="../../Promotion/TransactionPromotion.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -26,14 +46,17 @@
 			<xs:element name="isVoidReasonCode" type="crf:WfmBoolType" minOccurs="0"/>
 			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:element name="returnType" type="tmf:ReturnTypeCodeEnum" minOccurs="0"/>
-			<xs:element name="transactionType" type="erf:TransactionTypeEnum" minOccurs="0"/>
+			<xs:element name="transactionType" type="crf:TypeType" minOccurs="0"/>
 			<xs:element name="lineItems" type="lit:LineItemsType" minOccurs="0"/>
 			<xs:element name="totals" type="ttf:TotalsBaseType" minOccurs="0"/>
 			<xs:element name="customers" type="tpf:RetailCustomersType" minOccurs="0"/>
-			<xs:element name="tabs" type="tpf:tabsType" minOccurs="0"/>
+			<xs:element name="surveys" type="txf:SurveysType" minOccurs="0"/>
+			<xs:element name="conversionEvents" type="txf:ConversionEventsType" minOccurs="0"/>
+			<xs:element name="tabs" type="txf:TabsType" minOccurs="0"/>
 			<xs:element name="taxSummary" type="txf:TaxDefinitionsType" minOccurs="0"/>
 			<xs:element name="promotionSummary" type="prf:TransactionPromosType" minOccurs="0"/>
-			<xs:element name="transactionLineItemLink" type="txf:TransactionLineItemLinkType" minOccurs="0"/>
+			<xs:element name="transactionLineItemLink" type="txf:TransactionLineItemLinkType"
+				minOccurs="0"/>
 			<xs:element name="suspendID" type="crf:WfmStrType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="9.6">
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Control/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="9.6">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../../Item/Item.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
@@ -15,6 +16,7 @@
 	<xs:element name="controlTransactionType" type="ControlTransactionType"/>
 	<xs:complexType name="ControlTransactionType">
 		<xs:sequence>
+			<xs:element name="type" type="txf:TypeType" minOccurs="0"/>
 			<xs:choice>
 				<xs:element name="invalidSignOn" type="tpf:POSLogInvalidSignon"/>
 				<xs:element name="setCashierMode" type="tpf:SetCashierModeType">
@@ -39,7 +41,8 @@
 					<xs:element name="passwordAuthorization" type="tpf:POSLogPasswordAuthorization" minOccurs="0"/>
 				</xs:sequence>
 				<xs:element name="openLane" type="tmz:DateTimezoneType"/>
-				<xs:element name="productAvailabilityLog" type="tpf:ProductAvailabilityLogType"/>
+				<xs:element name="items" type="itm:ItemsType"/>
+				<xs:element name="tabs" type="txf:TabsType"/>
 			</xs:choice>
 			<xs:element name="reasons" type="crf:ReasonsCodeType" minOccurs="0"/>
 			<xs:choice minOccurs="0">

@@ -21,9 +21,9 @@
 				<xs:element name="inventoryAdjustment" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="adjustmentNumber" type="crf:IdIntType"/>
+							<xs:element name="adjustmentNumber" type="crf:IdIntType" minOccurs="0"/>
 							<xs:element name="eventType" type="crf:WfmStrType"/>
-							<xs:element name="messageNumber" type="crf:IdIntType">
+							<xs:element name="messageNumber" type="crf:WfmStrType">
 								<xs:annotation>
 									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 								</xs:annotation>
@@ -35,21 +35,15 @@
 								<xs:element name="inventoryAdjustmentDetail" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="adjustmentDetailNumber" type="crf:IdIntType"/>
-											<xs:element name="Item" type="itm:ItemType" minOccurs="0"/>
+											<xs:element name="adjustmentDetailNumber" type="crf:IdIntType" minOccurs="0"/>
+											<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
 											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
-											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0">
-												<xs:annotation>
-													<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
-												</xs:annotation>
-											</xs:element>
-											<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0">
-												<xs:annotation>
-													<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
-												</xs:annotation>
-											</xs:element>
-											<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
-											<xs:element name="inventoryStatus">
+											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="reasonCode" type="crf:WfmStrType" minOccurs="1"/>
+											<xs:element name="adjustmentQuantity" type="txf:QuantitiesType" minOccurs="0"/>
+											<xs:element name="disposition" minOccurs="0">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="current" type="crf:WfmStrType" minOccurs="0"/>
@@ -57,7 +51,7 @@
 													</xs:sequence>
 												</xs:complexType>
 											</xs:element>
-											<xs:element name="Party" type="prt:PartyType" minOccurs="0"/>
+											<xs:element name="userInfo" type="ivf:UserType"/>
 											<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
 											<xs:element name="documentNumber" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>

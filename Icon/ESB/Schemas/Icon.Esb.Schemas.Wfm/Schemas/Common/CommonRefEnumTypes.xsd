@@ -142,26 +142,4 @@
 			<xs:enumeration value="Down"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="TransactionTypeEnum">
-		<xs:restriction base="crf:WfmStrType">
-			<xs:enumeration value="Retail"/>
-			<xs:enumeration value="Eat-In"/>
-			<xs:enumeration value="Catering"/>
-			<xs:enumeration value="Selfscan"/>
-			<xs:enumeration value="HomeShopping"/>
-			<xs:enumeration value="WIC"/>
-			<xs:enumeration value="DriveOff"/>
-			<xs:enumeration value="Unpaid"/>
-			<xs:enumeration value="XReport"/>
-			<xs:enumeration value="ZReport"/>
-			<xs:enumeration value="Tab"/>
-			<xs:enumeration value="TabSuspend"/>
-			<xs:enumeration value="Tip"/>
-			<xs:enumeration value="CollectiveTip"/>
-			<xs:enumeration value="PersonalTip"/>
-			<xs:enumeration value="Walkoff"/>
-			<xs:enumeration value="WalkoffSuspend"/>
-			<xs:enumeration value="Sale"/>
-		</xs:restriction>
-	</xs:simpleType>
 </xs:schema>

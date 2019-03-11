@@ -20,54 +20,6 @@
 			<xs:enumeration value="Void"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="TransactionTypeEnum">
-		<xs:restriction base="crf:WfmStrType">
-			<xs:enumeration value="Selfscan"/>
-			<xs:enumeration value="HomeShopping"/>
-			<xs:enumeration value="WIC"/>
-			<xs:enumeration value="DriveOff"/>
-			<xs:enumeration value="Unpaid"/>
-			<xs:enumeration value="XReport"/>
-			<xs:enumeration value="ZReport"/>
-			<xs:enumeration value="Tab"/>
-			<xs:enumeration value="TabSuspend"/>
-			<xs:enumeration value="Tip"/>
-			<xs:enumeration value="CollectiveTip"/>
-			<xs:enumeration value="PersonalTip"/>
-			<xs:enumeration value="Walkoff"/>
-			<xs:enumeration value="WalkoffSuspend"/>
-			<xs:enumeration value="Sale"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="DateTimeTypeEnum">
-		<xs:restriction base="crf:WfmStrType">
-			<xs:enumeration value="Message"/>
-			<xs:enumeration value="ActualStart"/>
-			<xs:enumeration value="AvailableForSale"/>
-			<xs:enumeration value="BestBefore"/>
-			<xs:enumeration value="Birth"/>
-			<xs:enumeration value="Business"/>
-			<xs:enumeration value="Cancel"/>
-			<xs:enumeration value="CutBy"/>
-			<xs:enumeration value="Dispatch"/>
-			<xs:enumeration value="Effective"/>
-			<xs:enumeration value="End"/>
-			<xs:enumeration value="EnterFreezer"/>
-			<xs:enumeration value="ExpectedDue"/>
-			<xs:enumeration value="ExpectedStart"/>
-			<xs:enumeration value="Expiration"/>
-			<xs:enumeration value="Kill"/>
-			<xs:enumeration value="Pack"/>
-			<xs:enumeration value="Packaging"/>
-			<xs:enumeration value="Production"/>
-			<xs:enumeration value="Receipt"/>
-			<xs:enumeration value="SellBy"/>
-			<xs:enumeration value="Slaughter"/>
-			<xs:enumeration value="Start"/>
-			<xs:enumeration value="Transaction"/>
-			<xs:enumeration value="UseBy"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:simpleType name="BusinessActionTypeEnum">
 		<xs:restriction base="crf:WfmStrType">
 			<xs:enumeration value="AgeConfirmation"/>

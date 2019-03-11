@@ -130,6 +130,11 @@
 					<xs:documentation>The line item quantity which contrinuted to the promotion triggering. Example: Buy 2 get x%, sale quantity is 3, therefore trigger quantity is 2.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="triggerAmount" type="amt:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The line item amount, that the reward calculation is based on.(For an example: reward based on main item with\without its ingredients)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="apportionmentAmount" type="ApportionmentAmountType" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>The apportionment amount allocated to a line item by a promotion. Derived by the promotion's apportionment definition, setup by the business users according to retailer/supplier reconciliation agreements.</xs:documentation>

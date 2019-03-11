@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.4">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:lst="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.4">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
@@ -9,6 +9,7 @@
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" schemaLocation="../Hierarchy/Hierarchy.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" schemaLocation="../Trait/Trait.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" schemaLocation="ListType.xsd"/>
 	<!-- ================== -->
 	<!-- Simple Types                 -->
 	<!-- ================== -->
@@ -320,11 +321,11 @@
 			<xs:element name="hierarchy" type="ihy:HierarchyType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="GroupsType">
+	<!--<xs:complexType name="GroupsType">
 		<xs:sequence>
 			<xs:element name="group" type="grp:GroupTypeType" maxOccurs="unbounded"/>
 		</xs:sequence>
-	</xs:complexType>
+	</xs:complexType>-->
 	<xs:complexType name="LinksType">
 		<xs:sequence>
 			<xs:element name="link" type="lnk:LinkTypeType" maxOccurs="unbounded"/>
@@ -351,5 +352,12 @@
 				<xs:attribute name="Cryptogram" type="WfmStrType" form="unqualified"/>
 			</xs:extension>
 		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="ListType">
+		<xs:sequence>
+			<xs:element name="code" type="WfmStrType"/>
+			<xs:element name="description" type="WfmStrType" minOccurs="0"/>
+			<xs:element name="type" type="lst:ListTypeType" minOccurs="0"/>
+		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

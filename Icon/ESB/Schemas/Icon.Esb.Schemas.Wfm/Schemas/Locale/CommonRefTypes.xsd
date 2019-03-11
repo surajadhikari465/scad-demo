@@ -87,7 +87,7 @@
 	<!-- ================== -->
 	<xs:simpleType name="LocaleCodeTypeEnum">
 		<xs:annotation>
-			<xs:documentation>Code can represent - company, chain, region, metro, store, bakehouse, office, distribution center and so on..</xs:documentation>
+			<xs:documentation>Code can represent - company, chain, region, metro, store, bakehouse, office, distribution center, venue and so on..</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType">
 			<xs:enumeration value="CMP"/>
@@ -101,7 +101,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="LocaleDescTypeEnum">
 		<xs:annotation>
-			<xs:documentation>Description can represent - company, chain, region, metro, store, bakehouse, office, distribution center and so on..</xs:documentation>
+			<xs:documentation>Description can represent - company, chain, region, metro, store, bakehouse, office, distribution center, venue and so on..</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType">
 			<xs:enumeration value="Company"/>

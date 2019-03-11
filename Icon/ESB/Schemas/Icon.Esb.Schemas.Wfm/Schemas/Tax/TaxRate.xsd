@@ -40,7 +40,7 @@
 			</xs:element>
 			<xs:element name="startDate" type="taf:StartDateType" minOccurs="0"/>
 			<xs:element name="endDate" type="taf:EndDateType" minOccurs="0"/>
-			<xs:element name="transactionType" type="erf:TransactionTypeEnum"/>
+			<xs:element name="transactionType" type="crf:TypeType"/>
 			<xs:element name="taxZone" type="tzr:TaxZoneType" minOccurs="0"/>
 			<xs:element name="taxIndicator" type="taf:TaxIndicatorType"/>
 			<xs:element name="dependenceRateID" type="taf:DependenceRateIDType" minOccurs="0" maxOccurs="unbounded"/>
@@ -48,6 +48,8 @@
 			<xs:element name="unitType" type="taf:UnitType" minOccurs="0"/>
 			<xs:element name="roundingType" type="taf:RoundingTypeEnum"/>
 			<xs:element name="couponReducesTaxation" type="taf:CouponReducesTaxationType" minOccurs="0"/>
+			<xs:element name="turnOffEatIn" type="crf:WfmBoolType" minOccurs="0"/>
+			<xs:element name="turnOffCatering" type="crf:WfmBoolType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
 	</xs:complexType>

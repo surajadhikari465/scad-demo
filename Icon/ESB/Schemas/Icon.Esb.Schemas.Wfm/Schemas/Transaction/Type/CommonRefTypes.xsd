@@ -1,26 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" xmlns:taf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:tpy="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:scn="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2"
+	xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+	xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+	xmlns:arf="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1"
+	xmlns:taf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1"
+	xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2"
+	xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"
+	xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+	xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1"
+	xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+	xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+	xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+	xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2"
+	xmlns:str="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2"
+	xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2"
+	xmlns:tpy="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1"
+	xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+	xmlns:scn="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2"
+	targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1" schemaLocation="../../Address/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../../Item/Item.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1" schemaLocation="../Common/CommonRefTenderTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" schemaLocation="../LineItem/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../../Common/NameType.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="../../Item/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" schemaLocation="../../Item/ScanCode.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1" schemaLocation="../../Party/TransactionParty.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2" schemaLocation="../../Store/Store.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AddressMgmt/CommonRefTypes/V1"
+		schemaLocation="../../Address/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"
+		schemaLocation="../../Item/Item.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+		schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+		schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTenderTypes/V1"
+		schemaLocation="../Common/CommonRefTenderTypes.xsd"/>
+	<xs:import
+		namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2"
+		schemaLocation="../LineItem/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2"
+		schemaLocation="../../Common/NameType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1"
+		schemaLocation="../../Item/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+		schemaLocation="../../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2"
+		schemaLocation="../../Item/ScanCode.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Party/V1"
+		schemaLocation="../../Party/TransactionParty.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+		schemaLocation="../../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/StoreMgmt/Store/V2"
+		schemaLocation="../../Store/Store.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2"
+		schemaLocation="../../Timezone/Timezone.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+		schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
 	<!-- ================== -->
 	<!--  Simple Types                -->
 	<!-- ================== -->
@@ -93,7 +131,8 @@
 	</xs:complexType>
 	<xs:complexType name="AdjustmentsTenderType">
 		<xs:sequence>
-			<xs:element name="adjustment" type="AdjustmentTenderType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="adjustment" type="AdjustmentTenderType" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AdjustmentTenderType">
@@ -122,11 +161,6 @@
 			<xs:extension base="crf:WfmStrType"/>
 		</xs:simpleContent>
 	</xs:complexType>
-	<xs:complexType name="TransactionType">
-		<xs:sequence>
-			<xs:element name="transactionType" type="tmf:TransactionTypeEnum"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="ItemCount">
 		<xs:simpleContent>
 			<xs:extension base="crf:WfmStrType"/>
@@ -154,17 +188,13 @@
 			<xs:element name="accounts" type="TenderControlAccountsType" minOccurs="0"/>
 			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="amount" type="amt:AmountType" minOccurs="0"/>
-			<xs:element name="receiptDetail" type="ReceiptDetailType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="receiptDetail" type="ReceiptDetailType" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RetailCustomersType">
 		<xs:sequence>
 			<xs:element name="customer" type="tpy:TransactionPartyType" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="tabsType">
-		<xs:sequence>
-			<xs:element name="tab" type="txf:tabType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReceiptDetailType">
@@ -191,7 +221,8 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified" minOccurs="0"/>
+			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="tenderID" type="crf:TenderIdType" form="qualified" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -287,7 +318,8 @@
 	</xs:complexType>
 	<xs:complexType name="TenderDeclarationType">
 		<xs:sequence>
-			<xs:element name="account" type="TenderDeclarationAccountType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="account" type="TenderDeclarationAccountType" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="totals" type="TenderPOSLogTotalsType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -313,31 +345,38 @@
 			<xs:element name="isForced" type="crf:WfmBoolType" minOccurs="0"/>
 			<xs:element name="type" type="nmt:NameTypeType" minOccurs="0"/>
 			<xs:element name="accountability" type="tmf:AccountabilityTypeCodeEnum" minOccurs="0"/>
-			<xs:element name="startDateTimestamp" type="tmz:DateTimezoneType" form="qualified" minOccurs="0">
+			<xs:element name="startDateTimestamp" type="tmz:DateTimezoneType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The date and time for the start of this session. It maybe the start of a day or the start of a shift or ...</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="endDateTimestamp" type="tmz:DateTimezoneType" form="qualified" minOccurs="0">
+			<xs:element name="endDateTimestamp" type="tmz:DateTimezoneType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The date and time for the end of this session. It maybe the end of a day or the end of a shift or ...</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="tillID" type="txf:TillIdType" form="qualified" minOccurs="0"/>
-			<xs:element name="openBusinessDayDate" type="crf:WfmDateType" form="qualified" minOccurs="0"/>
-			<xs:element name="closeBusinessDayDate" type="crf:WfmDateType" form="qualified" minOccurs="0"/>
-			<xs:element name="openTransactionSequenceNumber" type="crf:SequenceNumberType" form="qualified" minOccurs="0">
+			<xs:element name="openBusinessDayDate" type="crf:WfmDateType" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="closeBusinessDayDate" type="crf:WfmDateType" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="openTransactionSequenceNumber" type="crf:SequenceNumberType"
+				form="qualified" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The first transaction in this session.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="closeTransactionSequenceNumber" type="crf:SequenceNumberType" form="qualified" minOccurs="0">
+			<xs:element name="closeTransactionSequenceNumber" type="crf:SequenceNumberType"
+				form="qualified" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The last transaction in this session.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="sessionSettle" type="SettleBase" form="qualified" minOccurs="0"/>
-			<xs:element name="lastTransactionSequenceNumber" type="crf:SequenceNumberType" form="qualified" minOccurs="0"/>
+			<xs:element name="lastTransactionSequenceNumber" type="crf:SequenceNumberType"
+				form="qualified" minOccurs="0"/>
 			<xs:element name="nonResettableGrandTotal" type="amt:AmountType" minOccurs="0"/>
 			<xs:element name="previousNonResettableGrandTotal" type="amt:AmountType" minOccurs="0"/>
 			<xs:element name="accountsReceivable" type="AccountsReceivableType" minOccurs="0"/>
@@ -359,30 +398,36 @@
 	<xs:complexType name="TipInType">
 		<xs:sequence>
 			<xs:element name="tipAction" type="tmf:TipInActionTypeCodeEnum" minOccurs="0"/>
-			<xs:element name="type" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="type" type="crf:TypeType" minOccurs="0"/>
 			<xs:element name="isVoided" type="crf:WfmBoolType" minOccurs="0"/>
 			<xs:element name="tenderName" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="amount" type="amt:AmountType" form="qualified"/>
-			<xs:element name="originalPaymentAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
-			<xs:element name="authorization" type="lif:TenderAuthorizationsBase" form="qualified" minOccurs="0"/>
+			<xs:element name="amount" type="amt:AmountType" form="qualified" minOccurs="1"/>
+			<xs:element name="originalPaymentAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="authorization" type="lif:TenderAuthorizationsBase" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="tipApproval" type="crf:WfmBoolType" minOccurs="0"/>
 			<xs:element name="count" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
 			<xs:element name="category" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="originalEpsTransactionId" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="tipTransactionTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+			<xs:element name="tipTransactionTime" type="tmz:DateTimezoneType" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="lastEpsTransactionId" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="originalUser" type="prf:PartyType" minOccurs="0"/>
-			<xs:element name="updateBy" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="updateBy" type="prf:PartyType" minOccurs="0"/>
 			<xs:element name="updatedDate" type="DateTimeType" form="qualified" minOccurs="0"/>
-			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified" minOccurs="0"/>
-			<xs:element name="tenderID" type="crf:TenderIdType" form="qualified" minOccurs="0"/>
+			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="tenderId" type="crf:TenderIdType" form="qualified" minOccurs="0"/>
+			<xs:element name="creditDebitCards" type="lif:TenderCreditDebitsDomainSpecific"
+				minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DateTimeType">
 		<xs:complexContent>
 			<xs:extension base="tmz:DateTimezoneType">
 				<xs:sequence>
-					<xs:element name="dateType" type="tmf:DateTimeTypeEnum"/>
+					<xs:element name="type" type="txf:TypeType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -394,7 +439,8 @@
 					<xs:element name="tenderType" type="tmf:TenderTypeCodeEnum" minOccurs="0"/>
 					<xs:element name="subTenderType" type="crf:WfmStrType" minOccurs="0"/>
 					<xs:element name="count" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
-					<xs:element name="reason" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
+					<xs:element name="reason" type="crf:ReasonCodeType" form="qualified"
+						minOccurs="0"/>
 					<xs:element name="tenderId" type="crf:WfmStrType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
@@ -416,7 +462,8 @@
 	</xs:complexType>
 	<xs:complexType name="TenderSummariesType">
 		<xs:sequence>
-			<xs:element name="summary" type="SettleTenderLedgerBase" form="qualified" maxOccurs="unbounded"/>
+			<xs:element name="summary" type="SettleTenderLedgerBase" form="qualified"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TillSettlesType">
@@ -435,17 +482,21 @@
 			<xs:element name="overShort" type="ControlOverShortType" minOccurs="0"/>
 			<xs:element name="accounts" type="ControlAccountsType" minOccurs="0"/>
 			<xs:element name="tipIn" type="TipInType" minOccurs="0"/>
+			<xs:element name="reason" type="crf:ReasonsCodeType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SettleBase">
 		<xs:sequence>
-			<xs:element name="transactionCount" type="CountCommonData" form="qualified" minOccurs="0"/>
-			<xs:element name="totalNetSalesAmount" type="amt:AmountType" form="qualified" minOccurs="0">
+			<xs:element name="transactionCount" type="CountCommonData" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="totalNetSalesAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The total value of all sales (net of returns) performed at the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalNetReturnAmount" type="amt:AmountType" form="qualified" minOccurs="0">
+			<xs:element name="totalNetReturnAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The total value of all returns performed at the till</xs:documentation>
 				</xs:annotation>
@@ -456,23 +507,27 @@
                         city taxes</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalGrossSalesExemptTaxAmount" type="amt:AmountType" form="qualified" minOccurs="0">
+			<xs:element name="totalGrossSalesExemptTaxAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Gross Sales Amount total for all Tax Exempt sales</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="grossPositiveAmount" type="amt:AmountType" form="qualified" minOccurs="0">
+			<xs:element name="grossPositiveAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The sum of the monetary value for all tenders put into the
                         Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="grossNegativeAmount" type="amt:AmountType" form="qualified" minOccurs="0">
+			<xs:element name="grossNegativeAmount" type="amt:AmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The sum of the monetary value for all tenders taken from the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="tenderSummary" type="SettleTenderLedgerBase" form="qualified" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="tenderSummary" type="SettleTenderLedgerBase" form="qualified"
+				minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>AKA Till Declaration </xs:documentation>
 				</xs:annotation>
@@ -502,7 +557,8 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="tenderPickup" type="SettleTenderPickupBase" form="qualified" minOccurs="0">
+			<xs:element name="tenderPickup" type="SettleTenderPickupBase" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The monetary value of the sum of all tender pickups taken from the Till</xs:documentation>
 				</xs:annotation>
@@ -518,12 +574,14 @@
 					<xs:documentation>The monetary value of the sum of all refunds taken from the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="employeeDiscounts" type="ControlPOSLogTotalsBase" form="qualified" minOccurs="0">
+			<xs:element name="employeeDiscounts" type="ControlPOSLogTotalsBase" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The monetary value of the sum of all employee discount line items recorded at the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalTipsAmount" type="TotalTipAmountType" form="qualified" minOccurs="0">
+			<xs:element name="totalTipsAmount" type="TotalTipAmountType" form="qualified"
+				minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>including cash and credit tips</xs:documentation>
 				</xs:annotation>
@@ -545,7 +603,8 @@
 			<xs:element name="amount" type="amt:AmountType" form="qualified"/>
 			<xs:element name="count" type="CountCommonData" form="qualified" minOccurs="0"/>
 			<xs:element name="reason" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
-			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified" minOccurs="0"/>
+			<xs:element name="foreignCurrency" type="taf:TenderForeignCurrencyBase" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="tenderID" type="crf:TenderIdType" form="qualified" minOccurs="0"/>
 			<xs:element name="tenderDescription" type="crf:WfmStrType" minOccurs="0"/>
 		</xs:sequence>
@@ -558,7 +617,8 @@
 			<xs:element name="tenderType" type="crf:WfmStrType"/>
 			<xs:element name="typeCode" type="crf:WfmStrType"/>
 			<xs:element name="tenders" type="TenderTotalsBase" minOccurs="0"/>
-			<xs:element name="totals" type="ControlPOSLogTotalsBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="totals" type="ControlPOSLogTotalsBase" form="qualified" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="safeID" type="SafeIdType" form="qualified" minOccurs="0"/>
 			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
 			<xs:element name="account" type="TenderAccountType" minOccurs="0"/>
@@ -602,26 +662,30 @@
 	</xs:complexType>
 	<xs:complexType name="SettleReturnBase">
 		<xs:sequence>
-			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="totals" type="ControlPOSLogTotalsBase" form="qualified"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SettleSalesBase">
 		<xs:sequence>
-			<xs:element name="sale" type="SettleSaleBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="sale" type="SettleSaleBase" form="qualified" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SettleSaleBase">
 		<xs:sequence>
 			<xs:element name="saleId" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
 			<xs:element name="saleTransactions" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
-			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="totals" type="ControlPOSLogTotalsBase" form="qualified"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SettleLoansBase">
 		<xs:sequence>
-			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="tender" type="TenderTotalBase" form="qualified" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="total" type="ControlPOSLogTotalsBase" form="qualified"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -632,7 +696,8 @@
 					<xs:documentation>The monetary value of the sum of all store coupon line items recorded at the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="couponSummary" type="SettleCouponSummary" form="qualified" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="couponSummary" type="SettleCouponSummary" form="qualified"
+				minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Summary of individual store coupon types during the period being reported</xs:documentation>
 				</xs:annotation>
@@ -677,18 +742,6 @@
 			<xs:element name="invalidPassword" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
 			<xs:element name="storeRegister" type="str:StoreType" form="qualified" minOccurs="0"/>
 			<xs:element name="reasonCode" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ProductAvailabilityLogType">
-		<xs:sequence>
-			<xs:element name="productAvailability" type="itm:ItemType" form="qualified" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ProductAvailabilityType">
-		<xs:sequence>
-			<xs:element name="posItemId" type="crf:ItemIdType" form="qualified"/>
-			<xs:element name="scanCodes" type="scn:ScanCodesType" form="qualified"/>
-			<xs:element name="isAvailable" type="crf:WfmBoolType" form="qualified"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="OperatorControlActionType">
@@ -746,9 +799,11 @@
 					<xs:documentation>The monetary value of all sales recorded using the nominated Tender at the Till</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="endings" type="ControlPOSLogTotalsBase" form="qualified" minOccurs="0"/>
+			<xs:element name="endings" type="ControlPOSLogTotalsBase" form="qualified" minOccurs="0"
+			/>
 		</xs:sequence>
-		<xs:attribute name="LedgerType" type="tmf:TenderLedgerTypeCodeEnum" default="Actual" form="unqualified">
+		<xs:attribute name="LedgerType" type="tmf:TenderLedgerTypeCodeEnum" default="Actual"
+			form="unqualified">
 			<xs:annotation>
 				<xs:documentation>A code denoting the type of totals in this Till Tender ledger record</xs:documentation>
 			</xs:annotation>
@@ -773,8 +828,10 @@
 	</xs:complexType>
 	<xs:complexType name="ControlOverShortType">
 		<xs:sequence>
-			<xs:element name="over" type="ControlPOSLogTotalsBase" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="short" type="ControlPOSLogTotalsBase" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="over" type="ControlPOSLogTotalsBase" minOccurs="0"
+				maxOccurs="unbounded"/>
+			<xs:element name="short" type="ControlPOSLogTotalsBase" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SetCashierModeType">

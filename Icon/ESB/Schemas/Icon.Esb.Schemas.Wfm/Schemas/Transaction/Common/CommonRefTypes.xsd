@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:arf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" xmlns:xrf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="16.27">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+	xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+	xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+	xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+	xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+	xmlns:nmt="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2"
+	xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1"
+	xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2"
+	xmlns:prf="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+	xmlns:arf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1"
+	xmlns:xrf="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1"
+	xmlns:tmz="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2"
+	xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+	targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="16.27">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2" schemaLocation="../../Common/NameType.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" schemaLocation="../../Common/LinkType.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../../Amount/Amount.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" schemaLocation="../../Locale/Locale.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../../Party/Party.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2" schemaLocation="../../Timezone/Timezone.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1" schemaLocation="../../Tax/TaxAuthority.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1" schemaLocation="../../Tax/TaxRate.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1"
+		schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1"
+		schemaLocation="../../Common/CommonRefEnumTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/NameType/V2"
+		schemaLocation="../../Common/NameType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1"
+		schemaLocation="../../Common/LinkType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1"
+		schemaLocation="../../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2"
+		schemaLocation="../../Locale/Locale.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2"
+		schemaLocation="../../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TimezoneMgmt/Timezone/V2"
+		schemaLocation="../../Timezone/Timezone.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxAuthority/V1"
+		schemaLocation="../../Tax/TaxAuthority.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Legal/Retail/TaxMgmt/TaxRate/V1"
+		schemaLocation="../../Tax/TaxRate.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2"
+		schemaLocation="../../Uom/UnitOfMeasure.xsd"/>
 	<!-- ================== -->
 	<!-- Simple Types                 -->
 	<!-- ================== -->
@@ -91,13 +118,17 @@
 		<xs:sequence>
 			<xs:element name="sequenceNumber" type="crf:SequenceNumberType" form="qualified"/>
 			<xs:element name="approver" type="prf:PartyType" form="qualified"/>
-			<xs:element name="lineApprovalCode" type="LineApprovalCode" form="qualified" minOccurs="0"/>
-			<xs:element name="description" type="DescriptionCommonData" form="qualified" minOccurs="0"/>
+			<xs:element name="lineApprovalCode" type="LineApprovalCode" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="description" type="DescriptionCommonData" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="entryMethod" type="tmf:EntryMethodEnum" form="qualified" minOccurs="0"/>
-			<xs:element name="approvalDateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
+			<xs:element name="approvalDateTime" type="tmz:DateTimezoneType" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="businessRuleManager" type="BusinessRuleManagerType" minOccurs="0"/>
 			<xs:element name="policyRuleManager" type="PolicyRuleManagerType" minOccurs="0"/>
-			<xs:element name="returnPolicy" type="ReturnPolicy" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="returnPolicy" type="ReturnPolicy" minOccurs="0" maxOccurs="unbounded"
+			/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BankReceiptType">
@@ -106,7 +137,8 @@
 			<xs:element name="Account" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="Description" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="Amount" type="amt:AmountType" minOccurs="0"/>
-			<xs:element name="ReceiptDetail" type="ReceiptDetailType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReceiptDetail" type="ReceiptDetailType" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BusinessActionType">
@@ -179,7 +211,8 @@
 	<xs:complexType name="OverShortType">
 		<xs:sequence>
 			<xs:element name="Over" type="POSLogTotalsBaseType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="Short" type="POSLogTotalsBaseType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Short" type="POSLogTotalsBaseType" minOccurs="0" maxOccurs="unbounded"
+			/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PolicyRuleManagerType">
@@ -214,7 +247,8 @@
 			<xs:element name="amount" type="amt:AmountType" form="qualified"/>
 			<xs:element name="count" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
 			<xs:element name="reason" type="crf:ReasonCodeType" form="qualified" minOccurs="0"/>
-			<xs:element name="foreignCurrency" type="TenderForeignCurrencyBaseType" form="qualified" minOccurs="0"/>
+			<xs:element name="foreignCurrency" type="TenderForeignCurrencyBaseType" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="tenderID" type="crf:WfmIntType" form="qualified" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -252,14 +286,17 @@
 	</xs:complexType>
 	<xs:complexType name="ReceiptDeliveryType">
 		<xs:sequence>
-			<xs:element name="ChannnelType" type="crf:WfmStrType" minOccurs="0"  maxOccurs="unbounded"/>
+			<xs:element name="channnelType" type="crf:WfmStrType" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReversalType">
 		<xs:sequence>
-			<xs:element name="sequenceNumber" type="crf:SequenceNumberType" form="qualified" minOccurs="0"/>
+			<xs:element name="sequenceNumber" type="crf:SequenceNumberType" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="dateTime" type="tmz:DateTimezoneType" form="qualified" minOccurs="0"/>
-			<xs:element name="adjudicationCode" type="AdjudicationCodeType" form="qualified" minOccurs="0"/>
+			<xs:element name="adjudicationCode" type="AdjudicationCodeType" form="qualified"
+				minOccurs="0"/>
 			<xs:element name="referenceNumber" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
 			<xs:element name="hostText" type="crf:WfmStrType" form="qualified" minOccurs="0"/>
 			<xs:element name="reversedAmount" type="amt:AmountType" form="qualified" minOccurs="0"/>
@@ -378,16 +415,75 @@
 			<xs:element name="uom" type="uom:UomType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="tabType">
+	<xs:complexType name="TabType">
 		<xs:sequence>
 			<xs:element name="tableId" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="actionLog" type="ActionLogType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="TabsType">
+		<xs:sequence>
+			<xs:element name="tab" type="TabType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="ActionLogType">
-		<xs:all>
+		<xs:sequence>
 			<xs:element name="logData" type="crf:WfmStrType" minOccurs="1"/>
-			<xs:element name="logTime" type="crf:WfmStrType" minOccurs="1"/>
-		</xs:all>
+			<xs:element name="logTime" type="tmz:DateTimezoneType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TypeType">
+		<xs:sequence>
+			<xs:element name="code" type="crf:CodeType" minOccurs="1"/>
+			<xs:element name="description" type="crf:DescriptionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SurveysType">
+		<xs:sequence>
+			<xs:element name="survey" type="SurveyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SurveyType">
+		<xs:sequence>
+			<xs:element name="surveyId" type="xs:string" form="qualified" minOccurs="0"/>
+			<xs:element name="surveyQuestion" type="SurveyQuestionType" form="qualified"
+				minOccurs="0"/>
+			<xs:element name="surveyResponse" type="SurveyResponseType" form="qualified"
+				minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="surveyLink" type="xs:string" form="unqualified" use="optional"/>
+		<xs:attribute name="surveyName" type="xs:string" form="unqualified" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="SurveyQuestionType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="question" type="crf:WfmStrType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SurveyResponseType">
+		<xs:sequence>
+			<xs:element name="response" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="responseDateTime" type="tmz:DateTimezoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConversionEventsType">
+		<xs:sequence>
+			<xs:element name="convresionEvent" type="ConversionEventType" minOccurs="0"
+				maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConversionEventType">
+		<xs:sequence>
+			<xs:element name="eventId" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="eventType" type="TypeType" minOccurs="0"/>
+			<xs:element name="conversionState" type="ConversionStateType" form="qualified"
+				minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConversionStateType">
+		<xs:sequence>
+			<xs:element name="customerId" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="status" type="crf:WfmStrType" minOccurs="1"/>
+		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

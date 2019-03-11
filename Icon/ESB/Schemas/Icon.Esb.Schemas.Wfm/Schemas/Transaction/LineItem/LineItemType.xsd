@@ -34,17 +34,4 @@
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="kitItemType" type="KitItemTypeType"/>
-	<xs:complexType name="KitItemTypeType">
-		<xs:sequence>
-			<xs:choice>
-				<xs:element name="return" type="rrf:ReturnType"/>
-				<xs:element name="sale" type="srf:SaleType"/>
-			</xs:choice>
-			<xs:choice minOccurs="0">
-				<xs:element name="onlineServices" type="orf:OnlineServicesType"/>
-				<xs:element name="scanData" type="txf:ScanDataBase"/>
-			</xs:choice>
-		</xs:sequence>
-	</xs:complexType>
 </xs:schema>

@@ -151,6 +151,9 @@
     <None Include="Schemas\Common\LinkType.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Common\ListType.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Common\NameType.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -286,10 +289,10 @@
     <None Include="Schemas\Item\ItemAttributesStore.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Schemas\Item\ItemType.xsd">
+    <None Include="Schemas\Item\ItemGroupType.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Schemas\Item\Kit\Kit.xsd">
+    <None Include="Schemas\Item\ItemType.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Schemas\Item\ScanCode.xsd">
@@ -481,7 +484,64 @@
     <None Include="Schemas\Transaction\Common\CommonRefTypes.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\Transaction\ItemMovement\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\ItemMovement\TransactionItemMovement.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schemas\Transaction\LineItem\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\Layaway.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\LineItem.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\LineItemType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\OnlineService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\Return.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\Sale.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\Tender.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\LineItem\Void.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Transaction.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\TransactionAssociate\TransactionAssociate.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\CommonRefTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\Control.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\CustomerOrder.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\Retail.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\TenderControl.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\TotalBaseType.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\Transaction\Type\TransactionType.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Schemas\Uom\CommonRefTypes.xsd">

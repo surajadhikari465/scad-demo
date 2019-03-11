@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:drf="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:kit="http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:drf="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:igp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" schemaLocation="../Common/ListType.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" schemaLocation="ScanCode.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="../Price/Price.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" schemaLocation="../SelectionGroup/SelectionGroup.xsd"/>
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1" schemaLocation="./Kit/Kit.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" schemaLocation="ItemGroupType.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -17,16 +19,23 @@
 		<xs:sequence>
 			<xs:element name="scanCodes" type="sis:ScanCodesType" minOccurs="0"/>
 			<xs:element name="links" type="crf:LinksType" minOccurs="0"/>
-			<xs:element name="groups" type="crf:GroupsType" minOccurs="0"/>
+			<xs:element name="groups" type="igp:ItemGroupsType" minOccurs="0"/>
 			<xs:element name="hierarchies" type="crf:HierarchiesType"/>
 			<xs:element name="traits" type="crf:TraitsType"/>
 			<xs:element name="prices" type="prc:PricesType" minOccurs="0"/>
 			<xs:element name="selectionGroups" type="drf:SelectionGroupsType" minOccurs="0"/>
-			<xs:element name="kit" type="kit:KitType" minOccurs="0">
+			<xs:element name="lists" type="lrf:ListsType" minOccurs="0"/>
+			<xs:element name="imageUrl" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="isKitchenItem" type="crf:WfmBoolType" minOccurs="0"/>
+			<xs:element name="kitchenDescription" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="isHospitalityItem" type="crf:WfmBoolType" minOccurs="0"/>
+			<xs:element name="calorieDisplayMode" type="crf:WfmStrType" minOccurs="0"/>
+			<!--<xs:element name="kit" type="kit:KitType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Kit builder information and other elements to be contained here</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			-->
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
