@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Data;
+using System.Text;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections;
@@ -51,16 +52,16 @@ namespace Audit
 			try
 			{
 				this.logger.Info($"Processing {this.spec.Config.Name}");
-				
+
 				var items = this.spec.Config.IsGlobal
 					? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} ",
-					                                              argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
-					                                              argRegion: new Region(){ Id = 0, Code = GLOBAL, Name = GLOBAL })}
-					
+																												argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
+																												argRegion: new Region(){ Id = 0, Code = GLOBAL, Name = GLOBAL })}
+
 					: this.spec.Regions.Where(x => IsReady(x))
-					      .Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}',",
-					                                       argFileName: Path.Combine(this.spec.DirPath, x.Code, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
-					                                       argRegion: x))
+								.Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}',",
+																								 argFileName: Path.Combine(this.spec.DirPath, x.Code, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
+																								 argRegion: x))
 					.ToArray();
 
 				foreach(var item in items)
@@ -69,11 +70,14 @@ namespace Audit
 					{
 						groupId = -1;
 						hasData = false;
+						var stringIDs = new HashSet<int>(); //Column IDs of typeof(string);
+
 						if(!Directory.Exists(Path.GetDirectoryName(item.FileName)))
 						{
 							Directory.CreateDirectory(Path.GetDirectoryName(item.FileName));
 						}
 						DeleteFile(item.FileName);
+
 						using(var conn = new SqlConnection(this.spec.ConnectionString))
 						using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}, @maxRows = {this.spec.Config.MaxRows}", conn) { CommandTimeout = this.spec.CommandTimeOut })
 						{
@@ -97,8 +101,8 @@ namespace Audit
 								}
 
 								hasData = true;
-								var data = new object[reader.FieldCount];
-								using(var writer = new StreamWriter(item.FileName, true))
+
+								using(var writer = new StreamWriter(item.FileName, true, Encoding.UTF8, 655336))
 								{
 									if(groupId == 0) //Write header
 									{
@@ -106,19 +110,30 @@ namespace Audit
 										for(int i = 0; i < reader.FieldCount; i++)
 										{
 											names.Add(reader.GetName(i));
+
+											if(reader.GetFieldType(i) == typeof(string))
+											{
+												stringIDs.Add(i);
+											}
 										}
 										writer.WriteLine(String.Join(delimiter, names));
 									}
 
 									while(reader.Read())
 									{
-										Array.Clear(data, 0, data.Length);
+										var data = new object[reader.FieldCount];
 										reader.GetValues(data);
-										writer.WriteLine(String.Join(delimiter, data.Select(x => x is DBNull ? String.Empty : x.ToString().Replace(spec.Config.Delimiter, SPACE).Trim())));
-									}
 
-									writer.Flush();
-									writer.Dispose();
+										Parallel.ForEach(stringIDs, (i) =>
+										{
+											if(!(data[i] is DBNull) && data[i].ToString().IndexOf(delimiter) >= 0)
+											{
+												data[i] = data[i].ToString().Replace(spec.Config.Delimiter, SPACE);
+											}
+										});
+
+										writer.WriteLine(String.Join(delimiter, data.Select(x => x is DBNull ? String.Empty : x)));
+									}
 								}
 								reader = null;
 							}
@@ -144,7 +159,7 @@ namespace Audit
 					}
 					catch(Exception ex)
 					{
-						this.logger.Error($"{AUDIT_SERVICE} ({item.Region.Code}) Exception:", ex); 
+						this.logger.Error($"{AUDIT_SERVICE} ({item.Region.Code}) Exception:", ex);
 					}
 				}
 			}
@@ -158,7 +173,7 @@ namespace Audit
 			outputInfo.ZipFile = Path.Combine(zipDir, Path.ChangeExtension(Path.GetFileName(outputInfo.FileName), "zip"));
 
 			if(!Directory.Exists(zipDir)) Directory.CreateDirectory(zipDir);
-      ZipFile.CreateFromDirectory(dirFrom, outputInfo.ZipFile);
+			ZipFile.CreateFromDirectory(dirFrom, outputInfo.ZipFile);
 			DeleteFile(outputInfo.FileName);
 		}
 
@@ -199,7 +214,7 @@ namespace Audit
 
 				var client = new AmazonS3Client(awsAccessKeyId: this.hsVariables.ContainsKey(this.spec.Profile.AccessKey) ? this.hsVariables[this.spec.Profile.AccessKey].ToString() : this.spec.Profile.AccessKey,
 				                                awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
-				                                clientConfig: new AmazonS3Config(){ ServiceURL = this.spec.Profile.BucketRegion	});
+				                                clientConfig: new AmazonS3Config() { ServiceURL = this.spec.Profile.BucketRegion });
 
 				var request = new PutObjectRequest
 				{
