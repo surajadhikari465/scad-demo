@@ -548,8 +548,8 @@ BEGIN
                   A.Multiple = B.Multiple,
                   A.PriceChangeType = 'SAL',
                   A.PriceType = 'SAL',
-                  A.Sale_Start_Date = B.StartDate,
-                  A.Sale_End_Date = B.SaleEndDate
+                  A.Sale_Start_Date = CONVERT(VARCHAR(10), B.StartDate, 101),
+                  A.Sale_End_Date =CONVERT(VARCHAR(10), B.SaleEndDate, 101)
      FROM #tempESL A
      INNER JOIN #tempDetailSAL B ON B.Item_Key = A.Item_Key AND B.Store_No = A.Store_No;
    END
