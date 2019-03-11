@@ -1,14 +1,15 @@
 import axios from 'axios'
 import { KbApiMethod } from '../helpers/kbapi';
 
-export function PerformLinkGroupSearch(groupName: string, groupDesc: string, modifierName: string, modifierPlu: string) {
+export function PerformLinkGroupSearch(groupName: string, groupDesc: string, modifierName: string, modifierPlu: string, regions: string) {
     return new Promise((resolve, reject) => {
         axios.get(KbApiMethod("LinkGroupsSearch"), {
             params: {
                 LinkGroupName: groupName,
                 LinkGroupDesc: groupDesc,
                 ModifierName: modifierName,
-                ModifierPLU: modifierPlu
+                ModifierPLU: modifierPlu,
+                Regions: regions
             }
         }).then(res => {
             resolve(res.data);

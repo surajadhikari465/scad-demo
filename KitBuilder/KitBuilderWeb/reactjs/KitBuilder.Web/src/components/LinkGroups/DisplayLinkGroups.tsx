@@ -43,7 +43,7 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
         var url = KbApiMethod("LinkGroups") + "/" + linkGroupId;
         let message = "";
         let messageType: SweetAlertType | undefined = undefined;
-        console.log(url);
+        
         Axios.delete(url)
             .then(response => {
                 if (response.status= 204) {
@@ -108,10 +108,9 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
                         },
                         {
                             Header: "Regional Association",
-                            accessor: "regionalAssociation",
+                            accessor: "regions",
                             show: true,
-                            style: { cursor: "pointer" },
-                            Cell: (row) => { return "will come from another PBI" }
+                            style: { cursor: "pointer" }
                         }, {
                             Header: "Action",
                             accessor: "Action",
@@ -128,7 +127,10 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
                         }
                     ]}
                 />
+                
             </React.Fragment>
+
+            
         )
     }
 }

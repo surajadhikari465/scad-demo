@@ -36,7 +36,7 @@ export class CopyLinkGroupButton extends React.Component<IProps, IState> {
                 let dataArray: any = []
 
                 return new Promise((resolve, reject) => {
-                    PerformLinkGroupSearch(linkGroupName, "", "", "")
+                    PerformLinkGroupSearch(linkGroupName, "", "", "","")
                         .then(result => {
                             dataArray = result;
                             if (dataArray.length === 0)

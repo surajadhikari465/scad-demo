@@ -32,7 +32,8 @@ interface ILinkGroupsPageState {
     showEditScreen: boolean,
     showSearchScreen: boolean,
     showAddNew: boolean,
-    selectedLinkGroup: any
+    selectedLinkGroup: any, 
+    regions: string[]
 
 }
 interface ILinkGroupsPageProps {
@@ -76,7 +77,8 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
             showEditScreen: false,
             showSearchScreen: true,
             showAddNew: false,
-            selectedLinkGroup: []
+            selectedLinkGroup: [], 
+            regions: []
         }
         this.handleSearchOptionsChange = this.handleSearchOptionsChange.bind(this);
         this.onSearch = this.onSearch.bind(this);
@@ -91,14 +93,37 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
         this.setState({ ...this.state, searchOptions: temp });
     }
 
+    componentWillMount() {
+       this.loadRegions().then((d:any)=> {
+        this.setState({ ...this.state, regions: d });
+       }).catch(e=> {
+            console.log("could not load region information")
+            console.log(e)
+       });
+    }
+
+    loadRegions() {
+        return new Promise((resolve, reject) => {
+            //pass linkgroupid and true to return child objects.
+            axios.get(KbApiMethod("LocalesByType"),
+            {
+                params: {
+                    localeTypeDesc: "Region",
+                } 
+            }
+             ).then(res => {
+                resolve(res.data);
+            }).catch(error => {
+                reject(error);
+            });
+        })
+    }
 
     onSearch() {
-        console.log("searching...")
         this.setState({ ...this.state, showSearchProgress: true });
         var searchOptions = this.state.searchOptions;
 
-
-        PerformLinkGroupSearch(searchOptions.LinkGroupName, searchOptions.LinkGroupDesc, searchOptions.ModifierName, searchOptions.ModifierPLU)
+        PerformLinkGroupSearch(searchOptions.LinkGroupName, searchOptions.LinkGroupDesc, searchOptions.ModifierName, searchOptions.ModifierPLU, searchOptions.Region)
             .then(result => {
                 this.setState({ ...this.state, linkGroupResults: result })
             }).catch(error => {
@@ -158,12 +183,18 @@ export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkG
 
                             <Grid item md={12}>
                                 <SearchLinkGroups
+                                    regions={this.state.regions}
                                     searchOptions={this.state.searchOptions}
                                     onChange={this.handleSearchOptionsChange}
                                     showSearchProgress={this.state.showSearchProgress}
                                     onSearch={this.onSearch}
                                     onAddNew={() => {
                                         this.setState({ ...this.state, showAddNew: !this.state.showAddNew })
+                                    }}
+                                    onRegionsChanged={(regions: string[]) => {
+                                        let updatedSearchOptions = this.state.searchOptions;
+                                        updatedSearchOptions.Region = regions.join(",");
+                                        this.setState({ ...this.state, searchOptions: updatedSearchOptions })
                                     }}
                                 />
 

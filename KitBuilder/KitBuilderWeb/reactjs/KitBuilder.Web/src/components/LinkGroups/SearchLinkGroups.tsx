@@ -39,20 +39,7 @@ const styles = (theme: any) => ({
 
 });
 
-const regions = [
-    'FL',
-    'MA',
-    'MW',
-    'NA',
-    'NE',
-    'PN',
-    'RM',
-    'SO',
-    'SP',
-    'SW',
-    'UK'
-    
-  ];
+
 
   const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -66,11 +53,13 @@ const ITEM_PADDING_TOP = 8;
   };
 
 interface IProps {
+    regions: string[],
     classes: any,
     searchOptions: any,
     onChange(event: any): void,
     onSearch(): void,
     onAddNew():void,
+    onRegionsChanged(selectedRegions: string[] ): void,
     showSearchProgress: boolean
 }
 
@@ -101,7 +90,7 @@ class SearchLinkGroups extends React.Component<IProps, IState> {
 
 
     handleChange(event:any) {
-        this.setState({selectedRegions: event.target.value})
+        this.setState({selectedRegions: event.target.value}, () => {this.props.onRegionsChanged(this.state.selectedRegions)})
     }
 
   
@@ -124,29 +113,23 @@ class SearchLinkGroups extends React.Component<IProps, IState> {
                             name="LinkGroupDesc"
                             onChange={this.props.onChange}
                         />
-                        {/* <TextField id="Region"
-                            label="Region"
-                            fullWidth
-                            name="Region"
-                            onChange={this.props.onChange}
-                        /> */}
-
+ 
 <InputLabel htmlFor="c" >Regions</InputLabel>
-        
+
         <Select
           multiple
           fullWidth
           value={this.state.selectedRegions}
           onChange={this.handleChange}
           input={<Input id="aaa" fullWidth   />}
-        renderValue={(selected:[]) => {  console.log(selected); return selected.join(', ')}}
+        renderValue={(selected:[]) => {  return selected.join(', ')}}
        
           MenuProps={MenuProps}
         >
-          {regions.map((region:string) => (
-            <MenuItem key={region} value={region}>
-              <Checkbox checked={ this.state.selectedRegions.indexOf(region) > -1} />
-              <ListItemText primary={region} />
+          {this.props.regions.map((region:any) => (
+            <MenuItem key={region.regionCode} value={region.regionCode}>
+              <Checkbox checked={ this.state.selectedRegions.indexOf(region.regionCode) > -1} />
+              <ListItemText primary={region.regionCode} />
             </MenuItem>
           ))}
         </Select>
