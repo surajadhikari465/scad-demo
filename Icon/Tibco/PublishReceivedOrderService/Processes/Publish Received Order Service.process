@@ -62,7 +62,7 @@
                             <xsl:value-of select="StoreName"/>
                         </pfx2:locationName>
                         <pfx2:eventType>
-                            <xsl:value-of select="$Parse-XML/pfx3:Event/pfx3:EventTypeCode"/>
+                            <xsl:value-of select="$Parse-XML/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
                         </pfx2:eventType>
                         <pfx2:messageNumber>
                             <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/MessageNumber"/>
@@ -350,7 +350,14 @@
         <pd:inputBindings>
             <jdbcQueryActivityInput>
                 <KeyId>
-                    <xsl:value-of select="$Parse-XML/pfx3:Event/pfx3:KeyID"/>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-XML/pfx3:Events/pfx3:EventType[1]/pfx3:KeyID)">
+                            <xsl:value-of select="$Parse-XML/pfx3:Events/pfx3:EventType[1]/pfx3:KeyID"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </KeyId>
             </jdbcQueryActivityInput>
         </pd:inputBindings>
@@ -364,7 +371,7 @@
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
             <validateOutput>true</validateOutput>
-            <term ref="pfx3:Event"/>
+            <term ref="pfx3:Events"/>
         </config>
         <pd:inputBindings>
             <xmlString>

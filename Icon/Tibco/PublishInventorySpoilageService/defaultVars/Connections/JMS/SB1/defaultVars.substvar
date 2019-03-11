@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!C3pAK895vlYhC4ILhDxKO8tdjb/POpYL/oH8HTorRWa3DP4kk6660gRT8hQt4dF5x0agOmY+63w=</value>
+			<value>#!t8r0Dx0AkbHLYJ5QtqxxjrEJRamI5EhLd4uncQ4j1TyQIhfuuaRC0WCyi+qvEYuW30O9X6kK+TE=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1552057306854</modTime>
+			<modTime>1552057250798</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value>sb1_HCReceiptOrderUser</value>
+			<value>sb1_HCAdjustmentUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1552057306928</modTime>
+			<modTime>1552057250888</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

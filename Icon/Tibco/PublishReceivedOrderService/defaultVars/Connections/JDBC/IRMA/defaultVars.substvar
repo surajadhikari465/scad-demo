@@ -4,10 +4,10 @@
 		<globalVariable>
 			<name>ConnectionString</name>
 			<value>jdbc:sqlserver://idd-ma\mad;DatabaseName=ItemCatalog_Test;</value>
-			<deploymentSettable>false</deploymentSettable>
+			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1551824709609</modTime>
+			<modTime>1552063622860</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

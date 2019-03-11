@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/OrderReceipt.xsd"/>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/InventoryAdjustment.xsd"/>
     <pd:name>Processes/SendToEsb.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="Input">
             <xsd:complexType>
                 <xsd:sequence>
+                    <xsd:element ref="pfx:inventoryAdjustments"/>
                     <xsd:element name="RegionCode" type="xsd:string"/>
-                    <xsd:element ref="pfx:orderReceipts"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>317</pd:startX>
-    <pd:startY>178</pd:startY>
+    <pd:startX>116</pd:startX>
+    <pd:startY>239</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>1151</pd:endX>
-    <pd:endY>161</pd:endY>
+    <pd:endX>1126</pd:endX>
+    <pd:endY>248</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1551808776710</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1551976352674</pd:targetNamespace>
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>459</pd:x>
-        <pd:y>22</pd:y>
-        <pd:width>550</pd:width>
-        <pd:height>302</pd:height>
+        <pd:x>143</pd:x>
+        <pd:y>92</pd:y>
+        <pd:width>928</pd:width>
+        <pd:height>271</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -91,8 +91,8 @@
         <pd:activity name="SendDataToESB">
             <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
             <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-            <pd:x>681</pd:x>
-            <pd:y>105</pd:y>
+            <pd:x>436</pd:x>
+            <pd:y>174</pd:y>
             <config>
                 <PermittedMessageType>Text</PermittedMessageType>
                 <SessionAttributes>
@@ -113,7 +113,7 @@
                 <ns1:ActivityInput>
                     <OtherProperties>
                         <TransactionID>
-                            <xsl:value-of select="concat($Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber, $_globalVariables/ns:GlobalVariables/Application/TransactionType,$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber)"/>
+                            <xsl:value-of select="concat($Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber ,$_globalVariables/ns:GlobalVariables/Application/TransactionType, $Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber)"/>
                         </TransactionID>
                         <TransactionType>
                             <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/TransactionType"/>
@@ -122,10 +122,10 @@
                             <xsl:value-of select="&quot;IRMA&quot;"/>
                         </Source>
                         <MessageType>
-                            <xsl:value-of select="&quot;Text&quot;"/>
+                            <xsl:value-of select="&quot;TEXT&quot;"/>
                         </MessageType>
                         <MessageNumber>
-                            <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                            <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                         </MessageNumber>
                         <RegionCode>
                             <xsl:value-of select="$Start/Input/RegionCode"/>
@@ -137,22 +137,11 @@
                 </ns1:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="CatchSendingToEsbException">
-            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-            <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>539</pd:x>
-            <pd:y>233</pd:y>
-            <pd:handler>true</pd:handler>
-            <config>
-                <catchAll>true</catchAll>
-            </config>
-            <pd:inputBindings/>
-        </pd:activity>
         <pd:activity name="Archive Message">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>891</pd:x>
-            <pd:y>105</pd:y>
+            <pd:x>799</pd:x>
+            <pd:y>164</pd:y>
             <config>
                 <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                 <spawn>true</spawn>
@@ -163,31 +152,43 @@
                         <xsl:value-of select="$Render-XML/xmlString"/>
                     </MessageBody>
                     <EventType>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:eventType"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:eventType"/>
                     </EventType>
                     <BusinessUnitID>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber"/>
                     </BusinessUnitID>
                     <KeyID>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:receiptNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:adjustmentNumber"/>
                     </KeyID>
                     <SecondaryKeyID>
                         <xsl:value-of select="0"/>
                     </SecondaryKeyID>
                     <Status>
-                        <xsl:value-of select="'P'"/>
+                        <xsl:value-of select="&quot;P&quot;"/>
                     </Status>
                     <MessageNumber>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                     </MessageNumber>
                 </Input>
             </pd:inputBindings>
         </pd:activity>
+        <pd:activity name="CatchSendingToEsbException">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>259</pd:x>
+            <pd:y>277</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <fault>localname=JMSSendException namespace=http://schemas.tibco.com/bw/plugins/jms/5.0/jmsExceptions</fault>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
         <pd:activity name="Archive Message On Error">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>903</pd:x>
-            <pd:y>241</pd:y>
+            <pd:x>667</pd:x>
+            <pd:y>276</pd:y>
             <config>
                 <processName>/SharedResources/Processes/ArchiveInventoryManagementMessage.process</processName>
                 <spawn>true</spawn>
@@ -198,27 +199,27 @@
                         <xsl:value-of select="$Render-XML/xmlString"/>
                     </MessageBody>
                     <EventType>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:eventType"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:eventType"/>
                     </EventType>
                     <BusinessUnitID>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:locationNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:locationNumber"/>
                     </BusinessUnitID>
                     <KeyID>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:receiptNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:adjustmentNumber"/>
                     </KeyID>
                     <SecondaryKeyID>
                         <xsl:value-of select="0"/>
                     </SecondaryKeyID>
                     <Status>
-                        <xsl:value-of select="'U'"/>
+                        <xsl:value-of select="&quot;U&quot;"/>
                     </Status>
-                    <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                    <xsl:if test="$_error/ns2:ErrorReport/Msg">
                         <ErrorDescription>
                             <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
                         </ErrorDescription>
                     </xsl:if>
                     <MessageNumber>
-                        <xsl:value-of select="$Start/Input/pfx:orderReceipts/pfx:orderReceipt[1]/pfx:messageNumber"/>
+                        <xsl:value-of select="$Start/Input/pfx:inventoryAdjustments/pfx:inventoryAdjustment[1]/pfx:messageNumber"/>
                     </MessageNumber>
                 </Input>
             </pd:inputBindings>
@@ -226,8 +227,8 @@
         <pd:activity name="LogSendDataToESBError">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>669</pd:x>
-            <pd:y>232</pd:y>
+            <pd:x>465</pd:x>
+            <pd:y>280</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
             </config>
@@ -266,17 +267,17 @@
         <pd:activity name="Render XML">
             <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
             <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-            <pd:x>544</pd:x>
-            <pd:y>104</pd:y>
+            <pd:x>270</pd:x>
+            <pd:y>175</pd:y>
             <config>
                 <renderAsText>text</renderAsText>
                 <validateInput>false</validateInput>
                 <renderDefaultPrefix>true</renderDefaultPrefix>
                 <textEncoding>UTF-16</textEncoding>
-                <term ref="pfx:orderReceipts"/>
+                <term ref="pfx:inventoryAdjustments"/>
             </config>
             <pd:inputBindings>
-                <xsl:copy-of select="$Start/Input/pfx:orderReceipts"/>
+                <xsl:copy-of select="$Start/Input/pfx:inventoryAdjustments"/>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

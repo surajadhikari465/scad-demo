@@ -26,20 +26,20 @@
 			<modTime>1547859326192</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>InstanceId</name>
-			<value>401</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1540934860909</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
 			<value>IRMA</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1538581460841</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MaxRedeliveryCount</name>
+			<value>6</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1551975633298</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MessageType</name>
@@ -66,36 +66,20 @@
 			<modTime>1538674595251</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>SpoilageEventQueueName</name>
+			<value>WFMSB1.Irma.SupplyChain.InventoryMgmt.Adjustments.MA.Queue.V1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1551975597753</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>TransactionType</name>
 			<value>InventorySpoilage</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1540934703825</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedFivetimes</name>
-			<value>15</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547859326059</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>10</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547859326104</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedThreetimes</name>
-			<value>5</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547859326148</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
