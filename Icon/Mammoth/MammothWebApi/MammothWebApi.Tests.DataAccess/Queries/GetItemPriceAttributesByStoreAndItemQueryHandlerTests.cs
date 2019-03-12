@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Mammoth.Common.DataAccess.DbProviders;
 using MammothWebApi.DataAccess.Models;
 using MammothWebApi.DataAccess.Queries;
@@ -344,6 +344,56 @@ namespace MammothWebApi.Tests.DataAccess.Queries
             // future TPR
             InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
                 4.49m, "TPR", "SSAL", expectedFutureTprStartDate, expectedFutureTprEndDate);
+
+            this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
+            {
+                Region = expectedRegion,
+                EffectiveDate = expectedEffectiveDate,
+                IncludeFuturePrices = false,
+                StoreScanCodeCollection = new List<StoreScanCode>
+                {
+                    new StoreScanCode {BusinessUnitID = expectedStoreBuId, ScanCode = expectedItemScanCode}
+                }
+            };
+
+            // When
+            var prices = this.queryHandler.Search(this.query);
+
+            // Then
+            // Expect current and future prices
+            Assert.AreEqual(2, prices.Count(), "Price count is not correct.");
+            Assert.AreEqual(expectedRegularStartDate, prices.First(p => p.PriceType == "REG").StartDate);
+            Assert.AreEqual(expectedTprStartDate, prices.First(p => p.PriceType != "REG").StartDate);
+            Assert.IsNull(prices.FirstOrDefault(p => p.StartDate > DateTime.Today));
+        }
+
+        [TestMethod]
+        public void GetItemDifferentPriceAttributesByStoreAndScanCodeQuery_FutureExpectedPricesAndIncludeFuturePricesIsFalse_ReturnsCurrentPricesOnly()
+        {
+            // Given
+            DateTime expectedFutureRegStartDate = DateTime.UtcNow.Date.AddDays(30);
+            DateTime expectedFutureTprStartDate = DateTime.UtcNow.Date.AddDays(20);
+            DateTime expectedFutureTprEndDate = DateTime.UtcNow.Date.AddDays(40);
+            DateTime expectedRegularStartDate = DateTime.UtcNow.Date.AddDays(-5);
+            DateTime expectedTprStartDate = DateTime.UtcNow.Date.AddDays(-1);
+            DateTime expectedTprEndDate = DateTime.UtcNow.Date.AddDays(10);
+
+            // future REG
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                7.50m, "REG", "REG", expectedFutureRegStartDate, null);
+            // future TPR
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.49m, "TPR", "SSAL", expectedFutureTprStartDate, expectedFutureTprEndDate);
+            // expected REG
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "REG", "REG", expectedRegularStartDate, null);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                4.50m, "REG", "REG", expectedRegularStartDate.AddDays(-2), null);
+            // expected TRP
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", expectedTprStartDate, expectedTprEndDate);
+            InsertGpmPriceObject(expectedRegion, expectedItemId, expectedStoreBuId,
+                2.50m, "TPR", "MSAL", DateTime.UtcNow.Date.AddDays(-8), DateTime.UtcNow.Date.AddDays(-4));
 
             this.query = new GetItemPriceAttributesByStoreAndScanCodeQuery
             {
