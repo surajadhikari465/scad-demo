@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KitBuilder.DataAccess.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +18,9 @@ namespace KitBuilder.DataAccess.Dto
 		[Required]
 		public int ItemId { get; set; }
 		[StringLength(255, ErrorMessage = "Description can have maximum length of 255.")]
+        public KitType KitType { get; set; }
+        public bool isDisplayMandatory { get; set; }
+        public bool showRecipe { get; set; }
 		public string Description { get; set; }
 		public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
