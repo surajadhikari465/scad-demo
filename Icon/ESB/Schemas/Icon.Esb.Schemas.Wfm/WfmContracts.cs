@@ -11,7 +11,7 @@
 // WFM Schema 3.0.0.1000 [0ee7bd5a2d0] + 2 Affinity crash fixes supplied by Jason Jorgenson
 
 
-namespace Icon.Esb.Schemas.Wfm.Contract
+namespace Icon.Esb.Schemas.Wfm.Contracts
 {
     using System.Xml.Serialization;
 
