@@ -34,11 +34,4 @@
 		<xs:attribute ref="crf:Action"/>
 		<xs:attribute ref="crf:Id"/>
 	</xs:complexType>
-	<xs:complexType name="RewardTypeType">
-		<xs:sequence>
-			<xs:element name="id" type="rrf:RewardTypeIdType"/>
-			<xs:element name="description" type="rrf:RewardDescType"/>
-			<xs:element name="type" type="rrt:RewardTypeType" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
 </xs:schema>

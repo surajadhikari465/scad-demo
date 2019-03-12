@@ -18,7 +18,7 @@
 	<xs:complexType name="ListType">
 		<xs:sequence>
 			<xs:element name="id" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="type" type="crf:ListType"/>
+			<xs:element name="type" type="ListTypeType"/>
 			<xs:element name="values" type="ListValuesType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
@@ -28,7 +28,7 @@
 		<xs:sequence>
 			<xs:element name="code" type="crf:WfmStrType"/>
 			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="type" type="crf:ListType" minOccurs="0"/>
+			<xs:element name="type" type="ListTypeType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ListValuesType">
