@@ -213,14 +213,14 @@
 	ih.CreatedBy as UserID,
 	us.FullName as UserName
 
-FROM dbo.ItemHistory as ih 
-	JOIN Store as s on s.Store_No = ih.Store_No
-	JOIN Item as i on i.Item_Key = ih.Item_Key
-	JOIN ItemIdentifier as ii on ii.Item_Key = i.Item_Key
-	JOIN ItemUnit as iu on iu.Unit_ID = i.Retail_Unit_ID
-	JOIN SubTeam st on st.SubTeam_No = i.SubTeam_No
-	JOIN SubTeam ss on ss.SubTeam_No = ih.SubTeam_No
-	JOIN Users us on ih.CreatedBy = us.User_ID
+FROM dbo.ItemHistory as ih (NOLOCK)
+	JOIN Store as s (NOLOCK) on s.Store_No = ih.Store_No
+	JOIN Item as i (NOLOCK) on i.Item_Key = ih.Item_Key
+	JOIN ItemIdentifier as ii (NOLOCK) on ii.Item_Key = i.Item_Key
+	JOIN ItemUnit as iu (NOLOCK) on iu.Unit_ID = i.Retail_Unit_ID
+	JOIN SubTeam st (NOLOCK) on st.SubTeam_No = i.SubTeam_No
+	JOIN SubTeam ss (NOLOCK) on ss.SubTeam_No = ih.SubTeam_No
+	JOIN Users us (NOLOCK) on ih.CreatedBy = us.User_ID
 WHERE ii.Default_Identifier = 1 and ih.ItemHistoryID = ?
 </statement>
             <wizardData/>

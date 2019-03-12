@@ -192,22 +192,22 @@
 	oi.UnitCost as ItemCost,
 	oi.DateReceived as EarliestArrivalDate,
 	oh.Expected_Date as ExpectedArrivalDate
-FROM OrderHeader oh
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-JOIN Vendor v on oh.Vendor_ID = v.Vendor_ID
-JOIN SubTeam sb on sb.SubTeam_No = oh.Transfer_To_SubTeam
-JOIN Team t on t.Team_No = sb.Team_No
-JOIN Users uc on uc.User_ID = oh.CreatedBy 
-LEFT JOIN Users ua on ua.User_ID = oh.ApprovedBy
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN OrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID 
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-JOIN SubTeam isb on isb.SubTeam_No = i.SubTeam_No
-JOIN ItemUnit iuo on iuo.Unit_ID = oi.QuantityUnit
-JOIN itemUnit iui on iui.Unit_ID = i.Retail_Unit_ID
+FROM OrderHeader oh (NOLOCK)
+join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
+JOIN Vendor v (NOLOCK) on oh.Vendor_ID = v.Vendor_ID
+JOIN SubTeam sb (NOLOCK) on sb.SubTeam_No = oh.Transfer_To_SubTeam
+JOIN Team t (NOLOCK) on t.Team_No = sb.Team_No
+JOIN Users uc (NOLOCK) on uc.User_ID = oh.CreatedBy 
+LEFT JOIN Users ua (NOLOCK) on ua.User_ID = oh.ApprovedBy
+LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes (NOLOCK) on oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN OrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID 
+JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+JOIN SubTeam isb (NOLOCK) on isb.SubTeam_No = i.SubTeam_No
+JOIN ItemUnit iuo (NOLOCK) on iuo.Unit_ID = oi.QuantityUnit
+JOIN itemUnit iui (NOLOCK) on iui.Unit_ID = i.Retail_Unit_ID
 WHERE oh.OrderHeader_ID = ?
  AND i.Retail_Sale = 1</statement>
                 <wizardData/>
@@ -423,14 +423,14 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as ItemCost,
 	NULL as EarliestArrivalDate,
 	NULL as ExpectedArrivalDate
-FROM OrderHeader oh
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN amz.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = ?
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+FROM OrderHeader oh (NOLOCK)
+join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
+LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes (NOLOCK) ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN amz.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = ?
+JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
 WHERE oh.OrderHeader_ID = ?
  AND i.Retail_Sale = 1</statement>
                 <wizardData/>
@@ -655,15 +655,15 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as ItemCost,
 	NULL as EarliestArrivalDate,
 	NULL as ExpectedArrivalDate
-FROM DeletedOrder oh
-join Vendor psl on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store s on s.Store_No = psl.Store_no
-JOIN Users uc on uc.User_ID = oh.User_ID 
-LEFT JOIN ExternalOrderInformation e on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
-LEFT JOIN OrderExternalSource oes ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
-JOIN dbo.DeletedOrderItem oi on oh.OrderHeader_ID = oi.OrderHeader_ID
-JOIN Item i on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
+FROM DeletedOrder oh (NOLOCK)
+join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
+JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
+JOIN Users uc (NOLOCK) on uc.User_ID = oh.User_ID 
+LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID and e.ExternalOrder_Id = oh.OrderExternalSourceOrderID
+LEFT JOIN OrderExternalSource oes (NOLOCK) ON oes.ID = e.ExternalSource_Id AND oes.Description = 'AMAZON'
+JOIN dbo.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID
+JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
+JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
 WHERE oh.OrderHeader_ID = ?
  AND i.Retail_Sale = 1</statement>
                 <wizardData/>

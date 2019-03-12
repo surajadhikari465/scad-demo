@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/OrderReceipt.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/PurchaseOrder.xsd"/>
@@ -92,8 +92,8 @@
     <pd:activity name="Map Purchase Order Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>326</pd:x>
-        <pd:y>317</pd:y>
+        <pd:x>325</pd:x>
+        <pd:y>316</pd:y>
         <config>
             <element ref="pfx:PurchaseOrders"/>
         </config>
@@ -258,6 +258,22 @@
                                         <pfx:defaultScanCode>
                                             <xsl:value-of select="DefaultScanCode"/>
                                         </pfx:defaultScanCode>
+                                        <pfx:quantities>
+                                            <ns02:quantity>
+                                                <xsl:if test="QuantityOrdered">
+                                                    <ns02:value>
+                                                        <xsl:value-of select="QuantityOrdered"/>
+                                                    </ns02:value>
+                                                </xsl:if>
+                                                <ns02:units>
+                                                    <ns02:uom>
+                                                        <ns1:code>
+                                                            <xsl:value-of select="upper-case(OrderedUnitCode)"/>
+                                                        </ns1:code>
+                                                    </ns02:uom>
+                                                </ns02:units>
+                                            </ns02:quantity>
+                                        </pfx:quantities>
                                         <pfx:packSize1>
                                             <xsl:value-of select="PackSize1"/>
                                         </pfx:packSize1>
@@ -362,8 +378,8 @@
     <pd:activity name="LogDataMapperError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>343</pd:x>
-        <pd:y>540</pd:y>
+        <pd:x>502</pd:x>
+        <pd:y>491</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>
@@ -400,60 +416,59 @@
             </LogElement>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Publish Error">
+    <pd:activity name="PublishErrorMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>483</pd:x>
-        <pd:y>407</pd:y>
+        <pd:x>491</pd:x>
+        <pd:y>401</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
-            <spawn>true</spawn>
         </config>
         <pd:inputBindings>
-            <ns1:ErrorMessage xmlns:ns1="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd">
-                <ns1:Application>
+            <ns4:ErrorMessage>
+                <ns4:Application>
                     <xsl:value-of select="$_processContext/ns3:ProcessContext/ProjectName"/>
-                </ns1:Application>
-                <ns1:MessageID>
+                </ns4:Application>
+                <ns4:MessageID>
                     <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
-                </ns1:MessageID>
-                <ns1:MessageProperties>
-                    <ns1:NameValuePair>
-                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="name">
+                </ns4:MessageID>
+                <ns4:MessageProperties>
+                    <ns4:NameValuePair>
+                        <xsl:attribute name="name">
                             <xsl:value-of select="local-name(current())"/>
                         </xsl:attribute>
-                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="value">
+                        <xsl:attribute name="value">
                             <xsl:value-of select="current()"/>
                         </xsl:attribute>
-                    </ns1:NameValuePair>
-                </ns1:MessageProperties>
-                <ns1:Message>
+                    </ns4:NameValuePair>
+                </ns4:MessageProperties>
+                <ns4:Message>
                     <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/Body"/>
-                </ns1:Message>
-                <ns1:ErrorCode>
+                </ns4:Message>
+                <ns4:ErrorCode>
                     <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
-                </ns1:ErrorCode>
-                <ns1:ErrorDetails>
+                </ns4:ErrorCode>
+                <ns4:ErrorDetails>
                     <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
-                </ns1:ErrorDetails>
-                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                </ns4:ErrorDetails>
+                <xsl:choose>
                     <xsl:when test="contains($_error/ns3:ErrorReport/MsgCode, &quot;Connection is closed&quot;)">
-                        <ns1:ErrorSeverity>
+                        <ns4:ErrorSeverity>
                             <xsl:value-of select="&quot;Fatal&quot;"/>
-                        </ns1:ErrorSeverity>
+                        </ns4:ErrorSeverity>
                     </xsl:when>
                     <xsl:when test="contains($_error/ns3:ErrorReport/MsgCode, &quot;com.microsoft.sqlserver.jdbc.SQLServerException:&quot;)">
-                        <ns1:ErrorSeverity>
+                        <ns4:ErrorSeverity>
                             <xsl:value-of select="&quot;Fatal&quot;"/>
-                        </ns1:ErrorSeverity>
+                        </ns4:ErrorSeverity>
                     </xsl:when>
                     <xsl:otherwise>
-                        <ns1:ErrorSeverity>
+                        <ns4:ErrorSeverity>
                             <xsl:value-of select="&quot;Error&quot;"/>
-                        </ns1:ErrorSeverity>
+                        </ns4:ErrorSeverity>
                     </xsl:otherwise>
                 </xsl:choose>
-            </ns1:ErrorMessage>
+            </ns4:ErrorMessage>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -532,21 +547,21 @@ and ($Purchase-Order-Event-Reciever/ns12:ActivityOutput/JMSProperties/ns12:JMSXD
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Confirm After Max Attempts</pd:from>
-        <pd:to>Publish Error</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Publish Error</pd:from>
+        <pd:from>LogDataMapperError</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>LogDataMapperError</pd:from>
+        <pd:from>Confirm After Max Attempts</pd:from>
+        <pd:to>PublishErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PublishErrorMessage</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
