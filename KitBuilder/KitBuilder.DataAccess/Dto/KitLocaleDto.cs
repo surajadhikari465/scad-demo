@@ -25,7 +25,7 @@ namespace KitBuilder.DataAccess.Dto
         public int StatusId { get; set; }
         public DateTime InsertDateUtc { get; set; }
         public DateTime? LastUpdatedDateUtc { get; set; }
-
+        public decimal? RegularPrice { get; set; }
         public KitDto Kit { get; set; }
         public LocaleDto Locale { get; set; }
         public StatusDto Status { get; set; }

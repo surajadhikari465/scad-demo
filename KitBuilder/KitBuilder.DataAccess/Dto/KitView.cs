@@ -20,7 +20,9 @@ namespace KitBuilder.DataAccess.Dto
         public int MinimumCalories { get; set; }
         public int MaximumCalories { get; set; }
         public int KitLocaleId { get; set; }
-
+        public bool AuthorizedByStore { get; set; }
+        public bool Excluded { get; set; }
+        public string ErrorMessage { get; set; }
         public ICollection<LinkGroupView> LinkGroups { get; set; }
     }
 }

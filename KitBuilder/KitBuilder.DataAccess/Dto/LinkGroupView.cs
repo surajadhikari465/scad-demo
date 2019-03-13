@@ -16,6 +16,7 @@ namespace KitBuilder.DataAccess.Dto
         public string GroupDescription { get; set; }
         public string LinkGroupProperties { get; set; }
         public string FormattedLinkGroupProperties { get; set; }
+        public bool Excluded { get; set; }
         public ICollection<ModifierView> Modifiers { get; set; }
     }
 }
