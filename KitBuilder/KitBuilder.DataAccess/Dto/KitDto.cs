@@ -17,11 +17,11 @@ namespace KitBuilder.DataAccess.Dto
 		public int KitId { get; set; }
 		[Required]
 		public int ItemId { get; set; }
-		[StringLength(255, ErrorMessage = "Description can have maximum length of 255.")]
         public KitType KitType { get; set; }
         public bool isDisplayMandatory { get; set; }
         public bool showRecipe { get; set; }
-		public string Description { get; set; }
+        [StringLength(255, ErrorMessage = "Description can have maximum length of 255.")]
+        public string Description { get; set; }
 		public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
 		public ItemsDto Item { get; set; }
