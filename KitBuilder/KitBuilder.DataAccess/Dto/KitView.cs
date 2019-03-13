@@ -16,7 +16,7 @@ namespace KitBuilder.DataAccess.Dto
         public int RegionId { get; set; }
         public int MetroId { get; set; }
         public int StoreId { get; set; }
-        public decimal kitPrice { get; set; }
+        public decimal KitPrice { get; set; }
         public int MinimumCalories { get; set; }
         public int MaximumCalories { get; set; }
         public int KitLocaleId { get; set; }
