@@ -251,10 +251,30 @@ namespace KitBuilderWebApi.Controllers
                     StatusId = de == null ? null : (int?)de.StatusId
                 };
         }
+        [HttpPost("{kitLocaleId}/UpdateMaximumCalories", Name = "UpdateMaximumCalories")]
+        public IActionResult UpdateMaximumCalories(int kitLocaleId, int MaximumCalories)
+        {
+            var kitLocale = kitLocaleRepository.GetAll().Where(x => x.KitLocaleId == kitLocaleId).FirstOrDefault();
+            if (kitLocale == null)
+            {
+      
+                return BadRequest("Kit Locale Record does not exist for passed Id");
+            }
+            kitLocale.MaximumCalories = MaximumCalories;
+            try
+            {
+                kitLocaleRepository.UnitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
 
+        }
 
-
-        [HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
+      [HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
         public IActionResult AssignUnassignLocations(
                  [FromBody] List<AssignKitToLocaleDto> assignKitToLocaleDtoList, int kitId)
         {

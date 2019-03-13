@@ -6,6 +6,7 @@ using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using LocaleType = KitBuilderWebApi.Helper.LocaleType;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -29,6 +30,47 @@ namespace KitBuilderWebApi.Controllers
 
             var locales = from l in LocalesRepository.GetAll()
                           where l.LocaleType.LocaleTypeDesc == localeTypeDesc
+                          select l;
+
+            return Ok(locales.ToList());
+
+        }
+
+        [HttpGet("GetLocaleByTypeId")]
+        public IActionResult GetLocaleByTypeId([FromQuery]string localeType)
+        {
+            LocaleType localeTypePassed;
+            if (Enum.TryParse(localeType, true, out localeTypePassed))
+            {
+                var locales = from l in LocalesRepository.GetAll()
+                              where l.LocaleTypeId == (int)localeTypePassed
+                              select l;
+                return Ok(locales.ToList());
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetMetroByRegionId")]
+        public IActionResult GetMetroByRegionId([FromQuery] int regionId)
+        {
+
+            var locales = from l in LocalesRepository.GetAll()
+                          where l.RegionId == regionId
+                          select l;
+
+            return Ok(locales.ToList());
+
+        }
+
+        [HttpGet("GetStoresByMetroId")]
+        public IActionResult GetStoresBytoreId([FromQuery] int metroId)
+        {
+
+            var locales = from l in LocalesRepository.GetAll()
+                          where l.MetroId == metroId
                           select l;
 
             return Ok(locales.ToList());
