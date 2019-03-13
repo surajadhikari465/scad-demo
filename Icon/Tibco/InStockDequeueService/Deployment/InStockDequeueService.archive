@@ -10,7 +10,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/StarterDequeueProcess.process</processProperty>
         </processArchive>
-        <versionProperty>9</versionProperty>
+        <versionProperty>10</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>InStockDequeueService</name>
