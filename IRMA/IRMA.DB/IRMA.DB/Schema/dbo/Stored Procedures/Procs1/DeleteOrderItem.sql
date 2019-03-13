@@ -109,44 +109,48 @@ BEGIN
 	    ----
 		IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 		BEGIN
-			DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-			DECLARE @poLineDeletionEventTypeId INT = (
-				SELECT TOP 1 EventTypeID
-				FROM amz.EventType
-				WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
-				);
-			DECLARE @transferLineDeletionEventTypeId INT = (
-				SELECT TOP 1 EventTypeID
-				FROM amz.EventType
-				WHERE EventTypeDescription = 'Transfer Line Item Deletion'
-				);
+			IF @ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'))
+			BEGIN
+				DECLARE @poLineDeletionEventTypeCode NVARCHAR(25) = (
+					SELECT TOP 1 EventTypeCode
+					FROM amz.EventType
+					WHERE EventTypeDescription = 'Purchase Order Line Item Deletion'
+					);
+				DECLARE @transferLineDeletionEventTypeCode NVARCHAR(25) = (
+					SELECT TOP 1 EventTypeCode
+					FROM amz.EventType
+					WHERE EventTypeDescription = 'Transfer Line Item Deletion'
+					);
 
-			INSERT INTO amz.OrderQueue (EventTypeID, KeyID,SecondaryKeyID, Status)
-			SELECT 
-				CASE
-					WHEN oh.OrderType_ID = 3 THEN @transferLineDeletionEventTypeId
-					ELSE @poLineDeletionEventTypeId 
-				END
-				,oh.OrderHeader_ID
-				,oi.OrderItem_ID
-				,@unprocessedStatusCode
-			FROM OrderItem oi (nolock)
-            JOIN OrderHeader oh on oi.OrderHeader_ID = oh.OrderHeader_ID
-		   WHERE oi.OrderItem_ID = @OrderItem_ID
-             AND oh.Sent = 1
-	         AND NOT EXISTS
-			(
-				SELECT 1 
-				  FROM amz.OrderQueue q
-				 WHERE q.KeyID = oh.OrderHeader_ID
-				   AND q.SecondaryKeyID = oi.OrderItem_ID
-		           AND (q.EventTypeID = @poLineDeletionEventTypeId
-		            OR  q.EventTypeID = @transferLineDeletionEventTypeId)
-			       AND q.Status = @unprocessedStatusCode
-			) 
-			
+				DECLARE @poLineItemDeleteMessageType NVARCHAR(50) = 'PurchaseLineDelete'
+				DECLARE @transferOrderLineMessageType NVARCHAR(50) = 'TransferLineDelete'
+
+				IF @OrderType_ID <> 3
+					INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID,SecondaryKeyID)
+					SELECT 
+						@poLineDeletionEventTypeCode
+						,@poLineItemDeleteMessageType
+						,oh.OrderHeader_ID
+						,oi.OrderItem_ID
+					FROM OrderItem oi (nolock)
+					JOIN OrderHeader oh on oi.OrderHeader_ID = oh.OrderHeader_ID
+					WHERE oi.OrderItem_ID = @OrderItem_ID
+						AND oh.Sent = 1;
+				ELSE
+					INSERT INTO amz.TransferQueue(EventTypeCode, MessageType, KeyID,SecondaryKeyID)
+					SELECT 
+						@transferLineDeletionEventTypeCode
+						,@transferOrderLineMessageType
+						,oh.OrderHeader_ID
+						,oi.OrderItem_ID
+					FROM OrderItem oi (nolock)
+					JOIN OrderHeader oh on oi.OrderHeader_ID = oh.OrderHeader_ID
+					WHERE oi.OrderItem_ID = @OrderItem_ID
+						AND oh.Sent = 1;
+					
+			END
 			SELECT @Error_No = @@ERROR
-		end
+		END
 
         IF @Error_No = 0
         BEGIN

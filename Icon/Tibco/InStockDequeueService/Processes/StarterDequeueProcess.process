@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" xmlns:pfx="http://www.tibco.com/schemas/HoneycrispDequeueService/Schemas/Schema.xsd" xmlns:pfx2="http://www.tibco.com/schemas/SharedSchemas/SharedResources/Schemas/Irma Honeycrisp/Schema.xsd" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/EventTypes.xsd" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx4="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx5="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="www.tibco.com/plugin/Timer" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/Schemas/EventTypes.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" schemaLocation="/Schemas/DequeueResults.xsd"/>
+    <pd:name>Processes/StarterDequeueProcess.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>46</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <StartTime>%%Application/ApplicationStartTime%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%Application/TimerIntervalInMilliseconds%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>809</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Events>
+            <xsd:element name="DoExist" type="xsd:boolean"/>
+        </Events>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1551290624193</pd:targetNamespace>
+    <pd:activity name="AssignEventsExist">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>95</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <variableName>Events</variableName>
+        </config>
+        <pd:inputBindings>
+            <DoExist>
+                <xsl:value-of select="true()"/>
+            </DoExist>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>19</pd:y>
+        <pd:width>388</pd:width>
+        <pd:height>389</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>while</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>index</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:whileCondition>$Events/DoExist = "true"</pd:whileCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DequeueEventsFromIrma</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendToTopic</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>EventsDoNotExist</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DequeueEventsFromIrma</pd:from>
+            <pd:to>EventsDoNotExist</pd:to>
+            <pd:xpathDescription>ZeroEvents</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>not(exists($DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MapToEventSchema</pd:from>
+            <pd:to>SendToTopic</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DequeueEventsFromIrma</pd:from>
+            <pd:to>MapToEventSchema</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="DequeueEventsFromIrma">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>309</pd:x>
+            <pd:y>99</pd:y>
+            <config>
+                <processName>/Processes/DequeueEvents.process</processName>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="SendToTopic">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>475</pd:x>
+            <pd:y>320</pd:y>
+            <config>
+                <processName>/Processes/SendEventToTopic.process</processName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$MapToEventSchema/pfx4:Events"/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="EventsDoNotExist">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>475</pd:x>
+            <pd:y>99</pd:y>
+            <config>
+                <variableName>Events</variableName>
+            </config>
+            <pd:inputBindings>
+                <DoExist>
+                    <xsl:value-of select="false()"/>
+                </DoExist>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="MapToEventSchema">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>310</pd:x>
+            <pd:y>321</pd:y>
+            <config>
+                <processName>/Processes/MapEvents.process</processName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$DequeueEventsFromIrma/root/Resultsets"/>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>677</pd:x>
+        <pd:y>166</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="LogError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>984</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationId"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProjectName"/>
+                </Logger>
+                <xsl:choose>
+                    <xsl:when test="$DequeueEventsFromIrma/root/NumberOfRecordsDequeued > 0 and&#xA;not(exists($DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1))">
+                        <Message>
+                            <xsl:value-of select="concat(&quot;Error occurred during the deqeueue parsing process. Error Message: &quot;, $_error/ns:ErrorReport/Msg, &quot;. StoredProcResultString: &quot;, $DequeueEventsFromIrma/root/DequeueResultString)"/>
+                        </Message>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Message>
+                            <xsl:value-of select="concat(&quot;Error occurred during the deqeueue process. Error Message: &quot;, $_error/ns:ErrorReport/Msg)"/>
+                        </Message>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Exception>
+                    <xsl:value-of select="tib:left($_error/ns:ErrorReport/StackTrace, 2000)"/>
+                </Exception>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="IterateEventErrors">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>702</pd:x>
+        <pd:y>279</pd:y>
+        <pd:width>307</pd:width>
+        <pd:height>185</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1</pd:over>
+            <pd:iterationElementSlot>currentEvent</pd:iterationElementSlot>
+            <pd:indexSlot>e</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>ArchiveEventError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ArchiveEventError</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="ArchiveEventError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>856</pd:x>
+            <pd:y>386</pd:y>
+            <config>
+                <processName>/Processes/ArchiveEvents.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <KeyID>
+                        <xsl:value-of select="$currentEvent/Record1/KeyID"/>
+                    </KeyID>
+                    <xsl:if test="not(($currentEvent/Record1/SecondaryKeyID/@xsi:nil=(&quot;true&quot;)) or ($currentEvent/Record1/SecondaryKeyID/@xsi:nil=(&quot;1&quot;)))">
+                        <SecondaryKeyID>
+                            <xsl:value-of select="$currentEvent/Record1/SecondaryKeyID"/>
+                        </SecondaryKeyID>
+                    </xsl:if>
+                    <MessageType>
+                        <xsl:value-of select="$currentEvent/Record1/MessageType"/>
+                    </MessageType>
+                    <EventTypeCode>
+                        <xsl:value-of select="$currentEvent/Record1/EventTypeCode"/>
+                    </EventTypeCode>
+                    <MessageTimestampUtc>
+                        <xsl:value-of select="$currentEvent/Record1/MessageTimestampUtc"/>
+                    </MessageTimestampUtc>
+                    <InsertDate>
+                        <xsl:value-of select="$currentEvent/Record1/InsertDate"/>
+                    </InsertDate>
+                    <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                        <ErrorCode>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </ErrorCode>
+                    </xsl:if>
+                    <ErrorDetails>
+                        <xsl:value-of select="concat(&quot;Message: &quot;, $_error/ns:ErrorReport/Msg, &quot;; StackTrace: &quot;, $_error/ns:ErrorReport/StackTrace)"/>
+                    </ErrorDetails>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="LogStart">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationId"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="concat($_processContext/ns:ProcessContext/ProjectName, $_globalVariables/ns1:GlobalVariables/Application/TransactionType)"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="concat(&quot;Starting &quot;, $_globalVariables/ns1:GlobalVariables/Application/TransactionType,  &quot; dequeue service.&quot;)"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogEnd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>681</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationId"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="concat($_processContext/ns:ProcessContext/ProjectName, $_globalVariables/ns1:GlobalVariables/Application/TransactionType)"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="concat(&quot;Ending &quot;, $_globalVariables/ns1:GlobalVariables/Application/TransactionType,  &quot; dequeue service.&quot;)"/>
+                </Message>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendErrorMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>960</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ErrorMessage>
+                <pfx5:Application>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Application/TransactionType, $_processContext/ns:ProcessContext/ProjectName)"/>
+                </pfx5:Application>
+                <pfx5:MessageID>
+                    <xsl:value-of select="&quot;N/A&quot;"/>
+                </pfx5:MessageID>
+                <pfx5:MessageProperties>
+                    <pfx5:NameValuePair>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="&quot;TransactionType&quot;"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/TransactionType"/>
+                        </xsl:attribute>
+                    </pfx5:NameValuePair>
+                </pfx5:MessageProperties>
+                <xsl:choose>
+                    <xsl:when test="$DequeueEventsFromIrma/root/NumberOfRecordsDequeued > 0 and&#xA;not(exists($DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1))">
+                        <pfx5:Message>
+                            <xsl:value-of select="concat(&quot;A failure occurred when parsing dequeue results for &quot;, $_globalVariables/ns1:GlobalVariables/Application/TransactionType, &quot; type events.  Stored Proc ResultString: &quot;, $DequeueEventsFromIrma/root/DequeueResultString)"/>
+                        </pfx5:Message>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx5:Message>
+                            <xsl:value-of select="concat(&quot;A failure occurred when dequeuing &quot;, $_globalVariables/ns1:GlobalVariables/Application/TransactionType, &quot; type events.  List of KeyIDs: &quot;,  tib:concat-sequence($DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1/KeyID))"/>
+                        </pfx5:Message>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx5:ErrorCode>
+                    <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                </pfx5:ErrorCode>
+                <pfx5:ErrorDetails>
+                    <xsl:value-of select="concat(&quot;StackTrace: &quot;, $_error/ns:ErrorReport/StackTrace)"/>
+                </pfx5:ErrorDetails>
+                <pfx5:ErrorSeverity>
+                    <xsl:value-of select="&quot;Fatal&quot;"/>
+                </pfx5:ErrorSeverity>
+            </pfx5:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>LogStart</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignEventsExist</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>IterateEventErrors</pd:to>
+        <pd:xpathDescription>EventsDequeued</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($DequeueEventsFromIrma/root/Resultsets/ResultSet1/Record1)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>LogError</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IterateEventErrors</pd:from>
+        <pd:to>LogError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogError</pd:from>
+        <pd:to>SendErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogStart</pd:from>
+        <pd:to>AssignEventsExist</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>LogEnd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogEnd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendErrorMessage</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

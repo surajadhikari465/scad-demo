@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx4="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" schemaLocation="/Schemas/InventoryManagementMessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
+    <pd:name>Processes/ArchiveEvents.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="KeyID" type="xsd:int"/>
+                    <xsd:element name="SecondaryKeyID" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="MessageType" type="xsd:string"/>
+                    <xsd:element name="EventTypeCode" type="xsd:string"/>
+                    <xsd:element name="MessageTimestampUtc" type="xsd:dateTime"/>
+                    <xsd:element name="InsertDate" type="xsd:dateTime"/>
+                    <xsd:element name="Message" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="MessageID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element ref="pfx3:MessageHeaders" minOccurs="0"/>
+                    <xsd:element name="ErrorCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ErrorDetails" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>70</pd:startX>
+    <pd:startY>207</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>591</pd:endX>
+    <pd:endY>395</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551449306052</pd:targetNamespace>
+    <pd:activity name="HeadersToJson">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx3:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Start/root/pfx3:MessageHeaders"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>330</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx:Events"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Start/root/Message"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="RetryOnError">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>440</pd:x>
+        <pd:y>22</pd:y>
+        <pd:width>296</pd:width>
+        <pd:height>287</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>errorCount</pd:indexSlot>
+            <pd:errorCondition>$_globalVariables/ns2:GlobalVariables/Application/DbErrorRetryCount &lt; $errorCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Update</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JDBC Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>583</pd:x>
+            <pd:y>94</pd:y>
+            <config>
+                <timeout>%%Application/DbCommandTimeoutInSeconds%%</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>true</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO amz.MessageArchiveEvent (KeyID, SecondaryKeyID, MessageType, EventTypeCode, InsertDate, MessageTimestampUtc, MessageID, MessageHeaders, Message, ErrorCode, ErrorDetails) VALUES (?,?,?,?,?,?,?,?,?,?,?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KeyID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>SecondaryKeyID</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MessageType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>EventTypeCode</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>InsertDate</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MessageTimestampUtc</parameterName>
+                        <dataType>TIMESTAMP</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MessageID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MessageHeaders</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Message</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ErrorCode</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ErrorDetails</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <KeyID>
+                        <xsl:value-of select="$Start/root/KeyID"/>
+                    </KeyID>
+                    <SecondaryKeyID>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/root/SecondaryKeyID)">
+                                <xsl:value-of select="$Start/root/SecondaryKeyID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </SecondaryKeyID>
+                    <MessageType>
+                        <xsl:value-of select="$Start/root/MessageType"/>
+                    </MessageType>
+                    <EventTypeCode>
+                        <xsl:value-of select="$Start/root/EventTypeCode"/>
+                    </EventTypeCode>
+                    <InsertDate>
+                        <xsl:value-of select="$Start/root/InsertDate"/>
+                    </InsertDate>
+                    <MessageTimestampUtc>
+                        <xsl:value-of select="$Start/root/MessageTimestampUtc"/>
+                    </MessageTimestampUtc>
+                    <MessageID>
+                        <xsl:value-of select="$Start/root/MessageID"/>
+                    </MessageID>
+                    <MessageHeaders>
+                        <xsl:value-of select="$HeadersToJson/ns:ActivityOutputClass/jsonString"/>
+                    </MessageHeaders>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/Message)">
+                            <Message>
+                                <xsl:value-of select="tib:render-xml($Parse-XML/pfx:Events, 1)"/>
+                            </Message>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <Message>
+                                <xsl:choose>
+                                    <xsl:when test="exists($Start/root/Message)">
+                                        <xsl:value-of select="$Start/root/Message"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </Message>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ErrorCode>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/root/ErrorCode)">
+                                <xsl:value-of select="$Start/root/ErrorCode"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ErrorCode>
+                    <ErrorDetails>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/root/ErrorDetails)">
+                                <xsl:value-of select="$Start/root/ErrorDetails"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ErrorDetails>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>580</pd:x>
+            <pd:y>234</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Application/DbRetryDelayInMilliseconds"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>671</pd:x>
+            <pd:y>233</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                    <message>
+                        <xsl:value-of select="concat(&quot;Error Message: &quot;, $_error/ns1:ErrorReport/Msg, &quot;. StackTrace: &quot;, $_error/ns1:ErrorReport/StackTrace)"/>
+                    </message>
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="LogError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>374</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/LogPublisher.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <LogElement>
+                <LogDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDate>
+                <ApplicationID>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Application/ApplicationId"/>
+                </ApplicationID>
+                <HostName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </HostName>
+                <UserName>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </UserName>
+                <Thread>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                </Thread>
+                <Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                </Logger>
+                <Message>
+                    <xsl:value-of select="concat(&quot;Failed to archive Event Message for KeyID: &quot;, string($Start/root/KeyID), &quot;, SecondaryID: &quot;,$Start/root/SecondaryKeyID,&quot;, MessageType: &quot;,  $Start/root/MessageType, &quot;, EventTypeCode: &quot;, $Start/root/EventTypeCode, &quot;InsertDate: &quot;,string($Start/root/InsertDate), &quot;, and MessageTimestampUtc: &quot;,string($Start/root/MessageTimestampUtc), &quot;Error Message: &quot;, $_error/ns1:ErrorReport/Msg)"/>
+                </Message>
+                <Exception>
+                    <xsl:value-of select="tib:left($_error/ns1:ErrorReport/StackTrace, 2000)"/>
+                </Exception>
+                <InsertedDate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertedDate>
+            </LogElement>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>132</pd:x>
+        <pd:y>391</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>HeadersToJson</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HeadersToJson</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:xpathDescription>MessageExists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/root/Message) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetryOnError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>LogError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>RetryOnError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HeadersToJson</pd:from>
+        <pd:to>RetryOnError</pd:to>
+        <pd:xpathDescription>else</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

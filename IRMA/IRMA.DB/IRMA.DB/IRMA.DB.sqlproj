@@ -3362,8 +3362,15 @@
     <None Include="Scripts\PostDeploy\Archive\PBI30732 - PostDeploy Grant Permission - Grant User Send Email Permission.sql" />
     <None Include="Scripts\PostDeploy\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagStoreValues.sql" />
+    <Build Include="Schema\amz\StoredProcedures\DequeueReceipts.sql" />
+    <Build Include="Schema\amz\StoredProcedures\DequeueOrders.sql" />
+    <Build Include="Schema\amz\Tables\MessageArchiveEvent.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30780_AddPriceBatchPurgedTablesToRetentionPolicyTable.sql" />
+    <Build Include="Schema\amz\StoredProcedures\DequeueInventory.sql" />
+    <Build Include="Schema\amz\Tables\TransferQueue.sql" />
+    <Build Include="Schema\amz\StoredProcedures\DequeueTransfers.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteNutriFactsFromIcon.sql" />
+    <None Include="Scripts\PostDeploy\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3371,6 +3378,7 @@
     <Build Include="Schema\amz\amz.sql" />
     <Build Include="Schema\amz\StoredProcedures\LockSpoilageEvents.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
+    <None Include="Scripts\PostDeploy\PBI14520_AddAmazonInStockEnabledStoreVendorIdToAppConfig.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

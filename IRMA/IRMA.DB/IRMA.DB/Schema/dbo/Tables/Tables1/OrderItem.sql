@@ -271,49 +271,52 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 	----
 	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
-		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-		DECLARE @orderReceiptCreationEventTypeId INT = 8 --'Order Receipt Creation'
-		DECLARE @poLineAddEventTypeId INT = 12 -- 'Purchase Order Line Item Add'
-		DECLARE @transferLineAddEventTypeId INT = 4 -- 'Transfer Line Item Add'
+		IF EXISTS (SELECT 1 FROM inserted JOIN OrderHeader oh on inserted.OrderHeader_ID = oh.OrderHeader_ID
+				   WHERE oh.ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+		BEGIN
+			DECLARE @orderReceiptCreationEventTypeCode NVARCHAR(25) = 'RCPT_CRE' --'Order Receipt Creation'
+			DECLARE @poLineAddEventTypeCode NVARCHAR(25) = 'PO_LINE_ADD' -- 'Purchase Order Line Item Add'
 
-		INSERT INTO amz.OrderQueue (
-				EventTypeID
+			DECLARE @receiptOrderMessageType NVARCHAR(50) = 'ReceiptMessage'
+			DECLARE @purchaseOrderLineItemMessageType NVARCHAR(50) = 'PurchaseOrder'
+		
+
+			INSERT INTO amz.OrderQueue (
+				EventTypeCode
+				, MessageType
 				, KeyID
 				, SecondaryKeyID
-				, Status
 				, InsertDate
 				, MessageTimestampUtc
 				)
-			SELECT CASE
-					 WHEN oh.OrderType_ID = 3 THEN @transferLineAddEventTypeId
-					 ELSE @poLineAddEventTypeId 
-				   END	   
-				 ,i.OrderHeader_ID
-				 , i.OrderItem_ID
-				 , @unprocessedStatusCode
-				 , SYSDATETIME()
-				 , SYSUTCDATETIME()
-			  FROM inserted i
-			  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-		WHERE oh.Sent = 1
+			SELECT
+				@poLineAddEventTypeCode
+				,@purchaseOrderLineItemMessageType
+				,i.OrderHeader_ID
+				,i.OrderItem_ID
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+			FROM inserted i
+			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+			WHERE oh.Sent = 1
 
-		INSERT INTO amz.ReceiptQueue (
-			EventTypeID
-			,KeyID
-			,SecondaryKeyID
-			,Status
-			,InsertDate
-			,MessageTimestampUtc
-			)
-		SELECT @orderReceiptCreationEventTypeId
-			,oh.OrderHeader_ID
-			,i.OrderItem_ID
-			,@unprocessedStatusCode
-			,SYSDATETIME()
-			,SYSUTCDATETIME()
-		FROM inserted i
-		JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-		WHERE i.QuantityReceived IS NOT NULL 
+			INSERT INTO amz.ReceiptQueue (
+				EventTypeCode
+				,MessageType
+				,KeyID
+				,SecondaryKeyID
+				,InsertDate
+				,MessageTimestampUtc
+				)
+			SELECT @orderReceiptCreationEventTypeCode
+				,@receiptOrderMessageType
+				,i.OrderHeader_ID
+				,i.OrderItem_ID
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+			FROM inserted i
+			WHERE i.QuantityReceived IS NOT NULL
+		END
 	END
 
     END TRY
@@ -412,74 +415,79 @@ BEGIN
 	----
 	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
-		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-		DECLARE @orderReceiptCreationEventTypeId INT = 8 -- 'Order Receipt Creation'
-		DECLARE @orderReceiptModificationEventTypeId INT = 9 -- 'Order Receipt Modification'
-		DECLARE @poLineModificationEventTypeId INT = 13 -- 'Purchase Order Line Item Modification'
-		DECLARE @transferLineModificationEventTypeId INT = 5 -- 'Transfer Line Item Modification'
+		IF EXISTS (SELECT 1 FROM inserted JOIN OrderHeader oh on inserted.OrderHeader_ID = oh.OrderHeader_ID
+				   WHERE oh.ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+		BEGIN
+			DECLARE @orderReceiptCreationEventTypeCode NVARCHAR(25) = 'RCPT_CRE' -- 'Order Receipt Creation'
+			DECLARE @orderReceiptModificationEventTypeCode NVARCHAR(25) = 'RCPT_MOD' -- 'Order Receipt Modification'
+			DECLARE @poLineModificationEventTypeCode NVARCHAR(25) = 'PO_LINE_MOD' -- 'Purchase Order Line Item Modification'
 
-		INSERT INTO amz.OrderQueue (
-				EventTypeID
+			DECLARE @receiptOrderMessageType NVARCHAR(50) = 'ReceiptMessage'
+			DECLARE @poLineItemMessageType NVARCHAR(50) = 'PurchaseOrder'
+
+			INSERT INTO amz.OrderQueue (
+				EventTypeCode
+				, MessageType
 				, KeyID
 				, SecondaryKeyID
-				, Status
 				, InsertDate
 				, MessageTimestampUtc
 				)
-			SELECT CASE
-					 WHEN oh.OrderType_ID = 3 THEN @transferLineModificationEventTypeId
-					 ELSE @poLineModificationEventTypeId 
-				   END	   
-					,oh.OrderHeader_ID
-					,i.OrderItem_ID
-					,@unprocessedStatusCode
-					,SYSDATETIME()
-					,SYSUTCDATETIME()
-			  FROM inserted i
-			  JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-			  JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-		WHERE ISNULL(i.QuantityOrdered, 0) <> ISNULL(d.QuantityOrdered, 0)
-		  AND OH.Sent =  1
-
-			INSERT INTO amz.ReceiptQueue (
-				EventTypeID
-				,KeyID
-				,SecondaryKeyID
-				,Status
-				,InsertDate
-				,MessageTimestampUtc
-				)
-			SELECT @orderReceiptCreationEventTypeId
-				,i.OrderHeader_ID
+			SELECT 
+				@poLineModificationEventTypeCode
+				,@poLineItemMessageType
+				,oh.OrderHeader_ID
 				,i.OrderItem_ID
-				,@unprocessedStatusCode
 				,SYSDATETIME()
 				,SYSUTCDATETIME()
 			FROM inserted i
 			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
 			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-		   WHERE i.QuantityReceived IS NOT NULL 
-				 AND d.QuantityReceived IS NULL
+			WHERE ISNULL(i.QuantityOrdered, 0) <> ISNULL(d.QuantityOrdered, 0)
+			  AND oh.Sent =  1
+			  AND oh.OrderType_ID <> 3
 
 			INSERT INTO amz.ReceiptQueue (
-				EventTypeID
+				EventTypeCode
+				,MessageType
 				,KeyID
 				,SecondaryKeyID
-				,Status
 				,InsertDate
 				,MessageTimestampUtc
 				)
-			SELECT @orderReceiptModificationEventTypeId
+			SELECT @orderReceiptCreationEventTypeCode
+				,@receiptOrderMessageType
 				,i.OrderHeader_ID
 				,i.OrderItem_ID
-				,@unprocessedStatusCode
 				,SYSDATETIME()
 				,SYSUTCDATETIME()
 			FROM inserted i
 			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
 			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-		   WHERE (i.QuantityReceived IS NOT NULL OR d.QuantityReceived IS NOT NULL)	----Line item receipt information is modified after the receipt info was entered
-			 AND ISNULL(i.QuantityReceived, 0) <> ISNULL(d.QuantityReceived, 0)
+			WHERE i.QuantityReceived IS NOT NULL 
+				AND d.QuantityReceived IS NULL
+
+			INSERT INTO amz.ReceiptQueue (
+				EventTypeCode
+				,MessageType
+				,KeyID
+				,SecondaryKeyID
+				,InsertDate
+				,MessageTimestampUtc
+				)
+			SELECT
+				@orderReceiptModificationEventTypeCode
+				,@receiptOrderMessageType
+				,i.OrderHeader_ID
+				,i.OrderItem_ID
+				,SYSDATETIME()
+				,SYSUTCDATETIME()
+			FROM inserted i
+			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
+			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
+			WHERE (i.QuantityReceived IS NOT NULL OR d.QuantityReceived IS NOT NULL)	----Line item receipt information is modified after the receipt info was entered
+				AND ISNULL(i.QuantityReceived, 0) <> ISNULL(d.QuantityReceived, 0)
+		END
 	END
     END TRY
     BEGIN CATCH

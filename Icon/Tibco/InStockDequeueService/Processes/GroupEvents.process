@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
+    <pd:name>Processes/GroupEvents.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Events"/>
+    <pd:startX>70</pd:startX>
+    <pd:startY>78</pd:startY>
+    <pd:returnBindings>
+        <pfx:Events>
+            <xsl:for-each select="$GroupedEvents/AccumulatedOutput/pfx:Events">
+                <xsl:for-each select="pfx:EventType">
+                    <pfx:EventType>
+                        <pfx:QueueID>
+                            <xsl:value-of select="pfx:QueueID"/>
+                        </pfx:QueueID>
+                        <pfx:EventTypeCode>
+                            <xsl:value-of select="pfx:EventTypeCode"/>
+                        </pfx:EventTypeCode>
+                        <pfx:MessageType>
+                            <xsl:value-of select="pfx:MessageType"/>
+                        </pfx:MessageType>
+                        <pfx:KeyID>
+                            <xsl:value-of select="pfx:KeyID"/>
+                        </pfx:KeyID>
+                        <xsl:if test="pfx:SecondaryKeyID">
+                            <pfx:SecondaryKeyID>
+                                <xsl:value-of select="pfx:SecondaryKeyID"/>
+                            </pfx:SecondaryKeyID>
+                        </xsl:if>
+                        <pfx:InsertDate>
+                            <xsl:value-of select="pfx:InsertDate"/>
+                        </pfx:InsertDate>
+                        <pfx:MessageTimestampUtc>
+                            <xsl:value-of select="pfx:MessageTimestampUtc"/>
+                        </pfx:MessageTimestampUtc>
+                    </pfx:EventType>
+                </xsl:for-each>
+            </xsl:for-each>
+        </pfx:Events>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:Events"/>
+    <pd:endX>842</pd:endX>
+    <pd:endY>240</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551754080007</pd:targetNamespace>
+    <pd:activity name="UniqueMessageTypes">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>220</pd:x>
+        <pd:y>235</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="MessageType" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each-group select="$Start/pfx:Events/pfx:EventType" group-by="pfx:MessageType">
+                    <MessageType>
+                        <xsl:value-of select="pfx:MessageType"/>
+                    </MessageType>
+                </xsl:for-each-group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="IterateByMessageType">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>77</pd:y>
+        <pd:width>349</pd:width>
+        <pd:height>301</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$UniqueMessageTypes/root/MessageType</pd:over>
+            <pd:iterationElementSlot>CurrentMessageType</pd:iterationElementSlot>
+            <pd:indexSlot>m</pd:indexSlot>
+            <pd:outSlot>GroupedEvents</pd:outSlot>
+            <pd:activityOutputName>GroupEvents</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>EventsOfCurrentType</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GroupEvents</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>EventsOfCurrentType</pd:from>
+            <pd:to>GroupEvents</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GroupEvents">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:description>If MessageType is a Delete, then there is no grouping, otherwise, we group by KeyID.</pd:description>
+            <pd:x>569</pd:x>
+            <pd:y>236</pd:y>
+            <config>
+                <element ref="pfx:Events"/>
+            </config>
+            <pd:inputBindings>
+                <pfx:Events>
+                    <xsl:choose>
+                        <xsl:when test="contains(lower-case($CurrentMessageType/MessageType), &quot;delete&quot;)">
+                            <xsl:for-each select="$EventsOfCurrentType/pfx:Events/pfx:EventType">
+                                <pfx:EventType>
+                                    <pfx:QueueID>
+                                        <xsl:value-of select="pfx:QueueID"/>
+                                    </pfx:QueueID>
+                                    <pfx:EventTypeCode>
+                                        <xsl:value-of select="pfx:EventTypeCode"/>
+                                    </pfx:EventTypeCode>
+                                    <pfx:MessageType>
+                                        <xsl:value-of select="pfx:MessageType"/>
+                                    </pfx:MessageType>
+                                    <pfx:KeyID>
+                                        <xsl:value-of select="pfx:KeyID"/>
+                                    </pfx:KeyID>
+                                    <xsl:if test="pfx:SecondaryKeyID">
+                                        <pfx:SecondaryKeyID>
+                                            <xsl:value-of select="pfx:SecondaryKeyID"/>
+                                        </pfx:SecondaryKeyID>
+                                    </xsl:if>
+                                    <pfx:InsertDate>
+                                        <xsl:value-of select="pfx:InsertDate"/>
+                                    </pfx:InsertDate>
+                                    <pfx:MessageTimestampUtc>
+                                        <xsl:value-of select="pfx:MessageTimestampUtc"/>
+                                    </pfx:MessageTimestampUtc>
+                                </pfx:EventType>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each-group select="$EventsOfCurrentType/pfx:Events/pfx:EventType" group-by="pfx:KeyID">
+                                <xsl:copy-of select="current-group()[1]"/>
+                            </xsl:for-each-group>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx:Events>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="EventsOfCurrentType">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>431</pd:x>
+            <pd:y>236</pd:y>
+            <config>
+                <element ref="pfx:Events"/>
+            </config>
+            <pd:inputBindings>
+                <pfx:Events>
+                    <xsl:copy-of select="$SortyByEventTypeCode/pfx:Events/pfx:EventType[pfx:MessageType = $CurrentMessageType/MessageType]"/>
+                </pfx:Events>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="SortyByEventTypeCode">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>71</pd:x>
+        <pd:y>234</pd:y>
+        <config>
+            <element ref="pfx:Events"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Events>
+                <xsl:for-each select="$Start/pfx:Events/pfx:EventType">
+                    <xsl:sort select="pfx:EventTypeCode"/>
+                    <pfx:EventType>
+                        <pfx:QueueID>
+                            <xsl:value-of select="pfx:QueueID"/>
+                        </pfx:QueueID>
+                        <pfx:EventTypeCode>
+                            <xsl:value-of select="pfx:EventTypeCode"/>
+                        </pfx:EventTypeCode>
+                        <pfx:MessageType>
+                            <xsl:value-of select="pfx:MessageType"/>
+                        </pfx:MessageType>
+                        <pfx:KeyID>
+                            <xsl:value-of select="pfx:KeyID"/>
+                        </pfx:KeyID>
+                        <xsl:if test="pfx:SecondaryKeyID">
+                            <pfx:SecondaryKeyID>
+                                <xsl:value-of select="pfx:SecondaryKeyID"/>
+                            </pfx:SecondaryKeyID>
+                        </xsl:if>
+                        <pfx:InsertDate>
+                            <xsl:value-of select="pfx:InsertDate"/>
+                        </pfx:InsertDate>
+                        <pfx:MessageTimestampUtc>
+                            <xsl:value-of select="pfx:MessageTimestampUtc"/>
+                        </pfx:MessageTimestampUtc>
+                    </pfx:EventType>
+                </xsl:for-each>
+            </pfx:Events>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SortyByEventTypeCode</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UniqueMessageTypes</pd:from>
+        <pd:to>IterateByMessageType</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IterateByMessageType</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SortyByEventTypeCode</pd:from>
+        <pd:to>UniqueMessageTypes</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

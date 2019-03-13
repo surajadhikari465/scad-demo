@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:WFM.UID="java://UID" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:WFM.DateTimeCompare="java://com.tibco.wfm.DateTimeComparison">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" schemaLocation="/Schemas/DequeueResults.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
+    <pd:name>Processes/SendEventToTopic.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Events"/>
+    <pd:startX>81</pd:startX>
+    <pd:startY>70</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1164</pd:endX>
+    <pd:endY>267</pd:endY>
+    <pd:errorSchemas>
+        <TopicSendError>
+            <xsd:element name="SendToTopicError">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ErrorMessage" type="xsd:string"/>
+                        <xsd:element name="ErrorCode" type="xsd:string"/>
+                        <xsd:element name="StackTrace" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </TopicSendError>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <MessageID>
+            <xsd:element name="MessageID" type="xsd:string"/>
+        </MessageID>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1551302948167</pd:targetNamespace>
+    <pd:activity name="GroupEvents">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>82</pd:x>
+        <pd:y>270</pd:y>
+        <config>
+            <processName>/Processes/GroupEvents.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx:Events"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="IterateEvents">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>170</pd:x>
+        <pd:y>41</pd:y>
+        <pd:width>855</pd:width>
+        <pd:height>435</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GroupEvents/pfx:Events/pfx:EventType</pd:over>
+            <pd:iterationElementSlot>currentRecord</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>ErrorRetry</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ErrorRetry</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="ErrorRetry">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>262</pd:x>
+            <pd:y>83</pd:y>
+            <pd:width>633</pd:width>
+            <pd:height>339</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>errorLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>errorCount</pd:indexSlot>
+                <pd:errorCondition>$_globalVariables/pfx2:GlobalVariables/Application/EmsRetryCount &lt; $errorCount</pd:errorCondition>
+                <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>AssignMessageID</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>ArchiveEvents</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>AssignMessageID</pd:from>
+                <pd:to>ConvertEventToXML</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Topic Publisher</pd:from>
+                <pd:to>ArchiveEvents</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>ConvertEventToXML</pd:from>
+                <pd:to>MapMessageHeaders</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>MapMessageHeaders</pd:from>
+                <pd:to>JMS Topic Publisher</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Topic Publisher</pd:from>
+                <pd:to>Sleep</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Sleep</pd:from>
+                <pd:to>Generate Error</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="JMS Topic Publisher">
+                <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+                <pd:x>656</pd:x>
+                <pd:y>183</pd:y>
+                <config>
+                    <PermittedMessageType>Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%Application/InventoryManagementTopic%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+                    <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+                </config>
+                <pd:inputBindings>
+                    <ns:ActivityInput>
+                        <OtherProperties>
+                            <TransactionID>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:TransactionID"/>
+                            </TransactionID>
+                            <TransactionType>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:TransactionType"/>
+                            </TransactionType>
+                            <Source>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:Source"/>
+                            </Source>
+                            <MessageType>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:MessageType"/>
+                            </MessageType>
+                            <MessageNumber>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:MessageNumber"/>
+                            </MessageNumber>
+                            <RegionCode>
+                                <xsl:value-of select="$MapMessageHeaders/ns1:MessageHeaders/ns1:RegionCode"/>
+                            </RegionCode>
+                        </OtherProperties>
+                        <Body>
+                            <xsl:value-of select="$ConvertEventToXML/xmlString"/>
+                        </Body>
+                    </ns:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="AssignMessageID">
+                <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+                <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+                <pd:x>356</pd:x>
+                <pd:y>160</pd:y>
+                <config>
+                    <variableName>MessageID</variableName>
+                </config>
+                <pd:inputBindings>
+                    <MessageID>
+                        <xsl:value-of select="WFM.UID:UID()"/>
+                    </MessageID>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="ArchiveEvents">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>786</pd:x>
+                <pd:y>178</pd:y>
+                <config>
+                    <processName>/Processes/ArchiveEvents.process</processName>
+                    <spawn>false</spawn>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <KeyID>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:KeyID"/>
+                        </KeyID>
+                        <xsl:if test="$currentRecord/pfx:EventType/pfx:SecondaryKeyID">
+                            <SecondaryKeyID>
+                                <xsl:value-of select="$currentRecord/pfx:EventType/pfx:SecondaryKeyID"/>
+                            </SecondaryKeyID>
+                        </xsl:if>
+                        <MessageType>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:MessageType"/>
+                        </MessageType>
+                        <EventTypeCode>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:EventTypeCode"/>
+                        </EventTypeCode>
+                        <MessageTimestampUtc>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:MessageTimestampUtc"/>
+                        </MessageTimestampUtc>
+                        <InsertDate>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:InsertDate"/>
+                        </InsertDate>
+                        <Message>
+                            <xsl:value-of select="$ConvertEventToXML/xmlString"/>
+                        </Message>
+                        <MessageID>
+                            <xsl:value-of select="$MessageID/MessageID"/>
+                        </MessageID>
+                        <xsl:copy-of select="$MapMessageHeaders/ns1:MessageHeaders"/>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="ConvertEventToXML">
+                <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+                <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+                <pd:x>360</pd:x>
+                <pd:y>296</pd:y>
+                <config>
+                    <renderAsText>text</renderAsText>
+                    <validateInput>true</validateInput>
+                    <textEncoding>UTF-8</textEncoding>
+                    <term ref="pfx:Events"/>
+                </config>
+                <pd:inputBindings>
+                    <pfx:Events>
+                        <xsl:copy-of select="$currentRecord/pfx:EventType"/>
+                    </pfx:Events>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="MapMessageHeaders">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>523</pd:x>
+                <pd:y>295</pd:y>
+                <config>
+                    <processName>/Processes/MapMessageHeaders.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <TransactionID>
+                            <xsl:value-of select="$MessageID/MessageID"/>
+                        </TransactionID>
+                        <TransactionType>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/TransactionType"/>
+                        </TransactionType>
+                        <Source>
+                            <xsl:value-of select="&quot;IRMA&quot;"/>
+                        </Source>
+                        <MessageType>
+                            <xsl:value-of select="$currentRecord/pfx:EventType/pfx:MessageType"/>
+                        </MessageType>
+                        <MessageNumber>
+                            <xsl:value-of select="string(tib:timestamp())"/>
+                        </MessageNumber>
+                        <RegionCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/RegionCode"/>
+                        </RegionCode>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Sleep">
+                <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+                <pd:resourceType>ae.activities.sleep</pd:resourceType>
+                <pd:x>657</pd:x>
+                <pd:y>340</pd:y>
+                <config/>
+                <pd:inputBindings>
+                    <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                        <IntervalInMillisec>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/EmsRetryDelayInMilliseconds"/>
+                        </IntervalInMillisec>
+                    </ns0:SleepInputSchema>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Generate Error">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>779</pd:x>
+                <pd:y>341</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                        <message>
+                            <xsl:value-of select="concat(&quot;Error Message: &quot;, $_error/ns2:ErrorReport/Msg, &quot;. StackTrace: &quot;, $_error/ns2:ErrorReport/StackTrace)"/>
+                        </message>
+                        <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GroupEvents</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GroupEvents</pd:from>
+        <pd:to>IterateEvents</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IterateEvents</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

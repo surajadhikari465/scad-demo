@@ -1,18 +1,12 @@
 ﻿CREATE TABLE [amz].[ReceiptQueue]
 (
 	[QueueID] INT IDENTITY(1,1),
-	[EventTypeID] INT NOT NULL,
+	[EventTypeCode] NVARCHAR(25) NOT NULL,
+	[MessageType] NVARCHAR(50) NOT NULL,
 	[KeyID] INT NOT NULL,
 	[SecondaryKeyID] INT NULL,
 	[InsertDate] DATETIME2(7) NOT NULL CONSTRAINT [DF_ReceiptQueue_InsertDate] DEFAULT (SYSDATETIME()),
-	[Status] NCHAR(1) NOT NULL,
-	[InProcessBy] INT NULL,
-	[ErrorDescription] NVARCHAR(MAX) NULL,
-	[ProcessTimes] SMALLINT NULL,
-	[LastProcessedTime] DATETIME2(7) NULL,
-	[MessageTimestampUtc] DATETIME2(7) NOT NULL CONSTRAINT [DF_ReceiptQueue_MessageTimestampUtc] DEFAULT (SYSUTCDATETIME()),
-    [ResetBy] [nvarchar](255) NULL,
-	CONSTRAINT [CK_ReceiptQueue_Status] CHECK  ([Status]='R' OR [Status]='F' OR [Status]='P' OR [Status]='I' OR [Status]='U')
+	[MessageTimestampUtc] DATETIME2(7) NOT NULL CONSTRAINT [DF_ReceiptQueue_MessageTimestampUtc] DEFAULT (SYSUTCDATETIME())
 )
 
 GO
@@ -20,14 +14,10 @@ CREATE CLUSTERED INDEX [idxReceiptQueue_InsertDateID]
     ON [amz].[ReceiptQueue]([InsertDate], [QueueID]);
 
 GO
-GRANT SELECT
+GRANT SELECT, INSERT
     ON OBJECT::[amz].[ReceiptQueue] TO [MammothRole]
     AS [dbo];
 
-GO
-GRANT UPDATE
-    ON OBJECT::[amz].[ReceiptQueue] TO [MammothRole]
-    AS [dbo];
 GO
 
 GRANT SELECT ON [amz].[ReceiptQueue] TO [IRMAReports];

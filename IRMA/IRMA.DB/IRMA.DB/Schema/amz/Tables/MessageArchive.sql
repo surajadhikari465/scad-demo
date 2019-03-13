@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [amz].[MessageArchive](
 	[MessageArchiveID] [int] IDENTITY(1,1) NOT NULL,
 	[BusinessUnitID] [int] NOT NULL,
-	[QueueID] [int] NULL,
 	[KeyID] [int] NOT NULL,
 	[SecondaryKeyID] [int] NULL,
 	[InsertDate] [datetime2](7) NOT NULL,
@@ -22,14 +21,10 @@ CREATE CLUSTERED INDEX [idxMessageArchive_InsertDateID]
 
 GO
 
-GRANT SELECT
-    ON OBJECT::[amz].[MessageArchive] TO [MammothRole]
+GRANT SELECT, UPDATE
+    ON OBJECT::[amz].[MessageArchive] TO [MammothRole], [TibcoDataWriter]
     AS [dbo];
 
-GO
-GRANT UPDATE
-    ON OBJECT::[amz].[MessageArchive] TO [MammothRole]
-    AS [dbo];
 GO
 
 GRANT SELECT ON [amz].[MessageArchive] TO [IRMAReports];

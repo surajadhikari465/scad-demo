@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" schemaLocation="/Schemas/InventoryManagementMessageHeaders.xsd"/>
+    <pd:name>Processes/MapMessageHeaders.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TransactionID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="TransactionType" type="xsd:string"/>
+                    <xsd:element name="Source" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="MessageType" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="MessageNumber" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RegionCode" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>153</pd:startX>
+    <pd:startY>131</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$MapHeaders/pfx2:MessageHeaders"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:MessageHeaders"/>
+    <pd:endX>515</pd:endX>
+    <pd:endY>131</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551809680170</pd:targetNamespace>
+    <pd:activity name="MapHeaders">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>327</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <element ref="pfx2:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:MessageHeaders>
+                <xsl:if test="$Start/root/TransactionID">
+                    <pfx2:TransactionID>
+                        <xsl:value-of select="$Start/root/TransactionID"/>
+                    </pfx2:TransactionID>
+                </xsl:if>
+                <xsl:if test="$Start/root/TransactionType">
+                    <pfx2:TransactionType>
+                        <xsl:value-of select="$Start/root/TransactionType"/>
+                    </pfx2:TransactionType>
+                </xsl:if>
+                <xsl:if test="$Start/root/Source">
+                    <pfx2:Source>
+                        <xsl:value-of select="$Start/root/Source"/>
+                    </pfx2:Source>
+                </xsl:if>
+                <pfx2:MessageType>
+                    <xsl:value-of select="$Start/root/MessageType"/>
+                </pfx2:MessageType>
+                <xsl:if test="$Start/root/MessageNumber">
+                    <pfx2:MessageNumber>
+                        <xsl:value-of select="$Start/root/MessageNumber"/>
+                    </pfx2:MessageNumber>
+                </xsl:if>
+                <pfx2:RegionCode>
+                    <xsl:value-of select="$Start/root/RegionCode"/>
+                </pfx2:RegionCode>
+            </pfx2:MessageHeaders>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>MapHeaders</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MapHeaders</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

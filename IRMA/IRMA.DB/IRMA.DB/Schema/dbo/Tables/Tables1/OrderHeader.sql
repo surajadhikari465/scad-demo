@@ -200,21 +200,36 @@ BEGIN
 	BEGIN
 		IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 		BEGIN
-			DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U';
-			DECLARE @TSF_DeleteEventTypeID INT = 7 --'Transfer Order Deletion'
-			DECLARE @PO_DeleteEventTypeID INT = 15 --'Purchase Order Deletion'
-	
-			INSERT INTO amz.OrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
-			SELECT CASE 
-					WHEN deleted.OrderType_ID <> 3 THEN @PO_DeleteEventTypeID
-					ELSE @TSF_DeleteEventTypeID
-				   END,
-				deleted.OrderHeader_ID,
-				SYSDATETIME(),
-				@unprocessedStatusCode, -- for 'Unprocessed'
-				SYSUTCDATETIME()
-			FROM deleted
-			WHERE deleted.Sent = 1
+			IF EXISTS (SELECT 1 FROM deleted 
+					   WHERE deleted.ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+			BEGIN
+				DECLARE @TSF_DeleteEventTypeCode NVARCHAR(25) = 'TSF_DEL' --'Transfer Order Deletion'
+				DECLARE @PO_DeleteEventTypeCode NVARCHAR(25) = 'PO_DEL' --'Purchase Order Deletion'
+
+				DECLARE @transferDeleteMessageType NVARCHAR(50) = 'TransferOrderDelete'
+				DECLARE @poDeleteMessageType NVARCHAR(50) = 'PurchaseOrderDelete'
+
+				IF (SELECT OrderType_ID FROM deleted) <> 3 -- Purchase Order
+					INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+					SELECT 
+						@PO_DeleteEventTypeCode,
+						@poDeleteMessageType,
+						deleted.OrderHeader_ID,
+						SYSDATETIME(),
+						SYSUTCDATETIME()
+					FROM deleted
+					WHERE deleted.Sent = 1;
+				ELSE
+					INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+					SELECT 
+						@TSF_DeleteEventTypeCode,
+						@transferDeleteMessageType,
+						deleted.OrderHeader_ID,
+						SYSDATETIME(),
+						SYSUTCDATETIME()
+					FROM deleted
+					WHERE deleted.Sent = 1
+			END
 		END
 	END
 
@@ -374,30 +389,47 @@ BEGIN
     BEGIN
 		IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 		BEGIN
-			DECLARE @po_creEventTypeID INT = 10 -- 'PO_CRE'
-			DECLARE @po_modEventTypeID INT = 11 -- 'PO_MOD'
-			DECLARE @tsf_creEventTypeID INT = 2 -- 'TSF_CRE'
-			DECLARE @tsf_modEventTypeID INT = 3 -- 'TSF_MOD'
-			DECLARE @unprocessedStatus NCHAR(1) = 'U'
+			IF EXISTS (SELECT 1 FROM inserted 
+					   WHERE inserted.ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+			BEGIN
+				DECLARE @po_creEventTypeCode NVARCHAR(25) = 'PO_CRE'
+				DECLARE @po_modEventTypeCode NVARCHAR(25) = 'PO_MOD'
+				DECLARE @tsf_creEventTypeCode NVARCHAR(25) = 'TSF_CRE'
 
-			INSERT INTO amz.OrderQueue (EventTypeID, KeyID, Status)
-			SELECT		CASE
-							WHEN (d.Sent = 0 AND i.OrderType_ID <> 3) THEN @po_creEventTypeID
-							WHEN (d.Sent = 0 AND i.OrderType_ID = 3) THEN @tsf_creEventTypeID
-							ELSE 
-							CASE 
-									WHEN i.OrderType_ID = 3 THEN @tsf_modEventTypeID
-									ELSE @po_modEventTypeID
-								 END	
-						END EventTypeID,
-						i.OrderHeader_ID,
-						@unprocessedStatus
-			FROM		INSERTED	i	
-			INNER JOIN	DELETED		d	ON	i.OrderHeader_ID = d.OrderHeader_ID
-			WHERE	i.Sent = 1 
+				DECLARE @poMessageType NVARCHAR(50) = 'PurchaseOrder'
+				DECLARE @transferMessageType NVARCHAR(50) = 'TransferOrder'
 
-			SELECT @Error_No = @@ERROR
+				IF (SELECT OrderType_ID FROM INSERTED) <> 3 -- Purchase Orders
+					INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID)
+					SELECT
+						CASE
+							WHEN (d.Sent = 0) THEN @po_creEventTypeCode
+							ELSE @po_modEventTypeCode
+						END EventTypeCode,
+						@poMessageType,
+						i.OrderHeader_ID
+					FROM INSERTED i	
+					INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
+					WHERE i.Sent = 1
+					AND ((i.Expected_Date <> d.Expected_Date)
+						OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
+							OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
+						OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
+							OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
+						OR ((i.ApprovedDate <> d.ApprovedDate)
+							OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL)))
+				ELSE
+					INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID)
+					SELECT
+						@tsf_creEventTypeCode,
+						@transferMessageType,
+						i.OrderHeader_ID
+					FROM INSERTED i	
+					INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
+					WHERE (i.Sent = 1 and d.Sent = 0)
+			END
 		END
+		SELECT @Error_No = @@ERROR
 	END
 
 	IF @Error_No <> 0
@@ -433,20 +465,36 @@ BEGIN
 
 	IF (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
-		DECLARE @PO_CRE_EvenTypeID INT = 10 -- 'PO_CRE'
-		DECLARE @TSF_CRE_EvenTypeID INT = 2 -- 'TSF_CRE'
+		IF EXISTS (SELECT 1 FROM inserted 
+				   WHERE inserted.ReceiveLocation_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+		BEGIN
+			DECLARE @PO_CRE_EvenTypeCode NVARCHAR(25) = 'PO_CRE'
+			DECLARE @TSF_CRE_EvenTypeCode NVARCHAR(25) = 'TSF_CRE'
 
-		INSERT INTO amz.OrderQueue (EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
-		SELECT CASE
-			WHEN inserted.OrderType_ID <> 3 THEN @PO_CRE_EvenTypeID
-			ELSE @TSF_CRE_EvenTypeID
-			END,
-			inserted.OrderHeader_ID,
-			SYSDATETIME(),
-			'U', -- for 'Unprocessed'
-			SYSUTCDATETIME()
-		FROM inserted
-		WHERE inserted.Sent = 1
+			DECLARE @poMessageType NVARCHAR(50) = 'PurchaseOrder'
+			DECLARE @transferMessageType NVARCHAR(50) = 'TransferOrder'
+
+			IF (SELECT OrderType_ID FROM inserted) <> 3 -- Purchase Order
+				INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+				SELECT
+					@PO_CRE_EvenTypeCode,
+					@poMessageType,
+					inserted.OrderHeader_ID,
+					SYSDATETIME(),
+					SYSUTCDATETIME()
+				FROM inserted
+				WHERE inserted.Sent = 1
+			ELSE
+				INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+				SELECT
+					@TSF_CRE_EvenTypeCode,
+					@transferMessageType,
+					inserted.OrderHeader_ID,
+					SYSDATETIME(),
+					SYSUTCDATETIME()
+				FROM inserted
+				WHERE inserted.Sent = 1
+		END
 	END
 END
 GO

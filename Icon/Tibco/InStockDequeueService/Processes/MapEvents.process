@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" schemaLocation="/Schemas/DequeueResults.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
+    <pd:name>Processes/MapEvents.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Resultsets"/>
+    <pd:startX>123</pd:startX>
+    <pd:startY>113</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-To-Events-Schema/pfx2:Events"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:Events"/>
+    <pd:endX>618</pd:endX>
+    <pd:endY>118</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1551377939780</pd:targetNamespace>
+    <pd:activity name="Map To Events Schema">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>366</pd:x>
+        <pd:y>123</pd:y>
+        <config>
+            <element ref="pfx2:Events"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Events>
+                <xsl:for-each select="$Start/Resultsets/ResultSet1/Record1">
+                    <pfx2:EventType>
+                        <pfx2:QueueID>
+                            <xsl:value-of select="QueueID"/>
+                        </pfx2:QueueID>
+                        <pfx2:EventTypeCode>
+                            <xsl:value-of select="EventTypeCode"/>
+                        </pfx2:EventTypeCode>
+                        <pfx2:MessageType>
+                            <xsl:value-of select="MessageType"/>
+                        </pfx2:MessageType>
+                        <pfx2:KeyID>
+                            <xsl:value-of select="KeyID"/>
+                        </pfx2:KeyID>
+                        <xsl:choose>
+                            <xsl:when test="SecondaryKeyID/@xsi:nil"/>
+                            <xsl:otherwise>
+                                <pfx2:SecondaryKeyID>
+                                    <xsl:value-of select="SecondaryKeyID"/>
+                                </pfx2:SecondaryKeyID>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx2:InsertDate>
+                            <xsl:value-of select="InsertDate"/>
+                        </pfx2:InsertDate>
+                        <pfx2:MessageTimestampUtc>
+                            <xsl:value-of select="MessageTimestampUtc"/>
+                        </pfx2:MessageTimestampUtc>
+                    </pfx2:EventType>
+                </xsl:for-each>
+            </pfx2:Events>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map To Events Schema</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map To Events Schema</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -279,19 +279,24 @@ where				InsertedData.Item_Key = OnHand.Item_Key AND
 
 	IF @Error_No = 0 AND (SELECT ISNULL(dbo.fn_InstanceDataValue('EnableAmazonEventGeneration', null), 0)) = 1
 	BEGIN
-		DECLARE @invAdjEvenTypeID INT = 1 -- 'INV_ADJ'
-		DECLARE @unprocessedStatusCode NVARCHAR(1) = 'U'
-
-		INSERT INTO amz.InventoryQueue(EventTypeID, KeyID, InsertDate, Status, MessageTimestampUtc)
-		SELECT 
-			@invAdjEvenTypeID,
-			inserted.ItemHistoryID,
-			SYSDATETIME(),
-			@unprocessedStatusCode,
-			SYSUTCDATETIME()
-		FROM inserted
-		WHERE inserted.Adjustment_ID = 1
+		IF EXISTS(SELECT 1 FROM inserted
+			JOIN Vendor v on inserted.Store_No = v.Store_no
+			WHERE v.Vendor_ID IN (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|')))
+		BEGIN
 		
+			DECLARE @invAdjEvenTypeCode NVARCHAR(25) = 'INV_ADJ'
+			DECLARE @invAdjMessageType NVARCHAR(50) = 'InventoryAdjustment'
+
+			INSERT INTO amz.InventoryQueue(EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+			SELECT 
+				@invAdjEvenTypeCode,
+				@invAdjMessageType,
+				inserted.ItemHistoryID,
+				SYSDATETIME(),
+				SYSUTCDATETIME()
+			FROM inserted
+			WHERE inserted.Adjustment_ID = 1
+		END
 		SELECT @Error_No = @@ERROR
 	END
 

@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!UKdj1Nz72+NZGl/kLjcpaYrIVkT0+4XtUKGbgX4emThttr5jN5kJaBEv5g4g/R51C2/IK7JG6orP4O37SUdbuSvIDDqj+Ywj</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1551941628125</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Username</name>
+			<value>sb1_HCInventoryMgmtPublisher</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1551941628255</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

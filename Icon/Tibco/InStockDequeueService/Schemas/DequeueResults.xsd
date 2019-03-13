@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="unqualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Resultsets">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UpdateCount" minOccurs="0"/>
+				<xs:element ref="ResultSet1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateCount" type="xs:int"/>
+	<xs:element name="ResultSet1">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Record1" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Record1">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="QueueID"/>
+				<xs:element ref="EventTypeCode"/>
+				<xs:element ref="MessageType"/>
+				<xs:element ref="KeyID"/>
+				<xs:element ref="SecondaryKeyID"/>
+				<xs:element ref="InsertDate"/>
+				<xs:element ref="MessageTimestampUtc"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="QueueID" type="xs:int"/>
+	<xs:element name="EventTypeCode" type="xs:string"/>
+	<xs:element name="MessageType" type="xs:string"/>
+	<xs:element name="KeyID" type="xs:int"/>
+	<xs:element name="SecondaryKeyID" type="xs:int" nillable="true"/>
+	<xs:element name="InsertDate" type="xs:dateTime"/>
+	<xs:element name="MessageTimestampUtc" type="xs:dateTime"/>
+</xs:schema>
