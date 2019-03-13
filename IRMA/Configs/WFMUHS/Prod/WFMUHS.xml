@@ -123,12 +123,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -212,12 +212,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -333,12 +333,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -420,12 +420,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -506,12 +506,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -612,12 +612,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -708,12 +708,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -797,12 +797,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -885,12 +885,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -972,12 +972,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -1072,12 +1072,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -1141,12 +1141,12 @@
       <SecurityGroup />
       <Description>SMORe List-O-Matic</Description>
       <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.13" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
       <AppSettings>
         <add key="MaxItems" value="500" />
       </AppSettings>
-      <Update enabled="1" version="1.0.0.13">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.13/</Location>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
