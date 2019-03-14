@@ -246,8 +246,7 @@
 	WHERE 
 	  i.Retail_Sale = 1
 	  AND id.Default_Identifier = 1
-	  AND oh.OrderHeader_ID = ?
-	  AND QuantityReceived IS NOT NULL</statement>
+	  AND oh.OrderHeader_ID = ?</statement>
             <wizardData/>
             <processInSubsets>false</processInSubsets>
             <Prepared_Param_DataType>
