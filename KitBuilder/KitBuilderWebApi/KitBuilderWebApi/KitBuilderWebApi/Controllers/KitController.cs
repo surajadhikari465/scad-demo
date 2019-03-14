@@ -26,6 +26,7 @@ namespace KitBuilderWebApi.Controllers
     public class KitController : Controller
     {
         private IRepository<KitInstructionList> kitInstructionListRepository;
+        private IRepository<InstructionList> instructionListRepository;
         private IRepository<LinkGroup> linkGroupRepository;
         private IRepository<Kit> kitRepository;
         private IRepository<Locale> localeRepository;
@@ -42,7 +43,8 @@ namespace KitBuilderWebApi.Controllers
 		private const string deleteKitSpName = "DeleteKitByKitId";
 		private IServiceProvider services;
 
-		public KitController(IRepository<LinkGroup> linkGroupRepository,                   
+		public KitController(IRepository<LinkGroup> linkGroupRepository, 
+                             IRepository<InstructionList> instructionListRepository,
                              IRepository<Kit> kitRepository,
                              IRepository<Locale> localeRepository,
                              IRepository<KitLocale> kitLocaleRepository,
@@ -60,6 +62,7 @@ namespace KitBuilderWebApi.Controllers
 							)
         {
             this.linkGroupRepository = linkGroupRepository;
+            this.instructionListRepository = instructionListRepository;
             this.kitRepository = kitRepository;
             this.localeRepository = localeRepository;
             this.kitLocaleRepository = kitLocaleRepository;
@@ -426,6 +429,84 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
+        private void CreateNewKit(KitDto newKit)
+        {
+            var kit = new Kit()
+            {
+                Description = newKit.Description,
+                ItemId = newKit.ItemId,
+                InsertDateUtc = DateTime.UtcNow,
+                LastUpdatedDateUtc = DateTime.UtcNow,
+                isDisplayMandatory = newKit.isDisplayMandatory,
+                showRecipe = newKit.showRecipe,
+                KitType = newKit.KitType
+            };
+
+            //add a kit to the database first, so we can get a kitId
+            var addedKit = kitRepository.Add(kit);
+
+            if (newKit.KitType != KitType.Simple) {
+                var addedKitLinkGroups = AddNewLinkedGroups(newKit.KitLinkGroup, addedKit);
+
+                var linkedGroupItems = newKit.KitLinkGroup.SelectMany(lg => lg.KitLinkGroupItem);
+                AddLinkedGroupItems(addedKitLinkGroups, linkedGroupItems.ToList());
+            }
+
+            AddNewInstrunctionLists(newKit.KitInstructionList, addedKit);
+        }
+
+        private void AddLinkedGroupItems(ICollection<KitLinkGroup> addedKitLinkGroups, ICollection<KitLinkGroupItemDto> linkedGroupItems)
+        {
+            //now last we need to add the items, but associate them with the kitlinkedgroup's
+            var linkedGroupItemIds = linkedGroupItems.Select(lgi => lgi.LinkGroupItemId);
+            var linkedGroupItemsToAdd = linkGroupItemRepository.GetAll()
+                .Where(lgi => linkedGroupItemIds.Contains(lgi.LinkGroupItemId) && addedKitLinkGroups.Select(x => x.LinkGroupId).Contains(lgi.LinkGroupId))
+                .Select(lgi => new KitLinkGroupItem()
+                {
+                    KitLinkGroupId = addedKitLinkGroups.Where(klg => klg.LinkGroupId == lgi.LinkGroupId).Select(klg => klg.KitLinkGroupId).First(),
+                    LinkGroupItemId = lgi.LinkGroupItemId
+                });
+
+
+            //now add the LinkedGroupItems
+            kitLinkGroupItemRepository.UnitOfWork.Context.KitLinkGroupItem.AddRange(linkedGroupItemsToAdd);
+            kitLinkGroupItemRepository.UnitOfWork.Commit();
+        }
+        private ICollection<KitLinkGroup> AddNewLinkedGroups(ICollection<KitLinkGroupDto> linkGroups, Kit addedKit)
+        {
+            var linkedGroupIds = linkGroups.Select(lg => lg.LinkGroupId);
+            //get the linked groups to be added from the database
+            var linkedGroupsToAdd = linkGroupRepository.GetAll()
+                .Where(lg => linkedGroupIds.Contains(lg.LinkGroupId))
+                .Select(lg => new KitLinkGroup()
+                {
+                    KitId = addedKit.KitId,
+                    LinkGroupId = lg.LinkGroupId
+                });
+            kitLinkGroupRepository.UnitOfWork.Context.KitLinkGroup.AddRange(linkedGroupsToAdd);
+            kitLinkGroupRepository.UnitOfWork.Commit();
+            return kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == addedKit.KitId).ToList();
+        }
+
+        private void AddNewInstrunctionLists(ICollection<KitInstructionListDto> instructions, Kit addedKit)
+        {
+            //get just the id's of the instructions to be added
+            var instructionIds = instructions.Select(klg => klg.InstructionListId);
+
+            //now get the instruction objects from the database
+            var instructionsToAdd = instructionListRepository.GetAll()
+                .Where(instruction => instructionIds.Contains(instruction.InstructionListId))
+                .Select(ins => new KitInstructionList()
+                {
+                    KitId = addedKit.KitId,
+                    InstructionListId = ins.InstructionListId,
+
+                });
+
+            kitInstructionListRepository.UnitOfWork.Context.KitInstructionList.AddRange(instructionsToAdd);
+            kitInstructionListRepository.UnitOfWork.Commit();
+        }
+
         [HttpPost(Name = "SaveKit")]
         public IActionResult KitSaveDetails([FromBody]KitDto kitToSave)
         {
@@ -435,11 +516,10 @@ namespace KitBuilderWebApi.Controllers
             {
                 ValidateKitSaveParameters(kitToSave);
 
-                var item = itemsRepository.GetAll().Where(i => i.ItemId == kitToSave.ItemId).FirstOrDefault();
+                var item = itemsRepository.GetAll().Where(i => i.ItemId == kitToSave.ItemId).First();
 
                 if (item == null)
                 {
-                    // error
                     errorMessage = $"SaveKit: Unable to find Item [id: {kitToSave.ItemId}]";
                     logger.LogError(errorMessage);
                     throw new Exception(errorMessage);
@@ -447,11 +527,18 @@ namespace KitBuilderWebApi.Controllers
 
                 if (kitToSave.KitId <= 0) //brand new kit
                 {
-                    var newKit = Mapper.Map<Kit>(kitToSave);
-                    newKit.LastUpdatedDateUtc = DateTime.UtcNow;
-                    newKit.InsertDateUtc = DateTime.UtcNow;
+                    var isItemAlreadyUsedForAKit =
+                    kitRepository.GetAll()
+                    .Where(kit => kit.ItemId == kitToSave.ItemId)
+                    .ToArray().Length > 0;
 
-                    kitLocaleRepository.UnitOfWork.Context.Kit.Add(newKit);
+                    if (isItemAlreadyUsedForAKit)
+                    {
+                        errorMessage = $"SaveKit: ItemId {kitToSave.ItemId} is already associated with a kit.";
+                        logger.LogError(errorMessage);
+                        throw new Exception(errorMessage);
+                    }
+                    CreateNewKit(kitToSave);
                 }
                 else
                 {

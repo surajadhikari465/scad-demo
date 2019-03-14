@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Route, HashRouter, Switch } from 'react-router-dom';
-import { App } from '../App';
 import { LinkGroupsPage } from './LinkGroups/LinkGroupsPage';
 import { InstructionListsPage } from './InstructionLists/InstructionListsPage';
 import KitListPage from './Kits';
 import '../css/site.css'
 import EditKit from './Kits/EditKit';
 import { AssignKitsToLocale} from './AssignKits/AssignKitsToLocale';
-import { CreateKit} from './Kits/KitItemAddModal/CreateKit';
 import {KitLinkGroupPage} from './KitLinkGroups/KitLinkGroupsPage';
 import { MuiThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
+import Header from './Header/header';
+import CreateKitPage from './Kits/CreateKitPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -35,7 +35,7 @@ class AppRouter extends React.Component {
       <HashRouter>
         <MuiThemeProvider theme = {theme}>
         <div className="container-fluid">
-          <Route component={App} />
+          <Header/>
           <Switch>
             <Route exact path="/" component={InstructionListsPage} />
             <Route path="/Instructions" component={InstructionListsPage} />
@@ -43,7 +43,7 @@ class AppRouter extends React.Component {
             <Route path="/Kits" component={KitListPage} />
             <Route path="/EditKit" component={EditKit} />
              <Route path="/AssignKits" component={AssignKitsToLocale} />
-            <Route path="/CreateKits" component={CreateKit} />
+            <Route path="/CreateKits" component={CreateKitPage} />
             <Route path="/KitLinkGroups" component ={KitLinkGroupPage}/>
           </Switch>
         </div>

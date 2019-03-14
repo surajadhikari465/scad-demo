@@ -1,0 +1,42 @@
+.stripped-table p:nth-child(even) {
+    background-color: #f2f2f2
+  }
+
+.stripped-table h6 {
+    color: grey;
+}
+
+  .stripped-table p {
+    padding: 16px !important;
+  }
+
+  .stripped-table {
+      background-color: white;
+      width: 100%;
+  }
+.item-checkbox {
+padding: 0px !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.create-kit-inner-row-container {
+  min-height: 72px !important;
+  border-bottom: 2px solid #e6e6e6;
+}
+
+.linked-groups-table-placeholder {
+  min-height: 100px;
+}
+
+.create-kit-message {
+  text-align: center;
+  color: forestgreen;
+}
+
+.create-kit-error {
+  text-align: center;
+  color: red;
+}

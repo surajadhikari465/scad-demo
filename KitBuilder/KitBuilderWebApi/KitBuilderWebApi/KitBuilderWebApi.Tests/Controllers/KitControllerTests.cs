@@ -22,6 +22,8 @@ namespace KitBuilderWebApi.Tests.Controllers
     public class KitControllerTests
     {
         private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
+        private Mock<IRepository<InstructionList>> mockInstrunctionListRepository;
+
         private Mock<IHelper<KitDto, KitSearchParameters>> mockKitHelper;
 
         private KitController kitController;
@@ -54,6 +56,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         public void InitializeTests()
         {
             mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
+            mockInstrunctionListRepository = new Mock<IRepository<InstructionList>>();
             mockLogger = new Mock<ILogger<KitController>>();
             mockKitLinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
             mockLinkGroupRepository = new Mock<IRepository<LinkGroup>>();
@@ -80,6 +83,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitHelper = new Mock<IHelper<KitDto, KitSearchParameters>>();
 
             kitController = new KitController(mockLinkGroupRepository.Object,
+                mockInstrunctionListRepository.Object,
                 mockKitRepository.Object,
                 mockLocaleRepository.Object,
                 mockKitLocaleRepository.Object,

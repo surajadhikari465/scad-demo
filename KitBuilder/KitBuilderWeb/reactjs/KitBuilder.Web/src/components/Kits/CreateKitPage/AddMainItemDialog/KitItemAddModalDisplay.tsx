@@ -1,8 +1,7 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import Checkbox from '@material-ui/core/Checkbox';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme: any) => ({
@@ -41,7 +40,9 @@ function KitItemAddModalDisplay(props: any) {
                     id: "select",
                     Cell: row => (
                         <Grid container justify="center" alignItems="center">
-                            <Checkbox color="primary" value="false" onChange={() => props.onChecked(row)} />
+                            <Button color="primary" onClick={() => props.onSelected(row.original)}>
+                                Select
+                            </Button>
                         </Grid>
                     )
                 }

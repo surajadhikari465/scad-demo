@@ -1,0 +1,13 @@
+.styled-panel {
+    border: 1px solid  rgba(0,0,0, 0.1);
+    background-color: white;
+    box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ReactTable {
+    background-color: white !important;
+}
+
+body {
+    background-color: #88BDBC !important;
+}
