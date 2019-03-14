@@ -410,14 +410,15 @@ BEGIN
 						i.OrderHeader_ID
 					FROM INSERTED i	
 					INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
-					WHERE i.Sent = 1
-					AND ((i.Expected_Date <> d.Expected_Date)
-						OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
-							OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
-						OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
-							OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
-						OR ((i.ApprovedDate <> d.ApprovedDate)
-							OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL)))
+					WHERE (i.Sent = 1 AND d.Sent = 0)
+						OR (i.Sent = 1
+							AND ((i.Expected_Date <> d.Expected_Date)
+								OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
+									OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
+								OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
+									OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
+								OR ((i.ApprovedDate <> d.ApprovedDate)
+									OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL))))
 				ELSE
 					INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID)
 					SELECT

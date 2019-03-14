@@ -463,7 +463,6 @@ BEGIN
 				,SYSUTCDATETIME()
 			FROM inserted i
 			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
 			WHERE i.QuantityReceived IS NOT NULL 
 				AND d.QuantityReceived IS NULL
 
@@ -484,9 +483,8 @@ BEGIN
 				,SYSUTCDATETIME()
 			FROM inserted i
 			JOIN deleted d ON i.OrderItem_ID = d.OrderItem_ID
-			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-			WHERE (i.QuantityReceived IS NOT NULL OR d.QuantityReceived IS NOT NULL)	----Line item receipt information is modified after the receipt info was entered
-				AND ISNULL(i.QuantityReceived, 0) <> ISNULL(d.QuantityReceived, 0)
+			WHERE (i.QuantityReceived IS NULL AND d.QuantityReceived IS NOT NULL)	----Line item receipt information is modified after the receipt info was entered
+				OR (i.QuantityReceived <> d.QuantityReceived)
 		END
 	END
     END TRY
