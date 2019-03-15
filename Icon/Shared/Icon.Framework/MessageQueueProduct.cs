@@ -118,9 +118,9 @@ namespace Icon.Framework
         public string KitchenDescription { get; set; }
         public string ImageURL { get; set; }
     
-        public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
         public virtual ICollection<MessageQueueNutrition> MessageQueueNutrition { get; set; }
+        public virtual MessageHistory MessageHistory { get; set; }
     }
 }

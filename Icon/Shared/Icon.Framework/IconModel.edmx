@@ -69,11 +69,16 @@
           <Property Name="merchandiseClassID" Type="int" />
           <Property Name="nationalClassID" Type="int" />
           <Property Name="insertDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
           <Property Name="Biodynamic" Type="bit" />
+          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
           <Property Name="CheeseRaw" Type="bit" />
+          <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
           <Property Name="HealthyEatingRatingId" Type="int" />
           <Property Name="Msc" Type="bit" />
           <Property Name="PremiumBodyCare" Type="bit" />
+          <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
+          <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
           <Property Name="Vegetarian" Type="bit" />
           <Property Name="WholeTrade" Type="bit" />
           <Property Name="GrassFed" Type="bit" />
@@ -84,11 +89,6 @@
           <Property Name="MadeInHouse" Type="bit" />
           <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
           <Property Name="AlcoholByVolume" Type="decimal" Precision="5" Scale="2" />
-          <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
-          <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
-          <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
-          <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
-          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="IRMAItemSubscription">
           <Key>
@@ -192,6 +192,7 @@
           <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
+          <Property Name="MessageHeader" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="MessageQueueBusinessUnitInProcess">
           <Key>
@@ -299,11 +300,11 @@
           <Property Name="TimezoneCode" Type="nvarchar" MaxLength="5" />
           <Property Name="TimezoneName" Type="nvarchar" MaxLength="100" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="InProcessBy" Type="int" />
-          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
           <Property Name="VenueCode" Type="nvarchar" MaxLength="255" />
           <Property Name="VenueOccupant" Type="nvarchar" MaxLength="255" />
           <Property Name="VenueSubType" Type="nvarchar" MaxLength="255" />
+          <Property Name="InProcessBy" Type="int" />
+          <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="MessageQueueNutrition">
           <Key>
@@ -858,8 +859,11 @@
           </Key>
           <Property Name="ItemSignAttributeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="AnimalWelfareRatingId" Type="int" />
           <Property Name="Biodynamic" Type="bit" Nullable="false" />
+          <Property Name="CheeseMilkTypeId" Type="int" />
           <Property Name="CheeseRaw" Type="bit" Nullable="false" />
+          <Property Name="EcoScaleRatingId" Type="int" />
           <Property Name="GlutenFreeAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="HealthyEatingRatingId" Type="int" />
           <Property Name="KosherAgencyName" Type="nvarchar" MaxLength="255" />
@@ -867,6 +871,8 @@
           <Property Name="NonGmoAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="OrganicAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="PremiumBodyCare" Type="bit" Nullable="false" />
+          <Property Name="SeafoodFreshOrFrozenId" Type="int" />
+          <Property Name="SeafoodCatchTypeId" Type="int" />
           <Property Name="VeganAgencyName" Type="nvarchar" MaxLength="255" />
           <Property Name="Vegetarian" Type="bit" Nullable="false" />
           <Property Name="WholeTrade" Type="bit" Nullable="false" />
@@ -878,10 +884,12 @@
           <Property Name="MadeInHouse" Type="bit" Nullable="false" />
           <Property Name="CustomerFriendlyDescription" Type="nvarchar" MaxLength="60" />
           <Property Name="AnimalWelfareRating" Type="nvarchar" MaxLength="255" />
+          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliverySystems" Type="nvarchar" MaxLength="255" />
+          <Property Name="DrainedWeightUom" Type="nvarchar" MaxLength="255" />
           <Property Name="EcoScaleRating" Type="nvarchar" MaxLength="255" />
           <Property Name="FreshOrFrozen" Type="nvarchar" MaxLength="255" />
           <Property Name="SeafoodCatchType" Type="nvarchar" MaxLength="255" />
-          <Property Name="MilkType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -993,7 +1001,7 @@
           </Key>
           <Property Name="scanCodeTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="scanCodeTypeDesc" Type="nvarchar" MaxLength="255" />
-        </EntityType>       
+        </EntityType>
         <EntityType Name="Territory">
           <Key>
             <PropertyRef Name="territoryID" />
@@ -3199,19 +3207,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
           </AssociationSet>
-          <EntitySet Name="MessageHistory" EntityType="Icon.Framework.Model.MessageHistory" />
-          <AssociationSet Name="FK_MessageHistory_MessageStatus" Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus">
-            <End Role="MessageStatus" EntitySet="MessageStatus" />
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageHistory_MessageType" Association="Icon.Framework.Model.FK_MessageHistory_MessageType">
-            <End Role="MessageType" EntitySet="MessageType" />
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueHierarchy_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
-          </AssociationSet>
           <EntitySet Name="EventQueue" EntityType="Icon.Framework.Model.EventQueue" />
           <AssociationSet Name="FK_EventQueue_EventType" Association="Icon.Framework.Model.FK_EventQueue_EventType">
             <End Role="EventType" EntitySet="EventType" />
@@ -3251,10 +3246,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="Locale" EntitySet="Locale" />
           </AssociationSet>
           <EntitySet Name="MessageQueueProduct" EntityType="Icon.Framework.Model.MessageQueueProduct" />
-          <AssociationSet Name="FK_MessageQueueProduct_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
-          </AssociationSet>
           <AssociationSet Name="FK_MessageQueueProduct_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
@@ -3268,14 +3259,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_MessageQueueItemLocale_MessageActionId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId">
             <End Role="MessageAction" EntitySet="MessageAction" />
             <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueItemLocale_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageQueuePrice_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueuePrice" EntitySet="MessageQueuePrice" />
           </AssociationSet>
           <AssociationSet Name="FK_MessageQueueItemLocale_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
@@ -3342,10 +3325,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageAction" EntitySet="MessageAction" />
             <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
           </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueProductSelectionGroup_MessageHistory" Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
-          </AssociationSet>
           <AssociationSet Name="FK_MessageQueueProductSelectionGroup_MessageStatus" Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
@@ -3359,10 +3338,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
           </AssociationSet>
           <EntitySet Name="MessageResendStatus" EntityType="Icon.Framework.Model.MessageResendStatus" />
-          <AssociationSet Name="FK_MessageRetryStatus_MessageHistory" Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageResendStatus" EntitySet="MessageResendStatus" />
-          </AssociationSet>
           <EntitySet Name="PLUCategory" EntityType="Icon.Framework.Model.PLUCategory" />
           <EntitySet Name="ItemMovement" EntityType="Icon.Framework.Model.ItemMovement" />
           <FunctionImport Name="GenerateItemUpdateMessagesByHierarchyClass">
@@ -3505,10 +3480,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="LocaleSubType" EntitySet="LocaleSubTypes" />
           </AssociationSet>
           <EntitySet Name="MessageQueueLocale" EntityType="Icon.Framework.Model.MessageQueueLocale" />
-          <AssociationSet Name="FK_app_MessageQueueLocale_MessageHistory" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_app_MessageQueueLocale_MessageStatus" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
@@ -3516,6 +3487,43 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType">
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <EntitySet Name="MessageHistory" EntityType="Icon.Framework.Model.MessageHistory" />
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageHistory" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageHistory_MessageStatus" Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageHistory_MessageType" Association="Icon.Framework.Model.FK_MessageHistory_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueHierarchy_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueuePrice_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueuePrice" EntitySet="MessageQueuePrice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProduct_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueProductSelectionGroup_MessageHistory" Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueProductSelectionGroup" EntitySet="MessageQueueProductSelectionGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRetryStatus_MessageHistory" Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageResendStatus" EntitySet="MessageResendStatus" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -3853,7 +3861,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="MessageTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MessageTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueHierarchy" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageType" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueProduct" />
           <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueItemLocale" />
           <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageTypeID" FromRole="MessageType" ToRole="MessageQueuePrice" />
@@ -3861,6 +3868,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageQueueBusinessUnitInProcess" Relationship="Icon.Framework.Model.FK_MessageQueueBusinessUnitInProcess_MessageType" FromRole="MessageType" ToRole="MessageQueueBusinessUnitInProcess" />
           <NavigationProperty Name="APIMessageMonitorLog" Relationship="Icon.Framework.Model.FK_APIMessageMonitorLog_MessageTypeId" FromRole="MessageType" ToRole="APIMessageMonitorLog" />
           <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageType" ToRole="MessageQueueLocale" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageType" ToRole="MessageHistory" />
           </EntityType>
         <EntityType Name="MessageStatus">
           <Key>
@@ -3869,12 +3877,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="MessageStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MessageStatusName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueueHierarchy" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageStatus" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueueProduct" />
           <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueueItemLocale" />
           <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueuePrice" />
           <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" FromRole="MessageStatus" ToRole="MessageQueueProductSelectionGroup" />
           <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageStatus" ToRole="MessageQueueLocale" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageStatus" ToRole="MessageHistory" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -4448,63 +4456,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="MessageHistory">
-          <Key>
-            <PropertyRef Name="MessageHistoryId" />
-          </Key>
-          <Property Name="MessageHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
-          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageHistory" ToRole="MessageStatus" />
-          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageHistory" ToRole="MessageType" />
-          <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueHierarchy" />
-          <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueProduct" />
-          <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueItemLocale" />
-          <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueuePrice" />
-          <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueProductSelectionGroup" />
-          <NavigationProperty Name="MessageResendStatus" Relationship="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" FromRole="MessageHistory" ToRole="MessageResendStatus" />
-          <Property Name="InProcessBy" Type="Int32" />
-          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueLocale" />
-        </EntityType>
-        <Association Name="FK_MessageHistory_MessageStatus">
-          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageStatus">
-              <PropertyRef Name="MessageStatusId" />
-            </Principal>
-            <Dependent Role="MessageHistory">
-              <PropertyRef Name="MessageStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageHistory_MessageType">
-          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="MessageTypeId" />
-            </Principal>
-            <Dependent Role="MessageHistory">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueueHierarchy_MessageHistoryId">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueHierarchy">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="EventQueue">
           <Key>
             <PropertyRef Name="QueueId" />
@@ -4697,7 +4648,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="FinancialParentId" Type="Int32" />
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageQueueProduct" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" FromRole="MessageQueueProduct" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageQueueProduct" ToRole="MessageType" />
           <Property Name="AnimalWelfareRating" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4756,21 +4706,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="KitchenItem" Type="Boolean" />
           <Property Name="KitchenDescription" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="ImageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageQueueProduct" ToRole="MessageHistory" />
          </EntityType>
-        <Association Name="FK_MessageQueueProduct_MessageHistoryId">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueProduct">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MessageQueueProduct_MessageStatusId">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="*" />
@@ -4835,11 +4772,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="MessageAction" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" FromRole="MessageQueueItemLocale" ToRole="MessageAction" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageQueueItemLocale" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" FromRole="MessageQueueItemLocale" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageQueueItemLocale" ToRole="MessageType" />
           <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="MessageQueueItemLocale" ToRole="IRMAPush" />
           <Property Name="PreviousLinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageQueueItemLocale" ToRole="MessageHistory" />
         </EntityType>
         <EntityType Name="MessageQueuePrice">
           <Key>
@@ -4878,10 +4815,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="PreviousSaleEndDate" Type="DateTime" Precision="7" />
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" FromRole="MessageQueuePrice" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageStatusId" FromRole="MessageQueuePrice" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageTypeID" FromRole="MessageQueuePrice" ToRole="MessageType" />
           <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_IRMAPushID" FromRole="MessageQueuePrice" ToRole="IRMAPush" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" FromRole="MessageQueuePrice" ToRole="MessageHistory" />
         </EntityType>
         <Association Name="FK_MessageQueueItemLocale_MessageActionId">
           <End Type="Icon.Framework.Model.MessageAction" Role="MessageAction" Multiplicity="1" />
@@ -4892,34 +4829,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="MessageQueueItemLocale">
               <PropertyRef Name="MessageActionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueueItemLocale_MessageHistoryId">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueItemLocale">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueuePrice_MessageHistoryId">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueuePrice" Role="MessageQueuePrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueuePrice">
-              <PropertyRef Name="MessageHistoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5146,10 +5055,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="MessageAction" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageAction" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageAction" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageType" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageType" />
           <NavigationProperty Name="ProductSelectionGroupType" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_ProductSelectionGroupType" FromRole="MessageQueueProductSelectionGroup" ToRole="ProductSelectionGroupType" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" FromRole="MessageQueueProductSelectionGroup" ToRole="MessageHistory" />
         </EntityType>
         <Association Name="FK_MessageQueueProductSelectionGroup_MessageAction">
           <End Type="Icon.Framework.Model.MessageAction" Role="MessageAction" Multiplicity="1" />
@@ -5160,18 +5069,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="MessageQueueProductSelectionGroup">
               <PropertyRef Name="MessageActionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueueProductSelectionGroup_MessageHistory">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.MessageQueueProductSelectionGroup" Role="MessageQueueProductSelectionGroup" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueProductSelectionGroup">
-              <PropertyRef Name="MessageHistoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5221,20 +5118,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" FromRole="MessageResendStatus" ToRole="MessageHistory" />
         </EntityType>
-        <Association Name="FK_MessageRetryStatus_MessageHistory">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageResendStatus" Role="MessageResendStatus" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageResendStatus">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PLUCategory">
           <Key>
             <PropertyRef Name="PluCategoryID" />
@@ -5933,6 +5816,13 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AnimalWelfareRatingId" Type="Int32" />
+          <Property Name="CheeseMilkTypeId" Type="Int32" />
+          <Property Name="EcoScaleRatingId" Type="Int32" />
+          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
+          <Property Name="SeafoodCatchTypeId" Type="Int32" />
+          <Property Name="DeliverySystems" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ItemSignAttribute_ItemId">
           <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
@@ -6073,27 +5963,13 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageQueueLocale" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageQueueLocale" ToRole="MessageType" />
           <Property Name="VenueCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="VenueOccupant" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="VenueSubType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
         </EntityType>
-        <Association Name="FK_app_MessageQueueLocale_MessageHistory">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_app_MessageQueueLocale_MessageStatus">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
@@ -6115,6 +5991,150 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="MessageQueueLocale">
               <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MessageHistory">
+          <Key>
+            <PropertyRef Name="MessageHistoryId" />
+          </Key>
+          <Property Name="MessageHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <Property Name="MessageHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueLocale" />
+          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageHistory" ToRole="MessageStatus" />
+          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageHistory" ToRole="MessageType" />
+          <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueHierarchy" />
+          <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueItemLocale" />
+          <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueuePrice" />
+          <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueProduct" />
+          <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueProductSelectionGroup" />
+          <NavigationProperty Name="MessageResendStatus" Relationship="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" FromRole="MessageHistory" ToRole="MessageResendStatus" />
+        </EntityType>
+        <Association Name="FK_app_MessageQueueLocale_MessageHistory">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageHistory_MessageStatus">
+          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="MessageStatusId" />
+            </Principal>
+            <Dependent Role="MessageHistory">
+              <PropertyRef Name="MessageStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageHistory_MessageType">
+          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageHistory">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueHierarchy_MessageHistoryId">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueHierarchy">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageHistoryId">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueuePrice_MessageHistoryId">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueuePrice" Role="MessageQueuePrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueuePrice">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProduct_MessageHistoryId">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueProduct">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueProductSelectionGroup_MessageHistory">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueProductSelectionGroup" Role="MessageQueueProductSelectionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueProductSelectionGroup">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRetryStatus_MessageHistory">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageResendStatus" Role="MessageResendStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageResendStatus">
+              <PropertyRef Name="MessageHistoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6493,19 +6513,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
                 <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
                 <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MessageHistory">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageHistory">
-              <MappingFragment StoreEntitySet="MessageHistory">
-                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
-                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7313,6 +7320,13 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemSignAttribute">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
               <MappingFragment StoreEntitySet="ItemSignAttribute">
+                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
+                <ScalarProperty Name="DeliverySystems" ColumnName="DeliverySystems" />
+                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
+                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
+                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
+                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
+                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
                 <ScalarProperty Name="MilkType" ColumnName="MilkType" />
                 <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
                 <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
@@ -7448,6 +7462,20 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
                 <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
                 <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageHistory">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageHistory">
+              <MappingFragment StoreEntitySet="MessageHistory">
+                <ScalarProperty Name="MessageHeader" ColumnName="MessageHeader" />
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -79,10 +79,6 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageActionId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageTypeId" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageHistory" Width="1.5" PointX="23.5" PointY="2.75" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageType" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.EventQueue" Width="1.5" PointX="11.625" PointY="1" />
         <AssociationConnector Association="Icon.Framework.Model.FK_EventQueue_EventType" />
         <EntityTypeShape EntityType="Icon.Framework.Model.Locale" Width="1.5" PointX="5.375" PointY="28.75" />
@@ -95,14 +91,11 @@
         <AssociationConnector Association="Icon.Framework.Model.Locale_ScanCode_FK1" />
         <AssociationConnector Association="Icon.Framework.Model.LocaleType_Locale_FK1" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="26.25" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueItemLocale" Width="1.5" PointX="32" PointY="9.625" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueuePrice" Width="1.5" PointX="28.625" PointY="16.875" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageStatusId" />
@@ -123,12 +116,10 @@
         <AssociationConnector Association="Icon.Framework.Model.FK__Settings__Settin__51DA19CB" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProductSelectionGroup" Width="1.5" PointX="35" PointY="11" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageAction" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageType" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_ProductSelectionGroupType" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageResendStatus" Width="1.5" PointX="24.5" PointY="11.75" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
         <EntityTypeShape EntityType="Icon.Framework.Model.PLUCategory" Width="1.5" PointX="17.375" PointY="15.75" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ItemMovement" Width="1.5" PointX="0.75" PointY="17.125" />
         <EntityTypeShape EntityType="Icon.Framework.Model.IRMAPush" Width="1.5" PointX="23.625" PointY="24.125" />
@@ -189,9 +180,18 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.LocaleSubType" Width="1.5" PointX="5.375" PointY="52.5" />
         <AssociationConnector Association="Icon.Framework.Model.LocaleType_LocaleSubType_FK1" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueLocale" Width="1.5" PointX="28.75" PointY="5.875" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" />
         <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" />
         <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageHistory" Width="1.5" PointX="22.75" PointY="2.25" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageType" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

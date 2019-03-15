@@ -28,9 +28,9 @@ namespace Icon.Framework
         public Nullable<System.DateTime> ProcessedDate { get; set; }
     
         public virtual MessageAction MessageAction { get; set; }
-        public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
         public virtual ProductSelectionGroupType ProductSelectionGroupType { get; set; }
+        public virtual MessageHistory MessageHistory { get; set; }
     }
 }

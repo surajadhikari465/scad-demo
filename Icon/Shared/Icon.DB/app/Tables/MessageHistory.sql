@@ -3,6 +3,7 @@
     [MessageTypeId]    INT           NOT NULL,
     [MessageStatusId]  INT           NOT NULL,
     [Message]          XML           NOT NULL,
+    [MessageHeader]    NVARCHAR(MAX) NULL,
     [InsertDate]       DATETIME2 (7) CONSTRAINT [DF_MessageHistory_InsertDate] DEFAULT (sysdatetime()) NOT NULL,
 	[InProcessBy]      INT NULL,
 	[ProcessedDate]    DATETIME2 (7) NULL,
