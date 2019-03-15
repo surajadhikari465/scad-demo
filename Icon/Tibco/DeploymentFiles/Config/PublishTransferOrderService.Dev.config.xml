@@ -3,51 +3,35 @@
 <application xmlns="http://www.tibco.com/xmlns/ApplicationManagement" name="PublishTransferOrderService">
     <description></description>
     <contact></contact>
-    <NVPairs name="Global Variables">
-        <NameValuePair>
-            <name>Application/ApplicationId</name>
-            <value>HC2</value>
-        </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/BatchSize</name>
-            <value>50</value>
-        </NameValuePairInteger>
+    <NVPairs name="Global Variables">        
         <NameValuePair>
             <name>Application/InstanceGUID</name>
-            <value>000000C9-0000-0000-0000-000000000000</value>
-        </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/InstanceId</name>
-            <value>201</value>
-        </NameValuePairInteger>
+            <value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
+        </NameValuePair>        
         <NameValuePair>
             <name>Application/InventoryAdjustmentSource</name>
             <value>IRMA</value>
+        </NameValuePair>
+		<NameValuePair>
+            <name>Application/IrmaTransferOrderQueue</name>
+            <value>WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1</value>
+        </NameValuePair>
+		<NameValuePair>
+            <name>Application/MaxRedeliveryCount</name>
+            <value>6</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/MessageType</name>
             <value>Text</value>
         </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/ProcessDelayTimeInMinutes</name>
-            <value>10</value>
-        </NameValuePairInteger>
+		<NameValuePair>
+            <name>Application/PublisherTimerInMilliseconds</name>
+            <value>10000</value>
+        </NameValuePair>
         <NameValuePair>
             <name>Application/TransactionType</name>
             <value>TransferOrders</value>
-        </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/WaitTimeForRecordsProcessedFivetimes</name>
-            <value>15</value>
-        </NameValuePairInteger>
-        <NameValuePairInteger>
-            <name>Application/WaitTimeForRecordsProcessedFourtimes</name>
-            <value>10</value>
-        </NameValuePairInteger>
-        <NameValuePairInteger>
-            <name>Application/WaitTimeForRecordsProcessedThreetimes</name>
-            <value>5</value>
-        </NameValuePairInteger>
+        </NameValuePair>       
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>
             <value>AddOrUpdate</value>

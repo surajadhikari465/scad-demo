@@ -17,6 +17,10 @@ Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
 Connections/JMS/ESB/Username=iconUser
 Connections/JMS/ESB/Password=#!8BLt/quuggtGbFmSF6Qn38rCK4GCSGHv8rcsTXy4yqU=
 
+Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1/Username=sb1_HCPurchaseOrderUser
+Connections/JMS/SB1/Password=#!TQhdKBWfIUOnSo+igyNrSr6zBnY9Ecs0VG1/Flq1yTX5N5TZzL1irA==
+
 // ----------------------------------------------------------------------------------
 // Machine #1 --- Publish Purchase Order Service Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------

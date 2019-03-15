@@ -1,0 +1,41 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Application/RegionCode=SO
+Application/StoredProcedureName=DequeueInventory
+Application/TransactionType=InventorySpoilage
+
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-so\soq;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/Username=TibcoDataWriter
+Connections/JDBC/IRMA/Password=#!Au7uqiI62/LDe3aF8jfOwK1jWdfv0lEPxbQmJOt40JKRW8YO2Br0OA==
+
+Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1/Username=sb1_HCInventoryMgmtPublisher
+Connections/JMS/SB1/Password=#!nxMBqC4giTg7fixoThonO3SHPe5hW6TGNI5A3Jzl+H7HwpjrLIL/7A==
+
+ErrorMessageSettings/Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+ErrorMessageSettings/Connections/JMS/SB1/Username=sb1_HCInventoryMgmtPublisher
+ErrorMessageSettings/Connections/JMS/SB1/Password=#!nxMBqC4giTg7fixoThonO3SHPe5hW6TGNI5A3Jzl+H7HwpjrLIL/7A==
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- InStockDequeueServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,InStockDequeueServiceProcessArchive,InStockDequeueServiceProcessArchive-1,machine=cerd1662
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- InStockDequeueServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,InStockDequeueServiceProcessArchive,InStockDequeueServiceProcessArchive-2,machine=cerd1663
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- InStockDequeueServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,InStockDequeueServiceProcessArchive,InStockDequeueServiceProcessArchive-3,machine=cerd1664
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- InStockDequeueServiceProcessArchive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,InStockDequeueServiceProcessArchive,InStockDequeueServiceProcessArchive-4,machine=cerd1665
