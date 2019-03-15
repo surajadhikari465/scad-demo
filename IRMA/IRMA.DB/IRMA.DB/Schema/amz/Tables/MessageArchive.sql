@@ -16,9 +16,17 @@
   [ResetBy] [nvarchar](255) NULL
 )
 GO
-CREATE CLUSTERED INDEX [idxMessageArchive_InsertDateID]
-    ON [amz].[MessageArchive]([InsertDate], [MessageArchiveID]);
 
+ALTER TABLE [amz].[MessageArchive] ADD  CONSTRAINT [PK_MessageArchive] PRIMARY KEY CLUSTERED
+(
+    [MessageArchiveID] ASC
+)
+GO
+
+CREATE NONCLUSTERED INDEX [IdxMessageArchive_InsertDateStatus] ON [amz].[MessageArchive]
+(
+    [Status] ASC
+)
 GO
 
 GRANT SELECT, UPDATE

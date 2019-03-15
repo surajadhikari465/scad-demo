@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
     <pd:name>Processes/RepublishInventoryMessagesService.process</pd:name>
@@ -10,10 +10,10 @@
     <pd:starter name="Timer">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>119</pd:x>
-        <pd:y>35</pd:y>
+        <pd:x>106</pd:x>
+        <pd:y>90</pd:y>
         <config>
-            <StartTime>1538028264000</StartTime>
+            <StartTime>1552543200000</StartTime>
             <Frequency>false</Frequency>
             <TimeInterval>%%Application/PublisherTimerInMilliseconds%%</TimeInterval>
             <FrequencyIndex>Millisecond</FrequencyIndex>
@@ -21,18 +21,18 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1253</pd:endX>
-    <pd:endY>41</pd:endY>
+    <pd:endX>1173</pd:endX>
+    <pd:endY>88</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1538071349052</pd:targetNamespace>
     <pd:group name="GroupAndSendMessages">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>446</pd:x>
-        <pd:y>82</pd:y>
-        <pd:width>698</pd:width>
-        <pd:height>360</pd:height>
+        <pd:x>438</pd:x>
+        <pd:y>108</pd:y>
+        <pd:width>595</pd:width>
+        <pd:height>314</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -40,7 +40,7 @@
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
-            <pd:over>$GetLockedMessages/resultSet/Record/MessageArchiveID</pd:over>
+            <pd:over>$GetUnsentMessages/root/Resultsets/ResultSet1/Record1/MessageArchiveID</pd:over>
             <pd:iterationElementSlot>CurrentMessageId</pd:iterationElementSlot>
             <pd:indexSlot>i</pd:indexSlot>
             <pd:activityOutputName/>
@@ -50,7 +50,7 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>SendDataToESB</pd:to>
+            <pd:to>SendToESB</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -63,22 +63,8 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Update MessageArchive Table</pd:from>
+            <pd:from>SendToESB</pd:from>
             <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>SendDataToESB</pd:from>
-            <pd:to>Update MessageArchive Table</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>CatchSendingToEsbException</pd:from>
-            <pd:to>LogSendDataToESBError</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -90,24 +76,36 @@
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
+        <pd:transition>
+            <pd:from>CatchSendingToEsbException</pd:from>
+            <pd:to>PublishErrorMessage</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>PublishErrorMessage</pd:from>
+            <pd:to>LogSendDataToESBError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
         <pd:activity name="Update MessageArchive Table With ESB Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1013</pd:x>
-            <pd:y>336</pd:y>
+            <pd:x>938</pd:x>
+            <pd:y>324</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <statement>UPDATE [amz].[MessageArchive]
 SET Status ='F',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
+	ProcessTimes =6,
 	LastProcessedTime = getdate(),
-	LastReprocessID = NULL,
 	ErrorDescription = ?
-WHERE MessageArchiveID = ?
-AND LastReprocessID = ?
-And STATUS = 'I'</statement>
+WHERE MessageArchiveID = ?</statement>
+                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <Prepared_Param_DataType>
                     <parameter>
                         <parameterName>ErrorDescription</parameterName>
@@ -117,12 +115,7 @@ And STATUS = 'I'</statement>
                         <parameterName>MessageArchiveID</parameterName>
                         <dataType>INTEGER</dataType>
                     </parameter>
-                    <parameter>
-                        <parameterName>LastReprocessID</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
                 </Prepared_Param_DataType>
-                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
             </config>
             <pd:inputBindings>
                 <jdbcUpdateActivityInput>
@@ -139,159 +132,25 @@ And STATUS = 'I'</statement>
                     <MessageArchiveID>
                         <xsl:value-of select="$CurrentMessageId/MessageArchiveID"/>
                     </MessageArchiveID>
-                    <LastReprocessID>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </LastReprocessID>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Update MessageArchive Table">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>847</pd:x>
-            <pd:y>179</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>false</emptyStrAsNil>
-                <statement>UPDATE [amz].[MessageArchive]
-SET Status ='P',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	ErrorDescription = ''
-WHERE MessageArchiveID = ?
-AND LastReprocessID = ?
-And STATUS = 'I'</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>MessageArchiveID</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                    <parameter>
-                        <parameterName>LastReprocessID</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-                <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <MessageArchiveID>
-                        <xsl:value-of select="$CurrentMessageId/MessageArchiveID"/>
-                    </MessageArchiveID>
-                    <LastReprocessID>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </LastReprocessID>
                 </jdbcUpdateActivityInput>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="CatchSendingToEsbException">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>612</pd:x>
-            <pd:y>313</pd:y>
+            <pd:x>523</pd:x>
+            <pd:y>304</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
             </config>
             <pd:inputBindings/>
         </pd:activity>
-        <pd:activity name="SendDataToESB">
-            <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
-            <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
-            <pd:x>614</pd:x>
-            <pd:y>168</pd:y>
-            <config>
-                <PermittedMessageType>Text</PermittedMessageType>
-                <SessionAttributes>
-                    <transacted>false</transacted>
-                    <acknowledgeMode>1</acknowledgeMode>
-                    <maxSessions>1</maxSessions>
-                    <destination>%%Destinations/InventoryManagementTopic%%</destination>
-                </SessionAttributes>
-                <ConfigurableHeaders>
-                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                    <JMSExpiration>0</JMSExpiration>
-                    <JMSPriority>4</JMSPriority>
-                </ConfigurableHeaders>
-                <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
-                <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
-            </config>
-            <pd:inputBindings>
-                <xsl:variable name="varCurrentMsgId" select="$CurrentMessageId/MessageArchiveID"/>
-                <xsl:variable name="varTransactionTypeSpoilage" select="$_globalVariables/ns:GlobalVariables/Application/TransactionTypeSpoilage"/>
-                <xsl:variable name="varTransactionTypeOrder" select="$_globalVariables/ns:GlobalVariables/Application/TransactionTypePurchaseOrders"/>
-                <xsl:variable name="varTransactionTypeTransfer" select="$_globalVariables/ns:GlobalVariables/Application/TransactionTypeTransferOrders"/>
-                <xsl:variable name="varTransactionTypeReceipt" select="$_globalVariables/ns:GlobalVariables/Application/TransactionTypeReceipt"/>
-                <ns1:ActivityInput>
-                    <OtherProperties>
-                        <xsl:choose>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;INV&quot;)">
-                                <TransactionID>
-                                    <xsl:value-of select="concat($GetLockedMessages/resultSet/Record[MessageArchiveID = $CurrentMessageId]/BusinessUnitID, $varTransactionTypeSpoilage, $GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/MessageNumber )"/>
-                                </TransactionID>
-                            </xsl:when>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;PO_&quot;)">
-                                <TransactionID>
-                                    <xsl:value-of select="concat($GetLockedMessages/resultSet/Record[MessageArchiveID = $CurrentMessageId]/BusinessUnitID, $varTransactionTypeOrder, $GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/MessageNumber )"/>
-                                </TransactionID>
-                            </xsl:when>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;RCPT&quot;)">
-                                <TransactionID>
-                                    <xsl:value-of select="concat($GetLockedMessages/resultSet/Record[MessageArchiveID = $CurrentMessageId]/BusinessUnitID, $varTransactionTypeReceipt, $GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/MessageNumber )"/>
-                                </TransactionID>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <TransactionID>
-                                    <xsl:value-of select="concat($GetLockedMessages/resultSet/Record[MessageArchiveID = $CurrentMessageId]/BusinessUnitID, $varTransactionTypeTransfer, $GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/MessageNumber )"/>
-                                </TransactionID>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:choose>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;INV&quot;)">
-                                <TransactionType>
-                                    <xsl:value-of select="$varTransactionTypeSpoilage"/>
-                                </TransactionType>
-                            </xsl:when>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;PO_&quot;)">
-                                <TransactionType>
-                                    <xsl:value-of select="$varTransactionTypeOrder"/>
-                                </TransactionType>
-                            </xsl:when>
-                            <xsl:when test="starts-with($GetLockedMessages/resultSet/Record[MessageArchiveID = $varCurrentMsgId]/EventType, &quot;RCPT&quot;)">
-                                <TransactionType>
-                                    <xsl:value-of select="$varTransactionTypeReceipt"/>
-                                </TransactionType>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <TransactionType>
-                                    <xsl:value-of select="$varTransactionTypeTransfer"/>
-                                </TransactionType>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <Source>
-                            <xsl:value-of select="&quot;IRMA&quot;"/>
-                        </Source>
-                        <MessageType>
-                            <xsl:value-of select="&quot;TEXT&quot;"/>
-                        </MessageType>
-                        <xsl:if test="$GetLockedMessages/resultSet/Record[MessageArchiveID=$varCurrentMsgId]/MessageNumber">
-                            <MessageNumber>
-                                <xsl:value-of select="$GetLockedMessages/resultSet/Record[MessageArchiveID=$varCurrentMsgId]/MessageNumber"/>
-                            </MessageNumber>
-                        </xsl:if>
-                    </OtherProperties>
-                    <Body>
-                        <xsl:value-of select="$GetLockedMessages/resultSet/Record[MessageArchiveID=$varCurrentMsgId]/Message"/>
-                    </Body>
-                </ns1:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
         <pd:activity name="LogSendDataToESBError">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>820</pd:x>
-            <pd:y>311</pd:y>
+            <pd:x>810</pd:x>
+            <pd:y>301</pd:y>
             <config>
                 <processName>/SharedResources/Processes/LogPublisher.process</processName>
             </config>
@@ -327,262 +186,175 @@ And STATUS = 'I'</statement>
                 </LogElement>
             </pd:inputBindings>
         </pd:activity>
+        <pd:activity name="SendToESB">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>629</pd:x>
+            <pd:y>178</pd:y>
+            <config>
+                <processName>/Processes/SendToESB.process</processName>
+            </config>
+            <pd:inputBindings>
+                <MessageData>
+                    <EventType>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/EventType"/>
+                    </EventType>
+                    <BusinessUnitID>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/BusinessUnitID"/>
+                    </BusinessUnitID>
+                    <MessageNumber>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/MessageNumber"/>
+                    </MessageNumber>
+                    <Message>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/Message"/>
+                    </Message>
+                </MessageData>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="PublishErrorMessage">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>659</pd:x>
+            <pd:y>302</pd:y>
+            <config>
+                <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns12:ErrorMessage>
+                    <ns12:Application>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </ns12:Application>
+                    <ns12:MessageID>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/MessageNumber"/>
+                    </ns12:MessageID>
+                    <ns12:MessageProperties>
+                        <ns12:NameValuePair>
+                            <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="name">
+                                <xsl:value-of select="local-name(current())"/>
+                            </xsl:attribute>
+                            <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="value">
+                                <xsl:value-of select="current()"/>
+                            </xsl:attribute>
+                        </ns12:NameValuePair>
+                    </ns12:MessageProperties>
+                    <ns12:Message>
+                        <xsl:value-of select="$GetUnsentMessages/root/Resultsets/ResultSet1/Record1[MessageArchiveID=$CurrentMessageId/MessageArchiveID]/Message"/>
+                    </ns12:Message>
+                    <ns12:ErrorCode>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                    </ns12:ErrorCode>
+                    <ns12:ErrorDetails>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    </ns12:ErrorDetails>
+                    <ns12:ErrorSeverity>
+                        <xsl:value-of select="&quot;Fatal&quot;"/>
+                    </ns12:ErrorSeverity>
+                </ns12:ErrorMessage>
+            </pd:inputBindings>
+        </pd:activity>
     </pd:group>
+    <pd:activity name="GetUnsentMessages">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>290</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/Processes/GetUnsentMessages.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:activity name="Catch All">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>120</pd:x>
-        <pd:y>478</pd:y>
+        <pd:x>541</pd:x>
+        <pd:y>473</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="GetLockedMessages">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>383</pd:x>
-        <pd:y>35</pd:y>
-        <config>
-            <timeout>120</timeout>
-            <commit>false</commit>
-            <maxRows>%%Application/BatchSize%%</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <processInSubsets>false</processInSubsets>
-            <statement>SELECT
-	MessageArchiveID,
-	BusinessUnitID,
-	EventType,
-	MessageNumber,
-	Message
-FROM
-	amz.MessageArchive
-WHERE Status in ('I') AND LastReprocessID = ?
-ORDER BY MessageArchiveID</statement>
-            <wizardData/>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>LastReprocessID</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>MessageArchiveID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>BusinessUnitID</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>EventType</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>MessageNumber</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>Message</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-16</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>xml</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput>
-                <LastReprocessID>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </LastReprocessID>
-            </jdbcQueryActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="LockMessages">
-        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>248</pd:x>
-        <pd:y>35</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <maxRows>20000</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <schema>amz</schema>
-            <catalog/>
-            <ProcedureName>LockInventoryMessages;1</ProcedureName>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <parameterTypes>
-                <parameter>
-                    <colName>@RETURN_VALUE</colName>
-                    <colType>5</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@NumberOfMessagesToProcess</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@Instance</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@ProcessDelayTimeInMinutes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedThreetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFourtimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-                <parameter>
-                    <colName>@WaitTimeForRecordsProcessedFivetimes</colName>
-                    <colType>1</colType>
-                    <dataType>4</dataType>
-                    <typeName>int</typeName>
-                </parameter>
-            </parameterTypes>
-        </config>
-        <pd:inputBindings>
-            <inputs>
-                <inputSet>
-                    <NumberOfMessagesToProcess>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/BatchSize"/>
-                    </NumberOfMessagesToProcess>
-                    <Instance>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                    </Instance>
-                    <ProcessDelayTimeInMinutes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ProcessDelayTimeInMinutes"/>
-                    </ProcessDelayTimeInMinutes>
-                    <WaitTimeForRecordsProcessedThreetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedThreetimes"/>
-                    </WaitTimeForRecordsProcessedThreetimes>
-                    <WaitTimeForRecordsProcessedFourtimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFourtimes"/>
-                    </WaitTimeForRecordsProcessedFourtimes>
-                    <WaitTimeForRecordsProcessedFivetimes>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/WaitTimeForRecordsProcessedFivetimes"/>
-                    </WaitTimeForRecordsProcessedFivetimes>
-                </inputSet>
-            </inputs>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Update Message to Error Status">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1257</pd:x>
-        <pd:y>486</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <statement>UPDATE [amz].[MessageArchive]
-SET Status ='F',
-	ProcessTimes = IsNull(ProcessTimes, 0) +1,
-	LastProcessedTime = getdate(),
-	LastReprocessID = NULL,
-	ErrorDescription = ?
-WHERE LastReprocessID = ?
-And STATUS = 'I'</statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>ErrorDescription</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>LastReprocessID</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <ErrorDescription>
-                    <xsl:choose>
-                        <xsl:when test="exists($_error/ns4:ErrorReport/StackTrace)">
-                            <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </ErrorDescription>
-                <LastReprocessID>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceId"/>
-                </LastReprocessID>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:activity name="Log Final Errors">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>663</pd:x>
-        <pd:y>479</pd:y>
+        <pd:x>1170</pd:x>
+        <pd:y>472</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
         </config>
         <pd:inputBindings>
             <LogElement>
                 <LogDate>
-                    <xsl:value-of select="current-dateTime()"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
                 </LogDate>
                 <ApplicationID>
-                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns:GlobalVariables/Application/InstanceGUID"/>
                 </ApplicationID>
                 <HostName>
-                    <xsl:value-of select="BW:getHostName()"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="BW:getHostName()"/>
                 </HostName>
                 <UserName>
-                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns4:ProcessContext/ProjectName"/>
                 </UserName>
                 <Thread>
-                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns4:ProcessContext/ProcessId"/>
                 </Thread>
                 <Level>
-                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;ERROR&quot;"/>
                 </Level>
                 <Logger>
-                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns4:ErrorReport/ProcessStack"/>
                 </Logger>
                 <Message>
-                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_error/ns4:ErrorReport/Msg"/>
                 </Message>
                 <InsertedDate>
-                    <xsl:value-of select="current-dateTime()"/>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="current-dateTime()"/>
                 </InsertedDate>
             </LogElement>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Timer</pd:from>
-        <pd:to>LockMessages</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>LockMessages</pd:from>
-        <pd:to>GetLockedMessages</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="PublishFinalErrorMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>860</pd:x>
+        <pd:y>471</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:ErrorMessage>
+                <ns12:Application>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </ns12:Application>
+                <ns12:MessageID>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:MessageID>
+                <ns12:MessageProperties>
+                    <ns12:NameValuePair>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="name">
+                            <xsl:value-of select="local-name(current())"/>
+                        </xsl:attribute>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="value">
+                            <xsl:value-of select="current()"/>
+                        </xsl:attribute>
+                    </ns12:NameValuePair>
+                </ns12:MessageProperties>
+                <ns12:Message>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Data/*"/>
+                </ns12:Message>
+                <ns12:ErrorCode>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                </ns12:ErrorCode>
+                <ns12:ErrorDetails>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </ns12:ErrorDetails>
+                <ns12:ErrorSeverity>
+                    <xsl:value-of select="&quot;Fatal&quot;"/>
+                </ns12:ErrorSeverity>
+            </ns12:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>GroupAndSendMessages</pd:from>
         <pd:to>End</pd:to>
@@ -591,29 +363,37 @@ And STATUS = 'I'</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetLockedMessages</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Update Message to Error Status</pd:from>
-        <pd:to>End</pd:to>
+        <pd:from>Timer</pd:from>
+        <pd:to>GetUnsentMessages</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetLockedMessages</pd:from>
-        <pd:to>GroupAndSendMessages</pd:to>
+        <pd:from>GetUnsentMessages</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>ZeroMessages</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>exists($GetLockedMessages/resultSet/Record)</pd:xpath>
+        <pd:xpath>not(exists($GetUnsentMessages/root/Resultsets/ResultSet1/Record1))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetUnsentMessages</pd:from>
+        <pd:to>GroupAndSendMessages</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch All</pd:from>
+        <pd:to>PublishFinalErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PublishFinalErrorMessage</pd:from>
         <pd:to>Log Final Errors</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -621,7 +401,7 @@ And STATUS = 'I'</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Log Final Errors</pd:from>
-        <pd:to>Update Message to Error Status</pd:to>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

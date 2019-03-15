@@ -3371,6 +3371,8 @@
     <Build Include="Schema\amz\StoredProcedures\DequeueTransfers.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteNutriFactsFromIcon.sql" />
     <None Include="Scripts\PostDeploy\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
+    <Build Include="Schema\amz\StoredProcedures\GetUnsentInStockMessages.sql" />
+    <None Include="Scripts\PostDeploy\PBI18549-AddInStockApplication.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

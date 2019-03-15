@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+    <pd:name>Processes/SendToESB.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="MessageData">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="EventType" type="xsd:string"/>
+                    <xsd:element name="BusinessUnitID" type="xsd:int"/>
+                    <xsd:element name="MessageNumber" type="xsd:string"/>
+                    <xsd:element name="Message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>144</pd:startX>
+    <pd:startY>181</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>670</pd:endX>
+    <pd:endY>186</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1552590882893</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>32</pd:y>
+        <pd:width>320</pd:width>
+        <pd:height>288</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>errorCount</pd:indexSlot>
+            <pd:errorCondition>$_globalVariables/pfx:GlobalVariables/Application/DbErrorRetryCount &lt; $errorCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SendDataToESB</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendDataToESB</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendDataToESB</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>381</pd:x>
+            <pd:y>243</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/DbRetryDelayInMilliseconds"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SendDataToESB">
+            <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+            <pd:x>400</pd:x>
+            <pd:y>98</pd:y>
+            <config>
+                <PermittedMessageType>Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%Destinations/InventoryManagementTopic%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/SharedResources/Connections/ESB.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput>
+                    <JMSProperties/>
+                    <OtherProperties>
+                        <xsl:choose>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;INV&quot;)">
+                                <TransactionID>
+                                    <xsl:value-of select="concat($Start/MessageData/BusinessUnitID, $_globalVariables/pfx:GlobalVariables/Application/TransactionTypeSpoilage, $Start/MessageData/MessageNumber)"/>
+                                </TransactionID>
+                            </xsl:when>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;PO_&quot;)">
+                                <TransactionID>
+                                    <xsl:value-of select="concat($Start/MessageData/BusinessUnitID, $_globalVariables/pfx:GlobalVariables/Application/TransactionTypePurchaseOrders, $Start/MessageData/MessageNumber)"/>
+                                </TransactionID>
+                            </xsl:when>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;RCPT&quot;)">
+                                <TransactionID>
+                                    <xsl:value-of select="concat($Start/MessageData/BusinessUnitID, $_globalVariables/pfx:GlobalVariables/Application/TransactionTypeReceipt, $Start/MessageData/MessageNumber)"/>
+                                </TransactionID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <TransactionID>
+                                    <xsl:value-of select="concat($Start/MessageData/BusinessUnitID, $_globalVariables/pfx:GlobalVariables/Application/TransactionTypeTransferOrders, $Start/MessageData/MessageNumber)"/>
+                                </TransactionID>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;INV&quot;)">
+                                <TransactionType>
+                                    <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/TransactionTypeSpoilage"/>
+                                </TransactionType>
+                            </xsl:when>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;PO_&quot;)">
+                                <TransactionType>
+                                    <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/TransactionTypePurchaseOrders"/>
+                                </TransactionType>
+                            </xsl:when>
+                            <xsl:when test="starts-with($Start/MessageData/EventType, &quot;RCPT&quot;)">
+                                <TransactionType>
+                                    <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/TransactionTypeReceipt"/>
+                                </TransactionType>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <TransactionType>
+                                    <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/TransactionTypeTransferOrders"/>
+                                </TransactionType>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <Source>
+                            <xsl:value-of select="&quot;IRMA&quot;"/>
+                        </Source>
+                        <MessageType>
+                            <xsl:value-of select="&quot;TEXT&quot;"/>
+                        </MessageType>
+                        <MessageNumber>
+                            <xsl:value-of select="$Start/MessageData/MessageNumber"/>
+                        </MessageNumber>
+                        <RegionCode>
+                            <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/RegionCode"/>
+                        </RegionCode>
+                    </OtherProperties>
+                    <Body>
+                        <xsl:value-of select="$Start/MessageData/Message"/>
+                    </Body>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>500</pd:x>
+            <pd:y>242</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                    <message>
+                        <xsl:value-of select="concat(&quot;Error Message: &quot;, $_error/ns:ErrorReport/Msg, &quot;. StackTrace: &quot;, $_error/ns:ErrorReport/StackTrace)"/>
+                    </message>
+                    <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

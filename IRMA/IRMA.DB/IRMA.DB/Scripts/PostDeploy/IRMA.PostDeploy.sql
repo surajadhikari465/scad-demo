@@ -15,6 +15,7 @@ Post-Deployment Script Template
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
 :r PBI4557_AddOpsgenieKeysToAppConfigApp.sql -- 2018.02.01
+:r PBI18549-AddInStockApplication.sql
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28

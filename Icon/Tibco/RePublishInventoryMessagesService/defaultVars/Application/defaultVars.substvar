@@ -2,14 +2,6 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ApplicationId</name>
-			<value>HC5</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1541793911934</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>BatchSize</name>
 			<value>50</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -18,20 +10,36 @@
 			<modTime>1541714180859</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>InstanceGUID</name>
-			<value>000001F5-0000-0000-0000-000000000000</value>
+			<name>DbCommandTimeoutInSeconds</name>
+			<value>30</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1547876948671</modTime>
+			<modTime>1552526402577</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>InstanceId</name>
-			<value>501</value>
+			<name>DbErrorRetryCount</name>
+			<value>6</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>Integer</type>
-			<modTime>1541793911956</modTime>
+			<type>String</type>
+			<modTime>1552528049678</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DbRetryDelayInMilliseconds</name>
+			<value>10000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1552532771198</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>InstanceGUID</name>
+			<value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1552666671801</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MessageType</name>
@@ -42,13 +50,20 @@
 			<modTime>1541714181129</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ProcessDelayTimeInMinutes</name>
-			<value>0</value>
+			<name>PublisherTimerInMilliseconds</name>
+			<value>300000</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<constraint></constraint>
-			<modTime>1547876948572</modTime>
+			<modTime>1552666671859</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RegionCode</name>
+			<value>MA</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1552590796752</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionTypePurchaseOrders</name>
@@ -81,30 +96,6 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1541738844881</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedFivetimes</name>
-			<value>10</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547876948597</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedFourtimes</name>
-			<value>5</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547876948621</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>WaitTimeForRecordsProcessedThreetimes</name>
-			<value>2</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1547876948645</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

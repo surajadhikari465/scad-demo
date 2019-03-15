@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/RepublishInventoryMessagesService.process</processProperty>
         </processArchive>
-        <versionProperty>7</versionProperty>
+        <versionProperty>8</versionProperty>
         <authorProperty>min.zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>RePublishInventoryMessagesService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\min.zhao\source\repos\Icon\Icon\Tibco\DeploymentFiles\RePublishInventoryMessagesService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\min.zhao\source\repos\SCAD\Icon\Tibco\DeploymentFiles\RePublishInventoryMessagesService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
