@@ -40,5 +40,12 @@ namespace Icon.Framework
         public string FreshOrFrozen { get; set; }
         public string SeafoodCatchType { get; set; }
         public string MilkType { get; set; }
+        public Nullable<int> AnimalWelfareRatingId { get; set; }
+        public Nullable<int> CheeseMilkTypeId { get; set; }
+        public Nullable<int> EcoScaleRatingId { get; set; }
+        public Nullable<int> SeafoodFreshOrFrozenId { get; set; }
+        public Nullable<int> SeafoodCatchTypeId { get; set; }
+        public string DeliverySystems { get; set; }
+        public string DrainedWeightUom { get; set; }
     }
 }
