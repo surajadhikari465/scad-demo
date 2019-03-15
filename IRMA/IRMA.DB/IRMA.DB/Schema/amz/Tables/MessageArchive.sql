@@ -23,7 +23,7 @@ ALTER TABLE [amz].[MessageArchive] ADD  CONSTRAINT [PK_MessageArchive] PRIMARY K
 )
 GO
 
-CREATE NONCLUSTERED INDEX [IdxMessageArchive_InsertDateStatus] ON [amz].[MessageArchive]
+CREATE NONCLUSTERED INDEX [IdxMessageArchive_Status] ON [amz].[MessageArchive]
 (
     [Status] ASC
 )

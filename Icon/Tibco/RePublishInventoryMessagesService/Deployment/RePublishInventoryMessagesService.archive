@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/RepublishInventoryMessagesService.process</processProperty>
         </processArchive>
-        <versionProperty>8</versionProperty>
+        <versionProperty>10</versionProperty>
         <authorProperty>min.zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>RePublishInventoryMessagesService</name>
