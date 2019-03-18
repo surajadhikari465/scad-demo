@@ -279,7 +279,8 @@ WHERE q.InProcessBy = @JobInstance
             itemLocaleData = this.db.Connection
                 .Query<ItemLocaleEventModel>(sql,
                     new { JobInstance = parameters.Instance, Today = today },
-                    transaction: db.Transaction)
+                    transaction: db.Transaction,
+										commandTimeout: 60)
                 .AsList();
 
             return itemLocaleData;

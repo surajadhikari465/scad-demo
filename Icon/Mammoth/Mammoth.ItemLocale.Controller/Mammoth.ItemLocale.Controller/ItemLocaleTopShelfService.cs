@@ -3,11 +3,7 @@ using Mammoth.Common.ControllerApplication;
 using Mammoth.Common.Email;
 using Mammoth.Logging;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Mammoth.ItemLocale.Controller
@@ -58,7 +54,7 @@ namespace Mammoth.ItemLocale.Controller
             }
             catch (Exception ex)
             {
-                logger.Error("An exception occurred.", ex);
+                logger.Error("RunService(): An exception occurred.", ex);
                 if (!IsSqlTimeoutException(ex))
                 {
                     emailClient.Send("An unexpected error occurred while processing Mammoth events. Error : " + ex.ToString(), "Mammoth " + settings.ControllerName + " Controller");
