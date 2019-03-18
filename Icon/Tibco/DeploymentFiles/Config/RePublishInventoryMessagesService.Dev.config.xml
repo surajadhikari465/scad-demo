@@ -4,29 +4,37 @@
     <description></description>
     <contact></contact>
     <NVPairs name="Global Variables">
-        <NameValuePair>
-            <name>Application/ApplicationId</name>
-            <value>HC5</value>
-        </NameValuePair>
         <NameValuePairInteger>
             <name>Application/BatchSize</name>
             <value>50</value>
         </NameValuePairInteger>
         <NameValuePair>
-            <name>Application/InstanceGUID</name>
-            <value>000001F5-0000-0000-0000-000000000000</value>
+            <name>Application/DbCommandTimeoutInSeconds</name>
+            <value>30</value>
         </NameValuePair>
-        <NameValuePairInteger>
-            <name>Application/InstanceId</name>
-            <value>501</value>
-        </NameValuePairInteger>
+        <NameValuePair>
+            <name>Application/DbErrorRetryCount</name>
+            <value>6</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/DbRetryDelayInMilliseconds</name>
+            <value>10000</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/InstanceGUID</name>
+            <value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
+        </NameValuePair>
         <NameValuePair>
             <name>Application/MessageType</name>
             <value>text</value>
         </NameValuePair>
         <NameValuePair>
-            <name>Application/ProcessDelayTimeInMinutes</name>
-            <value>5</value>
+            <name>Application/PublisherTimerInMilliseconds</name>
+            <value>300000</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Application/RegionCode</name>
+            <value>MA</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/TransactionTypePurchaseOrders</name>
@@ -43,18 +51,6 @@
         <NameValuePair>
             <name>Application/TransactionTypeTransferOrders</name>
             <value>TransferOrders</value>
-        </NameValuePair>
-        <NameValuePair>
-            <name>Application/WaitTimeForRecordsProcessedFivetimes</name>
-            <value>15</value>
-        </NameValuePair>
-        <NameValuePair>
-            <name>Application/WaitTimeForRecordsProcessedFourtimes</name>
-            <value>10</value>
-        </NameValuePair>
-        <NameValuePair>
-            <name>Application/WaitTimeForRecordsProcessedThreetimes</name>
-            <value>5</value>
         </NameValuePair>
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>
@@ -74,11 +70,11 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/ConnectionString</name>
-            <value>jdbc:sqlserver://idt-nc\nct;DatabaseName=ItemCatalog_Test;</value>
+            <value>jdbc:sqlserver://idd-ma\mad;DatabaseName=ItemCatalog_Test;</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/IRMA/Password</name>
-            <value>#!V7rjpoYwDwaO9sB2MlFteY3NvRz8nhAwoPDNCHPhp3nFrW5j5PtIUA==</value>
+            <value>#!NH2mvA8sVzVggl+H24ji1+B8LA8txEyP9Q/12lDEa0/+XuTl3Eq3ow==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/IRMA/SqlDBDriver</name>
@@ -94,7 +90,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/Mammoth/Password</name>
-            <value>#!slOih5PAiIJYFGboSpjDCLhRUZ9tqlMHRZ3psc1bJfsg/D1Up+pA9Q==</value>
+            <value>#!NgyW9AAg4m5pAwJRSngHtiLYkzF3OZXI+4ODVgf+/F1GBIChDPzQCQ==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/Mammoth/SqlDBDriver</name>
@@ -114,7 +110,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!ubW56Unggg84R82JKPR3HBuI3ZK3L/ez8JcSg5JAy4Q3ET+xdZWNgQ==</value>
+            <value>#!xORAUoaoKVd17F/ZXbgCz2fK/itqnqEngTlAuTBeX0KbLPosc8YLlg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -122,7 +118,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!6nKN7OhSLUwTSzcBilMUaH+ZDWH8aS0HksShs0JiEyP1h/HX/zHdsA==</value>
+            <value>#!YUMKbmlm6GSCpJl9kKgzCP3oRCwHbTncGDyf86t3rxYfWOx8BSRUlg==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -130,7 +126,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/SslPassword</name>
-            <value>#!iUNDRAwuQMCxL9mv13vZEQ==</value>
+            <value>#!hVa8ouCtE4ElwaiaCRtQqQ==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/Username</name>
@@ -138,7 +134,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/SB1/Password</name>
-            <value>#!00ZaWVxY3/cYRUJskqSRdWlSfM9JJSznWcEeASp4xBFDytgiJZkGKV5pcxzmno+l3FCkkHTtfpE=</value>
+            <value>#!rHAtOLSu4P9XTYpTGVzzrfPO1kOdd1N8zgz+euLEELeX00sTkZj0uR+/VrjpqZiyZfKVhESL+q8=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
@@ -179,6 +175,10 @@
         <NameValuePair>
             <name>Destinations/MammothPsgQueue</name>
             <value>WFMSB1.Mammoth.Retail.JustInTimePsg.MammothPrice.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>Destinations/PriceEslQueue</name>
+            <value>WFMSB1.Mammoth.Retail.JustInTimeEsl.MammothPrice.Queue.V1</value>
         </NameValuePair>
         <NameValuePair>
             <name>Destinations/PriceInforQueue</name>
@@ -241,6 +241,10 @@
             <value>WFMSB1.Mammoth.Retail.JustInTime.MammothPrice.Topic.V1</value>
         </NameValuePair>
         <NameValuePair>
+            <name>Destinations/PriceOnePlumQueue</name>
+            <value> WFMSB1.Mammoth.Retail.JustInTimeOnePlum.MammothPrice.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
             <name>Destinations/PricePushStarterQueue</name>
             <value>WFMSB1.Mammoth.Retail.JustInTime.PricePushStarter.Queue.V1</value>
         </NameValuePair>
@@ -255,6 +259,54 @@
         <NameValuePair>
             <name>DirTrace</name>
             <value>.</value>
+        </NameValuePair>
+        <NameValuePairPassword>
+            <name>ErrorMessageSettings/Connections/JMS/SB1/Password</name>
+            <value>#!oWj9ITSWqjud5qNkVDkJKCawvSioZ+62RJWoCjKlWWv8KhIXN0/xEqAvoEfZ5iSlwJqgJr217bc=</value>
+        </NameValuePairPassword>
+        <NameValuePair>
+            <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
+            <value>ssl://cerd1616.wfm.pvt:7233</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/Connections/JMS/SB1/Username</name>
+            <value>sb1_mammothPriceUser</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/CountSeperator</name>
+            <value>##</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/DeliveryMode</name>
+            <value>PERSISTENT</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/Destinations/MammothErrorMessageQueue</name>
+            <value>WFMSB1.Mammoth.Retail.Errors.Queue.V1</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/ExceptionLogDirectory</name>
+            <value>C:\temp\Exception</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/ExceptionLogExtension</name>
+            <value>.Exp</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/JmsExpiration</name>
+            <value>0</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/JmsPriority</name>
+            <value>4</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/SendRetryMaxCount</name>
+            <value>3</value>
+        </NameValuePair>
+        <NameValuePair>
+            <name>ErrorMessageSettings/SendRetrySleepDelayMilliseconds</name>
+            <value>3000</value>
         </NameValuePair>
         <NameValuePair>
             <name>HawkEnabled</name>
@@ -274,7 +326,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>LoggerSettings/Connections/JMS/SB1/Password</name>
-            <value>#!xwK3gta01bK5HVjU8yrQ2uX7g+6uq1Ni6lfkrqZ+lL8=</value>
+            <value>#!cUZwKieAPthwDqmXxxsobcNnaLlcK0ZPNCWPzDbba8w=</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
@@ -501,7 +553,7 @@
                 <checkpoint>Local File</checkpoint>
                 <checkpoint>/SharedResources/Connections/IRMA</checkpoint>
                 <checkpoint>/SharedResources/Connections/Mammoth</checkpoint>
-                <tablePrefix>Process_Ar_30601847</tablePrefix>
+                <tablePrefix>Process_Ar_19911371</tablePrefix>
             </checkpoints>
             <isFt>false</isFt>
         </bw>
