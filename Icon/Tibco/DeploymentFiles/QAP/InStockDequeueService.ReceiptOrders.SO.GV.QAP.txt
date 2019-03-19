@@ -7,6 +7,7 @@ BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 Application/RegionCode=SO
 Application/StoredProcedureName=DequeueReceipts
 Application/TransactionType=ReceiptOrders
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
 
 Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-so\soq;DatabaseName=ItemCatalog;
 Connections/JDBC/IRMA/Username=TibcoDataWriter
