@@ -19,6 +19,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionList;
 using LocaltypeModel = KitBuilder.DataAccess.DatabaseModels.LocaleType;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -42,6 +44,7 @@ namespace KitBuilderWebApi.Controllers
         private IHelper<KitDto, KitSearchParameters> kitHelper;
 		private const string deleteKitSpName = "DeleteKitByKitId";
 		private IServiceProvider services;
+        private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
 
 		public KitController(IRepository<LinkGroup> linkGroupRepository, 
                              IRepository<InstructionList> instructionListRepository,
@@ -58,8 +61,10 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitInstructionList> kitInstructionListRepository,
 							 ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper,
-							 IServiceProvider services
-							)
+							 IServiceProvider services,
+                             IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator
+
+                            )
         {
             this.linkGroupRepository = linkGroupRepository;
             this.instructionListRepository = instructionListRepository;
@@ -77,6 +82,7 @@ namespace KitBuilderWebApi.Controllers
 			this.logger = logger;
             this.kitHelper = kitHelper;
 			this.services = services;
+            this.calorieCalculator = calorieCalculator;
         }
 
 		[HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
@@ -108,7 +114,7 @@ namespace KitBuilderWebApi.Controllers
 
             if (localeIdWithKitLocaleRecord == null)
             {
-                logger.LogWarning("The object passed is either null or does not contain any rows.");
+                logger.LogWarning("Kit does not exist for selected store.");
                 return NotFound();
             }
 
@@ -125,6 +131,158 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(kitDtoList);
         }
+
+        [HttpGet("{kitId}/{storeId}/GetKitView", Name = "GetKitView")]
+        public IActionResult GetKitView(int kitId, int storeId)
+        {
+            int? localeIdWithKitLocaleRecord = getlocaleIdAtWhichkitRecordExits(kitId, storeId);
+            KitView kitView = new KitView();
+
+            if (localeIdWithKitLocaleRecord == null)
+            {
+                kitView.ErrorMessage = "Kit does not exist for selected store.";
+                return Ok(kitView);
+            }
+
+            var kitProperties = BuildKitPropertiesByLocaleId(kitId, (int)localeIdWithKitLocaleRecord, storeId);
+
+            if (kitProperties == null)
+            {
+                kitView.ErrorMessage = "Please make sure Kit is set up correctly for this store.";
+                return Ok(kitView);
+            }
+
+            kitView = BuildKitView(kitProperties, storeId);
+
+            if(kitView == null){
+                kitView.ErrorMessage = "Please make sure Kit is set up correctly for this store.";
+                return Ok(kitView);
+            }
+            else
+            {
+                return Ok(kitView);
+
+            }
+         
+        }
+
+        internal KitView BuildKitView(KitPropertiesDto kitProperties, int storeId)
+        {
+            KitView kitView = new KitView();
+            Task<KitLocaleDto> kitLocaleDtoTask;
+
+            try
+            {
+              kitLocaleDtoTask = calorieCalculator.Run(new GetKitLocaleByStoreParameters { KitLocaleId = kitProperties.KitLocaleId, StoreLocaleId = storeId });
+            }
+            catch(Exception ex)
+            {
+                kitView.ErrorMessage = "Error in getting data from mammoth.";
+                return kitView;
+            }
+
+            var maximumCalories =kitLocaleRepository.GetAll().Where(k => k.KitLocaleId == kitProperties.KitLocaleId).Select(s => s.MaximumCalories).FirstOrDefault();
+            kitView.LinkGroups = new List<LinkGroupView>() ;
+            kitView.KitId = kitProperties.KitId;
+            kitView.Description = kitProperties.Description;
+            kitView.StoreId = storeId;
+            kitView.KitLocaleId = kitProperties.KitLocaleId;
+            kitView.ErrorMessage = "";
+            kitLocaleDtoTask.Wait() ;
+
+            var kitLocaleDto = kitLocaleDtoTask.Result;
+ 
+            if (kitLocaleDto.Exclude == true)
+            {
+                kitView.ErrorMessage = "Kit is excluded for selected store.";
+                return kitView;
+            }
+
+            if (kitLocaleDto.AuthorizedByStore == false)
+            {
+                kitView.ErrorMessage = "Main Kit Item is not authorized for selected Store.";
+                return kitView;
+            }
+
+            if (kitLocaleDto.MaximumCalories != null && kitLocaleDto.MinimumCalories != null && kitLocaleDto.RegularPrice != null
+                && kitLocaleDto.AuthorizedByStore != null
+                && kitLocaleDto.Exclude != null)
+            {
+
+               
+                if (maximumCalories == null || maximumCalories == 0)
+                {
+                    kitView.MaximumCalories = (int)kitLocaleDto.MaximumCalories;
+                }
+                else
+                {
+                    kitView.MaximumCalories = (int)maximumCalories;
+                }
+
+                kitView.MinimumCalories = (int)kitLocaleDto.MinimumCalories;
+                kitView.KitPrice = (decimal)kitLocaleDto.RegularPrice;
+                kitView.AuthorizedByStore = (bool)kitLocaleDto.AuthorizedByStore;
+                kitView.Excluded = (bool)kitLocaleDto.Exclude;
+
+                foreach (KitLinkGroupPropertiesDto KitLinkGroupPropertiesDto in kitProperties.KitLinkGroupLocaleList.Where(l => l.Excluded == false))
+                {
+                    LinkGroupView linkGroupView = new LinkGroupView();
+                    linkGroupView.Modifiers = new List<ModifierView>();
+                    linkGroupView.LinkGroupId = KitLinkGroupPropertiesDto.KitLinkGroupId;
+                    linkGroupView.GroupName = KitLinkGroupPropertiesDto.Name;
+                    linkGroupView.GroupDescription = KitLinkGroupPropertiesDto.Name;
+                    linkGroupView.LinkGroupProperties = KitLinkGroupPropertiesDto.Properties;
+                    linkGroupView.FormattedLinkGroupProperties = formatLinkGroupProperties(KitLinkGroupPropertiesDto.Properties).ToString();
+
+                    var propertiesDtoList = KitLinkGroupPropertiesDto.KitLinkGroupItemLocaleList.OrderBy(s => s.Excluded).ToList();
+                    var listCount = propertiesDtoList.Count;
+                    int currentCount = 0;
+
+                    foreach (PropertiesDto propertiesDto in propertiesDtoList)//.Where(l => l.Excluded == false))
+                    {
+                        currentCount = currentCount + 1;
+                        KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto = (kitLocaleDto.KitLinkGroupLocale.Where(kl=>kl.KitLinkGroupId== propertiesDto.KitLinkGroupId).FirstOrDefault()).KitLinkGroupItemLocales
+                                                                              .Where(k => k.KitLinkGroupItemLocaleId == propertiesDto.KitLinkGroupItemLocaleId).FirstOrDefault();
+
+                        if (kitLinkGroupItemLocaleDto != null)
+                        {
+                            ModifierView modifierView = new ModifierView();
+                            modifierView.AuthorizedByStore = (bool)kitLinkGroupItemLocaleDto.AuthorizedByStore;
+                            modifierView.Excluded = (bool)kitLinkGroupItemLocaleDto.Exclude;
+                            modifierView.ItemID = (int)kitLinkGroupItemLocaleDto.ItemId;
+                            modifierView.ModifierName = propertiesDto.Name;
+                            modifierView.ModifierProperties = kitLinkGroupItemLocaleDto.Properties;
+                            modifierView.Price = kitLinkGroupItemLocaleDto.RegularPrice.ToString();
+                            modifierView.Calories = kitLinkGroupItemLocaleDto.Calories.ToString(); ;
+                            modifierView.FormattedModifierProperties = formatModifierProperties(kitLinkGroupItemLocaleDto.Properties, kitLinkGroupItemLocaleDto).ToString();
+                            if(currentCount == listCount)
+                            {
+                                linkGroupView.FormattedAllModifiersProperties = AppendToAllModifiersProperties(modifierView, linkGroupView.FormattedAllModifiersProperties, true);
+                            }
+                            else
+                            {
+                                linkGroupView.FormattedAllModifiersProperties = AppendToAllModifiersProperties(modifierView, linkGroupView.FormattedAllModifiersProperties, false);
+                            }
+                           
+                            linkGroupView.Modifiers.Add(modifierView);
+                        }
+                        else
+                        {
+                            kitView.ErrorMessage = " Error in fetching info from mammoth.";
+                        }
+                    }
+                    kitView.LinkGroups.Add(linkGroupView);
+                }
+
+                return kitView;
+            }
+            else
+            {
+                kitView.ErrorMessage = " Error in fetching info from Mammoth.";
+                return kitView;
+            }
+        }
+
 
         // GET api/kits/1/ViewKit/1 GetKitByLocationID
         [HttpGet("{kitId}/GetKitProperties/{localeId}", Name = "GetKitProperties")]
@@ -255,7 +413,7 @@ namespace KitBuilderWebApi.Controllers
                 };
         }
         [HttpPost("{kitLocaleId}/UpdateMaximumCalories", Name = "UpdateMaximumCalories")]
-        public IActionResult UpdateMaximumCalories(int kitLocaleId, int MaximumCalories)
+        public IActionResult UpdateMaximumCalories(int kitLocaleId, [FromBody]int MaximumCalories)
         {
             var kitLocale = kitLocaleRepository.GetAll().Where(x => x.KitLocaleId == kitLocaleId).FirstOrDefault();
             if (kitLocale == null)
@@ -997,6 +1155,85 @@ namespace KitBuilderWebApi.Controllers
             {
                 return StatusCode(StatusCodes.Status409Conflict);
             }
+        }
+
+
+
+        private string AppendToAllModifiersProperties(ModifierView modifierView, string formattedAllModifiersProperties, bool isLast)
+        {
+            StringBuilder linkgroupModifierProperties = new StringBuilder();
+
+            linkgroupModifierProperties.Append(formattedAllModifiersProperties);
+            if (modifierView.Excluded == false)
+                linkgroupModifierProperties.Append("^");
+            linkgroupModifierProperties.Append(modifierView.ModifierName);
+
+            linkgroupModifierProperties.Append("[");
+            linkgroupModifierProperties.Append(modifierView.FormattedModifierProperties);
+            linkgroupModifierProperties.Append("]");
+            if (!isLast)
+            {
+                linkgroupModifierProperties.Append(",");
+                linkgroupModifierProperties.Append("\n");
+            }
+
+
+            return linkgroupModifierProperties.ToString();
+        }
+
+        private StringBuilder formatModifierProperties(string properties, KitLinkGroupItemLocaleDto KitLinkGroupItemLocaleDto)
+        {
+            dynamic data = JObject.Parse(properties);
+            StringBuilder modifierProperties = new StringBuilder();
+
+            modifierProperties.Append(KitLinkGroupItemLocaleDto.Calories);
+            modifierProperties.Append(" Calories,");
+
+            modifierProperties.Append(" $");
+            modifierProperties.Append(KitLinkGroupItemLocaleDto.RegularPrice);
+            modifierProperties.Append(",");
+            modifierProperties.Append("\n");
+            modifierProperties.Append(" Min=");
+            modifierProperties.Append(data.Minimum);
+            modifierProperties.Append(",");
+
+            modifierProperties.Append(" Max=");
+            modifierProperties.Append(data.Maximum);
+           // modifierProperties.Append(",");
+           // modifierProperties.Append("\n");
+            //modifierProperties.Append(" NumOfFreeToppings = ");
+            //modifierProperties.Append(data.NumOfFreePortions);
+            //modifierProperties.Append(",");
+
+            //modifierProperties.Append(" Default Portions=");
+            //modifierProperties.Append(data.DefaultPortions);
+            //modifierProperties.Append(",");
+
+            //modifierProperties.Append(" MandatoryItem = ");
+            //modifierProperties.Append(data.DefaultPortions);
+
+            return modifierProperties;
+        }
+
+        private StringBuilder formatLinkGroupProperties(string properties)
+        {
+            dynamic data = JObject.Parse(properties);
+            StringBuilder linkgroupProperties = new StringBuilder();
+
+            linkgroupProperties.Append("Min=");
+            linkgroupProperties.Append(data.Minimum);
+            linkgroupProperties.Append(",");
+
+            linkgroupProperties.Append("Max=");
+            linkgroupProperties.Append(data.Maximum);
+            linkgroupProperties.Append(",");
+            linkgroupProperties.Append("\n");
+
+            linkgroupProperties.Append("Number Of FreeToppings = ");
+            linkgroupProperties.Append(data.NumOfFreeToppings);
+
+            return linkgroupProperties;
+
         }
 
         internal IQueryable<Kit> BuildKitByKitIdQuery(int id)

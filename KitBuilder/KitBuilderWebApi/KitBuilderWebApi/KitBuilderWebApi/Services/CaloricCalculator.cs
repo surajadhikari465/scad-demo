@@ -65,8 +65,10 @@ namespace KitBuilderWebApi.Services
 					var resultPrice = getAuthorizedStatusAndPriceService.Run(storeItemsList);
 					var itemStorePriceModelList = await resultPrice;
 
-					//update kitlocale with Price and Store Authorization Status
-					UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
+                    // must be removed after Min fixes code
+                    kitLocaleDto.RegularPrice = 1;
+                    //update kitlocale with Price and Store Authorization Status
+                    UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
 
 					if (kitLocaleDto.AuthorizedByStore == true)
 					{

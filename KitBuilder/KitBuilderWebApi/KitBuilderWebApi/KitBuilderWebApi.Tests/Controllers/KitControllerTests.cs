@@ -5,6 +5,7 @@ using KitBuilder.DataAccess.UnitOfWork;
 using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
+using KitBuilderWebApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
@@ -51,8 +53,8 @@ namespace KitBuilderWebApi.Tests.Controllers
         private List<KitLocale> kitLocaleList;
         private List<KitLinkGroupLocale> kitLinkGroupLocaleList;
         private List<AssignKitToLocaleDto> assignKitToLocaleDtoList;
-
-      [TestInitialize]
+        private Mock<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>> mockCalorieCalculator;
+        [TestInitialize]
         public void InitializeTests()
         {
             mockKitInstructionListRepository = new Mock<IRepository<KitInstructionList>>();
@@ -73,8 +75,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitLinkGroupItemLocaleRepository = new Mock<IRepository<KitLinkGroupItemLocale>>();
             mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
 			mockServices = new Mock<IServiceProvider>();
-
-			mockUnitWork = new Mock<IUnitOfWork>();
+            mockCalorieCalculator = new Mock<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>>();
+            mockUnitWork = new Mock<IUnitOfWork>();
 
             string locationUrl = "http://localhost:55873/api/Kits/";
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -97,8 +99,9 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockKitInstructionListRepository.Object,
 				mockLogger.Object,
                 mockKitHelper.Object,
-				mockServices.Object
-				);
+				mockServices.Object,
+                mockCalorieCalculator.Object
+                );
 
             MappingHelper.InitializeMapper();
             SetUpDataAndRepository();

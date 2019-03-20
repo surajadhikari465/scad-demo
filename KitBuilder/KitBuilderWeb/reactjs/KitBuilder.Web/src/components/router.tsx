@@ -11,6 +11,7 @@ import { MuiThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header/header';
 import CreateKitPage from './Kits/CreateKitPage';
+import {ViewKit} from './Kits/ViewKits/ViewKit';
 
 const theme = createMuiTheme({
   palette: {
@@ -45,6 +46,8 @@ class AppRouter extends React.Component {
              <Route path="/AssignKits" component={AssignKitsToLocale} />
             <Route path="/CreateKits" component={CreateKitPage} />
             <Route path="/KitLinkGroups" component ={KitLinkGroupPage}/>
+            <Route path="/ViewKit" component ={ViewKit}/>
+            
           </Switch>
         </div>
         </MuiThemeProvider>

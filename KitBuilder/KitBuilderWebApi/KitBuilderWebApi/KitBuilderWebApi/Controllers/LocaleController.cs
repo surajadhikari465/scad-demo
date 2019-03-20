@@ -53,12 +53,12 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
-        [HttpGet("GetMetroByRegionId")]
+        [HttpGet("GetMetrosByRegionId")]
         public IActionResult GetMetroByRegionId([FromQuery] int regionId)
         {
 
             var locales = from l in LocalesRepository.GetAll()
-                          where l.RegionId == regionId
+                          where l.RegionId == regionId && l.LocaleTypeId == (int) LocaleType.Metro
                           select l;
 
             return Ok(locales.ToList());
@@ -66,11 +66,11 @@ namespace KitBuilderWebApi.Controllers
         }
 
         [HttpGet("GetStoresByMetroId")]
-        public IActionResult GetStoresBytoreId([FromQuery] int metroId)
+        public IActionResult GetStoresByMetroId([FromQuery] int metroId)
         {
 
             var locales = from l in LocalesRepository.GetAll()
-                          where l.MetroId == metroId
+                          where l.MetroId == metroId && l.LocaleTypeId == (int)LocaleType.Store
                           select l;
 
             return Ok(locales.ToList());
