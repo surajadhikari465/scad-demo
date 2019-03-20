@@ -187,7 +187,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
 
                     this.setState({
                          message: "Data Saved Succesfully."
-                    })
+                    }, ()=>this.loadData())
                }).catch(error => {
                     this.setState({
                          error: "Error in Saving Data."

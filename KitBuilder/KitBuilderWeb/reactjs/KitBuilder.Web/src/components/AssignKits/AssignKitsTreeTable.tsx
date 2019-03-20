@@ -31,6 +31,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
 
     onAssignClicked(item: any) {
         item.isAssigned = !item.isAssigned;
+        item.IsDirty = true;
         if (item.isAssigned == true) {
             item.isChildDisabled = false;
             this.enableDisableControls(item.childs, false);
@@ -81,6 +82,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
 
     enableDisableControlsOnLoad(item: any) {
         for (let i = 0; i < item.length; i++) {
+            item.IsDirty = false;       
             if (item[i].isExcluded == true) {
                 item[i].isChildDisabled = true;
                 if (item[i].childs !== undefined) {
@@ -136,7 +138,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
         let showView = false;
 
         for (let i = 0; i < data.length; i++) {
-            if (data[i].isAssigned == true) {
+            if (data[i].isAssigned == true && !data[i].IsDirty) {
                 showView = true;
                 break;
             }
@@ -188,7 +190,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                                 <input disabled={this.props.disabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
                                             </div>
                                             <div className="btnCenter" style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>
-                                                {item.isAssigned ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
+                                                {item.isAssigned && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
                                             </div>
                                         </React.Fragment>
                                 }
