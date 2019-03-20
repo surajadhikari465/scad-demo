@@ -95,26 +95,24 @@ Public Class ItemNutrition
     End Sub
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
-        Dim SelectedTab As String = Me.ItemNutritionTabs.SelectedTab.Text
-        Select Case SelectedTab
-            Case "Extra Text"
-                Me.SaveExtraText()
-            Case "NutriFacts"
-                Me.SaveNutrifacts()
-            Case "Ingredients"
-                Me.SaveIngredients()
-            Case "Allergens"
-                Me.SaveAllergens()
-        End Select
+    Select Case Me.ItemNutritionTabs.SelectedTab.Text
+      Case "Extra Text": 
+        Me.SaveExtraText()
+      Case "NutriFacts"
+        Me.SaveNutrifacts()
+      Case "Ingredients"
+        Me.SaveIngredients()
+      Case "Allergens"
+        Me.SaveAllergens()
+    End Select
 
-        MessageBox.Show("Changes have been saved successfully.", "Save Changes", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    MessageBox.Show("Changes have been saved successfully.", "Save Changes", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         ButtonSave.Enabled = False
     End Sub
     Private Function SaveExtraText() As Boolean
-
-        ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text)
-        Return True
+    ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text.Trim())
+    Return True
     End Function
     Private Function SaveNutrifacts() As Boolean
         If ComboBoxNutrifacts.SelectedIndex = -1 Then

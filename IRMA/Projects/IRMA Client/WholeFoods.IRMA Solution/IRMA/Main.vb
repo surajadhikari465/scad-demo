@@ -2222,37 +2222,31 @@ me_exit:
   Private Sub tsbEdit_Search_Identifier_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEdit_Search_Identifier.Click
     logger.Debug("tsbEdit_Search_Identifier_Click")
 
-    Dim searchStr As String
-    searchStr = Trim(tsbEdit_SearchText.Text)
-    If searchStr = String.Empty Then
-      MsgBox("Please enter an Identifier", MsgBoxStyle.Information)
-      Exit Sub
-    End If
+    tsbEdit_SearchText.Text = tsbEdit_SearchText.Text.Replace(" ", String.Empty)
 
-    If Not IsNumeric(searchStr) Then
-      MsgBox("Identifier must be numeric", MsgBoxStyle.Information)
+    If Not IsNumeric(tsbEdit_SearchText.Text) Then
+      MsgBox("Identifier is missing or is not numeric." + VB.vbCrLf + "Please verify your input and try again.", MsgBoxStyle.Information)
+      tsbEdit_SearchText.SelectAll()
+      tsbEdit_SearchText.Select()
       Exit Sub
     End If
 
     gbQuickSearch = True
-    glIdentifier = searchStr
+    glIdentifier = tsbEdit_SearchText.Text
 
     frmItemSearch.ShowDialog()
-    frmItemSearch.Close()
     frmItemSearch.Dispose()
 
     gbQuickSearch = False
-    glIdentifier = ""
+    glIdentifier = String.Empty
 
     '-- if its not zero, then something was found
     If glItemID <> 0 Then
       frmItem.ShowDialog()
-      frmItem.Close()
       frmItem.Dispose()
     End If
 
     logger.Debug("tsbEdit_Search_Identifier_exit")
-
   End Sub
 
   Private Sub StaticStoreFTPToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles StaticStoreFTPToolStripMenuItem.Click
@@ -2470,5 +2464,20 @@ me_exit:
     Dim window As New SupportRestoreDeletedItems()
     window.ShowDialog()
     logger.Debug("SupportRestoreDeleteItemToolStripMenuItem_Click exit")
+  End Sub
+
+  Private Sub tsbEdit_SearchText_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tsbEdit_SearchText.KeyPress
+    If Asc(e.KeyChar) <> 8 Then
+      e.Handled = (Asc(e.KeyChar) < 48 Or Asc(e.KeyChar) > 57)
+    End If
+  End Sub
+
+  Private Sub tsbEdit_SearchText_KeyDown(sender As Object, e As KeyEventArgs) Handles tsbEdit_SearchText.KeyDown
+    If (e.Control And tsbEdit_SearchText.Text.Length > 0) Then
+      Select Case e.KeyCode
+        Case Keys.I : tsbEdit_Search_Identifier_Click(Nothing, Nothing)
+        Case Keys.P : tsbEdit_Search_PO_Click(Nothing, Nothing)
+      End Select
+    End If
   End Sub
 End Class

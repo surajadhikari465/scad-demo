@@ -658,45 +658,19 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             factory.ExecuteStoredProcedure("InsertOrUpdateItemNutrifact", paramList)
         End Function
 
-        Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String) As Boolean
-            Dim factory As New DataFactory(DataFactory.ItemCatalog)
-            Dim paramList As New ArrayList
-            Dim currentParam As DBParam
-            Dim results As SqlDataReader = Nothing
+    Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String) As Boolean
+      Dim factory As New DataFactory(DataFactory.ItemCatalog)
+      Dim paramList As New ArrayList(New DBParam() {
+        New DBParam("ExtraTextId", DBParamType.Int, extraTextId),
+        New DBParam("ItemKey", DBParamType.Int, itemKey),
+        New DBParam("Description", DBParamType.String, String.Empty),
+        New DBParam("Scale_LabelType_ID", DBParamType.Int, scaleLabelTypeId),
+        New DBParam("ExtraText", DBParamType.String, extraText)})
 
-            currentParam = New DBParam
-            currentParam.Name = "ExtraTextId"
-            currentParam.Value = extraTextId
-            currentParam.Type = DBParamType.Int
-            paramList.Add(currentParam)
+      factory.ExecuteStoredProcedure("InsertOrUpdateItemExtraText", paramList)
+    End Function
 
-            currentParam = New DBParam
-            currentParam.Name = "ItemKey"
-            currentParam.Value = itemKey
-            currentParam.Type = DBParamType.Int
-            paramList.Add(currentParam)
-
-            currentParam = New DBParam
-            currentParam.Name = "Description"
-            currentParam.Value = String.Empty
-            currentParam.Type = DBParamType.String
-            paramList.Add(currentParam)
-
-            currentParam = New DBParam
-            currentParam.Name = "Scale_LabelType_ID"
-            currentParam.Value = scaleLabelTypeId
-            currentParam.Type = DBParamType.Int
-            paramList.Add(currentParam)
-
-            currentParam = New DBParam
-            currentParam.Name = "ExtraText"
-            currentParam.Value = extraText
-            currentParam.Type = DBParamType.String
-            paramList.Add(currentParam)
-
-            factory.ExecuteStoredProcedure("InsertOrUpdateItemExtraText", paramList)
-        End Function
-        Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String) As Boolean
+    Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
