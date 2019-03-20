@@ -44,6 +44,7 @@ namespace Icon.ApiController.Tests.Commands
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.Product,
                 Message = "Test",
+                MessageHeader = "Test123",
                 InsertDate = DateTime.Now
             };
 
@@ -65,6 +66,7 @@ namespace Icon.ApiController.Tests.Commands
             Assert.AreEqual(MessageStatusTypes.Sent, updatedMessage.MessageStatusId);
             Assert.IsNull(updatedMessage.InProcessBy);
             Assert.AreEqual(DateTime.Now.Date, updatedMessage.ProcessedDate.Value.Date);
+            Assert.IsNotNull(updatedMessage.MessageHeader);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Icon.ApiController.Tests.Commands
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.Product,
                 Message = "Test",
+                MessageHeader = "Test123",
                 InsertDate = DateTime.Now
             };
 
@@ -62,6 +63,7 @@ namespace Icon.ApiController.Tests.Commands
             Assert.AreEqual(MessageTypes.Product, savedMessage.MessageTypeId);
             Assert.AreEqual("Test", savedMessage.Message);
             Assert.AreEqual(DateTime.Now.Date, savedMessage.InsertDate.Date);
+            Assert.AreEqual("Test123",savedMessage.MessageHeader);
         }
     }
 }

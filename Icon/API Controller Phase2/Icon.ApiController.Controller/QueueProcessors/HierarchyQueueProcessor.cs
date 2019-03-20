@@ -13,7 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
+using Newtonsoft.Json;
+using NLog;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Controller.QueueProcessors
@@ -108,14 +111,14 @@ namespace Icon.ApiController.Controller.QueueProcessors
                         }
                         else
                         {
-                            var hierarchyMessage = BuildXmlMessage(xml);
+                            var hierarchyMessage = BuildXmlMessage(xml, messageProperties);
 
                             SaveXmlMessageToMessageHistory(hierarchyMessage);
 
                             AssociateSavedMessageToMessageQueue(messagesReadyToSerialize, hierarchyMessage);
 
                             SetProcessedDate(messagesReadyToSerialize);
-
+                            
                             bool messageSent = PublishMessage(hierarchyMessage.Message, hierarchyMessage.MessageHistoryId);
 
                             ProcessResponse(messageSent, hierarchyMessage, hierarchyClassesInMiniBulk, miniBulk.name);
@@ -151,20 +154,20 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
         private void SetMessageProperties()
         {
-          messageProperties = new Dictionary<string, string>
+            messageProperties = new Dictionary<string, string>
           {
             { "IconMessageID", string.Empty },
             { "Source", "Icon" },
             { "TransactionType", "Hierarchy" }
           };
 
-          var nonNonReceiving = String.Format("{0},{1}", settings.NonReceivingSystemsAll, settings.NonReceivingSystemsHierarchy).Split(',')
-            .Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
-          
-          if(nonNonReceiving.Any())
-          {
-            messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, String.Join(",", nonNonReceiving));
-          }
+            var nonNonReceiving = String.Format("{0},{1}", settings.NonReceivingSystemsAll, settings.NonReceivingSystemsHierarchy).Split(',')
+              .Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+
+            if(nonNonReceiving.Any())
+            {
+                messageProperties.Add(EsbConstants.NonReceivingSystemsJmsProperty, String.Join(",", nonNonReceiving));
+            }
         }
 
         private void ProcessResponse(bool messageSent, MessageHistory message, List<string> publishedHierarchyClassesByIdAsString, string hierarchyName)
@@ -172,7 +175,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
             if (messageSent)
             {
                 logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
-
+                
                 var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
                 {
                     Message = message,
@@ -267,11 +270,11 @@ namespace Icon.ApiController.Controller.QueueProcessors
             {
                 Message = message
             };
-
+            
             saveToMessageHistoryCommandHandler.Execute(command);
         }
 
-        private MessageHistory BuildXmlMessage(string xml)
+        private MessageHistory BuildXmlMessage(string xml, Dictionary<string, string> messageProperties)
         {
             // ESB wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
             // the database will happily store it.
@@ -282,6 +285,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.Hierarchy,
                 Message = xml,
+                MessageHeader = JsonConvert.SerializeObject(messageProperties),
                 InsertDate = DateTime.Now,
                 InProcessBy = ControllerType.Instance,
                 ProcessedDate = null

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Icon.ApiController.Controller.ControllerConstants;
+using Newtonsoft.Json;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Controller.QueueProcessors
@@ -92,7 +93,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
                         }
                         else
                         {
-                            var message = BuildXmlMessage(xml);
+                            var message = BuildXmlMessage(xml, messageProperties);
 
                             SaveXmlMessageToMessageHistory(message);
 
@@ -215,7 +216,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
             saveToMessageHistoryCommandHandler.Execute(command);
         }
 
-        private MessageHistory BuildXmlMessage(string xml)
+        private MessageHistory BuildXmlMessage(string xml, Dictionary<string, string> messageProperties)
         {
             // ESB wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
             // the database will happily store it.
@@ -226,6 +227,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.ProductSelectionGroup,
                 Message = xml,
+                MessageHeader = JsonConvert.SerializeObject(messageProperties),
                 InsertDate = DateTime.Now,
                 InProcessBy = ControllerType.Instance,
                 ProcessedDate = null
