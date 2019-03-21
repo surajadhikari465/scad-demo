@@ -18,7 +18,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/EmailTo</name>
-            <value>irma.developers@wholefoods.com</value>
+            <value>irma.developers@wholefoods.com;irma.support@wholefoods.opsgenie.net</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/ErrorAlertIntegrationKey</name>
@@ -34,7 +34,7 @@
         </NameValuePairBoolean>
         <NameValuePairBoolean>
             <name>Application/SendErrorAlerts</name>
-            <value>true</value>
+            <value>false</value>
         </NameValuePairBoolean>
         <NameValuePair>
             <name>Application/TimerStartTime</name>
