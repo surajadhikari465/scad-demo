@@ -74,7 +74,11 @@ export class KitLinkGroupItemProperties extends React.Component<any>
 
     handleLinkGroupItemExclude() {
         let changedState = !this.props.kitLinkGroupItemsJson.excluded
-        this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupItemsJson.excluded = changedState })
+        this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupItemsJson.excluded = changedState
+                         })
+
+     this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupItemsJson.isDisabled = changedState
+                  })        
     }
 
     handleLinkGroupItemMandatoryItem(event: any) {
@@ -105,7 +109,12 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                     <div className="col-lg-2 col-md-2 mt-md-3">{/* Kit Link Group Item Name */}
                         <h6 className="text-left ">{this.props.kitLinkGroupItemsJson.name}</h6>
                     </div>
-                    <div className="col-lg-10 col-md-10 mt-md-3">{/* Kit Link Group Details */}
+
+                    <label className="col-lg-1 col-md-1 mt-md-3">
+                                    <input disabled ={this.props.kitLinkGroupItemsJson.isExcludeDisabled} className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupItemsJson.excluded} onClick={this.handleLinkGroupItemExclude.bind(this)} /> Exclude
+                    </label>
+
+                    <div className="col-lg-9 col-md-9 mt-md-3">{/* Kit Link Group Details */}
                         <form className="wrapper">
                             <fieldset disabled={this.props.kitLinkGroupItemsJson.isDisabled}>
                                 <label className="col-lg-3 col-md-3">
@@ -126,9 +135,7 @@ export class KitLinkGroupItemProperties extends React.Component<any>
                                 <label className="col-lg-3 col-md-3">
                                     <input disabled={true} className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupItemsJson.properties.MandatoryItem == "true" ? true : false} onClick={this.handleLinkGroupItemMandatoryItem.bind(this)} /> Mandatory Item
                             </label>
-                                <label className="col-lg-3 col-md-3">
-                                    <input className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupItemsJson.excluded} onClick={this.handleLinkGroupItemExclude.bind(this)} /> Exclude
-                            </label>
+                               
                             </fieldset>
                         </form>
                     </div>

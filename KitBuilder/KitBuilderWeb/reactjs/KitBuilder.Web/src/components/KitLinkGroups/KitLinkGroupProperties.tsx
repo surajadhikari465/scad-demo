@@ -60,6 +60,7 @@ export class KitLinkGroupProperties extends React.Component<any>
         let changedState = !this.props.kitLinkGroupDetails.excluded
         this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.forEach(function (element: any) {
             element.isDisabled = changedState;
+            element.isExcludeDisabled = changedState;
         });
         this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails })
         this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.excluded = changedState })
@@ -77,11 +78,18 @@ export class KitLinkGroupProperties extends React.Component<any>
             5. Exclude
              */}
             <div className="row mt-md-1 border-bottom">
+
                 <div className="col-lg-2 col-md-2 mt-md-3"> {/* Kit Link Group Name */}
                     <h4 className="text-left">{this.props.kitLinkGroupDetails.name}</h4>
                 </div>
-                <div className="col-lg-10 col-md-10 mt-md-3">{/* Kit Link Group Details */}
+               
+                <label  className="col-lg-1 col-md-1 mt-md-3">
+                            <input className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupDetails.excluded} onClick={this.handleLinkGroupExclude.bind(this)} /> Exclude
+                 </label>
+
+                <div className="col-lg-9 col-md-9 mt-md-3">{/* Kit Link Group Details */}
                     <form className="wrapper">
+                    <fieldset disabled={this.props.kitLinkGroupDetails.excluded}>
                         <label className="col-lg-2 col-md-2">
                             <input className="col-lg-5 col-md-5" type="number" min="0" value={this.props.kitLinkGroupDetails.properties.Minimum} onChange={this.handleLinkGroupMinimum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Minimum
                             </label>
@@ -94,10 +102,9 @@ export class KitLinkGroupProperties extends React.Component<any>
                         <label className="col-lg-3 col-md-3">
                             <input className="col-lg-3 col-md-3" type="number" min="0"  value={this.props.kitLinkGroupDetails.properties.NumOfFreeToppings} onChange={this.handleLinkGroupNumOfFreeToppings.bind(this)} onBlur={this.onfocusOut.bind(this)}/> # of Free Toppings
                             </label>
-                        <label className="col-lg-2 col-md-2">
-                            <input className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupDetails.excluded} onClick={this.handleLinkGroupExclude.bind(this)} /> Exclude
-                            </label>
+                            </fieldset>
                     </form>
+                    
                 </div>
                 <div className="col-lg-1 col-md-1"></div>
                 <div className="col-lg-11 mb-1"> {/* Kit Link Group Items */}

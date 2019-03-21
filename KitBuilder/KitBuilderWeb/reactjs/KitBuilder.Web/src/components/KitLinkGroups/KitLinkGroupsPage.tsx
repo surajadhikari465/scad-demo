@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Grid } from '@material-ui/core';
 import { KitLinkGroupProperties } from "./KitLinkGroupProperties";
 import { KbApiMethod } from '../helpers/kbapi'
+import './style.css';
 import { isNumber, checkDuplicateInObject, checkValueLessThanOrEqualToMaxValue, checkValueMoreThanOrEqualToMinValue } from '../KitLinkGroups/ValidateFunctions'
 const hStyle = { color: 'red' };
 var urlStart = KbApiMethod("Kits");
@@ -45,139 +46,155 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
         })
 
     }
-
+     filterByExcluded(item:any) {
+        if (item.excluded) {
+          return false;
+        } 
+        return true; 
+      }
 
     validateDataBeforeSaving() {
         let dataToValidate: any = this.state.kitDetails.kitLinkGroupLocaleList;
         let error: any = [];
-        if (checkDuplicateInObject("displaySequence", dataToValidate)) {
+
+        if (checkDuplicateInObject("displaySequence", dataToValidate.filter(this.filterByExcluded))) {
             error.push("Display Order must be unique at link group level.")
         }
+        let self = this;
+
         dataToValidate.forEach(function (element: any) {
             let validateSumMinToMax: Boolean = true;
             let compareMinMax: Boolean = true;
             let isMaxLgNumber: Boolean = true;
             let validateSumDefaultToMax: Boolean = true;
             let validateSumMaxModifierToMin: Boolean = true;
+            let LinkGroupExcluded: Boolean = element.excluded;
+   
+            if (!LinkGroupExcluded) {
 
-            if (checkDuplicateInObject("displaySequence", element.kitLinkGroupItemLocaleList)) {
-                error.push("Display Order must be unique for modifiers of link group:".concat(element.name, "."))
-            }
-
-            if (!isNumber(String(element.properties.Minimum)) || !checkValueLessThanOrEqualToMaxValue(element.Minimum, 10) || !checkValueMoreThanOrEqualToMinValue(element.Minimum, 0)) {
-                error.push("Minimum for link group:".concat(element.name, " must be numeric and can have values from 0 to 10."));
-                compareMinMax = false;
-                isMaxLgNumber = false;
-                validateSumMaxModifierToMin = false;
-            }
-
-            if (!isNumber(String(element.properties.Maximum)) || !checkValueLessThanOrEqualToMaxValue(element.Maximum, 10) || !checkValueMoreThanOrEqualToMinValue(element.Maximum, 1)) {
-                error.push("Maximum for link group:".concat(element.name, " must be numeric and can have values from 1 to 10."));
-                compareMinMax = false;
-                validateSumMinToMax = false;
-                validateSumDefaultToMax = false;
-            }
-
-            if (compareMinMax && parseInt(element.properties.Maximum) < parseInt(element.properties.Minimum)) {
-                error.push("Maximum for link group:".concat(element.name, " cannot be less than Minimum."));
-            }
-
-            if (!isNumber(String(element.displaySequence)) || !checkValueMoreThanOrEqualToMinValue(element.displaySequence, 1)) {
-                error.push("Display Order for link group:".concat(element.name, " must be numeric and greater than 0."));
-            }
-            
-            if (!isNumber(String(element.properties.NumOfFreeToppings)) || (isMaxLgNumber && !checkValueLessThanOrEqualToMaxValue(element.properties.NumOfFreeToppings, element.properties.Maximum))) {
-                error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and cannot be more than maximum."));
-            }
-
-            if (!isNumber(String(element.properties.NumOfFreeToppings)) ||!checkValueMoreThanOrEqualToMinValue(element.properties.NumOfFreeToppings, 0)) {
-                error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and greater than 0."));
-            }
-
-            let sumOfMinimum: number = 0;
-            let sumOfDefaults: number = 0;
-            let sumOfMaximum: number = 0;
-            element.kitLinkGroupItemLocaleList.forEach(function (innerElement: any) {
-
-                let compareMinMaxforModifier: Boolean = true;
-                let isMaxNumber: Boolean = true;
-                let isDefaultPortionNumber: Boolean = true;
-                let isMinNumber: Boolean = true;
-                if (!isNumber(String(innerElement.properties.Minimum)) || !checkValueLessThanOrEqualToMaxValue(innerElement.properties.Minimum, 10) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.Minimum, 0)) {
-                    error.push("Minimum for modifier:".concat(innerElement.name, " must be numeric and can have values from 0 to 10."));
-                    compareMinMaxforModifier = false;
-                    validateSumMinToMax = false;
-                    isMinNumber = false;
-                }
-                else {
-                    sumOfMinimum = sumOfMinimum + parseInt(innerElement.properties.Minimum);
+                if (checkDuplicateInObject("displaySequence",  element.kitLinkGroupItemLocaleList.filter(self.filterByExcluded) )) {
+                    error.push("Display Order must be unique for modifiers of link group:".concat(element.name, "."))
                 }
 
-                if (!isNumber(String(innerElement.properties.Maximum)) || !checkValueLessThanOrEqualToMaxValue(innerElement.properties.Maximum, 10) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.Maximum, 1)) {
-                    error.push("Maximum for modifier:".concat(innerElement.name, " must be numeric and can have values from 1 to 10."));
-                    compareMinMaxforModifier = false;
-                    isMaxNumber = false;
+                if (!isNumber(String(element.properties.Minimum)) || !checkValueLessThanOrEqualToMaxValue(element.Minimum, 10) || !checkValueMoreThanOrEqualToMinValue(element.Minimum, 0)) {
+                    error.push("Minimum for link group:".concat(element.name, " must be numeric and can have values from 0 to 10."));
+                    compareMinMax = false;
+                    isMaxLgNumber = false;
                     validateSumMaxModifierToMin = false;
                 }
-                else {
-                    sumOfMaximum = sumOfMaximum + parseInt(innerElement.properties.Maximum);
-                }
 
-                if (compareMinMaxforModifier && parseInt(innerElement.properties.Maximum) < parseInt(innerElement.properties.Minimum)) {
-                    error.push("Maximum for modifier:".concat(innerElement.name, " cannot be less than Minimum."));
-                }
-                if (!isNumber(String(innerElement.displaySequence)) || !checkValueMoreThanOrEqualToMinValue(innerElement.displaySequence, 1)) {
-                    error.push("Display Order for modifier:".concat(innerElement.name, " must be numeric and greater than 0."));
-                }
-                if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.NumOfFreePortions, innerElement.properties.Maximum))) {
-
-                    error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and cannot be more than Maximum."));
-                }
-
-                if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.NumOfFreePortions, 0)) {
-
-                    error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and greater than 0."));
-                }
-
-                if (!isNumber(String(innerElement.properties.DefaultPortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.DefaultPortions, innerElement.properties.Maximum))) {
-                    error.push("Default Portions for modifier:".concat(innerElement.name, " must be numeric and cannot be more than Maximum."));
-                    isDefaultPortionNumber = false;
+                if (!isNumber(String(element.properties.Maximum)) || !checkValueLessThanOrEqualToMaxValue(element.Maximum, 10) || !checkValueMoreThanOrEqualToMinValue(element.Maximum, 1)) {
+                    error.push("Maximum for link group:".concat(element.name, " must be numeric and can have values from 1 to 10."));
+                    compareMinMax = false;
+                    validateSumMinToMax = false;
                     validateSumDefaultToMax = false;
-
-                }
-                else {
-                    sumOfDefaults = sumOfDefaults + parseInt(innerElement.properties.DefaultPortions);
                 }
 
-                if (isDefaultPortionNumber && isMaxNumber && innerElement.properties.DefaultPortions > innerElement.properties.Maximum) {
-                    error.push("Default Portions for modifier:".concat(innerElement.name, " cannot be more than Maximum."));
+                if (compareMinMax && parseInt(element.properties.Maximum) < parseInt(element.properties.Minimum)) {
+                    error.push("Maximum for link group:".concat(element.name, " cannot be less than Minimum."));
                 }
 
-                if (isDefaultPortionNumber && isMinNumber && !checkValueMoreThanOrEqualToMinValue(innerElement.properties.DefaultPortions, innerElement.properties.Minimum)) {
-                    error.push("Default Portions for modifier:".concat(innerElement.name, " cannot be less than Minimum."));
+                if (!isNumber(String(element.displaySequence)) || !checkValueMoreThanOrEqualToMinValue(element.displaySequence, 1)) {
+                    error.push("Display Order for link group:".concat(element.name, " must be numeric and greater than 0."));
                 }
-            })
 
-            if (validateSumMaxModifierToMin && sumOfMaximum < element.properties.Minimum) {
-                error.push("Sum of Maximum of modifiers cannot be less than Minimum of link group:".concat(element.name, "."));
+                if (!isNumber(String(element.properties.NumOfFreeToppings)) || (isMaxLgNumber && !checkValueLessThanOrEqualToMaxValue(element.properties.NumOfFreeToppings, element.properties.Maximum))) {
+                    error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and cannot be more than maximum."));
+                }
+
+                if (!isNumber(String(element.properties.NumOfFreeToppings)) || !checkValueMoreThanOrEqualToMinValue(element.properties.NumOfFreeToppings, 0)) {
+                    error.push("Number of Free Toppings for link group:".concat(element.name, " must be numeric and greater than 0."));
+                }
+
+                let sumOfMinimum: number = 0;
+                let sumOfDefaults: number = 0;
+                let sumOfMaximum: number = 0;
+                element.kitLinkGroupItemLocaleList.forEach(function (innerElement: any) {
+
+                    let compareMinMaxforModifier: Boolean = true;
+                    let isMaxNumber: Boolean = true;
+                    let isDefaultPortionNumber: Boolean = true;
+                    let isMinNumber: Boolean = true;
+                    let isLinkGroupItemExcluded: Boolean = innerElement.excluded;
+                if(!isLinkGroupItemExcluded)
+                {
+                    if (!isNumber(String(innerElement.properties.Minimum)) || !checkValueLessThanOrEqualToMaxValue(innerElement.properties.Minimum, 10) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.Minimum, 0)) {
+                        error.push("Minimum for modifier:".concat(innerElement.name, " must be numeric and can have values from 0 to 10."));
+                        compareMinMaxforModifier = false;
+                        validateSumMinToMax = false;
+                        isMinNumber = false;
+                    }
+                    else {
+                        sumOfMinimum = sumOfMinimum + parseInt(innerElement.properties.Minimum);
+                    }
+
+                    if (!isNumber(String(innerElement.properties.Maximum)) || !checkValueLessThanOrEqualToMaxValue(innerElement.properties.Maximum, 10) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.Maximum, 1)) {
+                        error.push("Maximum for modifier:".concat(innerElement.name, " must be numeric and can have values from 1 to 10."));
+                        compareMinMaxforModifier = false;
+                        isMaxNumber = false;
+                        validateSumMaxModifierToMin = false;
+                    }
+                    else {
+                        sumOfMaximum = sumOfMaximum + parseInt(innerElement.properties.Maximum);
+                    }
+
+                    if (compareMinMaxforModifier && parseInt(innerElement.properties.Maximum) < parseInt(innerElement.properties.Minimum)) {
+                        error.push("Maximum for modifier:".concat(innerElement.name, " cannot be less than Minimum."));
+                    }
+                    if (!isNumber(String(innerElement.displaySequence)) || !checkValueMoreThanOrEqualToMinValue(innerElement.displaySequence, 1)) {
+                        error.push("Display Order for modifier:".concat(innerElement.name, " must be numeric and greater than 0."));
+                    }
+                    if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.NumOfFreePortions, innerElement.properties.Maximum))) {
+
+                        error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and cannot be more than Maximum."));
+                    }
+
+                    if (!isNumber(String(innerElement.properties.NumOfFreePortions)) || !checkValueMoreThanOrEqualToMinValue(innerElement.properties.NumOfFreePortions, 0)) {
+
+                        error.push("Number of Free Toppings for modifier:".concat(innerElement.name, " must be numeric and greater than 0."));
+                    }
+
+                    if (!isNumber(String(innerElement.properties.DefaultPortions)) || (isMaxNumber && !checkValueLessThanOrEqualToMaxValue(innerElement.properties.DefaultPortions, innerElement.properties.Maximum))) {
+                        error.push("Default Portions for modifier:".concat(innerElement.name, " must be numeric and cannot be more than Maximum."));
+                        isDefaultPortionNumber = false;
+                        validateSumDefaultToMax = false;
+
+                    }
+                    else {
+                        sumOfDefaults = sumOfDefaults + parseInt(innerElement.properties.DefaultPortions);
+                    }
+
+                    if (isDefaultPortionNumber && isMaxNumber && innerElement.properties.DefaultPortions > innerElement.properties.Maximum) {
+                        error.push("Default Portions for modifier:".concat(innerElement.name, " cannot be more than Maximum."));
+                    }
+
+                    if (isDefaultPortionNumber && isMinNumber && !checkValueMoreThanOrEqualToMinValue(innerElement.properties.DefaultPortions, innerElement.properties.Minimum)) {
+                        error.push("Default Portions for modifier:".concat(innerElement.name, " cannot be less than Minimum."));
+                    }
+                }
+                })
+
+                if (validateSumMaxModifierToMin && sumOfMaximum < element.properties.Minimum) {
+                    error.push("Sum of Maximum of modifiers cannot be less than Minimum of link group:".concat(element.name, "."));
+                }
+
+                if (validateSumMinToMax && sumOfMinimum > element.properties.Maximum) {
+                    error.push("Sum of Minimum of modifiers cannot be more than Maximum of link group:".concat(element.name, "."));
+                }
+                if (validateSumDefaultToMax && sumOfDefaults > element.properties.Maximum) {
+                    error.push("Sum of Default Portions of modifiers cannot be more than Maximum of link group:".concat(element.name, "."));
+                }
             }
-
-            if (validateSumMinToMax && sumOfMinimum > element.properties.Maximum) {
-                error.push("Sum of Minimum of modifiers cannot be more than Maximum of link group:".concat(element.name, "."));
-            }
-            if (validateSumDefaultToMax && sumOfDefaults > element.properties.Maximum) {
-                error.push("Sum of Default Portions of modifiers cannot be more than Maximum of link group:".concat(element.name, "."));
-            }
-
         });
 
         if (error.length > 0) {
 
-            this.setState({ validationErrors: error })
+            this.setState({ validationErrors: error, message:"" })
             return false;
         }
 
         return true;
+
     }
 
     loadData(isSavingData: Boolean) {
@@ -185,9 +202,9 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
         var pathArray = window.parent.location.href.split('/');
         pathArray = pathArray.reverse();
         // calling the API to get the required information
-      
+
         let url = urlStart + "/" + parseInt(pathArray[1]) + "/GetKitProperties/" + parseInt(pathArray[0]);
-     
+
         axios.get(url, {})
             .then(response => {
                 let kitLinkGroupsDetail = response.data;
@@ -221,10 +238,12 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
                             linkGroupItem.properties = newLinkGroupItemProps
                             linkGroupItem.excluded = false
                             linkGroupItem.isDisabled = disableControls
+                            linkGroupItem.isExcludeDisabled = disableControls
                             linkGroupItem.displaySequence = 0 // default display sequence
                         }
                         else {
-                            linkGroupItem.isDisabled = disableControls;
+                            linkGroupItem.isDisabled = disableControls || linkGroupItem.excluded;
+                            linkGroupItem.isExcludeDisabled = disableControls;
                             linkGroupItem.properties = JSON.parse(linkGroupItem.properties)
                         }
                     })
@@ -234,7 +253,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
                     if (isSavingData) {
                         this.setState({
                             error: null, message: "Data Saved Succesfully.", disableSaveButton: false,
-                             validationErrors: []
+                            validationErrors: []
                         })
                     }
                 })
@@ -361,7 +380,7 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
                             </form>
                             <div className="row">{/* Save and Publish buttons  */}
                                 <div className="col-lg-2 col-md-2 col-sm-2"></div>
-                                <button className="col-lg-2 col-md-2 col-sm-2 btn btn-primary" type="button" onClick={this.handleSaveButton}> Publish </button>
+                                <div className="col-lg-2 col-md-2 col-sm-2"></div>
                                 <div className="col-lg-4 col-md-4 col-sm-4"></div>
                                 <button disabled={this.state.disableSaveButton} className="col-lg-2 col-md-2 col-sm-2 btn btn-success" type="button" onClick={this.handleSaveButton}> Save Changes </button>
                                 <div className="col-lg-2 col-md-2 col-sm-2"></div>
