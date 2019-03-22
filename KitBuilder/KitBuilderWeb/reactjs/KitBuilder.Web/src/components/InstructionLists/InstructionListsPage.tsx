@@ -238,11 +238,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     })
                })
                .catch((error) => {
-                    console.log(error.response.data);
-                    this.setState({
-                         error: error.response.data,
-                         message: null,
-                    })
+                    this.props.showAlert(JSON.stringify(error.response.data), "error");
                });
      }
 
@@ -311,15 +307,10 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                .catch((error) => {
                     console.log(error);
                     if (error.response.status === 409) {
-                         this.setState({
-                              error: "Instruction List is in use.",  message: null
-                         })
+                         this.props.showAlert("Instruction List is in use.", "error");
                      }
                     else{
-                         this.setState({
-                              error: "Error in Deleting Instruction List.",
-                              message: null
-                         })
+                         this.props.showAlert("Error in Deleting Instruction List.", "error");
                     }
                    
                })
@@ -369,10 +360,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          dataInsert.push(data[i]);
                     }
                     else {
-                         this.setState({
-                              message: null,
-                              error: error,
-                         });
+                         this.props.showAlert(error, "error");
                          return;
                     }
 
@@ -381,14 +369,10 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     error = this.validateData(data[i]);
                     if (error == "") {
                          dataUpdate.push(data[i]);
-
                     }
                     else {
                          {
-                              this.setState({
-                                   message: null,
-                                   error: error,
-                              })
+                              this.props.showAlert(error, "error");
                               return ;
                          }
 
@@ -539,10 +523,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
                })
                .catch((error) => {
-                    this.setState({
-                         error: error.response.data,
-                         message: null,
-                    })
+                    this.props.showAlert(JSON.stringify(error.response.data), "error")
                     return;
                });
 

@@ -236,7 +236,7 @@ class CreateKitPage extends React.PureComponent<
 
   handleKitTypeChange = (kitType: number) => {
     //remove link groups if they select a simple item kit
-    if (kitType === 0) this.setState({ kitType, LinkGroups: [] });
+    if (kitType === 1) this.setState({ kitType, LinkGroups: [] });
     else this.setState({ kitType });
   };
 
