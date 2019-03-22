@@ -49,6 +49,5 @@
     [AltRetailUOM]               NVARCHAR(25)   NULL,
     [IrmaItemKey]                INT		    NULL,
     [DefaultScanCode]            BIT		    NULL,
-    [ExtraText]			 NVARCHAR(MAX)  NULL,
 );
 go

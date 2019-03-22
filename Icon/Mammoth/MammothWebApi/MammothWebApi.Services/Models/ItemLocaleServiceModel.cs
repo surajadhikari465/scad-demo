@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace MammothWebApi.Service.Models
 {
@@ -87,5 +88,7 @@ namespace MammothWebApi.Service.Models
         /// Extended Property
         /// </summary>
         public string ScaleExtraText { get; set; }
+
+				public bool IsNonRetailItem { get { return Regex.IsMatch(ScanCode, @"^[46|48]\d{1,12}$"); }}
     }
 }

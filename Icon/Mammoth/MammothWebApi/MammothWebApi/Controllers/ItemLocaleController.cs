@@ -1,7 +1,6 @@
 ﻿using Mammoth.Common;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Logging;
-using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Queries;
 using MammothWebApi.Extensions;
 using MammothWebApi.Models;
@@ -22,6 +21,7 @@ namespace MammothWebApi.Controllers
         private IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler;
         private IUpdateService<DeauthorizeItemLocale> deauthorizeItemLocaleService;
         private ILogger logger;
+				const string INVALID_INPUT = "The object passed is either null or does not contain any rows.";
 
         public ItemLocaleController(IUpdateService<AddUpdateItemLocale> itemLocaleService,
             IQueryHandler<GetAllBusinessUnitsQuery, List<int>> getAllBusinessUnitsQueryHandler,
@@ -40,8 +40,8 @@ namespace MammothWebApi.Controllers
         {
             if (itemLocales == null || itemLocales.Count == 0)
             {
-                logger.Warn("The object passed is either null or does not contain any rows.");
-                return BadRequest("The object sent is either null or does not contain any rows.");
+                logger.Warn(INVALID_INPUT);
+                return BadRequest(INVALID_INPUT);
             }
 
             try
@@ -76,8 +76,8 @@ namespace MammothWebApi.Controllers
         {
             if (itemLocales == null || itemLocales.Count == 0)
             {
-                logger.Warn("The object passed is either null or does not contain any rows.");
-                return BadRequest("The object sent is either null or does not contain any rows.");
+                logger.Warn(INVALID_INPUT);
+                return BadRequest(INVALID_INPUT);
             }
 
             try
