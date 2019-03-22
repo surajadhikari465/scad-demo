@@ -56,10 +56,10 @@ namespace AmazonLoad.IconItemLocale.Tests
             Assert.AreEqual(testItemLocale.LinkedItemId, siAttribs.links[0].parentId);
             Assert.AreEqual(testItemLocale.ItemId, siAttribs.links[0].childId);
 
-            Assert.AreEqual(1, siAttribs.groups.Length);
-            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, siAttribs.groups[0].Action);
-            Assert.AreEqual($"{testItemLocale.LinkedItemId}_{testItemLocale.ItemId}", siAttribs.groups[0].id);
-            Assert.AreEqual("Deposit", siAttribs.groups[0].description);
+            Assert.AreEqual(1, siAttribs.groups.group.Length);
+            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, siAttribs.groups.group[0].Action);
+            Assert.AreEqual($"{testItemLocale.LinkedItemId}_{testItemLocale.ItemId}", siAttribs.groups.group[0].id);
+            Assert.AreEqual("Deposit", siAttribs.groups.group[0].description);
         }
 
         [TestMethod]

@@ -395,8 +395,8 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
             int linkedItemId = linkedItem.itemID;
 
-            Assert.AreEqual(1, itemAttributes.groups.Length);
-            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
+            Assert.AreEqual(1, itemAttributes.groups.group.Length);
+            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
         }
 
         [TestMethod]
@@ -429,9 +429,9 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(1, itemAttributes.groups.Length);
-            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Deposit.ToString(), itemAttributes.groups[0].description);
+            Assert.AreEqual(1, itemAttributes.groups.group.Length);
+            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Deposit.ToString(), itemAttributes.groups.group[0].description);
         }
 
         [TestMethod]
@@ -464,9 +464,9 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(1, itemAttributes.groups.Length);
-            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups[0].description);
+            Assert.AreEqual(1, itemAttributes.groups.group.Length);
+            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
         }
 
         [TestMethod]
@@ -592,16 +592,16 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[1].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[1].parentIdSpecified);
 
-            Assert.AreEqual(2, itemAttributes.groups.Length);
-            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups[0].description);
-            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, itemAttributes.groups[0].Action);
-            Assert.IsTrue(itemAttributes.groups[0].ActionSpecified);
+            Assert.AreEqual(2, itemAttributes.groups.group.Length);
+            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
+            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, itemAttributes.groups.group[0].Action);
+            Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
 
-            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[1].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups[1].description);
-            Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups[1].Action);
-            Assert.IsTrue(itemAttributes.groups[1].ActionSpecified);
+            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[1].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[1].description);
+            Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[1].Action);
+            Assert.IsTrue(itemAttributes.groups.group[1].ActionSpecified);
         }
 
         [TestMethod]
@@ -658,11 +658,11 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(1, itemAttributes.groups.Length);
-            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups[0].description);
-            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, itemAttributes.groups[0].Action);
-            Assert.IsTrue(itemAttributes.groups[0].ActionSpecified);
+            Assert.AreEqual(1, itemAttributes.groups.group.Length);
+            Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
+            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, itemAttributes.groups.group[0].Action);
+            Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
         }
 
         [TestMethod]
@@ -696,10 +696,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups[0].id);
-            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups[0].description);
-            Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups[0].Action);
-            Assert.IsTrue(itemAttributes.groups[0].ActionSpecified);
+            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
+            Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[0].Action);
+            Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
         }
 
         [TestMethod]

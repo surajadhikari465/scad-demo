@@ -365,7 +365,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             if (!string.IsNullOrEmpty(message.LinkedItemScanCode) || !string.IsNullOrEmpty(message.PreviousLinkedItemScanCode))
             {
                 var links = new List<Contracts.LinkTypeType>();
-                var groups = new List<Contracts.GroupTypeType>();
+                var groups = new List<Contracts.ItemGroupTypeType>();
 
                 if (!string.IsNullOrEmpty(message.LinkedItemScanCode))
                 {
@@ -378,11 +378,11 @@ namespace Icon.ApiController.Controller.QueueReaders
                 }
 
                 (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).links = links.Any() ? links.ToArray() : null;
-                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups = groups.Any() ? groups.ToArray() : null;
+                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups.group = groups.Any() ? groups.ToArray() : null;
             }
         }
 
-        private void AddLinkedItem(MessageQueueItemLocale message, string linkedItemScanCode, List<Contracts.LinkTypeType> links, List<Contracts.GroupTypeType> groups, Contracts.ActionEnum action)
+        private void AddLinkedItem(MessageQueueItemLocale message, string linkedItemScanCode, List<Contracts.LinkTypeType> links, List<Contracts.ItemGroupTypeType> groups, Contracts.ActionEnum action)
         {
             Item linkedItem;
             if (!Cache.scanCodeToItem.TryGetValue(linkedItemScanCode, out linkedItem))
@@ -416,7 +416,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                             parentId = linkedItem.itemID,
                             childId = message.ItemId
                         });
-            groups.Add(new Contracts.GroupTypeType
+            groups.Add(new Contracts.ItemGroupTypeType
                         {
                             ActionSpecified = true,
                             Action = action,

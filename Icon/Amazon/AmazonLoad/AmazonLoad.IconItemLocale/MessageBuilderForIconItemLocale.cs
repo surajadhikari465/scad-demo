@@ -163,18 +163,18 @@ namespace AmazonLoad.IconItemLocale
             if (itemLocaleModel.LinkedItemId != null)
             {
                 var links = new List<Contracts.LinkTypeType>();
-                var groups = new List<Contracts.GroupTypeType>();
+                var groups = new List<Contracts.ItemGroupTypeType>();
 
                 AddLinkedItem(itemLocaleModel, links, groups, Contracts.ActionEnum.AddOrUpdate);
                 
                 (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).links = links.Any() ? links.ToArray() : null;
-                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups = groups.Any() ? groups.ToArray() : null;
+                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups.group = groups.Any() ? groups.ToArray() : null;
             }
         }
 
         private static void AddLinkedItem(ItemLocaleModelForWormhole itemLocaleModel,
             List<Contracts.LinkTypeType> links,
-            List<Contracts.GroupTypeType> groups,
+            List<Contracts.ItemGroupTypeType> groups,
             ActionEnum action)
         {
             if (itemLocaleModel.LinkedItemId != null)
@@ -201,7 +201,7 @@ namespace AmazonLoad.IconItemLocale
                     parentId = itemLocaleModel.LinkedItemId.GetValueOrDefault(),
                     childId = itemLocaleModel.ItemId
                 });
-                groups.Add(new Contracts.GroupTypeType
+                groups.Add(new Contracts.ItemGroupTypeType
                 {
                     ActionSpecified = true,
                     Action = action,
