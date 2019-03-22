@@ -17,7 +17,7 @@ function SelectKitDisplay(props: any) {
             columns={[
                 {
                     Header: "Kit Id",
-                    accessor: "KitId",
+                    accessor: "kitId",
                     show: false
                 },
                 {
@@ -28,7 +28,7 @@ function SelectKitDisplay(props: any) {
                            Kit Description
                           </div>
                     ),
-                    accessor: "Description",
+                    accessor: "description",
                     Cell: row => (
                         <div style={{ textAlign: "center" }}>{row.value}</div>
                       )
@@ -37,7 +37,7 @@ function SelectKitDisplay(props: any) {
                     Header: () => (
                         <div style={{ textAlign: "center" }}>Main Item Scan Code</div>
                       ),
-                    accessor: "Item.scanCode",
+                    accessor: "item.scanCode",
                     Cell: row => (
                         <div style={{ textAlign: "center" }}>{row.value}</div>
                       )

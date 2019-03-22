@@ -11,7 +11,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header/header';
 import CreateKitPage from './Kits/CreateKitPage';
 import withSnackbar from './PageStyle/withSnackbar';
-import {ViewKit} from './Kits/ViewKits/ViewKit';
+import ViewKit from './Kits/ViewKits/ViewKit';
 
 const theme = createMuiTheme({
   palette: {

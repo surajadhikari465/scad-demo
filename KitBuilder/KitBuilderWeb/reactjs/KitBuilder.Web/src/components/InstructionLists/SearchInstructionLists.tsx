@@ -63,9 +63,9 @@ function SearchInstructionLists(props: any) {
                         </Grid>
                     </Grid>
                 </Grid>
-                {props.value && <Grid item xs={12} sm={9} md={3} lg={3}>
-                   {props.type} Instruction
-                </Grid>}
+                {props.value ? <Grid item xs={12} sm={9} md={3} lg={3}>
+                   {props.type} Instruction 
+                </Grid>: null}
                 <Grid item xs={12} sm={9} md={3} lg={3}>
                     <Button variant="outlined" color="primary" className={props.classes.button} onClick={props.onAddNewList} >
                         Create Instruction

@@ -3,8 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import ViewKitSearch from './ViewKitSearch';
 import { KbApiMethod } from '../../helpers/kbapi'
 import { Grid } from '@material-ui/core';
-const hStyle = { color: 'red' };
-const successStyle = { color: 'blue' };
 import axios from 'axios';
 import KitResults from './KitResults'
 import KitSearchDialog from './SelectKit/KitSearchDialog'
@@ -14,6 +12,7 @@ import { isNumber } from '../../KitLinkGroups/ValidateFunctions';
 import './style.css';
 import PageStyle from './PageStyle';
 import PageTitle from '../../PageTitle';
+import withSnackbar from 'src/components/PageStyle/withSnackbar';
 
 
 const styles = (theme: any) => ({
@@ -41,8 +40,6 @@ const styles = (theme: any) => ({
 });
 
 interface IViewKitPageState {
-    error: string,
-    message: string,
     open: boolean,
     regions: Array<any>,
     metros: Array<any>,
@@ -63,17 +60,15 @@ interface IViewKitPageState {
 }
 
 interface IViewKitPageProps {
-
+    showAlert: any,
 }
 
 export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageState>
 {
-    constructor(props: any) {
+    constructor(props: IViewKitPageProps) {
         super(props);
 
         this.state = {
-            error: "",
-            message: "",
             open: false,
             regions: [],
             metros: [],
@@ -115,37 +110,28 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                 {
                     headers: headers
                 }).then(response => {
-
-                    this.setState({
-                        error: "", message: "Data saved successfully."
-                    })
-
+                    this.props.showAlert("Data saved successfully.", "success");
                 }).catch(error => {
-                    this.setState({
-                        error: "Error in saving data.", message: ""
-                    })
+                    this.props.showAlert("Error in saving data.","error");
                 });
         }
         else {
-            this.setState({
-                error: "Maximum Calories must be numeric.", message: ""
-            });
+            this.props.showAlert("Maximum Calories must be numeric.","error");
         }
     }
     onkitSelected(row: any) {
-
-        this.setState({ selectedKitId: row.KitId, kitsViewData: {}},()=>
-            {
-                this.setState({maximumCalories:"0", price:'', minimumCalories:""})
-            });
-        this.setState({ selectedKitDescription: row.Description, disableSaveButton: true, open: false });
+        this.setState({ 
+            selectedKitId: row.kitId, 
+            kitsViewData: {}, 
+            selectedKitDescription: row.description, 
+            disableSaveButton: true, 
+            open: false, 
+            maximumCalories:"0", 
+            price:'', 
+            minimumCalories:""})
     }
 
     showPopUp() {
-        this.setState({
-            error: "", message: ""
-        });
-
         this.setState({ open: true });
     }
 
@@ -159,8 +145,6 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
     onRegionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             regionValue: event.target.value,
-            error: "",
-            message: "",
             disableSaveButton: true,
             kitsViewData: {}
         }, this.populateMetros);
@@ -169,8 +153,6 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
     onMetroChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             metroValue: event.target.value,
-            error: "",
-            message: "",
             disableSaveButton: true,
             kitsViewData: {}
         }, this.populateStores);
@@ -179,8 +161,6 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
     onStoreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             storeValue: event.target.value,
-            error: "",
-            message: "",
             kitsViewData: {},
             disableSaveButton: true
         });
@@ -203,9 +183,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                 }))
             .catch(error => {
                 console.log(error);
-                this.setState({
-                    error: "Error loading Regions."
-                });
+                this.props.showAlert("Error loading Regions.", "error");
             })
         this.setState({ regionValue: "", metros: [], metroValue: "", stores: [], storeValue: "" })
     }
@@ -224,10 +202,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                     metros: data
                 }))
             .catch(error => {
-                console.log(error);
-                this.setState({
-                    error: "Error loading Metros."
-                });
+                this.props.showAlert("Error loading Metros.","error");
             })
         this.setState({ metroValue: "", stores: [], storeValue: "" })
     }
@@ -245,10 +220,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                     stores: data
                 }))
             .catch(error => {
-                console.log(error);
-                this.setState({
-                    error: "Error loading Stores."
-                });
+                this.props.showAlert("Error loading Stores.");
             })
         this.setState({ storeValue: "" })
     }
@@ -258,19 +230,13 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
 
         let selectedKitId = this.state.selectedKitId;
         let selectedStoreId = this.state.storeValue;
-        if (selectedKitId == 0) {
-
-            this.setState({
-                error: "Please select kit.", message: ""
-            });
+        if (selectedKitId === 0) {
+            this.props.showAlert("Please select kit.");
             this.setState({ disableViewKitButton: false })
             return;
         }
-        if (selectedStoreId == "") {
-
-            this.setState({
-                error: "Please select store.", message: ""
-            });
+        if (selectedStoreId === "") {
+            this.props.showAlert("Please select store.");
             this.setState({ disableViewKitButton: false })
             return;
         }
@@ -283,21 +249,23 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
             }).then((data) => {
 
                 if (typeof (data) == undefined || data == null || data.length == 0) {
+                    this.props.showAlert("No data found.");
                     this.setState({
-                        error: "No data found.", message: "", showDisplay: true, kitsViewData: {}
+                        showDisplay: true, kitsViewData: {}
                     });
 
                 }
 
-                else if (data.errorMessage != "") {
+                else if (data.errorMessage) {
+                    this.props.showAlert(data.errorMessage, "error")
                     this.setState({
-                        error: data.errorMessage, message: "", showDisplay: true, kitsViewData: {}
+                        showDisplay: true, kitsViewData: {}
                     });
                 }
 
                 else {
                     this.setState({
-                        error: "", message: "", kitsViewData: data, showDisplay: true,
+                        kitsViewData: data, showDisplay: true,
                         maximumCalories: data.maximumCalories, disableSaveButton: false,
                         price:data.kitPrice, minimumCalories:data.minimumCalories
                     });
@@ -305,10 +273,8 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                 this.setState({ disableViewKitButton: false })
             })
             .catch((error) => {
-                console.log(error.response.data);
+                this.props.showAlert(error.response.data, "error");
                 this.setState({
-                    error: error.response.data,
-                    message: "",
                     disableViewKitButton: false
                 })
             });
@@ -319,19 +285,6 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
         return (
 
             <React.Fragment>
-                <Grid container justify="center">
-                    <Grid container justify="center">
-                        <div className="error-message" >
-
-                            <span style={hStyle}> {this.state.error}</span>
-                        </div>
-                    </Grid>
-                    <Grid container justify="center">
-                        <div className="Success-message" >
-                            <span style={successStyle}> {this.state.message}</span>
-                        </div>
-                    </Grid>
-                </Grid>
                 <PageStyle>
                     <PageTitle icon="format_list_bulleted">View Kit By Store</PageTitle>
                     <div className="search-container">
@@ -381,4 +334,4 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
     }
 }
 
-export default withStyles(styles, { withTheme: true })(ViewKit);
+export default withStyles(styles, { withTheme: true })(withSnackbar(ViewKit));

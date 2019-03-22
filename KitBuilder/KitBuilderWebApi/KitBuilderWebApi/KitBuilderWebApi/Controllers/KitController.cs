@@ -325,7 +325,7 @@ namespace KitBuilderWebApi.Controllers
                 return kitRepository.GetAll().Where(kit => kit.KitId == kitId);
             }
         }
-        [HttpGet("{kitId}/{loadChildObjects}", Name = "GetKitByKitId")]
+        [HttpGet("{kitId}/{loadChildObjects?}", Name = "GetKitByKitId")]
         public IActionResult GetKitbyKitId(int kitId, bool loadChildObjects = false)
         {
 
