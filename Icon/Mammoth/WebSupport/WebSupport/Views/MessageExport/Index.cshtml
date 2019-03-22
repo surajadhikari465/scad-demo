@@ -52,34 +52,43 @@
     <br />
     <br />
     <hr style="color:red" />
-    <div class="form-group">
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray">
-        @Html.LabelFor(x => x.KeyID, new { @class = "control-label" })
-      </div>
+	<div class="form-group">
+		<div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray">
+			@Html.LabelFor(x => x.KeyID, new { @class = "control-label" })
+		</div>
 
-      <div class="col-sm-2">
-        @Html.TextBoxFor(model => Model.KeyID, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.KeyID, "", new { @class = "text-danger" })
-      </div>
+		<div class="col-sm-2">
+			@Html.TextBoxFor(model => Model.KeyID, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.KeyID, "", new { @class = "text-danger" })
+		</div>
 
-      <div class="col-sm-3" style="font-size:small; color:gray; width:90px;">
-        @Html.LabelFor(x => x.ReceivedDate, new { @class = "control-label" })
-      </div>
+		<div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray">
+			@Html.LabelFor(x => x.SecondaryKeyID, new { @class = "control-label" })
+		</div>
 
-      <div class="input-group bootstrap-datetimepicker-widget">
-        <div class="input-group date" id="dtpDateTime" style="width:150px">
-          @Html.TextBoxFor(model => Model.ReceivedDate, new { @class = "form-control" })
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-th"></span>
-          </span>
-        </div>
+		<div class="col-sm-2">
+			@Html.TextBoxFor(model => Model.SecondaryKeyID, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.SecondaryKeyID, "", new { @class = "text-danger" })
+		</div>
 
-        <script type="text/javascript">
-          //$.fn.datepicker.defaults.autoclose = true;
-          $(function () { $('#dtpDateTime').datetimepicker({ format: 'MM/DD/YYYY' }); });
-        </script>
-      </div>
-    </div>
+		<div class="col-sm-3" style="font-size:small; color:gray; width:90px;">
+			@Html.LabelFor(x => x.ReceivedDate, new { @class = "control-label" })
+		</div>
+
+		<div class="input-group bootstrap-datetimepicker-widget">
+			<div class="input-group date" id="dtpDateTime" style="width:150px">
+				@Html.TextBoxFor(model => Model.ReceivedDate, new { @class = "form-control" })
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-th"></span>
+				</span>
+			</div>
+
+			<script type="text/javascript">
+				//$.fn.datepicker.defaults.autoclose = true;
+				$(function () { $('#dtpDateTime').datetimepicker({ format: 'MM/DD/YYYY' }); });
+			</script>
+		</div>
+	</div>
 
     <br />
     <br />
@@ -119,7 +128,7 @@
             {
               <tr>
                 <td align="left" style="padding-left:5px">
-                  <input type="checkbox" name="cbIsSelected" value="@row["QueueID"]" onclick="" />
+                  <input type="checkbox" name="cbIsSelected" value="@row["ArchiveID"]" onclick="" />
                 </td>
 
                 @foreach(var val in row.ItemArray)

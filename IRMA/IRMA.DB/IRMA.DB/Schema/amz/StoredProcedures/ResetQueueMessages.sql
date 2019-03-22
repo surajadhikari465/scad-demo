@@ -1,11 +1,12 @@
 ﻿--Used by Mammoth/WebSupport
-CREATE PROCEDURE amz.ResetQueueMessages
+CREATE PROCEDURE [amz].[ResetQueueMessages]
   @action NVARCHAR(25),
   @queue NVARCHAR(25),
   @maxRecords int = 10000,
-	@userName NVARCHAR(200) = NULL,
+  @userName NVARCHAR(200) = NULL,
   @status NVARCHAR(1) = NULL,
   @keyID INT = NULL,
+  @secondaryKeyID INT = NULL, 
   @insertDate DATE = NULL,
   @IDs dbo.IntType READONLY
 AS
@@ -18,42 +19,33 @@ BEGIN
     BEGIN
       IF(@queue = 'Archive')
        BEGIN
-         IF(@keyID IS NOT NULL)
-           SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
-                CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status,
-                CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
-           FROM amz.MessageArchive A
-           INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
-           WHERE A.KeyID = @keyID AND CAST(A.InsertDate AS DATE) = IsNull(@insertDate, CAST(A.InsertDate AS DATE))
-         ELSE
-           SELECT TOP(@maxRecords) MessageArchiveID QueueID,  B.EventTypeDescription [Event], KeyID,
-                  CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status,
-                  CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
-           FROM amz.MessageArchive A
-           INNER JOIN amz.EventType B on B.EventTypeCode = A.EventType
-           WHERE CAST(A.InsertDate AS DATE) = IsNull(@insertDate, CAST(A.InsertDate AS DATE)) AND
-                 ((Status = IsNull(@status, Status) AND Status <> 'F') OR
-                 (Status = IsNull(@status, Status) AND Status = 'F' AND IsNull(ProcessTimes, 0) >= 6))
+           SELECT TOP(@maxRecords) MessageArchiveID ArchiveID,  EventType [Event], KeyID, SecondaryKeyID,
+                CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status, 
+				CONVERT(VARCHAR, InsertDate, 120) Insert_Date, ResetBy Reset_By
+           FROM amz.MessageArchive
+          WHERE (@keyID IS NULL OR KeyID = @keyID) 
+		    AND CAST(InsertDate AS DATE) = IsNull(@insertDate, CAST(InsertDate AS DATE))
+			AND Status = IsNull(@status, Status)
        END
 
-      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt'))
+      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt', 'Transfer'))
        BEGIN
-         SET @sql = 'DECLARE @status NVARCHAR(1) = ' + CASE WHEN @status IS NULL THEN 'NULL' ELSE ('''' + @status + '''') END + ';
-                       SELECT TOP(' + CAST(@maxRecords as varchar(25)) + ') QueueID, B.EventTypeDescription [Event], KeyID,
-                              CASE Status WHEN ''F'' THEN ''Failed'' WHEN ''P'' THEN ''Processed'' ELSE ''Unprocessed'' END Status,
-                              CONVERT(VARCHAR, A.InsertDate, 120) Insert_Date, ResetBy Reset_By
-                       FROM amz.' + @queue + 'Queue A
-                       INNER JOIN amz.EventType B on B.EventTypeID = A.EventTypeID';
-
-
-         IF(@keyID IS NOT NULL)
-           SET @sql = @sql + ' WHERE A.KeyID = ' + cast(@keyID as nvarchar(20)); 
-         ELSE
-           SET @sql = @sql + ' WHERE ((Status = IsNull(@status, Status) AND Status <> ''F'') OR
-                                      (Status = IsNull(@status, Status) AND Status = ''F'' AND IsNull(ProcessTimes, 0) >= 6))';
-
-        IF(@insertDate IS NOT NULL) SET @sql = @sql + ' AND CAST(A.InsertDate AS DATE) = ''' +  cast(@insertdate as NVARCHAR(10)) + '''';
-        EXEC(@sql);
+         SELECT TOP(@maxRecords) MessageArchiveEventID ArchiveID, EventTypeCode [Event], KeyID, SecondaryKeyID, 
+              '' Status, CONVERT(VARCHAR, InsertDate, 120) Insert_Date, '' Reset_By
+           FROM amz.MessageArchiveEvent
+		  WHERE (@keyID IS NULL OR KeyID = @keyID)  
+			AND (@secondaryKeyID IS NULL OR SecondaryKeyID = @secondaryKeyID) 
+			AND (@insertdate IS NULL OR CAST(InsertDate AS DATE) = @insertdate)
+			AND EventTypeCode LIKE CASE @queue
+										WHEN 'Inventory'
+											THEN 'INV_%'
+										WHEN 'Order'
+											THEN 'PO_%'
+										WHEN 'Receipt'
+											THEN 'RCPT_%'
+										ELSE
+											'TSF_%'
+								    END
       END
 
       SET NOCOUNT OFF;
@@ -75,11 +67,26 @@ BEGIN
          INNER JOIN #tempIDs B ON B.ID = A.MessageArchiveID;
        END
 
-      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt'))
+      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt', 'Transfer'))
        BEGIN
-         SET @sql = 'UPDATE A SET ProcessTimes = 0, Status = ''U'', InProcessBy = NULL, ResetBy = ''' + @userName + '''
-                     FROM amz.' + @queue + 'Queue A
-                     INNER JOIN #tempIDs B ON B.ID = A.QueueID;';
+		 
+		 SELECT @sql = CASE @queue
+					WHEN 'Inventory'
+						THEN 'InventoryQueue '
+					WHEN 'Order'
+						THEN 'OrderQueue '
+					WHEN 'Receipt'
+						THEN 'ReceiptQueue '
+					ELSE
+						'TransferQueue '
+				END
+		 
+		 SET @sql = 'INSERT INTO amz.' + @sql +
+			' (EventTypeCode, MessageType, KeyID, SecondaryKeyID, InsertDate, MessageTimestampUtc) ' +
+					'SELECT EventTypeCode, MessageType, KeyID, SecondaryKeyID, InsertDate, MessageTimestampUtc
+					   FROM amz.MessageArchiveEvent A
+				 INNER JOIN #tempIDs B ON B.ID = A.MessageArchiveEventID'	
+		 
          EXEC(@sql);
       END
 
