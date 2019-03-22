@@ -484,7 +484,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                .catch((error) => {
                     console.log(error);
                     this.setState({
-                         error: "Error in Saving data."
+                         error: JSON.stringify(error.response.data),
                     })
 
                     this.setState({
@@ -559,7 +559,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
           }
-          axios.post(urlStart, JSON.stringify(newInstructionList),
+          axios.post(urlStart, newInstructionList,
                {
                     headers: headers
                }).then(response => {
@@ -582,7 +582,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                })
                .catch((error) => {
                     this.setState({
-                         error: error.response.data,
+                         error: JSON.stringify(error.response.data),
                          message: null,
                     })
                     return;
