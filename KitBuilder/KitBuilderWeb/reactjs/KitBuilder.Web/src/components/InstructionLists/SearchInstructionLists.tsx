@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import './style.css';
+import { InstructionList } from 'src/types/InstructionList';
 
 const styles = (theme: any) => ({
     root: {
@@ -29,9 +30,9 @@ const styles = (theme: any) => ({
     }
 });
 
-const getAllMenuItems = (options: Array<any>) => 
-    options.map((item: any) => 
-        <MenuItem key={item.InstructionListId} value={item.InstructionListId}> {item.Name} </MenuItem>
+const getAllMenuItems = (options: Array<InstructionList>) => 
+    options.map((item: InstructionList) => 
+        <MenuItem key={item.instructionListId} value={item.instructionListId}> {item.name} </MenuItem>
     );
 
 function SearchInstructionLists(props: any) {

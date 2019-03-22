@@ -54,7 +54,7 @@ namespace KitBuilderWebApi.Controllers
         {
             var regionsArray = parameters.Regions?.Split(",");
             // get superset of data.
-            var query = from lg in linkGroupRepository.GetAll() select lg;
+            var query = from lg in linkGroupRepository.GetAll().Include(x => x.LinkGroupItem) select lg;
 
             // filter based on parameters
             if (!string.IsNullOrEmpty(parameters.LinkGroupName))
@@ -126,6 +126,7 @@ namespace KitBuilderWebApi.Controllers
                     lg.LinkGroupId,
                     lg.GroupName,
                     lg.GroupDescription,
+                    LinkGroupItemDto = lg.LinkGroupItem,
                     Regions = regionData.FormattedRegions()
                 };
 

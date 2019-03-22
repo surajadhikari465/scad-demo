@@ -7,6 +7,13 @@ namespace KitBuilderWebApi.Helper
 {
     public static class IEnumerableExtensions
     {
+        public static string ToPascalCase(this string str)
+        {
+            if (str.Length > 1)
+                return str[0].ToString().ToLower() + str.Substring(1);
+            else
+                return str.ToLower();
+        }
         public static IEnumerable<ExpandoObject> ShapeData<TSource>(
             this IEnumerable<TSource> source,
             string fields)
@@ -79,7 +86,7 @@ namespace KitBuilderWebApi.Helper
                     var propertyValue = propertyInfo.GetValue(sourceObject);
 
                     // add the field to the ExpandoObject
-                    ((IDictionary<string, object>)dataShapedObject).Add(propertyInfo.Name, propertyValue);
+                    ((IDictionary<string, object>)dataShapedObject).Add(propertyInfo.Name.ToPascalCase(), propertyValue);
                 }
 
                 // add the ExpandoObject to the list

@@ -10,23 +10,26 @@ interface ISelectInstructionsProps {
 
 export const SelectInstructions = (props: ISelectInstructionsProps) => {
 
-    const [instructionLists, setInstructionLists ] = React.useState([]);
+    const [instructionLists, setInstructionLists ] = React.useState<Array<InstructionList>>([]);
 
     React.useEffect(() => {
         const url = KbApiMethod("InstructionList");
         fetch(url)
         .then(response => response.json())
-        .then((lists) => setInstructionLists(lists))
+        .then((lists: Array<InstructionList>) => lists.filter((list: InstructionList) => list.instructionTypeId === 1))
+        .then((lists: Array<InstructionList>) => setInstructionLists(lists))
     }, [])
     
     const getIsSelected = (instruction: InstructionList) => {
-        return props.selectedInstructionLists.includes(instruction);
+    const id = instruction.instructionListId;
+        return props.selectedInstructionLists.map(i => i.instructionListId).includes(id);
     }
 
     const handleSelectInstructions = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const lists = e.target.value;
-        // @ts-ignore Select component returns an array
-        props.onSelectInstructionList(lists);
+        // @ts-ignore
+        const selectedInstructionLists = instructionLists.filter(i => lists.includes(i.instructionListId));
+        props.onSelectInstructionList(selectedInstructionLists);
     }
 
     return (
@@ -35,19 +38,17 @@ export const SelectInstructions = (props: ISelectInstructionsProps) => {
           <Select
             multiple
             variant="outlined"
-            value={props.selectedInstructionLists}
+            value={props.selectedInstructionLists.map(i => i.instructionListId)}
             onChange={handleSelectInstructions}
             input={<Input id="select-multiple-checkbox" />}
-                // @ts-ignore TODO fix pascal json issue
-            renderValue={(selected: Array<InstructionList>) => selected.map(s => s.Name).join(', ')}
+            // @ts-ignore
+            renderValue={(selected: Array<InstructionList>) => instructionLists.filter(i => selected.includes(i.instructionListId)).map(s => s.name).join(', ')}
           >
             {instructionLists.map((instruction: InstructionList, index) => (
-                // @ts-ignore value can return object
-              <MenuItem key={instruction.InstructionListId} value={instruction}>
+              // @ts-ignore We can assign an object as a value here
+              <MenuItem key={instruction.instructionListId} value={instruction.instructionListId}>
                 <Checkbox checked={getIsSelected(instruction)} />
-                {/* 
-                // @ts-ignore TODO fix pascal json issue */}
-                <ListItemText primary={instruction.Name} />
+                <ListItemText primary={instruction.name} />
               </MenuItem>
             ))}
           </Select>

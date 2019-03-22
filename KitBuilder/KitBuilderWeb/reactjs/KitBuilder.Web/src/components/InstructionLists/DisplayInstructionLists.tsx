@@ -5,6 +5,7 @@ import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { isNumberError, isLettersNumbers } from '../EditableInput';
+import { InstructionList } from 'src/types/InstructionList';
 const marginBottom = { marginBottom: 20 };
 const styles = (theme: any) => ({
     deleteButton: {
@@ -23,7 +24,7 @@ const styles = (theme: any) => ({
 });
 
 interface DisplayInstructionListsProps {
-    data: Array<any>,
+    data: Array<InstructionList>,
     renderEditable: any,
     onMemberDelete: Function,
     instructionValue: string,

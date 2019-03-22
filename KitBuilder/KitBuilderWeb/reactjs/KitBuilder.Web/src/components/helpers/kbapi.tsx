@@ -12,7 +12,6 @@ const ApiMethods  = {
 }
 
 export function KbApiMethod(name: string) {
-    var method = ApiMethods[name];
-    console.log("KB API => "  + method);
+    var method = ApiMethods[name];;
     return process.env.REACT_APP_KB_API_URL +  method;
 }

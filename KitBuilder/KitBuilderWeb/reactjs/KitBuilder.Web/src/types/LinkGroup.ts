@@ -1,23 +1,23 @@
 export interface Item {
     itemId: number,
-    ScanCode: string,
-    ProductDesc: string,
-    BrandName: string,
+    scanCode: string,
+    productDesc: string,
+    brandName: string,
 }
 
-export interface LinkedGroupItem {
+export interface LinkGroupItem {
     linkGroupId: number,
     linkGroupItemId: number,
     item: Item,
     selected? : boolean,
 }
 
-export interface LinkedGroup {
+export interface LinkGroup {
     linkGroupId: number,
     groupName: string,
     groupDescription: string,
     itemScanCode: number | void,
     itemDescription: string | void,
     insertDateUtc: string,
-    linkGroupItemDto: Array<LinkedGroupItem>,
+    linkGroupItemDto: Array<LinkGroupItem>,
 }

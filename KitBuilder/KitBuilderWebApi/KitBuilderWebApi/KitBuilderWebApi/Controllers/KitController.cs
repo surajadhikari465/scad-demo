@@ -306,11 +306,30 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(kitProperties);
         }
-
-        [HttpGet("{kitId}", Name = "GetKitByKitId")]
-        public IActionResult GetKitbyKitId(int kitId)
+        private IEnumerable<Kit> GetKits(int kitId, bool loadChildObjects)
         {
-            var kit = kitRepository.GetAll().Where(k => k.KitId == kitId).FirstOrDefault();
+            if (loadChildObjects)
+            {
+                return kitRepository.UnitOfWork.Context.Kit.Where(k => k.KitId == kitId)
+                       .Include(k => k.KitInstructionList).ThenInclude(il => il.InstructionList)
+                       .Include(k => k.KitLinkGroup).ThenInclude(s => s.LinkGroup).ThenInclude(d => d.LinkGroupItem).ThenInclude(lg => lg.Item)
+                       .Include(k => k.Item)
+                       .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem)
+                       .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem).ThenInclude(kgi => kgi.KitLinkGroupItemLocale)
+                       .Include(k => k.KitLocale).ThenInclude(f => f.KitLinkGroupLocale)
+                       .Include(k => k.KitLocale);
+            }
+
+            else
+            {
+                return kitRepository.GetAll().Where(kit => kit.KitId == kitId);
+            }
+        }
+        [HttpGet("{kitId}/{loadChildObjects}", Name = "GetKitByKitId")]
+        public IActionResult GetKitbyKitId(int kitId, bool loadChildObjects = false)
+        {
+
+            var kit = GetKits(kitId, loadChildObjects);
             if (kit == null)
             {
                 logger.LogWarning("Kit does not exist.");
@@ -714,60 +733,59 @@ namespace KitBuilderWebApi.Controllers
                         kitInstructionListRepository.GetAll().Where(kil => kil.KitId == kit.KitId);
 
                     var newKitInstructionLists = from id in kitToSave.KitInstructionList
-                                                 .Where(i => !existingKitInstructionLists.Select(l => l.KitInstructionListId).Contains(i.KitInstructionListId))
+                                                 .Where(i => !existingKitInstructionLists.Select(l => l.InstructionListId).Contains(i.InstructionListId))
                                                  select new KitInstructionList()
                                                  {
                                                      InstructionListId = id.InstructionListId,
                                                      KitId = kitToSave.KitId
                                                  };
 
-                    var kitInstructionListsToRemove = existingKitInstructionLists.Where(i => !kitToSave.KitInstructionList.Select(l => l.KitInstructionListId).Contains(i.KitInstructionListId));
+                    var kitInstructionListsToRemove = existingKitInstructionLists.Where(i => !kitToSave.KitInstructionList.Select(l => l.InstructionListId).Contains(i.InstructionListId));
 
                     var existingKitLinkGroups =
                         kitLinkGroupRepository.GetAll().Where(klg => klg.KitId == kitToSave.KitId);
-                    var newKitLinkGroups = from lg in kitToSave.KitLinkGroup
-                                           .Where(lg => lg.KitLinkGroupId <= 0)
-                                           select new KitLinkGroup()
+
+                    var newKitLinkGroupsAndTheirNewItems = kitToSave.KitLinkGroup.Where(klg => !existingKitLinkGroups.Select(el => el.LinkGroupId).Contains(klg.LinkGroupId))
+                                           .Select(lg => new KitLinkGroup()
                                            {
                                                KitId = kitToSave.KitId,
                                                LinkGroupId = lg.LinkGroupId,
                                                KitLinkGroupItem = ConvertToLinkGroupItemList(kitToSave.KitLinkGroup.Where(l => l.LinkGroupId == lg.LinkGroupId).SelectMany(i => i.KitLinkGroupItem)),
                                                LastUpdatedDateUtc = DateTime.UtcNow,
                                                InsertDateUtc = DateTime.UtcNow
-                                           };
+                                           });
+
                     var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
-                    var existingKitLinkGroupItems = from klgi in kitLinkGroupItemRepository.GetAll()
-                                                    join klg in kitLinkGroupRepository.GetAll() on klgi.KitLinkGroupId equals klg.KitLinkGroupId
-                                                    where klg.KitId == kitToSave.KitId
-                                                    select klgi;
 
-
-                    var newKitLinkGroupItemDtos = kitToSave.KitLinkGroup.SelectMany(li => li.KitLinkGroupItem)
-                        .Where(li => li.KitLinkGroupItemId <= 0 && li.KitLinkGroupId > 0);
-
-                    List<KitLinkGroupItem> newKitLinkGroupItems = new List<KitLinkGroupItem>();
-                    foreach (KitLinkGroupItemDto newLinkGroupItemDto in newKitLinkGroupItemDtos)
+                    var kitLinkGroupItemsThatHaveExistingKitLinkGroupParent = kitToSave.KitLinkGroup.SelectMany(klg => klg.KitLinkGroupItem.Select(klgi => new KitLinkGroupItem()
                     {
-                        var linkGroupItem = Mapper.Map<KitLinkGroupItem>(newLinkGroupItemDto);
-                        linkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
-                        linkGroupItem.InsertDateUtc = DateTime.UtcNow;
+                        InsertDateUtc = DateTime.UtcNow,
+                        KitLinkGroup = existingKitLinkGroups.Where(eklg => eklg.LinkGroupId == klg.LinkGroupId).FirstOrDefault(),
+                        LinkGroupItemId = klgi.LinkGroupItemId,
+                    })).Where(klgi => klgi.KitLinkGroup != null)
+                    .Select(klgi =>
+                    {
+                        klgi.KitLinkGroupId = klgi.KitLinkGroup.KitLinkGroupId;
+                        return klgi;
+                    });
 
-                        newKitLinkGroupItems.Add(Mapper.Map<KitLinkGroupItem>(newLinkGroupItemDto));
-                    }
+                    var existingKitLinkGroupItems = kitLinkGroupItemRepository.GetAll().Include(klgi => klgi.KitLinkGroup).Where(klgi => klgi.KitLinkGroup.KitId == kitToSave.KitId);
+
+                    var newKitLinkGroupItemsThatHaveExistingParentKitLinkGroup = kitLinkGroupItemsThatHaveExistingKitLinkGroupParent
+                        .Where(klgi => !existingKitLinkGroupItems.Select(eklgi => eklgi.LinkGroupItemId).Contains(klgi.LinkGroupItemId));
 
                     var KitLinkGroupItemsToRemove = from e in existingKitLinkGroupItems
                                                     join i in kitToSave.KitLinkGroup.SelectMany(li => li.KitLinkGroupItem)
-                                                         on e.KitLinkGroupItemId equals i.KitLinkGroupItemId into ps
+                                                         on e.LinkGroupItemId equals i.LinkGroupItemId into ps
                                                     from sub in ps.DefaultIfEmpty()
                                                     where sub == null
-                                                    select new KitLinkGroupItem
-                                                    {
-                                                        KitLinkGroupItemId = e.KitLinkGroupItemId
-                                                    };
+                                                    select e;
 
-
+                    kit.KitType = kitToSave.KitType;
                     kit.Description = kitToSave.Description;
+                    kit.isDisplayMandatory = kitToSave.isDisplayMandatory;
+                    kit.showRecipe = kitToSave.showRecipe;
                     kit.ItemId = kitToSave.ItemId;
                     kit.LastUpdatedDateUtc = DateTime.UtcNow;
 
@@ -775,10 +793,10 @@ namespace KitBuilderWebApi.Controllers
                     kitRepository.UnitOfWork.Context.KitInstructionList.AddRange(newKitInstructionLists);
 
                     kitRepository.UnitOfWork.Context.KitLinkGroupItem.RemoveRange(KitLinkGroupItemsToRemove);
-                    kitRepository.UnitOfWork.Context.KitLinkGroupItem.AddRange(newKitLinkGroupItems);
+                    kitRepository.UnitOfWork.Context.KitLinkGroupItem.AddRange(newKitLinkGroupItemsThatHaveExistingParentKitLinkGroup);
 
                     kitRepository.UnitOfWork.Context.KitLinkGroup.RemoveRange(KitLinkGroupsToRemove);
-                    kitRepository.UnitOfWork.Context.KitLinkGroup.AddRange(newKitLinkGroups);
+                    kitRepository.UnitOfWork.Context.KitLinkGroup.AddRange(newKitLinkGroupsAndTheirNewItems);
                 }
                 kitRepository.UnitOfWork.Commit();
 

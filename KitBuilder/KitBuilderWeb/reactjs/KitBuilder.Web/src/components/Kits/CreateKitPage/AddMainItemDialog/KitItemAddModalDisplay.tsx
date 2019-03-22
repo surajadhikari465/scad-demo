@@ -17,19 +17,19 @@ function KitItemAddModalDisplay(props: any) {
             columns={[
                 {
                     Header: "Main Item Id",
-                    accessor: "ItemId",
+                    accessor: "itemId",
                     show: false
                 },
                 {
                     Header: "Main Item",
-                    accessor: "ProductDesc",
+                    accessor: "productDesc",
                     Cell: row => (
                         <div style={{ textAlign: "center" }}>{row.value}</div>
                       ),
                 },
                 {
                     Header: "Scan Code",
-                    accessor: "ScanCode",
+                    accessor: "scanCode",
                     Cell: row => (
                         <div style={{ textAlign: "center" }}>{row.value}</div>
                       ),

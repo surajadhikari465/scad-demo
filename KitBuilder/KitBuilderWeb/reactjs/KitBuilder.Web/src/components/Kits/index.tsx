@@ -129,8 +129,8 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
          window.location.hash = "#/kits/CreateKit";
     }
 
-    onEdit() {
-        window.location.hash = "#/EditKit";
+    onEdit(kitId: number) {
+        window.location.hash = "#/EditKit/" + kitId;
        }
 
     onSearch() {

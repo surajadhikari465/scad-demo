@@ -1,0 +1,11 @@
+.snackbar-error {
+    background-color: red !important;
+}
+
+.snackbar-success {
+    background-color: green !important;
+}
+
+.snackbar-display {
+    border-radius: 0px !important;
+}

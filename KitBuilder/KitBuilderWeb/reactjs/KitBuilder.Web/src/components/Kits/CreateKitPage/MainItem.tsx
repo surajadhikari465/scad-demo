@@ -9,10 +9,10 @@ export default function MainItemDisplay(props: {
   return (
     <Grid container justify="space-between" alignItems="center">
       <Grid item>
-        {props.item ? props.item.ProductDesc : null}
+        {props.item ? props.item.productDesc : null}
       </Grid>
       <Grid item>
-        <b>{props.item ? props.item.ScanCode : null}</b>
+        <b>{props.item ? props.item.scanCode : null}</b>
       </Grid>
       <Grid item>
         <Button

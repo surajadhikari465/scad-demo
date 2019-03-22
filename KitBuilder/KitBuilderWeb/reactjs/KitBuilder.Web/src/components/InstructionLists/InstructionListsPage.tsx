@@ -13,6 +13,8 @@ import PageStyle from './PageStyle';
 import PageTitle from '../PageTitle';
 import CreateEdiInstructionDialog from './CreateEditInstructionsDialog';
 import EditableContent from '../EditableInput';
+import { InstructionList } from 'src/types/InstructionList';
+import withSnackbar from '../PageStyle/withSnackbar';
 
 var urlStart = KbApiMethod("InstructionList");
 
@@ -21,7 +23,7 @@ interface IInstructionListsPageState {
      message: any
      isLoaded: boolean,
      instructionTypes: Array<any>,
-     selectedInstructionTypeIdvalue: string,
+     selectedInstructionTypeIdvalue: number,
      currentInstructionTypeValue: string,
      instructionListDto: Array<any>,
      instructionList: Array<any>,
@@ -35,9 +37,10 @@ interface IInstructionListsPageState {
 }
 
 interface IInstructionListsPageProps {
+     showAlert: any,
 }
 
-export class InstructionListsPage extends React.PureComponent<IInstructionListsPageProps, IInstructionListsPageState>
+class InstructionListsPage extends React.PureComponent<IInstructionListsPageProps, IInstructionListsPageState>
 {
      constructor(props: IInstructionListsPageProps) {
           super(props);
@@ -47,7 +50,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                message: null,
                isLoaded: false,
                instructionTypes: [],
-               selectedInstructionTypeIdvalue: "",
+               selectedInstructionTypeIdvalue: 0,
                currentInstructionTypeValue: "",
                instructionListDto: [],
                instructionList: [],
@@ -76,7 +79,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
 
      onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           this.setState({ 
-               selectedInstructionTypeIdvalue: event.target.value,
+               selectedInstructionTypeIdvalue: parseInt(event.target.value),
                error: null,
                message: null,
           }, this.onSearch);
@@ -123,16 +126,11 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     this.setInstructionListHack(data);
                })
                     .then(() => {
-                         this.setState({ message: "Instruction Member Deleted Sucessfully.",  error: null}, this.onSearch);
+                         this.props.showAlert("Instruction Member Deleted Successfully.");
+                         this.onSearch();
                     })
                     .catch((error) => {
-                         console.log("Error in deleting Instruction list member");
-                         this.setState({
-                              error: "Error in deleting Instruction List Member."
-                         })
-                         this.setState({
-                              message: null
-                         })
+                         this.props.showAlert("Error in deleting Instruction List Member.", "error");
                          return;
                     });
           }
@@ -171,9 +169,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     }))
                .catch(error => {
                     console.log(error);
-                    this.setState({
-                         error: "Error loading Instruction Lists."
-                    });
+                    this.props.showAlert("Error loading Instruction Lists.", "error");
                })
 
      }
@@ -187,45 +183,40 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          instructionListDto: data
                     }, () => { this.setControl(name) }))
                .catch(error => {
-                    console.log(error);
-                    this.setState({
-                         error: "Error refreshing Instruction Lists."
-                    });
+                         this.props.showAlert("Error refreshing Instruction Lists.","error");
                });
      }
 
-     setControl = (name: any) => {
-          var result = this.state.instructionListDto.find(obj => {
-               return obj.Name === name
+     setControl = (name: string) => {
+          var result = this.state.instructionListDto.find((obj:InstructionList) => {
+               return obj.name === name
           })
           if (typeof result === "undefined" || result == null) {
-               this.setState({ selectedInstructionTypeIdvalue: "" });
+               this.setState({ selectedInstructionTypeIdvalue: 0 });
                this.setState({ instructionTypeName: "" });
                this.setState({ instructionList: [] });
           }
           else {
                
-               this.setState({ selectedInstructionTypeIdvalue: result.InstructionListId }, () => { this.onSearch() });
+               this.setState({ selectedInstructionTypeIdvalue: result.instructionListId }, () => { this.onSearch() });
           }
 
 
      }
 
      onSearch = () => {
-          if (this.state.selectedInstructionTypeIdvalue == "") {
-               this.setState({
-                    error: "Please Select Instruction List Name.",
-                    message: null,
-               });
+          if (this.state.selectedInstructionTypeIdvalue === 0) {
+                    this.props.showAlert("Please Select Instruction List Name.")
                return;
           }
 
-          var result = this.state.instructionListDto.find(obj => {
-               return obj.InstructionListId === this.state.selectedInstructionTypeIdvalue
+          var result = this.state.instructionListDto.find((obj: InstructionList) => {
+               // @ts-ignore
+               return obj.instructionListId === this.state.selectedInstructionTypeIdvalue
           })
           this.setState({
-               currentInstructionTypeValue: result.Name,
-               instructionTypeName: result.InstructionTypeName,
+               currentInstructionTypeValue: result.name,
+               instructionTypeName: result.instructionTypeName,
                isLoaded: true,
           });
 
@@ -259,7 +250,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           let data = [...this.state.instructionList];
 
                data.push({
-                    instructionListId: "0", instructionListMemberId: "0", group: "", sequence: "", member: "", action: ""
+                    instructionListId: 0, instructionListMemberId: 0, group: "", sequence: "", member: "", action: ""
                });
 
           this.setInstructionListHack(data);
@@ -300,11 +291,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           }
           var urlParam = this.state.selectedInstructionTypeIdvalue;
 
-          if (this.state.selectedInstructionTypeIdvalue == "") {
-               this.setState({
-                    error: "Please Select Instruction List Name.",
-                    message: null,
-               })
+          if (this.state.selectedInstructionTypeIdvalue === 0) {
+                    this.props.showAlert("Please Select Instruction List Name.");
                return;
 
           }
@@ -313,10 +301,9 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
 
           axios.delete(urlDelete, { headers },
           ).then(() => {
+               this.props.showAlert("Instruction List Deleted Successfully.", "success");
                this.setState({
-                    message: "Instruction List Deleted Successfully.",
-                    error: null,
-                    selectedInstructionTypeIdvalue: "",
+                    selectedInstructionTypeIdvalue: 0,
                     currentInstructionTypeValue: "",
                     isLoaded: false,
                }, () => this.Refresh(this.state.currentInstructionTypeValue))
@@ -423,9 +410,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          headers: headers
                     })
                     .then(() => {
+                         this.props.showAlert("Instruction List Saved Successfully.", "success");
                          this.setState({
-                              message: "Instruction List Saved Sucessfully.",
-                              error: null,
                               isSaveDisabled: true,
                               isPublishDisabled: false,
                          })
@@ -433,12 +419,7 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                         
                     })
                     .catch((error) => {
-                         console.log(error);
-                         this.setState({
-                              error: "Error in Saving new Instruction List and members.",
-                              message: null,
-                         })
-
+                         this.props.showAlert("Error in Saving new Instruction List and members.", "error");
                          return;
                     })
           }
@@ -472,24 +453,10 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     this.Refresh(this.state.currentInstructionTypeValue)
                })
                .then(() => {
-                    this.setState({
-                         error: null
-                    })
-                    this.setState({
-                         message: "Instruction List  Saved Sucessfully.",
-                         isSaveDisabled: true,
-                         isPublishDisabled: false,
-                    })
+                    this.props.showAlert("Instruction List Saved Sucessfully.", "success");
                })
                .catch((error) => {
-                    console.log(error);
-                    this.setState({
-                         error: JSON.stringify(error.response.data),
-                    })
-
-                    this.setState({
-                         message: null
-                    })
+                    this.props.showAlert("Error in Saving data.", "error");
                     return;
                });
      }
@@ -502,20 +469,15 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                     headers: headers
                })
                .then(() => {
+                    this.props.showAlert("Instruction List Saved Successfully.", "success")
                     this.setState({
-                         message: "Instruction List Saved Sucessfully.",
-                         error: null,
                          isSaveDisabled: true,
                          isPublishDisabled: false,
                     })
                     this.saveInstructionName();
                })
                .catch((error) => {
-                    console.log(error);
-                    this.setState({
-                         error: "Error in Saving new Instruction List and members.",
-                         message: null,
-                    })
+                    this.props.showAlert("Error in Saving new Instruction List and members.", "error");
                })
           }
           else
@@ -525,7 +487,8 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
      }
      onPublishChanges = () => {
           // TODO: Add logic for publishing data
-          this.setState({ isPublishDisabled: true, message: 'List Published Successfully.' });
+          this.props.showAlert("List Published Successfully.", "success")
+          this.setState({ isPublishDisabled: true });
      }
 
      handleDialogClose = () => {
@@ -552,24 +515,19 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
 
           const newInstructionList = 
           {
-               Name: name,
-               InstructionTypeId: Number(type),
+               name,
+               instructionTypeId: Number(type),
           }
 
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
           }
-          axios.post(urlStart, newInstructionList,
+          axios.post(urlStart, JSON.stringify(newInstructionList),
                {
                     headers: headers
                }).then(response => {
                     if (response.status === 409) {
-                         this.setState({
-                              error: "Instruction List with this name alreadys exists."
-                         })
-                         this.setState({
-                              message: null
-                         })
+                         this.props.showAlert("Instruction List with this name alreadys exists.", "error");
                          return;
                     }
 
@@ -577,12 +535,12 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
                          message: null
                     })
 
-                    this.Refresh(newInstructionList.Name)
+                    this.Refresh(newInstructionList.name)
 
                })
                .catch((error) => {
                     this.setState({
-                         error: JSON.stringify(error.response.data),
+                         error: error.response.data,
                          message: null,
                     })
                     return;
@@ -667,4 +625,4 @@ export class InstructionListsPage extends React.PureComponent<IInstructionListsP
           );
      }
 }
-export default InstructionListsPage;
+export default withSnackbar(InstructionListsPage);

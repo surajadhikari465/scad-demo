@@ -8,6 +8,10 @@
     background-color: white !important;
 }
 
+.ReactTable .rt-tr.-odd {
+    background-color: #f8f9fa !important;
+}
+
 body {
-    background-color: #88BDBC !important;
+    background-color: #f5f9fc !important;
 }

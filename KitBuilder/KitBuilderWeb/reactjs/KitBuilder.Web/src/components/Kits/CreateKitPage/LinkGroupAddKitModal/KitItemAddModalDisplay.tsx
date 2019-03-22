@@ -3,7 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
-import { LinkedGroup } from "../../../../types/LinkGroup";
+import { LinkGroup } from "../../../../types/LinkGroup";
 
 const styles = (theme: any) => ({
   root: {
@@ -16,29 +16,28 @@ const styles = (theme: any) => ({
 });
 
 interface IDisplayProps {
-  searchResults: Array<LinkedGroup>;
+  searchResults: Array<LinkGroup>;
   onQueue: any;
   onDeQueue: any;
-  queuedLinkedGroups: Array<LinkedGroup>;
-  kitLinkGroup: Array<LinkedGroup>;
+  queuedLinkGroups: Array<LinkGroup>;
+  kitLinkGroup: Array<LinkGroup>;
   classes: any;
 }
 
 class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
-  isAlreadyQueued = (linkedGroup : LinkedGroup) => 
-    this.props.queuedLinkedGroups.some(
-      x => x.linkGroupId === linkedGroup.linkGroupId
+  isAlreadyQueued = (linkGroup : LinkGroup) => 
+    this.props.queuedLinkGroups.some(
+      x => x.linkGroupId === linkGroup.linkGroupId
     );
 
-  handleSelect = (linkedGroup: LinkedGroup) => {
-    if (!this.isAlreadyQueued(linkedGroup)) this.props.onQueue([linkedGroup]);
+  handleSelect = (linkGroup: LinkGroup) => {
+    if (!this.isAlreadyQueued(linkGroup)) this.props.onQueue([linkGroup]);
   };
 
-  isAlreadyAddedToKit = (linkedGroup: LinkedGroup) => {
+  isAlreadyAddedToKit = (linkGroup: LinkGroup) => {
     const r = this.props.kitLinkGroup.some(
-      lg => lg.linkGroupId === linkedGroup.linkGroupId
+      lg => lg.linkGroupId === linkGroup.linkGroupId
     );
-    console.log(r);
     return r;
   };
   render() {
@@ -84,7 +83,7 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
         />
 
         <ReactTable
-          data={this.props.queuedLinkedGroups}
+          data={this.props.queuedLinkGroups}
           columns={[
             {
               Header: "SelectedLinkGroupID",

@@ -7,7 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import { KbApiMethod } from 'src/components/helpers/kbapi';
-import { LinkedGroup } from 'src/types/LinkGroup';
+import { LinkGroup } from 'src/types/LinkGroup';
 const hStyle = { color: "red" };
 const successStyle = { color: "blue" };
 const ModalStyle = {
@@ -20,12 +20,12 @@ interface ILinkGroupKitAddModalProps {
   onAddToKit: any;
   onCancel: any;
   isOpen: boolean;
-  kitLinkGroup: Array<LinkedGroup>
+  kitLinkGroup: Array<LinkGroup>
 }
 
 interface ILinkGroupKitAddModalState {
-  searchResults: Array<LinkedGroup>;
-  queuedLinkedGroups: Array<LinkedGroup>;
+  searchResults: Array<LinkGroup>;
+  queuedLinkGroups: Array<LinkGroup>;
   error: string;
   message: string;
 }
@@ -38,7 +38,7 @@ class LinkgroupKitAddModal extends React.PureComponent<
     super(props);
     this.state = {
       searchResults: [],
-      queuedLinkedGroups: [],
+      queuedLinkGroups: [],
       error: "",
       message: ""
     };
@@ -47,7 +47,7 @@ class LinkgroupKitAddModal extends React.PureComponent<
   handleSearch = (name: string, plu: string) => {
     let searchBy, searchValue;
     if(name) {
-      searchBy = "LinkGroupDesc";
+      searchBy = "LinkGroupName";
       searchValue = name;
     } else if (plu) {
       searchBy = "ModifierPlu";
@@ -61,34 +61,35 @@ class LinkgroupKitAddModal extends React.PureComponent<
 
     fetch(url + queryString)
     .then(result => result.json())
+    .then(result => result.filter((lg: LinkGroup) => lg.linkGroupItemDto.length > 0))
     .then(result => {
       this.setState({searchResults: result});
     });
   };
 
-  handleQueue = (linkedGroupsToAdd: Array<any>) => {
-    const { queuedLinkedGroups } = this.state;
+  handleQueue = (linkGroupsToAdd: Array<any>) => {
+    const { queuedLinkGroups } = this.state;
     this.setState({
-      queuedLinkedGroups: [...queuedLinkedGroups, ...linkedGroupsToAdd]
+      queuedLinkGroups: [...queuedLinkGroups, ...linkGroupsToAdd]
     });
   };
 
-  handleDeQueue = (linkedGroupToRemove: LinkedGroup) => {
-    const { queuedLinkedGroups } = this.state;
-    const queuedToKeep = queuedLinkedGroups.filter(
-      group => group !== linkedGroupToRemove
+  handleDeQueue = (linkGroupToRemove: LinkGroup) => {
+    const { queuedLinkGroups } = this.state;
+    const queuedToKeep = queuedLinkGroups.filter(
+      group => group !== linkGroupToRemove
     );
-    this.setState({ queuedLinkedGroups: queuedToKeep });
+    this.setState({ queuedLinkGroups: queuedToKeep });
   };
 
   handleCancel = () => {
-    this.setState({ searchResults: [], queuedLinkedGroups: [] });
+    this.setState({ searchResults: [], queuedLinkGroups: [] });
     this.props.onCancel();
   };
 
   handleAdd = () => {
-      this.props.onAddToKit(this.state.queuedLinkedGroups);
-      this.setState({ searchResults: [], queuedLinkedGroups: [] });
+      this.props.onAddToKit(this.state.queuedLinkGroups);
+      this.setState({ searchResults: [], queuedLinkGroups: [] });
   }
 
   render() {
@@ -97,7 +98,7 @@ class LinkgroupKitAddModal extends React.PureComponent<
         <Dialog fullWidth={true} maxWidth="lg" open={this.props.isOpen}>
           <Grid container justify="center">
             <DialogTitle id="form-dialog-title">
-              Add Linked Group
+              Add Link Group
             </DialogTitle>
           </Grid>
           <DialogContent>
@@ -123,7 +124,7 @@ class LinkgroupKitAddModal extends React.PureComponent<
                     searchResults={this.state.searchResults}
                     onQueue={this.handleQueue}
                     onDeQueue={this.handleDeQueue}
-                    queuedLinkedGroups={this.state.queuedLinkedGroups}
+                    queuedLinkGroups={this.state.queuedLinkGroups}
                   />
                 </Grid>
                 <Grid container justify="flex-end">

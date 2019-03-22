@@ -100,7 +100,7 @@ export class KitLinkGroupItemProperties extends React.Component<any>
             2. Minimum
             3. Maximum
             4. Default Item
-            5. Mandatory Item
+            5. Mandatory Item 
             6. # of Free Portions
             7. Excluded
             */}

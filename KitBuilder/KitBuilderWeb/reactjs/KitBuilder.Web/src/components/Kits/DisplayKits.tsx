@@ -27,7 +27,7 @@ function DisplayKits(props: any) {
                 columns={[
                     {
                         Header: "Kit Id",
-                        accessor: "KitId",
+                        accessor: "kitId",
                         Cell: props.renderEditable,
                         show: false
                     },
@@ -35,7 +35,7 @@ function DisplayKits(props: any) {
                         Header: () => (
                             <div style={{ textAlign: "center" }}>Main Item</div>
                           ),
-                        accessor: "Item.productDesc",
+                        accessor: "item.productDesc",
                         Cell: row => (
                             <div style={{ textAlign: "center" }}>{row.value}</div>
                           )
@@ -49,7 +49,7 @@ function DisplayKits(props: any) {
                                Kit Description
                               </div>
                         ),
-                        accessor: "Description",
+                        accessor: "description",
                         Cell: row => (
                             <div style={{ textAlign: "center" }}>{row.value}</div>
                           )
@@ -60,7 +60,7 @@ function DisplayKits(props: any) {
                         id: "action",
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
-                                <Button color="primary" className={props.classes.editbutton} onClick={() => props.onEdit(row)}>
+                                <Button color="primary" className={props.classes.editbutton} onClick={() => props.onEdit(row.original.kitId)}>
                                     Edit
                     </Button>
                             </Grid>

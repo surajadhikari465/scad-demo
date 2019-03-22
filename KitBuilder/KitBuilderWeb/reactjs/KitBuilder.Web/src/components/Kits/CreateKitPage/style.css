@@ -1,5 +1,15 @@
-.stripped-table p:nth-child(even) {
-    background-color: #f2f2f2
+
+.striped-table .striped-table-row {
+  margin-left: -16px;
+  padding-left: 32px;
+  margin-right: -16px;
+  padding-right: 32px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.striped-table .striped-table-row:nth-child(even) {
+    background-color: #f2f2f2;
   }
 
 .stripped-table h6 {
@@ -24,7 +34,7 @@ padding: 0px !important;
 
 .create-kit-inner-row-container {
   min-height: 72px !important;
-  border-bottom: 2px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .linked-groups-table-placeholder {

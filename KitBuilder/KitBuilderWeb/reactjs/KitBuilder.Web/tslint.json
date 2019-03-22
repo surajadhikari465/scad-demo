@@ -1,5 +1,7 @@
 {
-  "extends": [],
+  "extends": [
+    "tslint-react-hooks"
+  ],
   "defaultSeverity": "warning",
   "member-access": [
     true,
