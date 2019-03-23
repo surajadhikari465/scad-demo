@@ -33,6 +33,8 @@ namespace KitBuilder.Esb.LocaleListener
             container.RegisterSingleton<IConnectionBuilder>(() => new ConnectionBuilder("KitBuilder"));
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
 
+            container.Register<IListenerApplication, KitBuilderLocaleListener>(Lifestyle.Singleton);
+
             container.RegisterDecorator<ICommandHandler<AddOrUpdateLocalesCommand>, DbProviderCommandHandlerDecorator<AddOrUpdateLocalesCommand>>(Lifestyle.Singleton);
 
             return container;

@@ -7,6 +7,7 @@ using Icon.Esb.Subscriber;
 using Icon.Logging;
 using KitBuilder.Esb.LocaleListener.Commands;
 using KitBuilder.Esb.LocaleListener.Models;
+using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,13 +47,17 @@ namespace KitBuilder.Esb.LocaleListener
 
             if (locales != null && locales.Any())
             {
+                locales.ForEach(l =>
+                {
+                    logger.Info($"Locale: {l.LocaleID}");
+                    logger.Debug($"{l.Dump()}");
+                }
+                );
+
                 try
                 {
-
-                    addOrUpdateLocalesCommandHandler.Execute(new AddOrUpdateLocalesCommand
-                        {
-                            Locales = locales
-                        });
+                    var addOrUpdateLocalesCommand = new AddOrUpdateLocalesCommand() { Locales = locales };
+                    addOrUpdateLocalesCommandHandler.Execute(addOrUpdateLocalesCommand);
                 }
                 catch (Exception ex)
                 {
