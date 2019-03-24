@@ -13,6 +13,7 @@ import { InstructionList } from "src/types/InstructionList";
 import { SelectInstructions } from "./SelectInstructions";
 import PageTitle from "src/components/PageTitle";
 import ConfirmSaveDialog from "./ConfirmSaveDialog";
+import { Link } from 'react-router-dom';
 
 interface ICreateKitPageState {
   addItemIsOpen: boolean;
@@ -426,6 +427,11 @@ class CreateKitPage extends React.PureComponent<
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
+                <Grid container justify="space-between">
+                <Grid item>
+                   {editMode && <Link to={"/AssignKits/" + this.state.kitId}><Button variant="outlined">Assign Kit</Button></Link> }
+                </Grid>
+                <Grid item>
                   <Grid container justify="flex-end">
                     <Grid item>
                       <Button
@@ -448,6 +454,8 @@ class CreateKitPage extends React.PureComponent<
                         {editMode ? "Save" : "Create"} Kit
                       </Button>
                     </Grid>
+                  </Grid>
+                  </Grid>
                   </Grid>
                 </Grid>
               </Grid>

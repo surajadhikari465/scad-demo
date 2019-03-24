@@ -8,17 +8,17 @@ const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
-var kitIdPassed = 1;
-var kitName = "";
 
 interface IAssignKitsToLocaleState {
      data: any,
      error: any,
      message: any,
-     kitId: number
+     kitId: number,
+     kitName: string,
 }
 
 interface IAssignKitsToLocaleProps {
+     match: any,
 }
 
 export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssignKitsToLocaleState>
@@ -30,7 +30,8 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                data: [],
                error: null,
                message: null,
-               kitId:0
+               kitId:0,
+               kitName: "",
           }
 
           this.updateData = this.updateData.bind(this);
@@ -40,13 +41,15 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
      componentDidMount() {
           var pathArray = window.location.href.split('/');
           pathArray = pathArray.reverse();
-          kitIdPassed = parseInt(pathArray[0]);
-         this.setState({kitId:kitIdPassed})
+          const kitIdPassed = parseInt(pathArray[0]);
+          this.setState({kitId:kitIdPassed}, () => {
           this.loadData();
-          this.loadKit(kitIdPassed);
+          this.loadKit();
+          });
      }
 
-     loadKit(kitId: number) {
+     loadKit() {
+          const { kitId } = this.state;
           let url = urlKit;
                    url = url + '/' + kitId;
           fetch(url)
@@ -63,7 +66,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                          })
                     }
                }).then(data => {
-                    kitName = data.description;
+                    if(data.length > 0) this.setState({kitName: data[0].description});
                }).catch((error) => {
                     this.setState({
                          error: "Error in Displaying Data."
@@ -76,9 +79,10 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
      }
 
      loadData() {
+          const { kitId } = this.state;
           let url = urlStart;
 
-          url = url + '/' + kitIdPassed;
+          url = url + '/' + kitId;
           fetch(url)
                .then(response => {
                     return response.json();
@@ -168,10 +172,10 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
      }
 
      saveData() {
-          var { data } = this.state;
+          var { data, kitId } = this.state;
           var dest: Array<any>;
           dest = [];
-          let urlKitSave = urlKit + "/" + kitIdPassed + "/" + "AssignUnassignLocations"
+          let urlKitSave = urlKit + "/" + kitId + "/" + "AssignUnassignLocations"
           this.putData(dest, data);
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
@@ -220,7 +224,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                               <span style={sucesssStyle}> {this.state.message}</span>
                          </div>
                     </Grid>
-                    <h3>Kit Name: {kitName}</h3>
+                    <h3>Kit Name: {this.state.kitName}</h3>
                     <Grid container justify="flex-end">
                          <Button variant="contained" color="primary" onClick={() => this.saveChanges()} >
                               Save Changes
