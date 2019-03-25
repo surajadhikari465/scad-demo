@@ -16,7 +16,7 @@ namespace KitBuilder.DataAccess.Dto
         [StringLength(100, ErrorMessage = "Group Name can have maximum length of 100.")]
         public string GroupName { get; set; }
         [Required]
-        [StringLength(500, ErrorMessage = "Group Description can have maximum length of 500.")]
+        [StringLength(20, ErrorMessage = "Group Description can have maximum length of 20.")]
         public string GroupDescription { get; set; }
         public string ItemScanCode { get; set; }
         public string ItemDescription { get; set; }
