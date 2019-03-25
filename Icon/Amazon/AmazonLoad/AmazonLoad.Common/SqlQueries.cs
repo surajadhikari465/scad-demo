@@ -6,28 +6,40 @@
         {
             get
             {
-                return @"declare @nationalHierarchyId int = (select hierarchyID from dbo.Hierarchy where hierarchyName = 'National');
-                    select {top query}
-		                h.hierarchyID as HierarchyId,
-		                h.hierarchyName as HierarchyName,
-		                hp.hierarchyLevelName as HierarchyLevelName,
-		                hp.itemsAttached as ItemsAttached,
-		                case
-			                when @HierarchyName = 'Financial' then substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
-			                else cast(hc.hierarchyClassID as nvarchar(32)) 
-		                end as HierarchyClassId,
-		                hc.hierarchyClassName as HierarchyClassName,		
-		                hc.hierarchyLevel as HierarchyLevel,
-		                hc.hierarchyParentClassID as HierarchyParentClassId,
-                    case when Isnull(hc.hierarchyID, 0) = @nationalHierarchyId then D.traitValue else null end NationalClassCode
-	                from
-		                Hierarchy h
-		                join HierarchyClass hc on h.hierarchyID = hc.hierarchyID
-		                join HierarchyPrototype hp on hc.hierarchyID = hp.hierarchyID and hc.hierarchyLevel = hp.hierarchyLevel
-                    left join dbo.HierarchyClassTrait D on D.hierarchyClassID = hc.HierarchyClassId
-                    where
-		                h.hierarchyName = @HierarchyName
-                    order by hc.hierarchyLevel";
+                return @"DECLARE @nationalClassCodeTraitId INT = (
+		                        SELECT traitID
+		                        FROM Trait
+		                        WHERE traitDesc = 'National Class Code'
+		                        );
+
+                        WITH NatClassCodeCte
+                        AS (
+	                        SELECT hct.hierarchyClassID
+		                        ,hct.traitValue AS NationalClassCode
+	                        FROM HierarchyClassTrait hct
+	                        WHERE hct.traitID = @nationalClassCodeTraitId
+	                        )
+                        SELECT {top query}
+                            h.HIERARCHYID AS HIERARCHYID
+	                        ,h.hierarchyName AS HierarchyName
+	                        ,hp.hierarchyLevelName AS HierarchyLevelName
+	                        ,hp.itemsAttached AS ItemsAttached
+	                        ,CASE 
+		                        WHEN @HierarchyName = 'Financial'
+			                        THEN substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
+		                        ELSE cast(hc.hierarchyClassID AS NVARCHAR(32))
+		                        END AS HierarchyClassId
+	                        ,hc.hierarchyClassName AS HierarchyClassName
+	                        ,hc.hierarchyLevel AS HierarchyLevel
+	                        ,hc.hierarchyParentClassID AS HierarchyParentClassId
+	                        ,ncc.NationalClassCode AS NationalClassCode
+                        FROM Hierarchy h
+                        INNER JOIN HierarchyClass hc ON h.HIERARCHYID = hc.HIERARCHYID
+                        INNER JOIN HierarchyPrototype hp ON hc.HIERARCHYID = hp.HIERARCHYID
+	                        AND hc.hierarchyLevel = hp.hierarchyLevel
+                        LEFT JOIN NatClassCodeCte ncc ON hc.hierarchyClassID = ncc.hierarchyClassID
+                        WHERE h.hierarchyName = @HierarchyName
+                        ORDER BY hc.hierarchyLevel";
             }
         }
 
