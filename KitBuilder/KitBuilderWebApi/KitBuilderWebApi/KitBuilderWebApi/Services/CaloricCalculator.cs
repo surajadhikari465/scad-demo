@@ -65,8 +65,6 @@ namespace KitBuilderWebApi.Services
 					var resultPrice = getAuthorizedStatusAndPriceService.Run(storeItemsList);
 					var itemStorePriceModelList = await resultPrice;
 
-                    // must be removed after Min fixes code
-                    kitLocaleDto.RegularPrice = 1;
                     //update kitlocale with Price and Store Authorization Status
                     UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
 
@@ -144,6 +142,18 @@ namespace KitBuilderWebApi.Services
 
 		internal void UpdateKitLocaleForPrice(KitLocaleDto kitLocaleDto, IEnumerable<ItemStorePriceModel> itemStorePriceModelList)
 		{
+			ItemStorePriceModel maintItemStorePriceModel = itemStorePriceModelList.Where(i => i.ItemId == kitLocaleDto.Kit.Item.ItemId).FirstOrDefault();
+
+			if (maintItemStorePriceModel != null)
+			{
+				kitLocaleDto.RegularPrice = maintItemStorePriceModel.Price;
+				kitLocaleDto.AuthorizedByStore = maintItemStorePriceModel.Authorized;
+			}
+			else
+			{
+				kitLocaleDto.AuthorizedByStore = false;
+			}
+
 			var kitLinkGroupItemLocaleDtos = from kitLinkGroupLocales in kitLocaleDto.KitLinkGroupLocale
 											 from kitLinkGroupItemLocales in kitLinkGroupLocales.KitLinkGroupItemLocales
 											 select kitLinkGroupItemLocales;
@@ -164,8 +174,8 @@ namespace KitBuilderWebApi.Services
 				}
 			}
 
-			kitLocaleDto.AuthorizedByStore = itemStorePriceModelList.Where(i => i.ItemId == kitLocaleDto.Kit.ItemId).Select(a => a.Authorized).FirstOrDefault();
-			kitLocaleDto.AuthorizedByStore = kitLocaleDto.AuthorizedByStore == null ? false : kitLocaleDto.AuthorizedByStore;
+			//kitLocaleDto.AuthorizedByStore = itemStorePriceModelList.Where(i => i.ItemId == kitLocaleDto.Kit.ItemId).Select(a => a.Authorized).FirstOrDefault();
+			//kitLocaleDto.AuthorizedByStore = kitLocaleDto.AuthorizedByStore == null ? false : kitLocaleDto.AuthorizedByStore;
 		}
 
 		internal void UpdateKitLocaleForNutrition(KitLocaleDto kitLocaleDto, IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList)
@@ -202,7 +212,7 @@ namespace KitBuilderWebApi.Services
 					int kitLinkGroupMaxCalories = 0;
 					int kitLinkGroupMaxPortion = kitLinkGroupProperties.Maximum;
 					int arrayIndex = 0;
-					int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Count();
+					int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true).Count();
 					int[,] modifierMax = new int[modifierCounter, 2];
 
 					foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true))
@@ -241,8 +251,11 @@ namespace KitBuilderWebApi.Services
 					//Sort the two dimentional array modifierMax by the first element, which is modifier's calories. The second element
 					//is maximum portion of a modifier.
 					int[,] sortedByFirstElement = modifierMax.OrderByDescending(x => x[0]);
+					int j = 0;
 
-					while (kitLinkGroupMaxPortion > 0)
+					//The loop will end when either the Max on the KitLinkGroup is reached, 
+					//or all the available/authorized modifiers in the KitLinkGroup have been looped thru
+					while (kitLinkGroupMaxPortion > 0 && j < modifierCounter - 1) 
 					{
 						for (int i = 0; i < sortedByFirstElement.GetLength(0); i++)
 						{
@@ -259,6 +272,7 @@ namespace KitBuilderWebApi.Services
 							}
 
 							kitLinkGroupMaxCalories += sortedByFirstElement[i, 0] * counter;
+							j = i;
 						}
 					}
 

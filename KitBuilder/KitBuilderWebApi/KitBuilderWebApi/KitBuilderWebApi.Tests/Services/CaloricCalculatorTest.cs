@@ -99,6 +99,7 @@ namespace KitBuilderWebApi.Tests.Services
 
 			//Then
 			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
+			Assert.AreEqual((decimal)9.99, kitLocaleDto.Result.RegularPrice, "Kit main item price is wrong.");
 			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
 			Assert.AreEqual(830, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k =>  k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(330, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
@@ -154,6 +155,53 @@ namespace KitBuilderWebApi.Tests.Services
 			Assert.AreEqual(560, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
 		}
 
+		[TestMethod]
+		public void CaloricCalculator_LinkGroupMaxGreaterThanModifierMax_ReturnsMinMaxKitLocaleCalories()
+		{
+			//Given
+			string filePath = Path.Combine(projectPath, "TestData", "KitLocale_LinkGroupMaxGreaterThanModifierMax.Json");
+			string json = System.IO.File.ReadAllText(filePath);
+			List<KitLocale> kitLocales = JsonConvert.DeserializeObject<List<KitLocale>>(json);
+
+			filePath = Path.Combine(projectPath, "TestData", "ItemStorePriceModelList_Unauthorized.Json");
+			json = System.IO.File.ReadAllText(filePath);
+			IEnumerable<ItemStorePriceModel> itemStorePriceModelList = JsonConvert.DeserializeObject<IEnumerable<ItemStorePriceModel>>(json);
+
+			//Add kit main item to itemStorePriceModelList (results from the Mammoth price call), and mock it to be the authorized for the store.
+			string kitMainItemString = "{\"ItemId\": 1862661,\"ScanCode\": \"28838000000\",\"BusinessUnitID\": 10316,\"Authorized\": true,\"Multiple\": 1,\"Price\": 9.99,\"Currency\": \"USD\"}";
+			ItemStorePriceModel kitMainItem = JsonConvert.DeserializeObject<ItemStorePriceModel>(kitMainItemString);
+			itemStorePriceModelList = itemStorePriceModelList.Append(kitMainItem);
+
+			filePath = Path.Combine(projectPath, "TestData", "ItemCaloriesList.Json");
+			json = System.IO.File.ReadAllText(filePath);
+			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
+
+			var mockContext = new Mock<KitBuilderContext>();
+			var mockDbSet = GetMockDbSet<KitLocale>(kitLocales);
+			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+
+			mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocales.AsQueryable());
+			mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+
+			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
+			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
+
+			//When
+			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+			{
+				KitLocaleId = KITLOCALEID,
+				StoreLocaleId = STORELOCALElEID
+			};
+			Task<KitLocaleDto> kitLocaleDto = caloricCalculator.Run(parameters);
+
+			//Then
+			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
+			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
+			Assert.IsNull(kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(200, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
+			Assert.AreEqual(320, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
+			Assert.AreEqual(520, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
+		}
 		[TestMethod]
 		public void CaloricCalculator_KitMainItemUnauthorized_LogErrorReturnKitLocaleWithAuthStatusOnly()
 		{
