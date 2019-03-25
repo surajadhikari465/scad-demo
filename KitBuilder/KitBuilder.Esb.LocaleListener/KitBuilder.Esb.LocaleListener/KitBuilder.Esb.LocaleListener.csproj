@@ -7,8 +7,8 @@
     <ProjectGuid>{66357147-724B-4ABB-ADA2-C31CF4DC4BEB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mammoth.Esb.LocaleListener</RootNamespace>
-    <AssemblyName>Mammoth.Esb.LocaleListener</AssemblyName>
+    <RootNamespace>KitBuilder.Esb.LocaleListener</RootNamespace>
+    <AssemblyName>KitBuilder.Esb.LocaleListener</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
