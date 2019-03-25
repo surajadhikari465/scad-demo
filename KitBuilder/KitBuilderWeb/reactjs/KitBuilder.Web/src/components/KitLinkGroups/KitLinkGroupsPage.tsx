@@ -71,13 +71,15 @@ export class KitLinkGroupPage extends React.Component<IKitLinkGroupPageProps, IK
             let LinkGroupExcluded: Boolean = element.excluded;
             let validateLinkGroupMaxToSumMaxModifier: Boolean = true;
 
-            if (element.kitLinkGroupItemLocaleList.filter(self.filterByExcluded).length == 0) {
-                error.push("Link Group:".concat(element.name, " must have at least one included modifier", "."))
-                self.setState({ validationErrors: error, message: "" })
-            }
+         
 
             if (!LinkGroupExcluded) {
 
+                if (element.kitLinkGroupItemLocaleList.filter(self.filterByExcluded).length == 0) {
+                    error.push("Link Group:".concat(element.name, " must have at least one included modifier", "."))
+                    self.setState({ validationErrors: error, message: "" })
+                }
+                
                 if (checkDuplicateInObject("displaySequence", element.kitLinkGroupItemLocaleList.filter(self.filterByExcluded))) {
                     error.push("Display Order must be unique for modifiers of link group:".concat(element.name, "."))
                 }
