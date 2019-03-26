@@ -28,6 +28,7 @@
     "build": "react-scripts-ts build",
     "build:dev": "env-cmd .env.dev npm run build && rename build KB.Dev",
     "build:test": "env-cmd .env.test npm run build && rename build KB.Test",
+	"build:qa": "env-cmd .env.qa npm run build && rename build KB.QA",
     "build:prod": "env-cmd .env.production npm run build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
