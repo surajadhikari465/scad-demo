@@ -5,6 +5,7 @@ using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Icon.Framework;
 
 namespace GlobalEventController.Controller.EventServices
 {
@@ -40,14 +41,14 @@ namespace GlobalEventController.Controller.EventServices
 
 			this.ValidatedItemList = this.ValidatedItemList.DistinctBy(v => v.ScanCode).ToList();
 
-			if(this.ValidatedItemList.Any(x => x.IsDeleted))
+			if(this.ValidatedItemList.Any(x => x.EventTypeId == EventTypes.NutritionDelete))
 			{
-				this.bulkDeleteHandler.Handle(new BulkDeleteNutriFactsCommand { ScanCodes = this.ValidatedItemList.Where(x => x.IsDeleted).Select(x => x.ScanCode).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList() });
+				this.bulkDeleteHandler.Handle(new BulkDeleteNutriFactsCommand { ScanCodes = this.ValidatedItemList.Where(x => x.EventTypeId == EventTypes.NutritionDelete).Select(x => x.ScanCode).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList() });
 			}
 
-			if(this.ValidatedItemList.Any(x => !x.IsDeleted))
+			if(this.ValidatedItemList.Any(x => x.EventTypeId != EventTypes.NutritionDelete))
 			{
-				List<ValidatedItemModel> ValidatedItemWithTaxList = bulkGetValidatedItemsWithTax.Handle(new BulkGetItemsWithTaxClassQuery() { ValidatedItems = this.ValidatedItemList.Where(x => !x.IsDeleted).ToList() });
+				List<ValidatedItemModel> ValidatedItemWithTaxList = bulkGetValidatedItemsWithTax.Handle(new BulkGetItemsWithTaxClassQuery() { ValidatedItems = this.ValidatedItemList.Where(x => x.EventTypeId != EventTypes.NutritionDelete).ToList() });
 
 				List<IconItemLastChangeModel> iconItemLastChangedItems = ValidatedItemWithTaxList.Select(vi => new IconItemLastChangeModel(vi)
 				{

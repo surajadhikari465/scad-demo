@@ -52,7 +52,6 @@ namespace GlobalEventController.Common
         public string RetailUom { get; set; }
         public string ItemTypeCode { get; set; }
         public string CustomerFriendlyDescription { get; set; }
-				public bool IsDeleted { get { return EventTypeId == EventTypes.NutritionDelete; }}
 
         public ValidatedItemModel() { }
 
