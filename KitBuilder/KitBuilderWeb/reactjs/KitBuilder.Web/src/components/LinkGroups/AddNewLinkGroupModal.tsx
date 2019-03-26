@@ -109,7 +109,10 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
                  resolve(res.data.linkGroupId);
              }).catch(error => {
                  console.log(error)
-                 reject(error.message);
+                 if(error.response.data && error.response.data.GroupDescription) {
+                     reject(error.response.data.GroupDescription[0]);
+                 }
+                 else reject(error.message);
              });
         })
     }
