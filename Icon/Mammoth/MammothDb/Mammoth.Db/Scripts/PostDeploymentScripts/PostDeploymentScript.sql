@@ -14,3 +14,4 @@ Post-Deployment Script Template
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql
+:r .\AddMammothAuditApp.sql

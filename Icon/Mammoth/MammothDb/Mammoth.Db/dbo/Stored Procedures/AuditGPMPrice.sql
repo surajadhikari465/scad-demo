@@ -1,81 +1,81 @@
-﻿CREATE PROCEDURE dbo.AuditGPMPrice
+﻿--Formatted by Poor SQL
+CREATE PROCEDURE dbo.AuditGPMPrice
   @action VARCHAR(25),
   @region VARCHAR(2),
-  @groupSize INT = 250000,
-  @maxRows INT = 0,
-  @groupId INT = NULL
+	@groupSize INT = 250000,
+	@groupId INT = 0
 AS
 BEGIN
-  SET NOCOUNT ON;
-  SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+	SET NOCOUNT ON;
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-  IF(NOT Exists(SELECT 1 FROM Regions WHERE Region = @region))
-  BEGIN
-    DECLARE @msg varchar(100) = 'Invalid region specified ' + @region + '.';
-    RAISERROR (@msg, 16, 1);
-    RETURN;
-  END
+	IF(NOT EXISTS(SELECT 1 FROM Regions WHERE Region = @region))
+	BEGIN
+		DECLARE @msg VARCHAR(100) = 'Invalid region specified ' + @region + '.';
+		RAISERROR(@msg, 16, 1);
+		RETURN;
+	END
 
-  
+	DECLARE @query NVARCHAR(max);
 
-  IF @action = 'Initilize'
-  BEGIN
-    IF IsNull(@MaxRows, 0) <= 0 
-	  	SET @MaxRows =  2147483647 --max int
-    
-    IF IsNull(@groupSize, 0) <= 0 
-      SET @groupSize = 250000;
-    
-    TRUNCATE TABLE stage.GPMPriceExport;
+	IF @action = 'Initilize'
+	BEGIN
+		SET @query = 'SELECT Count(*) FROM gpm.Price_' + @region;
+		EXEC sp_executesql @query;
+		RETURN;
+	END
 
-    DECLARE @query nvarchar(max) = '
-    INSERT INTO stage.GPMPriceExport
-    SELECT TOP (' + cast(@maxRows AS NVARCHAR(10)) + ')
-           p.Region,
-           l.ItemID,
-           l.BusinessUnitID,
-           i.ScanCode,
-           Cast(p.StartDate as Date) StartDate,
-           p.EndDate,
-           p.Price,
-           p.PercentOff,
-           p.PriceType,
-           p.PriceTypeAttribute AS PriceReasonCode ,--price reason type modify
-           p.CurrencyCode,
-           p.Multiple,
-           p.TagExpirationDate,
-           p.InsertDateUtc,
-           p.ModifiedDateUtc,
-           l.Authorized,
-           p.SellableUOM,
-           0 GroupID
-    FROM gpm.Price_' + @region + ' p
-    JOIN dbo.ItemAttributes_Locale_' + @region + ' l ON p.ItemID = l.ItemID AND p.BusinessUnitID = l.BusinessUnitID
-    JOIN dbo.Items i ON p.ItemID = i.ItemID;'
-    
-    EXEC sp_executesql @query;
-    
-    --Assign batches based on @GroupSize
-    ;WITH cte AS(SELECT ItemId, GroupId,
-	  		         (RANK() OVER (ORDER BY Itemid, BusinessUnitID) - 1) / @GroupSize [CalculatedGroupId]
-	  	           FROM stage.GPMPriceExport)
-	    UPDATE cte SET GroupId = cte.CalculatedGroupId;
-    
-    SELECT COUNT(*) AS [rowCount] FROM stage.GPMPriceExport;
-    RETURN;
-  END
+	IF @action = 'Get'
+	BEGIN
+		IF IsNull(@groupSize, 0) <= 0
+			SET @groupSize = 250000;
 
-  IF @action = 'Get'
-  BEGIN
-    SELECT A.* FROM stage.GPMPriceExport A WHERE A.GroupId = IsNull(@groupId, A.GroupId);
-    RETURN;
-  END
+		DECLARE @minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0 ELSE 1 END);
 
-  SET NOCOUNT OFF;
+		SET @query = '
+    IF (object_id(''tempdb..#group'') IS NOT NULL) DROP TABLE #group;
+    IF (object_id(''tempdb..#items'') IS NOT NULL) DROP TABLE #items;
 
-  SET @msg = 'Unsupported action (' + @action + ').';
-  RAISERROR (@msg, 16, 1);
-  RETURN;
+    CREATE TABLE #group (ItemID INT, BU INT, ScanCode varchar(255), Authorized bit, INDEX ix_ID NONCLUSTERED(ItemID, BU));
+
+    ;WITH cte AS(SELECT TOP 100 PERCENT B.ItemID, B.BusinessUnitID, A.ScanCode, B.Authorized, Row_Number() OVER (ORDER BY B.ItemID ASC, B.BusinessUnitID ASC) rowID
+                 FROM dbo.Items A
+                 INNER JOIN dbo.ItemAttributes_Locale_' + @region + ' B ON B.ItemID = A.ItemID
+                 ORDER BY B.ItemID ASC, B.BusinessUnitID ASC)
+      INSERT INTO #group (ItemID, BU, ScanCode, Authorized)
+      SELECT TOP(' + Cast(@groupSize AS VARCHAR(25)) + ') ItemID, BusinessUnitID, ScanCode, Authorized
+	  	FROM cte
+	  	WHERE rowID >= ' + Cast(@minId AS VARCHAR(25)) + ';
+
+      SELECT B.ItemID,
+           B.BU AS BusinessUnitID,
+           B.ScanCode,
+           Cast(A.StartDate as Date) StartDate,
+           A.EndDate,
+           A.Price,
+           A.PercentOff,
+           A.PriceType,
+           A.PriceTypeAttribute AS PriceReasonCode, --price reason type modify
+           A.CurrencyCode,
+           A.Multiple,
+           A.TagExpirationDate,
+           A.InsertDateUtc,
+           A.ModifiedDateUtc,
+           B.Authorized,
+           A.SellableUOM
+      INTO #items
+      FROM gpm.Price_' + @region + ' A
+      JOIN #group B ON B.ItemID = A.ItemID AND B.BU = A.BusinessUnitID;
+
+      SELECT ''' + @region + ''' AS Region, * from #items;'
+
+		EXEC sp_executesql @query;
+		RETURN;
+	END
+
+	SET NOCOUNT OFF;
+	SET @msg = 'Unsupported action (' + @action + ').';
+	RAISERROR(@msg, 16, 1);
 END
 GO
 

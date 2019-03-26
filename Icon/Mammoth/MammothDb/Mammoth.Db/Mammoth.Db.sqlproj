@@ -812,7 +812,6 @@
     <Build Include="gpm\Stored Procedures\UpdatePrice.sql" />
     <Build Include="stage\Tables\ItemLocaleExportStaging.sql" />
     <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
-    <Build Include="stage\Tables\GPMPriceExport.sql" />
     <Build Include="dbo\Stored Procedures\AuditGlobalItem.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateMammothClosedStores.sql" />
   </ItemGroup>
@@ -833,6 +832,7 @@
     <None Include="Scripts\PreDeploymentScripts\Deduplicate_ItemAttributesLocale_Tables.sql" />
     <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion.sql" />
     <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion_ROLLBACK.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddMammothAuditApp.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

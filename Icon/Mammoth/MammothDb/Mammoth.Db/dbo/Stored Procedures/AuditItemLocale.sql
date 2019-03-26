@@ -2,7 +2,6 @@
   @action VARCHAR(25),
   @region VARCHAR(2),
 	@groupSize INT = 250000,
-	@maxRows INT = 0,
 	@groupId INT = 0
 AS
 BEGIN
@@ -16,12 +15,6 @@ BEGIN
     RETURN;
   END
 
-  DECLARE @minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0 ELSE 1 END);
-  DECLARE @rowCount int;
-
-	IF IsNull(@MaxRows, 0) = 0 
-		SET @MaxRows = 2147483647 -- max int
-  
   IF @action = 'Initilize'
   BEGIN
     SELECT Count(*) FROM dbo.ItemLocaleAttributes WHERE Region = @region option(recompile);
@@ -30,71 +23,37 @@ BEGIN
 
   IF @action = 'Get'
 	BEGIN
-	  DECLARE @ColorAddedId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE '%Color%Add%'
-	  		)
-	  DECLARE @CountryOfProcessingId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Country of Processing'
-	  		)
-	  DECLARE @OriginId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Origin'
-	  		)
-	  DECLARE @EstId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Electronic Shelf Tag'
-	  		)
-	  DECLARE @ExclusiveId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Exclusive'
-	  		)
-	  DECLARE @NumDigitsToScaleId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Number of Digits Sent To Scale'
-	  		)
-	  DECLARE @ChicagoBabyId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Chicago Baby'
-	  		)
-	  DECLARE @TagUomId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Tag UOM'
-	  		)
-	  DECLARE @LinkedScanCodeId INT = (
-	  		SELECT AttributeID
-	  		FROM Attributes
-	  		WHERE AttributeDesc LIKE 'Linked Scan Code'
-	  		)
-	  
+    IF IsNull(@groupSize, 0) <= 0
+			SET @groupSize = 250000;
+
+    DECLARE @minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0 ELSE 1 END);
+
+	  DECLARE @ColorAddedId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE '%Color%Add%');
+	  DECLARE @CountryOfProcessingId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Country of Processing');
+	  DECLARE @OriginId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Origin');
+	  DECLARE @EstId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Electronic Shelf Tag');
+	  DECLARE @ExclusiveId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Exclusive');
+	  DECLARE @NumDigitsToScaleId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Number of Digits Sent To Scale');
+	  DECLARE @ChicagoBabyId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Chicago Baby');
+	  DECLARE @TagUomId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Tag UOM');
+	  DECLARE @LinkedScanCodeId INT = (SELECT AttributeID	FROM Attributes	WHERE AttributeDesc = 'Linked Scan Code');
+	  DECLARE @ScaleExtraTextId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Scale Extra Text');
+	  DECLARE @CFSSendtoScale INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'CFS Send to Scale'); 
+	  DECLARE @ForceTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Force Tare'); 
+	  DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Shelf Life');
+	  DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Unwrapped Tare Weight');
+	  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Use By EAB');
+	  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Wrapped Tare Weight'); 
     
-	  DECLARE @ScaleExtraTextId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Scale Extra Text' )
-	  DECLARE @CFSSendtoScale INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'CFS Send to Scale' ) 
-	  DECLARE @ForceTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Force Tare' ) 
-	  DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Shelf Life' ) 
-	  DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Unwrapped Tare Weight' ) 
-	  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Use By EAB' ) 
-	  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Wrapped Tare Weight' ) 
-    
---  ------------------------------------------------
 	  IF (object_id('tempdb..#group') IS NOT NULL) DROP TABLE #group;
     IF (object_id('tempdb..#items') IS NOT NULL) DROP TABLE #items;
-    
     CREATE TABLE #group (ItemID INT, BU INT, INDEX ix_ID NONCLUSTERED(ItemID, BU));
     
-    ;WITH cte AS(SELECT TOP (@maxRows) B.ItemID, B.BusinessUnitID, Row_Number() OVER (ORDER BY B.ItemID ASC, B.BusinessUnitID ASC) rowID
+    ;WITH cte AS(SELECT TOP 100 PERCENT B.ItemID, B.BusinessUnitID, Row_Number() OVER (ORDER BY B.ItemID ASC, B.BusinessUnitID ASC) rowID
 	  		FROM dbo.Items A
         join dbo.ItemLocaleAttributes B on B.ItemID = A.ItemID
-        WHERE B.Region = @region)
+        WHERE B.Region = @region
+        ORDER BY B.ItemID, B.BusinessUnitID)
 	  	INSERT INTO #group (ItemID, BU)
 	  	SELECT TOP (@groupSize) ItemID, BusinessUnitID
 	  	FROM cte
@@ -150,7 +109,6 @@ BEGIN
 	    [IrmaItemKey] [int] NULL,
       INDEX ix_itemId_LocaleId nonclustered (ItemID, LocaleId));
     
---  ------------------------------------------------
 	  INSERT INTO #items
 	  SELECT
 	  	s.BusinessUnitId,
@@ -201,7 +159,7 @@ BEGIN
 	  	s.DefaultScanCode [DefaultScanCode],
 	  	s.IrmaItemKey [IrmaItemKey]
     FROM #group A
-    inner join dbo.ItemLocaleAttributes s on s.ItemID = A.ItemID and s.BusinessUnitID = A.BU
+    INNER JOIN dbo.ItemLocaleAttributes s ON s.ItemID = A.ItemID and s.BusinessUnitID = A.BU
     INNER JOIN dbo.Items i ON s.ItemID = i.ItemID
     INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID
     INNER JOIN dbo.Locale l ON l.Region = @region AND s.BusinessUnitID = l.BusinessUnitID
@@ -288,7 +246,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @ScaleExtraTextId
 	  option (recompile)
-    
 	  
 	  UPDATE il
 	  SET [CFS Send to Scale] = ext.AttributeValue
@@ -297,7 +254,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @CFSSendtoScale
 	  option (recompile)
-    
 	  
 	  UPDATE il
 	  SET [Force Tare] = ext.AttributeValue
@@ -306,7 +262,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @ForceTare
 	  option (recompile)
-    
 	  
 	  UPDATE il
 	  SET [Shelf Life] = ext.AttributeValue
@@ -315,7 +270,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @ShelfLife
 	  option (recompile)
-    
 	  
 	  UPDATE il
 	  SET [Unwrapped Tare Weight] = ext.AttributeValue
@@ -324,8 +278,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @UnwrappedTareWeight
 	  option (recompile)
-    
-    
 	  
 	  UPDATE il
 	  SET [Use By EAB] = ext.AttributeValue
@@ -334,8 +286,6 @@ BEGIN
 	  	AND il.LocaleId = ext.LocaleID
 	  WHERE ext.AttributeId = @UseByEAB
 	  option (recompile)
-    
-    
 	  
 	  UPDATE il
 	  SET [Wrapped Tare Weight] = ext.AttributeValue

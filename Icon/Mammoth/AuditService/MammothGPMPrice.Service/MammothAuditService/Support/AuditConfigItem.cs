@@ -73,12 +73,5 @@ namespace Audit
         get { return (int)base["groupSize"]; }
         set { base["groupSize"] = value; }
     }
-
-		[ConfigurationProperty("maxRows", IsRequired = false)]
-    public int MaxRows
-    {
-        get { return (int)base["maxRows"]; }
-        set { base["maxRows"] = value; }
-    }
   }
 }

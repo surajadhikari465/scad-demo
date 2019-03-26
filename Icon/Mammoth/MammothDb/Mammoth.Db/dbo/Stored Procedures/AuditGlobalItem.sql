@@ -1,15 +1,12 @@
 ﻿--Formatted by Poor SQL
-CREATE PROCEDURE dbo.AuditGlobalItem @action VARCHAR(25)
-	,@groupSize INT = 250000
-	,@maxRows INT = 0
-	,@groupId INT = 0
+CREATE PROCEDURE dbo.AuditGlobalItem
+  @action VARCHAR(25),
+	@groupSize INT = 250000,
+	@groupId INT = 0
 AS
 BEGIN
 	SET NOCOUNT ON;
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-
-	IF IsNull(@maxRows, 0) <= 0
-		SET @maxRows = 2147483647 --max int
 
   IF IsNull(@groupSize, 0) <= 0 
     SET @groupSize = 250000;
@@ -24,13 +21,7 @@ BEGIN
 
 	IF @action = 'Get'
 	BEGIN
-		DECLARE @minId INT = (@groupId * @groupSize) + (
-				CASE 
-					WHEN @groupID = 0
-						THEN 0
-					ELSE 1
-					END
-				)
+		DECLARE @minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0	ELSE 1 END)
 			,@fairTradeID INT = (
 				SELECT AttributeID
 				FROM Attributes
@@ -93,20 +84,13 @@ BEGIN
 		IF (object_id('tempdb..#items') IS NOT NULL)
 			DROP TABLE #items;
 
-		CREATE TABLE #group (ItemID INT INDEX ix_ID NONCLUSTERED);;
+		CREATE TABLE #group (ItemID INT INDEX ix_ID NONCLUSTERED);
 
-		WITH cte
-		AS (
-			SELECT TOP (@maxRows) ItemID
-				,Row_Number() OVER (
-					ORDER BY ItemID
-					) rowID
-			FROM dbo.Items
-			)
-		INSERT INTO #group (ItemID)
-		SELECT TOP (@groupSize) ItemID
-		FROM cte
-		WHERE rowID >= @minId
+		WITH cte AS(SELECT ItemID, Row_Number() OVER(ORDER BY ItemID) rowID FROM dbo.Items)
+		  INSERT INTO #group (ItemID)
+		  SELECT TOP (@groupSize) ItemID
+		  FROM cte
+		  WHERE rowID >= @minId
 
 		CREATE TABLE #items (
 			ItemID INT NOT NULL INDEX ix_ItemID NONCLUSTERED
