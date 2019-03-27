@@ -20,7 +20,9 @@ BEGIN
 						(2, N'B', N'Building '),
 						(3, N'PQ', N'Publish Queued'),
 						(4, N'P', N'Published'),
-						(5, N'IP', N'PublishFailed')
+						(5, N'M', N'Modifying'),
+						(6, N'PF', N'PublishFailed'),
+						(7, N'PRQ', N'Publish ReQueued')
 					) 
 			AS Source(StatusID, StatusCode, StatusDescription)
 			ON Target.StatusID=Source.StatusID

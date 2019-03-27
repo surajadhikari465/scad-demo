@@ -10,7 +10,8 @@ namespace KitBuilder.DataAccess.Enums
         Building = 2,
         PublishQueued = 3,
         Published = 4,
-        PublishFailed = 5,
-
+        Modifying = 5,
+        PublishFailed = 6,
+        PublishReQueued = 7
    }
 }
