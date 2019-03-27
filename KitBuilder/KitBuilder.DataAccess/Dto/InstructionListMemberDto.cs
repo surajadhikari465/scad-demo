@@ -15,5 +15,6 @@ namespace KitBuilder.DataAccess.Dto
         public string Member { get; set; }
         [Required]
         public int PluNumber { get; set; }
+        public bool IsDeleted { get; set; } 
     }
 }

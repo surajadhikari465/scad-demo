@@ -17,6 +17,7 @@ namespace KitBuilder.DataAccess.DatabaseModels
         public DateTime InsertDateUtc { get; set; }
         public DateTime? LastUpdatedDateUtc { get; set; }
         public int PluNumber { get; set; }
+        public bool IsDeleted { get; set; }
         public InstructionList InstructionList { get; set; }
         public AvailablePluNumber PluNumberNavigation { get; set; }
     }

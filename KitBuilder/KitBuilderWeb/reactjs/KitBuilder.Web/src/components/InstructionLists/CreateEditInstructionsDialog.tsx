@@ -87,7 +87,6 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
     const {
       isOpen,
       onClose,
-      onDelete,
       isEditInstructions
     } = this.props;
     const { instructionName, instructionType } = this.state;
@@ -168,18 +167,6 @@ export default class CreateEdiInstructionDialog extends React.PureComponent<
                   Cancel
                 </Button>
               </Grid>
-              {isEditInstructions && (
-                <Grid item xs={12}>
-                  <Button
-                    onClick={onDelete}
-                    variant="outlined"
-                    color="secondary"
-                    className="full-width"
-                  >
-                    Delete
-                  </Button>
-                </Grid>
-              )}
             </Grid>
           </Grid>
         </DialogContent>
