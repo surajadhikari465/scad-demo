@@ -666,9 +666,8 @@ Module Global_Renamed
     Public bSpecificVendor As Boolean
     Public bSpecificInvoice As Boolean
     Public bSpecificStoreItemVendorCost As Boolean
-    Public sVersion As String
-    Public gsReportingServicesURL As String
-    Public gsReportDirectory As String
+  Public gsReportingServicesURL As String
+  Public gsReportDirectory As String
     Public gbUseLocalTime As Boolean
     Public stopwatch As New System.Diagnostics.Stopwatch
 
@@ -4265,12 +4264,7 @@ me_err:
   End Sub
 
   Public Sub ValidateLogon()
-
-    logger.Debug("ValidateLogon Entry")
-
-
     If DateDiff(Microsoft.VisualBasic.DateInterval.Minute, mLastActive, Now) >= 30 Then
-
       If Len(gsUserName) > 0 Then
         frmLogin.UserName = gsUserName
         frmLogin.SetUserInfo = False
@@ -4290,14 +4284,9 @@ me_err:
 
       frmLogin.Close()
       frmLogin.Dispose()
-
     End If
 
     mLastActive = Now
-
-    logger.Debug("ValidateLogon Exit")
-
-
   End Sub
 
   ' SubTeamTypes:  All, Store, Supplier, StoreMinusSupplier, Retail, StoreUser

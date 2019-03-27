@@ -11,17 +11,16 @@ Friend Class frmSplash
 			eventArgs.Handled = True
 		End If
 	End Sub
-	
-	Private Sub frmSplash_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-        'Enables the text to be transparent.
-        lblProductName.Parent = imgLogo
-        lblVersion.Parent = imgLogo
 
-        lblVersion.Text = "Version " & sVersion
+  Private Sub frmSplash_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    'Enables the text to be transparent.
+    lblProductName.Parent = imgLogo
+    lblVersion.Parent = imgLogo
 
-    End Sub
-	
-    Private Sub imgLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles imgLogo.Click
+    lblVersion.Text = "Version " & Application.ProductVersion
+  End Sub
+
+  Private Sub imgLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles imgLogo.Click
         Me.Close()
     End Sub
 End Class

@@ -6,9 +6,8 @@ Imports log4net
 Friend Class frmLogin
     Inherits System.Windows.Forms.Form
 
-    Const Domain As String = "WFM"
-    Dim mValidated As Boolean
-    Dim mUserName As String
+  Dim mValidated As Boolean
+  Dim mUserName As String
     Dim mRetryCount As Short
     Dim mSetUserInfo As Boolean
 
@@ -181,36 +180,19 @@ Friend Class frmLogin
         logger.Debug("cmdOK_Click Exit")
     End Sub
 
-    Private Sub frmLogin_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+  Private Sub frmLogin_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    mUserName = System.Environment.UserName
+    txtUserName.Text = mUserName
+  End Sub
 
-        logger.Debug("frmLogin_Load Entry")
+  Private Sub frmLogin_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+    mValidated = False
+    mRetryCount = 0
+    mUserName = String.Empty
+    mSetUserInfo = False
+  End Sub
 
-        Dim sDomain As String
-        sDomain = String.Empty
-
-        GetLogonDomainUser(sDomain, mUserName) 'This routine delivers the local PC as the domain in some cases, so don't use below
-
-        'Me.Text = My.Application.Info.Title
-        txtUserName.Text = mUserName
-
-        logger.Debug("frmLogin_Load Exit")
-
-    End Sub
-
-    Private Sub frmLogin_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-
-        logger.Debug("frmLogin_FormClosed Entry")
-
-        mValidated = False
-        mRetryCount = 0
-        mUserName = ""
-        mSetUserInfo = False
-
-        logger.Debug("frmLogin_FormClosed Exit")
-
-    End Sub
-
-    Private Sub txtPassword_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPassword.Enter
-    txtPassword.SelectAll()
+  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPassword.Enter, txtUserName.Enter
+    CType(eventSender, TextBox).SelectAll()
   End Sub
 End Class

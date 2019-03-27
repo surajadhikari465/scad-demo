@@ -22,65 +22,41 @@ Friend Class frmMain
   Public Const ENVIRONMENT_LABEL_PRD As String = "Production"
 
   Private Sub frmMain_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-    logger.Debug("frmMain_Load entry")
     logger.Info(String.Format("Application Startup Path: {0}", Application.StartupPath))
 
-    Dim sTemp As New VB6.FixedLengthString(200)
-    Dim hWindowHandle As Integer
-    Dim sNewCaption As String
     Dim VersionDAO As New VersionDAO
     Dim blnShowMessage As Boolean
 
     ' initially hide the toolbar container
     ToolStripContainer1.TopToolStripPanelVisible = False
-
-    ' set up the version number
-    sVersion = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
+    tslTitle.Text = String.Empty
+    tslTitle.Alignment = ToolStripItemAlignment.Right
 
     ' do version check
-    If String.Compare(VersionDAO.GetVersionInfo("IRMA CLIENT").ToString(), sVersion) > 0 Then
-      Dim msg As String = String.Format("Your copy of IRMA (version {0}) is not current.  Please check for an updated version and try again.{1}{1}If you continue to have problems, please contact {2} regional IRMA support.", sVersion, vbCrLf, gsRegionCode)
-      MsgBox(msg, MsgBoxStyle.Critical, Me.Text)
-      Application.Exit()
-    End If
-
-    If My.Application.Info.Version.Revision > 0 Then
-      sVersion = sVersion & "." & My.Application.Info.Version.Revision
-    End If
-
-    sNewCaption = "IRMA Client"
-
-    'Make sure they don't have more than two copies open
-    hWindowHandle = FindWindow(vbNullString, sNewCaption)
-    glInstance = 1
-
-    If hWindowHandle <> 0 Then
-      glInstance = 2
-      sNewCaption = sNewCaption & " (copy 2)"
-      hWindowHandle = FindWindow(vbNullString, sNewCaption)
-
-      If hWindowHandle <> 0 Then
-        MsgBox(String.Format(ResourcesIRMA.GetString("AppAlreadyRunning"), vbCrLf, "two"), MsgBoxStyle.Critical, Me.Text)
+    If String.Compare(VersionDAO.GetVersionInfo("IRMA CLIENT"), Application.ProductVersion) > 0 Then
+      If MessageBox.Show(String.Format("You are using old version of IRMA client (version {0}).{1}{1}It's strongly recommended to update your IRMA client application!{1}{1}Would you like to proceed using old IRMA client?", Application.ProductVersion, vbCrLf), "System Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) = DialogResult.Cancel Then
+        Application.Exit()
         End
       End If
     End If
 
-    InitializeGlobalSettings(sNewCaption)
+    InitializeGlobalSettings("IRMA Client")
 
     ' Set the tool status values
-    ToolStripStatusLabel_Region.Text = ToolStripStatusLabel_Region.Text & gsRegionCode & "     "
-    ToolStripStatusLabel_Environment.Text = ToolStripStatusLabel_Environment.Text & ConfigurationServices.AppSettings("environment") & "     "
-    ToolStripStatusLabel_Version.Text = ToolStripStatusLabel_Version.Text & "System: " & VersionDAO.GetVersionInfo("SYSTEM") & "     Application: " & VersionDAO.GetVersionInfo("IRMA CLIENT") & "     "
+    ToolStripStatusLabel_Region.Text = ToolStripStatusLabel_Region.Text & gsRegionCode
+    ToolStripStatusLabel_Environment.Text = ToolStripStatusLabel_Environment.Text & ConfigurationServices.AppSettings("environment")
+    ToolStripStatusLabel_Version.Text = ToolStripStatusLabel_Version.Text & "System: " & VersionDAO.GetVersionInfo("SYSTEM") & "     Application: " & VersionDAO.GetVersionInfo("IRMA CLIENT")
     ToolStripStatusLabelRegionalSetting.Text = ToolStripStatusLabelRegionalSetting.Text & gsUG_CultureDisplayName
 
     InitializeDatabase()
 
     '-- Login
     ValidateLogon()
+    tslTitle.Text = String.Format("User: {0}  ({1})", gsUserName, gsTitleDescription)
 
     '-- Splash
     frmSplash.Show()
-    System.Windows.Forms.Application.DoEvents()
+    Application.DoEvents()
 
     Try
       blnShowMessage = ConfigurationServices.AppSettings("ShowMainMessage")
@@ -123,8 +99,6 @@ Friend Class frmMain
     If ConfigurationServices.AppSettings("environment") <> ENVIRONMENT_LABEL_PRD Then
       MsgBox(ResourcesIRMA.GetString("TestWarning"), MsgBoxStyle.Information, Me.Text)
     End If
-
-    logger.Debug("frmMain_Load exit")
   End Sub
 
   Private Sub frmMain_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
