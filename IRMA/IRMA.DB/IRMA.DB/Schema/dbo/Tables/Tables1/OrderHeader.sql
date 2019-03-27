@@ -209,26 +209,28 @@ BEGIN
 				DECLARE @transferDeleteMessageType NVARCHAR(50) = 'TransferOrderDelete'
 				DECLARE @poDeleteMessageType NVARCHAR(50) = 'PurchaseOrderDelete'
 
-				IF (SELECT OrderType_ID FROM deleted) <> 3 -- Purchase Order
-					INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
-					SELECT 
-						@PO_DeleteEventTypeCode,
-						@poDeleteMessageType,
-						deleted.OrderHeader_ID,
-						SYSDATETIME(),
-						SYSUTCDATETIME()
-					FROM deleted
-					WHERE deleted.Sent = 1;
-				ELSE
-					INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
-					SELECT 
-						@TSF_DeleteEventTypeCode,
-						@transferDeleteMessageType,
-						deleted.OrderHeader_ID,
-						SYSDATETIME(),
-						SYSUTCDATETIME()
-					FROM deleted
-					WHERE deleted.Sent = 1
+			
+				INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+				SELECT 
+					@PO_DeleteEventTypeCode,
+					@poDeleteMessageType,
+					deleted.OrderHeader_ID,
+					SYSDATETIME(),
+					SYSUTCDATETIME()
+				FROM deleted
+				WHERE deleted.Sent = 1
+					AND deleted.OrderType_ID <> 3; -- Purchase Order
+			
+				INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+				SELECT 
+					@TSF_DeleteEventTypeCode,
+					@transferDeleteMessageType,
+					deleted.OrderHeader_ID,
+					SYSDATETIME(),
+					SYSUTCDATETIME()
+				FROM deleted
+				WHERE deleted.Sent = 1
+					AND deleted.OrderType_ID = 3 -- Transfer Orders
 			END
 		END
 	END
@@ -399,35 +401,36 @@ BEGIN
 				DECLARE @poMessageType NVARCHAR(50) = 'PurchaseOrder'
 				DECLARE @transferMessageType NVARCHAR(50) = 'TransferOrder'
 
-				IF (SELECT OrderType_ID FROM INSERTED) <> 3 -- Purchase Orders
-					INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID)
-					SELECT
-						CASE
-							WHEN (d.Sent = 0) THEN @po_creEventTypeCode
-							ELSE @po_modEventTypeCode
-						END EventTypeCode,
-						@poMessageType,
-						i.OrderHeader_ID
-					FROM INSERTED i	
-					INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
-					WHERE (i.Sent = 1 AND d.Sent = 0)
-						OR (i.Sent = 1
-							AND ((i.Expected_Date <> d.Expected_Date)
-								OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
-									OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
-								OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
-									OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
-								OR ((i.ApprovedDate <> d.ApprovedDate)
-									OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL))))
-				ELSE
-					INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID)
-					SELECT
-						@tsf_creEventTypeCode,
-						@transferMessageType,
-						i.OrderHeader_ID
-					FROM INSERTED i	
-					INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
-					WHERE (i.Sent = 1 and d.Sent = 0)
+				INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID)
+				SELECT
+					CASE
+						WHEN (d.Sent = 0) THEN @po_creEventTypeCode
+						ELSE @po_modEventTypeCode
+					END EventTypeCode,
+					@poMessageType,
+					i.OrderHeader_ID
+				FROM INSERTED i	
+				INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
+				WHERE i.OrderType_ID <> 3 -- Purchase Orders
+					AND (i.Sent = 1 AND d.Sent = 0)
+					OR (i.Sent = 1
+						AND ((i.Expected_Date <> d.Expected_Date)
+							OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
+								OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
+							OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
+								OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
+							OR ((i.ApprovedDate <> d.ApprovedDate)
+								OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL))))
+								
+				INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID)
+				SELECT
+					@tsf_creEventTypeCode,
+					@transferMessageType,
+					i.OrderHeader_ID
+				FROM INSERTED i	
+				INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
+				WHERE (i.Sent = 1 and d.Sent = 0)
+					AND i.OrderType_ID = 3 -- Trnasfer Orders
 			END
 		END
 		SELECT @Error_No = @@ERROR
@@ -475,26 +478,28 @@ BEGIN
 			DECLARE @poMessageType NVARCHAR(50) = 'PurchaseOrder'
 			DECLARE @transferMessageType NVARCHAR(50) = 'TransferOrder'
 
-			IF (SELECT OrderType_ID FROM inserted) <> 3 -- Purchase Order
-				INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
-				SELECT
-					@PO_CRE_EvenTypeCode,
-					@poMessageType,
-					inserted.OrderHeader_ID,
-					SYSDATETIME(),
-					SYSUTCDATETIME()
-				FROM inserted
-				WHERE inserted.Sent = 1
-			ELSE
-				INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
-				SELECT
-					@TSF_CRE_EvenTypeCode,
-					@transferMessageType,
-					inserted.OrderHeader_ID,
-					SYSDATETIME(),
-					SYSUTCDATETIME()
-				FROM inserted
-				WHERE inserted.Sent = 1
+
+			INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+			SELECT
+				@PO_CRE_EvenTypeCode,
+				@poMessageType,
+				inserted.OrderHeader_ID,
+				SYSDATETIME(),
+				SYSUTCDATETIME()
+			FROM inserted
+			WHERE inserted.Sent = 1
+				AND inserted.OrderType_ID <> 3 -- Purchase Orders
+
+			INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID, InsertDate, MessageTimestampUtc)
+			SELECT
+				@TSF_CRE_EvenTypeCode,
+				@transferMessageType,
+				inserted.OrderHeader_ID,
+				SYSDATETIME(),
+				SYSUTCDATETIME()
+			FROM inserted
+			WHERE inserted.Sent = 1
+				AND inserted.OrderType_ID = 3 -- Transfer Orders
 		END
 	END
 END
