@@ -223,6 +223,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						Action = Contracts.ActionEnum.AddOrUpdate,
 						ActionSpecified = true,
 						id = message.ItemId,
+                        
 						@base = new Contracts.BaseItemType
 						{
 							type = new Contracts.ItemTypeType
@@ -230,7 +231,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 								code = message.ItemTypeCode,
 								description = message.ItemTypeDesc
 							},
-							consumerInformation = BuildConsumerInformation(message)
+							consumerInformation = BuildConsumerInformation(message) 
+                            
 						},
 						locale = new Contracts.LocaleType[]
 						{
@@ -245,6 +247,11 @@ namespace Icon.ApiController.Controller.QueueReaders
 															},
 															Item = new Contracts.EnterpriseItemAttributesType
 															{
+
+                                                                    imageUrl =  message.ImageURL, 
+                                                                    kitchenDescription = message.KitchenDescription, 
+                                                                    isKitchenItem = message.KitchenItem ?? false,
+                                                                    isHospitalityItem = message.HospitalityItem ?? false,
 																	scanCodes = new Contracts.ScanCodeType[]
 																	{
 																			BuildScanCodeType(message)
