@@ -279,7 +279,7 @@
                                                     .Columns(column =>
                                                     {
                                                         column.For(x => x.LocaleName).HeaderText("Venue").Width("15%");
-                                                        column.For(x => x.LocaleSubTypeId).HeaderText("Sub Type").Width("15%").FormatterFunction("lookupSubtype");
+                                                        column.For(x => x.LocaleSubType).HeaderText("Sub Type").Width("15%");
                                                         column.For(x => x.VenueOccupant).HeaderText("Venue Occupant").Width("15%");
                                                         column.For(x => x.VenueCode).HeaderText("Venue Code").Width("15%");
                                                         column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("15%");
