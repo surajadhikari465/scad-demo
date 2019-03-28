@@ -26,8 +26,11 @@
     <td>
         @Html.DisplayFor(model => model.Status)
     </td>
+    @if (Model.CommandsEnabled)
+    {
     <td>
         @{Html.RenderPartial("_CommandsPartial", Model);}
     </td>
+    }
 </tr>
 }

@@ -8,38 +8,43 @@ using System.Web.Mvc;
 
 namespace Icon.Dashboard.Mvc.Helpers
 {
+
     public class EnvironmentSwitcher
     {
         public Dictionary<string, string> GetWebServersForEnvironments()
         {
-            var serverList = new Dictionary<string, string>();
+            var webServerList = new Dictionary<string, string>();
             foreach (var environment in Enum.GetValues(typeof(EnvironmentEnum)).Cast<EnvironmentEnum>())
             {
                 var server = ConfigurationManager.AppSettings["webServer_" + environment.ToString()];
                 if (server != null)
                 {
-                    serverList.Add(environment.ToString(), server);
+                    webServerList.Add(environment.ToString(), server);
                 }
             }
-            return serverList;
+            if (webServerList.Count < 1)
+            {
+                webServerList.Add("Test", "localhost");
+            }
+            return webServerList;
         }
 
         public KeyValuePair<string, string> GetWebServerForEnvironment(EnvironmentEnum environment)
         {
             var server = ConfigurationManager.AppSettings["webServer_" + environment.ToString()];
-            return new KeyValuePair<string,string>(environment.ToString(), server);
+            return new KeyValuePair<string, string>(environment.ToString(), server);
         }
 
-        public List<string> GetDefaultIconServersForEnvironment(EnvironmentEnum environment)
+        public List<string> GetDefaultAppServersForEnvironment(EnvironmentEnum environment)
         {
-            return GetDefaultIconServersForEnvironment(environment.ToString());
+            return GetDefaultAppServersForEnvironment(environment.ToString());
         }
 
-        public List<string> GetDefaultIconServersForEnvironment(string environment)
+        public List<string> GetDefaultAppServersForEnvironment(string environment)
         {
             if (string.IsNullOrWhiteSpace(environment)) environment = "Dev";
             var defaultServers = new List<string>();
-            string configEntryForEnv = ConfigurationManager.AppSettings["serviceServers_" + environment];
+            string configEntryForEnv = ConfigurationManager.AppSettings["appServers_" + environment];
 
             if (!String.IsNullOrWhiteSpace(configEntryForEnv))
             {

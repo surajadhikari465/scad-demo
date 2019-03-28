@@ -25,14 +25,8 @@ namespace Icon.Dashboard.Mvc.Filters
 
         public DashboardAuthorization() : base()
         {
-            if (ConfigurationManager.AppSettings[AppSettingForReadOnlyGroup] != null)
-            {
-                ReadOnlyGroupRole = ConfigurationManager.AppSettings[AppSettingForReadOnlyGroup];
-            }
-            if (ConfigurationManager.AppSettings[AppSettingForEditingGroup] != null)
-            {
-                PrivilegedGroupRole = ConfigurationManager.AppSettings[AppSettingForEditingGroup];
-            }
+            ReadOnlyGroupRole = ConfigurationManager.AppSettings[AppSettingForReadOnlyGroup];
+            PrivilegedGroupRole = ConfigurationManager.AppSettings[AppSettingForEditingGroup];
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)

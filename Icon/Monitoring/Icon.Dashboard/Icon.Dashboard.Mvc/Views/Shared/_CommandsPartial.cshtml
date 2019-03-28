@@ -28,7 +28,7 @@
         }
         using (Html.BeginForm(action, controller, new { application = Model.Name, server = Model.Server, command = cmd }, FormMethod.Post, null))
         {
-            <button type="submit" value="@cmd" class="btn btn-@bootstrapClass btn-sm btn-block">
+            <button type="submit" value="@cmd" class="btn btn-@bootstrapClass btn-sm btn-block @(Model.CommandsEnabled  ? "" : "disabled")">
                 @cmd
             </button>
         }

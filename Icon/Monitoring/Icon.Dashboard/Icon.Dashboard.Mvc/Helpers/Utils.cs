@@ -37,9 +37,9 @@ namespace Icon.Dashboard.Mvc.Helpers
                 case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.QA:
                     environmentClass = "warning";
                     break;
-                //case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Prd:
-                //    environmentClass = "danger";
-                //    break;
+                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Prd:
+                    environmentClass = "danger";
+                    break;
                 case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Undefined:
                 default:
                     environmentClass = "default";
@@ -89,7 +89,7 @@ namespace Icon.Dashboard.Mvc.Helpers
             }
             return requestIdParameter;
         }
-        
+
         public static string Environment
         {
             get
@@ -109,7 +109,7 @@ namespace Icon.Dashboard.Mvc.Helpers
         private const string DefaultDataFileName = "SampleDataFile.xml";
 
         public static string GetPathForDataFile(HttpServerUtilityBase serverUtility, string dataFileName)
-            //string pathToXsdSchema = "Applications.xsd", bool validateXml = true)
+        //string pathToXsdSchema = "Applications.xsd", bool validateXml = true)
         {
             if (serverUtility == null) throw new ArgumentNullException(nameof(serverUtility));
             if (String.IsNullOrWhiteSpace(dataFileName)) throw new ArgumentNullException(nameof(dataFileName));
@@ -136,9 +136,7 @@ namespace Icon.Dashboard.Mvc.Helpers
             get
             {
                 var stringVal = ConfigurationManager.AppSettings["serviceCommandTimeoutMilliseconds"];
-                int val;
-                if (!int.TryParse(stringVal, out val))
-                    val = 10000;
+                if (!int.TryParse(stringVal, out int val)) val = 10000;
                 return val;
             }
         }

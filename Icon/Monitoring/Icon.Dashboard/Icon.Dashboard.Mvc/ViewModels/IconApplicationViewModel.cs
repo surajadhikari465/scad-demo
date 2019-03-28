@@ -116,6 +116,8 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public string CurrentEsbEnvironment { get; set; }
 
         public bool ConfigFilePathIsValid { get; set; }
+
+        public bool CommandsEnabled { get; set; }
         
     }
 }

@@ -32,9 +32,12 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
+                @if (ViewBag.CommandsEnabled)
+                {
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.ValidCommands)
                 </th>
+                }
             </tr>
         </thead>
         <tbody class="text-center">

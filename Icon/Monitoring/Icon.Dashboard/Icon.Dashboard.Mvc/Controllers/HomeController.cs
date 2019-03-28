@@ -8,6 +8,7 @@ using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Filters;
+using System.Security.Principal;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
@@ -31,6 +32,11 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
             var viewModels = DashboardDataFileService.GetApplications(dataFileWebServerPath);
+            ViewBag.CommandsEnabled = UserHasEditRights(HttpContext.User);
+            foreach (var viewModel in viewModels)
+            {
+                viewModel.CommandsEnabled = ViewBag.CommandsEnabled;
+            }
             return View(viewModels);
         }
 
@@ -42,6 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
             var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
+            viewModel.CommandsEnabled = UserHasEditRights(HttpContext.User);
             return View(viewModel);
         }
 
@@ -64,6 +71,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             //HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
             var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
+            viewModel.CommandsEnabled = UserHasEditRights(HttpContext.User);
             return View(viewModel);
         }
 
@@ -93,7 +101,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Details(string application, string server, string command)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.ExecuteServiceCommand( dataFileWebServerPath, application, server, command);
+            DashboardDataFileService.ExecuteServiceCommand(dataFileWebServerPath, application, server, command);
             return RedirectToAction("Details", "Home", new { application = application, server = server });
         }
 
@@ -142,5 +150,10 @@ namespace Icon.Dashboard.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
         #endregion
+
+        internal bool UserHasEditRights(IPrincipal user)
+        {
+            return DashboardAuthorization.IsAuthorized(user, UserRoleEnum.EditingPrivileges);
+        }
     }
 }

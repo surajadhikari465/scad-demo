@@ -280,9 +280,6 @@
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Web.Test1.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Icon.Dashboard.CommonDatabaseAccess\Icon.Dashboard.CommonDatabaseAccess.csproj">

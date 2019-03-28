@@ -12,7 +12,7 @@ namespace Icon.Dashboard.DataFileAccess.Models
         Dev,
         Test,
         QA,
-        //Perf,
-        //Prd
+        Perf,
+        Prd
     }
 }

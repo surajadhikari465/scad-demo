@@ -18,7 +18,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
         {
             // Arrange;
             var envSwitcher = new EnvironmentSwitcher();
-            const int expectedServerCount = 3;
+            const int expectedServerCount = 5;
             // Act
             var servers = envSwitcher.GetWebServersForEnvironments();
             // Assert
@@ -142,7 +142,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
         }
 
         [TestMethod]
-        public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_DEV_ShouldReturnsExpectedUrls()
+        public void EnvironmentSwitcher_GetDefaultAppServersForEnvironment_DEV_ShouldReturnsExpectedUrls()
         {
             // Arrange;
             var envSwitcher = new EnvironmentSwitcher();
@@ -153,17 +153,17 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
             };
 
             // Act
-            var actualSevers = envSwitcher.GetDefaultIconServersForEnvironment(env);
+            var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
 
             // Assert
             foreach ( var expectedServer in expectedServerNames)
             {
-                Assert.IsTrue(actualSevers.Contains(expectedServer));
+                Assert.IsTrue(actualSevers.Contains(expectedServer), $"Expectedj to find '{expectedServer}'");
             }
         }
 
         [TestMethod]
-        public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_TST_ShouldReturnsExpectedUrls()
+        public void EnvironmentSwitcher_GetDefaultAppServersForEnvironment_TST_ShouldReturnsExpectedUrls()
         {
             // Arrange;
             var envSwitcher = new EnvironmentSwitcher();
@@ -175,17 +175,17 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
             };
 
             // Act
-            var actualSevers = envSwitcher.GetDefaultIconServersForEnvironment(env);
+            var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
 
             // Assert
             foreach (var expectedServer in expectedServerNames)
             {
-                Assert.IsTrue(actualSevers.Contains(expectedServer));
+                Assert.IsTrue(actualSevers.Contains(expectedServer), $"Expected to find '{expectedServer}'");
             }
         }
 
         [TestMethod]
-        public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_QA_ShouldReturnsExpectedUrls()
+        public void EnvironmentSwitcher_GetDefaultAppServersForEnvironment_QA_ShouldReturnsExpectedUrls()
         {
             // Arrange;
             var envSwitcher = new EnvironmentSwitcher();
@@ -200,12 +200,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
             };
 
             // Act
-            var actualSevers = envSwitcher.GetDefaultIconServersForEnvironment(env);
+            var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
 
             // Assert
             foreach (var expectedServer in expectedServerNames)
             {
-                Assert.IsTrue(actualSevers.Contains(expectedServer));
+                Assert.IsTrue(actualSevers.Contains(expectedServer), $"Expected to find '{expectedServer}'");
             }
         }
 
@@ -222,41 +222,41 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
         //    };
 
         //    // Act
-        //    var actualSevers = envSwitcher.GetDefaultIconServersForEnvironment(env);
+        //    var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
 
         //    // Assert
         //    foreach (var expectedServer in expectedServerNames)
         //    {
-        //        Assert.IsTrue(actualSevers.Contains(expectedServer));
+        //        Assert.IsTrue(actualSevers.Contains(expectedServer), $"Expected to find '{expectedServer}'");
         //    }
         //}
 
-        //[TestMethod]
-        //public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_PRD_ShouldReturnsExpectedUrls()
-        //{
-        //    // Arrange;
-        //    var envSwitcher = new EnvironmentSwitcher();
-        //    var env = EnvironmentEnum.Prd;
-        //    List<string> expectedServerNames = new List<string>
-        //    {
-        //        "vm-icon-prd1",
-        //        "vm-icon-prd2",
-        //        "vm-icon-prd3",
-        //        "vm-icon-prd4",
-        //        "vm-icon-prd5",
-        //        "vm-icon-prd6",
-        //        "mammoth-app01-prd",
-        //        "mammoth-app02-prd",
-        //    };
+        [TestMethod]
+        public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_PRD_ShouldReturnsExpectedUrls()
+        {
+            // Arrange;
+            var envSwitcher = new EnvironmentSwitcher();
+            var env = EnvironmentEnum.Prd;
+            List<string> expectedServerNames = new List<string>
+            {
+                "vm-icon-prd1",
+                "vm-icon-prd2",
+                "vm-icon-prd3",
+                "vm-icon-prd4",
+                "vm-icon-prd5",
+                "vm-icon-prd6",
+                "mammoth-app01-prd",
+                "mammoth-app02-prd",
+            };
 
-        //    // Act
-        //    var actualSevers = envSwitcher.GetDefaultIconServersForEnvironment(env);
+            // Act
+            var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
 
-        //    // Assert
-        //    foreach (var expectedServer in expectedServerNames)
-        //    {
-        //        Assert.IsTrue(actualSevers.Contains(expectedServer));
-        //    }
-        //}
+            // Assert
+            foreach (var expectedServer in expectedServerNames)
+            {
+                Assert.IsTrue(actualSevers.Contains(expectedServer), $"Expected to find '{expectedServer}'");
+            }
+        }
     }
 }
