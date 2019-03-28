@@ -34,6 +34,7 @@ BEGIN
 	JOIN StoreItemVendor siv ON vch.StoreItemVendorID = siv.StoreItemVendorID
 	JOIN Item i ON siv.Item_Key = i.Item_Key
 	JOIN ItemIdentifier ii ON siv.Item_Key = ii.Item_Key
+    JOIN ValidatedScanCode vsc ON vsc.ScanCode = ii.Identifier
 	JOIN Store s ON siv.Store_No = s.Store_No
 	WHERE i.Deleted_Item = 0 AND i.Remove_Item = 0
 	  AND ii.Deleted_Identifier = 0 AND ii.Remove_Identifier = 0
