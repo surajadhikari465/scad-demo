@@ -4,7 +4,3 @@
     [StatusDescription] NVARCHAR (100) NOT NULL,
     CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED ([StatusID] ASC)
 );
-
-
-
-
