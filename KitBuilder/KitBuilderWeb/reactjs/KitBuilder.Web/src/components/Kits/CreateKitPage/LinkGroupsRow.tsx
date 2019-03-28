@@ -25,7 +25,7 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
             }
     }
 // @ts-ignore
-    const allItems = (props.linkedGroup.linkGroupItemDto || props.linkedGroup.linkGroupItem).map(item => 
+    const allItems = props.linkedGroup.linkGroupItemDto.map(item => 
     <Grid item xs={6} md={4} key = {item.linkGroupItemId}>
         <Checkbox className = "item-checkbox" checked={isItemSelected(item)} onChange={(e, checked) => handleSelectionChanged(item, checked)}/> 
          {item.item.productDesc} 

@@ -63,7 +63,7 @@ class CreateKitPage extends React.PureComponent<
       addLinkGroupIsOpen: false,
       kitId: 0,
       description: "",
-      kitType: 1,
+      kitType: 3,
       LinkGroups: [],
       selectedLinkGroupItems: [],
       item: null,
@@ -87,13 +87,9 @@ class CreateKitPage extends React.PureComponent<
         .then(response => response.json())
         .then(response => response[0])
         .then(response => {
-          const kitLinkGroup = response.kitLinkGroup.map(
-            (lg: any) => lg.linkGroup
-          );
           const selectedLinkGroupItems = response.kitLinkGroup
-            .map((lg: any) => lg.kitLinkGroupItem)
-            .reduce((final: any, next: any) => [...final, ...next], [])
-            .map((klgi: any) => klgi.linkGroupItem);
+            .map((lg: any) => lg.kitLinkGroupItems)
+            .reduce((final: LinkGroupItem[], next: LinkGroupItem[]) => [...final, ...next], []);
           const Instructions = response.kitInstructionList.map(
             (kitInstruction: any) => kitInstruction.instructionList
           );
@@ -114,10 +110,16 @@ class CreateKitPage extends React.PureComponent<
             description,
             item
           });
-          return kitLinkGroup;
+          return response.kitLinkGroup;
         })
-        .then(LinkGroups => {
+        .then(kitLinkGroups => {
+          // download all link groups with children
+          const linkGroupPromises: Promise<LinkGroup>[] = kitLinkGroups
+            .map((lg: any) => Axios.get(`${KbApiMethod("LinkGroups")}/${lg.linkGroupId}/true`).then(response => response.data));
+
+          Promise.all(linkGroupPromises).then((LinkGroups: LinkGroup[]) => {
           this.setState({ LinkGroups, loading: false });
+          });
         });
     }
   }
@@ -157,7 +159,8 @@ class CreateKitPage extends React.PureComponent<
       Axios.post(KbApiMethod("Kits"), this.buildAddKitPayload())
         .then(r => {
           if (r.status === 200) {
-            this.props.showAlert("Kit Created Succesfully", "success");
+            const message = this.state.editMode ? "Kit Saved Succesfully" : "Kit Created Succesfully";
+            this.props.showAlert(message, "success");
           }
         })
         .catch(e => {
@@ -474,6 +477,7 @@ class CreateKitPage extends React.PureComponent<
               }}
             />
             <ConfirmSaveDialog
+              isEdit = {this.state.editMode}
               open={this.state.confirmCreatKitIsOpen}
               onClose={() => this.setState({ confirmCreatKitIsOpen: false })}
               onCreateKit={() => {

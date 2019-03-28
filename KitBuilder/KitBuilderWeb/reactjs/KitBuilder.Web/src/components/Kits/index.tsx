@@ -85,7 +85,7 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
                  'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
              }
           
-            var url = urlStart +"/"+ row.row._original.KitId;
+            var url = urlStart +"/"+ row.row._original.kitId;
             axios.delete(url, { headers },
             ).then(response=>{   
             for (let i = 0 ; i < data.length ; i ++) {

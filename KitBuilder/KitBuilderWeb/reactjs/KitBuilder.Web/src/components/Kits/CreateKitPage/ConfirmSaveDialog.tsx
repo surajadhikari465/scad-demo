@@ -10,6 +10,7 @@ import {
 interface IConfirmSaveDialogProps {
   onClose: any;
   onCreateKit: any;
+  isEdit: boolean;
   open: boolean;
 }
 
@@ -23,7 +24,10 @@ export default function ConfirmSaveDialog(props: IConfirmSaveDialogProps) {
     >
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to create a new Kit?
+          { props.isEdit ?
+          "Are you sure you want to save this kit?" :
+          "Are you sure you want to create a new kit?"
+          }
         </DialogContentText>
       </DialogContent>
       <DialogActions>

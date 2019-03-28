@@ -306,18 +306,48 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(kitProperties);
         }
-        private IEnumerable<Kit> GetKits(int kitId, bool loadChildObjects)
+        private IEnumerable<Object> GetKits(int kitId, bool loadChildObjects)
         {
             if (loadChildObjects)
             {
-                return kitRepository.UnitOfWork.Context.Kit.Where(k => k.KitId == kitId)
-                       .Include(k => k.KitInstructionList).ThenInclude(il => il.InstructionList)
-                       .Include(k => k.KitLinkGroup).ThenInclude(s => s.LinkGroup).ThenInclude(d => d.LinkGroupItem).ThenInclude(lg => lg.Item)
-                       .Include(k => k.Item)
-                       .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem)
-                       .Include(k => k.KitLinkGroup).ThenInclude(k => k.KitLinkGroupItem).ThenInclude(kgi => kgi.KitLinkGroupItemLocale)
-                       .Include(k => k.KitLocale).ThenInclude(f => f.KitLinkGroupLocale)
-                       .Include(k => k.KitLocale);
+                var kitLinkGroupItems = kitRepository.UnitOfWork.Context.KitLinkGroupItem.FromSql<KitLinkGroupItem>(@"select klgi.*
+                                                           from kit 
+                                                            inner join kitlinkgroup klg on klg.KitId = kit.KitId
+                                                            inner join KitLinkGroupItem klgi on klgi.KitLinkGroupId= klg.KitLinkGroupId
+                                                             where kit.kitid = {0};", kitId).ToList();
+
+                return 
+                    from k in kitRepository.UnitOfWork.Context.Kit
+                    where k.KitId == kitId
+                    select new
+                    {
+                        k.KitId,
+                        k.Description,
+                        k.KitType,
+                        k.isDisplayMandatory,
+                        k.showRecipe,
+                        k.Item,
+                        KitLinkGroup = k.KitLinkGroup.Select(x => new {
+                            x.KitLinkGroupId,
+                            x.LinkGroupId,
+                            x.KitId,
+                            KitLinkGroupItems = from klgi2 in kitLinkGroupItems
+                                                where klgi2.KitLinkGroupId == x.KitLinkGroupId
+                                                join lgi2 in linkGroupItemRepository.GetAll() on klgi2.LinkGroupItemId equals lgi2.LinkGroupItemId
+                                                select new
+                                                {
+                                                    klgi2.KitLinkGroupId,
+                                                    x.LinkGroupId,
+                                                    klgi2.LinkGroupItemId,
+                                                }
+                        }),
+                        KitInstructionList = k.KitInstructionList.Select(kil => new
+                        {
+                             kil.KitId,
+                                kil.InstructionListId,
+                            kil.InstructionList,
+                        })
+                    };
             }
 
             else
