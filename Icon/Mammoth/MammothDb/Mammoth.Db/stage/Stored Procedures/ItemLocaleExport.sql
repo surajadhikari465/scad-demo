@@ -76,6 +76,13 @@ BEGIN
 			)
 		DROP INDEX IX_ItemLocaleExportStaging ON stage.ItemLocaleExportStaging
 
+   IF EXISTS (    
+   SELECT *    
+   FROM sys.indexes    
+   WHERE name LIKE '%IX_ItemLocaleExportStaging_BU%'    
+   )    
+  DROP INDEX IX_ItemLocaleExportStaging_BU ON stage.ItemLocaleExportStaging    
+
 	SET @timestamp = GETDATE();
 	SET @msg = CONVERT(VARCHAR, @timestamp, 120) + ': begin item locale staging '
 
@@ -155,10 +162,16 @@ BEGIN
 			)
 	WITH NOWAIT
 
-	CREATE NONCLUSTERED INDEX IX_ItemLocaleExportStaging ON stage.ItemLocaleExportStaging (
+   CREATE NONCLUSTERED INDEX IX_ItemLocaleExportStaging ON stage.ItemLocaleExportStaging (
 		localeid,
 		itemid
 		)
+
+   CREATE NONCLUSTERED INDEX IX_ItemLocaleExportStaging_BU ON stage.ItemLocaleExportStaging (    
+	BusinessUnitId,    
+	itemid    
+		)    
+    
 
 	-- left joins were removed.
 	-- recreated as updates with inner joins.

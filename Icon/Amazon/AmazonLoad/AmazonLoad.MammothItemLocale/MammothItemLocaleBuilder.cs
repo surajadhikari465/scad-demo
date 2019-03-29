@@ -1,18 +1,18 @@
 ﻿using AmazonLoad.Common;
 using Dapper;
-using Icon.Common;
-using Icon.Esb;
 using Icon.Esb.Producer;
 using MoreLinq;
 using Newtonsoft.Json;
+using OutputColorizer;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 
 namespace AmazonLoad.MammothItemLocale
 {
@@ -21,48 +21,157 @@ namespace AmazonLoad.MammothItemLocale
         public static int NumberOfRecordsSent = 0;
         public static int NumberOfMessagesSent = 0;
         internal static int DefaultBatchSize = 100;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-    
 
-        public static void LoadMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
-            string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  bool sendToEsb = true )
+        public static void CheckStagingTable(string mammothConnectionString, int timeoutInSeconds)
         {
-
-            SqlConnection sqlConnection = new SqlConnection(mammothConnectionString);
-
-            // stage data
-           StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerEsbMessage, connectionTimeoutSeconds);
-
-            var numberOfGroups =
-                sqlConnection.QueryFirst<int>("select max(GroupID) from stage.ItemLocaleExportStaging where processed = 0", commandTimeout: connectionTimeoutSeconds) + 1;
-
-            Console.WriteLine($"{numberOfGroups} esb message group(s) created");
-
-            var GroupRanges = CalculateRanges(numberOfGroups, clientSideProcessGroupCount);
-
-            Console.WriteLine($"{GroupRanges.Count()} client side data sets will be processed.");
-
-            foreach (var groupRange in GroupRanges)
+            using (var connection = new SqlConnection(mammothConnectionString))
             {
-                Console.WriteLine($"message group range {groupRange.Start}-{groupRange.End}");
-                var models =
-                    sqlConnection.Query<MammothItemLocaleModel>($"select * from stage.ItemLocaleExportStaging where groupid >= {groupRange.Start} and groupid <= {groupRange.End}  and processed = 0", commandTimeout: connectionTimeoutSeconds).ToList();
+                var info = GetStagingTableInfo(connection, timeoutInSeconds);
 
-                for (int i = groupRange.Start; i <= groupRange.End; i++)
+                logger.Info($"Staging Table has{info.TotalRecords} record(s)");
+
+                if (info.UnprocessedRecords > 0)
                 {
-                    var chunk = models.Where(w => w.GroupId == i);
-                    // now send the message(s) to the eSB
-                    SendMessagesToEsbServerSideGroups(chunk.ToList(), esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, sendToEsb);
+                    logger.Info($"{info.UnprocessedRecords} record(s) have not been processed");
+                    logger.Info($"{info.UnProcessedGroupIds.Count()} message groups have not been processed");
                 }
-               
+                else
+                {
+                    logger.Info($"All records have been processed.");
+                }
+                    logger.Info("");
             }
-
+     
         }
 
-        internal static IEnumerable<GroupRange> CalculateRanges(int numberOfGroups, int batchSize)
+        internal static StagingTableInfo GetStagingTableInfo(SqlConnection connection, int timeoutInSeconds)
         {
-            return Enumerable.Range(0, numberOfGroups + 1).Batch(batchSize).Select(e => new GroupRange { Start = e.First(), End = e.Last() });
+            logger.Info("Checking status of staging table...");
+
+            var info = new StagingTableInfo();
+
+            info.TotalRecords= connection.QueryFirst<int>("select count(*)  from stage.ItemLocaleExportStaging with (nolock)", commandTimeout: timeoutInSeconds);
+            if (info.TotalRecords > 0)
+            {
+                info.UnprocessedRecords = connection.QueryFirst<int>("select count(*) from stage.ItemLocaleExportStaging with (nolock) where Processed =0 ", commandTimeout: timeoutInSeconds);
+                var groups = connection.Query<int?>("select distinct GroupId from stage.ItemLocaleExportStaging with (nolock) where Processed = 0", commandTimeout: timeoutInSeconds);
+                info.UnProcessedGroupIds = groups.Any(g => g.HasValue) ? groups.Where(g => g.HasValue).Select(g=> g.Value).ToList() : new List<int>();
+            }
+                
+            return info;
+        }
+
+
+        public static void ClearStagingTable(string mammothConnectionString, int commandTimeoutInSeconds)
+        {
+
+            using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
+            {
+
+                var stagingInfo = GetStagingTableInfo(sqlConnection, commandTimeoutInSeconds);
+
+                if (stagingInfo.UnprocessedRecords > 0)
+                {
+                    logger.Info($"Staging table contains {stagingInfo.UnprocessedRecords} unprocessed record(s)");
+                    logger.Info($"They will be cleared in 10 seconds. Press Control-C to Cancel...");
+
+                    Enumerable.Range(0, 10).ForEach(x => Thread.Sleep(1000));
+                }
+                sqlConnection.Execute("truncate table stage.ItemLocaleExportStaging", commandTimeout: commandTimeoutInSeconds);
+            }
+        }
+
+
+        public static void ResetProcessedRecords(string mammothConnectionString, int timeoutInSeconds)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
+            {
+                var stagingInfo = GetStagingTableInfo(sqlConnection, timeoutInSeconds);
+
+                if (stagingInfo.UnprocessedRecords > 0)
+                {
+                    logger.Info($"Staging table contains {stagingInfo.TotalRecords} record(s)");
+                    logger.Info($"Processed flags will be cleared in 10 seconds. Press Control-C to Cancel...");
+
+                    Enumerable.Range(0, 10).ForEach(x => Thread.Sleep(1000));
+                }
+
+                sqlConnection.Execute("update stage.ItemLocaleExportStaging set Processed = 0");
+            }
+        }
+        public static void StageRecords(string mammothConnectionString, int timeoutInSeconds, string region, int maxNumberOfRows, int numberOfRecordsPerEsbMessage)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
+            {
+                var stagingInfo = GetStagingTableInfo(sqlConnection, timeoutInSeconds);
+                if (stagingInfo.UnprocessedRecords > 0)
+                {
+                    logger.Info($"Staging table contains {stagingInfo.UnprocessedRecords} unprocessed record(s)");
+                    logger.Info($"They will be cleared in 10 seconds. Press Control-C to Cancel...");
+
+                    Enumerable.Range(0, 10).ForEach(x => Thread.Sleep(1000));
+                }
+
+                StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerEsbMessage, timeoutInSeconds);
+                
+            }
+        }
+
+
+
+            public static void ProcessMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
+            string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToEsb = true )
+        {
+
+            using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
+            {
+
+                var stagingInfo = GetStagingTableInfo(sqlConnection, connectionTimeoutSeconds);
+                var numberOfGroups = stagingInfo.UnProcessedGroupIds.Count();
+                var GroupRanges = CalculateRanges(stagingInfo.UnProcessedGroupIds, clientSideProcessGroupCount);
+
+                logger.Info($"{numberOfGroups} esb message group(s) created");
+                logger.Info($"{GroupRanges.Count()} client side data sets will be processed.");
+
+                foreach (var g in GroupRanges)
+                {
+                    var first = g.Groups.First();
+                    var last = g.Groups.Last();
+
+                    logger.Info($"pulling data for groups {first}-{last}");
+                    var models =
+                        sqlConnection.Query<MammothItemLocaleModel>($"select * from stage.ItemLocaleExportStaging where groupid >= {first} and groupid <= {last}  and processed = 0", commandTimeout: connectionTimeoutSeconds).ToList();
+
+                    try
+                    {
+                        var processingRange = Enumerable.Range(first, last+1);
+                        logger.Info($"processing data for groups {first}-{last}");
+                        Parallel.ForEach(processingRange, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (groupId) =>
+                          {
+                              var chunk = models.Where(w => w.GroupId == groupId);
+                              SendMessagesToEsbServerSideGroups(chunk.ToList(), esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToEsb);
+                          });
+                        logger.Info($"finalizing groups {first}-{last}");
+                        sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Info($"group range {first}-{last} failed");
+                        logger.Info(ex.Message);
+                        logger.Info("");
+                    }
+                }
+            }
+        }
+
+        internal static IEnumerable<GroupRange> CalculateRanges(List<int> unprocessedGroups, int batchSize)
+        {
+            var batches = unprocessedGroups.OrderBy(o => o).Batch(batchSize).Select(s => new GroupRange { Groups= s.ToList() });
+            return batches;
         }
         
         
@@ -82,8 +191,9 @@ namespace AmazonLoad.MammothItemLocale
 
         internal static void SendMessagesToEsbServerSideGroups(List<MammothItemLocaleModel> models,
             IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-            string nonReceivingSysName, string transactionType, bool sendToEsbFlag = true)
+            string nonReceivingSysName, string transactionType, int groupId, bool sendToEsbFlag = true)
         {
+            if (!models.Any()) return;
             string message = MessageBuilderForMammothItemLocale.BuildMessage(models);
             string messageId = Guid.NewGuid().ToString();
             var headers = new Dictionary<string, string>
@@ -94,23 +204,25 @@ namespace AmazonLoad.MammothItemLocale
                 { "TransactionType", transactionType }
             };
 
-            if (!models.Any()) return;
-
-            if (sendToEsbFlag)
-            {
-                esbProducer.Send(
-                    message,
-                    messageId,
-                    headers);
-            }
-            NumberOfRecordsSent += models.Count();
-            NumberOfMessagesSent += 1;
-            if (saveMessages)
-            {
-                File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
-            }
+  
+                if (sendToEsbFlag)
+                {
+                    esbProducer.Send(
+                        message,
+                        messageId,
+                        headers);
+                }
+            
+                Interlocked.Add(ref NumberOfRecordsSent, models.Count());
+                Interlocked.Increment(ref NumberOfMessagesSent);
+            
+                if (saveMessages)
+                {
+                    File.AppendAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+                }
         }
 
+        [Obsolete("Use SendMessagesToEsbServerSideGroups instead",false)]
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
            string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsbFlag = true)
