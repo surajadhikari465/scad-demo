@@ -14,6 +14,7 @@ EXAMPLE (showing Icon-DB scripts path):
 */
 
 :r .\Scripts\PopulateData\AddDeleteNutritionToEventType.sql --2019.02.11 PBI 4535
+:r .\Scripts\PopulateData\PopulateTraits_PBI19318.sql --2019.03.29 PBI 19318
 
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql
