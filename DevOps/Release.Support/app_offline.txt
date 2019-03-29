@@ -1,0 +1,5 @@
+<html>
+    <body>
+        <h1>Application updating please wait...</h1>
+    </body>
+</html>
