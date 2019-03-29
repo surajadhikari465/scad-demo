@@ -12,6 +12,7 @@ const styles = (theme: any) => ({
     root: {
         marginTop: 24
     },
+    
     label: {
         textAlign: "right" as 'right',
         marginBottom: 0 + ' !important',
@@ -64,7 +65,7 @@ function SearchInstructionLists(props: any) {
                     </Grid>
                 </Grid>
                 {props.value ? <Grid item xs={12} sm={9} md={3} lg={3}>
-                   {props.type} Instruction 
+                <div className="div_instruction"> {props.type} Instruction </div><div className="div_text">Status: {props.status}</div>
                 </Grid>: null}
                 <Grid item xs={12} sm={9} md={3} lg={3}>
                     <Button variant="outlined" color="primary" className={props.classes.button} onClick={props.onAddNewList} >

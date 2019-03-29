@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using KitBuilder.DataAccess;
+using enums =KitBuilder.DataAccess.Enums;
 
 namespace KitBuilderWebApi.Controllers
 { 
@@ -28,7 +29,7 @@ namespace KitBuilderWebApi.Controllers
         private ILogger<InstructionListController> logger;
         private IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper;
         private IRepository<AvailablePluNumber> availablePluNumberRespository;
-
+        private IRepository<InstructionListQueue> instructionListQueueRespository;
 
         public InstructionListController(IRepository<InstructionList> instructionListRepository,
                                          IRepository<InstructionListMember> instructionListMemberRepository,
@@ -38,7 +39,8 @@ namespace KitBuilderWebApi.Controllers
                                          IHelper<InstructionListDto, InstructionListsParameters> instructionListHelper,
                                          IRepository<KitInstructionList> kitInstructionListRepository,
                                          IRepository<LinkGroupItem> linkGroupItemRepository,
-                                          IRepository<AvailablePluNumber> availablePluNumberRespository)
+                                         IRepository<AvailablePluNumber> availablePluNumberRespository,
+                                         IRepository<InstructionListQueue> instructionListQueueRespository)
         {
             this.instructionListRepository = instructionListRepository;
             this.instructionListMemberRepository = instructionListMemberRepository;
@@ -49,6 +51,7 @@ namespace KitBuilderWebApi.Controllers
             this.kitInstructionListRepository = kitInstructionListRepository;
             this.linkGroupItemRepository = linkGroupItemRepository;
             this.availablePluNumberRespository = availablePluNumberRespository;
+            this.instructionListQueueRespository = instructionListQueueRespository;       
         }
 
 
@@ -102,7 +105,7 @@ namespace KitBuilderWebApi.Controllers
                                                    Name = i.Name,
                                                    InstructionTypeId = i.InstructionTypeId,
                                                    StatusId = i.StatusId,
-                                                   Status = s.StatusCode,
+                                                   Status = s.StatusDescription,
                                                    InstructionTypeName = itr.Name
 
                                                };
@@ -155,6 +158,39 @@ namespace KitBuilderWebApi.Controllers
             return Ok(instructionListDto);
         }
 
+        [HttpPut( Name = "PublishInstructions")]
+        public IActionResult Publish([FromBody]int instructionListId)
+        {
+            var existingList = instructionListRepository.Find(i => i.InstructionListId == instructionListId);
+            if (existingList == null) return NotFound();
+
+            if(existingList.StatusId == (int)enums.Status.Building || existingList.StatusId == (int) enums.Status.PublishQueued)
+            {
+                existingList.StatusId = (int)enums.Status.PublishQueued;
+            }
+            else if (existingList.StatusId == (int)enums.Status.Modifying || existingList.StatusId == (int)enums.Status.PublishReQueued || existingList.StatusId == (int)enums.Status.Published)
+            {
+                existingList.StatusId = (int)enums.Status.PublishReQueued;
+            }
+            instructionListQueueRespository.Add(new InstructionListQueue
+            {
+                KeyId = instructionListId,
+                Status = "U",
+                InsertDateUtc = DateTime.UtcNow
+
+            });
+
+            try
+            {
+                instructionListQueueRespository.UnitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while trying to queue your publish request.");
+            }
+        }
         /// <summary>
         /// InstructionList - UPDATE
         /// </summary>
@@ -182,10 +218,17 @@ namespace KitBuilderWebApi.Controllers
             instructionList.InstructionListId = existingList.InstructionListId;
             instructionList.InsertDateUtc = existingList.InsertDateUtc;
             instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
-            if(instructionList.StatusId ==0)
+
+            if(existingList.StatusId == (int)enums.Status.Published || existingList.StatusId == (int)enums.Status.PublishFailed
+                || existingList.StatusId == (int)enums.Status.PublishReQueued || existingList.StatusId == (int)enums.Status.PublishQueued)
+            {
+                instructionList.StatusId = (int)enums.Status.Modifying;
+            }
+            else
             {
                 instructionList.StatusId = existingList.StatusId;
             }
+           
             instructionList.Name = list.Name;
             try
             {
@@ -273,7 +316,7 @@ namespace KitBuilderWebApi.Controllers
             if (!ModelState.IsValid || instructionListAddDto == null)
                 return BadRequest(ModelState);
 
-            var defaultStatus = statusRespository.Find(s => s.StatusId == (int)StatusType.IP);
+            var defaultStatus = statusRespository.Find(s => s.StatusId == (int)enums.Status.Building);
             if (defaultStatus == null)
             {
                 ModelState.AddModelError("DefaultStatus", "Unable to find 'In Progress' Status");

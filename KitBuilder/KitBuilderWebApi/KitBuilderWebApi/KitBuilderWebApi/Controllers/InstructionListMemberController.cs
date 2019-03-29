@@ -11,6 +11,7 @@ using KitBuilderWebApi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using KitBuilder.DataAccess;
+using enums = KitBuilder.DataAccess.Enums;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -83,7 +84,7 @@ namespace KitBuilderWebApi.Controllers
 
             var instructionListMembers =
                 instructionListMemberRepository.FindAll(il =>
-                    il.InstructionListId == instructionListId).OrderBy(i=> i.Group).ThenBy(i=>i.Sequence);
+                    il.InstructionListId == instructionListId && il.IsDeleted == false).OrderBy(i=> i.Group).ThenBy(i=>i.Sequence);
 
             var instructionListMembersDto = Mapper.Map<List<InstructionListMemberDto>>(instructionListMembers);
             return Ok(instructionListMembersDto);
@@ -117,6 +118,12 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "No Plu Numbers available.");
             }
 
+            if (instructionList.StatusId == (int)enums.Status.Published || instructionList.StatusId == (int)enums.Status.PublishReQueued
+                || instructionList.StatusId == (int)enums.Status.PublishFailed || instructionList.StatusId == (int)enums.Status.PublishQueued)
+            {
+                instructionList.StatusId = (int)enums.Status.Modifying;
+                instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
             var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
             instructionListMember.InstructionListId = instructionListId;
             instructionListMember.InsertDateUtc = DateTime.UtcNow;
@@ -168,6 +175,14 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "No Plu Numbers available.");
             }
             int count = 0;
+
+
+            if (instructionList.StatusId == (int)enums.Status.Published || instructionList.StatusId == (int)enums.Status.PublishReQueued
+                 || instructionList.StatusId == (int)enums.Status.PublishFailed || instructionList.StatusId == (int)enums.Status.PublishQueued)
+            {
+                instructionList.StatusId = (int)enums.Status.Modifying;
+                instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
             foreach (var instructionListMemberDto in instructionListMembersDto)
             {
                 var instructionListMember = Mapper.Map<InstructionListMember>(instructionListMemberDto);
@@ -219,10 +234,22 @@ namespace KitBuilderWebApi.Controllers
 
             if (instructionListMember != null)
             {
-                var pluNumber = availablePluNumberRespository.GetAll().Where(p => p.PluNumber == instructionListMember.PluNumber).FirstOrDefault();
-                instructionListMemberRepository.Delete(instructionListMember);
-                pluNumber.InUse = false;
-                pluNumber.LastUpdatedDateUtc = DateTime.UtcNow;
+                if (instructionList.StatusId == (int)enums.Status.Building)
+                {
+                    var pluNumber = availablePluNumberRespository.GetAll().Where(p => p.PluNumber == instructionListMember.PluNumber).FirstOrDefault();
+                    instructionListMemberRepository.Delete(instructionListMember);
+                    pluNumber.InUse = false;
+                    pluNumber.LastUpdatedDateUtc = DateTime.UtcNow;
+                }
+                else if (instructionList.StatusId == (int)enums.Status.Published || instructionList.StatusId == (int)enums.Status.Modifying
+                        || instructionList.StatusId == (int)enums.Status.PublishQueued || instructionList.StatusId == (int)enums.Status.PublishFailed
+                        || instructionList.StatusId == (int)enums.Status.PublishReQueued)
+                {
+                    instructionList.StatusId = (int)enums.Status.Modifying;
+                    instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+                    instructionListMember.IsDeleted = true;
+                    instructionListMember.LastUpdatedDateUtc = DateTime.UtcNow;
+                }
             }
 
             try
@@ -294,7 +321,7 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
 
             var instructionList = instructionListRepository.Find(il => il.InstructionListId == instructionListId);
-            
+
             if (instructionList == null)
             {
                 logger.LogWarning($"The InstructionList with Id {instructionListId} was not found.");
@@ -303,7 +330,14 @@ namespace KitBuilderWebApi.Controllers
 
             }
 
-            foreach (var instructionListMemberDto in InstructionListMembersDto)
+            if (instructionList.StatusId == (int)enums.Status.Published || instructionList.StatusId == (int)enums.Status.Modifying
+                        || instructionList.StatusId == (int)enums.Status.PublishQueued || instructionList.StatusId == (int)enums.Status.PublishFailed
+                        || instructionList.StatusId == (int)enums.Status.PublishReQueued)
+            {
+                instructionList.StatusId = (int)enums.Status.Modifying;
+                instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+            }
+                foreach (var instructionListMemberDto in InstructionListMembersDto)
             {
 
                 var existingInstructionListMemeber = instructionListMemberRepository.Find(ilm =>

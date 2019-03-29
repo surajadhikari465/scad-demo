@@ -54,6 +54,7 @@ function DisplayInstructionLists(props: DisplayInstructionListsProps) {
                                 accessor: "instructionListId",
                                 Cell: props.renderEditable(() => {}),
                                 show: false
+                              
                             },
                             {
                                 Header: "Instruction List Member Id",

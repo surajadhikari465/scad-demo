@@ -34,6 +34,7 @@ interface IInstructionListsPageState {
      isEditInstructions: boolean,
      isSaveDisabled: boolean,
      isPublishDisabled: boolean,
+     status:string
 }
 
 interface IInstructionListsPageProps {
@@ -61,6 +62,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                isEditInstructions: false,
                isSaveDisabled: true,
                isPublishDisabled: true,
+               status:""
           }
      }
 
@@ -82,6 +84,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                selectedInstructionTypeIdvalue: parseInt(event.target.value),
                error: null,
                message: null,
+               isPublishDisabled:false
           }, this.onSearch);
      }
 
@@ -125,9 +128,10 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
                     this.setInstructionListHack(data);
                })
-                    .then(() => {
-                         this.props.showAlert("Instruction Member Deleted Successfully.");
-                         this.onSearch();
+                    .then(() => { 
+                        this.Refresh(this.state.currentInstructionTypeValue);
+                        this.props.showAlert("Instruction Member Deleted Successfully.");
+                        
                     })
                     .catch((error) => {
                          this.props.showAlert("Error in deleting Instruction List Member.", "error");
@@ -174,6 +178,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
      }
      Refresh = (name: any) => {
+   
           fetch(urlStart)
                .then(response => {
                     return response.json();
@@ -214,9 +219,11 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                // @ts-ignore
                return obj.instructionListId === this.state.selectedInstructionTypeIdvalue
           })
+
           this.setState({
                currentInstructionTypeValue: result.name,
                instructionTypeName: result.instructionTypeName,
+               status: result.status,
                isLoaded: true,
           });
 
@@ -470,10 +477,30 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
           }
      }
      onPublishChanges = () => {
-          // TODO: Add logic for publishing data
-          this.props.showAlert("List Published Successfully.", "success")
-          this.setState({ isPublishDisabled: true });
-     }
+    
+          var headers = {
+               'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
+          }
+          var urlParam = this.state.selectedInstructionTypeIdvalue;
+          var url = urlStart;
+
+               axios.put(url, urlParam,
+                    {
+                         headers: headers
+                    })
+                    .then(() => {
+                         this.props.showAlert("Instruction List Queued Successfully.", "success");
+                         this.setState({
+                              isSaveDisabled: true,
+                              isPublishDisabled: false,
+                         }, ()=>this.Refresh(this.state.currentInstructionTypeValue))
+                      
+                    })
+                    .catch((error) => {
+                         this.props.showAlert("Error in Queueing Instruction List.", "error");
+                         return;
+                    })
+          }
 
      handleDialogClose = () => {
           this.setState({
@@ -560,10 +587,12 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          onChange={this.onChange}
                          options={instructionListDto}
                          onSearch={this.onSearch}
+                         status = {this.state.status}
                          onEdit={this.onEdit}
                          onAddNewList={this.onAddNewList}
                          value={this.state.selectedInstructionTypeIdvalue}
                          type={this.state.instructionTypeName}
+
                     />
 
 
