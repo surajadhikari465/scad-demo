@@ -215,7 +215,7 @@
 	IsNull(u.UserName, '') as RecvUserName,
 	IsNull(u.User_ID, 0)  as RecvUSerID,
 	iu.Unit_Abbreviation as OrderUom,
-	iui.Unit_Abbreviation as ReceiptUom,
+	iu.Unit_Abbreviation as ReceiptUom,
 	CASE WHEN IsNull(QuantityReceived,0) = QuantityOrdered THEN 'Received'  
 		WHEN oh.PartialShipment = 1 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Partially Received'
 		WHEN oh.PartialShipment = 0 AND IsNull(QuantityReceived,0) &gt; 0 THEN 'Received' 
@@ -234,7 +234,6 @@
 	JOIN SubTeam sth WITH (NOLOCK) on sth.Subteam_No = oh.Transfer_To_SubTeam
 	LEFT JOIN dbo.Users u WITH (NOLOCK) on oh.ApprovedBy = u.User_ID
 	JOIN ItemUnit iu WITH (NOLOCK) on iu.Unit_ID = oi.QuantityUnit
-	LEFT JOIN ItemUnit iui WITH (NOLOCK) on iui.Unit_ID = oi.InvoiceQuantityUnit
 	JOIN Vendor v WITH (NOLOCK) on  v.Vendor_ID = oh.Vendor_ID
 	LEFT JOIN StoreItemVendor siv WITH (NOLOCK) on siv.Store_No = s.Store_No and siv.Item_Key = i.Item_Key and siv.PrimaryVendor = 1
 	LEFT JOIN ItemVendor iv WITH (NOLOCK) on iv.Item_Key = id.Item_Key and iv.Vendor_ID = 
