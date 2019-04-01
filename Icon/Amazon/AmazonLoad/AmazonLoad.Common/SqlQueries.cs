@@ -507,7 +507,7 @@ left join PostalCode post on post.postalCodeID = addr.postalCodeID
 left join Country country on country.countryID = post.countryID
 left join Timezone zone on zone.timezoneID = addr.timezoneID
 where
-	chain.localeTypeID = 1
+	chain.localeTypeID = 1 and store.localeID is not null
 order by [ChainId], [RegionId], [MetroId], [StoreId]
 ";
             }
