@@ -168,7 +168,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 existingList.StatusId = (int)enums.Status.PublishQueued;
             }
-            else if (existingList.StatusId == (int)enums.Status.Modifying || existingList.StatusId == (int)enums.Status.PublishReQueued || existingList.StatusId == (int)enums.Status.Published)
+            else if (existingList.StatusId == (int)enums.Status.Modifying || existingList.StatusId == (int)enums.Status.PublishFailed  || existingList.StatusId == (int)enums.Status.PublishReQueued || existingList.StatusId == (int)enums.Status.Published)
             {
                 existingList.StatusId = (int)enums.Status.PublishReQueued;
             }
