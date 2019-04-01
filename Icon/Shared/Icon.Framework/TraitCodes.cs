@@ -188,5 +188,12 @@ namespace Icon.Framework
         public const string Tsf365Eligible = "TSE";
         public const string WfmEligilble = "WFE";
         public const string Other3pEligible = "OTE";
+        public const string Ident = "IDT";
+        public const string LiquorLicensing = "LL";
+        public const string PrimenowMerchantId = "MI";
+        public const string PrimenowMerchantIdEncrypted = "MIE";
+        public const string LocalZone = "LZ";
+        public const string GlobalRegionalDesignation = "GRD";
+        public const string HierarchyIdForChosenBrand = "PCO";
 	}
 }

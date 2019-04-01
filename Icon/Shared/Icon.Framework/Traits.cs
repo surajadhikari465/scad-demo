@@ -189,6 +189,13 @@ namespace Icon.Framework
         public const int Tsf365Eligible = 180;
         public const int WfmEligilble = 181;
         public const int Other3pEligible = 182;
+        public const int Ident = 183;
+        public const int LiquorLicensing = 184;
+        public const int PrimenowMerchantId = 185;
+        public const int PrimenowMerchantIdEncrypted = 186;
+        public const int LocalZone = 187;
+        public const int GlobalRegionalDesignation = 188;
+        public const int HierarchyIdForChosenBrand = 189;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -368,7 +375,14 @@ namespace Icon.Framework
 				{ "ESE", 179 },
 				{ "TSE", 180 },
 				{ "WFE", 181 },
-				{ "OTE", 182 }
+				{ "OTE", 182 },
+				{ "IDT", 183 },
+				{ "LL", 184 },
+				{ "MI", 185 },
+				{ "MIE", 186 },
+				{ "LZ", 187 },
+				{ "GRD", 188 },
+				{ "PCO", 189 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -551,6 +565,13 @@ namespace Icon.Framework
 			public const string Tsf365Eligible = "TSF (365) Eligible";
 			public const string WfmEligilble = "WFM Eligilble";
 			public const string Other3pEligible = "Other 3P Eligible";
+			public const string Ident = "Ident";
+			public const string LiquorLicensing = "Liquor Licensing";
+			public const string PrimenowMerchantId = "PrimeNow Merchant ID";
+			public const string PrimenowMerchantIdEncrypted = "PrimeNow Merchant ID Encrypted";
+			public const string LocalZone = "Local Zone";
+			public const string GlobalRegionalDesignation = "Global/Regional Designation";
+			public const string HierarchyIdForChosenBrand = "Hierarchy ID for chosen brand";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -730,7 +751,14 @@ namespace Icon.Framework
 				{ 179, "Estore Eligible" },
 				{ 180, "TSF (365) Eligible" },
 				{ 181, "WFM Eligilble" },
-				{ 182, "Other 3P Eligible" }
+				{ 182, "Other 3P Eligible" },
+				{ 183, "Ident" },
+				{ 184, "Liquor Licensing" },
+				{ 185, "PrimeNow Merchant ID" },
+				{ 186, "PrimeNow Merchant ID Encrypted" },
+				{ 187, "Local Zone" },
+				{ 188, "Global/Regional Designation" },
+				{ 189, "Hierarchy ID for chosen brand" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -914,6 +942,13 @@ namespace Icon.Framework
 			public const string Tsf365Eligible = "TSE";
 			public const string WfmEligilble = "WFE";
 			public const string Other3pEligible = "OTE";
+			public const string Ident = "IDT";
+			public const string LiquorLicensing = "LL";
+			public const string PrimenowMerchantId = "MI";
+			public const string PrimenowMerchantIdEncrypted = "MIE";
+			public const string LocalZone = "LZ";
+			public const string GlobalRegionalDesignation = "GRD";
+			public const string HierarchyIdForChosenBrand = "PCO";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1093,7 +1128,14 @@ namespace Icon.Framework
 				{ 179, "ESE" },
 				{ 180, "TSE" },
 				{ 181, "WFE" },
-				{ 182, "OTE" }
+				{ 182, "OTE" },
+				{ 183, "IDT" },
+				{ 184, "LL" },
+				{ 185, "MI" },
+				{ 186, "MIE" },
+				{ 187, "LZ" },
+				{ 188, "GRD" },
+				{ 189, "PCO" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}
