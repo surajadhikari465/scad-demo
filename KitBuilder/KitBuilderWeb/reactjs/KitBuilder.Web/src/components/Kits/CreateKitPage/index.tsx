@@ -281,6 +281,7 @@ class CreateKitPage extends React.PureComponent<
             {error && <div className="create-kit-error">{error}</div>}
             {message && <div className="create-kit-message">{message}</div>}
             <StyledPanel
+              padding={24}
               header={
                 <PageTitle icon="build">
                   {editMode ? "Edit" : "Create"} Kit

@@ -1,24 +1,19 @@
 import * as React from 'react'
-import { withStyles } from '@material-ui/core/styles';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Button from '@material-ui/core/Button'
-import DeleteIcon from '@material-ui/icons/Delete'
 import Axios from 'axios';
 import { KbApiMethod } from 'src/components/helpers/kbapi';
-import Swal, { SweetAlertType } from 'sweetalert2'
+import withSnackbar from '../PageStyle/withSnackbar';
 
 
 interface IProps {
     DisplayData: [],
-    handleSearchRowClick(linkGroupId: number): void,
-    onSearch(): void
+    onSearch(name: string, desc: string, modName: string, plu: string, region: string): void;
+    onEdit(id: number): void;
+    showAlert(message: string, type?: string): void;
 }
 interface IState { }
-
-const styles = (theme: any) => ({
-
-});
 
 class DisplayLinkGroups extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -28,56 +23,28 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
         }
     }
 
-    onSearchResultsCellClick(row: any, column: any) {
-        if (column.Header !== "Action") {
-            if (row !== undefined) {
-
-                this.props.handleSearchRowClick(row.original.linkGroupId);
-            }
-        }
+    onSearchResultsCellClick = (row: any) => {
+        this.props.onEdit(row.original.linkGroupId);
     }
 
-    deleteKit(linkGroupRow: any) {
-
+    deleteKit = (linkGroupRow: any) => {
         var linkGroupId = linkGroupRow.original.linkGroupId;
         var url = KbApiMethod("LinkGroups") + "/" + linkGroupId;
-        let message = "";
-        let messageType: SweetAlertType | undefined = undefined;
         
         Axios.delete(url)
             .then(response => {
                 if (response.status= 204) {
-                    message = 'Kit Deleted.'
-                    messageType = "success";
-                    this.props.onSearch()
-                    Swal({
-                        title: message,
-                        type: messageType,
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ok'
-                    })
+                    this.props.showAlert("Member deleted");
                 }
             })
             .catch(error => {
+                let message;
                 if (error.response.data.includes("409")) {
                     message = 'Link Group is in use. Please make sure this kit is not assigned to any kit.'
-                    messageType = "error";
                 } else {
                     message = error.response.data
-                    messageType = "error";
                 }
-
-                Swal({
-                    title: message,
-                    type: messageType,
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok'
-                })
-
+                this.props.showAlert(message, "error");
             })
     }
 
@@ -86,11 +53,6 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
             <React.Fragment>
                 <ReactTable
                     className="-highlight -striped"
-                    getTdProps={(state: any, rowInfo: any, column: any, instance: any) => ({
-                        onClick: (e: any) => {
-                            this.onSearchResultsCellClick(rowInfo, column)
-                        }
-                    })}
                     defaultPageSize={10}
                     data={this.props.DisplayData}
                     columns={[
@@ -98,29 +60,38 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
                             Header: "Link Group Name",
                             accessor: "groupName",
                             show: true,
-                            style: { cursor: "pointer" }
+                            style: { textAlign: "center" },
                         },
                         {
                             Header: "Link Group Desc",
                             accessor: "groupDescription",
                             show: true,
-                            style: { cursor: "pointer" }
+                            style: { textAlign: "center" },
                         },
                         {
                             Header: "Regional Association",
                             accessor: "regions",
                             show: true,
-                            style: { cursor: "pointer" }
-                        }, {
-                            Header: "Action",
-                            accessor: "Action",
+                            style: { textAlign: "center" },
+                        }, 
+                        {
                             style: { textAlign: "center" },
                             show: true,
                             width: 100,
                             Cell: (row) => (
-                                <Button variant="text" size="small" color="secondary" onClick={() => this.deleteKit(row)}>
+                                <Button color="primary" onClick={() => this.onSearchResultsCellClick(row)}>
+                                    Edit
+                                </Button>
+                            )
+
+                        },
+                        {
+                            style: { textAlign: "center" },
+                            show: true,
+                            width: 100,
+                            Cell: (row) => (
+                                <Button color="secondary" onClick={() => this.deleteKit(row)}>
                                     Delete
-                                <DeleteIcon />
                                 </Button>
                             )
 
@@ -135,4 +106,4 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
     }
 }
 
-export default withStyles(styles)(DisplayLinkGroups);
+export default withSnackbar(DisplayLinkGroups);

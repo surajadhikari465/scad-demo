@@ -12,6 +12,7 @@ import Header from './Header/header';
 import CreateKitPage from './Kits/CreateKitPage';
 import withSnackbar from './PageStyle/withSnackbar';
 import ViewKit from './Kits/ViewKits/ViewKit';
+import Footer from './PageStyle/Footer';
 
 const theme = createMuiTheme({
   palette: {
@@ -48,6 +49,7 @@ class AppRouter extends React.Component {
             <Route path="/ViewKit" component ={ViewKit}/>
             
           </Switch>
+          <Footer/>
         </div>
         </MuiThemeProvider>
       </HashRouter>

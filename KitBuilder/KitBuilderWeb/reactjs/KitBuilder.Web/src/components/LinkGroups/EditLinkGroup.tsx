@@ -1,267 +1,241 @@
-import * as React from 'react'
-import Grid from '@material-ui/core/Grid';
-import ReactTable from 'react-table';
-import DeleteIcon from '@material-ui/icons/Delete'
-import SaveIcon from '@material-ui/icons/Save'
-import CancelIcon from '@material-ui/icons/Cancel'
-import InstructionListPicker from './InstructionListPicker';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import withStyles from '@material-ui/core/styles/withStyles';
-import CopyLinkGroupButton from './CopyLinkGroupButton';
-import * as LinkGroupFunctions from './LinkGroupFunctions';
-import AddModifiersToLinkGroupsPage from './AddModifiersToLinkGroupsPage';
-
+import * as React from "react";
+import Grid from "@material-ui/core/Grid";
+import ReactTable from "react-table";
+import InstructionListPicker from "./InstructionListPicker";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import CopyLinkGroupButton from "./CopyLinkGroupButton";
+import * as LinkGroupFunctions from "./LinkGroupFunctions";
+import { DialogContent } from '@material-ui/core';
+import AddItemToLinkGroupDialog from './AddItemToLinkGroupDialog';
+import { Item, LinkGroup } from 'src/types/LinkGroup';
+import { KbApiMethod } from '../helpers/kbapi';
+import Axios from 'axios';
+import withSnackbar from '../PageStyle/withSnackbar';
 
 interface IState {
-    InstructionsList: any,
-    data: any,
-    LinkGroupItems: Array<any>,
-    LinkGroupName: string,
-    LinkGroupDesc: string,
-    showAddModifiers: boolean
+  InstructionsList: any;
+  data: any;
+  LinkGroupItems: Array<any>;
+  LinkGroupName: string;
+  LinkGroupDesc: string;
+  showAddModifiers: boolean;
 }
 
 interface IProps {
-    classes: any,
-    data: any,
-    handleCancelClick(): void
+  data: any;
+  handleCancelClick(): void;
+  showAlert(message: string, type?: string): void;
 }
 
-const styles = (theme: any) => ({
-    root: {
-        flexGrow: 1
-    },
-    label: {
-        fontSize: 20,
-        textAlign: "right" as 'right',
-        marginBottom: 0 + ' !important',
-        paddingRight: 10 + 'px'
-    },
-    button: {
-        margin: theme.spacing.unit,
+class EditLinkGroup extends React.Component<IProps, IState> {
+  constructor(props: any) {
+    super(props);
+    this.loadCookingInstructionsList = this.loadCookingInstructionsList.bind(
+      this
+    );
 
-    },
-    IconLeftMargin: {
-        marginLeft: '10px'
-    },
-    searchButtons: {
-        width: '175px',
-        marginLeft: '60px',
-        marginTop: '10px'
+    this.state = {
+      InstructionsList: [],
+      data: {},
+      LinkGroupItems: [],
+      LinkGroupName: "",
+      LinkGroupDesc: "",
+      showAddModifiers: false
+    };
+  }
 
-    },
-    actionButtons: {
-        width: '175px'
+  componentDidMount() {
+    this.getLinkGroupInfo();
+    this.loadCookingInstructionsList();
+  }
 
+  getLinkGroupInfo = () => {
+      const url = `${KbApiMethod("LinkGroups")}/${this.props.data.linkGroupId}/true`;
+      Axios.get(url)
+      .then((response: any) => response.data).then((linkGroup: LinkGroup) => {
+        this.setState(    {
+            data: linkGroup,
+            LinkGroupItems: linkGroup.linkGroupItemDto,
+            LinkGroupName: linkGroup.groupName,
+            LinkGroupDesc: linkGroup.groupDescription
+          });
+      })
+  }
 
-    },
-    formControl:
-    {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-        width: '100%'
-    },
+  removeLinkGroupItem = (itemIdToDelete: number) => {
+    const { LinkGroupItems } = this.state;
+    const allItemsButDeletedItem = LinkGroupItems.filter((item) => item.linkGroupItemId != itemIdToDelete);
 
-});
+    const url = `${KbApiMethod("LinkGroups")}/${this.props.data.linkGroupId}/LinkGroupItem/${itemIdToDelete}`;
+    Axios.delete(url).then(() => {
+      this.setState({ LinkGroupItems: allItemsButDeletedItem });
+      this.props.showAlert("Modifier Deleted Successfully", "success");
+    })
+    .catch((error) => {
+      this.props.showAlert(error.message, "error");
+    })
+  }
 
+  loadCookingInstructionsList() {
+    LinkGroupFunctions.LoadCookingInstructions().then(result => {
+      this.setState({ InstructionsList: result });
+    });
+  }
 
-export class EditLinkGroup extends React.Component<IProps, IState> {
+  handleChange = (name: string, event: any) => {
+    this.setState({ ...this.state, [name]: event.target.value });
+  }
 
-    constructor(props: any) {
-        super(props)
-        this.loadCookingInstructionsList = this.loadCookingInstructionsList.bind(this);
+  handleAddModifiers = (items: Item[]) => {
+    const remodeled = items.map((item: Item) => ({
+        itemId: item.itemId,
+        linkGroupId: this.props.data.linkGroupId,
+    }));
 
-        this.state = {
-            InstructionsList: [],
-            data: [],
-            LinkGroupItems: [],
-            LinkGroupName: " ",
-            LinkGroupDesc: " ",
-            showAddModifiers: false
+    const url = `${KbApiMethod("LinkGroups")}/${this.props.data.linkGroupId}/LinkGroupItems`;
+    Axios.post(url, remodeled).then(() => {
+        this.getLinkGroupInfo();
+        this.setState({showAddModifiers: false});
+        this.props.showAlert("Modifier Added Succesfully", "success");
+    }).catch((error) => {
+      this.props.showAlert(error.message, "error");
+    })
+  }
 
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.escFunction = this.escFunction.bind(this);
-    }
+  render() {
+    return (<DialogContent><Grid container justify="space-between" spacing = {16}>
+          <Grid item md={3}>
+            <TextField
+              id="LinkGroupName"
+              label="Link Group Name"
+              name="LinkGroupName"
+              value={this.state.LinkGroupName || ""}
+              onChange={e => this.handleChange("LinkGroupName", e)}
+              fullWidth
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item md={3}>
+            <TextField
+              id="LinkGroupDesc"
+              label="Link Group Description"
+              name="LinkGroupDesc"
+              value={this.state.LinkGroupDesc || ""}
+              onChange={e => this.handleChange("LinkGroupDesc", e)}
+              fullWidth
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
 
+          <Grid item md={3}>
+              <CopyLinkGroupButton
+                linkGroupId={this.state.data.linkGroupId}
+              />
+            </Grid>
 
-    componentDidMount() {
-        document.addEventListener("keydown", this.escFunction, false);
-        this.loadCookingInstructionsList();
-
-    }
-
-    static getDerivedStateFromProps(Props: any, State: any) {
-
-        if (Props.data !== State.data) {
-
-            return {
-                data: Props.data,
-                LinkGroupItems: Props.data.linkGroupItemDto,
-                LinkGroupName: Props.data.groupName,
-                LinkGroupDesc: Props.data.groupDescription
-            }
-        }
-        return null;
-    }
-
-    escFunction(event: any) {
-        if (event.keyCode === 27) {
-            this.props.handleCancelClick();
-        }
-    }
-
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.escFunction, false);
-    }
-
-    loadCookingInstructionsList() {
-
-        LinkGroupFunctions.LoadCookingInstructions()
-            .then(result => { this.setState({ InstructionsList: result }) })
-
-
-    }
-
-    handleChange(name: string, event: any) {
-        this.setState({ ...this.state, [name]: event.target.value })
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-
-                <Grid container spacing={16} justify="center">
-                    <Grid item md={3} >
-                        <TextField id="LinkGroupName"
-                            label="Link Group Name"
-                            name="LinkGroupName"
-                            value={this.state.LinkGroupName || ""}
-                            onChange={(e) => this.handleChange('LinkGroupName', e)}
-                            fullWidth
-                        />
-
-                        <TextField id="LinkGroupDesc"
-                            label="Link Group Description"
-                            name="LinkGroupDesc"
-                            value={this.state.LinkGroupDesc || ""}
-                            onChange={(e) => this.handleChange('LinkGroupDesc', e)}
-                            fullWidth
-                        />
-                    </Grid>
-
-
-                    <Grid item md={3}  >
-                        <CopyLinkGroupButton
-                            className={this.props.classes.searchButtons}
-                            linkGroupId={this.state.data.linkGroupId}
-                        />
-                        <Button variant="contained" color="secondary"
-                            className={this.props.classes.searchButtons}
-                            onClick={() => { this.setState({ showAddModifiers: !this.state.showAddModifiers }) }}
-                        >
-                            Add Modifier
-                        </Button>
-                    </Grid>
-
-                    <Grid item md={12} >
-                        <ReactTable
-                            className="-highlight -striped"
-                            defaultPageSize={10}
-                            data={this.state.LinkGroupItems}
-                            columns={[
-                                {
-                                    Header: "PLU",
-                                    accessor: "item.scanCode",
-                                    show: true,
-                                    style: { cursor: "pointer" }
-                                },
-                                {
-                                    Header: "Modifier",
-                                    accessor: "item.productDesc",
-                                    show: true,
-                                    style: { cursor: "pointer" }
-                                },
-                                {
-                                    Header: "Brand",
-                                    accessor: "item.brandName",
-                                    show: true,
-                                    style: { cursor: "pointer" }
-                                },
-                                {
-                                    Header: "InstructionListId",
-                                    accessor: "instructionListId",
-                                    show: false,
-                                    style: { cursor: "pointer" }
-                                },
-                                {
-                                    Header: "Cooking Instructions",
-                                    accessor: "instructionListId",
-                                    show: true,
-                                    style: { cursor: "pointer" },
-                                    Cell: cellInfo => (
-                                        <InstructionListPicker
-                                            SelectOptions={this.state.InstructionsList}
-                                            SelectedOption={cellInfo.original.instructionListId || -1}
-                                            LinkGroupId={cellInfo.original.linkGroupId}
-                                            handleSelectionChanged={(e) => {
-                                                const data = [...this.state.LinkGroupItems];
-                                                data[cellInfo.index][cellInfo.column.id!] = e.target.value
-                                                this.setState({ ...this.state, LinkGroupItems: data })
-                                            }
-                                            }
-                                        />)
-                                },
-                                {
-                                    Header: "Action",
-                                    accessor: "Action",
-                                    style: { textAlign: "center" },
-                                    show: true,
-                                    width: 100,
-                                    Cell: (row) => (
-                                        <Button variant="text" size="small" color="secondary">
-                                            Delete
-                                        <DeleteIcon />
-                                        </Button>
-                                    )
-                                }
-                            ]}
-                        />
-                    </Grid>
-                    <Grid container justify="space-between" >
-                        <Grid item >
-
-                            <Button variant="contained" color="default"
-
-                                onClick={this.props.handleCancelClick}
-                            >
-                                Cancel (Esc)
-                         <CancelIcon className={this.props.classes.IconLeftMargin} />
-                            </Button>
-                        </Grid>
-                        <Grid item  >
-
-                            <Button
-                                variant="contained"
-                                color="primary"
-                            >
-                                Save
-                            <SaveIcon className={this.props.classes.IconLeftMargin} />
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                {!this.state.showAddModifiers ||
-                    <AddModifiersToLinkGroupsPage onCancel={() =>{this.setState({showAddModifiers: !this.state.showAddModifiers})}} />}
-
-                {/* <pre>{JSON.stringify(this.state, null, 4)}</pre> */}
-            </React.Fragment>
-        )
-    }
+          <Grid item md={12}>
+            <ReactTable
+              className="-highlight -striped"
+              defaultPageSize={10}
+              data={this.state.LinkGroupItems}
+              columns={[
+                {
+                  Header: "PLU",
+                  accessor: "item.scanCode",
+                  show: true,
+                  style: { cursor: "pointer" }
+                },
+                {
+                  Header: "Modifier",
+                  accessor: "item.productDesc",
+                  show: true,
+                  style: { cursor: "pointer" }
+                },
+                {
+                  Header: "Brand",
+                  accessor: "item.brandName",
+                  show: true,
+                  style: { cursor: "pointer" }
+                },
+                {
+                  Header: "InstructionListId",
+                  accessor: "instructionListId",
+                  show: false,
+                  style: { cursor: "pointer" }
+                },
+                {
+                  Header: "Cooking Instructions",
+                  accessor: "instructionListId",
+                  show: true,
+                  style: { cursor: "pointer" },
+                  Cell: cellInfo => (
+                    <InstructionListPicker
+                      SelectOptions={this.state.InstructionsList}
+                      SelectedOption={cellInfo.original.instructionListId || -1}
+                      LinkGroupId={cellInfo.original.linkGroupId}
+                      handleSelectionChanged={e => {
+                        const data = [...this.state.LinkGroupItems];
+                        data[cellInfo.index][cellInfo.column.id!] =
+                          e.target.value;
+                        this.setState({ ...this.state, LinkGroupItems: data });
+                      }}
+                    />
+                  )
+                },
+                {
+                  style: { textAlign: "center" },
+                  show: true,
+                  Cell: row => (
+                    <Button color="secondary" onClick = {() => this.removeLinkGroupItem(row.original.linkGroupItemId)}>
+                      Delete
+                    </Button>
+                  ),
+                  Footer: row => (
+                    <Button
+                      variant="text"
+                      color="primary"
+                      onClick={() =>
+                        this.setState({
+                          showAddModifiers: !this.state.showAddModifiers
+                        })
+                      }
+                    >
+                      ADD MODIFIER
+                    </Button>
+                  )
+                }
+              ]}
+            />
+          </Grid>
+          <Grid item xs = {12}>
+          <Grid container justify="space-between">
+            <Grid item md={3}>
+              <Button
+                variant="outlined"
+                color="default"
+                onClick={this.props.handleCancelClick}
+                fullWidth
+              >
+                Cancel
+              </Button>
+            </Grid>
+            
+            <Grid item md={3}>
+              <Button variant="contained" color="primary" fullWidth>
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+          </Grid>
+        </Grid>
+        <AddItemToLinkGroupDialog 
+        isOpen = {this.state.showAddModifiers} 
+        handleAddModifiers={this.handleAddModifiers}
+        onClose = {() => this.setState({showAddModifiers: false})}/>
+        </DialogContent>)}
 }
 
-
-export default withStyles(styles)(EditLinkGroup);
+export default withSnackbar(EditLinkGroup);

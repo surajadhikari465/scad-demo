@@ -14,8 +14,8 @@ import { KbApiMethod } from '../helpers/kbapi';
 
 interface IProps {
     open: boolean,
-    closeModal(): void
-    onCreated(id: number): void
+    closeModal(): void,
+    onCreated(id: number): void,
 }
 interface IState {
     LinkGroupName: string,
@@ -88,10 +88,10 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
         } else {
         
             this.saveNewLinkGroup(linkGroup)
-            .then(result => {
+            .then((newLinkGroupId: number) => {
                 this.setState({  loading: false  })
+                this.props.onCreated(newLinkGroupId);
                 this.close()
-                this.props.onCreated(Number(result))
             })
             .catch(error => {
                 this.setState({ loading: false, error: error  })
@@ -105,10 +105,8 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
                     GroupName: newlinkGroup.GroupName, 
                     GroupDescription: newlinkGroup.GroupDescription, 
              }).then(res => {
-                console.log(res.data)
                  resolve(res.data.linkGroupId);
              }).catch(error => {
-                 console.log(error)
                  if(error.response.data && error.response.data.GroupDescription) {
                      reject(error.response.data.GroupDescription[0]);
                  }
@@ -135,10 +133,12 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
                     <Card >
                         <CardContent>
                             <Typography>Create a new Link Group</Typography>
-                            <div>
+                            <div className="mt-3 mb-3">
                                 <TextField id="LinkGroupName"
                                     label="Link Group Name"
                                     name="LinkGroupName"
+                                    variant="outlined"
+                                    InputLabelProps = {{shrink: true}}
                                     fullWidth
                                     onChange={this.handleChange}
                                     inputRef={(input) => { if (!input) return; input.focus() }}
@@ -148,6 +148,8 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
                                 <TextField id="LinkGroupDesc"
                                     label="Link Group Description"
                                     name="LinkGroupDesc"
+                                    variant="outlined"
+                                    InputLabelProps = {{shrink: true}}
                                     fullWidth
                                     onChange={this.handleChange}
                                 />
@@ -175,16 +177,17 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
                                             variant="outlined"
                                             disabled={this.state.loading}
                                             onClick={() => { this.close() }} >
-                                            Cancel (ESC)
+                                            Cancel
                                         </Button>
 
                                         <Button
                                             style={ButtonStyle}
                                             size="small"
-                                            variant="outlined"
+                                            variant="contained"
+                                            color="primary"
                                             disabled={this.state.loading}
                                             onClick={() => { this.save() }}>
-                                            Save
+                                            Create
                                         </Button>
                                     </Grid>
                                 </Grid>

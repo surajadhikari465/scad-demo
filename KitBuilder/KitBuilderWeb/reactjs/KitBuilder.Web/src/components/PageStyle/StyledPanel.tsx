@@ -7,7 +7,7 @@ const StyledPanel = (props: any) => {
     <Grid item xs={12} md={10}>
     {props.header}
     </Grid>
-                <Grid item xs={12} md={10}  className = "styled-panel"  style={{padding: 16}}>
+                <Grid item xs={12} md={10}  className = "styled-panel"  style={{padding: props.padding}}>
                     {props.children }
                 </Grid>
             </Grid>

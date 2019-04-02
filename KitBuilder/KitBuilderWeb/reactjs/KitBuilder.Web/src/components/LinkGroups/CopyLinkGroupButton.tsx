@@ -1,95 +1,142 @@
-import * as React from 'react'
-import Button from '@material-ui/core/Button';
-import Swal from 'sweetalert2'
-import { PerformLinkGroupSearch } from './LinkGroupFunctions'
+import * as React from "react";
+import Button from "@material-ui/core/Button";
+import { PerformLinkGroupSearch } from "./LinkGroupFunctions";
+import withSnackbar from "../PageStyle/withSnackbar";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  DialogActions
+} from "@material-ui/core";
+import { LinkGroup } from "src/types/LinkGroup";
 
 interface IProps {
-    className: string | undefined,
-    linkGroupId: number
+  linkGroupId: number;
+  showAlert(message: string, type?: string): void;
 }
-
 interface IState {
-
+  isOpen: boolean;
+  name: string;
+  description: string;
+  errors: { name: string[]; description: string[] };
 }
 
 export class CopyLinkGroupButton extends React.Component<IProps, IState> {
-    constructor(props: any) {
-        super(props)
-        this.CopyLinkGroupClick = this.CopyLinkGroupClick.bind(this);
-    }
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      isOpen: false,
+      name: "",
+      description: "",
+      errors: { name: [], description: [] }
+    };
+  }
 
+  defaultErrors = () => {
+    return { name: [], description: [] };
+  }
 
-    CopyLinkGroupClick() {
-        Swal({
-            title: 'Enter name for the new Link Group',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ok',
-            showLoaderOnConfirm: true,
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
+  CopyLinkGroupClick = () => {
+    const { name, errors } = this.state;
 
-            preConfirm: (linkGroupName) => {
-                
-                let dataArray: any = []
+    PerformLinkGroupSearch(name, "", "", "", "")
+      .then((result: LinkGroup[]) => {
+        const hasSameName = result.some(
+          linkGroup =>
+            linkGroup.groupName.toLowerCase().trim() ===
+            name.toLowerCase().trim()
+        );
+        return hasSameName;
+      })
+      .then(hasSameName => {
+        if (hasSameName) {
+          this.setState({
+            errors: {
+              ...errors,
+              name: ["A Link Group with that name already exists."]
+            }
+          });
+          return false;
+        }
+        return true;
+      })
+      .then(validationPassed => {
+        if (validationPassed) {
+          var message = `Copy LinkGroup Id: ${
+            this.props.linkGroupId
+          } with name: ${name}`;
+          this.props.showAlert(message, "success");
+          this.setState({isOpen: false});
+        }
+      })
+      .catch(error => {
+        this.props.showAlert(error.message, "error");
+      });
+  };
 
-                return new Promise((resolve, reject) => {
-                    PerformLinkGroupSearch(linkGroupName, "", "", "","")
-                        .then(result => {
-                            dataArray = result;
-                            if (dataArray.length === 0)
-                                resolve(linkGroupName)
-                            else
-                                throw new Error("A Link Group already exists with that name.")
+  CopyLinkGroup(id: number, newLinkGroupName: string) {}
 
-                        }).catch(error => {
-                            Swal.showValidationMessage(error.message)
-                            Swal.hideLoading();
-                        });
-                })
+  render() {
+    const { name, description, errors } = this.state;
+    return (
+      <React.Fragment>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => this.setState({ isOpen: true })}
+          fullWidth
+        >
+          Duplicate
+        </Button>
+        <Dialog
+          open={this.state.isOpen}
+          onClose={() => this.setState({ isOpen: false })}
+        >
+          <DialogTitle>Duplicate a Link Group</DialogTitle>
+          <DialogContent>
+            <TextField
+              variant="outlined"
+              label="Name"
+              error = {!!errors.name.length}
+              helperText={errors.name.join(" ,")}
+              value={name}
+              onChange={e => this.setState({ name: e.target.value, errors: this.defaultErrors() })}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              className="mt-3 mb-3"
+            />
 
-            },
-            input: 'text'
-        }).then(result => {
-            if (result.dismiss === Swal.DismissReason.cancel) return;
-            this.CopyLinkGroup(this.props.linkGroupId, result.value)
-        }).catch(error => {
-            this.CopyLinkGroupError(error)
-        })
-    }
-
-
-    CopyLinkGroup(id: number, newLinkGroupName: string) {
-        var message = "Copy LinkGroup Id: " + id + " with name: " + newLinkGroupName
-        Swal({
-            type: 'success',
-            html: message
-        })
-    }
-
-    CopyLinkGroupError(message: string) {
-        Swal({
-            type: 'error',
-            html: message
-        })
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={this.props.className}
-                    onClick={this.CopyLinkGroupClick}
-                >
-                    Copy Link Group
-                </Button>
-            </React.Fragment>
-        )
-    }
+            <TextField
+              variant="outlined"
+              label="Description"
+              helperText={errors.description.join(" ,")}
+              value={description}
+              onChange={e => this.setState({ description: e.target.value, errors: this.defaultErrors() })}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => this.setState({ isOpen: false })}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.CopyLinkGroupClick}
+            >
+              Create
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    );
+  }
 }
 
-export default CopyLinkGroupButton
+export default withSnackbar(CopyLinkGroupButton);

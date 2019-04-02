@@ -1,238 +1,238 @@
-import * as React from 'react';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles'
-import SearchLinkGroups from './SearchLinkGroups';
-import DisplayLinkGroups from './DisplayLinkGroups';
-import axios from 'axios'
-import { KbApiMethod } from '../helpers/kbapi';
-import EditLinkGroup from './EditLinkGroup';
-import { AddNewLinkGroupModal } from './AddNewLinkGroupModal';
-import  {PerformLinkGroupSearch} from './LinkGroupFunctions'
-
-const errorStyle = { color: 'red' };
-const sucesssStyle = { color: 'blue' };
+import * as React from "react";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+import SearchLinkGroups from "./SearchLinkGroups";
+import DisplayLinkGroups from "./DisplayLinkGroups";
+import axios from "axios";
+import { KbApiMethod } from "../helpers/kbapi";
+import { AddNewLinkGroupModal } from "./AddNewLinkGroupModal";
+import { PerformLinkGroupSearch } from "./LinkGroupFunctions";
+import StyledPanel from "../PageStyle/StyledPanel";
+import PageTitle from "../PageTitle";
+import { Button } from "@material-ui/core";
+import EditLinkGroupDialog from "./EditLinkGroupDialog";
 
 class SearchOptions {
-    LinkGroupName: string;
-    LinkGroupDesc: string;
-    ModifierName: string;
-    ModifierPLU: string;
-    Region: string;
+  LinkGroupName: string;
+  LinkGroupDesc: string;
+  ModifierName: string;
+  ModifierPLU: string;
+  Region: string;
 
-    constructor() {
-    }
+  constructor() {}
 }
 
 interface ILinkGroupsPageState {
-    error: any,
-    message: any,
-    searchOptions: SearchOptions,
-    linkGroupResults: any,
-    showSearchProgress: boolean,
-    showEditScreen: boolean,
-    showSearchScreen: boolean,
-    showAddNew: boolean,
-    selectedLinkGroup: any, 
-    regions: string[]
-
+  error: any;
+  message: any;
+  searchOptions: SearchOptions;
+  linkGroupResults: any;
+  showSearchProgress: boolean;
+  showEditScreen: boolean;
+  showSearchScreen: boolean;
+  showAddNew: boolean;
+  selectedLinkGroup: any;
+  regions: string[];
 }
 interface ILinkGroupsPageProps {
-    styles: any
+  styles: any;
 }
 
 const styles = () => ({
-    root: {
-        flexGrow: 1
-    },
-    hidden: {
-        display: "none"
-    },
-    EditButtons: {
-        width: "100%"
-    },
-    AddNewModal: {
-        width: "50%"
-    }
-
+  root: {
+    flexGrow: 1
+  },
+  hidden: {
+    display: "none"
+  },
+  EditButtons: {
+    width: "100%"
+  },
+  AddNewModal: {
+    width: "50%"
+  }
 });
 
+export class LinkGroupsPage extends React.Component<
+  ILinkGroupsPageProps,
+  ILinkGroupsPageState
+> {
+  constructor(props: any) {
+    super(props);
 
-export class LinkGroupsPage extends React.Component<ILinkGroupsPageProps, ILinkGroupsPageState>
-{
-    constructor(props: any) {
-        super(props);
+    this.state = {
+      error: "",
+      message: "",
+      searchOptions: {
+        LinkGroupName: "",
+        LinkGroupDesc: "",
+        ModifierName: "",
+        ModifierPLU: "",
+        Region: ""
+      },
+      linkGroupResults: [],
+      showSearchProgress: false,
+      showEditScreen: false,
+      showSearchScreen: true,
+      showAddNew: false,
+      selectedLinkGroup: [],
+      regions: []
+    };
+  }
 
-        this.state = {
-            error: "",
-            message: "",
-            searchOptions: {
-                LinkGroupName: "",
-                LinkGroupDesc: "",
-                ModifierName: "",
-                ModifierPLU: "",
-                Region: ""
-            },
-            linkGroupResults: [],
-            showSearchProgress: false,
-            showEditScreen: false,
-            showSearchScreen: true,
-            showAddNew: false,
-            selectedLinkGroup: [], 
-            regions: []
-        }
-        this.handleSearchOptionsChange = this.handleSearchOptionsChange.bind(this);
-        this.onSearch = this.onSearch.bind(this);
-        this.loadLinkGroup = this.loadLinkGroup.bind(this);
-        this.switchToEditMode = this.switchToEditMode.bind(this);
-        this.switchToSearchMode = this.switchToSearchMode.bind(this);
-    }
+  handleSearchOptionsChange = (event: any) => {
+    var temp = { ...this.state.searchOptions };
+    temp[event.target.name] = event.target.value;
+    this.setState({ ...this.state, searchOptions: temp });
+  }
 
-    handleSearchOptionsChange(event: any) {
-        var temp = { ...this.state.searchOptions };
-        temp[event.target.name] = event.target.value;
-        this.setState({ ...this.state, searchOptions: temp });
-    }
-
-    componentWillMount() {
-       this.loadRegions().then((d:any)=> {
+  componentWillMount() {
+    this.loadRegions()
+      .then((d: any) => {
         this.setState({ ...this.state, regions: d });
-       }).catch(e=> {
-            console.log("could not load region information")
-            console.log(e)
-       });
-    }
+      })
+      .catch(e => {
+        console.log("could not load region information");
+        console.log(e);
+      });
+  }
 
-    loadRegions() {
-        return new Promise((resolve, reject) => {
-            //pass linkgroupid and true to return child objects.
-            axios.get(KbApiMethod("LocalesByType"),
-            {
-                params: {
-                    localeTypeDesc: "Region",
-                } 
-            }
-             ).then(res => {
-                resolve(res.data);
-            }).catch(error => {
-                reject(error);
-            });
+  loadRegions = () => {
+    return new Promise((resolve, reject) => {
+      //pass linkgroupid and true to return child objects.
+      axios
+        .get(KbApiMethod("LocalesByType"), {
+          params: {
+            localeTypeDesc: "Region"
+          }
         })
-    }
-
-    onSearch() {
-        this.setState({ ...this.state, showSearchProgress: true });
-        var searchOptions = this.state.searchOptions;
-
-        PerformLinkGroupSearch(searchOptions.LinkGroupName, searchOptions.LinkGroupDesc, searchOptions.ModifierName, searchOptions.ModifierPLU, searchOptions.Region)
-            .then(result => {
-                this.setState({ ...this.state, linkGroupResults: result })
-            }).catch(error => {
-                this.setState({ ...this.state, error: error });
-            });
-    }
-
-    switchToEditMode(linkGroupId: number) {
-        this.loadLinkGroup(linkGroupId)
-            .then(result => {
-                this.setState({ selectedLinkGroup: result, showEditScreen: true, showSearchScreen: false })
-            })
-            .catch(error => {
-                alert(error);
-            });
-    }
-
-    switchToSearchMode() {
-        this.setState({ selectedLinkGroup: [], showEditScreen: false, showSearchScreen: true })
-    }
-
-    loadLinkGroup(linkGroupId: number) {
-        return new Promise((resolve, reject) => {
-            //pass linkgroupid and true to return child objects.
-            axios.get(KbApiMethod("LinkGroups") + "/" + linkGroupId + "/true", { 
-            }).then(res => {
-                resolve(res.data);
-            }).catch(error => {
-                reject(error);
-            });
+        .then(res => {
+          resolve(res.data);
         })
-    }
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 
- 
+  onSearch = (linkGroupName: string, linkGroupDesc: string, modifierName: string, modifierPlu: string, region: string) => {
+    this.setState({ ...this.state, showSearchProgress: true });
 
- 
+    PerformLinkGroupSearch(
+      linkGroupName,
+      linkGroupDesc,
+      modifierName,
+      modifierPlu,
+      region
+    )
+      .then(result => {
+        this.setState({ ...this.state, linkGroupResults: result });
+      })
+      .catch(error => {
+        this.setState({ ...this.state, error: error });
+      });
+  }
 
+  onEdit = (linkGroupId: number) => {
+    this.loadLinkGroup(linkGroupId)
+      .then(result => {
+        this.setState({
+          selectedLinkGroup: result,
+          showEditScreen: true,
+          showSearchScreen: false
+        });
+      })
+      .catch(error => {
+        alert(error);
+      });
+  }
 
-    render() {
-        return (
-            <React.Fragment>
-                <br />
-                <form onSubmit={() => this.onSearch()} onKeyDown={(d) => { if (d.keyCode === 13) { this.onSearch() } }}>
+  loadLinkGroup = (linkGroupId: number) => {
+    return new Promise((resolve, reject) => {
+      //pass linkgroupid and true to return child objects.
+      axios
+        .get(KbApiMethod("LinkGroups") + "/" + linkGroupId + "/true", {})
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 
-                    {!this.state.showSearchScreen ||
-                        <Grid container spacing={24} justify="center">
-                            <Grid item md={12} >
-                                <div className="error-message" >
-                                    <span style={errorStyle}> {this.state.error}</span>
-                                </div>
-                            </Grid>
-                            <Grid item md={12}>
-                                <div className="Success-message" >
-                                    <span style={sucesssStyle}> {this.state.message}</span>
-                                </div>
-                            </Grid>
-
-                            <Grid item md={12}>
-                                <SearchLinkGroups
-                                    regions={this.state.regions}
-                                    searchOptions={this.state.searchOptions}
-                                    onChange={this.handleSearchOptionsChange}
-                                    showSearchProgress={this.state.showSearchProgress}
-                                    onSearch={this.onSearch}
-                                    onAddNew={() => {
-                                        this.setState({ ...this.state, showAddNew: !this.state.showAddNew })
-                                    }}
-                                    onRegionsChanged={(regions: string[]) => {
-                                        let updatedSearchOptions = this.state.searchOptions;
-                                        updatedSearchOptions.Region = regions.join(",");
-                                        this.setState({ ...this.state, searchOptions: updatedSearchOptions })
-                                    }}
-                                />
-
-                            </Grid>
-
-                            <Grid item md={10}>
-                                <DisplayLinkGroups
-                                    DisplayData={this.state.linkGroupResults}
-                                    onSearch={this.onSearch}
-                                    handleSearchRowClick={this.switchToEditMode} />
-                            </Grid>
-
-                        </Grid>
-                    }
-                    <br />
-                    {!this.state.showEditScreen ||
-                        <Grid container justify="center">
-                            <Grid item md={10} >
-                                <EditLinkGroup data={this.state.selectedLinkGroup}
-                                    handleCancelClick={this.switchToSearchMode}
-                                />
-                            </Grid>
-
-                        </Grid>
-                    }
-
-                </form>
-                <br />
-
-                <AddNewLinkGroupModal
-                    open={this.state.showAddNew}
-                    closeModal={() => { this.setState({ ...this.state, showAddNew: false }) }}
-                    onCreated={this.switchToEditMode}
+  render() {
+    return (
+      <>
+        <StyledPanel header={<PageTitle icon="link">Link Groups</PageTitle>}>
+          <br />
+            <Grid container>
+              <Grid item md={12}>
+                <SearchLinkGroups
+                onAddNew = {() => {}}
+                  regions={this.state.regions}
+                  searchOptions={this.state.searchOptions}
+                  onChange={this.handleSearchOptionsChange}
+                  showSearchProgress={this.state.showSearchProgress}
+                  onSearch={this.onSearch}
+                  onRegionsChanged={(regions: string[]) => {
+                    let updatedSearchOptions = this.state.searchOptions;
+                    updatedSearchOptions.Region = regions.join(",");
+                    this.setState({
+                      ...this.state,
+                      searchOptions: updatedSearchOptions
+                    });
+                  }}
                 />
-            </React.Fragment>
-        )
-    }
-}
+              </Grid>
 
+              <Grid item md={12}>
+                <DisplayLinkGroups
+                  DisplayData={this.state.linkGroupResults}
+                  onSearch={this.onSearch}
+                  onEdit={this.onEdit}
+                />
+              </Grid>
+            </Grid>
+
+          <AddNewLinkGroupModal
+            onCreated={this.onEdit}
+            open={this.state.showAddNew}
+            closeModal={() => {
+              this.setState({ showAddNew: false });
+            }}
+          />
+        </StyledPanel>
+        <Grid container justify="center" className="mt-3">
+          <Grid item md={10}>
+            <Grid container justify="flex-end">
+              <Grid item md={3}>
+                <Button
+                  style={{ width: "100%" }}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => {
+                    this.setState({
+                      ...this.state,
+                      showAddNew: !this.state.showAddNew
+                    });
+                  }}
+                >
+                  Create Link Group
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <EditLinkGroupDialog
+          isOpen={this.state.showEditScreen}
+          selectedLinkGroup={this.state.selectedLinkGroup}
+          onClose={() => this.setState({ showEditScreen: false })}
+        />
+      </>
+    );
+  }
+}
 
 export default withStyles(styles)(LinkGroupsPage);
