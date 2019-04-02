@@ -195,5 +195,28 @@ namespace Icon.Framework
         public const string LocalZone = "LZ";
         public const string GlobalRegionalDesignation = "GRD";
         public const string HierarchyIdForChosenBrand = "PCO";
+        public const string DataSource = "DAT";
+        public const string GmoTransparency = "GMT";
+        public const string ItemDepth = "IDP";
+        public const string ItemHeight = "IHT";
+        public const string ItemWidth = "IWD";
+        public const string Cube = "CUB";
+        public const string Weight = "IWT";
+        public const string TrayDepth = "TDP";
+        public const string TrayHeight = "THT";
+        public const string TrayWidth = "TWD";
+        public const string Labeling = "LBL";
+        public const string CountryOfOrigin = "COO";
+        public const string PackageGroup = "PG";
+        public const string PackageGroupType = "PGT";
+        public const string PrivateLabel = "PRL";
+        public const string Appellation = "APL";
+        public const string FairTradeClaim = "FT";
+        public const string GlutenFreeClaim = "GFC";
+        public const string NonGmoClaim = "NGC";
+        public const string OrganicClaim = "OC";
+        public const string Varietal = "VAR";
+        public const string BeerStyle = "BES";
+        public const string LineExtension = "LEX";
 	}
 }

@@ -196,6 +196,29 @@ namespace Icon.Framework
         public const int LocalZone = 187;
         public const int GlobalRegionalDesignation = 188;
         public const int HierarchyIdForChosenBrand = 189;
+        public const int DataSource = 190;
+        public const int GmoTransparency = 191;
+        public const int ItemDepth = 192;
+        public const int ItemHeight = 193;
+        public const int ItemWidth = 194;
+        public const int Cube = 195;
+        public const int Weight = 196;
+        public const int TrayDepth = 197;
+        public const int TrayHeight = 198;
+        public const int TrayWidth = 199;
+        public const int Labeling = 200;
+        public const int CountryOfOrigin = 201;
+        public const int PackageGroup = 202;
+        public const int PackageGroupType = 203;
+        public const int PrivateLabel = 204;
+        public const int Appellation = 205;
+        public const int FairTradeClaim = 206;
+        public const int GlutenFreeClaim = 207;
+        public const int NonGmoClaim = 208;
+        public const int OrganicClaim = 209;
+        public const int Varietal = 210;
+        public const int BeerStyle = 211;
+        public const int LineExtension = 212;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -382,7 +405,30 @@ namespace Icon.Framework
 				{ "MIE", 186 },
 				{ "LZ", 187 },
 				{ "GRD", 188 },
-				{ "PCO", 189 }
+				{ "PCO", 189 },
+				{ "DAT", 190 },
+				{ "GMT", 191 },
+				{ "IDP", 192 },
+				{ "IHT", 193 },
+				{ "IWD", 194 },
+				{ "CUB", 195 },
+				{ "IWT", 196 },
+				{ "TDP", 197 },
+				{ "THT", 198 },
+				{ "TWD", 199 },
+				{ "LBL", 200 },
+				{ "COO", 201 },
+				{ "PG", 202 },
+				{ "PGT", 203 },
+				{ "PRL", 204 },
+				{ "APL", 205 },
+				{ "FT", 206 },
+				{ "GFC", 207 },
+				{ "NGC", 208 },
+				{ "OC", 209 },
+				{ "VAR", 210 },
+				{ "BES", 211 },
+				{ "LEX", 212 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -572,6 +618,29 @@ namespace Icon.Framework
 			public const string LocalZone = "Local Zone";
 			public const string GlobalRegionalDesignation = "Global/Regional Designation";
 			public const string HierarchyIdForChosenBrand = "Hierarchy ID for chosen brand";
+			public const string DataSource = "Data Source";
+			public const string GmoTransparency = "GMO Transparency";
+			public const string ItemDepth = "Item Depth";
+			public const string ItemHeight = "Item Height";
+			public const string ItemWidth = "Item Width";
+			public const string Cube = "Cube";
+			public const string Weight = "Weight";
+			public const string TrayDepth = "Tray Depth";
+			public const string TrayHeight = "Tray Height";
+			public const string TrayWidth = "Tray Width";
+			public const string Labeling = "Labeling";
+			public const string CountryOfOrigin = "Country of Origin";
+			public const string PackageGroup = "Package Group";
+			public const string PackageGroupType = "Package Group Type";
+			public const string PrivateLabel = "Private Label";
+			public const string Appellation = "Appellation";
+			public const string FairTradeClaim = "Fair Trade Claim";
+			public const string GlutenFreeClaim = "Gluten Free Claim";
+			public const string NonGmoClaim = "Non-GMO Claim";
+			public const string OrganicClaim = "Organic Claim";
+			public const string Varietal = "Varietal";
+			public const string BeerStyle = "Beer Style";
+			public const string LineExtension = "Line Extension";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -758,7 +827,30 @@ namespace Icon.Framework
 				{ 186, "PrimeNow Merchant ID Encrypted" },
 				{ 187, "Local Zone" },
 				{ 188, "Global/Regional Designation" },
-				{ 189, "Hierarchy ID for chosen brand" }
+				{ 189, "Hierarchy ID for chosen brand" },
+				{ 190, "Data Source" },
+				{ 191, "GMO Transparency" },
+				{ 192, "Item Depth" },
+				{ 193, "Item Height" },
+				{ 194, "Item Width" },
+				{ 195, "Cube" },
+				{ 196, "Weight" },
+				{ 197, "Tray Depth" },
+				{ 198, "Tray Height" },
+				{ 199, "Tray Width" },
+				{ 200, "Labeling" },
+				{ 201, "Country of Origin" },
+				{ 202, "Package Group" },
+				{ 203, "Package Group Type" },
+				{ 204, "Private Label" },
+				{ 205, "Appellation" },
+				{ 206, "Fair Trade Claim" },
+				{ 207, "Gluten Free Claim" },
+				{ 208, "Non-GMO Claim" },
+				{ 209, "Organic Claim" },
+				{ 210, "Varietal" },
+				{ 211, "Beer Style" },
+				{ 212, "Line Extension" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -949,6 +1041,29 @@ namespace Icon.Framework
 			public const string LocalZone = "LZ";
 			public const string GlobalRegionalDesignation = "GRD";
 			public const string HierarchyIdForChosenBrand = "PCO";
+			public const string DataSource = "DAT";
+			public const string GmoTransparency = "GMT";
+			public const string ItemDepth = "IDP";
+			public const string ItemHeight = "IHT";
+			public const string ItemWidth = "IWD";
+			public const string Cube = "CUB";
+			public const string Weight = "IWT";
+			public const string TrayDepth = "TDP";
+			public const string TrayHeight = "THT";
+			public const string TrayWidth = "TWD";
+			public const string Labeling = "LBL";
+			public const string CountryOfOrigin = "COO";
+			public const string PackageGroup = "PG";
+			public const string PackageGroupType = "PGT";
+			public const string PrivateLabel = "PRL";
+			public const string Appellation = "APL";
+			public const string FairTradeClaim = "FT";
+			public const string GlutenFreeClaim = "GFC";
+			public const string NonGmoClaim = "NGC";
+			public const string OrganicClaim = "OC";
+			public const string Varietal = "VAR";
+			public const string BeerStyle = "BES";
+			public const string LineExtension = "LEX";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1135,7 +1250,30 @@ namespace Icon.Framework
 				{ 186, "MIE" },
 				{ 187, "LZ" },
 				{ 188, "GRD" },
-				{ 189, "PCO" }
+				{ 189, "PCO" },
+				{ 190, "DAT" },
+				{ 191, "GMT" },
+				{ 192, "IDP" },
+				{ 193, "IHT" },
+				{ 194, "IWD" },
+				{ 195, "CUB" },
+				{ 196, "IWT" },
+				{ 197, "TDP" },
+				{ 198, "THT" },
+				{ 199, "TWD" },
+				{ 200, "LBL" },
+				{ 201, "COO" },
+				{ 202, "PG" },
+				{ 203, "PGT" },
+				{ 204, "PRL" },
+				{ 205, "APL" },
+				{ 206, "FT" },
+				{ 207, "GFC" },
+				{ 208, "NGC" },
+				{ 209, "OC" },
+				{ 210, "VAR" },
+				{ 211, "BES" },
+				{ 212, "LEX" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}
