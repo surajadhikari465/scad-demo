@@ -1,9 +1,9 @@
 
-div[class^="MuiFormControl-root-"] {
+div[class^="MuiFormControl-root"] {
   width: 100%;
 }
 
-div[class^="MuiFormControl-root-"] input {
+div[class^="MuiFormControl-root"] input {
   padding: 10px !important;
   background-color: white;
 }

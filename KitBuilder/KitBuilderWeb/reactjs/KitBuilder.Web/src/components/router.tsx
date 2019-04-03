@@ -13,6 +13,12 @@ import CreateKitPage from './Kits/CreateKitPage';
 import withSnackbar from './PageStyle/withSnackbar';
 import ViewKit from './Kits/ViewKits/ViewKit';
 import Footer from './PageStyle/Footer';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { createGenerateClassName } from '@material-ui/core/styles';
+
+const generateClassName = createGenerateClassName({
+      dangerouslyUseGlobalCSS: true,
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -32,7 +38,7 @@ const theme = createMuiTheme({
 
 class AppRouter extends React.Component {
   render() {
-    return (
+    return (<JssProvider generateClassName={generateClassName}>
       <HashRouter>
         <MuiThemeProvider theme = {theme}>
         <div className="container-fluid">
@@ -53,6 +59,7 @@ class AppRouter extends React.Component {
         </div>
         </MuiThemeProvider>
       </HashRouter>
+      </JssProvider>
     )
   }
 }
