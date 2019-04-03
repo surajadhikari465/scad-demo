@@ -5,12 +5,19 @@ BEGIN
 
 DECLARE @PublishedStatusId int = (select StatusID from Status where statuscode='P')
 
+
+UPDATE AvailablePluNumber
+SET InUse = 0, 
+    LastUpdatedDateUtc = GETUTCDATE()
+WHERE PluNumber IN  (SELECT PluNumber FROM dbo.InstructionListMember
+					 WHERE InstructionListId = @InstructionListId and IsDeleted=1)
+
 DELETE dbo.InstructionListMember
-Where InstructionListId = @InstructionListId and IsDeleted=1
+WHERE InstructionListId = @InstructionListId and IsDeleted=1
 
 Update InstructionList
 SET StatusId = @PublishedStatusId,
     LastUpdatedDateUtc = GETUTCDATE()
-Where InstructionListId = @InstructionListId
+WHERE InstructionListId = @InstructionListId
 
 END

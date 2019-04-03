@@ -21,7 +21,7 @@ BEGIN
 			InstructionList
 			inner join InstructionListMember on InstructionList.InstructionListId = InstructionListMember.InstructionListId
 			WHERE InstructionList.InstructionListId = @InstructionListId
-		
+		    ORDER BY [Group],Sequence
 	END
 
   ELSE IF( @InstructionTypeId = @GenericInstructionTypeId)
@@ -38,7 +38,7 @@ BEGIN
 			InstructionList
 			inner join InstructionListMember on InstructionList.InstructionListId = InstructionListMember.InstructionListId
 			WHERE InstructionList.InstructionListId = @InstructionListId
-
+			ORDER BY [Group],Sequence
 
   END
 	SET NOCOUNT OFF
