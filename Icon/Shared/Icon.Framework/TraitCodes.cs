@@ -194,7 +194,7 @@ namespace Icon.Framework
         public const string PrimenowMerchantIdEncrypted = "MIE";
         public const string LocalZone = "LZ";
         public const string GlobalRegionalDesignation = "GRD";
-        public const string HierarchyIdForChosenBrand = "PCO";
+        public const string ParentCompany = "PCO";
         public const string DataSource = "DAT";
         public const string GmoTransparency = "GMT";
         public const string ItemDepth = "IDP";
@@ -218,5 +218,7 @@ namespace Icon.Framework
         public const string Varietal = "VAR";
         public const string BeerStyle = "BES";
         public const string LineExtension = "LEX";
+        public const string ZipCode = "ZIP";
+        public const string Locality = "LCL";
 	}
 }

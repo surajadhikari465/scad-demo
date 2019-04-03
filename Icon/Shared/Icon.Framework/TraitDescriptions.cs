@@ -188,5 +188,37 @@ namespace Icon.Framework
         public const string Tsf365Eligible = "TSF (365) Eligible";
         public const string WfmEligilble = "WFM Eligilble";
         public const string Other3pEligible = "Other 3P Eligible";
+        public const string Ident = "Ident";
+        public const string LiquorLicensing = "Liquor Licensing";
+        public const string PrimenowMerchantId = "PrimeNow Merchant ID";
+        public const string PrimenowMerchantIdEncrypted = "PrimeNow Merchant ID Encrypted";
+        public const string LocalZone = "Local Zone";
+        public const string GlobalRegionalDesignation = "Global/Regional Designation";
+        public const string ParentCompany = "Parent Company";
+        public const string DataSource = "Data Source";
+        public const string GmoTransparency = "GMO Transparency";
+        public const string ItemDepth = "Item Depth";
+        public const string ItemHeight = "Item Height";
+        public const string ItemWidth = "Item Width";
+        public const string Cube = "Cube";
+        public const string Weight = "Weight";
+        public const string TrayDepth = "Tray Depth";
+        public const string TrayHeight = "Tray Height";
+        public const string TrayWidth = "Tray Width";
+        public const string Labeling = "Labeling";
+        public const string CountryOfOrigin = "Country of Origin";
+        public const string PackageGroup = "Package Group";
+        public const string PackageGroupType = "Package Group Type";
+        public const string PrivateLabel = "Private Label";
+        public const string Appellation = "Appellation";
+        public const string FairTradeClaim = "Fair Trade Claim";
+        public const string GlutenFreeClaim = "Gluten Free Claim";
+        public const string NonGmoClaim = "Non-GMO Claim";
+        public const string OrganicClaim = "Organic Claim";
+        public const string Varietal = "Varietal";
+        public const string BeerStyle = "Beer Style";
+        public const string LineExtension = "Line Extension";
+        public const string ZipCode = "Zip Code";
+        public const string Locality = "Locality";
 	}
 }

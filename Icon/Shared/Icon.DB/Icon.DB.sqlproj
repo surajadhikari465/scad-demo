@@ -695,6 +695,7 @@
     <None Include="Scripts\PopulateData\Archive\PopulateIconWebApiApp.sql" />
     <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
     <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery.sql" />
+    <None Include="Scripts\PopulateData\PopulateTraits.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -729,7 +730,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\PopulateTraits_PBI19318.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

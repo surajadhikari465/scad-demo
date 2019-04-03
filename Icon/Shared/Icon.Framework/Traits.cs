@@ -195,7 +195,7 @@ namespace Icon.Framework
         public const int PrimenowMerchantIdEncrypted = 186;
         public const int LocalZone = 187;
         public const int GlobalRegionalDesignation = 188;
-        public const int HierarchyIdForChosenBrand = 189;
+        public const int ParentCompany = 189;
         public const int DataSource = 190;
         public const int GmoTransparency = 191;
         public const int ItemDepth = 192;
@@ -219,6 +219,8 @@ namespace Icon.Framework
         public const int Varietal = 210;
         public const int BeerStyle = 211;
         public const int LineExtension = 212;
+        public const int ZipCode = 213;
+        public const int Locality = 214;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -428,7 +430,9 @@ namespace Icon.Framework
 				{ "OC", 209 },
 				{ "VAR", 210 },
 				{ "BES", 211 },
-				{ "LEX", 212 }
+				{ "LEX", 212 },
+				{ "ZIP", 213 },
+				{ "LCL", 214 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -617,7 +621,7 @@ namespace Icon.Framework
 			public const string PrimenowMerchantIdEncrypted = "PrimeNow Merchant ID Encrypted";
 			public const string LocalZone = "Local Zone";
 			public const string GlobalRegionalDesignation = "Global/Regional Designation";
-			public const string HierarchyIdForChosenBrand = "Hierarchy ID for chosen brand";
+			public const string ParentCompany = "Parent Company";
 			public const string DataSource = "Data Source";
 			public const string GmoTransparency = "GMO Transparency";
 			public const string ItemDepth = "Item Depth";
@@ -641,6 +645,8 @@ namespace Icon.Framework
 			public const string Varietal = "Varietal";
 			public const string BeerStyle = "Beer Style";
 			public const string LineExtension = "Line Extension";
+			public const string ZipCode = "Zip Code";
+			public const string Locality = "Locality";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -827,7 +833,7 @@ namespace Icon.Framework
 				{ 186, "PrimeNow Merchant ID Encrypted" },
 				{ 187, "Local Zone" },
 				{ 188, "Global/Regional Designation" },
-				{ 189, "Hierarchy ID for chosen brand" },
+				{ 189, "Parent Company" },
 				{ 190, "Data Source" },
 				{ 191, "GMO Transparency" },
 				{ 192, "Item Depth" },
@@ -850,7 +856,9 @@ namespace Icon.Framework
 				{ 209, "Organic Claim" },
 				{ 210, "Varietal" },
 				{ 211, "Beer Style" },
-				{ 212, "Line Extension" }
+				{ 212, "Line Extension" },
+				{ 213, "Zip Code" },
+				{ 214, "Locality" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1040,7 +1048,7 @@ namespace Icon.Framework
 			public const string PrimenowMerchantIdEncrypted = "MIE";
 			public const string LocalZone = "LZ";
 			public const string GlobalRegionalDesignation = "GRD";
-			public const string HierarchyIdForChosenBrand = "PCO";
+			public const string ParentCompany = "PCO";
 			public const string DataSource = "DAT";
 			public const string GmoTransparency = "GMT";
 			public const string ItemDepth = "IDP";
@@ -1064,6 +1072,8 @@ namespace Icon.Framework
 			public const string Varietal = "VAR";
 			public const string BeerStyle = "BES";
 			public const string LineExtension = "LEX";
+			public const string ZipCode = "ZIP";
+			public const string Locality = "LCL";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1273,7 +1283,9 @@ namespace Icon.Framework
 				{ 209, "OC" },
 				{ 210, "VAR" },
 				{ 211, "BES" },
-				{ 212, "LEX" }
+				{ 212, "LEX" },
+				{ 213, "ZIP" },
+				{ 214, "LCL" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

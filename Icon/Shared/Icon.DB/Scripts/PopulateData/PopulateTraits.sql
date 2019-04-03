@@ -1,6 +1,7 @@
 ﻿--PBI 19318: As a APT user, I need 5 new locale traits added to Icon to cover features migrating from Infor and to provide a single source of data for brand contacts and attributes.
 --PBI 14463: As a APT user, I need a new trait group and 2 new brand traits added to Icon to cover features migrating from Infor and to provide a single source of data for brand contacts and attributes.
 --PBI 19321: As a APT user, I need new item traits to be added and saved to Icon db to cover features migrating from Infor and to provide a single source of data for brand contacts and attributes.
+--PBI 14463: As a APT user, I need a 2 more new brand traits added to Icon: Zip Code (Zip), Locality (LCL)
 DECLARE @scriptKey VARCHAR(128) = 'PopulateTraits'
 
 IF(Exists(SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
@@ -48,7 +49,7 @@ ELSE
 
     IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'PCO')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES(189, @TraitGroupID, 'PCO', N'Hierarchy ID for chosen brand','^[0-9]{1,10}$');
+			VALUES(189, @TraitGroupID, 'PCO', N'Parent Company','^[0-9]{1,10}$');
 			
 	SET @traitGroupID = 1; --Item Attributes
 	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'DAT')
@@ -143,6 +144,14 @@ ELSE
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
 			VALUES(212, @TraitGroupID, 'LEX', N'Line Extension', '');
 
+    SET @traitGroupID = 8; --Brand Traits
+    IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'ZIP')
+	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
+			VALUES(213, @TraitGroupID, 'ZIP', N'Zip Code','^[0-9]{5}(?:-[0-9]{4})?$');
+
+    IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'Locality')
+	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
+			VALUES(214, @TraitGroupID, 'LCL', N'Locality','^.{1,35}$');
 	  SET IDENTITY_INSERT dbo.Trait OFF;
     
     INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE());
