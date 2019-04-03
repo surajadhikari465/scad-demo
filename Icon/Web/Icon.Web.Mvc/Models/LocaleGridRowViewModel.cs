@@ -60,6 +60,12 @@ namespace Icon.Web.Mvc.Models
         public string Fax { get; set; }
         public string CurrencyCode { get; set; }
 
+				public bool Ident { get; set; }
+				public string LiquorLicense { get; set; }
+				public string PrimeMerchantID { get; set; }
+				public string PrimeMerchantIDEncrypted { get; set; }
+				public string LocalZone { get; set; }
+
         // Venue Properties
         public string LocaleSubType { get; set; }
 
@@ -112,6 +118,11 @@ namespace Icon.Web.Mvc.Models
             VenueCode = LocaleAccessor.GetVenueCode(locale);
             VenueOccupant = LocaleAccessor.GetVenueOccupant(locale);
             Locales = new List<LocaleGridRowViewModel>();
+						Ident = LocaleAccessor.GetIdent(locale);
+						LiquorLicense = LocaleAccessor.GetLiquorLicensing(locale);
+						PrimeMerchantID = LocaleAccessor.GetPrimeMerchantID(locale);
+						PrimeMerchantIDEncrypted = LocaleAccessor.GetPrimeMerchantIDEncrypted(locale);
+						LocalZone = LocaleAccessor.GetLocaleZone(locale);
         }
     }
 }

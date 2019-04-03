@@ -30,5 +30,10 @@ namespace Icon.Web.DataAccess.Commands
         public string StorePosType { get; set; }
         public string UserName { get; set; }
         public string CurrencyCode { get; set; }
+				public bool Ident { get; set; }
+				public string LocalZone { get; set; }
+				public string LiquorLicense { get; set; }
+				public string PrimeMerchantID { get; set; }
+				public string PrimeMerchantIDEncrypted { get; set; }
     }
 }

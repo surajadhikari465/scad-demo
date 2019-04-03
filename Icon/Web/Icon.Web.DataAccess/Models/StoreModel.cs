@@ -1,5 +1,4 @@
-﻿using Icon.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,8 +55,12 @@ namespace Icon.Web.DataAccess.Models
         public string Fax { get; set; }
         public string CurrencyCode { get; set; }
         public string UserName { get; set; }
+				public bool Ident { get; set; }
+				public string LocalZone { get; set; }
+				public string LiquorLicense { get; set; }
+				public string PrimeMerchantID { get; set; }
+				public string PrimeMerchantIDEncrypted { get; set; }
       
         public StoreModel() { }
-
     }
 }

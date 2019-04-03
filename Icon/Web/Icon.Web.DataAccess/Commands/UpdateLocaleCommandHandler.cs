@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using System;
 using System.Data.Entity;
@@ -46,6 +45,12 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
             AddOrUpdateTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
             AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
+						AddOrUpdateTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
+						AddOrUpdateTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
+						AddOrUpdateTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
+						AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);
+						AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantIdEncrypted, existingLocale, data.PrimeMerchantIDEncrypted);
+
             // set the currency code trait based on the country set for the Locale
             var currencyCode = GetCurrencyCodeForCountry(data.CountryId);
             if (!String.IsNullOrWhiteSpace(currencyCode))

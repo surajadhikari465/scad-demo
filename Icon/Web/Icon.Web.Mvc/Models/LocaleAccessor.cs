@@ -180,5 +180,35 @@ namespace Icon.Web.Mvc.Models
             LocaleTrait trait = locale.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.CurrencyCode);
             return trait == null ? String.Empty : trait.traitValue;
         }
+
+        public static bool GetIdent(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.Ident);
+            return trait == null ? false : trait.traitValue == "1";
+        }
+
+        public static string GetLiquorLicensing(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.LiquorLicensing);
+            return trait == null ? String.Empty : trait.traitValue;
+        }
+
+        public static string GetPrimeMerchantID(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.PrimenowMerchantId);
+            return trait == null ? String.Empty : trait.traitValue;
+        }
+
+        public static string GetPrimeMerchantIDEncrypted(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.PrimenowMerchantIdEncrypted);
+            return trait == null ? String.Empty : trait.traitValue;
+        }
+
+        public static string GetLocaleZone(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.LocalZone);
+            return trait == null ? String.Empty : trait.traitValue;
+        }
     }
 }

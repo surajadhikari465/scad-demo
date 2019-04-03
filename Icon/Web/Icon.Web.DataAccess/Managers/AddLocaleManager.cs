@@ -1,5 +1,4 @@
-﻿
-namespace Icon.Web.DataAccess.Managers
+﻿namespace Icon.Web.DataAccess.Managers
 {
     public class AddLocaleManager : LocaleManager
     {
@@ -11,5 +10,10 @@ namespace Icon.Web.DataAccess.Managers
         public string Fax { get; set; }
         public string IrmaStoreId { get; set; }
         public string StorePosType { get; set; }
+        public bool Ident { get; set; }
+				public string LocalZone  { get; set; }
+        public string LiquorLicense  { get; set; }
+        public string PrimeMerchantID  { get; set; }
+        public string PrimeMerchantIDEncrypted { get; set; }
     }
 }

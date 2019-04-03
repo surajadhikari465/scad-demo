@@ -137,6 +137,26 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "POS Type")]
         public IEnumerable<SelectListItem> StorePosTypes { get; set; }
 
+				[Display(Name = "Ident")]
+        public bool Ident { get; set; }
+
+				[Display(Name = "PrimeNow Merchant ID")]
+        [RegularExpression(@"^[0-9]{11}$", ErrorMessage = "PrimeNow Merchant ID must be numeric with 11 digits length.")]
+        public string PrimeMerchantID { get; set; }
+
+				[Display(Name = "PrimeNow Merchant ID Encrypted")]
+        [RegularExpression(@"^[a-zA-Z0-9]{13}$", ErrorMessage = "PrimeNow Merchant ID Encrypted must be alpha-numeric with 13 characters length.")]
+        public string PrimeMerchantIDEncrypted { get; set; }
+
+				[Display(Name = "Local Zone")]
+        [RegularExpression(@"^.{1,35}$", ErrorMessage = "Local Zone should be alpha-numeric with up to 35 characters length.")]
+        public string LocalZone{ get; set; }
+
+				public string SelectedLiquorLicense { get; set; }
+        [Display(Name = "Liquor License")]
+				[RegularExpression(@"^(Beer|Wine|Spirit)$", ErrorMessage = "Invalid Liquor License. Valid values are Beer, Wine or Spirit")]
+        public IEnumerable<SelectListItem> LiquorLicenseTypes { get; set; }
+
         public string SelectedCurrency { get; set; }
         [Display(Name = "Currency")]
         [Editable(false)]

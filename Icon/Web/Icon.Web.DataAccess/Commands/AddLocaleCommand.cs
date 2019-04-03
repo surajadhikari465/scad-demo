@@ -22,5 +22,10 @@ namespace Icon.Web.DataAccess.Commands
 
         public string UserName { get; set; }
         public int CountryId { get; set; }
+				public bool Ident { get; set; }
+				public string LocalZone { get; set; }
+				public string LiquorLicense { get; set; }
+				public string PrimeMerchantID { get; set; }
+				public string PrimeMerchantIDEncrypted { get; set; }
     }
 }
