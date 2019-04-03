@@ -1,3 +1,4 @@
+Imports System.Linq
 Imports log4net
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
@@ -15,6 +16,13 @@ Public Enum ItemStatus
     Error_DistributionUnitRequired
     Error_RetailUnitRequired
     Error_AverageUnitWeightRequired
+    Error_ItemDescriptionInvalidCharacters
+    Error_POSDescriptionInvalidCharacters
+    Error_SignCaptionInvalidCharacters
+    Error_PackageDescUnitInvalidCharacters
+    Error_VendorUnitInvalidCharacters
+    Error_DistributionUnitInvalidCharacters
+    Error_RetailUnitInvalidCharacters
 End Enum
 
 Public Enum BatchModificationType
@@ -31,6 +39,7 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
 #Region "Public Constants"
 
         Public Const ITEM_IDENTIFIER_MAX_LENGTH = 14
+        Public Const INVALID_CHARACTERS = "|"
 
 #End Region
 
@@ -696,14 +705,20 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
             ' -- Item Description
             If _itemDescription = vbNullString Then
                 statusList.Add(ItemStatus.Error_ItemDescriptionRequired)
+            ElseIf _itemDescription.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_ItemDescriptionInvalidCharacters)
             End If
             ' -- POS Description
             If _posDescription = vbNullString Then
                 statusList.Add(ItemStatus.Error_POSDescriptionRequired)
+            ElseIf _posDescription.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_POSDescriptionInvalidCharacters)
             End If
             ' -- Sign Description
             If _signCaption = vbNullString Then
                 statusList.Add(ItemStatus.Error_SignCaptionRequired)
+            ElseIf _signCaption.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_SignCaptionInvalidCharacters)
             End If
             ' -- Package Description 1
             If packageDesc1Required Then
@@ -728,18 +743,26 @@ Namespace WholeFoods.IRMA.ItemHosting.BusinessLogic
             ' -- Package Unit ID
             If _packageUnitID Is Nothing Then
                 statusList.Add(ItemStatus.Error_PackageDescUnitRequired)
+            ElseIf _packageUnitID.ToCharArray().All(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_PackageDescUnitInvalidCharacters)
             End If
             ' -- Vendor Unit ID
             If _vendorUnitID Is Nothing Then
                 statusList.Add(ItemStatus.Error_VendorUnitRequired)
+            ElseIf _vendorUnitID.ToCharArray().All(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_VendorUnitInvalidCharacters)
             End If
             ' -- Distribution Unit ID
             If _distributionUnitID Is Nothing Then
                 statusList.Add(ItemStatus.Error_DistributionUnitRequired)
+            ElseIf _distributionUnitID.ToCharArray().All(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_DistributionUnitInvalidCharacters)
             End If
             ' -- Retail Unit ID
             If _retailUnitID Is Nothing Then
                 statusList.Add(ItemStatus.Error_RetailUnitRequired)
+            ElseIf _retailUnitID.ToCharArray().All(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ItemStatus.Error_RetailUnitInvalidCharacters)
             End If
 
             If statusList.Count = 0 Then

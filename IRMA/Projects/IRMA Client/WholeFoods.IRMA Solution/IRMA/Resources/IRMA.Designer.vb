@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Class IRMA
@@ -99,7 +99,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BypassNoTagLogicInformationMessage", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Checking this box will result in No-Tag Transaction history being ignored when sending the Print Batch Request to SLAW (NOTE all other No-Tag exclusions will be enforced). Are you sure you want to ignore No-Tag Transaction History for the selected PrintBatches?.
         '''</summary>
@@ -277,6 +277,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property Identifier() As String
             Get
                 Return ResourceManager.GetString("Identifier", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} cannot contain character(s) &apos;{1}&apos;..
+        '''</summary>
+        Friend Shared ReadOnly Property InvalidCharacters() As String
+            Get
+                Return ResourceManager.GetString("InvalidCharacters", resourceCulture)
             End Get
         End Property
         

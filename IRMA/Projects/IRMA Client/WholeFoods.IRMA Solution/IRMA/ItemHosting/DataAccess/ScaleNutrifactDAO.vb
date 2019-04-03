@@ -1,10 +1,24 @@
 Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.Utility.DataAccess
+
+Public Enum ScaleNutrifactsValidationStatus
+    Valid
+    Error_DescriptionInvalidCharacters
+    Error_ServingPerContainerInvalidCharacters
+    Error_ServingSizeDescInvalidCharacters
+    Error_ExtraTextInvalidCharacters
+    Error_IngredientsTextInvalidCharacters
+    Error_AllergensTextInvalidCharacters
+End Enum
 
 Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
     Public Class ScaleNutrifactDAO
+
+        Public Const INVALID_CHARACTERS = "|"
+
         Public Shared Function GetNutriFact(ByVal ID As Integer) As ScaleNutrifactBO
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim scaleNutrifact As New ScaleNutrifactBO
@@ -238,7 +252,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                         End If
                     End While
                     results.Close()
-                End If           
+                End If
 
                 If isSuccess Then
                     currentParam = New DBParam
@@ -658,19 +672,20 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             factory.ExecuteStoredProcedure("InsertOrUpdateItemNutrifact", paramList)
         End Function
 
-    Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String) As Boolean
-      Dim factory As New DataFactory(DataFactory.ItemCatalog)
-      Dim paramList As New ArrayList(New DBParam() {
-        New DBParam("ExtraTextId", DBParamType.Int, extraTextId),
-        New DBParam("ItemKey", DBParamType.Int, itemKey),
-        New DBParam("Description", DBParamType.String, String.Empty),
-        New DBParam("Scale_LabelType_ID", DBParamType.Int, scaleLabelTypeId),
-        New DBParam("ExtraText", DBParamType.String, extraText)})
+        Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String) As Boolean
+            Dim factory As New DataFactory(DataFactory.ItemCatalog)
+            Dim paramList As New ArrayList(New DBParam() {
+              New DBParam("ExtraTextId", DBParamType.Int, extraTextId),
+              New DBParam("ItemKey", DBParamType.Int, itemKey),
+              New DBParam("Description", DBParamType.String, String.Empty),
+              New DBParam("Scale_LabelType_ID", DBParamType.Int, scaleLabelTypeId),
+              New DBParam("ExtraText", DBParamType.String, extraText)})
 
-      factory.ExecuteStoredProcedure("InsertOrUpdateItemExtraText", paramList)
-    End Function
+            factory.ExecuteStoredProcedure("InsertOrUpdateItemExtraText", paramList)
+            Return True
+        End Function
 
-    Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String) As Boolean
+        Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -765,5 +780,63 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             factory.ExecuteStoredProcedure("DeleteItemExtraText", paramList)
         End Function
 
+        Public Shared Function ValidateScaleNutrifacts(ByVal scaleNutrifacts As ScaleNutrifactBO) As ArrayList
+            Dim statusList As New ArrayList
+
+            ' -- Description
+            If Not String.IsNullOrEmpty(scaleNutrifacts.Description) Then
+                If scaleNutrifacts.Description.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleNutrifactsValidationStatus.Error_DescriptionInvalidCharacters)
+                End If
+            End If
+
+            ' -- ServingPerContainer
+            If Not String.IsNullOrEmpty(scaleNutrifacts.ServingPerContainer) Then
+                If scaleNutrifacts.ServingPerContainer.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleNutrifactsValidationStatus.Error_ServingPerContainerInvalidCharacters)
+                End If
+            End If
+
+            ' -- ServingSizeDesc
+            If Not String.IsNullOrEmpty(scaleNutrifacts.ServingSizeDesc) Then
+                If scaleNutrifacts.ServingSizeDesc.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleNutrifactsValidationStatus.Error_ServingSizeDescInvalidCharacters)
+                End If
+            End If
+
+            If statusList.Count = 0 Then
+                statusList.Add(ScaleNutrifactsValidationStatus.Valid)
+            End If
+
+            Return statusList
+        End Function
+
+        Public Shared Function ValidatexExtraText(ByVal extraText As String) As ArrayList
+            Dim statusList As New ArrayList
+
+            If extraText.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleNutrifactsValidationStatus.Error_ExtraTextInvalidCharacters)
+            End If
+
+            If statusList.Count = 0 Then
+                statusList.Add(ScaleNutrifactsValidationStatus.Valid)
+            End If
+
+            Return statusList
+        End Function
+
+        Public Shared Function ValidateIngredientsText(ByVal ingredientsText As String) As ArrayList
+            Dim statusList As New ArrayList
+
+            If ingredientsText.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleNutrifactsValidationStatus.Error_AllergensTextInvalidCharacters)
+            End If
+
+            If statusList.Count = 0 Then
+                statusList.Add(ScaleNutrifactsValidationStatus.Valid)
+            End If
+
+            Return statusList
+        End Function
     End Class
 End Namespace

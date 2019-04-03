@@ -1,10 +1,22 @@
 Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.Utility.DataAccess
 
 Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
+    Public Enum ScaleDetailsValidationStatus
+        Valid
+        Error_ScaleDescription1InvalidCharacters
+        Error_ScaleDescription2InvalidCharacters
+        Error_ScaleDescription3InvalidCharacters
+        Error_ScaleDescription4InvalidCharacters
+        Error_FixedWeightInvalidCharacters
+    End Enum
+
     Public Class ScaleDetailsDAO
+
+        Public Const INVALID_CHARACTERS = "|"
 
 #Region "read methods"
 
@@ -627,6 +639,50 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             factory.ExecuteStoredProcedure("Replenishment_ScalePush_InsertScaleExtraTextChgQueue", paramList)
         End Sub
 
+        Public Shared Function ValidateScaleDetails(ByVal scaleDetailsBO As ScaleDetailsBO) As ArrayList
+            Dim statusList As New ArrayList
+
+            ' -- ScaleDescription4
+            If Not String.IsNullOrEmpty(scaleDetailsBO.ScaleDescription1) Then
+                If scaleDetailsBO.ScaleDescription1.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleDetailsValidationStatus.Error_ScaleDescription1InvalidCharacters)
+                End If
+            End If
+
+            ' -- ScaleDescription4
+            If Not String.IsNullOrEmpty(scaleDetailsBO.ScaleDescription2) Then
+                If scaleDetailsBO.ScaleDescription2.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleDetailsValidationStatus.Error_ScaleDescription2InvalidCharacters)
+                End If
+            End If
+
+            ' -- ScaleDescription4
+            If Not String.IsNullOrEmpty(scaleDetailsBO.ScaleDescription3) Then
+                If scaleDetailsBO.ScaleDescription3.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleDetailsValidationStatus.Error_ScaleDescription3InvalidCharacters)
+                End If
+            End If
+
+            ' -- ScaleDescription4
+            If Not String.IsNullOrEmpty(scaleDetailsBO.ScaleDescription4) Then
+                If scaleDetailsBO.ScaleDescription4.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleDetailsValidationStatus.Error_ScaleDescription4InvalidCharacters)
+                End If
+            End If
+
+            ' -- FixedWeight
+            If Not String.IsNullOrEmpty(scaleDetailsBO.FixedWeight) Then
+                If scaleDetailsBO.FixedWeight.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ScaleDetailsValidationStatus.Error_FixedWeightInvalidCharacters)
+                End If
+            End If
+
+            If statusList.Count = 0 Then
+                statusList.Add(ScaleDetailsValidationStatus.Valid)
+            End If
+
+            Return statusList
+        End Function
 #End Region
 
     End Class

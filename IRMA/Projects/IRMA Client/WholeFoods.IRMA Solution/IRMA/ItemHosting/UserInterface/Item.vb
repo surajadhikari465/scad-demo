@@ -564,6 +564,13 @@ me_err:
         EditErrorDisplay = bSaveData
     End Function
 
+    Private Function NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String) As Boolean
+        Dim validationErrorMsg As String = String.Format(ResourcesIRMA.GetString("InvalidCharacters"), sFieldCaption, sInvalidCharacters)
+        MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
+        ctlControl.Focus()
+        Return False
+    End Function
+
     Function SaveData() As Boolean
         Dim iLoop As Short
         Dim bMustSave As Boolean
@@ -669,11 +676,20 @@ me_err:
                         Case ItemStatus.Error_POSDescriptionRequired
                             SaveData = EditErrorDisplay(bMustSave, lblPOSDesc.Text.Replace(":", ""), txtField(iItemPOS_Description))
                             Exit Function
+                        Case ItemStatus.Error_POSDescriptionInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(lblPOSDesc.Text.Replace(":", ""), txtField(iItemPOS_Description), ItemBO.INVALID_CHARACTERS)
+                            Exit Function
                         Case ItemStatus.Error_ItemDescriptionRequired
                             SaveData = EditErrorDisplay(bMustSave, lblDescription.Text.Replace(":", ""), txtField(iItemItem_Description))
                             Exit Function
+                        Case ItemStatus.Error_ItemDescriptionInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(lblDescription.Text.Replace(":", ""), txtField(iItemItem_Description), ItemBO.INVALID_CHARACTERS)
+                            Exit Function
                         Case ItemStatus.Error_SignCaptionRequired
                             SaveData = EditErrorDisplay(bMustSave, lblSignCaption.Text.Replace(":", ""), txtField(iItemSign_Description))
+                            Exit Function
+                        Case ItemStatus.Error_SignCaptionInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(lblSignCaption.Text.Replace(":", ""), txtField(iItemSign_Description), ItemBO.INVALID_CHARACTERS)
                             Exit Function
                         Case ItemStatus.Error_PackageDesc1Required
                             SaveData = EditErrorDisplay(bMustSave, ResourcesItemHosting.GetString("LabelType"), txtField(iItemPackage_Desc1))
@@ -700,14 +716,26 @@ me_err:
                         Case ItemStatus.Error_PackageDescUnitRequired
                             SaveData = EditErrorDisplay(bMustSave, ResourcesItemHosting.GetString("PkgDescUnit"), cmbField(iItemPackage_Unit_ID))
                             Exit Function
+                        Case ItemStatus.Error_PackageDescUnitInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(ResourcesItemHosting.GetString("PkgDescUnit"), cmbField(iItemPackage_Unit_ID), ItemBO.INVALID_CHARACTERS)
+                            Exit Function
                         Case ItemStatus.Error_VendorUnitRequired
                             SaveData = EditErrorDisplay(bMustSave, String.Format(ResourcesItemHosting.GetString("Unit"), lblVendorOrder.Text.Replace(":", "")), cmbField(iItemVendor_Unit_ID))
+                            Exit Function
+                        Case ItemStatus.Error_VendorUnitInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(String.Format(ResourcesItemHosting.GetString("Unit"), lblVendorOrder.Text.Replace(":", "")), cmbField(iItemVendor_Unit_ID), ItemBO.INVALID_CHARACTERS)
                             Exit Function
                         Case ItemStatus.Error_DistributionUnitRequired
                             SaveData = EditErrorDisplay(bMustSave, String.Format(ResourcesItemHosting.GetString("Unit"), lblDistribution.Text.Replace(":", "")), cmbField(iItemDistribution_Unit_ID))
                             Exit Function
+                        Case ItemStatus.Error_DistributionUnitInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(String.Format(ResourcesItemHosting.GetString("Unit"), lblDistribution.Text.Replace(":", "")), cmbField(iItemDistribution_Unit_ID), ItemBO.INVALID_CHARACTERS)
+                            Exit Function
                         Case ItemStatus.Error_RetailUnitRequired
                             SaveData = EditErrorDisplay(bMustSave, String.Format(ResourcesItemHosting.GetString("Unit"), lblRetail.Text.Replace(":", "")), cmbField(iItemRetail_Unit_ID))
+                            Exit Function
+                        Case ItemStatus.Error_RetailUnitInvalidCharacters
+                            SaveData = NotifyOfInvalidCharacters(String.Format(ResourcesItemHosting.GetString("Unit"), lblRetail.Text.Replace(":", "")), cmbField(iItemRetail_Unit_ID), ItemBO.INVALID_CHARACTERS)
                             Exit Function
                     End Select
                 End While

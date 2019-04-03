@@ -89,8 +89,9 @@ Public Class ItemSignAttributeForm
     End Sub
 
     Private Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-        SaveChanges()
-        Me.Close()
+        If (SaveChanges()) Then
+            Me.Close()
+        End If
     End Sub
 
     ''' <summary>
@@ -293,7 +294,7 @@ Public Class ItemSignAttributeForm
         End If
     End Sub
 
-    Private Sub SaveChanges()
+    Private Function SaveChanges() As Boolean
         ComposeCurrentItemSignAttribute()
 
         If (IsNothing(_itemSignAtribute.Exclusive) And Not IsNothing(_currentItemSignAtribute.Exclusive)) Or
@@ -313,9 +314,32 @@ Public Class ItemSignAttributeForm
             _currentItemSignAtribute.ItemSignAttributeID = _itemSignAtribute.ItemSignAttributeID
             _currentItemSignAtribute.ItemKey = _itemKey
 
+            Dim statusList As ArrayList = ItemSignAttributeDAO.ValidateSignAttributes(_currentItemSignAtribute)
+            Dim statusEnum As IEnumerator = statusList.GetEnumerator
+            Dim currentStatus As ItemSignAttributeValidationStatus
+
+            While statusEnum.MoveNext
+                currentStatus = CType(statusEnum.Current, ItemSignAttributeValidationStatus)
+                Select Case currentStatus
+                    Case ItemSignAttributeValidationStatus.Error_LocalityInvalidCharacters
+                        NotifyOfInvalidCharacters(lblLocality.Text, txtLocality, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                        Return False
+                    Case ItemSignAttributeValidationStatus.Error_SignRomanceTextLongInvalidCharacters
+                        NotifyOfInvalidCharacters(lblSignRomancLong.Text, txtSignRomanceLong, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                        Return False
+                    Case ItemSignAttributeValidationStatus.Error_SignRomanceTextShortInvalidCharacters
+                        NotifyOfInvalidCharacters(lblSignRomancShort.Text, txtSignRomanceShort, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                        Return False
+                    Case ItemSignAttributeValidationStatus.Error_ChicagoBabyInvalidCharacters
+                        NotifyOfInvalidCharacters(lblChicagoBaby.Text, txtChicagoBaby, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                        Return False
+                End Select
+            End While
+
             ItemSignAttributeDAO.Save(_currentItemSignAtribute)
         End If
-    End Sub
+        Return True
+    End Function
 
     Private Sub ComposeCurrentItemSignAttribute()
         _currentItemSignAtribute = New ItemSignAttributeBO()
@@ -338,5 +362,11 @@ Public Class ItemSignAttributeForm
         If Not String.IsNullOrEmpty(txtTagUom.Text.Trim()) Then
             _currentItemSignAtribute.TagUom = Integer.Parse(txtTagUom.Text.Trim())
         End If
+    End Sub
+
+    Private Sub NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String)
+        Dim validationErrorMsg As String = String.Format(ResourcesIRMA.GetString("InvalidCharacters"), sFieldCaption, sInvalidCharacters)
+        MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
+        ctlControl.Focus()
     End Sub
 End Class

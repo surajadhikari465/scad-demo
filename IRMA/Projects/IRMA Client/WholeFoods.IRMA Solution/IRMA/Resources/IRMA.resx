@@ -374,4 +374,8 @@
   <data name="BypassNoTagLogicInformationMessage" xml:space="preserve">
     <value>Print batch requests were sent to SLAW</value>
   </data>
+  <data name="InvalidCharacters" xml:space="preserve">
+    <value>{0} cannot contain character(s) '{1}'.</value>
+    <comment>0 = field label, 1 = offending chararcter(s)</comment>
+  </data>
 </root>

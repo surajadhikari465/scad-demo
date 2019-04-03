@@ -1,7 +1,17 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.Utility.DataAccess
 
+Public Enum ScaleIngredientsValidationStatus
+    Valid
+    Error_ScaleIngredientsDescriptionInvalidCharacters
+    Error_ScaleIngredientsInvalidCharacters
+End Enum
+
 Public Class ScaleIngredientsDAO
+
+    Public Const INVALID_CHARACTERS = "|"
+
     Public Shared Function GetIngredientsByItem(ByVal item_Key As Integer) As IngredientsBO
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         Dim ingredientsBO As IngredientsBO
@@ -126,4 +136,28 @@ Public Class ScaleIngredientsDAO
             End If
         End Try
     End Sub
+
+    Public Shared Function ValidateIngredients(ByVal ingredients As IngredientsBO) As ArrayList
+        Dim statusList As New ArrayList
+
+        ' -- Description
+        If Not String.IsNullOrEmpty(ingredients.Description) Then
+            If ingredients.Description.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleIngredientsValidationStatus.Error_ScaleIngredientsDescriptionInvalidCharacters)
+            End If
+        End If
+
+        ' -- Ingredientsg
+        If Not String.IsNullOrEmpty(ingredients.Ingredients) Then
+            If ingredients.Ingredients.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleIngredientsValidationStatus.Error_ScaleIngredientsInvalidCharacters)
+            End If
+        End If
+
+        If statusList.Count = 0 Then
+            statusList.Add(ScaleIngredientsValidationStatus.Valid)
+        End If
+
+        Return statusList
+    End Function
 End Class

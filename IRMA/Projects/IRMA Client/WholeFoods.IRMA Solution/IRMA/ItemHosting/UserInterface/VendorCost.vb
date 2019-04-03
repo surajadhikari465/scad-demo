@@ -6,6 +6,7 @@ Imports WholeFoods.IRMA.ItemHosting.DataAccess
 Imports WholeFoods.Utility
 Imports log4net
 Imports WholeFoods.IRMA.Ordering.DataAccess
+Imports System.Linq
 
 Friend Class frmVendorCost
     Inherits System.Windows.Forms.Form
@@ -26,6 +27,7 @@ Friend Class frmVendorCost
     Const PRIMARY_VENDOR_COL As Short = 7
     Const VENDOR_COST_HISTORY_KEY_COL As Short = 8
     Const STORE_NO_COL As Short = 9
+    Const INVALID_CHARACTERS As String = "|"
 
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
@@ -264,6 +266,11 @@ ExitSub:
                     MsgBox(String.Format(ResourcesIRMA.GetString("Required"), lblVendorItemID.Text.Replace(":", "")), MsgBoxStyle.Critical, Me.Text)
                     logger.Info(String.Format(ResourcesIRMA.GetString("Required"), lblVendorItemID.Text.Replace(":", "")))
                     txtItemID.Focus()
+                    success = False
+                ElseIf txtItemID.Text.Trim.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    MsgBox(String.Format(ResourcesIRMA.GetString("InvalidCharacters"), lblVendorItemID.Text.Replace(":", ""), INVALID_CHARACTERS), MsgBoxStyle.Critical, Me.Text)
+                    txtItemID.Focus()
+                    logger.Info(String.Format(ResourcesIRMA.GetString("InvalidCharacters"), lblVendorItemID.Text.Replace(":", ""), INVALID_CHARACTERS))
                     success = False
                 Else
                     SQLExecute("EXEC UpdateItemID " & plItem_Key & ", " & poVendorInfo.VendorID & ", '" & Trim(txtItemID.Text) & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
@@ -504,11 +511,11 @@ ExitSub:
         logger.Debug("OptSelection_CheckedChanged Exit")
     End Sub
 
-  Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
-    txtItemID.SelectAll()
-  End Sub
+    Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
+        txtItemID.SelectAll()
+    End Sub
 
-  Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
+    Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
 
         logger.Debug("txtItemID_KeyPress Entry")
 

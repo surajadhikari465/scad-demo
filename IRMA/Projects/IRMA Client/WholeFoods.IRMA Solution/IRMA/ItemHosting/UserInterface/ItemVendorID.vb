@@ -6,6 +6,7 @@ Imports VB = Microsoft.VisualBasic
 Imports log4net
 Imports WholeFoods.IRMA.Mammoth.DataAccess
 Imports WholeFoods.IRMA.Mammoth.BusinessLogic
+Imports System.Linq
 
 Friend Class frmItemVendorID
     Inherits System.Windows.Forms.Form
@@ -23,6 +24,7 @@ Friend Class frmItemVendorID
     ' Define the log4net logger for this class.
     Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
+    Const INVALID_CHARACTERS As String = "|"
 
     Private Enum geStoreCol
         StoreNo = 0
@@ -272,6 +274,12 @@ Friend Class frmItemVendorID
                     txtItemID.Focus()
                     logger.Info(String.Format(ResourcesIRMA.GetString("Required"), _lblLabel_3.Text.Replace(":", "")))
                     saveSuccess = False
+                ElseIf txtItemID.Text.Trim.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    ' Make sure the new value does not contain illegal characters
+                    MsgBox(String.Format(ResourcesIRMA.GetString("InvalidCharacters"), _lblLabel_3.Text.Replace(":", ""), INVALID_CHARACTERS), MsgBoxStyle.Critical, Me.Text)
+                    txtItemID.Focus()
+                    logger.Info(String.Format(ResourcesIRMA.GetString("InvalidCharacters"), _lblLabel_3.Text.Replace(":", ""), INVALID_CHARACTERS))
+                    saveSuccess = False
                 Else
                     SQLExecute("EXEC UpdateItemVendor " & glItemID & ", " & glVendorID & ", '" & Trim(txtItemID.Text) & "'", DAO.RecordsetOptionEnum.dbSQLPassThrough)
                     ' Refresh the original value so the user is not prompted to save again on form closing
@@ -372,36 +380,36 @@ Friend Class frmItemVendorID
         logger.Debug("frmItemVendorID_FormClosed Exit")
     End Sub
 
-  Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
-    txtItemID.SelectAll()
-  End Sub
+    Private Sub txtItemID_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtItemID.Enter
+        txtItemID.SelectAll()
+    End Sub
 
-  Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
-    logger.Debug("txtItemID_KeyPress Entry")
-    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+    Private Sub txtItemID_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtItemID.KeyPress
+        logger.Debug("txtItemID_KeyPress Entry")
+        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
-    KeyAscii = ValidateKeyPressEvent(KeyAscii, "String", txtItemID, 0, 0, 0)
+        KeyAscii = ValidateKeyPressEvent(KeyAscii, "String", txtItemID, 0, 0, 0)
 
-    eventArgs.KeyChar = Chr(KeyAscii)
-    If KeyAscii = 0 Then
-      eventArgs.Handled = True
-    End If
+        eventArgs.KeyChar = Chr(KeyAscii)
+        If KeyAscii = 0 Then
+            eventArgs.Handled = True
+        End If
 
-    logger.Debug("txtItemID_KeyPress Exit")
-  End Sub
+        logger.Debug("txtItemID_KeyPress Exit")
+    End Sub
 
-  Private Sub ClearSelections()
-    logger.Debug("ClearSelections Entry")
+    Private Sub ClearSelections()
+        logger.Debug("ClearSelections Entry")
 
-    Dim iCnt As Int16
-    For iCnt = 0 To ugrdSIV.Rows.Count - 1
-      ugrdSIV.Rows(iCnt).Selected = False
-    Next
+        Dim iCnt As Int16
+        For iCnt = 0 To ugrdSIV.Rows.Count - 1
+            ugrdSIV.Rows(iCnt).Selected = False
+        Next
 
-    logger.Debug("ClearSelections Exit")
-  End Sub
+        logger.Debug("ClearSelections Exit")
+    End Sub
 
-  Private Sub OptSelection_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles optSelection.CheckedChanged
+    Private Sub OptSelection_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles optSelection.CheckedChanged
         If Me.IsInitializing Then Exit Sub
 
         logger.Debug("OptSelection_CheckedChanged Entry")

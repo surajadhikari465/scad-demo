@@ -42,7 +42,6 @@
   <ItemGroup>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -61,6 +60,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ItemHosting\ScaleAllergensDAOUnitTests.cs" />
+    <Compile Include="ItemHosting\ScaleIngredientsDAOUnitTests.cs" />
+    <Compile Include="ItemHosting\ScaleStorageDataDAOUnitTests.cs" />
+    <Compile Include="ItemHosting\ScaleNutrifactsDAOUnitTests.cs" />
+    <Compile Include="ItemHosting\ScaleDetailsDAOUnitTests.cs" />
+    <Compile Include="ItemHosting\ItemSignAttributeDAOUnitTests.cs" />
     <Compile Include="NoTag\NoTagLogicUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shrink\ShrinkCorrectionUnitTests.cs" />

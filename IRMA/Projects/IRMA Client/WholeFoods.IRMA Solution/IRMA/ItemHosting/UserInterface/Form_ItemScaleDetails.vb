@@ -585,6 +585,38 @@ Imports log4net
             End If
         End If
 
+        Dim statusList As ArrayList = ScaleDetailsDAO.ValidateScaleDetails(ScaleDetailsBO)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleDetailsValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleDetailsValidationStatus)
+            Select Case currentStatus
+                Case ScaleDetailsValidationStatus.Error_ScaleDescription1InvalidCharacters
+                    NotifyOfInvalidCharacters(ScaleDescLabel.Text.Replace(" :", "") + "1", ScaleDesc1TextBox, ScaleDetailsDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+            Select Case currentStatus
+                Case ScaleDetailsValidationStatus.Error_ScaleDescription2InvalidCharacters
+                    NotifyOfInvalidCharacters(ScaleDescLabel.Text.Replace(" :", "") + "2", ScaleDesc2TextBox, ScaleDetailsDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+            Select Case currentStatus
+                Case ScaleDetailsValidationStatus.Error_ScaleDescription3InvalidCharacters
+                    NotifyOfInvalidCharacters(ScaleDescLabel.Text.Replace(" :", "") + "3", ScaleDesc3TextBox, ScaleDetailsDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+            Select Case currentStatus
+                Case ScaleDetailsValidationStatus.Error_ScaleDescription4InvalidCharacters
+                    NotifyOfInvalidCharacters(ScaleDescLabel.Text.Replace(" :", "") + "4", ScaleDesc4TextBox, ScaleDetailsDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+            Select Case currentStatus
+                Case ScaleDetailsValidationStatus.Error_FixedWeightInvalidCharacters
+                    NotifyOfInvalidCharacters(FixedWeightLabel.Text.Replace(" :", ""), FixedWeightTextbox, ScaleDetailsDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+        End While
 
         If Me.FormOwnsData Then
             ' call save method on DAO object
@@ -648,9 +680,7 @@ Imports log4net
 
         logger.Debug("Form_ItemScaleDetails_FormClosing Entry")
 
-        Dim IsEditable As Boolean = False
-        IsEditable = (gbItemAdministrator And frmItem.pbUserSubTeam) Or gbSuperUser
-        If IsEditable = False Then
+        If Not (gbItemAdministrator And frmItem.pbUserSubTeam) Or gbSuperUser Then
             SetDataChanges(False)
         End If
 
@@ -985,8 +1015,6 @@ Imports log4net
         End If
     End Sub
 
-
-
     Private Sub LoadNutrifacts(ByVal NutrifactID As Integer)
         If LabelFormatCombo.DataSource Is Nothing Then
             LabelFormatCombo.DataSource = ScaleLabelFormatDAO.GetComboList()
@@ -1136,6 +1164,7 @@ Imports log4net
 
         SetNutrifactsDataChanges(False)
     End Sub
+
     Private Sub ClearNutrifacts()
         If NutrifactCombo.Items.Count > 0 AndAlso NutrifactCombo.SelectedIndex <> -1 Then NutrifactCombo.SelectedIndex = -1
         NutrifactDescriptionTextbox.Text = String.Empty
@@ -1307,7 +1336,7 @@ Imports log4net
     End Sub
 
     Private Sub NutrifactCombo_ValueMemberChanged(sender As Object, e As EventArgs) Handles NutrifactCombo.ValueMemberChanged
-        SetDataChanges(True)
+        SetNutrifactsDataChanges(True)
     End Sub
 
     Private Sub PerContainerTextBox_TextChanged(sender As Object, e As EventArgs) Handles PerContainerTextBox.TextChanged
@@ -1593,6 +1622,29 @@ Imports log4net
             Dim alternateJurisdiction As Boolean = False
             PopulateNutrifactBO(scaleNutrifact)
 
+            Dim statusList As ArrayList = ScaleNutrifactDAO.ValidateScaleNutrifacts(scaleNutrifact)
+            Dim statusEnum As IEnumerator = statusList.GetEnumerator
+            Dim currentStatus As ScaleNutrifactsValidationStatus
+
+            While statusEnum.MoveNext
+                currentStatus = CType(statusEnum.Current, ScaleIngredientsValidationStatus)
+                Select Case currentStatus
+                    Case ScaleNutrifactsValidationStatus.Error_DescriptionInvalidCharacters
+                        NotifyOfInvalidCharacters(DescriptionLabel.Text.Replace(":", ""), NutrifactDescriptionTextbox, ScaleNutrifactDAO.INVALID_CHARACTERS)
+                        Return isSuccessful
+                End Select
+                Select Case currentStatus
+                    Case ScaleNutrifactsValidationStatus.Error_ServingPerContainerInvalidCharacters
+                        NotifyOfInvalidCharacters(Label10.Text.Replace(":", ""), SizeNumericEditor, ScaleNutrifactDAO.INVALID_CHARACTERS)
+                        Return isSuccessful
+                End Select
+                Select Case currentStatus
+                    Case ScaleNutrifactsValidationStatus.Error_ServingSizeDescInvalidCharacters
+                        NotifyOfInvalidCharacters(Label7.Text.Replace(":", ""), PerContainerTextBox, ScaleNutrifactDAO.INVALID_CHARACTERS)
+                        Return isSuccessful
+                End Select
+            End While
+
             If ScaleNutrifactDAO.Save(scaleNutrifact, alternateJurisdiction) Then
                 ' reload the combo
                 Me.LoadNutrifacts(Me.NutrifactsID)
@@ -1641,6 +1693,19 @@ Imports log4net
         IngredientsBO.Description = ""
         IngredientsBO.LabelTypeID = 0
 
+        Dim statusList As ArrayList = ScaleIngredientsDAO.ValidateIngredients(IngredientsBO)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleIngredientsValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleIngredientsValidationStatus)
+            Select Case currentStatus
+                Case ScaleIngredientsValidationStatus.Error_ScaleIngredientsInvalidCharacters
+                    NotifyOfInvalidCharacters(Label1.Text.Replace(":", ""), IngredientsTxt, ScaleIngredientsDAO.INVALID_CHARACTERS)
+                    Return isSuccessful
+            End Select
+        End While
+
         If addIngredients = True And Not (String.IsNullOrEmpty(IngredientsBO.Ingredients)) Then
             ScaleIngredientsDAO.AddIngredientsToItem(ItemKey, IngredientsBO)
         Else
@@ -1666,6 +1731,19 @@ Imports log4net
         AllergensBO.Description = ""
         AllergensBO.LabelTypeID = 0
 
+        Dim statusList As ArrayList = ScaleAllergensDAO.ValidateAllergens(AllergensBO)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleAllergensValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleAllergensValidationStatus)
+            Select Case currentStatus
+                Case ScaleAllergensValidationStatus.Error_AllergensInvalidCharacters
+                    NotifyOfInvalidCharacters(Label8.Text.Replace(":", ""), AllergensTxt, ScaleAllergensDAO.INVALID_CHARACTERS)
+                    Return isSuccessful
+            End Select
+        End While
+
         If addAllergens = True And Not (String.IsNullOrEmpty(AllergensBO.Allergens)) Then
             ScaleAllergensDAO.AddAllergensToItem(ItemKey, AllergensBO)
         Else
@@ -1688,6 +1766,24 @@ Imports log4net
         StorageDataBO.ID = Me.ScaleStorageDataID
         StorageDataBO.StorageData = StorageDataTxt.Text.Trim()
         StorageDataBO.Description = txtDescription.Text
+
+        Dim statusList As ArrayList = ScaleStorageDataDAO.ValidateStorageData(StorageDataBO)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleStorageDataValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleStorageDataValidationStatus)
+            Select Case currentStatus
+                Case ScaleStorageDataValidationStatus.Error_ScaleStorageDataDescriptionInvalidCharacters
+                    NotifyOfInvalidCharacters(lblDescription.Text.Replace(":", ""), txtDescription, ScaleStorageDataDAO.INVALID_CHARACTERS)
+                    Return isSuccessful
+            End Select
+            Select Case currentStatus
+                Case ScaleStorageDataValidationStatus.Error_ScaleStorageDataInvalidCharacters
+                    NotifyOfInvalidCharacters(lblStorageData.Text.Replace(":", ""), StorageDataTxt, ScaleStorageDataDAO.INVALID_CHARACTERS)
+                    Return isSuccessful
+            End Select
+        End While
 
         If addStorageData = True And Not (String.IsNullOrEmpty(StorageDataBO.StorageData)) Then
             ScaleStorageDataDAO.AddStorageDataToItem(ItemKey, StorageDataBO)
@@ -1919,5 +2015,11 @@ Imports log4net
         If Me.NutrifactCombo.SelectedIndex >= 0 Then
             ClearNutrifacts()
         End If
+    End Sub
+
+    Private Sub NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String)
+        Dim validationErrorMsg As String = String.Format("{0} cannot contain any of illegal character(s) '{1}'.", sFieldCaption, sInvalidCharacters)
+        MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
+        ctlControl.Focus()
     End Sub
 End Class

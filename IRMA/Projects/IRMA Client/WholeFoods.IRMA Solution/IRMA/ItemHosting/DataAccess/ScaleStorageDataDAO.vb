@@ -1,7 +1,17 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.Utility.DataAccess
 
+Public Enum ScaleStorageDataValidationStatus
+    Valid
+    Error_ScaleStorageDataDescriptionInvalidCharacters
+    Error_ScaleStorageDataInvalidCharacters
+End Enum
+
 Public Class ScaleStorageDataDAO
+
+    Public Const INVALID_CHARACTERS = "|"
+
     Public Shared Function GetStorageDataByItem(ByVal item_Key As Integer) As StorageDataBO
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         Dim StorageDataBO As StorageDataBO
@@ -112,4 +122,27 @@ Public Class ScaleStorageDataDAO
             End If
         End Try
     End Sub
+    Public Shared Function ValidateStorageData(ByVal storageData As StorageDataBO) As ArrayList
+        Dim statusList As New ArrayList
+
+        ' -- Description
+        If Not String.IsNullOrEmpty(storageData.Description) Then
+            If storageData.Description.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleStorageDataValidationStatus.Error_ScaleStorageDataDescriptionInvalidCharacters)
+            End If
+        End If
+
+        ' -- StorageDatag
+        If Not String.IsNullOrEmpty(storageData.StorageData) Then
+            If storageData.StorageData.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleStorageDataValidationStatus.Error_ScaleStorageDataInvalidCharacters)
+            End If
+        End If
+
+        If statusList.Count = 0 Then
+            statusList.Add(ScaleStorageDataValidationStatus.Valid)
+        End If
+
+        Return statusList
+    End Function
 End Class

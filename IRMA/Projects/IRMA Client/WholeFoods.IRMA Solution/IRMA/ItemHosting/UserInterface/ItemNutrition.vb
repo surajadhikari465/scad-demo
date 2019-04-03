@@ -95,25 +95,46 @@ Public Class ItemNutrition
     End Sub
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
-    Select Case Me.ItemNutritionTabs.SelectedTab.Text
-      Case "Extra Text": 
-        Me.SaveExtraText()
-      Case "NutriFacts"
-        Me.SaveNutrifacts()
-      Case "Ingredients"
-        Me.SaveIngredients()
-      Case "Allergens"
-        Me.SaveAllergens()
-    End Select
+        Dim saveSuccess As Boolean = False
 
-    MessageBox.Show("Changes have been saved successfully.", "Save Changes", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Select Case Me.ItemNutritionTabs.SelectedTab.Text
+            Case "Extra Text"
+                saveSuccess = Me.SaveExtraText()
+            Case "NutriFacts"
+                saveSuccess = Me.SaveNutrifacts()
+            Case "Ingredients"
+                saveSuccess = Me.SaveIngredients()
+            Case "Allergens"
+                saveSuccess = Me.SaveAllergens()
+        End Select
 
-        ButtonSave.Enabled = False
+        If (saveSuccess) Then
+            MessageBox.Show("Changes have been saved successfully.", "Save Changes", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ButtonSave.Enabled = False
+        End If
     End Sub
+
     Private Function SaveExtraText() As Boolean
-    ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text.Trim())
-    Return True
+        ' validate before saving
+        Dim statusList As ArrayList = ScaleNutrifactDAO.ValidatexExtraText(txtExtraText.Text.Trim())
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleNutrifactsValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleNutrifactsValidationStatus)
+            Select Case currentStatus
+                Case ScaleNutrifactsValidationStatus.Error_ExtraTextInvalidCharacters
+                    NotifyOfInvalidCharacters(ExtraTextTab.Text, txtExtraText, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+        End While
+
+        ' save
+        ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text.Trim())
+        Return True
+
     End Function
+
     Private Function SaveNutrifacts() As Boolean
         If ComboBoxNutrifacts.SelectedIndex = -1 Then
             ScaleNutrifactDAO.DeleteItemNutrifact(glItemID)
@@ -122,19 +143,51 @@ Public Class ItemNutrition
         End If
         Return True
     End Function
+
     Private Function SaveIngredients() As Boolean
+        ' validate before saving
+        Dim statusList As ArrayList = ScaleNutrifactDAO.ValidateIngredientsText(IngredientsTxt.Text)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleNutrifactsValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleNutrifactsValidationStatus)
+            Select Case currentStatus
+                Case ScaleNutrifactsValidationStatus.Error_IngredientsTextInvalidCharacters
+                    NotifyOfInvalidCharacters(Label11.Text.Replace(" :", ""), IngredientsTxt, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+        End While
+
         ScaleNutrifactDAO.InsertOrUpdateItemIngredient(glItemID, IngredientsBO.ScaleIngredientID, IngredientsTxt.Text)
         Return True
     End Function
+
     Private Function SaveAllergens() As Boolean
+        ' validate before saving
+        Dim statusList As ArrayList = ScaleNutrifactDAO.ValidatexExtraText(AllergensTxt.Text)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ScaleNutrifactsValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ScaleNutrifactsValidationStatus)
+            Select Case currentStatus
+                Case ScaleNutrifactsValidationStatus.Error_ExtraTextInvalidCharacters
+                    NotifyOfInvalidCharacters(Label8.Text.Replace(" :", ""), AllergensTxt, ItemSignAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+        End While
+
         ScaleNutrifactDAO.InsertOrUpdateItemAllergen(glItemID, AllergensBO.ScaleAllergenID, AllergensTxt.Text)
         Return True
     End Function
+
     Private Sub ComboBoxNutrifacts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxNutrifacts.SelectedIndexChanged
         If Not formIsReadOnly Then
             ButtonSave.Enabled = True
         End If
     End Sub
+
     Private Sub LockForm()
         Dim SelectedTab As String = Me.ItemNutritionTabs.SelectedTab.Text
         Select Case SelectedTab
@@ -289,5 +342,11 @@ Public Class ItemNutrition
 
     Private Sub ButtonExtraTextLabelTypeRemove_Click(sender As Object, e As EventArgs) Handles ButtonExtraTextLabelTypeRemove.Click
         Me.ExtraTextLabelTypeCbx.SelectedIndex = -1
+    End Sub
+
+    Private Sub NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String)
+        Dim validationErrorMsg As String = String.Format(ResourcesIRMA.GetString("InvalidCharacters"), sFieldCaption, sInvalidCharacters)
+        MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
+        ctlControl.Focus()
     End Sub
 End Class

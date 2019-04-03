@@ -1,7 +1,18 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.Utility.DataAccess
 
+Public Enum ScaleAllergensValidationStatus
+    Valid
+    Error_DescriptionInvalidCharacters
+    Error_AllergensInvalidCharacters
+    Error_ScaleServingSizeDescInvalidCharacters
+End Enum
+
 Public Class ScaleAllergensDAO
+
+    Public Const INVALID_CHARACTERS = "|"
+
     Public Shared Function GetAllergensByItem(ByVal item_Key As Integer) As AllergensBO
         Dim factory As New DataFactory(DataFactory.ItemCatalog)
         Dim allergensBO As AllergensBO
@@ -126,4 +137,35 @@ Public Class ScaleAllergensDAO
             End If
         End Try
     End Sub
+
+    Public Shared Function ValidateAllergens(ByVal allergensBO As AllergensBO) As ArrayList
+        Dim statusList As New ArrayList
+
+        ' -- Description
+        If Not String.IsNullOrEmpty(allergensBO.Description) Then
+            If allergensBO.Description.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleAllergensValidationStatus.Error_DescriptionInvalidCharacters)
+            End If
+        End If
+
+        ' -- Allergens
+        If Not String.IsNullOrEmpty(allergensBO.Allergens) Then
+            If allergensBO.Allergens.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleAllergensValidationStatus.Error_AllergensInvalidCharacters)
+            End If
+        End If
+
+        ' -- LabelTypeDescription
+        If Not String.IsNullOrEmpty(allergensBO.LableTypeDescription) Then
+            If allergensBO.LableTypeDescription.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                statusList.Add(ScaleAllergensValidationStatus.Error_ScaleServingSizeDescInvalidCharacters)
+            End If
+        End If
+
+        If statusList.Count = 0 Then
+            statusList.Add(ScaleAllergensValidationStatus.Valid)
+        End If
+
+        Return statusList
+    End Function
 End Class

@@ -1,12 +1,23 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Linq
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.Utility.DataAccess
+
+Public Enum ItemSignAttributeValidationStatus
+    Valid
+    Error_LocalityInvalidCharacters
+    Error_SignRomanceTextLongInvalidCharacters
+    Error_SignRomanceTextShortInvalidCharacters
+    Error_ChicagoBabyInvalidCharacters
+End Enum
 
 Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
     Public Class ItemSignAttributeDAO
 
         Private Shared _instance As ItemSignAttributeDAO = Nothing
+
+        Public Const INVALID_CHARACTERS = "|"
 
         Public Shared ReadOnly Property Instance() As ItemSignAttributeDAO
             Get
@@ -305,5 +316,44 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
             factory.ExecuteStoredProcedure("dbo.InsertOrUpdateItemSignAttribute", paramList)
         End Function
+
+        Public Shared Function ValidateSignAttributes(ByVal itemSignAttribute As ItemSignAttributeBO) As ArrayList
+            Dim statusList As New ArrayList
+
+            ' -- Locality
+            If Not String.IsNullOrEmpty(itemSignAttribute.Locality) Then
+                If itemSignAttribute.Locality.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ItemSignAttributeValidationStatus.Error_LocalityInvalidCharacters)
+                End If
+            End If
+
+            ' -- Sign Romance Long
+            If Not String.IsNullOrEmpty(itemSignAttribute.SignRomanceLong) Then
+                If itemSignAttribute.SignRomanceLong.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ItemSignAttributeValidationStatus.Error_SignRomanceTextLongInvalidCharacters)
+                End If
+            End If
+
+            ' -- Sign Romance Short
+            If Not String.IsNullOrEmpty(itemSignAttribute.SignRomanceShort) Then
+                If itemSignAttribute.SignRomanceShort.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c)) Then
+                    statusList.Add(ItemSignAttributeValidationStatus.Error_SignRomanceTextShortInvalidCharacters)
+                End If
+            End If
+
+            ' -- Chicago Baby
+            If Not String.IsNullOrEmpty(itemSignAttribute.ChicagoBaby) Then
+                If (itemSignAttribute.ChicagoBaby.ToCharArray().Any(Function(c) INVALID_CHARACTERS.Contains(c))) Then
+                    statusList.Add(ItemSignAttributeValidationStatus.Error_ChicagoBabyInvalidCharacters)
+                End If
+            End If
+
+            If statusList.Count = 0 Then
+                statusList.Add(ItemSignAttributeValidationStatus.Valid)
+            End If
+
+            Return statusList
+        End Function
+
     End Class
 End Namespace
