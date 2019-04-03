@@ -75,6 +75,27 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(result);
         }
+        [HttpPut("{linkGroupId}/LinkGroupItem", Name = "UpdateLinkGroupItem")]
+        public IActionResult UpdateLinkGroupItem(int linkGroupId, [FromBody]LinkGroupItemDto linkGroupItemDto)
+        {
+            if (linkGroupItemDto == null)
+            {
+                return BadRequest();
+            }
+
+            var existingLinkGroupItem = linkGroupItemRepository.Get(linkGroupItemDto.LinkGroupItemId);
+
+            if (existingLinkGroupItem != null)
+            {
+                existingLinkGroupItem.InstructionListId = linkGroupItemDto.InstructionListId;
+                existingLinkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
+                linkGroupItemRepository.UnitOfWork.Commit();
+                return Ok();
+            } else
+            {
+                return NotFound();
+            }
+        }
 
         [HttpPost("{linkGroupId}/LinkGroupItem", Name = "CreateLinkGroupItem")]
         public IActionResult CreateLinkGroupItem(int linkGroupId, [FromBody]LinkGroupItemDto linkGroupItemDto)
@@ -138,6 +159,41 @@ namespace KitBuilderWebApi.Controllers
             {
                 linkGroupRepository.UnitOfWork.Commit();
                 return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+        }
+
+        [HttpPut("{linkGroupId}/LinkGroupItems", Name = "UpdateLinkGroupItems")]
+        public IActionResult UpdateLinkGroupItems(int linkGroupId, [FromBody]List<LinkGroupItemDto> linkGroupItemsDto)
+        {
+            if (linkGroupItemsDto == null || !linkGroupItemsDto.Any())
+            {
+                return BadRequest();
+            }
+
+            foreach (var linkGroupItemDto in linkGroupItemsDto)
+            {
+                var existingLinkGroupItem = linkGroupItemRepository.Get(linkGroupItemDto.LinkGroupItemId);
+
+                if (existingLinkGroupItem != null)
+                {
+                    existingLinkGroupItem.InstructionListId = linkGroupItemDto.InstructionListId;
+                    existingLinkGroupItem.LastUpdatedDateUtc = DateTime.UtcNow;
+                    linkGroupItemRepository.UnitOfWork.Commit();
+                } else
+                {
+                    return NotFound();
+                }
+            }
+
+            try
+            {
+                linkGroupItemRepository.UnitOfWork.Commit();
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -219,6 +275,7 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(500, "A problem happened while handling your request.");
             }
         }
+
 
         internal IQueryable<LinkGroupItem> BuildLinkGroupItemsDeleteQuery(List<int> linkGroupItemIDs, int linkGroupId)
         {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, HashRouter, Switch } from 'react-router-dom';
-import { LinkGroupsPage } from './LinkGroups/LinkGroupsPage';
+import LinkGroupsPage from './LinkGroups/LinkGroupsPage';
 import InstructionListsPage from './InstructionLists/InstructionListsPage';
 import KitListPage from './Kits';
 import '../css/site.css'

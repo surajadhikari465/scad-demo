@@ -8,9 +8,9 @@ import CopyLinkGroupButton from "./CopyLinkGroupButton";
 import * as LinkGroupFunctions from "./LinkGroupFunctions";
 import { DialogContent } from '@material-ui/core';
 import AddItemToLinkGroupDialog from './AddItemToLinkGroupDialog';
-import { Item, LinkGroup } from 'src/types/LinkGroup';
+import { Item, LinkGroup, LinkGroupItem } from 'src/types/LinkGroup';
 import { KbApiMethod } from '../helpers/kbapi';
-import Axios from 'axios';
+import Axios, { AxiosError } from 'axios';
 import withSnackbar from '../PageStyle/withSnackbar';
 
 interface IState {
@@ -20,6 +20,7 @@ interface IState {
   LinkGroupName: string;
   LinkGroupDesc: string;
   showAddModifiers: boolean;
+  editedModifiers: LinkGroupItem[],
 }
 
 interface IProps {
@@ -41,13 +42,38 @@ class EditLinkGroup extends React.Component<IProps, IState> {
       LinkGroupItems: [],
       LinkGroupName: "",
       LinkGroupDesc: "",
-      showAddModifiers: false
+      showAddModifiers: false,
+      editedModifiers: [],
     };
   }
 
   componentDidMount() {
     this.getLinkGroupInfo();
     this.loadCookingInstructionsList();
+  }
+
+  handleSaveLinkGroup = () => {
+    const linkGroup = {... this.state.data };
+    linkGroup.groupName = this.state.LinkGroupName;
+    linkGroup.groupDescription = this.state.LinkGroupDesc;
+
+    const url = `${KbApiMethod("LinkGroups")}/${linkGroup.linkGroupId}`;
+    
+    Axios.put(url, linkGroup).then(() => {
+      //skip modifiers if none have been edited.
+      if(this.state.editedModifiers.length === 0) return;
+      
+      //now try and save any edited modifiers
+      const url = `${KbApiMethod("LinkGroups")}/${this.props.data.linkGroupId}/LinkGroupItems`;
+      Axios.put(url, this.state.editedModifiers);
+    })
+    .then(() => {
+      this.props.showAlert("Update Successful", "success");
+      this.props.handleCancelClick();
+    })
+    .catch((error: AxiosError) => {
+      this.props.showAlert(error.message, "error");
+    })
   }
 
   getLinkGroupInfo = () => {
@@ -61,6 +87,20 @@ class EditLinkGroup extends React.Component<IProps, IState> {
             LinkGroupDesc: linkGroup.groupDescription
           });
       })
+  }
+
+  handleModifierEdit = (item: LinkGroupItem) => {
+    const { editedModifiers } = this.state;
+    let itemToAdd;
+    const existingItem = editedModifiers.find(i => i.linkGroupItemId === item.linkGroupItemId);
+    if(existingItem) {
+      existingItem.instructionListId = item.instructionListId;
+      itemToAdd = { ...existingItem };
+    } else {
+      itemToAdd = item;
+    }
+    const restOfItems = editedModifiers.filter(i => i.linkGroupItemId !== item.linkGroupItemId);
+    this.setState({ editedModifiers: [...restOfItems, itemToAdd]});
   }
 
   removeLinkGroupItem = (itemIdToDelete: number) => {
@@ -110,7 +150,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
               id="LinkGroupName"
               label="Link Group Name"
               name="LinkGroupName"
-              value={this.state.LinkGroupName || ""}
+              value={this.state.LinkGroupName}
               onChange={e => this.handleChange("LinkGroupName", e)}
               fullWidth
               variant="outlined"
@@ -122,7 +162,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
               id="LinkGroupDesc"
               label="Link Group Description"
               name="LinkGroupDesc"
-              value={this.state.LinkGroupDesc || ""}
+              value={this.state.LinkGroupDesc}
               onChange={e => this.handleChange("LinkGroupDesc", e)}
               fullWidth
               variant="outlined"
@@ -178,9 +218,11 @@ class EditLinkGroup extends React.Component<IProps, IState> {
                       LinkGroupId={cellInfo.original.linkGroupId}
                       handleSelectionChanged={e => {
                         const data = [...this.state.LinkGroupItems];
-                        data[cellInfo.index][cellInfo.column.id!] =
+                        const item = data[cellInfo.index]
+                        item[cellInfo.column.id!] =
                           e.target.value;
                         this.setState({ ...this.state, LinkGroupItems: data });
+                        this.handleModifierEdit(item);
                       }}
                     />
                   )
@@ -224,7 +266,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
             </Grid>
             
             <Grid item md={3}>
-              <Button variant="contained" color="primary" fullWidth>
+              <Button variant="contained" color="primary" onClick={this.handleSaveLinkGroup} fullWidth>
                 Save
               </Button>
             </Grid>

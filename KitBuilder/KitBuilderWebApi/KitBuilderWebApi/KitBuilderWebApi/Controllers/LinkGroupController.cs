@@ -119,7 +119,8 @@ namespace KitBuilderWebApi.Controllers
 
             // get display data based on ids
             var data = from lg in linkGroupRepository.GetAll()
-                join regionData in linkGroupsWithRegions on lg.LinkGroupId equals regionData.LinkGroupId
+                join regionData in linkGroupsWithRegions on lg.LinkGroupId equals regionData.LinkGroupId into rd
+                from regLeftJoin in rd.DefaultIfEmpty()
                 where linkGroupIdsFilteredByRegions.Contains(lg.LinkGroupId)
                 select new
                 {
@@ -127,7 +128,7 @@ namespace KitBuilderWebApi.Controllers
                     lg.GroupName,
                     lg.GroupDescription,
                     LinkGroupItemDto = lg.LinkGroupItem,
-                    Regions = regionData.FormattedRegions()
+                    Regions = regLeftJoin==null ? "" : regLeftJoin.FormattedRegions()
                 };
 
             data.WriteDebugSql();
@@ -207,7 +208,7 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(linkGroupDto);
         }
-            
+
         [HttpPost()]
         public IActionResult CreateLinkGroup(
             [FromBody] LinkGroupDto linkGroup)

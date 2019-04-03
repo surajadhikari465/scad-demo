@@ -9,7 +9,7 @@ export interface LinkGroupItem {
     linkGroupId: number,
     linkGroupItemId: number,
     item: Item,
-    selected? : boolean,
+    instructionListId: number,
 }
 
 export interface LinkGroup {

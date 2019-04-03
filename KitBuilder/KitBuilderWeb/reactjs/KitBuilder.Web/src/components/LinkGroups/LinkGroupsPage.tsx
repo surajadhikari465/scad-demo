@@ -1,6 +1,5 @@
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
 import SearchLinkGroups from "./SearchLinkGroups";
 import DisplayLinkGroups from "./DisplayLinkGroups";
 import axios from "axios";
@@ -11,6 +10,8 @@ import StyledPanel from "../PageStyle/StyledPanel";
 import PageTitle from "../PageTitle";
 import { Button } from "@material-ui/core";
 import EditLinkGroupDialog from "./EditLinkGroupDialog";
+import { LinkGroup } from 'src/types/LinkGroup';
+import withSnackbar from '../PageStyle/withSnackbar';
 
 class SearchOptions {
   LinkGroupName: string;
@@ -35,25 +36,10 @@ interface ILinkGroupsPageState {
   regions: string[];
 }
 interface ILinkGroupsPageProps {
-  styles: any;
+  showAlert(message: string, type?: string): void;
 }
 
-const styles = () => ({
-  root: {
-    flexGrow: 1
-  },
-  hidden: {
-    display: "none"
-  },
-  EditButtons: {
-    width: "100%"
-  },
-  AddNewModal: {
-    width: "50%"
-  }
-});
-
-export class LinkGroupsPage extends React.Component<
+class LinkGroupsPage extends React.Component<
   ILinkGroupsPageProps,
   ILinkGroupsPageState
 > {
@@ -115,6 +101,29 @@ export class LinkGroupsPage extends React.Component<
     });
   }
 
+  deleteLinkGroup = (linkGroupRow: any) => {
+    var linkGroupId = linkGroupRow.original.linkGroupId;
+    var url = KbApiMethod("LinkGroups") + "/" + linkGroupId;
+    
+    axios.delete(url)
+        .then((response: any) => {
+                const { linkGroupResults } = this.state;
+                const allButDeleted = linkGroupResults.filter((lg: LinkGroup) => lg.linkGroupId !== linkGroupId)
+                this.setState({linkGroupResults: allButDeleted});
+                this.props.showAlert("Member deleted");
+        })
+        .catch((error: any) => {
+            let message;
+            if (error.response.data.includes("409")) {
+                message = 'Link Group is in use. Please make sure this kit is not assigned to any kit.'
+            } else {
+                message = error.response.data
+            }
+            this.props.showAlert(message, "error");
+        })
+}
+
+
   onSearch = (linkGroupName: string, linkGroupDesc: string, modifierName: string, modifierPlu: string, region: string) => {
     this.setState({ ...this.state, showSearchProgress: true });
 
@@ -126,10 +135,10 @@ export class LinkGroupsPage extends React.Component<
       region
     )
       .then(result => {
-        this.setState({ ...this.state, linkGroupResults: result });
+        this.setState({ linkGroupResults: result });
       })
       .catch(error => {
-        this.setState({ ...this.state, error: error });
+        this.setState({ error: error });
       });
   }
 
@@ -191,6 +200,7 @@ export class LinkGroupsPage extends React.Component<
                   DisplayData={this.state.linkGroupResults}
                   onSearch={this.onSearch}
                   onEdit={this.onEdit}
+                  deleteLinkGroup={this.deleteLinkGroup}
                 />
               </Grid>
             </Grid>
@@ -235,4 +245,4 @@ export class LinkGroupsPage extends React.Component<
   }
 }
 
-export default withStyles(styles)(LinkGroupsPage);
+export default withSnackbar(LinkGroupsPage);
