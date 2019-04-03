@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:prf="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
-	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="..\Common\CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="Item.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" schemaLocation="../Price/CommonRefTypes.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -16,6 +17,7 @@
 		<xs:sequence>
 			<xs:element name="group" type="ItemGroupTypeType" maxOccurs="unbounded"/>
 		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
 	</xs:complexType>
 	<xs:complexType name="ItemGroupTypeType">
 		<xs:sequence>
@@ -26,13 +28,13 @@
 			<xs:element name="displayOrder" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="minimum" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="maximum" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="default" type="crf:WfmBoolType" minOccurs="0"/>
+			<xs:element name="defaultPortions" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="mandatory" type="crf:WfmBoolType" default="true" minOccurs="0"/>
 			<xs:element name="numFreePortions" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="uos" type="uom:UomType" minOccurs="0"/>
 			<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
 			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
-			<xs:element name="extraPrice" type="irf:StockProductLabelDecimalType" minOccurs="0">
+			<xs:element name="extraPrice" type="prf:PriceAmount" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Discussion Point: Price in Item has other required elements that would have to be populated</xs:documentation>
 				</xs:annotation>

@@ -120,15 +120,6 @@
 			<xs:element name="taxCertificate" type="TaxCertType" minOccurs="0"/>
 			<xs:element name="taxregistration" type="TaxRegistrationType" minOccurs="0"/>
 			<xs:element name="taxExemptReason" type="TaxExemptReasonType" minOccurs="0"/>
-			<xs:element name="customerRating" minOccurs="0" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="crf:WfmStrType">
-							<xs:attribute name="Question"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="isVoid" type="crf:WfmBoolType" use="optional"/>
 		<xs:attribute name="isAuthenticatedOffline" type="crf:WfmBoolType" use="optional"/>

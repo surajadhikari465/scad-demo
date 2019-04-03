@@ -2,36 +2,44 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<name>ApplicationID</name>
+			<value>Logger</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771718</modTime>
+			<modTime>1541714180848</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Password</name>
-			<value>#!mUX3Nanm5URn2I3RDDyp6iu2AtG+3MqNGxQBiiVSXzGzk9j/dK2TwA==</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1510074771737</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>SqlDBDriver</name>
-			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<name>LogDirectory</name>
+			<value>/LogErrors/</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771756</modTime>
+			<modTime>1541714181086</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>Username</name>
-			<value>Mammoth.tibco.Dev</value>
+			<name>LogExtension</name>
+			<value>.txt</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771774</modTime>
+			<modTime>1541714181252</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retryCount</name>
+			<value>5</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1541714180906</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>retrySleepInMilliseconds</name>
+			<value>1000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1541714180971</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

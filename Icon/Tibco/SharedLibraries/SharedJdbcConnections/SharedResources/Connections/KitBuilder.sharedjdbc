@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>KitBuilder</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>%%Connections/JDBC/KitBuilder/SqlDBDriver%%</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <user>%%Connections/JDBC/KitBuilder/Username%%</user>
+        <location>%%Connections/JDBC/KitBuilder/ConnectionString%%</location>
+        <password>%%Connections/JDBC/KitBuilder/Password%%</password>
+    </config>
+</BWSharedResource>

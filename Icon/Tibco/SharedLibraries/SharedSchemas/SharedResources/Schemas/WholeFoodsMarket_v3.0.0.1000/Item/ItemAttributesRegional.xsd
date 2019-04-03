@@ -24,6 +24,7 @@
 			<xs:element name="prices" type="prc:PricesType" minOccurs="0"/>
 			<xs:element name="selectionGroups" type="drf:SelectionGroupsType" minOccurs="0"/>
 			<xs:element name="lists" type="lrf:ListsType" minOccurs="0"/>
+			<xs:element name="calorieDisplayMode" type="crf:WfmStrType" minOccurs="0"/>
 			<!--<xs:element name="kit" type="kit:KitType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Kit builder information and other elements to be contained here</xs:documentation>

@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<value>jdbc:sqlserver://idd-ma\mad;DatabaseName=ItemCatalog_Test;</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771718</modTime>
+			<modTime>1552519800778</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!mUX3Nanm5URn2I3RDDyp6iu2AtG+3MqNGxQBiiVSXzGzk9j/dK2TwA==</value>
+			<value>#!OTNzAa4LeqTOrJzhSD2zJsT8iq2lZHaW8S5S0RHBEYaMGuyuvkWqoA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1510074771737</modTime>
+			<modTime>1541714181024</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SqlDBDriver</name>
@@ -23,15 +23,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771756</modTime>
+			<modTime>1541714181013</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value>Mammoth.tibco.Dev</value>
+			<value>TibcoDataWriter</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771774</modTime>
+			<modTime>1541714180967</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

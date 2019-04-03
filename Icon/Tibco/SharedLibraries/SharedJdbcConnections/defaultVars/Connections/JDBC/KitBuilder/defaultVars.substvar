@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
+			<value>jdbc:sqlserver://rds-kitbuilder-dev-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771718</modTime>
+			<modTime>1553884554436</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!mUX3Nanm5URn2I3RDDyp6iu2AtG+3MqNGxQBiiVSXzGzk9j/dK2TwA==</value>
+			<value>#!qDRg5/+CmbL4WOIs4LdOUCIhDaMojd0+UKwtv67bUMJyPIyEUBKZ4A==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1510074771737</modTime>
+			<modTime>1553884607501</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>SqlDBDriver</name>
@@ -23,15 +23,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771756</modTime>
+			<modTime>1553884554446</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value>Mammoth.tibco.Dev</value>
+			<value>KitBuilderWebApi</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771774</modTime>
+			<modTime>1553884554422</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

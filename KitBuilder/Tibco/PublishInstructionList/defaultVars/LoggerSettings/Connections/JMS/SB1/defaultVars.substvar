@@ -2,36 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://MAMMOTH-DB01-DEV\MAMMOTH;DatabaseName=Mammoth_Dev;</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1510074771718</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>Password</name>
-			<value>#!mUX3Nanm5URn2I3RDDyp6iu2AtG+3MqNGxQBiiVSXzGzk9j/dK2TwA==</value>
+			<value>#!hRKn+TJv/VUjjezWJbMyjdPqdrTzm3nIpTWAdpvF87I=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1510074771737</modTime>
+			<modTime>1541714180913</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>SqlDBDriver</name>
-			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<name>Url</name>
+			<value>ssl://cerd1616.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771756</modTime>
+			<modTime>1541714180990</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>
-			<value>Mammoth.tibco.Dev</value>
+			<value>sb1_cleUser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1510074771774</modTime>
+			<modTime>1541714180861</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

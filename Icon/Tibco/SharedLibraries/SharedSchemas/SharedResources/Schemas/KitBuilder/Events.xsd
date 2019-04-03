@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:hny="http://schemas.wfm.com/KitBuilder/Events.xsd"
+	 targetNamespace="http://schemas.wfm.com/KitBuilder/Events.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Event" type="hny:EventType"/>
+	<xs:element name="Events" type="hny:EventTypes"/>
+	<xs:complexType name="EventTypes">
+		<xs:sequence>
+			<xs:element name="EventType" type="hny:EventType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventType">
+		<xs:sequence>
+			<xs:element name="InstructionListQueueID" type="xs:int"/>
+			<xs:element name="KeyID" type="xs:string"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="InsertDateUtc" type="xs:string"/>
+			<xs:element name="MessageTimestampUtc" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
