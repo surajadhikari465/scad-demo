@@ -24,6 +24,9 @@ Friend Class frmMain
   Private Sub frmMain_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
     logger.Info(String.Format("Application Startup Path: {0}", Application.StartupPath))
 
+    Dim hWindowHandle As Integer
+    Dim sNewCaption As String = "IRMA Client"
+
     Dim VersionDAO As New VersionDAO
     Dim blnShowMessage As Boolean
 
@@ -40,7 +43,22 @@ Friend Class frmMain
       End If
     End If
 
-    InitializeGlobalSettings("IRMA Client")
+    'Make sure they don't have more than two copies open
+    hWindowHandle = FindWindow(vbNullString, sNewCaption)
+    glInstance = 1
+
+    If hWindowHandle <> 0 Then
+      glInstance = 2
+      sNewCaption = sNewCaption & " (copy 2)"
+      hWindowHandle = FindWindow(vbNullString, sNewCaption)
+
+      If hWindowHandle <> 0 Then
+        MsgBox(String.Format(ResourcesIRMA.GetString("AppAlreadyRunning"), vbCrLf, "two"), MsgBoxStyle.Critical, Me.Text)
+        End
+      End If
+    End If
+
+    InitializeGlobalSettings(sNewCaption)
 
     ' Set the tool status values
     ToolStripStatusLabel_Region.Text = ToolStripStatusLabel_Region.Text & gsRegionCode
