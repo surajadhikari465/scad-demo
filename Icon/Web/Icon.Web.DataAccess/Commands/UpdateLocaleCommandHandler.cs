@@ -45,11 +45,11 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
             AddOrUpdateTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
             AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
-						AddOrUpdateTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
-						AddOrUpdateTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
-						AddOrUpdateTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
-						AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);
-						AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantIdEncrypted, existingLocale, data.PrimeMerchantIDEncrypted);
+            AddOrUpdateTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
+            AddOrUpdateTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
+            AddOrUpdateTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
+            AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);
+            AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantIdEncrypted, existingLocale, data.PrimeMerchantIDEncrypted);
 
             // set the currency code trait based on the country set for the Locale
             var currencyCode = GetCurrencyCodeForCountry(data.CountryId);
@@ -93,7 +93,9 @@ namespace Icon.Web.DataAccess.Commands
         {
             LocaleTrait trait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode);
 
-            if (trait == null)
+            traitValue = string.IsNullOrWhiteSpace(traitValue) ? null : traitValue.Trim();
+
+            if(trait == null)
             {
                 existingLocale.LocaleTrait.Add(new LocaleTrait
                 {
@@ -105,7 +107,14 @@ namespace Icon.Web.DataAccess.Commands
             }
             else
             {
-                trait.traitValue = traitValue;
+                if(traitValue == null)
+                {
+                    existingLocale.LocaleTrait.Remove(trait);
+                }
+                else
+                {
+                    trait.traitValue = traitValue;
+                }
             }
         }
 

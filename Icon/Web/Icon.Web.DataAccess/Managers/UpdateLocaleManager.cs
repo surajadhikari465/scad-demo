@@ -37,11 +37,11 @@ namespace Icon.Web.DataAccess.Managers
             IrmaStoreId = storeModel.IrmaStoreId;
             StorePosType = storeModel.StorePosType;
             UserName = storeModel.UserName;
-						Ident = storeModel.Ident;
-						LocalZone = storeModel.LocalZone;
-						LiquorLicense = storeModel.LiquorLicense;
-						PrimeMerchantID = storeModel.PrimeMerchantID;
-						PrimeMerchantIDEncrypted = storeModel.PrimeMerchantIDEncrypted;
+			Ident = storeModel.Ident;
+			LocalZone = storeModel.LocalZone;
+			LiquorLicense = storeModel.LiquorLicense;
+			PrimeMerchantID = storeModel.PrimeMerchantID;
+			PrimeMerchantIDEncrypted = storeModel.PrimeMerchantIDEncrypted;
         }
         public int LocaleId { get; set; }
         public string LocaleName { get; set; }
@@ -77,10 +77,10 @@ namespace Icon.Web.DataAccess.Managers
         public string VenueOccupant { get; set; }
         public int LocaleSubTypeId { get; set; }
 
-				public bool Ident { get; set; }
-				public string LocalZone { get; set; }
-				public string LiquorLicense { get; set; }
-				public string PrimeMerchantID { get; set; }
-				public string PrimeMerchantIDEncrypted { get; set; }
+		public bool Ident { get; set; }
+		public string LocalZone { get; set; }
+		public string LiquorLicense { get; set; }
+		public string PrimeMerchantID { get; set; }
+		public string PrimeMerchantIDEncrypted { get; set; }
     }
 }

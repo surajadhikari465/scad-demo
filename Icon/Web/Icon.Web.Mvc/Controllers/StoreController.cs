@@ -17,7 +17,6 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
-
     public class StoreController : Controller
     {
         private ILogger logger;
@@ -101,7 +100,7 @@ namespace Icon.Web.Controllers
             model.StorePosTypes = StorePosTypes.AsDictionary.Values.ToList();
             model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID = c.currencyTypeID, CurrencyTypeCode = c.currencyTypeCode, CurrencyTypeDesc = c.currencyTypeDesc, IssuingEntity = c.issuingEntity, NumericCode = c.numericCode, MinorUnit = c.minorUnit, Symbol = c.symbol });
             model.LocaleSubTypes = this.localeSubTypes.Select(l => new LocaleSubTypeViewModel { LocaleSubTypeID = l.localeSubTypeID, LocaleTypeID = l.localeTypeID, LocaleSubTypeCode = l.localSubTypeCode, LocaleSubTypeDescription = l.localeSubTypeDesc });
-						model.LiquorLicenseTypes = new string[]{"Beer", "Spirit", "Wine"};
+            model.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" };
             return model;
         }
 
@@ -165,11 +164,11 @@ namespace Icon.Web.Controllers
                     LocaleSubType = locale.LocaleSubType,
                     LocaleSubTypeId = localeSubTypes.Where(l => l.localeSubTypeDesc == locale.LocaleSubType).Select(ls => ls.localeSubTypeID).FirstOrDefault(),
 
-										Ident = locale.Ident,
-										LiquorLicense = locale.LiquorLicense,
-										LocalZone = locale.LocalZone,
-										PrimeMerchantID = locale.PrimeMerchantID,
-										PrimeMerchantIDEncrypted = locale.PrimeMerchantIDEncrypted
+                    Ident = locale.Ident,
+                    LiquorLicense = locale.LiquorLicense,
+                    LocalZone = locale.LocalZone,
+                    PrimeMerchantID = locale.PrimeMerchantID,
+                    PrimeMerchantIDEncrypted = locale.PrimeMerchantIDEncrypted
                 };
 
                 storeHierarchy.Add(gridViewModel);
@@ -268,11 +267,11 @@ namespace Icon.Web.Controllers
                 IrmaStoreId = viewModel.IrmaStoreId,
                 StorePosType = viewModel.SelectedStorePosType,
                 UserName = User.Identity.Name,
-								Ident = viewModel.Ident,
-								LocalZone = viewModel.LocalZone,
-								LiquorLicense = viewModel.SelectedLiquorLicense,
-								PrimeMerchantID = viewModel.PrimeMerchantID,
-								PrimeMerchantIDEncrypted = viewModel.PrimeMerchantIDEncrypted
+                Ident = viewModel.Ident,
+                LocalZone = viewModel.LocalZone,
+                LiquorLicense = viewModel.SelectedLiquorLicense,
+                PrimeMerchantID = viewModel.PrimeMerchantID,
+                PrimeMerchantIDEncrypted = viewModel.PrimeMerchantIDEncrypted
             };
 
             try
@@ -410,11 +409,11 @@ namespace Icon.Web.Controllers
                 IrmaStoreId = localeRow.IrmaStoreId,
                 StorePosType = localeRow.StorePosType,
                 UserName = User.Identity.Name,
-								Ident = localeRow.Ident,
-								LiquorLicense = localeRow.LiquorLicense,
-								LocalZone = localeRow.LocalZone,
-								PrimeMerchantID = localeRow.PrimeMerchantID,
-								PrimeMerchantIDEncrypted = localeRow.PrimeMerchantIDEncrypted
+                Ident = localeRow.Ident,
+                LiquorLicense = localeRow.LiquorLicense,
+                LocalZone = localeRow.LocalZone,
+                PrimeMerchantID = localeRow.PrimeMerchantID,
+                PrimeMerchantIDEncrypted = localeRow.PrimeMerchantIDEncrypted
             };
             return storeModel;
         }
@@ -428,7 +427,7 @@ namespace Icon.Web.Controllers
             viewModel.StorePosTypes.First().Selected = true;
             viewModel.EwicAgencies = this.eWicAgencies.Select(a => new SelectListItem { Value = a.AgencyId, Text = a.AgencyId });
             viewModel.CurrencyTypes = this.currencies?.Select(c => new SelectListItem { Value = c.currencyTypeID.ToString(), Text = c.currencyTypeCode });
-						viewModel.LiquorLicenseTypes = new string[]{ "Beer", "Spirit", "Wine" }.Select((x,i) => new SelectListItem { Value = i.ToString(), Text = x });
+            viewModel.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" }.Select((x, i) => new SelectListItem { Value = i.ToString(), Text = x });
             return viewModel;
         }
     }

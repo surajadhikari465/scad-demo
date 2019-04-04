@@ -64,26 +64,26 @@ namespace Icon.Web.DataAccess.Commands
                     new LocaleTrait { traitID = Traits.InsertDate, traitValue = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture) },
                     new LocaleTrait { traitID = Traits.ModifiedUser, traitValue = data.UserName },
                     new LocaleTrait { traitID = Traits.CurrencyCode, traitValue = currencyCode },
-										new LocaleTrait { traitID = Traits.Ident, traitValue = data.Ident ? "1" : "0" }
+                    new LocaleTrait { traitID = Traits.Ident, traitValue = data.Ident ? "1" : "0" }
                 }
             };
 
-						if(!string.IsNullOrEmpty(data.LocalZone))
-						{
-							locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.LocalZone, traitValue = data.LocalZone });
-						}
-						if(!string.IsNullOrEmpty(data.LiquorLicense))
-						{
-							locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.LiquorLicensing, traitValue = data.LiquorLicense });
-						}
-						if(!string.IsNullOrEmpty(data.PrimeMerchantID))
-						{
-							locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.PrimenowMerchantId, traitValue = data.PrimeMerchantID });
-						}
-						if(!string.IsNullOrEmpty(data.PrimeMerchantIDEncrypted))
-						{
-							locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.PrimenowMerchantIdEncrypted, traitValue = data.PrimeMerchantIDEncrypted });
-						}
+            if(!string.IsNullOrWhiteSpace(data.LocalZone))
+            {
+                locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.LocalZone, traitValue = data.LocalZone });
+            }
+            if(!string.IsNullOrWhiteSpace(data.LiquorLicense))
+            {
+                locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.LiquorLicensing, traitValue = data.LiquorLicense });
+            }
+            if(!string.IsNullOrWhiteSpace(data.PrimeMerchantID))
+            {
+                locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.PrimenowMerchantId, traitValue = data.PrimeMerchantID });
+            }
+            if(!string.IsNullOrWhiteSpace(data.PrimeMerchantIDEncrypted))
+            {
+                locale.LocaleTrait.Add(new LocaleTrait { traitID = Traits.PrimenowMerchantIdEncrypted, traitValue = data.PrimeMerchantIDEncrypted });
+            }
 
             context.Locale.Add(locale);
             context.SaveChanges();
