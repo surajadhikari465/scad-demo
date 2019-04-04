@@ -40,14 +40,6 @@ END
 
 IF EXISTS ( SELECT * 
             FROM   sysobjects 
-            WHERE  id = object_id(N'[amz].[LockTransferOrderEvents]') 
-                   and OBJECTPROPERTY(id, N'IsProcedure') = 1 )
-BEGIN
-    DROP PROCEDURE [amz].[LockInventorySpoilage]
-END
-
-IF EXISTS ( SELECT * 
-            FROM   sysobjects 
             WHERE  id = object_id(N'[amz].[SendErrorNotificationEmail]') 
                    and OBJECTPROPERTY(id, N'IsProcedure') = 1 )
 BEGIN
