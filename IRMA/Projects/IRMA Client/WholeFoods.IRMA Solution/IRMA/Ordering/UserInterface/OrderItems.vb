@@ -132,6 +132,12 @@ Friend Class frmOrdersItem
         Dim lIgnoreErrNum(0) As Integer
 
         With rsOrderItem
+            '-- Bug Fix 4848 OrderItem edit screen 
+            If (.Fields("ItemCount").Value >= 1) Then
+                Dim dialogResult As DialogResult
+                dialogResult = MessageBox.Show(String.Format("[ {0} ] already exists on this order.", .Fields("Item_Description").Value, "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation))
+                Exit Sub
+            End If
 
             sQuantityOrdered = .Fields("QuantityOrdered").Value
             iQuantityUnit = .Fields("QuantityUnit").Value
