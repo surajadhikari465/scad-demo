@@ -115,7 +115,7 @@ class LinkGroupsPage extends React.Component<
         .catch((error: any) => {
             let message;
             if (error.response.data.includes("409")) {
-                message = 'Link Group is in use. Please make sure this kit is not assigned to any kit.'
+                message = 'Please make sure this Link Group is not assigned to any Kit.'
             } else {
                 message = error.response.data
             }

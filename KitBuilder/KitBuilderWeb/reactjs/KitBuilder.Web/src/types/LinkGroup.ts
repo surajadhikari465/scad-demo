@@ -1,3 +1,5 @@
+import { InstructionList } from './InstructionList';
+
 export interface Item {
     itemId: number,
     scanCode: string,
@@ -10,6 +12,7 @@ export interface LinkGroupItem {
     linkGroupItemId: number,
     item: Item,
     instructionListId: number,
+    instructionList: InstructionList,
 }
 
 export interface LinkGroup {

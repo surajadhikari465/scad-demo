@@ -275,6 +275,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
         </Grid>
         <AddItemToLinkGroupDialog 
         isOpen = {this.state.showAddModifiers} 
+        linkGroupItems = {this.state.LinkGroupItems}
         handleAddModifiers={this.handleAddModifiers}
         onClose = {() => this.setState({showAddModifiers: false})}/>
         </DialogContent>)}

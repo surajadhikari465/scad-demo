@@ -10,6 +10,8 @@ import {
   DialogActions
 } from "@material-ui/core";
 import { LinkGroup } from "src/types/LinkGroup";
+import Axios from 'axios';
+import { KbApiMethod } from '../helpers/kbapi';
 
 interface IProps {
   linkGroupId: number;
@@ -62,12 +64,31 @@ export class CopyLinkGroupButton extends React.Component<IProps, IState> {
         return true;
       })
       .then(validationPassed => {
-        if (validationPassed) {
-          var message = `Copy LinkGroup Id: ${
-            this.props.linkGroupId
-          } with name: ${name}`;
-          this.props.showAlert(message, "success");
-          this.setState({isOpen: false});
+        const url = `${KbApiMethod("LinkGroups")}/${this.props.linkGroupId}/true`;
+
+
+        if (validationPassed) { 
+
+          Axios.get(url).then((response) => {
+            const lg: LinkGroup = response.data;
+            lg.linkGroupItemDto.forEach(i => {
+              delete i.item
+              delete i.instructionList
+              i.linkGroupId = 0;
+              i.linkGroupItemId = 0;
+            });
+            lg.linkGroupId = 0;
+            lg.groupName = this.state.name;
+            lg.groupDescription = this.state.description;
+
+            Axios.post(KbApiMethod("LinkGroups"), lg).then(() => {
+              this.props.showAlert("Success duplicating link group.", "success");
+              this.setState({isOpen: false});
+            })
+            .catch(error => {
+              this.props.showAlert(error.message, "error");
+            });
+          })
         }
       })
       .catch(error => {

@@ -223,8 +223,9 @@ namespace KitBuilderWebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            var linkGroupItems = linkGroup.LinkGroupItemDto.Select(x => Mapper.Map<LinkGroupItem>(x));
             var linkGroupPassed = Mapper.Map<LinkGroup>(linkGroup);
+            linkGroupPassed.LinkGroupItem = linkGroupItems.ToList();
             linkGroupPassed.InsertDateUtc = DateTime.UtcNow;
             linkGroupPassed.LastUpdatedDateUtc = DateTime.UtcNow;
 

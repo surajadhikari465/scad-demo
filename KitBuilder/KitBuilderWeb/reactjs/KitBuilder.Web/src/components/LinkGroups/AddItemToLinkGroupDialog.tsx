@@ -9,12 +9,13 @@ import {
   TextField,
   DialogActions
 } from "@material-ui/core";
-import { Item } from "src/types/LinkGroup";
-import { KbApiMethod } from '../helpers/kbapi';
-import Axios, { AxiosResponse } from 'axios';
+import { Item, LinkGroupItem } from "src/types/LinkGroup";
+import { KbApiMethod } from "../helpers/kbapi";
+import Axios, { AxiosResponse } from "axios";
 
 interface IAddItemToLinkGroupDialogProps {
   isOpen: boolean;
+  linkGroupItems: LinkGroupItem[];
   handleAddModifiers(items: Item[]): void;
   onClose(): void;
 }
@@ -48,10 +49,9 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
     });
   };
 
-  isAlreadyQueued = (linkGroup: Item) =>
-    this.state.queuedItems.some(
-      x => x.itemId === linkGroup.itemId
-    );
+  isAlreadyQueued = (item: Item) =>
+    this.state.queuedItems.some(x => x.itemId === item.itemId) ||
+    this.props.linkGroupItems.some(x => x.item.itemId === item.itemId);
 
   onQueue = (linkGroup: Item) => {
     if (!this.isAlreadyQueued(linkGroup)) {
@@ -75,7 +75,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
   onAddToLinkGroup = () => {
     const { queuedItems } = this.state;
     this.props.handleAddModifiers(queuedItems);
-  }
+  };
 
   render() {
     return (
@@ -83,23 +83,32 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
         <DialogContent>
           <Grid container justify="space-between" className="mb-3">
             <Grid item md={3}>
-              <TextField label="Item Name" 
-              value = {this.state.name}
-              onChange = {(e) => this.setState({name: e.target.value})}
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}/>
+              <TextField
+                label="Item Name"
+                value={this.state.name}
+                onChange={e => this.setState({ name: e.target.value })}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             </Grid>
             <Grid item md={3}>
-              <TextField label="Item Plu" 
-              value = {this.state.plu}
-              onChange = {(e) => this.setState({plu: e.target.value})}
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}/>
+              <TextField
+                label="Item Plu"
+                value={this.state.plu}
+                onChange={e => this.setState({ plu: e.target.value })}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
             </Grid>
             <Grid item md={3}>
-              <Button variant="contained" color="primary" onClick={this.onSearch} fullWidth>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.onSearch}
+                fullWidth
+              >
                 Search
               </Button>
             </Grid>
@@ -109,11 +118,11 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
             columns={[
               {
                 Header: "Description",
-                accessor: "productDesc",
+                accessor: "productDesc"
               },
               {
                 Header: "PLU",
-                accessor: "scanCode",
+                accessor: "scanCode"
               },
               {
                 accessor: "select",
@@ -141,11 +150,11 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
               {
                 Header: "Description",
                 accessor: "productDesc",
-                className: "mui--text-center",
+                className: "mui--text-center"
               },
               {
                 Header: "PLU",
-                accessor: "scanCode",
+                accessor: "scanCode"
               },
               {
                 Cell: row => (
@@ -163,12 +172,21 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
             defaultPageSize={5}
             className="-striped -highlight"
           />
-                  <DialogActions>
-          <Button variant="outlined" onClick = {this.props.onClose}> Cancel </Button>
-          <Button variant="contained" onClick={this.onAddToLinkGroup} color="primary"> Add To Link Group </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button variant="outlined" onClick={this.props.onClose}>
+              {" "}
+              Cancel{" "}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={this.onAddToLinkGroup}
+              color="primary"
+            >
+              {" "}
+              Add To Link Group{" "}
+            </Button>
+          </DialogActions>
         </DialogContent>
-
       </Dialog>
     );
   }
