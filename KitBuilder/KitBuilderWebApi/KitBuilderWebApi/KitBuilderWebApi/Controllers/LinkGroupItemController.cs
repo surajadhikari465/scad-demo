@@ -18,17 +18,20 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<LinkGroup> linkGroupRepository;
         private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
+        private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private ILogger<LinkGroupController> logger;
 
         public LinkGroupItemController(IRepository<LinkGroup> linkGroupRepository,
                                        IRepository<LinkGroupItem> linkGroupItemRepository,
                                        IRepository<Items> itemsRepository,
+                                       IRepository<KitLinkGroupItem> kitLinkGroupItemRepository,
                                        ILogger<LinkGroupController> logger
                                        )
         {
             this.linkGroupRepository = linkGroupRepository;
             this.linkGroupItemRepository = linkGroupItemRepository;
             this.itemsRepository = itemsRepository;
+            this.kitLinkGroupItemRepository = kitLinkGroupItemRepository;
             this.logger = logger;
         }
 
@@ -214,6 +217,12 @@ namespace KitBuilderWebApi.Controllers
             }
 
             var linkGroupItem = linkGroupItemRepository.Get(linkGroupItemId);
+            var kitLinkGroup = kitLinkGroupItemRepository.GetAll().Where(klgi => klgi.LinkGroupItemId == linkGroupItem.LinkGroupItemId);
+
+            if(kitLinkGroup.Count() > 0)
+            {
+                return StatusCode(409, "Cannot delete modifier that is included in a kit.");
+            }
 
             if (linkGroup.LinkGroupId == linkGroupItem.LinkGroupId)
             {

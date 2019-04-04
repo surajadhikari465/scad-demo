@@ -31,6 +31,7 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
         return (
             <React.Fragment>
                 <ReactTable
+                noDataText="No Link Groups"
                     className="-highlight -striped"
                     defaultPageSize={10}
                     data={this.props.DisplayData}

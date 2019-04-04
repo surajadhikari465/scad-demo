@@ -114,18 +114,23 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
             </Grid>
           </Grid>
           <ReactTable
+            noDataText="No Items"
             data={this.state.searchResults}
             columns={[
               {
                 Header: "Description",
+                width: 500,
+                style: { textAlign: "center" },
                 accessor: "productDesc"
               },
               {
                 Header: "PLU",
+                style: { textAlign: "center" },
                 accessor: "scanCode"
               },
               {
                 accessor: "select",
+                style: { textAlign: "center" },
                 Cell: row => (
                   <Grid container justify="center" alignItems="center">
                     <Grid item>
@@ -145,18 +150,23 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
           />
 
           <ReactTable
+          noDataText="No Items Queued"
             data={this.state.queuedItems}
             columns={[
               {
+                width: 500,
+                style: { textAlign: "center" },
                 Header: "Description",
                 accessor: "productDesc",
                 className: "mui--text-center"
               },
               {
                 Header: "PLU",
+                style: { textAlign: "center" },
                 accessor: "scanCode"
               },
               {
+                style: { textAlign: "center" },
                 Cell: row => (
                   <Grid container justify="center" alignItems="center">
                     <Button

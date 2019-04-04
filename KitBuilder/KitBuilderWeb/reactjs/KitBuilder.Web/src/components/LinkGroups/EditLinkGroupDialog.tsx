@@ -13,6 +13,7 @@ const EditLinkGroupDialog = (props: any) => {
       <EditLinkGroup
         data={props.selectedLinkGroup}
         handleCancelClick={props.onClose}
+        clearSearchResults={props.clearSearchResults}
         />
     </Dialog>
   );

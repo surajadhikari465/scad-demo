@@ -101,6 +101,10 @@ class LinkGroupsPage extends React.Component<
     });
   }
 
+  clearSearchResults = () => {
+    this.setState({linkGroupResults: []});
+  }
+
   deleteLinkGroup = (linkGroupRow: any) => {
     var linkGroupId = linkGroupRow.original.linkGroupId;
     var url = KbApiMethod("LinkGroups") + "/" + linkGroupId;
@@ -115,7 +119,7 @@ class LinkGroupsPage extends React.Component<
         .catch((error: any) => {
             let message;
             if (error.response.data.includes("409")) {
-                message = 'Please make sure this Link Group is not assigned to any Kit.'
+                message = 'Cannot delete link group that is included in a kit.'
             } else {
                 message = error.response.data
             }
@@ -238,7 +242,10 @@ class LinkGroupsPage extends React.Component<
         <EditLinkGroupDialog
           isOpen={this.state.showEditScreen}
           selectedLinkGroup={this.state.selectedLinkGroup}
-          onClose={() => this.setState({ showEditScreen: false })}
+          onClose={() => {
+            this.setState({ showEditScreen: false});
+        }}
+          clearSearchResults = {this.clearSearchResults}
         />
       </>
     );

@@ -27,6 +27,7 @@ interface IProps {
   data: any;
   handleCancelClick(): void;
   showAlert(message: string, type?: string): void;
+  clearSearchResults(): void;
 }
 
 class EditLinkGroup extends React.Component<IProps, IState> {
@@ -69,10 +70,11 @@ class EditLinkGroup extends React.Component<IProps, IState> {
     })
     .then(() => {
       this.props.showAlert("Update Successful", "success");
-      this.props.handleCancelClick();
+      this.props.clearSearchResults();
     })
     .catch((error: AxiosError) => {
-      this.props.showAlert(error.message, "error");
+      const message = error.response ? error.response.data : error.message;
+      this.props.showAlert(message, "error");
     })
   }
 
@@ -113,7 +115,8 @@ class EditLinkGroup extends React.Component<IProps, IState> {
       this.props.showAlert("Modifier Deleted Successfully", "success");
     })
     .catch((error) => {
-      this.props.showAlert(error.message, "error");
+      const message = error.response ? error.response.data : error.message;
+      this.props.showAlert(message, "error");
     })
   }
 
@@ -178,6 +181,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
 
           <Grid item md={12}>
             <ReactTable
+            noDataText="No Modifiers"
               className="-highlight -striped"
               defaultPageSize={10}
               data={this.state.LinkGroupItems}
@@ -186,31 +190,31 @@ class EditLinkGroup extends React.Component<IProps, IState> {
                   Header: "PLU",
                   accessor: "item.scanCode",
                   show: true,
-                  style: { cursor: "pointer" }
+                  style: { textAlign: "center" },
                 },
                 {
                   Header: "Modifier",
                   accessor: "item.productDesc",
                   show: true,
-                  style: { cursor: "pointer" }
+                  style: { textAlign: "center" },
                 },
                 {
                   Header: "Brand",
                   accessor: "item.brandName",
                   show: true,
-                  style: { cursor: "pointer" }
+                  style: { textAlign: "center" },
                 },
                 {
                   Header: "InstructionListId",
                   accessor: "instructionListId",
                   show: false,
-                  style: { cursor: "pointer" }
+                  style: { textAlign: "center" },
                 },
                 {
                   Header: "Cooking Instructions",
                   accessor: "instructionListId",
                   show: true,
-                  style: { cursor: "pointer" },
+                  style: { textAlign: "center" },
                   Cell: cellInfo => (
                     <InstructionListPicker
                       SelectOptions={this.state.InstructionsList}
