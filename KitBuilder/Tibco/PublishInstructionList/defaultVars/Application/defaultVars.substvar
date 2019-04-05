@@ -58,6 +58,14 @@
 			<modTime>1541714181129</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>NonReceivingSystems</name>
+			<value>AMZ,DW,KB,ESL1Plum,Infor,Mammoth,Slaw,Spice</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1554409479601</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
 			<value>30000</value>
 			<deploymentSettable>true</deploymentSettable>
