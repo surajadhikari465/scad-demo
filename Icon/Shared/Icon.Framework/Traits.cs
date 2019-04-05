@@ -194,7 +194,7 @@ namespace Icon.Framework
         public const int PrimenowMerchantId = 185;
         public const int PrimenowMerchantIdEncrypted = 186;
         public const int LocalZone = 187;
-        public const int GlobalRegionalDesignation = 188;
+        public const int Designation = 188;
         public const int ParentCompany = 189;
         public const int DataSource = 190;
         public const int GmoTransparency = 191;
@@ -620,7 +620,7 @@ namespace Icon.Framework
 			public const string PrimenowMerchantId = "PrimeNow Merchant ID";
 			public const string PrimenowMerchantIdEncrypted = "PrimeNow Merchant ID Encrypted";
 			public const string LocalZone = "Local Zone";
-			public const string GlobalRegionalDesignation = "Global/Regional Designation";
+			public const string Designation = "Designation";
 			public const string ParentCompany = "Parent Company";
 			public const string DataSource = "Data Source";
 			public const string GmoTransparency = "GMO Transparency";
@@ -832,7 +832,7 @@ namespace Icon.Framework
 				{ 185, "PrimeNow Merchant ID" },
 				{ 186, "PrimeNow Merchant ID Encrypted" },
 				{ 187, "Local Zone" },
-				{ 188, "Global/Regional Designation" },
+				{ 188, "Designation" },
 				{ 189, "Parent Company" },
 				{ 190, "Data Source" },
 				{ 191, "GMO Transparency" },
@@ -1047,7 +1047,7 @@ namespace Icon.Framework
 			public const string PrimenowMerchantId = "MI";
 			public const string PrimenowMerchantIdEncrypted = "MIE";
 			public const string LocalZone = "LZ";
-			public const string GlobalRegionalDesignation = "GRD";
+			public const string Designation = "GRD";
 			public const string ParentCompany = "PCO";
 			public const string DataSource = "DAT";
 			public const string GmoTransparency = "GMT";

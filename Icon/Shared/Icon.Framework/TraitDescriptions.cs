@@ -193,7 +193,7 @@ namespace Icon.Framework
         public const string PrimenowMerchantId = "PrimeNow Merchant ID";
         public const string PrimenowMerchantIdEncrypted = "PrimeNow Merchant ID Encrypted";
         public const string LocalZone = "Local Zone";
-        public const string GlobalRegionalDesignation = "Global/Regional Designation";
+        public const string Designation = "Designation";
         public const string ParentCompany = "Parent Company";
         public const string DataSource = "Data Source";
         public const string GmoTransparency = "GMO Transparency";

@@ -45,7 +45,7 @@ ELSE
     SET @traitGroupID = 8; --Brand Traits
     IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'GRD')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES(188, @TraitGroupID, 'GRD', N'Global/Regional Designation','(Global|Regional)$'); --Pick list
+			VALUES(188, @TraitGroupID, 'GRD', N'Designation','(Global|Regional)$'); --Pick list
 
     IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'PCO')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 

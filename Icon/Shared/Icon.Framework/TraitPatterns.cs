@@ -188,5 +188,37 @@ namespace Icon.Framework
         public const string Tsf365Eligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
         public const string WfmEligilble = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
         public const string Other3pEligible = @"^[YyNnTtFf01]$|^[Yy][Ee][Ss]$|^[Nn][Oo]$|^[Oo][Nn]$|^[Oo][Ff][Ff]$|^[Tt][Rr][Uu][Ee]$|^[Ff][Aa][Ll][Ss][Ee]$|^$";
+        public const string Ident = @"0|1";
+        public const string LiquorLicensing = @"(Beer|Wine|Spirit)$";
+        public const string PrimenowMerchantId = @"^[0-9]{11}$";
+        public const string PrimenowMerchantIdEncrypted = @"^[a-zA-Z0-9]{13}$";
+        public const string LocalZone = @"^.{1,35}$";
+        public const string Designation = @"(Global|Regional)$";
+        public const string ParentCompany = @"^[0-9]{1,10}$";
+        public const string DataSource = @"";
+        public const string GmoTransparency = @"";
+        public const string ItemDepth = @"";
+        public const string ItemHeight = @"";
+        public const string ItemWidth = @"";
+        public const string Cube = @"";
+        public const string Weight = @"";
+        public const string TrayDepth = @"";
+        public const string TrayHeight = @"";
+        public const string TrayWidth = @"";
+        public const string Labeling = @"";
+        public const string CountryOfOrigin = @"";
+        public const string PackageGroup = @"";
+        public const string PackageGroupType = @"";
+        public const string PrivateLabel = @"";
+        public const string Appellation = @"";
+        public const string FairTradeClaim = @"0|1";
+        public const string GlutenFreeClaim = @"0|1";
+        public const string NonGmoClaim = @"0|1";
+        public const string OrganicClaim = @"0|1";
+        public const string Varietal = @"";
+        public const string BeerStyle = @"";
+        public const string LineExtension = @"";
+        public const string ZipCode = @"^[0-9]{5}(?:-[0-9]{4})?$";
+        public const string Locality = @"^.{1,35}$";
 	}
 }
