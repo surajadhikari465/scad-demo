@@ -104,7 +104,7 @@
     <Build Include="dbo\Stored Procedures\GetUnsentInstructionMessages.sql" />
     <Build Include="dbo\Stored Procedures\GetInstructionListDataForESB.sql" />
     <Build Include="dbo\Stored Procedures\DeleteInstructionMembersForPublishedKit.sql" />
-    <Build Include="Scripts\PostDeploymentScripts\PopulateInstructionMemberPluNumbers.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateInstructionMemberPluNumbers.sql" />
     <Build Include="dbo\Tables\MammothHospitalityItems.sql" />
   </ItemGroup>
   <ItemGroup>

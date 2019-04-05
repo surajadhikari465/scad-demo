@@ -412,7 +412,7 @@ BEGIN
 				FROM INSERTED i	
 				INNER JOIN DELETED d ON i.OrderHeader_ID = d.OrderHeader_ID
 				WHERE i.OrderType_ID <> 3 -- Purchase Orders
-					AND (i.Sent = 1 AND d.Sent = 0)
+					AND ((i.Sent = 1 AND d.Sent = 0)
 					OR (i.Sent = 1
 						AND ((i.Expected_Date <> d.Expected_Date)
 							OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
@@ -420,7 +420,7 @@ BEGIN
 							OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
 								OR (i.OriginalCloseDate IS NOT NULL AND d.OriginalCloseDate IS NULL))
 							OR ((i.ApprovedDate <> d.ApprovedDate)
-								OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL))))
+								OR (i.ApprovedDate IS NOT NULL AND d.ApprovedDate IS NULL)))))
 								
 				INSERT INTO amz.TransferQueue (EventTypeCode, MessageType, KeyID)
 				SELECT
