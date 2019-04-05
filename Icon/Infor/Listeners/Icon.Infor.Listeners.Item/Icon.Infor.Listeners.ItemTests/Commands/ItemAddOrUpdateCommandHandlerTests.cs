@@ -227,9 +227,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.Varietal, traits.Single(it => it.traitID == Traits.Varietal).traitValue);
             Assert.AreEqual(expectedItem.BeerStyle, traits.Single(it => it.traitID == Traits.BeerStyle).traitValue);
             Assert.AreEqual(expectedItem.LineExtension, traits.Single(it => it.traitID == Traits.LineExtension).traitValue);
-            Assert.AreEqual(expectedItem.NonGmo, traits.Single(it => it.traitID == Traits.NonGmo).traitValue);
-            Assert.AreEqual(expectedItem.Organic, traits.Single(it => it.traitID == Traits.Organic).traitValue);
-            Assert.AreEqual(expectedItem.GlutenFree, traits.Single(it => it.traitID == Traits.GlutenFree).traitValue);
             //Sign Attributes
             Assert.AreEqual(expectedItem.AnimalWelfareRating, signAttributes.AnimalWelfareRating);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
@@ -455,9 +452,6 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.Varietal, traits.Single(it => it.traitID == Traits.Varietal).traitValue);
             Assert.AreEqual(expectedItem.BeerStyle, traits.Single(it => it.traitID == Traits.BeerStyle).traitValue);
             Assert.AreEqual(expectedItem.LineExtension, traits.Single(it => it.traitID == Traits.LineExtension).traitValue);
-            Assert.AreEqual(expectedItem.NonGmo, traits.Single(it => it.traitID == Traits.NonGmo).traitValue);
-            Assert.AreEqual(expectedItem.Organic, traits.Single(it => it.traitID == Traits.Organic).traitValue);
-            Assert.AreEqual(expectedItem.GlutenFree, traits.Single(it => it.traitID == Traits.GlutenFree).traitValue);
             //Sign Attributes
             Assert.AreEqual(expectedItem.AnimalWelfareRating, signAttributes.AnimalWelfareRating);
             Assert.AreEqual(expectedItem.Biodynamic.ToBool(), signAttributes.Biodynamic);
