@@ -1249,27 +1249,27 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overridable Function Save() As Boolean
-		
-			' first delete this or any child Business Object that
-			' is marked for delete
-			Me.Delete(True)
-			
-			If Me.IsDirty And Not Me.IsDeleted Then
-				If Me.IsNew Then
-					ItemAttributeDAO.Instance.InsertItemAttribute(CType(Me, ItemAttribute))
-					Trace.WriteLine("Inserting a new ItemAttribute")
-				Else
-					ItemAttributeDAO.Instance.UpdateItemAttribute(CType(Me, ItemAttribute))
-					Trace.WriteLine("Updating an existing ItemAttribute")
-				End If
-				
-				Me.IsDirty = False
-				Me.IsNew = False
-			End If
-			
-		End Function
 
-       ''' <summary>
+            ' first delete this or any child Business Object that
+            ' is marked for delete
+            Me.Delete(True)
+
+            If Me.IsDirty And Not Me.IsDeleted Then
+                If Me.IsNew Then
+                    ItemAttributeDAO.Instance.InsertItemAttribute(CType(Me, ItemAttribute))
+                    Trace.WriteLine("Inserting a new ItemAttribute")
+                Else
+                    ItemAttributeDAO.Instance.UpdateItemAttribute(CType(Me, ItemAttribute))
+                    Trace.WriteLine("Updating an existing ItemAttribute")
+                End If
+
+                Me.IsDirty = False
+                Me.IsNew = False
+            End If
+
+        End Function
+
+        ''' <summary>
         ''' Delete this ItemAttribute
         ''' </summary>
         ''' <returns></returns>

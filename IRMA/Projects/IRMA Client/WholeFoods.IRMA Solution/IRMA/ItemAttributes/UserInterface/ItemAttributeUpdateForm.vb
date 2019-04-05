@@ -59,9 +59,10 @@ Public Class ItemAttributeUpdateForm
     End Sub
 
     Private Sub cmdUpdate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-        SaveChanges()
-        '-- Exit this screen
-        Me.Close()
+        If SaveChanges() Then
+            '-- Exit this screen
+            Me.Close()
+        End If
     End Sub
 
 #End Region
@@ -258,7 +259,7 @@ Public Class ItemAttributeUpdateForm
         aLabel.Text = anIdentifier.ScreenText
     End Sub
 
-    Private Sub SaveChanges()
+    Private Function SaveChanges() As Boolean
         If _itemAtribute Is Nothing Then
             _itemAtribute = New ItemAttribute()
         End If
@@ -273,8 +274,12 @@ Public Class ItemAttributeUpdateForm
             End If
         Next
         _itemAtribute.ItemKey = _itemKey
-        _itemAtribute.Save()
-    End Sub
+        If (ValidateTextForSave(_itemAtribute)) Then
+            _itemAtribute.Save()
+            Return True
+        End If
+        Return False
+    End Function
 
     Private Sub SaveCheckBox(ByVal anIdentifier As AttributeIdentifier)
         Dim name As String = anIdentifier.FieldType
@@ -360,6 +365,67 @@ Public Class ItemAttributeUpdateForm
         End If
     End Sub
 
+    Private Function ValidateTextForSave(ByRef itemAttribute As ItemAttribute) As Boolean
+        'Validate Text fields for forbidden characters
+        Dim statusList As ArrayList = ItemAttributeDAO.Instance.ValidateItemAttributeText(itemAttribute)
+        Dim statusEnum As IEnumerator = statusList.GetEnumerator
+        Dim currentStatus As ItemAttributeValidationStatus
+
+        While statusEnum.MoveNext
+            currentStatus = CType(statusEnum.Current, ItemSignAttributeValidationStatus)
+            Select Case currentStatus
+                Case ItemAttributeValidationStatus.Error_Text1InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text1)), Text1, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text2InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text2)), Text2, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text3InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text3)), Text3, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text4InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text4)), Text4, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text5InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text5)), Text5, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text6InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text6)), Text6, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text7InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text7)), Text7, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text8InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text8)), Text8, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text9InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text9)), Text9, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+                Case ItemAttributeValidationStatus.Error_Text10InvalidCharacters
+                    NotifyOfInvalidCharacters(GetScreenTextForAttribute(NameOf(Text10)), Text10, ItemAttributeDAO.INVALID_CHARACTERS)
+                    Return False
+            End Select
+        End While
+
+        Return True
+
+    End Function
+
+    Private Function GetScreenTextForAttribute(ByRef fieldType As String) As String
+        Dim screenText As String = String.Empty
+        For Each attributeIdentifier As AttributeIdentifier In _attibuteIdentifiers
+            If attributeIdentifier.FieldType = fieldType Then
+                screenText = attributeIdentifier.ScreenText
+            End If
+        Next
+        Return screenText
+    End Function
+
+    Private Sub NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String)
+        Dim validationErrorMsg As String = String.Format(ResourcesIRMA.GetString("InvalidCharacters"), sFieldCaption, sInvalidCharacters)
+        MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
+        ctlControl.Focus()
+    End Sub
 #End Region
 
 
