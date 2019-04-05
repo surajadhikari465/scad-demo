@@ -35,7 +35,7 @@ function KitResults(props: any) {
             Header: () => (
               <div style={{ textAlign: "center" }}> Link Groups</div>
             ),
-       
+
             Cell: row => (
               <div style={{ textAlign: "center" }}>{row.value}</div>
             ),
@@ -48,11 +48,35 @@ function KitResults(props: any) {
             ),
             minWidth: 200,
             Cell: row => (
-              <div style={{ textAlign: "left" }}>{
-                row.value.split('\n').map((line:string)=><div>{line}</div>)}
-                 </div>
+              <div style={{ textAlign: "left" }}>
+                {
+
+                row.value.split('\r').map((line1: string) => 
+                line1.includes('Unauthorized') ?
+                    <div style={{ color: 'red' }}>
+                      {
+                        line1.replace('Unauthorized','').split('\n').map((line: string) => 
+                        
+                          <div>
+                            {line}
+                          </div>
+                        )
+                      
+                        }
+                    </div> :
+                    <div >
+                      {line1.split('\n').map((line: string) =>
+                      
+                      <div>
+                      {line}
+                     </div>
+                   )
+                    }
+                    </div>)
+                } 
+                </div>
             ),
-          
+
             accessor: "formattedAllModifiersProperties"
           },
 
@@ -62,11 +86,11 @@ function KitResults(props: any) {
             ),
             Cell: row => (
               <div style={{ textAlign: "center" }}>{
-                
-                row.value.split('\n').map((line:string)=><div>{line}</div>)}
-                </div>
+
+                row.value.split('\n').map((line: string) => <div>{line}</div>)}
+              </div>
             ),
-          
+
             accessor: "formattedLinkGroupProperties"
           }
 
@@ -104,7 +128,7 @@ function KitResults(props: any) {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <Button variant="outlined" disabled ={props.disableSaveButton} color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
+          <Button variant="outlined" disabled={props.disableSaveButton} color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
             Save Changes
                 </Button>
         </Grid>

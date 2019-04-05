@@ -271,6 +271,7 @@ namespace KitBuilderWebApi.Controllers
                             kitView.ErrorMessage = " Error in fetching info from mammoth.";
                         }
                     }
+                    linkGroupView.Modifiers = linkGroupView.Modifiers.OrderBy(s => s.AuthorizedByStore).ThenBy(a => a.Excluded).ToList();
                     kitView.LinkGroups.Add(linkGroupView);
                 }
 
@@ -1212,17 +1213,23 @@ namespace KitBuilderWebApi.Controllers
             StringBuilder linkgroupModifierProperties = new StringBuilder();
 
             linkgroupModifierProperties.Append(formattedAllModifiersProperties);
-            if (modifierView.Excluded == false)
+            if (modifierView.Excluded == true)
                 linkgroupModifierProperties.Append("^");
+
+          
+
             linkgroupModifierProperties.Append(modifierView.ModifierName);
 
             linkgroupModifierProperties.Append("[");
             linkgroupModifierProperties.Append(modifierView.FormattedModifierProperties);
             linkgroupModifierProperties.Append("]");
+            if (modifierView.AuthorizedByStore == false)
+                linkgroupModifierProperties.Append("Unauthorized");
+
             if (!isLast)
             {
                 linkgroupModifierProperties.Append(",");
-                linkgroupModifierProperties.Append("\n");
+                linkgroupModifierProperties.Append("\r");
             }
 
 
