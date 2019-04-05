@@ -77,14 +77,14 @@ export class AddNewLinkGroupModal extends React.Component<IProps, IState> {
     save() {
      
         var linkGroup:NewLinkGroup = {
-            GroupName: this.state.LinkGroupName, 
-            GroupDescription: this.state.LinkGroupDesc
+            GroupName: this.state.LinkGroupName.trim(), 
+            GroupDescription: this.state.LinkGroupDesc.trim()
         }
 
         if (linkGroup.GroupName === "" || linkGroup.GroupDescription === "") 
         {
             this.setState({ error: "Group Name and Description are required.", loading: false})         
-            return;   
+            return;
         } else {
         
             this.saveNewLinkGroup(linkGroup)

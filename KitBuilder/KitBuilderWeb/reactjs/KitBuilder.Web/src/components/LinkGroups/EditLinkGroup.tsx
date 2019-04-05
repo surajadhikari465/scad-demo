@@ -21,6 +21,10 @@ interface IState {
   LinkGroupDesc: string;
   showAddModifiers: boolean;
   editedModifiers: LinkGroupItem[],
+  errors: {
+    name?: string,
+    desciption?: string,
+  }
 }
 
 interface IProps {
@@ -45,6 +49,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
       LinkGroupDesc: "",
       showAddModifiers: false,
       editedModifiers: [],
+      errors: {},
     };
   }
 
@@ -53,10 +58,30 @@ class EditLinkGroup extends React.Component<IProps, IState> {
     this.loadCookingInstructionsList();
   }
 
-  handleSaveLinkGroup = () => {
+  hasSameName = () =>{
+    const { LinkGroupName, data } = this.state;
+    return LinkGroupFunctions.PerformLinkGroupSearch(LinkGroupName, "", "", "", "")
+      .then((result: LinkGroup[]) => {
+        const hasSameName = result.some(
+          linkGroup =>
+            linkGroup.groupName.toLowerCase().trim() ===
+            LinkGroupName.toLowerCase().trim() && linkGroup.linkGroupId !== data.linkGroupId
+        );
+        return hasSameName;
+      });
+  }
+
+  handleSaveLinkGroup = async () => {
     const linkGroup = {... this.state.data };
-    linkGroup.groupName = this.state.LinkGroupName;
-    linkGroup.groupDescription = this.state.LinkGroupDesc;
+
+      const hasSameName = await this.hasSameName();
+      if(hasSameName) {
+        this.setState({errors: { name: "Another link group already has this name." }});
+        return;
+      }
+      this.setState({errors: {}});
+      linkGroup.groupName = this.state.LinkGroupName;
+      linkGroup.groupDescription = this.state.LinkGroupDesc;
 
     const url = `${KbApiMethod("LinkGroups")}/${linkGroup.linkGroupId}`;
     
@@ -71,6 +96,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
     .then(() => {
       this.props.showAlert("Update Successful", "success");
       this.props.clearSearchResults();
+
     })
     .catch((error: AxiosError) => {
       const message = error.response ? error.response.data : error.message;
@@ -153,6 +179,8 @@ class EditLinkGroup extends React.Component<IProps, IState> {
               id="LinkGroupName"
               label="Link Group Name"
               name="LinkGroupName"
+              error={!!this.state.errors.name}
+              helperText = {this.state.errors.name}
               value={this.state.LinkGroupName}
               onChange={e => this.handleChange("LinkGroupName", e)}
               fullWidth
