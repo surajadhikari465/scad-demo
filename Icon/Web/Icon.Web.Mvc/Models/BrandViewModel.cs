@@ -1,5 +1,6 @@
 ﻿using Icon.Web.Attributes;
 using Icon.Web.Common;
+using System.Collections.Generic;
 using Icon.Web.DataAccess.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,25 @@ namespace Icon.Web.Mvc.Models
         [IconPropertyValidation(ValidatorPropertyNames.BrandAbbreviation, CanBeNullOrEmprty = true)]
         public string BrandAbbreviation { get; set; }
 
+        [Display(Name = "Designation")]
+        [RegularExpression(@"^(Global|Regional)$", ErrorMessage = "Valid values are Global or Regional")]
+        public string Designation { get; set; }
+
+        public static IEnumerable<string> DesignationList { get { return new string[] { string.Empty, "Global", "Regional" }; }}
+
+        [Display(Name = "Parent Company")]
+        public string ParentCompany { get; set; }
+
+        public IEnumerable<string> BrandList { get; set; }
+       
+        [Display(Name = "Zip Code")]
+        [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Invalid Zip Code. Example: 12345 or 12345-6789")]
+        public string ZipCode { get; set; }
+
+        [Display(Name = "Locality")]
+        [RegularExpression(@"^.{1,35}$", ErrorMessage = "Locality should be up to 35 characters length.")]
+        public string Locality { get; set; }
+
         public BrandViewModel() { }
 
         public BrandViewModel(BrandModel brand)
@@ -26,6 +46,10 @@ namespace Icon.Web.Mvc.Models
             base.HierarchyParentClassId = brand.HierarchyParentClassId;
             BrandName = brand.HierarchyClassName;
             BrandAbbreviation = brand.BrandAbbreviation;
+            Designation = brand.Designation;
+            ParentCompany = brand.ParentCompany;
+            ZipCode = brand.ZipCode;
+            Locality = brand.Locality;
         }
     }
 }

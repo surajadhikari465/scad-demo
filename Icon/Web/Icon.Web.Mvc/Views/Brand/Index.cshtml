@@ -36,18 +36,22 @@
             .AutoGenerateColumns(false)
             .Columns(columns =>
             {
-                columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("int").Width("20%");
-                columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("20%");
-                columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("20%");
-                columns.Unbound("Edit").Template("<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("20%").HeaderText("Edit Link");
-                columns.Unbound("Delete").Template("<a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("20%").HeaderText("Delete Link");
+              columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("int").Width("10%");
+              columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("20%");
+              columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("10%");
+              columns.For(c => c.Designation).HeaderText("Designation").DataType("string").Width("10%");
+              columns.For(c => c.ParentCompany).HeaderText("Parent Company").DataType("string").Width("10%");
+              columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
+              columns.For(c => c.Locality).HeaderText("Locality").DataType("string").Width("10%");
+              columns.Unbound("Edit").Template("<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("Edit Link");
+              columns.Unbound("Delete").Template("<a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("Delete Link");
             })
-            .Features(features => 
+            .Features(features =>
             {
-                    features.Paging().PageSize(20);
-                    features.Sorting().Inherit(true);
-                    features.Filtering().Inherit(true);
-                
+              features.Paging().PageSize(20);
+              features.Sorting().Inherit(true);
+              features.Filtering().Inherit(true);
+
             })
             .DataSourceUrl(Url.Action("All", "Brand"))
             .DataBind()

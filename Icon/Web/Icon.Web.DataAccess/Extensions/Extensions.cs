@@ -168,15 +168,30 @@ namespace Icon.Web.DataAccess.Extensions
             context.SaveChanges();
         }
 
+        public static void AddHierarchyClassTrait(this HierarchyClass hierarchyClass, IconContext context, int currentID, string traitValue)
+        {
+            if(string.IsNullOrWhiteSpace(traitValue)) return;
+
+            var hierarchyClassTrait = new HierarchyClassTrait
+            {
+                traitID = currentID,
+                traitValue = traitValue.Trim(),
+                hierarchyClassID = hierarchyClass.hierarchyClassID
+            };
+
+            context.HierarchyClassTrait.Add(hierarchyClassTrait);
+            context.SaveChanges();
+        }
+
         public static void UpdateHierarchyClassTrait(this HierarchyClassTrait hierarchyClassTrait, IconContext context, string traitValue, bool removeIfNullOrEmpty)
         {
-            if (removeIfNullOrEmpty && String.IsNullOrEmpty(traitValue))
+            if (removeIfNullOrEmpty && String.IsNullOrWhiteSpace(traitValue))
             {
                 context.HierarchyClassTrait.Remove(hierarchyClassTrait);
             }
             else
             {
-                hierarchyClassTrait.traitValue = traitValue;
+                hierarchyClassTrait.traitValue = traitValue.Trim();
             }
 
             context.SaveChanges();

@@ -18,43 +18,55 @@ namespace Icon.Web.DataAccess.Commands
 
         public void Execute(UpdateBrandHierarchyClassTraitsCommand data)
         {
+            string traitValue;
             var brandToUpdate = context.HierarchyClass.Single(hc => hc.hierarchyClassID == data.Brand.hierarchyClassID);
-            var currentBrandAbbreviationTrait = brandToUpdate.HierarchyClassTrait.SingleOrDefault(hct => hct.Trait.traitCode == TraitCodes.BrandAbbreviation);
+            if(brandToUpdate == null) return;
 
-            if (currentBrandAbbreviationTrait != null)
+            var allTraits = brandToUpdate.HierarchyClassTrait.ToArray();
+            var existingTrait = allTraits.SingleOrDefault(x => x.Trait.traitCode == TraitCodes.BrandAbbreviation);
+
+            if (existingTrait != null && !string.IsNullOrWhiteSpace(data.BrandAbbreviation) && (string.IsNullOrWhiteSpace(existingTrait.traitValue) ? String.Empty : existingTrait.traitValue).Trim() != data.BrandAbbreviation.Trim())
             {
-                string currentBrandAbbreviation = currentBrandAbbreviationTrait.traitValue;
-
-                if (currentBrandAbbreviation == data.BrandAbbreviation)
-                {
-                    return;
-                }
-            }
-
-            if (data.BrandAbbreviation != null)
-            {
-                bool duplicateBrandAbbreviationExists = context.HierarchyClassTrait.ContainsDuplicateBrandAbbreviation(data.BrandAbbreviation);
-
-                if (duplicateBrandAbbreviationExists)
+                if (context.HierarchyClassTrait.Where(x => x.hierarchyClassID != brandToUpdate.hierarchyClassID).ContainsDuplicateBrandAbbreviation(data.BrandAbbreviation))
                 {
                     throw new DuplicateValueException(String.Format("The brand abbreviation {0} already exists.", data.BrandAbbreviation));
                 }
             }
-
-            if (currentBrandAbbreviationTrait == null)
+            
+            foreach(var code in new int[]{ Traits.BrandAbbreviation,  Traits.Designation, Traits.ParentCompany, Traits.ZipCode, Traits.Locality })
             {
-                if (String.IsNullOrEmpty(data.BrandAbbreviation))
+                existingTrait = allTraits.SingleOrDefault(x => x.traitID == code);
+
+                switch(code)
                 {
-                    return;
+                    case Traits.BrandAbbreviation:
+                        traitValue = data.BrandAbbreviation;
+                        break;
+                    case Traits.Designation:
+                        traitValue = data.Designation;
+                        break;
+                    case Traits.ParentCompany:
+                        traitValue = data.ParentCompany;
+                        break;
+                    case Traits.ZipCode:
+                        traitValue = data.ZipCode;
+                        break;
+                    case Traits.Locality:
+                        traitValue = data.Locality;
+                        break;
+                    default:
+                        traitValue = null;
+                        break;
+                }
+
+                if(existingTrait == null)
+                {
+                    brandToUpdate.AddHierarchyClassTrait(context, code, traitValue);
                 }
                 else
                 {
-                    brandToUpdate.AddHierarchyClassTrait(context, TraitCodes.BrandAbbreviation, data.BrandAbbreviation);
+                    existingTrait.UpdateHierarchyClassTrait(context, traitValue, removeIfNullOrEmpty: true);
                 }
-            }
-            else
-            {
-                currentBrandAbbreviationTrait.UpdateHierarchyClassTrait(context, data.BrandAbbreviation, removeIfNullOrEmpty: true);
             }
         }
     }

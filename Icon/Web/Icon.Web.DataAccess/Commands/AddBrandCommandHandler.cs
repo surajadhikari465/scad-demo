@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.DataAccess.Extensions;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Linq;
@@ -21,7 +20,11 @@ namespace Icon.Web.DataAccess.Commands
         {
             Validate(data);
             AddBrandAbbreviationIfNotNullOrEmpty(data.Brand, data.BrandAbbreviation);
-
+            AddTrait(data.Brand, Traits.Designation, data.Designation);
+            AddTrait(data.Brand, Traits.ParentCompany, data.ParentCompany);
+            AddTrait(data.Brand, Traits.ZipCode, data.ZipCode);
+            AddTrait(data.Brand, Traits.Locality, data.Locality);
+            
             data.Brand.hierarchyID = Hierarchies.Brands;
             data.Brand.hierarchyParentClassID = null;
             data.Brand.hierarchyLevel = HierarchyLevels.Parent;           
@@ -56,18 +59,22 @@ namespace Icon.Web.DataAccess.Commands
 
         private void AddBrandAbbreviationIfNotNullOrEmpty(HierarchyClass brand, string brandAbbreviation)
         {
-            if (!String.IsNullOrEmpty(brandAbbreviation))
+            if (!String.IsNullOrWhiteSpace(brandAbbreviation))
             {
                 if (context.HierarchyClassTrait.Any(hct => hct.traitID == Traits.BrandAbbreviation && hct.traitValue.ToLower() == brandAbbreviation.ToLower()))
                 {
                     throw new DuplicateValueException(String.Format("The brand abbreviation {0} already exists.", brandAbbreviation));
                 }
 
-                brand.HierarchyClassTrait.Add(new HierarchyClassTrait
-                {
-                    traitID = Traits.BrandAbbreviation,
-                    traitValue = brandAbbreviation
-                });
+                AddTrait(brand, Traits.BrandAbbreviation, brandAbbreviation);
+            }
+        }
+
+        private void AddTrait(HierarchyClass brand, int id, string traitValue)
+        {
+            if(!string.IsNullOrWhiteSpace(traitValue))
+            {
+                brand.HierarchyClassTrait.Add(new HierarchyClassTrait{ traitID = id, traitValue = traitValue.Trim() });
             }
         }
     }

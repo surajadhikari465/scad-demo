@@ -94,6 +94,8 @@ namespace Icon.Web.DataAccess.Commands
             LocaleTrait trait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode);
 
             traitValue = string.IsNullOrWhiteSpace(traitValue) ? null : traitValue.Trim();
+            
+            if(trait == null || traitValue == null) return;
 
             if(trait == null)
             {

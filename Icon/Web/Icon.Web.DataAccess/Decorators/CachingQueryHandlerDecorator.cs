@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Logging;
 using Icon.Web.Common.Cache;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
 
 namespace Icon.Web.DataAccess.Decorators

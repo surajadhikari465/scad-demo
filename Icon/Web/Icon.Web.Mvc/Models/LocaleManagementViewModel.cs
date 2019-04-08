@@ -109,10 +109,10 @@ namespace Icon.Web.Mvc.Models
         // Section of regex before first pipe is for USA/Canada phone numbers, e.g. (^([0-9]{3}-)[0-9]{3}-[0-9]{4}$)
         // Section of regex after first pipe is for UK phone numbers, e.g. ^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))?$
         [Required]
-        [Display(Name= "Phone Number")]
+        [Display(Name = "Phone Number")]
         [MaxLength(20)]
         [RegularExpression(@"(^([0-9]{3}-)[0-9]{3}-[0-9]{4}$)|^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))?$",
-            ErrorMessage=   "Phone numbers for North America must be 10 digits with dashes, no parenthesis allowed. XXX-XXX-XXXX. " +
+            ErrorMessage = "Phone numbers for North America must be 10 digits with dashes, no parenthesis allowed. XXX-XXX-XXXX. " +
                             "Phone numbers for United Kingdom need to be 11 digits with no dashes, parenthesis around first set of numbers. " +
                             "Examples: (XXX) XXXX XXXX, (XXXX) XXXXXXX")]
         public string PhoneNumber { get; set; }
@@ -137,24 +137,24 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "POS Type")]
         public IEnumerable<SelectListItem> StorePosTypes { get; set; }
 
-				[Display(Name = "Ident")]
+        [Display(Name = "Ident")]
         public bool Ident { get; set; }
 
-				[Display(Name = "PrimeNow Merchant ID")]
+        [Display(Name = "PrimeNow Merchant ID")]
         [RegularExpression(@"^[0-9]{11}$", ErrorMessage = "PrimeNow Merchant ID must be numeric with 11 digits length.")]
         public string PrimeMerchantID { get; set; }
 
-				[Display(Name = "PrimeNow Merchant ID Encrypted")]
+        [Display(Name = "PrimeNow Merchant ID Encrypted")]
         [RegularExpression(@"^[a-zA-Z0-9]{13}$", ErrorMessage = "PrimeNow Merchant ID Encrypted must be alpha-numeric with 13 characters length.")]
         public string PrimeMerchantIDEncrypted { get; set; }
 
-				[Display(Name = "Local Zone")]
+        [Display(Name = "Local Zone")]
         [RegularExpression(@"^.{1,35}$", ErrorMessage = "Local Zone should be alpha-numeric with up to 35 characters length.")]
-        public string LocalZone{ get; set; }
+        public string LocalZone { get; set; }
 
-				public string SelectedLiquorLicense { get; set; }
+        public string SelectedLiquorLicense { get; set; }
         [Display(Name = "Liquor License")]
-				[RegularExpression(@"^(Beer|Wine|Spirit)$", ErrorMessage = "Invalid Liquor License. Valid values are Beer, Wine or Spirit")]
+        [RegularExpression(@"^(Beer|Wine|Spirit)$", ErrorMessage = "Invalid Liquor License. Valid values are Beer, Wine or Spirit")]
         public IEnumerable<SelectListItem> LiquorLicenseTypes { get; set; }
 
         public string SelectedCurrency { get; set; }

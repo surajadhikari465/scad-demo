@@ -54,7 +54,18 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Brand/Create
         public ActionResult Create()
         {
-            return View();
+            //return View();
+
+            var viewModel = new BrandViewModel
+            {
+                BrandName = String.Empty,
+                BrandAbbreviation = String.Empty,
+                HierarchyId = -1,
+                HierarchyClassId = -1,
+                HierarchyLevel = HierarchyLevels.Parent,
+                BrandList = GetBrandList()
+            };
+            return View(viewModel);
         }
 
         // POST: Brand/Create
@@ -84,7 +95,11 @@ namespace Icon.Web.Mvc.Controllers
             var manager = new AddBrandManager
             {
                 Brand = newBrand,
-                BrandAbbreviation = newBrandAbbreviation
+                BrandAbbreviation = newBrandAbbreviation,
+                Designation = string.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Designation.Trim(),
+                ParentCompany = string.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
+                ZipCode = string.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Replace(" ", String.Empty),
+                Locality = string.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim()
             };
 
             try
@@ -134,21 +149,22 @@ namespace Icon.Web.Mvc.Controllers
                 return View(viewModel);
             }
 
-            string updatedBrandName = viewModel.BrandName.Trim();
-            string updatedBrandAbbreviation = String.IsNullOrWhiteSpace(viewModel.BrandAbbreviation) ? null : viewModel.BrandAbbreviation.Trim();
-
             var updatedBrand = new HierarchyClass
             {
                 hierarchyID = viewModel.HierarchyId,
                 hierarchyClassID = viewModel.HierarchyClassId,
-                hierarchyClassName = updatedBrandName,
+                hierarchyClassName = viewModel.BrandName.Trim(),//updatedBrandName,
                 hierarchyLevel = viewModel.HierarchyLevel
             };
 
             var manager = new UpdateBrandManager
             {
                 Brand = updatedBrand,
-                BrandAbbreviation = updatedBrandAbbreviation
+                BrandAbbreviation = String.IsNullOrWhiteSpace(viewModel.BrandAbbreviation) ? null : viewModel.BrandAbbreviation.Trim(),//updatedBrandAbbreviation,
+                Designation = String.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Designation.Trim(),
+                ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
+                ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
+                Locality = String.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Locality.Trim()
             };
 
             try
@@ -163,6 +179,7 @@ namespace Icon.Web.Mvc.Controllers
                 ViewData["ErrorMessage"] = ex.Message;
             }
 
+            viewModel.BrandList = GetBrandList();
             return View(viewModel);
         }
 
@@ -204,7 +221,6 @@ namespace Icon.Web.Mvc.Controllers
 
             string brandName = brand.hierarchyClassName;
             string brandAbbreviation = null;
-
             var brandAbbreviationTrait = brand.HierarchyClassTrait.SingleOrDefault(hct => hct.Trait.traitCode == TraitCodes.BrandAbbreviation);
 
             if (brandAbbreviationTrait != null)
@@ -212,16 +228,29 @@ namespace Icon.Web.Mvc.Controllers
                 brandAbbreviation = brandAbbreviationTrait.traitValue;
             }
 
+            var traits = brand.HierarchyClassTrait.ToArray();
+            var brands = GetBrandList();
+
             var viewModel = new BrandViewModel
             {
                 BrandName = brand.hierarchyClassName,
-                BrandAbbreviation = brandAbbreviation,
+                BrandAbbreviation = traits.SingleOrDefault(x => x.traitID == Traits.BrandAbbreviation)?.traitValue, //brandAbbreviation,
                 HierarchyId = brand.hierarchyID,
                 HierarchyClassId = brand.hierarchyClassID,
-                HierarchyLevel = HierarchyLevels.Parent
+                HierarchyLevel = HierarchyLevels.Parent,
+                Designation = traits.SingleOrDefault(x => x.traitID == Traits.Designation)?.traitValue,
+                ZipCode = traits.SingleOrDefault(x => x.traitID == Traits.ZipCode)?.traitValue,
+                Locality = traits.SingleOrDefault(x => x.traitID == Traits.Locality)?.traitValue,
+                ParentCompany = brands.FirstOrDefault(x => string.Compare(x, traits.SingleOrDefault(y => y.traitID == Traits.ParentCompany)?.traitValue, true) == 0),
+                BrandList = brands
             };
 
             return viewModel;
+        }
+
+        string[] GetBrandList()
+        {
+            return getBrandsQuery.Search(new GetBrandsParameters()).Select(x => x.HierarchyClassName).OrderBy(x => x).ToArray();
         }
     }
 }
