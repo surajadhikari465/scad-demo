@@ -22,7 +22,8 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<ILogger<LinkGroupController>> mockLogger;
         private Mock<IRepository<LinkGroup>> mockLinkGroupRepository;
         private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
-        private Mock<IRepository<Items>> mockItemsRepository;
+		private Mock<IRepository<KitLinkGroupItem>> mockKitLinkGroupItemRepository;
+		private Mock<IRepository<Items>> mockItemsRepository;
         Mock<IUnitOfWork> _mockUnitWork;
 
         IList<LinkGroup> linkGroups;
@@ -51,7 +52,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             listGroupItemController = new LinkGroupItemController(mockLinkGroupRepository.Object,
                                                                   mockLinkGroupItemRepository.Object,
                                                                   mockItemsRepository.Object,
-                                                                  mockLogger.Object);
+																  mockKitLinkGroupItemRepository.Object,
+																  mockLogger.Object);
 
             listGroupItemController.Url = mockUrlHelper.Object;
             InitializeMapper();

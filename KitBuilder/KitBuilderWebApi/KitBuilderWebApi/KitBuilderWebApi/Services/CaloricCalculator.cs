@@ -255,7 +255,7 @@ namespace KitBuilderWebApi.Services
 
 					//The loop will end when either the Max on the KitLinkGroup is reached, 
 					//or all the available/authorized modifiers in the KitLinkGroup have been looped thru
-					while (kitLinkGroupMaxPortion > 0 && j < modifierCounter - 1) 
+					while (kitLinkGroupMaxPortion > 0 && j <= modifierCounter - 1) 
 					{
 						for (int i = 0; i < sortedByFirstElement.GetLength(0); i++)
 						{
@@ -272,7 +272,7 @@ namespace KitBuilderWebApi.Services
 							}
 
 							kitLinkGroupMaxCalories += sortedByFirstElement[i, 0] * counter;
-							j = i;
+							j++;
 						}
 					}
 
