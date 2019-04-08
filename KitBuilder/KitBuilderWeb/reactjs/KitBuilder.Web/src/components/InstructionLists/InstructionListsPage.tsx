@@ -130,11 +130,11 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                })
                     .then(() => { 
                         this.Refresh(this.state.currentInstructionTypeValue);
-                        this.props.showAlert("Instruction Member Deleted Successfully.");
+                        this.props.showAlert("Instruction member deleted successfully.");
                         
                     })
                     .catch((error) => {
-                         this.props.showAlert("Error in deleting Instruction List Member.", "error");
+                         this.props.showAlert("Error in deleting instruction list member.", "error");
                          return;
                     });
           }
@@ -173,7 +173,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     }))
                .catch(error => {
                     console.log(error);
-                    this.props.showAlert("Error loading Instruction Lists.", "error");
+                    this.props.showAlert("Error loading instruction lists.", "error");
                })
 
      }
@@ -188,7 +188,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          instructionListDto: data
                     }, () => { this.setControl(name) }))
                .catch(error => {
-                         this.props.showAlert("Error refreshing Instruction Lists.","error");
+                         this.props.showAlert("Error refreshing instruction lists.","error");
                });
      }
 
@@ -211,7 +211,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
      onSearch = () => {
           if (this.state.selectedInstructionTypeIdvalue === 0) {
-                    this.props.showAlert("Please Select Instruction List Name.")
+                    this.props.showAlert("Please select instruction list name.")
                return;
           }
 
@@ -252,7 +252,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
      onAddMember = () => {
           let data = [...this.state.instructionList];
 
-               data.push({
+               data.unshift({
                     instructionListId: 0, instructionListMemberId: 0, group: "", sequence: "", member: "", action: ""
                });
 
@@ -295,7 +295,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
           var urlParam = this.state.selectedInstructionTypeIdvalue;
 
           if (this.state.selectedInstructionTypeIdvalue === 0) {
-                    this.props.showAlert("Please Select Instruction List Name.");
+                    this.props.showAlert("Please select instruction list name.");
                return;
 
           }
@@ -304,7 +304,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
           axios.delete(urlDelete, { headers },
           ).then(() => {
-               this.props.showAlert("Instruction List Deleted Successfully.", "success");
+               this.props.showAlert("Instruction list deleted successfully.", "success");
                this.setState({
                     selectedInstructionTypeIdvalue: 0,
                     currentInstructionTypeValue: "",
@@ -314,10 +314,10 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                .catch((error) => {
                     console.log(error);
                     if (error.response.status === 409) {
-                         this.props.showAlert("Instruction List is in use.", "error");
+                         this.props.showAlert("Instruction list is in use.", "error");
                      }
                     else{
-                         this.props.showAlert("Error in Deleting Instruction List.", "error");
+                         this.props.showAlert("Error in deleting instruction list.", "error");
                     }
                    
                })
@@ -353,11 +353,19 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
           return  "";
      }
 
-     onSaveChanges = () => {
+     onSaveChanges = (publishing = false) => {
           let data = this.state.instructionList;
           let dataUpdate = [];
           let dataInsert: any[] = [];
           var error = "";
+          var nameError="";
+     
+          nameError = this.validateName(this.state.currentInstructionTypeValue);
+          if(nameError !="")
+          {
+          this.props.showAlert(nameError, "error");
+          return; 
+          }
 
           for (let i = 0; i < data.length; i++) {
                if (data[i].instructionListMemberId == 0) {
@@ -401,29 +409,39 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          headers: headers
                     })
                     .then(() => {
-                         this.props.showAlert("Instruction List Saved Successfully.", "success");
+                         if(!publishing)
+                         {
+                         this.props.showAlert("Instruction list saved successfully.", "success");
                          this.setState({
                               isSaveDisabled: true,
                               isPublishDisabled: false,
                          })
-                         this.insertMembers(dataInsert, urlAdd, headers);
+                    }
+                         this.insertMembers(dataInsert, urlAdd, headers,publishing);
                         
                     })
                     .catch((error) => {
-                         this.props.showAlert("Error in Saving new Instruction List and members.", "error");
+                         this.props.showAlert("Error in saving new instruction list and members.", "error");
                          return;
                     })
           }
           else if (dataInsert.length > 0) {
-               this.insertMembers(dataInsert, urlAdd, headers);
+               this.insertMembers(dataInsert, urlAdd, headers,publishing);
           }
           else
-          {
-               this.saveInstructionName();
+          { this.saveInstructionName(publishing);
           }
      };
 
-     saveInstructionName = () => {
+     validateName(name:string){
+          if(name.length>40)
+          {
+               return "Instruction list name length cannot be more than 40."
+          }
+          return  "";
+     }
+
+     saveInstructionName = (publishing:boolean = false) => {
 
           var updatedInstructionList = {
                InstructionListId: this.state.selectedInstructionTypeIdvalue,
@@ -444,15 +462,25 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     this.Refresh(this.state.currentInstructionTypeValue)
                })
                .then(() => {
-                    this.props.showAlert("Instruction List Saved Sucessfully.", "success");
+                    if(!publishing)
+                    {
+                         this.props.showAlert("Instruction list saved successfully.", "success");
+                       
+                    }
+                    else
+                    {
+                         this.publishData();
+                    }
+                  
+             
                })
                .catch((error) => {
-                    this.props.showAlert("Error in Saving data.", "error");
+                    this.props.showAlert("Error in saving instruction list name.", "error");
                     return;
                });
      }
 
-     insertMembers = (dataInsert: any[], urlAdd: any, headers: any) => {
+     insertMembers = (dataInsert: any[], urlAdd: any, headers: any,publishing:boolean = false) => {
           if(dataInsert.length > 0)
           {
           axios.post(urlAdd, JSON.stringify(dataInsert),
@@ -460,24 +488,29 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     headers: headers
                })
                .then(() => {
-                    this.props.showAlert("Instruction List Saved Successfully.", "success")
+                    if(!publishing)
+                    {
+                         this.props.showAlert("Instruction list saved successfully.", "success")
+                    }
+                   
                     this.setState({
                          isSaveDisabled: true,
                          isPublishDisabled: false,
                     })
-                    this.saveInstructionName();
+                    this.saveInstructionName(publishing);
                })
                .catch((error) => {
-                    this.props.showAlert("Error in Saving new Instruction List and members.", "error");
+                    this.props.showAlert("Error in saving new instruction list and members.", "error");
                })
           }
           else
           {
-               this.saveInstructionName();
+               this.saveInstructionName(publishing);
           }
      }
-     onPublishChanges = () => {
-    
+
+     publishData()
+     {
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
           }
@@ -489,17 +522,28 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          headers: headers
                     })
                     .then(() => {
-                         this.props.showAlert("Instruction List Queued Successfully.", "success");
+                         this.props.showAlert("Instruction list queued successfully.", "success");
                          this.setState({
                               isSaveDisabled: true,
                               isPublishDisabled: false,
                          }, ()=>this.Refresh(this.state.currentInstructionTypeValue))
-                      
+                       
                     })
                     .catch((error) => {
-                         this.props.showAlert("Error in Queueing Instruction List.", "error");
+                         this.props.showAlert("Error in queueing instruction list.", "error");
                          return;
                     })
+     }
+     onPublishChanges = () => {
+          let data = this.state.instructionList;
+          
+          if(data.length==0)
+          {
+               this.props.showAlert("Instruction list must have at least one member to publish.", "error");
+               return;
+          }
+          this.onSaveChanges(true);
+        
           }
 
      handleDialogClose = () => {
@@ -538,7 +582,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     headers: headers
                }).then(response => {
                     if (response.status === 409) {
-                         this.props.showAlert("Instruction List with this name alreadys exists.", "error");
+                         this.props.showAlert("Instruction list with this name already exists.", "error");
                          return;
                     }
 

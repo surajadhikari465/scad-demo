@@ -7,11 +7,15 @@ import Button from '@material-ui/core/Button';
 import { isNumberError, isLettersNumbers } from '../EditableInput';
 import { InstructionList } from 'src/types/InstructionList';
 const marginBottom = { marginBottom: 20 };
+import DeleteIcon from '@material-ui/icons/Delete';
 const styles = (theme: any) => ({
     deleteButton: {
         margin: 0,
         padding: 0
     },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+      },
     instructionValue: {
         fontSize: 24,
     },
@@ -83,13 +87,13 @@ function DisplayInstructionLists(props: DisplayInstructionListsProps) {
                                 Cell: row => (
                                     <Grid container justify="center" alignItems="center">
                                         <Button variant="text" color='secondary' className={props.classes.deleteButton} onClick={() => props.onMemberDelete(row)}>
-                                            DELETE
+                                        <DeleteIcon className={props.classes.rightIcon} />
                                         </Button>
                                     </Grid>
                                 ),
                                 Footer: row => (
                                     <Grid container justify="center" alignItems="center">
-                                        <Button disabled={!props.isLoaded} variant="text" color='primary' className={props.classes.deleteButton} onClick={() => props.onAddMember(row)}>
+                                        <Button disabled={!props.isLoaded} variant="outlined" color='primary'  onClick={() => props.onAddMember(row)}>
                                             ADD MEMBER
                                         </Button>
                                     </Grid>

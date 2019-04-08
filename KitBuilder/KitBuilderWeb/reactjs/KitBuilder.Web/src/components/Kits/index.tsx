@@ -101,7 +101,7 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
             kits: data
        });
         }) 
-        .then(()=> this.setState({message: "Kit Deleted Sucessfully"}))
+        .then(()=> this.setState({message: "Kit Deleted Successfully"}))
         .then(()=> this.setState({error: null}))
         
         .catch((error) => 
@@ -109,12 +109,12 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
             if(error.response.data.includes("409"))  
             { 
                 this.setState({
-                error: "Kit is in use. Please make sure this kit is not assigned to any locale."
+                error: "Kit Is In Use. Please Make Sure This Kit Is Not Assigned To Any Locale."
            }) 
             }   
             else{
                 this.setState({
-                    error: "Error in Deleting Kit."
+                    error: "Error In Deleting Kit."
                }) 
             }  
             
@@ -126,7 +126,7 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
         }
 
     createKit() {
-         window.location.hash = "#/kits/CreateKit";
+         window.location.hash = "#/CreateKits";
     }
 
     onEdit(kitId: number) {
@@ -137,7 +137,7 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
 
         if (this.state.searchMainItemName == "" && this.state.searchScanCode == "" && this.state.searchkitDescription == "" && this.state.searchLinkGroupName == "") {
             this.setState({
-                error: "Please enter atleast one select criteria."
+                error: "Please Enter At least One Select Criteria."
             });
 
             this.setState({

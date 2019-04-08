@@ -25,7 +25,6 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
     }
 
     AssignKitProperties(item: any) {
-        console.log("hi entered the method")
         window.location.hash = "#/KitLinkGroups/"+ this.props.kitId +"/" +  item.localeId;
     }
 

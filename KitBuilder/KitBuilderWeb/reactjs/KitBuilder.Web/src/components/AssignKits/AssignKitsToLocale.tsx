@@ -69,7 +69,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                     if(data.length > 0) this.setState({kitName: data[0].description});
                }).catch((error) => {
                     this.setState({
-                         error: "Error in Displaying Data."
+                         error: "Error in displaying data."
                     })
 
                     this.setState({
@@ -87,9 +87,9 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                .then(response => {
                     return response.json();
                     if (response.status === 404) {
-                         console.log("Not Found");
+                         console.log("Not found");
                          this.setState({
-                              error: "Data Not Found"
+                              error: "Data not found."
                          })
 
                          this.setState({
@@ -100,7 +100,7 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                     this.parseData(data);
                }).catch((error) => {
                     this.setState({
-                         error: "Error in Displaying Data."
+                         error: "Error in displaying data."
                     })
 
                     this.setState({
@@ -190,11 +190,11 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                     })
 
                     this.setState({
-                         message: "Data Saved Succesfully."
+                         message: "Data saved succesfully."
                     }, ()=>this.loadData())
                }).catch(error => {
                     this.setState({
-                         error: "Error in Saving Data."
+                         error: "Error in saving data."
                     })
 
                     this.setState({

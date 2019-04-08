@@ -116,7 +116,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                 });
         }
         else {
-            this.props.showAlert("Maximum Calories must be numeric.","error");
+            this.props.showAlert("Maximum calories must be numeric.","error");
         }
     }
     onkitSelected(row: any) {
@@ -183,7 +183,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                 }))
             .catch(error => {
                 console.log(error);
-                this.props.showAlert("Error loading Regions.", "error");
+                this.props.showAlert("Error loading regions.", "error");
             })
         this.setState({ regionValue: "", metros: [], metroValue: "", stores: [], storeValue: "" })
     }
@@ -202,7 +202,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                     metros: data
                 }))
             .catch(error => {
-                this.props.showAlert("Error loading Metros.","error");
+                this.props.showAlert("Error loading metros.","error");
             })
         this.setState({ metroValue: "", stores: [], storeValue: "" })
     }
@@ -220,7 +220,7 @@ export class ViewKit extends React.Component<IViewKitPageProps, IViewKitPageStat
                     stores: data
                 }))
             .catch(error => {
-                this.props.showAlert("Error loading Stores.");
+                this.props.showAlert("Error loading stores.");
             })
         this.setState({ storeValue: "" })
     }
