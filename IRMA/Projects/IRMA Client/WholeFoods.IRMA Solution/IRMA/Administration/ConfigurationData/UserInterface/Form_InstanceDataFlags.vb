@@ -95,8 +95,15 @@ Public Class Form_InstanceDataFlags
 
     Private Sub BindData()
         Me.CenterToParent()
+        ' Visible only for Super User in Prod
+        If Not My.Application.IsProduction OrElse (My.Application.IsProduction AndAlso gbSuperUser) Then
+            Me.ugInstanceDataFlags.DataSource = InstanceDataDAO.GetAllInstanceDataFlags
+        Else
+            Dim resultsData As DataTable = Nothing
+            resultsData = InstanceDataDAO.GetAllInstanceDataFlags
+            Me.ugInstanceDataFlags.DataSource = resultsData.Select("FlagKey<>'AllowChangeOwnTitle'").CopyToDataTable()
+        End If
 
-        Me.ugInstanceDataFlags.DataSource = InstanceDataDAO.GetAllInstanceDataFlags
         Me.ugInstanceDataFlags.DisplayLayout.Bands(0).Columns("FlagKey").CellActivation = Activation.NoEdit
 
         Me.ugInstanceDataFlags.DisplayLayout.AutoFitStyle = AutoFitStyle.ResizeAllColumns

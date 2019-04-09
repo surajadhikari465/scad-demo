@@ -118,6 +118,8 @@ Public Class Form_EditUser
                     Me.TextBox_UserName.Enabled = False
                     ' Pre-fill for values that have defaults on create
                     CheckBox_AcctEnabled.Checked = _userConfig.AccountEnabled
+                    ' disable the ability to change one's own Title in PROD only
+                    ComboBox_Title.Enabled = Not My.Application.IsProduction OrElse (My.Application.IsProduction AndAlso _userConfig.SuperUser)
                     If _userConfig.AccountEnabled = False Then
                         Me.Button_Save.Enabled = False
                         Me.Button_DisableAccount.Enabled = False
