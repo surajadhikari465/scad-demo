@@ -73,7 +73,15 @@ class EditLinkGroup extends React.Component<IProps, IState> {
 
   handleSaveLinkGroup = async () => {
     const linkGroup = {... this.state.data };
-
+    const { LinkGroupDesc, LinkGroupName } = this.state;
+      if(LinkGroupName.trim().length === 0) {
+        this.setState({errors: { name: "Name cannot be blank." }});
+        return;
+      }
+      if(LinkGroupDesc.trim().length === 0) {
+        this.setState({errors: { desciption: "Description cannot be blank." }});
+        return;
+      }
       const hasSameName = await this.hasSameName();
       if(hasSameName) {
         this.setState({errors: { name: "Another link group already has this name." }});
@@ -193,6 +201,8 @@ class EditLinkGroup extends React.Component<IProps, IState> {
               id="LinkGroupDesc"
               label="Link Group Description"
               name="LinkGroupDesc"
+              error={!!this.state.errors.desciption}
+              helperText = {this.state.errors.desciption}
               value={this.state.LinkGroupDesc}
               onChange={e => this.handleChange("LinkGroupDesc", e)}
               fullWidth
