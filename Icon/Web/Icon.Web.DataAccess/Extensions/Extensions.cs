@@ -168,22 +168,19 @@ namespace Icon.Web.DataAccess.Extensions
             context.SaveChanges();
         }
 
-        public static void AddHierarchyClassTrait(this HierarchyClass hierarchyClass, IconContext context, int currentID, string traitValue)
+        public static void AddHierarchyClassTrait(this HierarchyClass hierarchyClass, IconContext context, int currentID, string traitValue, bool saveChanges = false)
         {
             if(string.IsNullOrWhiteSpace(traitValue)) return;
 
-            var hierarchyClassTrait = new HierarchyClassTrait
-            {
-                traitID = currentID,
-                traitValue = traitValue.Trim(),
-                hierarchyClassID = hierarchyClass.hierarchyClassID
-            };
+            context.HierarchyClassTrait.Add(new HierarchyClassTrait() { traitID = currentID, traitValue = traitValue.Trim(), hierarchyClassID = hierarchyClass.hierarchyClassID });
 
-            context.HierarchyClassTrait.Add(hierarchyClassTrait);
-            context.SaveChanges();
+            if(saveChanges)
+            {
+                context.SaveChanges();
+            }
         }
 
-        public static void UpdateHierarchyClassTrait(this HierarchyClassTrait hierarchyClassTrait, IconContext context, string traitValue, bool removeIfNullOrEmpty)
+        public static void UpdateHierarchyClassTrait(this HierarchyClassTrait hierarchyClassTrait, IconContext context, string traitValue, bool removeIfNullOrEmpty, bool saveChanges = true)
         {
             if (removeIfNullOrEmpty && String.IsNullOrWhiteSpace(traitValue))
             {
@@ -194,7 +191,10 @@ namespace Icon.Web.DataAccess.Extensions
                 hierarchyClassTrait.traitValue = traitValue.Trim();
             }
 
-            context.SaveChanges();
+            if(saveChanges)
+            {
+                context.SaveChanges();
+            }
         }
 
         public static bool ContainsDuplicatePluCategoryName(this IEnumerable<PLUCategory> pluCategoryList, int? pluCategoryId, string pluCategoryName, long beginRange, long endRange)

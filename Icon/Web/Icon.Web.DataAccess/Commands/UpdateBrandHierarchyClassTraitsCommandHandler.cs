@@ -65,8 +65,10 @@ namespace Icon.Web.DataAccess.Commands
                 }
                 else
                 {
-                    existingTrait.UpdateHierarchyClassTrait(context, traitValue, removeIfNullOrEmpty: true);
+                    existingTrait.UpdateHierarchyClassTrait(context, traitValue, removeIfNullOrEmpty: true, saveChanges: false);
                 }
+
+                context.SaveChanges();
             }
         }
     }

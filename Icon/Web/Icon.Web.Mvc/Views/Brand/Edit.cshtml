@@ -47,7 +47,7 @@
     <div class="row">
       @Html.LabelFor(model => model.ParentCompany, new { @class = "col-md-2 form-label" })
       <div>
-        @Html.DropDownList("ParentCompany", new SelectList(Model.BrandList ?? new string[] { }), "Select a Brand... (Optional)")
+        @Html.DropDownList("ParentCompany", new SelectList(Model == null || Model.BrandList == null ? new string[] { } : Model.BrandList), "Select a Brand... (Optional)")
       </div>
     </div>
 

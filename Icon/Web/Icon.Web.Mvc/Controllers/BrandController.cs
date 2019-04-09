@@ -54,18 +54,7 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Brand/Create
         public ActionResult Create()
         {
-            //return View();
-
-            var viewModel = new BrandViewModel
-            {
-                BrandName = String.Empty,
-                BrandAbbreviation = String.Empty,
-                HierarchyId = -1,
-                HierarchyClassId = -1,
-                HierarchyLevel = HierarchyLevels.Parent,
-                BrandList = GetBrandList()
-            };
-            return View(viewModel);
+            return View(EmptyViewModel());
         }
 
         // POST: Brand/Create
@@ -87,14 +76,9 @@ namespace Icon.Web.Mvc.Controllers
             string newBrandName = viewModel.BrandName.Trim();
             string newBrandAbbreviation = String.IsNullOrEmpty(viewModel.BrandAbbreviation) ? null : viewModel.BrandAbbreviation.Trim();
 
-            var newBrand = new HierarchyClass
-            {
-                hierarchyClassName = newBrandName
-            };
-
             var manager = new AddBrandManager
             {
-                Brand = newBrand,
+                Brand = new HierarchyClass(){ hierarchyClassName = newBrandName },
                 BrandAbbreviation = newBrandAbbreviation,
                 Designation = string.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Designation.Trim(),
                 ParentCompany = string.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
@@ -113,7 +97,7 @@ namespace Icon.Web.Mvc.Controllers
                 ViewData["SuccessMessage"] = successMessage;
 
                 ModelState.Clear();
-                return View();
+                return View(EmptyViewModel());
             }
             catch (CommandException ex)
             {
@@ -121,7 +105,7 @@ namespace Icon.Web.Mvc.Controllers
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
                 ViewData["ErrorMessage"] = ex.Message;
 
-                return View();
+                return View(EmptyViewModel());
             }
         }
 
@@ -210,6 +194,19 @@ namespace Icon.Web.Mvc.Controllers
             ExcelHelper.SendForDownload(Response, brandExporter.ExportModel.ExcelWorkbook, brandExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Brand");
         }
         
+        private BrandViewModel EmptyViewModel()
+        {
+            return new BrandViewModel
+                {
+                    BrandName = String.Empty,
+                    BrandAbbreviation = String.Empty,
+                    HierarchyId = -1,
+                    HierarchyClassId = -1,
+                    HierarchyLevel = HierarchyLevels.Parent,
+                    BrandList = GetBrandList()
+                };
+        }
+
         private BrandViewModel BuildBrandViewModel(int hierarchyClassId)
         {
             var parameters = new GetHierarchyClassByIdParameters
