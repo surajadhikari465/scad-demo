@@ -148,7 +148,7 @@ namespace Icon.Web.Mvc.Controllers
                 Designation = String.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Designation.Trim(),
                 ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                 ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
-                Locality = String.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Locality.Trim()
+                Locality = String.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim()
             };
 
             try
