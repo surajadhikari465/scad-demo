@@ -2465,11 +2465,17 @@ me_exit:
   End Sub
 
   Private Sub tsbEdit_SearchText_KeyDown(sender As Object, e As KeyEventArgs) Handles tsbEdit_SearchText.KeyDown
-    If (e.Control And tsbEdit_SearchText.Text.Length > 0) Then
-      Select Case e.KeyCode
-        Case Keys.I : tsbEdit_Search_Identifier_Click(Nothing, Nothing)
-        Case Keys.P : tsbEdit_Search_PO_Click(Nothing, Nothing)
-      End Select
-    End If
-  End Sub
+        If (e.Control) Then
+            If tsbEdit_SearchText.Text.Length > 0 Then
+                Select Case e.KeyCode
+                    Case Keys.I : tsbEdit_Search_Identifier_Click(Nothing, Nothing)
+                    Case Keys.P : tsbEdit_Search_PO_Click(Nothing, Nothing)
+                End Select
+            Else
+                Select Case e.KeyCode
+                    Case Keys.V : tsbEdit_SearchText.Text = Clipboard.GetText()
+                End Select
+            End If
+        End If
+    End Sub
 End Class
