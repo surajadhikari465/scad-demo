@@ -17,7 +17,6 @@ namespace Icon.Framework
         public MessageType()
         {
             this.MessageQueueHierarchy = new HashSet<MessageQueueHierarchy>();
-            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
             this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
             this.MessageQueuePrice = new HashSet<MessageQueuePrice>();
             this.MessageQueueProductSelectionGroup = new HashSet<MessageQueueProductSelectionGroup>();
@@ -25,13 +24,13 @@ namespace Icon.Framework
             this.APIMessageMonitorLog = new HashSet<APIMessageProcessorLogEntry>();
             this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
             this.MessageHistory = new HashSet<MessageHistory>();
+            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
         }
     
         public int MessageTypeId { get; set; }
         public string MessageTypeName { get; set; }
     
         public virtual ICollection<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
-        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual ICollection<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual ICollection<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
@@ -39,5 +38,6 @@ namespace Icon.Framework
         public virtual ICollection<APIMessageProcessorLogEntry> APIMessageMonitorLog { get; set; }
         public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual ICollection<MessageHistory> MessageHistory { get; set; }
+        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
     }
 }

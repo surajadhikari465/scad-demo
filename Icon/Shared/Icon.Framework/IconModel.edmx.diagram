@@ -90,9 +90,6 @@
         <AssociationConnector Association="Icon.Framework.Model.Locale_LocaleTrait_FK1" />
         <AssociationConnector Association="Icon.Framework.Model.Locale_ScanCode_FK1" />
         <AssociationConnector Association="Icon.Framework.Model.LocaleType_Locale_FK1" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="26.25" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueItemLocale" Width="1.5" PointX="32" PointY="9.625" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueuePrice" Width="1.5" PointX="28.625" PointY="16.875" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" />
@@ -149,8 +146,6 @@
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventQueue" Width="1.5" PointX="29.625" PointY="28.25" />
         <EntityTypeShape EntityType="Icon.Framework.Model.VimEventType" Width="1.5" PointX="27.375" PointY="28.875" />
         <AssociationConnector Association="Icon.Framework.Model.FK_EventQueue_EventType2" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueNutrition" Width="1.5" PointX="27.875" PointY="31.75" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
         <EntityTypeShape EntityType="Icon.Framework.Model.AuthorizedProductList" Width="1.5" PointX="4.25" PointY="46.625" />
         <AssociationConnector Association="Icon.Framework.Model.FK_ewic_AuthorizedProductList_Agency" />
         <AssociationConnector Association="Icon.Framework.Model.FK_ewic_Mapping_AuthorizedProductList" />
@@ -189,9 +184,14 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="25" PointY="0.75" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueNutrition" Width="1.5" PointX="27.25" PointY="39.625" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

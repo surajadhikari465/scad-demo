@@ -88,10 +88,10 @@ namespace Icon.Framework
         public string CustomerFriendlyDescription { get; set; }
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
-        public string FairTradeCertified { get; set; }
-        public string FlexibleText { get; set; }
         public string SelfCheckoutItemTareGroup { get; set; }
+        public string FlexibleText { get; set; }
         public Nullable<int> ShelfLife { get; set; }
+        public string FairTradeCertified { get; set; }
         public string MadeWithOrganicGrapes { get; set; }
         public Nullable<bool> PrimeBeef { get; set; }
         public Nullable<bool> RainforestAlliance { get; set; }
@@ -117,10 +117,33 @@ namespace Icon.Framework
         public Nullable<bool> KitchenItem { get; set; }
         public string KitchenDescription { get; set; }
         public string ImageURL { get; set; }
+        public string DataSource { get; set; }
+        public string GMOTransparency { get; set; }
+        public Nullable<decimal> ItemDepth { get; set; }
+        public Nullable<decimal> ItemHeight { get; set; }
+        public Nullable<decimal> ItemWidth { get; set; }
+        public Nullable<decimal> Cube { get; set; }
+        public Nullable<decimal> Weight { get; set; }
+        public Nullable<decimal> TrayDepth { get; set; }
+        public Nullable<decimal> TrayHeight { get; set; }
+        public Nullable<decimal> TrayWidth { get; set; }
+        public string Labeling { get; set; }
+        public string CountryOfOrigin { get; set; }
+        public Nullable<int> PackageGroup { get; set; }
+        public string PackageGroupType { get; set; }
+        public string PrivateLabel { get; set; }
+        public string Appellation { get; set; }
+        public Nullable<bool> FairTradeClaim { get; set; }
+        public Nullable<bool> GlutenFreeClaim { get; set; }
+        public Nullable<bool> NonGMOClaim { get; set; }
+        public Nullable<bool> OrganicClaim { get; set; }
+        public string Varietal { get; set; }
+        public string BeerStyle { get; set; }
+        public string LineExtension { get; set; }
     
+        public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
         public virtual ICollection<MessageQueueNutrition> MessageQueueNutrition { get; set; }
-        public virtual MessageHistory MessageHistory { get; set; }
     }
 }

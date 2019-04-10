@@ -64,7 +64,6 @@ namespace Icon.Framework
         public virtual DbSet<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
         public virtual DbSet<EventQueue> EventQueue { get; set; }
         public virtual DbSet<Locale> Locale { get; set; }
-        public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual DbSet<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual DbSet<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual DbSet<ProductSelectionGroupType> ProductSelectionGroupType { get; set; }
@@ -90,7 +89,6 @@ namespace Icon.Framework
         public virtual DbSet<MammothEventType> MammothEventType { get; set; }
         public virtual DbSet<VimEventQueue> VimEventQueue { get; set; }
         public virtual DbSet<VimEventType> VimEventType { get; set; }
-        public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
         public virtual DbSet<AuthorizedProductList> AuthorizedProductList { get; set; }
         public virtual DbSet<MessageQueueBusinessUnitInProcess> MessageQueueBusinessUnitInProcess { get; set; }
         public virtual DbSet<PerformanceLog> PerformanceLog { get; set; }
@@ -105,6 +103,8 @@ namespace Icon.Framework
         public virtual DbSet<LocaleSubType> LocaleSubTypes { get; set; }
         public virtual DbSet<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual DbSet<MessageHistory> MessageHistory { get; set; }
+        public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
+        public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {

@@ -15,6 +15,7 @@ namespace Icon.Framework
     public partial class MessageQueueNutrition
     {
         public int MessageQueueNutritionId { get; set; }
+        public int MessageQueueId { get; set; }
         public string Plu { get; set; }
         public string RecipeName { get; set; }
         public string Allergens { get; set; }
