@@ -20,6 +20,7 @@ namespace KitBuilder.DataAccess.DatabaseModels
         public virtual DbSet<KitInstructionList> KitInstructionList { get; set; }
         public virtual DbSet<KitLinkGroup> KitLinkGroup { get; set; }
         public virtual DbSet<KitLinkGroupItem> KitLinkGroupItem { get; set; }
+        public virtual DbSet<KitQueue> KitQueue { get; set; }
         public virtual DbSet<KitLinkGroupItemLocale> KitLinkGroupItemLocale { get; set; }
         public virtual DbSet<KitLinkGroupLocale> KitLinkGroupLocale { get; set; }
         public virtual DbSet<KitLocale> KitLocale { get; set; }
@@ -54,6 +55,23 @@ namespace KitBuilder.DataAccess.DatabaseModels
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
+
+            modelBuilder.Entity<KitQueue>(entity =>
+                {
+                    entity.HasIndex(e => e.Status)
+                        .HasName("IdxKitQueue_Status");
+
+                    entity.Property(e => e.InsertDateUtc).HasDefaultValueSql("(sysdatetime())");
+
+                    entity.Property(e => e.KitId).HasColumnName("KitId");
+
+                    entity.Property(e => e.KitLocaleId).HasColumnName("kitLocaleId");
+
+                    entity.Property(e => e.Status)
+                            .IsRequired()
+                            .HasMaxLength(3);
+                });
+
 
             modelBuilder.Entity<AvailablePluNumber>(entity =>
             {

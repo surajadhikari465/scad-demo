@@ -22,7 +22,11 @@ BEGIN
 						(4, N'P', N'Published'),
 						(5, N'M', N'Modifying'),
 						(6, N'PF', N'PublishFailed'),
-						(7, N'PRQ', N'Publish ReQueued')
+						(7, N'PRQ', N'Publish ReQueued'),
+						(8, N'PP', N'Partially Published'),
+						(9, N'UA', N'Unauthorized'),
+						(10, N'P', N'Processed'),
+						(11, N'U', N'UnProcessed')
 					) 
 			AS Source(StatusID, StatusCode, StatusDescription)
 			ON Target.StatusID=Source.StatusID
