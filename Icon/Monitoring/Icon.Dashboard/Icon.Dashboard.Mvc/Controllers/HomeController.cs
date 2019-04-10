@@ -9,100 +9,140 @@ using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Filters;
 using System.Security.Principal;
+using Icon.Dashboard.DataFileAccess.Models;
+using Icon.Dashboard.RemoteServicesAccess;
+using System.IO;
+using System.Configuration;
+using System.Xml.Linq;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
     public class HomeController : BaseDashboardController
     {
-        public HomeController() : this(null, null, null, null) { }
+        public HomeController() : this(null, null, null, null, null, null) { }
 
         public HomeController(
             HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null,
+            IIconDatabaseServiceWrapper iconDataBaseService = null,
             string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null)
-            : base(serverUtility, loggingServiceWrapper, pathToXmlDataFile, dataServiceWrapper) { }
+            IDataFileServiceWrapper dataServiceWrapper = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null,
+            IRemoteWmiServiceWrapper remoteServicesService = null)
+            : base(serverUtility,
+                  iconDataBaseService,
+                  pathToXmlDataFile,
+                  dataServiceWrapper,
+                  mammothDbService,
+                  remoteServicesService) { }
 
         #region GET
+      
         [HttpGet]
         [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult Index()
+        public ActionResult Index(DashboardEnvironmentCollectionViewModel customEnvironment = null)
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var viewModels = DashboardDataFileService.GetApplications(dataFileWebServerPath);
-            ViewBag.CommandsEnabled = UserHasEditRights(HttpContext.User);
-            foreach (var viewModel in viewModels)
+            var chosenEnvironment = new DashboardEnvironmentViewModel();
+
+            if (customEnvironment == null  || customEnvironment.Environments.Count<1)
             {
-                viewModel.CommandsEnabled = ViewBag.CommandsEnabled;
+                // determine the default environment based on the hosting web server
+                var envSwitcher = new EnvironmentSwitcher();
+                chosenEnvironment = envSwitcher.GetDefaultEnvironment(Request.Url.Host);
             }
-            return View(viewModels);
+            else
+            { 
+                // use the selected environment in the provided model
+                chosenEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
+            }
+
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
+            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+
+            RemoteServicesService.IconApps = IconDatabaseService.GetApps();
+            RemoteServicesService.MammothApps = MammothDatabaseService.GetApps();
+            RemoteServicesService.EsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
+
+            var appViewModels = RemoteServicesService.LoadRemoteServices(chosenEnvironment, commandsEnabled);
+
+            ViewBag.CommandsEnabled = commandsEnabled;
+
+            return View(appViewModels);
         }
 
         [HttpGet]
         [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult Details(string application, string server)
+        public ActionResult Custom()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
-            viewModel.CommandsEnabled = UserHasEditRights(HttpContext.User);
-            return View(viewModel);
+
+            var envSwitcher = new EnvironmentSwitcher();
+            var defaultEnvironment = EnvironmentEnum.Undefined;
+            var environmentCollection = new DashboardEnvironmentCollectionViewModel();
+
+            var defaultEnvironmentName = envSwitcher.GetWebServersForEnvironments()
+                    .FirstOrDefault(e => e.Value.Equals(Request.Url.Host, StringComparison.InvariantCultureIgnoreCase)).Key;
+            if (string.IsNullOrWhiteSpace(defaultEnvironmentName))
+            {
+                // when debugging on local system
+                defaultEnvironment = EnvironmentEnum.Dev;
+            }
+            else
+            {
+                Enum.TryParse(defaultEnvironmentName, out defaultEnvironment);
+            }
+
+            foreach (var environment in Enum.GetValues(typeof(EnvironmentEnum)).Cast<EnvironmentEnum>())
+            {
+                if (environment == EnvironmentEnum.Undefined) continue;
+
+                var defaultAppServersForEnvironment = envSwitcher.GetDefaultAppServersForEnvironment(environment);
+                var environmentViewModel = new DashboardEnvironmentViewModel()
+                {
+                    Name = environment.ToString(),
+                    AppServers = defaultAppServersForEnvironment
+                       .Select(s => new AppServerViewModel { ServerName = s })
+                       .ToList()
+                };
+                environmentCollection.Environments.Add(environmentViewModel);
+                if (environment == defaultEnvironment)
+                {
+                    environmentCollection.SelectedEnvIndex = environmentCollection.Environments.IndexOf(environmentViewModel);
+                }
+            }
+            return View(environmentCollection);
         }
 
         [HttpGet]
         [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Edit(string application, string server)
+        public ActionResult Edit(string server, string application)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
-            return View(viewModel);
-        }
 
-        [HttpGet]
-        [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult Configure(string application, string server)
-        {
-            //HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var viewModel = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
-            viewModel.CommandsEnabled = UserHasEditRights(HttpContext.User);
-            return View(viewModel);
-        }
+            RemoteServicesService.IconApps = IconDatabaseService.GetApps();
+            RemoteServicesService.MammothApps = MammothDatabaseService.GetApps();
+            RemoteServicesService.EsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
 
-        [HttpGet]
-        [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
-        public ActionResult Create()
-        {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var viewModel = new IconApplicationViewModel();
-            return View(viewModel);
+            var appViewModel = RemoteServicesService.LoadRemoteService(server, application, commandsEnabled);
+            ViewBag.CommandsEnabled = commandsEnabled;
+
+            return View(appViewModel);
         }
         #endregion
 
         #region POST
         [HttpPost]
         [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Index(string application, string server, string command)
+        public ActionResult Index(string server, string application, string command)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
             DashboardDataFileService.ExecuteServiceCommand(dataFileWebServerPath, application, server, command);
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Details(string application, string server, string command)
-        {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.ExecuteServiceCommand(dataFileWebServerPath, application, server, command);
-            return RedirectToAction("Details", "Home", new { application = application, server = server });
         }
 
         [HttpPost]
@@ -110,50 +150,34 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.UpdateApplication(dataFileWebServerPath, appViewModel);
-            return RedirectToAction("Details", "Home", new { application = appViewModel.Name, server = appViewModel.Server });
-        }
-
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Configure(IconApplicationViewModel appViewModel)
-        {
-            ViewBag.EnvironmentOptions = new EnvironmentSwitcher().GetWebServersForEnvironments();
             DashboardDataFileService.SaveAppSettings(appViewModel);
-            return RedirectToAction("Details", "Home", new
-            {
-                application = appViewModel.Name,
-                server = appViewModel.Server
-            });
+            return RedirectToAction("Edit", "Home", new { server = appViewModel.Server, application = appViewModel.Name });
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Create(IconApplicationViewModel appViewModel)
+        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        public ActionResult Custom(DashboardEnvironmentCollectionViewModel customEnvironment)
         {
+            var chosenCustomEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
+            
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
+            
+            var iconAppsWithLogging = IconDatabaseService.GetApps();
+            var mammothAppsWithLogging = MammothDatabaseService.GetApps();
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.AddApplication(dataFileWebServerPath, appViewModel);
-            return RedirectToAction("Details", "Home", new
-            {
-                application = appViewModel.Name,
-                server = appViewModel.Server
-            });
-        }
+            var allEsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
 
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
-        public ActionResult Delete(string application, string server)
-        {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var app = DashboardDataFileService.GetApplication(dataFileWebServerPath, application, server);
-            DashboardDataFileService.DeleteApplication(dataFileWebServerPath, app);
-            return RedirectToAction("Index", "Home");
-        }
-        #endregion
+            var appViewModels = RemoteServicesService.LoadRemoteServices(chosenCustomEnvironment,
+                commandsEnabled,
+                iconAppsWithLogging,
+                mammothAppsWithLogging,
+                allEsbEnvironments);
 
-        internal bool UserHasEditRights(IPrincipal user)
-        {
-            return DashboardAuthorization.IsAuthorized(user, UserRoleEnum.EditingPrivileges);
+            ViewBag.CommandsEnabled = commandsEnabled;
+
+            return View("Index", appViewModels);
         }
+      
+        #endregion}
     }
 }

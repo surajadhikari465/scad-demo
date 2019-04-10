@@ -288,5 +288,13 @@ namespace Icon.Dashboard.Mvc.Services
             var toDelete = esbEnvironment.ToDataModel();
             IconMonitoringService.DeleteEsbEnvironment(toDelete, pathToXmlDataFile);
         }
+
+        public IEnumerable<EsbEnvironmentViewModel> GetEsbEnvironmentsWithoutApplications(string pathToXmlDataFile)
+        {
+            var environmentViewModels = IconMonitoringService.GetEsbEnvironments(pathToXmlDataFile)
+                .Select(e=> new EsbEnvironmentViewModel(e));
+
+            return environmentViewModels.OrderBy(e=>e.Name);
+        }
     }
 }

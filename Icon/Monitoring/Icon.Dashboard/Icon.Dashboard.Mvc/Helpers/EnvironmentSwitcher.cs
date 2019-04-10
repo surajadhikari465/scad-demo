@@ -1,4 +1,5 @@
 ﻿using Icon.Dashboard.DataFileAccess.Models;
+using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,18 @@ namespace Icon.Dashboard.Mvc.Helpers
 
     public class EnvironmentSwitcher
     {
+        //public Dictionary<string, string> GetAllLinkedServersForEnvironment(EnvironmentEnum environment)
+        //{
+        //    var serverList = new Dictionary<string, string>();
+
+        //    var appServer = GetAppServersForEnvironment(environment);
+        //    var tibocAdminServer = GetTibcoAdminServerForEnivronment(environment.ToString());
+        //    var mammothWebSupportServer = GetMammothWebSupportServerForEnivronment(environment.ToString());
+        //    var iconWebServer = GetIconWebServerForEnvironment(environment.ToString());
+
+        //    return serverList;
+        //}
+
         public Dictionary<string, string> GetWebServersForEnvironments()
         {
             var webServerList = new Dictionary<string, string>();
@@ -66,6 +79,8 @@ namespace Icon.Dashboard.Mvc.Helpers
             if (string.IsNullOrWhiteSpace(environment)) environment = "Dev";
             var serverUrl = ConfigurationManager.AppSettings["mammothWebSupport_" + environment];
             return serverUrl;
+            //var server = ConfigurationManager.AppSettings["mammothWebSupport_" + environment];
+            //return new KeyValuePair<string, string>(environment.ToString(), server);
         }
 
         public string GetIconWebServerForEnvironment(string environment)
@@ -73,6 +88,36 @@ namespace Icon.Dashboard.Mvc.Helpers
             if (string.IsNullOrWhiteSpace(environment)) environment = "Dev";
             var serverUrl = ConfigurationManager.AppSettings["iconWeb_" + environment];
             return serverUrl;
+            //var server = ConfigurationManager.AppSettings["iconWeb_" + environment];
+            //return new KeyValuePair<string, string>(environment.ToString(), server);
+        }
+
+        public string GetDefaultEnvironmentName(string webhost)
+        {
+            string defaultEnvironmentName = string.Empty;
+
+            var webServersDictionary = GetWebServersForEnvironments();
+            if (!webServersDictionary.TryGetValue(webhost, out defaultEnvironmentName))
+            {
+                defaultEnvironmentName = "Dev";
+            }
+
+            return defaultEnvironmentName;
+        }
+
+        public DashboardEnvironmentViewModel GetDefaultEnvironment(string webhost)
+        {
+            var defaultEnvironmentName = GetDefaultEnvironmentName(webhost);
+            var defaultAppServersForEnvironment = GetDefaultAppServersForEnvironment(defaultEnvironmentName);
+
+            var environmentViewModel = new DashboardEnvironmentViewModel()
+            {
+                Name = defaultEnvironmentName,
+                AppServers = defaultAppServersForEnvironment
+                    .Select(s => new AppServerViewModel { ServerName = s })
+                    .ToList()
+            };
+            return environmentViewModel;
         }
     }
 }

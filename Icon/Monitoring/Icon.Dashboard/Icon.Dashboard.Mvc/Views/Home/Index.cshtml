@@ -4,17 +4,17 @@
     var btnClass = Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment() ?? "primary";
 }
 @Scripts.Render("~/bundles/jqueryTable")
-@Scripts.Render("~/Content/Table/css")
 
+<p></p>
 <p></p>
 @* initialize the datatable and set page size to 25 *@
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {;
         $('#Config').DataTable({ "iDisplayLength": 25 });
-    } );
+    });
 </script>
 <div class="container-wide">
-    <table class="table table-bordered table-condensed no-bottom-margin table-striped "  id="Config">
+    <table class="table table-bordered table-condensed no-bottom-margin table-striped " id="Config">
         <thead>
             <tr>
                 <th class="text-center">
@@ -32,11 +32,14 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
+                <th class="text-center hidden-xs hidden-sm hidden-md">
+                    @Html.DisplayNameFor(model => model.AccountName)
+                </th>
                 @if (ViewBag.CommandsEnabled)
                 {
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => model.ValidCommands)
-                </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.ValidCommands)
+                    </th>
                 }
             </tr>
         </thead>
@@ -44,10 +47,4 @@
             @Html.DisplayForModel()
         </tbody>
     </table>
-    @Html.ActionLink(
-        "Add New Application Definition",
-        "Create",
-        "Home",
-        null,
-        new { @class = "btn btn-warning btn-block" })
 </div>

@@ -29,6 +29,8 @@ namespace Icon.Dashboard.Mvc.Services
         IEnumerable<IconApplicationViewModel> GetApplications(string pathToXmlDataFile);
 
         IEnumerable<EsbEnvironmentViewModel> GetEsbEnvironments(string pathToXmlDataFile, bool includeUnassignedApps = false);
+        
+        IEnumerable<EsbEnvironmentViewModel> GetEsbEnvironmentsWithoutApplications(string pathToXmlDataFile);
 
         Dictionary<string, string> ReconfigureEsbApps(
             string pathToXmlDataFile, IEnumerable<EsbEnvironmentViewModel> esbEnvironments);

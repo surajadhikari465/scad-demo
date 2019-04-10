@@ -17,6 +17,20 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
     public class DefaultRoutingUnitTests : _MvcRoutingUnitTestBase
     {
         [TestMethod]
+        public void MvcRouting_UrlWithoutAction_GetsDefaultActionRoute()
+        {
+            // Arrange
+            //string controller = "aaaa";
+            //string action = "bbbb";
+            SetupRequestUrl($"~/");
+            var routes = RegisterRoutesForTest();
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
+        }
+
+        [TestMethod]
         public void MvcRouting_UnknownControllerUnknownActionNoId_GetsHomeAndCustomActionRoute()
         {
             // Arrange

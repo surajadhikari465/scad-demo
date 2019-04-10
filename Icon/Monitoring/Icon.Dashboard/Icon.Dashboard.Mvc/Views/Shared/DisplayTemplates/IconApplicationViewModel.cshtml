@@ -8,16 +8,16 @@
 
 <tr id="@rowTargetId" class="@rowColorClass">
     <td class="text-nowrap">
-        @Html.DisplayFor(model => model.Server)
+        @Html.DisplayFor(model => model.Server) (@Html.DisplayFor(model => model.HostName))
     </td>
     <td>
-        @Html.ActionLink(Model.DisplayName, "Details", controllerName, new { application = Model.Name, server = Model.Server }, null)
+        @Html.ActionLink(Model.DisplayName, "Edit", new { server = Model.Server, application = Model.Name }, null)
         ("@Model.Name")
     </td>
     <td class="hidden-xs hidden-sm text-left breakText" style="max-width:50%;@(Model.ConfigFilePathIsValid ? "" : "background-color:#ffff99;")">
         @if (!String.IsNullOrWhiteSpace(Model.ConfigFilePath))
         {
-            @Html.ActionLink(Model.ConfigFilePath, "Configure", controllerName, new { application = Model.Name, server = Model.Server }, null)
+            @Html.ActionLink(Model.ConfigFilePath, "Edit", controllerName, new { server = Model.Server, application = Model.Name }, null)
         }
     </td>
     <td class="hidden-xs hidden-sm">
@@ -26,11 +26,14 @@
     <td>
         @Html.DisplayFor(model => model.Status)
     </td>
+    <td class="hidden-xs hidden-sm hidden-md breakText">
+        @Html.DisplayFor(model => model.AccountName)
+    </td>
     @if (Model.CommandsEnabled)
     {
-    <td>
-        @{Html.RenderPartial("_CommandsPartial", Model);}
-    </td>
+        <td>
+            @{Html.RenderPartial("_CommandsPartial", Model);}
+        </td>
     }
 </tr>
 }

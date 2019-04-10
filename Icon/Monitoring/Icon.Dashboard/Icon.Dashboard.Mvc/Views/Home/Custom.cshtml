@@ -1,0 +1,108 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.DashboardEnvironmentCollectionViewModel
+@{
+    ViewBag.Title = "Dashboard Environments";
+}
+
+<p></p>
+<p></p>
+<div class="container-wide">
+    <div id="vueElement" class="row">
+        <h1 class="text-center">Dashboard Environments</h1>
+
+        <div class="col-lg-4 col-md-6" v-for="(env, envIndex) in Environments" :key="env.id">
+            <div class="panel panel-info dashboardEnvPanel">
+                <div class="panel-heading">
+                    <h2 class="text-center">
+                        <label>
+                            <input type="radio" :id="envIndex" :value="envIndex" v-model="SelectedEnvIndex" />
+                            "{{env.Name}}" App Servers
+                        </label>
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <draggable class="draggable-div"
+                               v-model="env.AppsInEnvironment"
+                               :list="env.AppsInEnvironment"
+                               :options="{group:'myOptions'}">
+                        <div class="env-drag-item"
+                             v-for="(app, appIndex) in env.AppServers"
+                             :key="app.id">
+                            {{app.ServerName}}
+                            @*</a>*@
+                        </div>
+                    </draggable>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-8">
+                <button id="saveChangesBtn" v-on:click="submitVueModelToServer" class="btn btn-info btn-block">
+                    <img id="saveChangesLoadingImg" src="~/Content/Images/loading_orange.gif" class="hidden" />
+                    View Dashboard for Chosen Environment
+                </button>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-xs-offset-2 col-xs-8 margin-top-10">
+                @Html.ActionLink("Define New Dashboard Environment", "Create", "Environment", null, new { @class = "btn btn-info btn-block" })
+            </div>
+        </div>*@
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/vue.js")
+    @Scripts.Render("~/Scripts/Sortable.js")
+    @Scripts.Render("~/Scripts/vuedraggable.js")
+    @Scripts.Render("~/bundles/jqueryTable")
+}
+
+@* generate javascript code from the MVC view model*@
+<script type="text/javascript">
+    @* some variables which will be needed in the vue_dashboard_esb_connections script *@
+    var urlForPost = "@Url.Action("Custom", "Home")";
+    var vueElementSelector = "#vueElement";
+    var btnSaveSelector = "#saveChangesBtn";
+    var btnLoadingImgSelector = "#saveChangesLoadingImg";
+
+    @* put the MVC view model(s) into a javascript data object ready for Vue.js initial binding  *@
+    var vueData = {
+    SelectedEnvIndex: @Model.SelectedEnvIndex,
+    @* declare an array of esb environment objects*@
+    Environments:
+    [
+        @* razor loop through environment view models *@
+        @for (int envCounter = 0; envCounter < Model.Environments.Count(); envCounter++)
+        {
+        var eachEnvironment = Model.Environments.ElementAt(envCounter);
+        @* javascript object for environment: *@
+        <text>
+        {
+            id: @envCounter,
+            Name: '@eachEnvironment.Name',
+            AppServers:
+            [
+        </text>
+                @* razor inner loop through environment app view models *@
+                for (int appCounter = 0; appCounter < eachEnvironment.AppServers.Count; appCounter++)
+                {
+                var eachAppServer = eachEnvironment.AppServers[appCounter];
+                    @* javascript object for each app *@
+                    <text>
+                    {
+                        id: @(envCounter)@(appCounter),
+                        parentId: @envCounter,
+                        ServerName: '@eachAppServer.ServerName',
+                    },
+                    </text>
+                }
+        <text>
+            ]
+        },
+        </text>
+        }
+    ]
+    };
+</script>
+
+@Scripts.Render("~/Scripts/vue_dashboard_dynamic_environments.js")

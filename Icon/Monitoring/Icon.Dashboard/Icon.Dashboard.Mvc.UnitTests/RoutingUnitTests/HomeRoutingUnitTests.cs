@@ -71,83 +71,83 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
             AssertUndesirableRouteDataIsAbsent(routeData, new List<string>() { "id" });
         }
 
-        [TestMethod]
-        public void MvcRouting_HomeConfigureWithTwoParameters_GetsHomeConfigureRoute()
-        {
-            // Arrange
-            string action = "Configure";
-            string param1 = "oopsy";
-            string param2 = "daisy";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Configure");
-        }
+        //[TestMethod]
+        //public void MvcRouting_HomeConfigureWithTwoParameters_GetsHomeConfigureRoute()
+        //{
+        //    // Arrange
+        //    string action = "Configure";
+        //    string param1 = "oopsy";
+        //    string param2 = "daisy";
+        //    SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
+        //    var routes = RegisterRoutesForTest();
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Configure");
+        //}
 
-        [TestMethod]
-        public void MvcRouting_HomeConfigureWithTwoParameters_AssignsExtraParamsToQuery()
-        {
-            // Arrange
-            string action = "Configure";
-            string param1 = "oopsy";
-            string param2 = "daisy";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            var expectedValues = new Dictionary<string, object>()
-            {
-                {"application", param1 },
-                {"server", param2 }
-            };
-            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
-        }
+        //[TestMethod]
+        //public void MvcRouting_HomeConfigureWithTwoParameters_AssignsExtraParamsToQuery()
+        //{
+        //    // Arrange
+        //    string action = "Configure";
+        //    string param1 = "oopsy";
+        //    string param2 = "daisy";
+        //    SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
+        //    var routes = RegisterRoutesForTest();
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    var expectedValues = new Dictionary<string, object>()
+        //    {
+        //        {"server", param1 },
+        //        {"application", param2 } 
+        //    };
+        //    AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        //}
 
-        [TestMethod]
-        public void MvcRouting_HomeDetailsithQueryParameters_GetsHomeDetailsRoute()
-        {
-            // Arrange
-            string action = "Details";
-            string param1 = "myApplication";
-            string param2 = "aServer";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: action);
-        }
+        //[TestMethod]
+        //public void MvcRouting_HomeDetailsithQueryParameters_GetsHomeDetailsRoute()
+        //{
+        //    // Arrange
+        //    string action = "Details";
+        //    string param1 = "aServer";
+        //    string param2 = "myApplication";
+        //    SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
+        //    var routes = RegisterRoutesForTest();
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: action);
+        //}
 
-        [TestMethod]
-        public void MvcRouting_HomeDetailsWithQueryParameters_HasExectedQueryValues()
-        {
-            // Arrange
-            string action = "Details";
-            string param1 = "myApplication";
-            string param2 = "aServer";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            var expectedValues = new Dictionary<string, object>()
-            {
-                {"application", param1 },
-                {"server", param2 }
-            };
-            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
-        }
+        //[TestMethod]
+        //public void MvcRouting_HomeDetailsWithQueryParameters_HasExectedQueryValues()
+        //{
+        //    // Arrange
+        //    string action = "Details";
+        //    string param1 = "aServer";
+        //    string param2 = "myApplication";
+        //    SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
+        //    var routes = RegisterRoutesForTest();
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    var expectedValues = new Dictionary<string, object>()
+        //    {
+        //        {"server", param1 },
+        //        {"application", param2 } 
+        //    };
+        //    AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        //}
 
         [TestMethod]
         public void MvcRouting_HomeEditWithQueryParameters_GetsHomeEditRoute()
         {
             // Arrange
             string action = "Edit";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -161,8 +161,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         {
             // Arrange
             string action = "Edit";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -170,8 +170,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
             // Assert
             var expectedValues = new Dictionary<string, object>()
             {
-                {"application", param1 },
-                {"server", param2 }
+                {"server", param1 },
+                {"application", param2 } 
             };
             AssertDesiredRouteDataIsPresent(routeData, expectedValues);
         }
@@ -209,8 +209,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         {
             // Arrange
             string action = "TaskPartial";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -224,8 +224,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         {
             // Arrange
             string action = "TaskPartial";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -233,8 +233,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
             // Assert
             var expectedValues = new Dictionary<string, object>()
             {
-                {"application", param1 },
-                {"server", param2 }
+                {"server", param1 },
+                {"application", param2 } 
             };
             AssertDesiredRouteDataIsPresent(routeData, expectedValues);
         }
@@ -244,8 +244,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         {
             // Arrange
             string action = "IconApiServicePartial";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -259,8 +259,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         {
             // Arrange
             string action = "IconApiServicePartial";
-            string param1 = "myApplication";
-            string param2 = "aServer";
+            string param1 = "aServer";
+            string param2 = "myApplication";
             SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
             var routes = RegisterRoutesForTest();
             // Act
@@ -268,8 +268,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
             // Assert
             var expectedValues = new Dictionary<string, object>()
             {
-                {"application", param1 },
-                {"server", param2 }
+                {"server", param1 },
+                {"application", param2 } 
             };
             AssertDesiredRouteDataIsPresent(routeData, expectedValues);
         }

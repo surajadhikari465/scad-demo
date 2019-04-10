@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -111,6 +112,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseDashboardController.cs" />
     <Compile Include="Filters\DashboardAuthorization.cs" />
+    <Compile Include="Helpers\BeginCollectionItemHelper.cs" />
     <Compile Include="Infrastructure\TempDataKeys.cs" />
     <Compile Include="Controllers\ApiJobsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -127,12 +129,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataFileServiceWrapper.cs" />
     <Compile Include="Services\IMammothDatabaseServiceWrapper.cs" />
+    <Compile Include="Services\IRemoteWmiServiceWrapper.cs" />
     <Compile Include="Services\MammothDatabaseServiceWrapper.cs" />
     <Compile Include="Services\IconDatabaseServiceWrapper.cs" />
     <Compile Include="Services\IDataFileServiceWrapper.cs" />
     <Compile Include="Services\IIconDatabaseServiceWrapper.cs" />
+    <Compile Include="Services\RemoteWmiServiceWrapper.cs" />
     <Compile Include="ViewModels\ApiMessageJobSummaryViewModel.cs" />
     <Compile Include="ViewModels\ApiMessageJobTimedReportViewModel.cs" />
+    <Compile Include="ViewModels\DashboardEnvironmentCollectionViewModel.cs" />
     <Compile Include="ViewModels\EsbEnvironmentViewModel.cs" />
     <Compile Include="ViewModels\IconServiceAppViewModel.cs" />
     <Compile Include="ViewModels\RecentLogEntriesReportCollectionViewModel.cs" />
@@ -143,9 +148,13 @@
     <Compile Include="ViewModels\PaginationPageViewModel.cs" />
     <Compile Include="ViewModels\PendingMessagesViewModel.cs" />
     <Compile Include="ViewModels\IconApplicationViewModel.cs" />
-    <Compile Include="ViewModels\ServerListViewModel.cs" />
+    <Compile Include="ViewModels\AppServerViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\MovieViewModel.cs" />
+    <Compile Include="ViewModels\DashboardEnvironmentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DashboardApplicationsTest.xml" />
     <Content Include="App_Data\SampleDataFile.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -160,6 +169,7 @@
     <Content Include="Content\Images\denied.png" />
     <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\loading_blue_on_yellow.gif" />
+    <Content Include="Content\Images\loading_orange.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -184,7 +194,6 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -216,6 +225,7 @@
     <Content Include="Scripts\Sortable.min.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
+    <Content Include="Scripts\vue_dashboard_dynamic_environments.js" />
     <Content Include="Scripts\vue_dashboard_esb_connections.js" />
     <Content Include="Scripts\vuedraggable.js" />
     <Content Include="Scripts\vuedraggable.min.js" />
@@ -233,17 +243,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationViewModel.cshtml" />
-    <Content Include="Views\Home\Create.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\IconApplicationViewModel.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
-    <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationDetailsViewModel.cshtml" />
     <Content Include="Views\Shared\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
     <Content Include="Views\Logs\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconLogEntryViewModel.cshtml" />
-    <Content Include="Views\Home\Configure.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationTypeEnum.cshtml" />
     <Content Include="Views\Shared\_PaginationPartial.cshtml" />
     <Content Include="Views\Shared\_SubMenuForAppLogs.cshtml" />
@@ -271,6 +278,11 @@
     <Content Include="Views\Shared\_SupportAppsPartial.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Views\Shared\MovieViewModel.cshtml" />
+    <Content Include="Views\Shared\AppServerViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DashboardEnvironmentViewModel.cshtml" />
+    <Content Include="Views\Home\Custom.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\AppServerViewModel.cshtml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -297,6 +309,10 @@
     <ProjectReference Include="..\Icon.Dashboard.MammothDatabaseAccess\Icon.Dashboard.MammothDatabaseAccess.csproj">
       <Project>{eb1c6c33-8ee5-4777-a7f9-85d2d3beba85}</Project>
       <Name>Icon.Dashboard.MammothDatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
+      <Project>{3D756762-6F47-4A5D-B81D-BA023B96F094}</Project>
+      <Name>Icon.Dashboard.RemoteServicesAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +382,12 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)Icon.Dashboard.DataFileAccess\Schema\Applications.xsd" "$(ProjectDir)App_Data" /Y</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

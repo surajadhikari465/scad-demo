@@ -61,7 +61,7 @@
 @* some variables which will be needed in the vue_dashboard_esb_connections script *@
 var urlForPost = "@Url.Action("Index", "Esb")";
 var urlForEnvDetails= "@Url.Action("Details", "Esb")";
-var urlForAppConfig = "@Url.Action("Configure", "Home")";
+var urlForAppConfig = "@Url.Action("Edit", "Home")";
 var vueElementSelector = "#vueElement";
 var btnSaveSelector = "#saveChangesBtn";
 var btnLoadingImgSelector = "#saveChangesLoadingImg";
@@ -101,7 +101,7 @@ var vueData = {
                 Server: '@eachApp.Server',
                 DisplayName: '@eachApp.DisplayName',
                 ConfigFilePath: '@Html.Raw(eachApp.ConfigFilePath)',
-                AppConfigUrl: '@Html.Raw(Url.Action("Configure", "Home", new { application = eachApp.Name, server = eachApp.Server }))'
+                AppConfigUrl: '@Html.Raw(Url.Action("Edit", "Home", new { server = eachApp.Server, application = eachApp.Name}))'
             },
             </text>
     } @* end inner razor loop*@

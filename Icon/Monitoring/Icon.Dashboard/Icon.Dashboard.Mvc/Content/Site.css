@@ -211,3 +211,29 @@ a:hover.esbAppAnchor, a:focus.esbAppAnchor {
     border: 4px solid #1D976C;
     border-radius: 10px;
 }
+
+.env-drag-item {
+    border-radius: 20px;
+    border: 2px solid #0E2058;
+    padding: 4px;
+    margin: 4px;
+    background: #99CCFF; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(-90deg, #99CCFF, #3399FF); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, #99CCFF, #3399FF); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, #99CCFF, #3399FF); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(-90deg, #99CCFF, #3399FF); /* Standard syntax */
+} /* 3399FF 99CCFF*/
+
+a.appServerAnchor {
+    color: #000;
+}
+
+a:hover.appServerAnchor, a:focus.appServerAnchor {
+    color: #FFA07A;
+    text-decoration: underline;
+}
+
+.dashboardEnvPanel {
+    border: 4px solid #3366cc;
+    border-radius: 10px;
+}

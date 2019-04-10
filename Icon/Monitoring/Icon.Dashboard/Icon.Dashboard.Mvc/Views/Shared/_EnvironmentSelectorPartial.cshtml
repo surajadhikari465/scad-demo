@@ -33,11 +33,12 @@
     @foreach (var entry in Model)
     {
         var active = Request.Url.Host == entry.Value ? "active" : "";
-        var disabled = entry.Key == "Prod" ? "disabled" : "";
+        //var disabled = entry.Key == "Prod" ? "disabled" : "";
         var server = entry.Value;
         var link = "http://" + server + pathAndQuery;
-        <li class="btn-@color @active @disabled"><a class="dropdown-item" href="@link">@entry.Key</a></li>
+        <li class="btn-@color @active"><a class="dropdown-item" href="@link">@entry.Key</a></li>
     }
+        <li class="btn-success"><a class="dropdown-item" href="@Url.Action("Custom", "Home")">Define Custom</a></li>
     </ul>
 
 </li>

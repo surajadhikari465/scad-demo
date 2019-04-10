@@ -14,23 +14,18 @@ namespace Icon.Dashboard.RemoteServicesAccess
 
         public RemoteServiceModel(ManagementObject wmiManagementObject) : this()
         {
-            Server = wmiManagementObject["SystemName"].ToString();
+            SystemName = wmiManagementObject["SystemName"].ToString();
             FullName = wmiManagementObject["Name"].ToString();
-            DisplayName = wmiManagementObject["DisplayName"].ToString();
-            Description = wmiManagementObject["Description"].ToString();
-
-            var pathName = wmiManagementObject["PathName"].ToString();
-            if (pathName.Contains("-"))
-            {
-                pathName = pathName.Substring(0, pathName.IndexOf('-'));
-            }
-            var remotePath = pathName.Replace(":", "$").Replace("\"", "").Trim();
-            var exePath = $"\\\\{Server}\\{remotePath}";
-            var config = ConfigurationManager.OpenExeConfiguration(exePath);
-            ConfigFilePath = config.FilePath;
+            DisplayName = wmiManagementObject["DisplayName"]?.ToString();
+            Description = wmiManagementObject["Description"]?.ToString();
+            ProcessId = int.Parse(wmiManagementObject["ProcessId"].ToString());
+            StartMode = wmiManagementObject["StartMode"]?.ToString();
+            RunningAs = wmiManagementObject["StartName"].ToString();
+            State = wmiManagementObject["State"].ToString();
+            ConfigFilePath = wmiManagementObject["PathName"].ToString();
         }
 
-        public string Server { get; set; }
+        public string SystemName { get; set; }
         public string DisplayName { get; set; }
         public string FullName { get; set; }
         public string Description { get; set; }
@@ -38,6 +33,10 @@ namespace Icon.Dashboard.RemoteServicesAccess
         public int? LoggingID { get; set; }
         public string LoggingName { get; set; }
         public string Environment { get; set; }
+        public string State { get; set; }
+        public int ProcessId { get; set; }
+        public string StartMode { get; set; }
+        public string RunningAs { get; set; }
         public string TypeOfApplication
         {
             get { return "WindowsService"; }

@@ -1,4 +1,4 @@
-﻿@model IDictionary<string, string>
+﻿@*@model IDictionary<string, string>
 
 @{
     var pathForDataFile = ViewBag.DataFilePath;
@@ -6,31 +6,31 @@
 
 <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-        Admin
+        Environment
     </a>
     <ul class="dropdown-menu">
         <li class="btn-default">
-            <a class="dropdown-item" href="@Url.Action("Index", "Admin")">
+            <a class="dropdown-item" href="@Url.Action("Index", "Environment")">
                 Current Data File: @pathForDataFile
             </a>
         </li>
-        <li class="btn-default">
-            <a class="dropdown-item" href="@Url.Action("Query", "Admin")">
+        @*<li class="btn-default">
+            <a class="dropdown-item" href="@Url.Action("Query", "Environment")">
                 Live Query Server(s) for Services
             </a>
         </li>
         <li class="btn-default">
-            <a class="dropdown-item" href="@Url.Action("Load", "Admin")">
+            <a class="dropdown-item" href="@Url.Action("Load", "Environment")">
                 Load Alternate Data File
             </a>
-        </li>
+        </li>*@
         @*<li class="btn-default">
             <a class="dropdown-item" href="">
                 Save Data File as Default on Web Server
             </a>
         </li>*@
-    </ul>
-</li>
+    @*</ul>
+</li>*@*@
 
 
 

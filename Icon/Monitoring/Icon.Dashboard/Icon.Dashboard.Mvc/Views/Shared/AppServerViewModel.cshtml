@@ -1,0 +1,19 @@
+﻿@*@model Icon.Dashboard.Mvc.ViewModels.AppServerViewModel
+@using Icon.Dashboard.Mvc.Helpers
+
+<li style="padding-bottom:15px">
+    @using (Html.BeginCollectionItem("AppServers"))
+    {
+        <img src="@Url.Content("~/Content/images/draggable-icon.png")" style="cursor: move" alt="" />
+
+        @Html.LabelFor(model => model.ServerName)
+        @Html.EditorFor(model => model.ServerName)
+        @Html.ValidationMessageFor(model => model.ServerName)
+
+        @Html.LabelFor(model => model.Rating)
+        @Html.EditorFor(model => model.Rating)
+        @Html.ValidationMessageFor(model => model.Rating)
+
+        <a href="#" onclick="$(this).parent().remove();">Delete</a>
+    }
+</li>*@

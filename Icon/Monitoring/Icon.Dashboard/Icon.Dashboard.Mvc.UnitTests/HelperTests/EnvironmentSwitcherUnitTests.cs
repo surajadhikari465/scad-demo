@@ -68,33 +68,33 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
             serverForEnv.Value.ToLower().Should().BeEquivalentTo(expectedServerName.ToLower());
         }
 
-        //[TestMethod]
-        //public void EnvironmentSwitcher_GetWebServerForEnvironment_Perf_ShouldReturnsExpectedServerData()
-        //{
-        //    // Arrange;
-        //    var envSwitcher = new EnvironmentSwitcher();
-        //    var env = EnvironmentEnum.Perf;
-        //    var expectedServerName = $"irmatestapp1";
-        //    // Act
-        //    var serverForEnv = envSwitcher.GetWebServerForEnvironment(env);
-        //    // Assert
-        //    serverForEnv.Should().NotBeNull();
-        //    serverForEnv.Value.ToLower().Should().BeEquivalentTo(expectedServerName.ToLower());
-        //}
+        [TestMethod]
+        public void EnvironmentSwitcher_GetWebServerForEnvironment_Perf_ShouldReturnsExpectedServerData()
+        {
+            // Arrange;
+            var envSwitcher = new EnvironmentSwitcher();
+            var env = EnvironmentEnum.Perf;
+            var expectedServerName = $"irmatestapp1";
+            // Act
+            var serverForEnv = envSwitcher.GetWebServerForEnvironment(env);
+            // Assert
+            serverForEnv.Should().NotBeNull();
+            serverForEnv.Value.ToLower().Should().BeEquivalentTo(expectedServerName.ToLower());
+        }
 
-        //[TestMethod]
-        //public void EnvironmentSwitcher_GetWebServerForEnvironment_PRD_ShouldReturnsExpectedServerData()
-        //{
-        //    // Arrange;
-        //    var envSwitcher = new EnvironmentSwitcher();
-        //    var env = EnvironmentEnum.Prd;
-        //    var expectedServerName = $"irma{env}app1";
-        //    // Act
-        //    var serverForEnv = envSwitcher.GetWebServerForEnvironment(env);
-        //    // Assert
-        //    serverForEnv.Should().NotBeNull();
-        //    serverForEnv.Value.ToLower().Should().BeEquivalentTo(expectedServerName.ToLower());
-        //}
+        [TestMethod]
+        public void EnvironmentSwitcher_GetWebServerForEnvironment_PRD_ShouldReturnsExpectedServerData()
+        {
+            // Arrange;
+            var envSwitcher = new EnvironmentSwitcher();
+            var env = EnvironmentEnum.Prd;
+            var expectedServerName = $"irma{env}app1";
+            // Act
+            var serverForEnv = envSwitcher.GetWebServerForEnvironment(env);
+            // Assert
+            serverForEnv.Should().NotBeNull();
+            serverForEnv.Value.ToLower().Should().BeEquivalentTo(expectedServerName.ToLower());
+        }
 
         [TestMethod]
         public void EnvironmentSwitcher_GetMammothWebSupportServerForEnvironment_ShouldReturnsExpectedUrl()
@@ -209,20 +209,27 @@ namespace Icon.Dashboard.Mvc.UnitTests.HelperTests
             }
         }
 
-        //[TestMethod]
-        //public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_PERF_ShouldReturnsExpectedUrls()
-        //{
-        //    // Arrange;
-        //    var envSwitcher = new EnvironmentSwitcher();
-        //    var env = EnvironmentEnum.Perf;
-        //    List<string> expectedServerNames = new List<string>
-        //    {
-        //        "vm-icon-test2",
-        //        "mammoth-app01-qa",
-        //    };
+        [TestMethod]
+        public void EnvironmentSwitcher_GetDefaultIconServersForEnvironment_PERF_ShouldReturnsExpectedUrls()
+        {
+            // Arrange;
+            var envSwitcher = new EnvironmentSwitcher();
+            var env = EnvironmentEnum.Perf;
+            List<string> expectedServerNames = new List<string>
+            {
+                "vm-icon-test2",
+                "mammoth-app01-qa",
+            };
 
-        //    // Act
-        //    var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
+            // Act
+            var actualSevers = envSwitcher.GetDefaultAppServersForEnvironment(env);
+
+            // Assert
+            foreach (var expectedServer in expectedServerNames)
+            {
+                Assert.IsTrue(actualSevers.Contains(expectedServer));
+            }
+        }
 
         //    // Assert
         //    foreach (var expectedServer in expectedServerNames)

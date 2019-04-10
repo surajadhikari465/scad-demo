@@ -13,12 +13,13 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class ApiJobsController : BaseDashboardController
     {
-        public ApiJobsController() : this(null, null) { }
+        public ApiJobsController() : this(null, null, null) { }
 
         public ApiJobsController(
             HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
-            : base (serverUtility, loggingServiceWrapper ) { }
+            IIconDatabaseServiceWrapper iconDbService = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null)
+            : base (serverUtility, iconDbService, mammothDbService ) { }
 
         #region GET
 
@@ -37,6 +38,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult Pending()
         {
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var pendingMessages = IconDatabaseService.GetPendingMessages();
             return View(pendingMessages);
         }
@@ -45,6 +47,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RedrawPaging(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var pagingData = GetPaginationViewModel(routeParameter, page, pageSize);
             return PartialView("_PaginationPartial", pagingData);
         }

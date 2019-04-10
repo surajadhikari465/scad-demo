@@ -23,13 +23,13 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected ApiJobsController ConstructController()
         {
-            return ConstructController(base.loggingServiceWrapper, base.serverUtility);
+            return ConstructController(base.iconDbServiceWrapper, base.serverUtility);
         }
 
         protected ApiJobsController ConstructController(IIconDatabaseServiceWrapper loggingServiceWrapper = null,
             HttpServerUtilityBase serverUtility = null)
         {
-            var controller = new ApiJobsController(base.serverUtility, base.loggingServiceWrapper);
+            var controller = new ApiJobsController(base.serverUtility, base.iconDbServiceWrapper);
             base.SetupMockHttpContext(controller, loggingDataServiceName, mockIconLoggingServiceWrapper);
             return controller;
         }

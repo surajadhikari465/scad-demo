@@ -13,7 +13,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public IconApplicationViewModel()
         {
             this.ValidCommands = new List<string>();
-            this.TypeOfApplication = ApplicationTypeEnum.WindowsService;
         }
 
         public IconApplicationViewModel(IIconApplication app) : this()
@@ -24,9 +23,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
                 this.Server = app.Server;
                 this.ConfigFilePath = app.ConfigFilePath;
                 this.DisplayName = app.DisplayName;
-                this.TypeOfApplication = app.TypeOfApplication;
-                this.DataFlowFrom = app.DataFlowFrom;
-                this.DataFlowTo = app.DataFlowTo;
                 this.Status = app.GetStatus();
                 this.ValidCommands = app.ValidCommands;
                 this.StatusIsGreen = app.StatusIsGreen;
@@ -46,31 +42,21 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public IIconApplication ToDataModel()
         {
             IIconApplication app = null;
-            switch (this.TypeOfApplication)
+
+            app = new IconService();
+            app.Server = this.Server;
+            app.Name = this.Name;
+            app.DisplayName = this.DisplayName;
+            app.ConfigFilePath = this.ConfigFilePath;
+            app.LoggingName = this.LoggingName;
+
+            if (this.AppSettings != null)
             {
-                case ApplicationTypeEnum.WindowsService:
-                    app = new IconService();
-                    app.Server = this.Server;
-                    app.Name = this.Name;
-                    app.DisplayName = this.DisplayName;
-                    app.DataFlowFrom = this.DataFlowFrom;
-                    app.DataFlowTo = this.DataFlowTo;
-                    app.ConfigFilePath = this.ConfigFilePath;
-                    app.LoggingName = this.LoggingName;
-
-                    if (this.AppSettings != null)
-                    {
-                        // Updating basic settings does not need to call a save to the app.config's appsettings.
-                        this.AppSettings.ToList().ForEach(e =>
-                           app.AppSettings[e.Key] = e.Value ?? string.Empty);
-                    }
-
-                    break;
-                case ApplicationTypeEnum.ScheduledTask:
-                case ApplicationTypeEnum.Unknown:
-                default:
-                    break;
+                // Updating basic settings does not need to call a save to the app.config's appsettings.
+                this.AppSettings.ToList().ForEach(e =>
+                    app.AppSettings[e.Key] = e.Value ?? string.Empty);
             }
+
             return app;
         }
         
@@ -85,19 +71,14 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DataType(DataType.MultilineText)]
         public string ConfigFilePath { get; set; }
 
-        [DisplayName("Service Display/Full Name")]
+        [DisplayName("Display Name")]
         public string DisplayName { get; set; }
 
+        [DisplayName("Server")]
         public string Server { get; set; }
 
-        [DisplayName("App Type")]
-        public virtual ApplicationTypeEnum TypeOfApplication { get; set; }
-
-        [DisplayName("Data From")]
-        public string DataFlowFrom { get; set; }
-
-        [DisplayName("Data To")]
-        public string DataFlowTo { get; set; }
+        [DisplayName("App Family")]
+        public string Family { get; set; }
         
         public string Status { get; set; }
 
@@ -106,18 +87,27 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         public virtual bool StatusIsGreen { get; set; }
 
-        [DisplayName("Logging Name")]
+        [DisplayName("Log Name")]
         public string LoggingName { get; set; }
 
-        [DisplayName("LogID")]
+        [DisplayName("Log ID")]
         public int? LoggingID { get; set; }
 
         [DisplayName("ESB Environment")]
         public string CurrentEsbEnvironment { get; set; }
 
+        [DisplayName("Valid Config?")]
         public bool ConfigFilePathIsValid { get; set; }
 
         public bool CommandsEnabled { get; set; }
+
+        [DisplayName("Running As")]
+        public string AccountName { get; set; }
+
+        public string HostName { get; set; }
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
         
     }
 }

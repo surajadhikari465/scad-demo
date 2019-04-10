@@ -14,12 +14,14 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class LogsController : BaseDashboardController
     {
-        public LogsController() : this(null, null) { }
+        public LogsController() : this(null, null, null) { }
 
         public LogsController(
             HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null)
-            : base (serverUtility, loggingServiceWrapper) { }
+            IIconDatabaseServiceWrapper iconDbService = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null)
+            : base (serverUtility, iconDbService, mammothDbService) { }
+
 
         #region GET
         [HttpGet]
@@ -38,6 +40,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
         public ActionResult RecentErrors(int appID, int hours = 24)
         {
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var recentLogEntryReportForApp = IconDatabaseService.GetRecentLogEntriesReportForApp(
                 appID, new TimeSpan(hours, 0, 0), LoggingLevel.Error);
             return PartialView("_RecentLogEntriesReportPartial", recentLogEntryReportForApp);
@@ -48,6 +51,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult RedrawPaging(string routeParameter = null, int page = 1,
             int pageSize = PagingConstants.DefaultPageSize)
         {
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var pagingData = GetPaginationViewModel(routeParameter, page, pageSize);
             return PartialView("_PaginationPartial", pagingData);
         }
@@ -57,6 +61,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult TableRefresh(string routeParameter = null, int page = 1,
             int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {
+            HttpContext.Items["loggingDataService"] = IconDatabaseService;
             var logs = GetAppLogsAndSetRelatedViewData(routeParameter, page, pageSize);
             return PartialView("_AppLogTablePartial", logs);
         }

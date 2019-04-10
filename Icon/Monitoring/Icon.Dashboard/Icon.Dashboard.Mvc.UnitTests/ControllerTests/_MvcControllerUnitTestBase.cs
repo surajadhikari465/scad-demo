@@ -21,6 +21,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         protected Mock<HttpServerUtilityBase> mockServerUtility = new Mock<HttpServerUtilityBase>();
         protected Mock<IDataFileServiceWrapper> mockDataServiceWrapper = new Mock<IDataFileServiceWrapper>();
         protected Mock<IIconDatabaseServiceWrapper> mockIconLoggingServiceWrapper = new Mock<IIconDatabaseServiceWrapper>();
+        protected Mock<IMammothDatabaseServiceWrapper> mockMammothLoggingServiceWrapper = new Mock<IMammothDatabaseServiceWrapper>();
+        protected Mock<IRemoteWmiServiceWrapper> mockRemoteWmiSerivceWrapper = new Mock<IRemoteWmiServiceWrapper>();
         protected Mock<HttpContextBase> mockHttpContext = new Mock<HttpContextBase>();
 
         public _MvcControllerUnitTestBase()
@@ -40,6 +42,9 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected void SetMockHttpContext(Controller controller)
         {
+            var mockRequest = new Mock<HttpRequestBase>();
+            mockRequest.Setup(r => r.Url).Returns(new Uri("http://fakeserver/IconDashboard/Home/Index", UriKind.Absolute));
+            mockHttpContext.Setup(req => req.Request).Returns(mockRequest.Object);
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object, new RouteData(), controller);
         }
 
@@ -69,11 +74,26 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
                 return mockDataServiceWrapper.Object;
             }
         }
-        protected IIconDatabaseServiceWrapper loggingServiceWrapper
+        protected IIconDatabaseServiceWrapper iconDbServiceWrapper
         {
             get
             {
                 return mockIconLoggingServiceWrapper.Object;
+            }
+        }
+        protected IMammothDatabaseServiceWrapper mammothDbServiceWrapper
+        {
+            get
+            {
+                return mockMammothLoggingServiceWrapper.Object;
+            }
+        }
+
+        protected IRemoteWmiServiceWrapper wmiServiceWrapper
+        {
+            get
+            {
+                return mockRemoteWmiSerivceWrapper.Object;
             }
         }
 
@@ -103,39 +123,39 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         {
             fakeServiceA = Mock.Of<IconService>();
             fakeServiceA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeServiceA.DataFlowFrom = "None";
-            fakeServiceA.DataFlowTo = "ESB";
+            //fakeServiceA.DataFlowFrom = "None";
+            //fakeServiceA.DataFlowTo = "ESB";
             fakeServiceA.DisplayName = "AAAAAA Service";
             fakeServiceA.Name = "Fake.Name.AAAAAA";
             fakeServiceA.Server = "test-Server1";
-            Mock.Get(fakeServiceA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
+            //Mock.Get(fakeServiceA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             FakeServiceViewModelA = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeServiceViewModelA.DataFlowFrom = "None";
-            FakeServiceViewModelA.DataFlowTo = "ESB";
+            //FakeServiceViewModelA.DataFlowFrom = "None";
+            //FakeServiceViewModelA.DataFlowTo = "ESB";
             FakeServiceViewModelA.DisplayName = "AAAAAA Service";
             FakeServiceViewModelA.Name = "Fake.Name.AAAAAA";
             FakeServiceViewModelA.Server = "test-Server1";
-            Mock.Get(FakeServiceViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
+            //Mock.Get(FakeServiceViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             fakeServiceB = Mock.Of<IconService>();
             fakeServiceB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            fakeServiceB.DataFlowFrom = "None";
-            fakeServiceB.DataFlowTo = "Unknown";
+            //fakeServiceB.DataFlowFrom = "None";
+            //fakeServiceB.DataFlowTo = "Unknown";
             fakeServiceB.DisplayName = "BBBB Service";
             fakeServiceB.Name = "Fake.Name.BBBBB";
             fakeServiceB.Server = "test-Server1";
-            Mock.Get(fakeServiceB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
+            //Mock.Get(fakeServiceB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             FakeServiceViewModelB = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            FakeServiceViewModelB.DataFlowFrom = "None";
-            FakeServiceViewModelB.DataFlowTo = "Unknown";
+            //FakeServiceViewModelB.DataFlowFrom = "None";
+            //FakeServiceViewModelB.DataFlowTo = "Unknown";
             FakeServiceViewModelB.DisplayName = "BBBB Service";
             FakeServiceViewModelB.Name = "Fake.Name.BBBBB";
             FakeServiceViewModelB.Server = "test-Server1";
-            Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);            
+            //Mock.Get(FakeServiceViewModelB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);            
         }
 
         protected IApp GetFakeApiControllerApp(int id = 99, string name = "ICON Test ApiController App")

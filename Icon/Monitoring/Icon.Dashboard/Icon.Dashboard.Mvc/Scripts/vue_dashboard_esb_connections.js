@@ -4,7 +4,7 @@
 // load variables which should have been globally set in the razor view
 var postUrl         = (urlForPost) ? urlForPost : "/Esb/Index";
 var detailsUrl      = (urlForPost) ? urlForEnvDetails : "/Esb/Details";
-var appConfigUrl    = (urlForPost) ? urlForAppConfig : "/Home/Configure";
+var appConfigUrl    = (urlForPost) ? urlForAppConfig : "/Home/Edit";
 var idForVueElement = (vueElementSelector) ? vueElementSelector : "#vueElement";
 var idForSaveButton = (btnSaveSelector) ? btnSaveSelector :"#saveChangesBtn";
 var idForLoadingImg = (btnLoadingImgSelector) ? btnLoadingImgSelector : "#saveChangesLoadingImg";

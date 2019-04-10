@@ -1,14 +1,22 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
 
 @{
-    string title = String.Format("Edit Dashboard Entry for \"{0}\"", Model.DisplayName);
+    string title = String.Format("View\\Edit Configuration for \"{0}\"", Model.DisplayName);
     ViewBag.Title =title;
 }
 
 <h3 class="text-center">@title</h3>
 
 <div class="container-fluid">
-    @Html.EditorForModel()
+    @if (Model.CommandsEnabled)
+    {
+        @Html.EditorForModel()
+    }
+    else
+    {
+        @Html.DisplayForModel()
+    }
+
 
     @{Html.RenderPartial("_BackToListPartial", Model);}
 </div>

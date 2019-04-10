@@ -27,8 +27,10 @@
         private static readonly Lazy<IconDashboardDataService> lazyInstance =
             new Lazy<IconDashboardDataService>(() =>
                 {
+                    //var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
                     AggregateCatalog catalog = new AggregateCatalog();
                     catalog.Catalogs.Add(new AssemblyCatalog(typeof(IconDashboardDataService).Assembly));
+                    //var catalog = new AssemblyCatalog(codeBaseUri.ToString());
                     return new CompositionContainer(catalog).GetExportedValue<IconDashboardDataService>();
                 });
 

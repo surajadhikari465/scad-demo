@@ -21,8 +21,13 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             var testService = base.FakeServiceViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockRemoteWmiSerivceWrapper
+                .Setup(s => s.LoadRemoteService( It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                    //It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -38,8 +43,13 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             var testService = base.FakeServiceViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockRemoteWmiSerivceWrapper
+                .Setup(s => s.LoadRemoteService( It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                    //It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -47,11 +57,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             ActionResult result = controller.Edit(testService.Name, testService.Server);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockRemoteWmiSerivceWrapper.Verify(s => s.LoadRemoteService( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [TestMethod]
-        public void MvcHomeController_Edit_Post_Service_Should_CallUpdateApplication()
+        public void MvcHomeController_Edit_Post_Service_Should_CallSaveAppSettings()
         {
             //Given
             var testService = base.FakeServiceViewModelA;
@@ -65,7 +75,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             ActionResult result = controller.Edit(postModel);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s.UpdateApplication(It.IsAny<string>(), postModel), Times.Once);
+            mockDataServiceWrapper.Verify(s => s.SaveAppSettings( postModel), Times.Once);
         }
 
         [TestMethod]
@@ -102,7 +112,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
             RedirectToRouteResult routeResult = result as RedirectToRouteResult;
             Assert.AreEqual(routeResult.RouteValues["controller"], "Home");
-            Assert.AreEqual(routeResult.RouteValues["action"], "Details");
+            Assert.AreEqual(routeResult.RouteValues["action"], "Edit");
             Assert.AreEqual(routeResult.RouteValues["application"], testService.Name);
             Assert.AreEqual(routeResult.RouteValues["server"], testService.Server);
         }

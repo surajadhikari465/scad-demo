@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace Icon.Dashboard.Mvc.ViewModels
+{
+    public class MovieViewModel
+    {
+        [Required]
+        public string Title { get; set; }
+        public int Rating { get; set; }
+    }
+}

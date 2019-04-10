@@ -17,6 +17,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
     {
         public HomeControllerIndexUnitTests() : base() { }
 
+
         [TestMethod]
         public void MvcHomeController_Index_Get_Should_ReturnViewResult()
         {
@@ -40,8 +41,14 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var fakeData = base.AllFakeAppViewModels;
             int expectedCount = fakeData.Count;
-            base.mockDataServiceWrapper
-                .Setup(s => s.GetApplications( It.IsAny<string>()))
+            base.mockRemoteWmiSerivceWrapper
+                .Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(),
+                    It.IsAny<bool>()))
+                //.Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(),
+                //    It.IsAny<bool>(),
+                //    It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                //    It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
+                //    It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 

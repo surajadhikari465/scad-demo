@@ -11,6 +11,7 @@ namespace Icon.Dashboard.Mvc
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.AppendTrailingSlash = true;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
@@ -48,12 +49,12 @@ namespace Icon.Dashboard.Mvc
 
             routes.MapRoute(
                 name: "HomeActionWithParameters",
-                url: "{Home}/{action}/{application}/{server}",
+                url: "{Home}/{action}/{server}/{application}",
                 defaults: new
                 {
                     controller = "Home",
-                    application = UrlParameter.Optional,
-                    server = UrlParameter.Optional
+                    server = UrlParameter.Optional,
+                    application = UrlParameter.Optional
                 }
             );
 

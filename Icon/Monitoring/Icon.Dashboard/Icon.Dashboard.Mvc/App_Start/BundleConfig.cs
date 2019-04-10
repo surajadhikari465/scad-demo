@@ -33,6 +33,10 @@ namespace Icon.Dashboard.Mvc
                     "~/Scripts/moment*",
                     "~/Scripts/bootstrap-datetimepicker*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryuisortable").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui*"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/bootstrap-datetimepicker.css",
@@ -42,6 +46,8 @@ namespace Icon.Dashboard.Mvc
             bundles.Add(new StyleBundle("~/Content/Tablecss").Include(
                             "~/Content/dataTables.bootstrap.min.css"));
 
+            bundles.Add(new StyleBundle("~/Content/jqueryuisortable").Include(
+                            "~/Content/jquery-ui*"));
         }
     }
 }

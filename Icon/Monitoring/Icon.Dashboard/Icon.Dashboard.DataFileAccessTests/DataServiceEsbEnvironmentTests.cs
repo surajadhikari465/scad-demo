@@ -230,6 +230,7 @@
             environmentB.Should().NotBeNull();
             environmentB.ServerUrl.Should().BeEquivalentTo(expectedServerUrl);
             environmentB.NumberOfListenerThreads.Should().Be(expectedNumberOfListenerThreads);
-        }        
+        }
+        
     }
 }

@@ -13,14 +13,15 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class EsbController : BaseDashboardController
     {
-        public EsbController() : this(null, null, null, null) { }
+        public EsbController() : this(null, null, null, null, null) { }
 
         public EsbController(
             HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null,
+            IIconDatabaseServiceWrapper iconDbService = null,
             string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null)
-            : base(serverUtility, loggingServiceWrapper, pathToXmlDataFile, dataServiceWrapper) { }
+            IDataFileServiceWrapper dataServiceWrapper = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null)
+            : base(serverUtility, iconDbService, pathToXmlDataFile, dataServiceWrapper, mammothDbService) { }
 
         #region GET
 
