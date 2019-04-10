@@ -228,7 +228,15 @@ namespace KitBuilderWebApi.Controllers
             {
                 instructionList.StatusId = existingList.StatusId;
             }
-           
+
+            // check for duplicate name
+            var instructionListWithSameName = instructionListRepository.Find(i => i.Name.ToUpper() == list.Name.ToUpper() && i.InstructionListId != instructionList.InstructionListId);
+
+            if (instructionListWithSameName != null)
+            {
+                return StatusCode(409, "Instruction List with this name alreadys exists.");
+            }
+
             instructionList.Name = list.Name;
             try
             {

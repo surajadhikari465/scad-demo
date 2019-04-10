@@ -411,7 +411,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                     .then(() => {
                          if(!publishing)
                          {
-                         this.props.showAlert("Instruction list saved successfully.", "success");
+                        
                          this.setState({
                               isSaveDisabled: true,
                               isPublishDisabled: false,
@@ -475,6 +475,10 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
              
                })
                .catch((error) => {
+                    if (error.response.status === 409) {
+                         this.props.showAlert("Instruction list with this name already exists.", "error");
+                         return;
+                    }
                     this.props.showAlert("Error in saving instruction list name.", "error");
                     return;
                });
