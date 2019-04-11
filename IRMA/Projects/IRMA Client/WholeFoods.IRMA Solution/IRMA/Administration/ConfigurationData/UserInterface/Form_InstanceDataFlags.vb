@@ -95,13 +95,16 @@ Public Class Form_InstanceDataFlags
 
     Private Sub BindData()
         Me.CenterToParent()
-        ' Visible only for Super User in Prod
-        If Not My.Application.IsProduction OrElse (My.Application.IsProduction AndAlso gbSuperUser) Then
-            Me.ugInstanceDataFlags.DataSource = InstanceDataDAO.GetAllInstanceDataFlags
-        Else
-            Dim resultsData As DataTable = Nothing
-            resultsData = InstanceDataDAO.GetAllInstanceDataFlags
-            Me.ugInstanceDataFlags.DataSource = resultsData.Select("FlagKey<>'AllowChangeOwnTitle'").CopyToDataTable()
+
+        Me.ugInstanceDataFlags.DataSource = InstanceDataDAO.GetAllInstanceDataFlags
+        ' Disable in PRD
+        If My.Application.IsProduction Then
+            For Each ugRow As UltraGridRow In Me.ugInstanceDataFlags.Rows
+                If ugRow.Cells("FlagKey").Value = "AllowChangeOwnTitle" Then
+                    ugRow.Activation = Activation.Disabled
+                    Exit For
+                End If
+            Next
         End If
 
         Me.ugInstanceDataFlags.DisplayLayout.Bands(0).Columns("FlagKey").CellActivation = Activation.NoEdit
