@@ -1,17 +1,3 @@
-
-div[class^="MuiFormControl-root"] {
-  width: 100%;
-}
-
-div[class^="MuiFormControl-root"] input {
-  padding: 10px !important;
-  background-color: white;
-}
-
-div[class^="MuiSelect-select"] {
-  padding: 10px !important;
-}
-
 .top-buffer {
       margin-top: 20px;
     }

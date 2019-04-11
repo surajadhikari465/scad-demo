@@ -1,1 +1,13 @@
-[class*="col-"] { padding-right: 0px !important; padding-left: 0px !important; }
+.included-checkbox {
+    margin: 0px !important;
+}
+.number-input {
+    max-width: 50px;
+    background-color: rgba(0,0,0, .03);
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
+}

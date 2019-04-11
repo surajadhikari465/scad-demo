@@ -1,116 +1,252 @@
-import * as React from 'react';
-import { KitLinkGroupItemProperties } from './KitLinkGroupItemProperties';
-import { isNumber, overFlow, checkValueLessThanOrEqualToMaxValue } from '../KitLinkGroups/ValidateFunctions'
+import * as React from "react";
+import { KitLinkGroupItemProperties } from "./KitLinkGroupItemProperties";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import {
+  isNumber,
+  overFlow,
+  checkValueLessThanOrEqualToMaxValue
+} from "../KitLinkGroups/ValidateFunctions";
+import {
+  Paper,
+  Grid,
+  DialogContent,
+  TextField,
+  Divider,
+  FormHelperText,
+  Checkbox
+} from "@material-ui/core";
+import DisplayPosition from "./DisplayPosition";
 
-export class KitLinkGroupProperties extends React.Component<any>
-{
-    /* constructor */
-    constructor(props: any) {
-        super(props)
-    }
-    onfocusOut(event: any)
-    {
-       this.props.updateError("");
-    }
-    /* setState methods */
-    handleLinkGroupMinimum(event: any) {
-        let minimum = event.target.value;
-
-        if (isNumber(String(minimum)) && checkValueLessThanOrEqualToMaxValue(minimum, 10)) {
-            this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.properties.Minimum = parseInt(event.target.value) })
-        }
-        else {
-            this.props.updateError("Minimum for link group must be numeric and can have values from 0 to 10.");
-        }
-    }
-
-    handleLinkGroupMaximum(event: any) {
-        let maximum = event.target.value;
-
-        if (isNumber(String(maximum)) && checkValueLessThanOrEqualToMaxValue(maximum, 10)) {
-            this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.properties.Maximum = parseInt(event.target.value) })
-        }
-        else {
-            this.props.updateError("Maximum for link group must be numeric and can have values from 1 to 10.");
-        }
-    }
-
-    handleLinkGroupDisplayOrder(event: any) {
-        let displayOrder = event.target.value;
-
-        if (isNumber(String(displayOrder)) && !overFlow(displayOrder)) {
-            this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.displaySequence = parseInt(displayOrder) })
-        }
-        else {
-            this.props.updateError("Display Order for link group must be numeric.");
-        }
-    }
-
-    handleLinkGroupNumOfFreeToppings(event: any) {
-        let numberOfFreeToppings = event.target.value;
-        if (isNumber(String(numberOfFreeToppings))&& checkValueLessThanOrEqualToMaxValue(numberOfFreeToppings, 10)) {
-        this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.properties.NumOfFreeToppings = parseInt(numberOfFreeToppings)})
-        }
-        else{
-            this.props.updateError("Number Of Free Toppings for link group must be numeric and can have values from 0 to 10.");
-        }
-    }
-
-    handleLinkGroupExclude() {
-        let changedState = !this.props.kitLinkGroupDetails.excluded
-        this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.forEach(function (element: any) {
-            element.isDisabled = changedState;
-            element.isExcludeDisabled = changedState;
-        });
-        this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails })
-        this.setState({ kitLinkGroupDetails: this.props.kitLinkGroupDetails.excluded = changedState })
-
-    }
-
-    /* html render method */
-    render() {
-        return <React.Fragment>
-            {/*add KitLinkGroup Properties 
-            1. Minimum
-            2. Maximum
-            3. # of Free Toppings
-            4. Display Order
-            5. Exclude
-             */}
-            <div className="row mt-md-1 border-bottom">
-
-                <div className="col-lg-2 col-md-2 mt-md-3"> {/* Kit Link Group Name */}
-                    <h4 className="text-left">{this.props.kitLinkGroupDetails.name}</h4>
-                </div>
-               
-                <label  className="col-lg-1 col-md-1 mt-md-3">
-                            <input className="col-lg-2 col-md-2" type="checkbox" checked={this.props.kitLinkGroupDetails.excluded} onClick={this.handleLinkGroupExclude.bind(this)} /> Exclude
-                 </label>
-
-                <div className="col-lg-9 col-md-9 mt-md-3">{/* Kit Link Group Details */}
-                    <form className="wrapper">
-                    <fieldset disabled={this.props.kitLinkGroupDetails.excluded}>
-                        <label className="col-lg-2 col-md-2">
-                            <input className="col-lg-5 col-md-5" type="number" min="0" value={this.props.kitLinkGroupDetails.properties.Minimum} onChange={this.handleLinkGroupMinimum.bind(this)} onBlur={this.onfocusOut.bind(this)} /> Minimum
-                            </label>
-                        <label className="col-lg-2 col-md-2">
-                            <input className="col-lg-5 col-md-5 ml-md-1"type="number" min="1" max="10" value={this.props.kitLinkGroupDetails.properties.Maximum} onChange={this.handleLinkGroupMaximum.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Maximum
-                            </label>
-                        <label className="col-lg-3 col-md-3">
-                            <input className="col-lg-3 col-md-3 ml-md-4"type="number" min="1" value={this.props.kitLinkGroupDetails.displaySequence} onChange={this.handleLinkGroupDisplayOrder.bind(this)} onBlur={this.onfocusOut.bind(this)}/> Display Order
-                            </label>
-                        <label className="col-lg-3 col-md-3">
-                            <input className="col-lg-3 col-md-3" type="number" min="0"  value={this.props.kitLinkGroupDetails.properties.NumOfFreeToppings} onChange={this.handleLinkGroupNumOfFreeToppings.bind(this)} onBlur={this.onfocusOut.bind(this)}/> # of Free Toppings
-                            </label>
-                            </fieldset>
-                    </form>
-                    
-                </div>
-                <div className="col-lg-1 col-md-1"></div>
-                <div className="col-lg-11 mb-1"> {/* Kit Link Group Items */}
-                    {this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.map((kitLGI: any) => <KitLinkGroupItemProperties updateError={this.props.updateError} kitLinkGroupItemsJson={kitLGI}></KitLinkGroupItemProperties>)}
-                </div>
-            </div>
-        </React.Fragment>;
-    }
+interface IKitLinkGroupPropertiesProps {
+  kitLinkGroupDetails: any;
+  updateKitLinkGroupProperties: any;
+  updateKitLinkGroupItemProperties: any;
+  updateError: any;
+  kitLinkGroupErrors: any[];
+  kitLinkGroupItemErrors: any[];
 }
+
+interface IKitLinkGroupPropertiesState {
+  showModifiers: boolean;
+}
+
+class KitLinkGroupProperties extends React.Component<
+  IKitLinkGroupPropertiesProps,
+  IKitLinkGroupPropertiesState
+> {
+  /* constructor */
+  constructor(props: IKitLinkGroupPropertiesProps) {
+    super(props);
+    this.state = {
+      showModifiers: true
+    };
+  }
+
+  toggleShowModifiers = () => {
+    const showModifiers = !this.state.showModifiers;
+    this.setState({ showModifiers });
+  };
+
+  handleUpdateProperties = (properties: any) =>
+    this.props.updateKitLinkGroupProperties(
+      this.props.kitLinkGroupDetails.kitLinkGroupId,
+      properties
+    );
+
+  onfocusOut(event: any) {
+    this.props.updateError("");
+  }
+  /* setState methods */
+  handleLinkGroupMinimum(event: React.ChangeEvent<HTMLInputElement>) {
+    let minimum = parseInt(event.target.value);
+
+    if (isNumber(String(minimum)) && minimum <= 10 && minimum >= 0) {
+      this.handleUpdateProperties({
+        properties: { Minimum: minimum }
+      });
+    }
+  }
+
+  handleLinkGroupMaximum(event: React.ChangeEvent<HTMLInputElement>) {
+    let maximum = parseInt(event.target.value);
+
+    if (isNumber(String(maximum)) && maximum <= 10 && maximum > 0) {
+      this.handleUpdateProperties({
+        properties: { Maximum: maximum }
+      });
+    }
+  }
+
+  handleLinkGroupDisplayOrder(displayOrder: number) {
+    if (isNumber(String(displayOrder)) && !overFlow(displayOrder)) {
+      this.handleUpdateProperties({ displaySequence: displayOrder });
+    }
+  }
+
+  handleLinkGroupNumOfFreeToppings(event: any) {
+    let numberOfFreeToppings = event.target.value;
+    if (
+      isNumber(String(numberOfFreeToppings)) &&
+      checkValueLessThanOrEqualToMaxValue(numberOfFreeToppings, 10)
+    ) {
+      this.handleUpdateProperties({
+        properties: { NumOfFreeToppings: parseInt(numberOfFreeToppings) }
+      });
+    } else {
+      this.props.updateError(
+        "Number Of Free Toppings for link group must be numeric and can have values from 0 to 10."
+      );
+    }
+  }
+
+  toggleLinkGroupExclude = () => {
+    this.handleUpdateProperties({
+      excluded: !this.props.kitLinkGroupDetails.excluded
+    });
+  };
+
+  generateErrorElements = () => {
+    return this.props.kitLinkGroupErrors.map((error: any) => (
+      <FormHelperText error={true}>{error.message}</FormHelperText>
+    ));
+  };
+
+  /* html render method */
+  render() {
+    const disabled = this.props.kitLinkGroupDetails.excluded;
+    const errorElements = this.generateErrorElements();
+    return (
+      <Paper square>
+        <DialogContent>
+          <Grid
+            container
+            style={
+              this.props.kitLinkGroupDetails.excluded ? { color: "grey" } : {}
+            }
+          >
+            <Grid item xs={12}>
+              {errorElements}
+            </Grid>
+
+            <Grid item xs={12}>
+              <Grid container spacing={16}>
+                <Grid item>
+                  <h4 style={errorElements.length > 0 ? {color: "red"} : {}}>{this.props.kitLinkGroupDetails.name}</h4>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid
+                container
+                justify="space-between"
+                alignItems="flex-end"
+                alignContent="flex-end"
+              >
+                <Grid item>
+                  Exclude
+                  <Checkbox
+                    checked={disabled}
+                    onClick={this.toggleLinkGroupExclude}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Min"
+                    disabled={disabled}
+                    className="number-input"
+                    type="number"
+                    value={this.props.kitLinkGroupDetails.properties.Minimum}
+                    onChange={this.handleLinkGroupMinimum.bind(this)}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Max"
+                    disabled={disabled}
+                    className="number-input"
+                    type="number"
+                    value={this.props.kitLinkGroupDetails.properties.Maximum}
+                    onChange={this.handleLinkGroupMaximum.bind(this)}
+                  />
+                </Grid>
+                <Grid item style={{ minWidth: 50 }} />
+                <Grid item>
+                  <TextField
+                    label="Free"
+                    disabled={disabled}
+                    className="number-input"
+                    type="number"
+                    value={
+                      this.props.kitLinkGroupDetails.properties
+                        .NumOfFreeToppings
+                    }
+                    onChange={this.handleLinkGroupNumOfFreeToppings.bind(this)}
+                  />
+                </Grid>
+                <Grid item>
+                  <DisplayPosition
+                    disabled={disabled}
+                    position={this.props.kitLinkGroupDetails.displaySequence}
+                    onPositionChange={this.handleLinkGroupDisplayOrder}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12}>
+              <Grid container spacing={16}>
+                <Divider
+                  style={{
+                    width: "100%",
+                    marginTop: "16px",
+                    marginBottom: "16px"
+                  }}
+                />
+                <Grid item xs={12}>
+                  <Grid container justify="flex-end">
+                    <Grid item>
+                      {this.state.showModifiers ? (
+                        <KeyboardArrowUp onClick={this.toggleShowModifiers} />
+                      ) : (
+                        <KeyboardArrowDown onClick={this.toggleShowModifiers} />
+                      )}
+                    </Grid>
+                  </Grid>
+                </Grid>
+                {!this.state.showModifiers ? null : this.props.kitLinkGroupDetails.kitLinkGroupItemLocaleList.map(
+                  (kitLGI: any) => (
+                    <Grid item xs={12}>
+                      <KitLinkGroupItemProperties
+                        isParentExcluded={
+                          this.props.kitLinkGroupDetails.excluded
+                        }
+                        errors={this.props.kitLinkGroupItemErrors.filter(
+                          (error: any) =>
+                            error.kitLinkGroupItemId ===
+                            kitLGI.kitLinkGroupItemId
+                        )}
+                        updateError={this.props.updateError}
+                        kitLinkGroupItemsJson={kitLGI}
+                        onUpdateItem={(properties: any) =>
+                          this.props.updateKitLinkGroupItemProperties(
+                            this.props.kitLinkGroupDetails.kitLinkGroupId,
+                            kitLGI.kitLinkGroupItemId,
+                            properties
+                          )
+                        }
+                      />
+                    </Grid>
+                  )
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Paper>
+    );
+  }
+}
+
+export default KitLinkGroupProperties;
