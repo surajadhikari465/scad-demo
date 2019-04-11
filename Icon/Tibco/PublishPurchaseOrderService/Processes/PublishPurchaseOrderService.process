@@ -111,10 +111,12 @@
                                         <xsl:value-of select="ExternalOrder_Id"/>
                                     </pfx:externalPurchaseOrderNumber>
                                 </xsl:if>
-                                <xsl:if test="ExternalSource">
-                                    <pfx:externalSource>
-                                        <xsl:value-of select="ExternalSource"/>
-                                    </pfx:externalSource>
+                                <xsl:if test="exists(ExternalOrder_Id)">
+                                    <xsl:if test="ExternalSource">
+                                        <pfx:externalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </pfx:externalSource>
+                                    </xsl:if>
                                 </xsl:if>
                                 <pfx:eventType>
                                     <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
@@ -160,10 +162,17 @@
                                 <pfx:purchaseOrderNumber>
                                     <xsl:value-of select="OrderHeader_ID"/>
                                 </pfx:purchaseOrderNumber>
-                                <xsl:if test="ExternalSource">
-                                    <pfx:externalSource>
-                                        <xsl:value-of select="ExternalSource"/>
-                                    </pfx:externalSource>
+                                <xsl:if test="ExternalOrder_Id">
+                                    <pfx:externalPurchaseOrderNumber>
+                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                    </pfx:externalPurchaseOrderNumber>
+                                </xsl:if>
+                                <xsl:if test="exists(ExternalOrder_Id)">
+                                    <xsl:if test="ExternalSource">
+                                        <pfx:externalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </pfx:externalSource>
+                                    </xsl:if>
                                 </xsl:if>
                                 <pfx:eventType>
                                     <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
