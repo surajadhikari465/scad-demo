@@ -23,6 +23,7 @@ DECLARE @numberOfDigitsSentToScale INT = (SELECT AttributeID FROM dbo.Attributes
 DECLARE @colorAddedId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'CLA');
 DECLARE @countryOfProcessingId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'COP');
 DECLARE @originId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'ORN');
+DECLARE @primeBeefId INT = (SELECT AttributeID FROM dbo.Attributes WHERE AttributeCode = 'PRB');
 
 -- Other local variables
 DECLARE @Region NVARCHAR(2) = (SELECT Region FROM Locale WHERE BusinessUnitID = @BusinessUnitID);
@@ -126,7 +127,13 @@ CREATE TABLE #itemExtended
 	Molybdenum smallint NULL,
 	Selenium smallint NULL,
 	TransFatWeight decimal(10, 1) NULL,
-	OriginalStageInsertDate datetime2(7) NULL
+	OriginalStageInsertDate datetime2(7) NULL,
+  BrandName varchar(255),
+  IsAirChilled bit,
+  IsGrassFed bit,
+  IsPastureRaised bit,
+  SeafoodCatchType varchar(255),
+  PrimeBeef bit
 )
 
 BEGIN TRY
@@ -157,6 +164,18 @@ FROM #itemExtended ist
 JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
 	AND ia.AttributeID = @refrigerateId
 
+UPDATE ist
+SET PrimeBeef = AttributeValue
+FROM #itemExtended ist
+JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
+	AND ia.AttributeID = @primeBeefId
+
+UPDATE A
+SET BrandName = C.HierarchyClassName
+FROM #itemExtended A
+JOIN dbo.Items B on B.ItemID = A.ItemID
+JOIN dbo.HierarchyClass C on C.HierarchyClassID = B.BrandHCID
+
 --Update Sign Attributes
 UPDATE ist
 SET 
@@ -168,7 +187,11 @@ SET
 	IsVegetarian = sgn.IsVegetarian,
 	Rating_AnimalWelfare = sgn.Rating_AnimalWelfare,
 	Rating_HealthyEating = sgn.Rating_HealthyEating,
-	Seafood_FreshOrFrozen = sgn.Seafood_FreshOrFrozen
+	Seafood_FreshOrFrozen = sgn.Seafood_FreshOrFrozen,
+  IsAirChilled = sgn.IsAirChilled,
+  IsGrassFed = sgn.IsGrassFed,
+  IsPastureRaised = sgn.IsPastureRaised,
+  SeafoodCatchType = sgn.Seafood_CatchType
 FROM #itemExtended ist
 JOIN dbo.ItemAttributes_Sign sgn on ist.ItemID = sgn.ItemID
 
@@ -600,7 +623,7 @@ CREATE NONCLUSTERED INDEX IX_#prices_ItemID_BusinessUnitID ON #prices (Region AS
 	);
 
 -- Bring it all together
-SELECT
+SELECT 
 	ist.Region,
 	i.ItemID,
 	ist.BusinessUnitID,
@@ -727,7 +750,14 @@ SELECT
 	p.RewardPriceEndDate,
 	p.LinkedScanCodePrice,
 	sa.TerritoryAbbrev				AS GeographicalState,
-	il.Authorized					AS IsAuthorized 
+	il.Authorized					AS IsAuthorized,
+  i.PackageUnit,
+  ist.BrandName,
+  ist.isAirChilled,
+  ist.isGrassFed,
+  ist.IsPastureRaised,
+  ist.SeafoodCatchType,
+  ist.PrimeBeef
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
 INNER JOIN dbo.Hierarchy_Merchandise m on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
