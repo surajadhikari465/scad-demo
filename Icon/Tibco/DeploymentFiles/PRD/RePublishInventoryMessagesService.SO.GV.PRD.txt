@@ -5,6 +5,8 @@ BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
 Application/InstanceId=507
+Application/RegionCode=SO
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
 
 Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-so\sop;DatabaseName=ItemCatalog;
 Connections/JDBC/IRMA/Username=TibcoDataWriter
