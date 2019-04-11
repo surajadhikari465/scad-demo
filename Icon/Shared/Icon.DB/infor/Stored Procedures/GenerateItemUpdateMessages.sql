@@ -63,7 +63,31 @@ BEGIN
 		@eseTraitId int,
 		@tseTraitId int,
 		@wfeTraitId int,
-		@oteTraitId int
+		@oteTraitId int,
+		@datTraitId int,
+        @gmtTraitId int,
+        @idpTraitId int,
+        @ihtTraitId int,
+		@iwdTraitId int,
+		@cubTraitId int,
+		@iwtTraitId int,
+		@tdpTraitId int,
+		@thtTraitId int,
+		@twdTraitId int,
+		@lblTraitId int,
+		@cooTraitId int,
+		@pgTraitId int,
+		@pgtTraitId int,
+		@prlTraitId int,
+		@aplTraitId int,
+		@ftTraitId int,
+		@gfcTraitId int,
+		@ngcTraitId int,
+		@ocTraitId int,
+		@varTraitId int,
+		@besTraitId int,
+		@lexTraitId int
+		
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
 
@@ -114,6 +138,29 @@ BEGIN
 	SET @tseTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TSE')
 	SET @wfeTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WFE')
 	SET @oteTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OTE')
+	SET @datTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'DAT')
+    SET @gmtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'GMT')
+    SET @idpTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IDP')
+    SET @ihtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IHT')
+	SET	@iwdTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IWD')
+	SET	@cubTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'CUB')
+	SET	@iwtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IWT')
+	SET	@tdpTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TDP')
+	SET	@thtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'THT')
+	SET	@twdTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TWD')
+	SET	@lblTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LBL')
+	SET	@cooTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'COO')
+	SET	@pgTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PG')
+	SET	@pgtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PGT')
+	SET	@prlTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PRL')
+	SET	@aplTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'APL')
+	SET	@ftTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FT')
+	SET	@gfcTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'GFC')
+	SET	@ngcTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'NGC')
+	SET	@ocTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OC')
+	SET	@varTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'VAR')
+	SET	@besTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'BES')
+	SET	@lexTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LEX')
 
 	insert into 
 		app.MessageQueueProduct
@@ -260,7 +307,46 @@ BEGIN
 		i.HospitalityItem																AS HospitalityItem,
 		i.KitchenItem																	AS KitchenItem,
 		i.KitchenDescription															AS KitchenDescription,
-		i.ImageURL																		AS ImageURL
+		i.ImageURL																		AS ImageURL,
+		dat.traitValue                                                                  AS  DataSource,		
+		gmt.traitValue  																AS  GMOTransparency,
+		idp.traitValue  																AS  ItemDepth,
+		iht.traitValue  																AS  ItemHeight,
+		iwd.traitValue  																AS  ItemWidth,
+		cub.traitValue  																AS  [Cube],
+		iwt.traitValue  																AS  [Weight],
+		tdp.traitValue  																AS  TrayDepth,
+		tht.traitValue  																AS  TrayHeight,
+		twd.traitValue  																AS  TrayWidth,
+		lbl.traitValue  																AS  Labeling,
+		coo.traitValue  																AS  CountryOfOrigin,
+		pg.traitValue  																	AS  PackageGroup,
+		pgt.traitValue  																AS  PackageGroupType,
+		prl.traitValue  																AS  PrivateLabel,
+		apl.traitValue  																AS  Appellation,
+		CASE 
+					WHEN ft.traitValue is null THEN NULL 
+					WHEN ft.traitValue = 'Y' OR ft.traitValue = 'Yes'
+					 OR ft.traitValue = '1' OR ft.traitValue = 'True'  
+					THEN 1 ELSE 0 END													AS FairTradeClaim,
+		CASE 
+					WHEN gfc.traitValue is null THEN NULL 
+					WHEN gfc.traitValue = 'Y' OR gfc.traitValue = 'Yes'
+					 OR gfc.traitValue = '1' OR gfc.traitValue = 'True'  
+					THEN 1 ELSE 0 END													AS GlutenFreeClaim,
+		CASE 
+					WHEN ngc.traitValue is null THEN NULL 
+					WHEN ngc.traitValue = 'Y' OR ngc.traitValue = 'Yes'
+					 OR ngc.traitValue = '1' OR ngc.traitValue = 'True'  
+					THEN 1 ELSE 0 END													AS NonGMOClaim,
+		CASE 
+					WHEN oc.traitValue is null THEN NULL 
+					WHEN oc.traitValue = 'Y' OR oc.traitValue = 'Yes'
+					 OR oc.traitValue = '1' OR oc.traitValue = 'True'  
+					THEN 1 ELSE 0 END													AS  OrganicClaim,
+		va.traitValue                                                                   AS  Varietal,
+		bes.traitValue                                                                  AS  BeerStyle,
+		lex.traitValue                                                                  AS  LineExtension
 
 	from 
 		#itemIDs					ui
@@ -342,7 +428,31 @@ BEGIN
 		LEFT JOIN ItemTrait				ese			ON	ese.traitID					= @eseTraitId AND ese.itemID = i.itemID AND ese.localeID = @localeID	
 		LEFT JOIN ItemTrait				tse			ON	tse.traitID					= @tseTraitId AND tse.itemID = i.itemID AND tse.localeID = @localeID	
 		LEFT JOIN ItemTrait				wfe			ON	wfe.traitID					= @wfeTraitId AND wfe.itemID = i.itemID AND wfe.localeID = @localeID	
-		LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID	
+		LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
+        LEFT JOIN ItemTrait				dat			ON	dat.traitID					= @datTraitId AND dat.itemID = i.itemID AND dat.localeID = @localeID
+		LEFT JOIN ItemTrait				gmt			ON	gmt.traitID					= @gmtTraitId AND gmt.itemID = i.itemID AND gmt.localeID = @localeID
+		LEFT JOIN ItemTrait				idp			ON	idp.traitID					= @idpTraitId AND idp.itemID = i.itemID AND idp.localeID = @localeID
+		LEFT JOIN ItemTrait				iht			ON	iht.traitID					= @ihtTraitId AND iht.itemID = i.itemID AND iht.localeID = @localeID
+		LEFT JOIN ItemTrait				iwd			ON	iwd.traitID					= @iwdTraitId AND iwd.itemID = i.itemID AND iwd.localeID = @localeID
+		LEFT JOIN ItemTrait				cub			ON	cub.traitID					= @cubTraitId AND cub.itemID = i.itemID AND cub.localeID = @localeID
+		LEFT JOIN ItemTrait				iwt			ON	iwt.traitID					= @iwtTraitId AND iwt.itemID = i.itemID AND iwt.localeID = @localeID
+		LEFT JOIN ItemTrait				tdp			ON	tdp.traitID					= @tdpTraitId AND tdp.itemID = i.itemID AND tdp.localeID = @localeID
+		LEFT JOIN ItemTrait				tht			ON	tht.traitID					= @thtTraitId AND tht.itemID = i.itemID AND tht.localeID = @localeID
+		LEFT JOIN ItemTrait				twd			ON	twd.traitID					= @twdTraitId AND twd.itemID = i.itemID AND twd.localeID = @localeID
+		LEFT JOIN ItemTrait				lbl			ON	lbl.traitID					= @lblTraitId AND lbl.itemID = i.itemID AND lbl.localeID = @localeID
+		LEFT JOIN ItemTrait				coo			ON	coo.traitID					= @cooTraitId AND coo.itemID = i.itemID AND coo.localeID = @localeID
+		LEFT JOIN ItemTrait				pg			ON	pg.traitID					= @pgTraitId  AND pg.itemID = i.itemID  AND pg.localeID = @localeID
+		LEFT JOIN ItemTrait				pgt			ON	pgt.traitID					= @pgtTraitId AND pgt.itemID = i.itemID AND pgt.localeID = @localeID
+		LEFT JOIN ItemTrait				prl			ON	prl.traitID					= @prlTraitId AND prl.itemID = i.itemID AND prl.localeID = @localeID
+		LEFT JOIN ItemTrait				apl			ON	apl.traitID					= @aplTraitId AND apl.itemID = i.itemID AND apl.localeID = @localeID
+		LEFT JOIN ItemTrait				ft			ON	ft.traitID					= @ftTraitId  AND ft.itemID = i.itemID  AND ft.localeID = @localeID
+		LEFT JOIN ItemTrait				gfc			ON	gfc.traitID					= @gfcTraitId AND gfc.itemID = i.itemID AND gfc.localeID = @localeID
+		LEFT JOIN ItemTrait				ngc			ON	ngc.traitID					= @ngcTraitId AND ngc.itemID = i.itemID AND ngc.localeID = @localeID
+		LEFT JOIN ItemTrait				oc			ON	oc.traitID					= @ocTraitId  AND oc.itemID = i.itemID  AND oc.localeID = @localeID
+		LEFT JOIN ItemTrait				va			ON	va.traitID					= @varTraitId AND va.itemID = i.itemID  AND va.localeID = @localeID
+		LEFT JOIN ItemTrait				bes			ON	bes.traitID					= @besTraitId AND bes.itemID = i.itemID AND bes.localeID = @localeID
+		LEFT JOIN ItemTrait				lex			ON	lex.traitID					= @lexTraitId AND lex.itemID = i.itemID AND lex.localeID = @localeID
+	
 	where
 		it.itemTypeID <> @couponItemTypeId
  

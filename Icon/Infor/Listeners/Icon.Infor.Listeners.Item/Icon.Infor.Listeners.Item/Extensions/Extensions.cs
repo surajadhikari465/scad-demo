@@ -13,15 +13,15 @@ using System.Threading.Tasks;
 
 namespace Icon.Infor.Listeners.Item.Extensions
 {
-	public static class Extensions
-	{
-		public static ItemModel ToItemModel(
-		   this Esb.Schemas.Wfm.Contracts.ItemType item,
-		   string inforMessageId,
-		   DateTime messageParseTime,
-		   decimal? sequenceId)
-		{
-			var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
+    public static class Extensions
+    {
+        public static ItemModel ToItemModel(
+           this Esb.Schemas.Wfm.Contracts.ItemType item,
+           string inforMessageId,
+           DateTime messageParseTime,
+           decimal? sequenceId)
+        {
+            var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
 
 
             return new ItemModel
@@ -102,124 +102,147 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 KitchenDescription = enterpriseAttributes.kitchenDescription,
                 ImageUrl = enterpriseAttributes.imageUrl,
                 KitchenItem = enterpriseAttributes.isKitchenItemSpecified ? enterpriseAttributes.isKitchenItem : false,
-				HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false,
-				Line = GetTraitValue(enterpriseAttributes, TraitCodes.Line),
-				SKU = GetTraitValue(enterpriseAttributes, TraitCodes.Sku),
-				PriceLine = GetTraitValue(enterpriseAttributes, TraitCodes.PriceLine),
-				VariantSize = GetTraitValue(enterpriseAttributes, TraitCodes.VariantSize),
-				EStoreNutritionRequired = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreNutritionRequired),
-				PrimeNowEligible = GetTraitValue(enterpriseAttributes, TraitCodes.PrimeNowEligible),
-				EstoreEligible = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreEligible),
-				TSFEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Tsf365Eligible),
-				WFMEligilble = GetTraitValue(enterpriseAttributes, TraitCodes.WfmEligilble),
-				Other3PEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Other3pEligible)
-			};
-		}
-        
+                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false,
+                Line = GetTraitValue(enterpriseAttributes, TraitCodes.Line),
+                SKU = GetTraitValue(enterpriseAttributes, TraitCodes.Sku),
+                PriceLine = GetTraitValue(enterpriseAttributes, TraitCodes.PriceLine),
+                VariantSize = GetTraitValue(enterpriseAttributes, TraitCodes.VariantSize),
+                EStoreNutritionRequired = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreNutritionRequired),
+                PrimeNowEligible = GetTraitValue(enterpriseAttributes, TraitCodes.PrimeNowEligible),
+                EstoreEligible = GetTraitValue(enterpriseAttributes, TraitCodes.EstoreEligible),
+                TSFEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Tsf365Eligible),
+                WFMEligilble = GetTraitValue(enterpriseAttributes, TraitCodes.WfmEligilble),
+                Other3PEligible = GetTraitValue(enterpriseAttributes, TraitCodes.Other3pEligible),
+                DataSource = GetTraitValue(enterpriseAttributes, TraitCodes.DataSource),
+                GMOTransparency = GetTraitValue(enterpriseAttributes, TraitCodes.GmoTransparency),
+                ItemDepth = GetTraitValue(enterpriseAttributes, TraitCodes.ItemDepth),
+                ItemHeight = GetTraitValue(enterpriseAttributes, TraitCodes.ItemHeight),
+                ItemWidth = GetTraitValue(enterpriseAttributes, TraitCodes.ItemWidth),
+                Cube = GetTraitValue(enterpriseAttributes, TraitCodes.Cube),
+                Weight = GetTraitValue(enterpriseAttributes, TraitCodes.Weight),
+                TrayDepth = GetTraitValue(enterpriseAttributes, TraitCodes.TrayDepth),
+                TrayHeight = GetTraitValue(enterpriseAttributes, TraitCodes.TrayHeight),
+                TrayWidth = GetTraitValue(enterpriseAttributes, TraitCodes.TrayWidth),
+                Labeling = GetTraitValue(enterpriseAttributes, TraitCodes.Labeling),
+                CountryofOrigin = GetTraitValue(enterpriseAttributes, TraitCodes.CountryOfOrigin),
+                PackageGroup = GetTraitValue(enterpriseAttributes, TraitCodes.PackageGroup),
+                PackageGroupType = GetTraitValue(enterpriseAttributes, TraitCodes.PackageGroupType),
+                PrivateLabel = GetTraitValue(enterpriseAttributes, TraitCodes.PrivateLabel),
+                Appellation = GetTraitValue(enterpriseAttributes, TraitCodes.Appellation),
+                FairTradeClaim = GetTraitValue(enterpriseAttributes, TraitCodes.FairTradeClaim),
+                GlutenFreeClaim = GetTraitValue(enterpriseAttributes, TraitCodes.GlutenFreeClaim),
+                NonGMOClaim = GetTraitValue(enterpriseAttributes, TraitCodes.NonGmoClaim),
+                OrganicClaim = GetTraitValue(enterpriseAttributes, TraitCodes.OrganicClaim),
+                Varietal = GetTraitValue(enterpriseAttributes, TraitCodes.Varietal),
+                BeerStyle = GetTraitValue(enterpriseAttributes, TraitCodes.BeerStyle),
+                LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension)
+            };
+        }
 
-		private static string GetScanCodeTypeCode(string scanCode)
-		{
-			if (IsScalePlu(scanCode))
-			{
-				return ScanCodeTypes.Descriptions.ScalePlu;
-			}
-			else if (scanCode.Length < 7)
-			{
-				return ScanCodeTypes.Descriptions.PosPlu;
-			}
-			else
-			{
-				return ScanCodeTypes.Descriptions.Upc;
-			}
-		}
 
-		private static bool IsScalePlu(string scanCode)
-		{
-			return Regex.IsMatch(scanCode, RegularExpressions.ScalePlu)
-				|| Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu46)
-				|| Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu48);
-		}
+        private static string GetScanCodeTypeCode(string scanCode)
+        {
+            if (IsScalePlu(scanCode))
+            {
+                return ScanCodeTypes.Descriptions.ScalePlu;
+            }
+            else if (scanCode.Length < 7)
+            {
+                return ScanCodeTypes.Descriptions.PosPlu;
+            }
+            else
+            {
+                return ScanCodeTypes.Descriptions.Upc;
+            }
+        }
 
-		private static int GetItemTypeCodeId(string typeCode)
-		{
-			if (ItemTypes.Ids.ContainsKey(typeCode))
-			{
-				return ItemTypes.Ids[typeCode];
-			}
-			else
-			{
-				return -1;
-			}
-		}
+        private static bool IsScalePlu(string scanCode)
+        {
+            return Regex.IsMatch(scanCode, RegularExpressions.ScalePlu)
+                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu46)
+                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu48);
+        }
 
-		private static int GetScanCodeTypeId(string scanCode)
-		{
-			if (scanCode.Length == 11 && scanCode[0] == '2' && scanCode.EndsWith("00000"))
-			{
-				return ScanCodeTypes.ScalePlu;
-			}
-			else if (scanCode.Length < 7)
-			{
-				return ScanCodeTypes.PosPlu;
-			}
-			else
-			{
-				return ScanCodeTypes.Upc;
-			}
-		}
+        private static int GetItemTypeCodeId(string typeCode)
+        {
+            if (ItemTypes.Ids.ContainsKey(typeCode))
+            {
+                return ItemTypes.Ids[typeCode];
+            }
+            else
+            {
+                return -1;
+            }
+        }
 
-		private static string GetTraitValue(EnterpriseItemAttributesType enterpriseAttributes, string traitCode, string defaultValue = "")
-		{
-			var traitValue = enterpriseAttributes.traits.FirstOrDefault(i => i.code == traitCode);
+        private static int GetScanCodeTypeId(string scanCode)
+        {
+            if (scanCode.Length == 11 && scanCode[0] == '2' && scanCode.EndsWith("00000"))
+            {
+                return ScanCodeTypes.ScalePlu;
+            }
+            else if (scanCode.Length < 7)
+            {
+                return ScanCodeTypes.PosPlu;
+            }
+            else
+            {
+                return ScanCodeTypes.Upc;
+            }
+        }
 
-			if (traitValue == null || string.IsNullOrWhiteSpace(traitValue.type.value.First().value))
-				return defaultValue;
-			else
-				return traitValue.type.value.First().value;
-		}
+        private static string GetTraitValue(EnterpriseItemAttributesType enterpriseAttributes, string traitCode, string defaultValue = "")
+        {
+            var traitValue = enterpriseAttributes.traits.FirstOrDefault(i => i.code == traitCode);
 
-		private static string GetHierarchyClassId(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
-		{
-			try
-			{
-				var hierarchyClassId = enterpriseAttributes.hierarchies.FirstOrDefault(i => i.name == hierarchyName).@class.FirstOrDefault().id;
-				if (hierarchyClassId == null)
-				{
-					return string.Empty;
-				}
-				else
-				{
-					return hierarchyClassId;
-				}
-			}
-			catch (Exception)
-			{
-				return string.Empty;
-			}
-		}
+            if (traitValue == null || string.IsNullOrWhiteSpace(traitValue.type.value.First().value))
+                return defaultValue;
+            else
+                return traitValue.type.value.First().value;
+        }
 
-		public static int? GetIdFromDescription(this Dictionary<string, int> descriptionToIdDictionary, string description)
-		{
-			if (description == null || !descriptionToIdDictionary.ContainsKey(description))
-			{
-				return null;
-			}
-			else
-			{
-				return descriptionToIdDictionary[description];
-			}
-		}
+        private static string GetHierarchyClassId(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
+        {
+            try
+            {
+                var hierarchyClassId = enterpriseAttributes.hierarchies.FirstOrDefault(i => i.name == hierarchyName).@class.FirstOrDefault().id;
+                if (hierarchyClassId == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return hierarchyClassId;
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
 
-		public static bool ToBool(this string boolString)
-		{
-			return boolString == "1";
-		}
+        public static int? GetIdFromDescription(this Dictionary<string, int> descriptionToIdDictionary, string description)
+        {
+            if (description == null || !descriptionToIdDictionary.ContainsKey(description))
+            {
+                return null;
+            }
+            else
+            {
+                return descriptionToIdDictionary[description];
+            }
+        }
 
-		private static bool ContainsDuplicateHierarchyClass(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
-		{
-			var hierarchyClassCount = enterpriseAttributes.hierarchies.Count(i => i.name == hierarchyName);
+        public static bool ToBool(this string boolString)
+        {
+            return boolString == "1";
+        }
 
-			return hierarchyClassCount > 1;
-		}
-	}
+        private static bool ContainsDuplicateHierarchyClass(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
+        {
+            var hierarchyClassCount = enterpriseAttributes.hierarchies.Count(i => i.name == hierarchyName);
+
+            return hierarchyClassCount > 1;
+        }
+    }
 }
