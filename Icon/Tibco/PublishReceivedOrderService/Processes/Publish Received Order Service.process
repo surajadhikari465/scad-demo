@@ -76,7 +76,7 @@
                                     <xsl:value-of select="OrderItem_ID"/>
                                 </pfx2:receiptDetailNumber>
                                 <pfx2:purchaseOrderDetailNumber>
-                                    <xsl:value-of select="OrderHeader_ID"/>
+                                    <xsl:value-of select="OrderItem_ID"/>
                                 </pfx2:purchaseOrderDetailNumber>
                                 <pfx2:sourceItemKey>
                                     <xsl:value-of select="ItemKey"/>
