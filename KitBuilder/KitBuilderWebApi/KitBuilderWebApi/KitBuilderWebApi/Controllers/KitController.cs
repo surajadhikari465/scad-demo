@@ -29,29 +29,32 @@ namespace KitBuilderWebApi.Controllers
     {
         private IRepository<KitInstructionList> kitInstructionListRepository;
         private IRepository<InstructionList> instructionListRepository;
+        private IRepository<KitQueue> kitQueueRepository;
         private IRepository<LinkGroup> linkGroupRepository;
         private IRepository<Kit> kitRepository;
         private IRepository<Locale> localeRepository;
         private IRepository<KitLocale> kitLocaleRepository;
-		private IRepository<LinkGroupItem> linkGroupItemRepository;
+        private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
         private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
-		private ILogger<KitController> logger;
+        private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaltypeModel> localeTypeRepository;
         private IHelper<KitDto, KitSearchParameters> kitHelper;
-		private const string deleteKitSpName = "DeleteKitByKitId";
-		private IServiceProvider services;
+        private const string deleteKitSpName = "DeleteKitByKitId";
+        private const string publishKitEvents = "PublishKitEvents";
+
+        private IServiceProvider services;
         private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
 
-		public KitController(IRepository<LinkGroup> linkGroupRepository, 
+        public KitController(IRepository<LinkGroup> linkGroupRepository,
                              IRepository<InstructionList> instructionListRepository,
                              IRepository<Kit> kitRepository,
                              IRepository<Locale> localeRepository,
                              IRepository<KitLocale> kitLocaleRepository,
-							 IRepository<LinkGroupItem> linkGroupItemRepository,
+                             IRepository<LinkGroupItem> linkGroupItemRepository,
                              IRepository<Items> itemsRepository,
                              IRepository<KitLinkGroup> kitLinkGroupRepository,
                              IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository,
@@ -59,10 +62,11 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository,
                              IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
-							 ILogger<KitController> logger,
+                             ILogger<KitController> logger,
                              IHelper<KitDto, KitSearchParameters> kitHelper,
-							 IServiceProvider services,
-                             IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator
+                             IServiceProvider services,
+                             IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator,
+                             IRepository<KitQueue> kitQueueRepository
 
                             )
         {
@@ -79,35 +83,36 @@ namespace KitBuilderWebApi.Controllers
             this.kitLinkGroupItemLocaleRepository = kitLinkGroupItemLocaleRepository;
             this.localeTypeRepository = localeTypeRepository;
             this.kitInstructionListRepository = kitInstructionListRepository;
-			this.logger = logger;
+            this.logger = logger;
             this.kitHelper = kitHelper;
-			this.services = services;
+            this.services = services;
             this.calorieCalculator = calorieCalculator;
+            this.kitQueueRepository = kitQueueRepository;
         }
 
-		[HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
-		public IActionResult GetKitCalories(int kitLocaleId, int storeLocaleId)
-		{
-			GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
-			{
-				KitLocaleId = kitLocaleId,
-				StoreLocaleId = storeLocaleId
-			};
+        [HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
+        public IActionResult GetKitCalories(int kitLocaleId, int storeLocaleId)
+        {
+            GetKitLocaleByStoreParameters parameters = new GetKitLocaleByStoreParameters
+            {
+                KitLocaleId = kitLocaleId,
+                StoreLocaleId = storeLocaleId
+            };
 
-			CaloricCalculator calculator = (CaloricCalculator)services.GetService(typeof(IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>));
-			Task<KitLocaleDto> kitLocaleDto = calculator.Run(parameters);
+            CaloricCalculator calculator = (CaloricCalculator)services.GetService(typeof(IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>));
+            Task<KitLocaleDto> kitLocaleDto = calculator.Run(parameters);
 
-			if (kitLocaleDto.Result.KitLocaleId == 0)
-			{
-				logger.LogWarning("No KitLocale can be found by KitLocaleId: " + kitLocaleId.ToString());
-				return NotFound();
-			}
+            if (kitLocaleDto.Result.KitLocaleId == 0)
+            {
+                logger.LogWarning("No KitLocale can be found by KitLocaleId: " + kitLocaleId.ToString());
+                return NotFound();
+            }
 
-			return Ok(kitLocaleDto.Result);
-		}
+            return Ok(kitLocaleDto.Result);
+        }
 
-		// GET api/kits/1/ViewKit/1 GetKitByLocaleId
-		[HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
+        // GET api/kits/1/ViewKit/1 GetKitByLocaleId
+        [HttpGet("{kitId}/ViewKit/{localeId}", Name = "ViewKit")]
         public IActionResult GetKitByLocaleId(int kitId, int localeId, bool loadChildObjects)
         {
             int? localeIdWithKitLocaleRecord = getlocaleIdAtWhichkitRecordExits(kitId, localeId);
@@ -154,7 +159,8 @@ namespace KitBuilderWebApi.Controllers
 
             kitView = BuildKitView(kitProperties, storeId);
 
-            if(kitView == null){
+            if (kitView == null)
+            {
                 kitView.ErrorMessage = "Please make sure Kit is set up correctly for this store.";
                 return Ok(kitView);
             }
@@ -163,7 +169,7 @@ namespace KitBuilderWebApi.Controllers
                 return Ok(kitView);
 
             }
-         
+
         }
 
         internal KitView BuildKitView(KitPropertiesDto kitProperties, int storeId)
@@ -173,25 +179,25 @@ namespace KitBuilderWebApi.Controllers
 
             try
             {
-              kitLocaleDtoTask = calorieCalculator.Run(new GetKitLocaleByStoreParameters { KitLocaleId = kitProperties.KitLocaleId, StoreLocaleId = storeId });
+                kitLocaleDtoTask = calorieCalculator.Run(new GetKitLocaleByStoreParameters { KitLocaleId = kitProperties.KitLocaleId, StoreLocaleId = storeId });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 kitView.ErrorMessage = "Error in getting data from mammoth.";
                 return kitView;
             }
 
-            var maximumCalories =kitLocaleRepository.GetAll().Where(k => k.KitLocaleId == kitProperties.KitLocaleId).Select(s => s.MaximumCalories).FirstOrDefault();
-            kitView.LinkGroups = new List<LinkGroupView>() ;
+            var maximumCalories = kitLocaleRepository.GetAll().Where(k => k.KitLocaleId == kitProperties.KitLocaleId).Select(s => s.MaximumCalories).FirstOrDefault();
+            kitView.LinkGroups = new List<LinkGroupView>();
             kitView.KitId = kitProperties.KitId;
             kitView.Description = kitProperties.Description;
             kitView.StoreId = storeId;
             kitView.KitLocaleId = kitProperties.KitLocaleId;
             kitView.ErrorMessage = "";
-            kitLocaleDtoTask.Wait() ;
+            kitLocaleDtoTask.Wait();
 
             var kitLocaleDto = kitLocaleDtoTask.Result;
- 
+
             if (kitLocaleDto.Exclude == true)
             {
                 kitView.ErrorMessage = "Kit is excluded for selected store.";
@@ -209,7 +215,7 @@ namespace KitBuilderWebApi.Controllers
                 && kitLocaleDto.Exclude != null)
             {
 
-               
+
                 if (maximumCalories == null || maximumCalories == 0)
                 {
                     kitView.MaximumCalories = (int)kitLocaleDto.MaximumCalories;
@@ -241,7 +247,7 @@ namespace KitBuilderWebApi.Controllers
                     foreach (PropertiesDto propertiesDto in propertiesDtoList)//.Where(l => l.Excluded == false))
                     {
                         currentCount = currentCount + 1;
-                        KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto = (kitLocaleDto.KitLinkGroupLocale.Where(kl=>kl.KitLinkGroupId== propertiesDto.KitLinkGroupId).FirstOrDefault()).KitLinkGroupItemLocales
+                        KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto = (kitLocaleDto.KitLinkGroupLocale.Where(kl => kl.KitLinkGroupId == propertiesDto.KitLinkGroupId).FirstOrDefault()).KitLinkGroupItemLocales
                                                                               .Where(k => k.KitLinkGroupItemLocaleId == propertiesDto.KitLinkGroupItemLocaleId).FirstOrDefault();
 
                         if (kitLinkGroupItemLocaleDto != null)
@@ -255,7 +261,7 @@ namespace KitBuilderWebApi.Controllers
                             modifierView.Price = kitLinkGroupItemLocaleDto.RegularPrice.ToString();
                             modifierView.Calories = kitLinkGroupItemLocaleDto.Calories.ToString(); ;
                             modifierView.FormattedModifierProperties = formatModifierProperties(kitLinkGroupItemLocaleDto.Properties, kitLinkGroupItemLocaleDto).ToString();
-                            if(currentCount == listCount)
+                            if (currentCount == listCount)
                             {
                                 linkGroupView.FormattedAllModifiersProperties = AppendToAllModifiersProperties(modifierView, linkGroupView.FormattedAllModifiersProperties, true);
                             }
@@ -263,7 +269,7 @@ namespace KitBuilderWebApi.Controllers
                             {
                                 linkGroupView.FormattedAllModifiersProperties = AppendToAllModifiersProperties(modifierView, linkGroupView.FormattedAllModifiersProperties, false);
                             }
-                           
+
                             linkGroupView.Modifiers.Add(modifierView);
                         }
                         else
@@ -317,7 +323,7 @@ namespace KitBuilderWebApi.Controllers
                                                             inner join KitLinkGroupItem klgi on klgi.KitLinkGroupId= klg.KitLinkGroupId
                                                              where kit.kitid = {0};", kitId).ToList();
 
-                return 
+                return
                     from k in kitRepository.UnitOfWork.Context.Kit
                     where k.KitId == kitId
                     select new
@@ -344,8 +350,8 @@ namespace KitBuilderWebApi.Controllers
                         }),
                         KitInstructionList = k.KitInstructionList.Select(kil => new
                         {
-                             kil.KitId,
-                                kil.InstructionListId,
+                            kil.KitId,
+                            kil.InstructionListId,
                             kil.InstructionList,
                         })
                     };
@@ -468,7 +474,7 @@ namespace KitBuilderWebApi.Controllers
             var kitLocale = kitLocaleRepository.GetAll().Where(x => x.KitLocaleId == kitLocaleId).FirstOrDefault();
             if (kitLocale == null)
             {
-      
+
                 return BadRequest("Kit Locale Record does not exist for passed Id");
             }
             kitLocale.MaximumCalories = MaximumCalories;
@@ -485,9 +491,9 @@ namespace KitBuilderWebApi.Controllers
 
         }
 
-      [HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
+        [HttpPost("{kitId}/AssignUnassignLocations", Name = "AssignUnassignLocations")]
         public IActionResult AssignUnassignLocations(
-                 [FromBody] List<AssignKitToLocaleDto> assignKitToLocaleDtoList, int kitId)
+                   [FromBody] List<AssignKitToLocaleDto> assignKitToLocaleDtoList, int kitId)
         {
             if (assignKitToLocaleDtoList == null)
             {
@@ -566,6 +572,49 @@ namespace KitBuilderWebApi.Controllers
             }
         }
 
+        [HttpPut(Name = "PublishKit")]
+        public IActionResult Publish([FromBody]int kitId)
+        {
+            var kit = kitRepository.Find(k => k.KitId == kitId);
+            List<string> storesWithNoProperties = new List<string>();
+
+            if (kit == null) return NotFound();
+            if (kit.KitType != KitType.Simple)
+            {
+                var kitlocaleList = (from kl in kitLocaleRepository.GetAll().Where(k => k.KitId == kitId && k.Exclude == false).ToList()
+                                     join kli in kitLinkGroupLocaleRepository.GetAll() on kl.KitLocaleId equals kli.KitLocaleId into ps
+                                     from sub in ps.DefaultIfEmpty()
+                                     select new
+                                     {
+                                         isPropertiesExist = sub != null ? true : false
+                                     }).ToList();
+
+                if (kitlocaleList == null)
+                {
+                    return NotFound();
+                }
+
+                if (kitlocaleList.Where(k => k.isPropertiesExist == false).Any())
+                {
+                    return StatusCode(StatusCodes.Status412PreconditionFailed);
+                }
+            }
+            try
+            {
+                var param1 = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
+                linkGroupRepository.ExecWithStoreProcedure(publishKitEvents + " @kitId", param1);
+
+                return NoContent();
+            }
+
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+        }
+
         [HttpPost("{kitId}", Name = "SaveKitProperties")]
         public IActionResult SaveKitProperties(
           [FromBody] KitPropertiesDto kitPropertiesDto)
@@ -584,8 +633,8 @@ namespace KitBuilderWebApi.Controllers
 
             var passedInKitLinkGroupItemLocales = kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(x => x.KitLinkGroupItemLocaleList);
 
-            var existingKitLinkGroupLocals = kitLinkGroupLocaleRepository.GetAll().Where(klgl=>klgl.KitLocaleId == kitLocaleID);
-            
+            var existingKitLinkGroupLocals = kitLinkGroupLocaleRepository.GetAll().Where(klgl => klgl.KitLocaleId == kitLocaleID);
+
 
             var existingKitLinkGroupItemLocals = from klgl in kitLinkGroupItemLocaleRepository.GetAll()
                                                  join klg in passedInKitLinkGroupItemLocales on klgl.KitLinkGroupLocaleId equals klg.KitLinkGroupLocaleId
@@ -653,7 +702,8 @@ namespace KitBuilderWebApi.Controllers
             //add a kit to the database first, so we can get a kitId
             var addedKit = kitRepository.Add(kit);
 
-            if (newKit.KitType != KitType.Simple) {
+            if (newKit.KitType != KitType.Simple)
+            {
                 var addedKitLinkGroups = AddNewLinkedGroups(newKit.KitLinkGroup, addedKit);
 
                 var linkedGroupItems = newKit.KitLinkGroup.SelectMany(lg => lg.KitLinkGroupItem);
@@ -1051,7 +1101,7 @@ namespace KitBuilderWebApi.Controllers
                                                                           DisplaySequence = klgl != null ? (int?)klgl.DisplaySequence : null,
                                                                           KitLinkGroupItemLocaleList = new HashSet<PropertiesDto>(),
                                                                       }).OrderByDescending(s => s.DisplaySequence.HasValue)
-                                                                        .ThenBy(p => p.DisplaySequence).ThenBy(p=>p.Name).ToList();
+                                                                        .ThenBy(p => p.DisplaySequence).ThenBy(p => p.Name).ToList();
 
 
             List<PropertiesDto> KitLinkGroupItemLocaleList = (from klgl in KitLinkGroupLocaleList
@@ -1216,7 +1266,7 @@ namespace KitBuilderWebApi.Controllers
             if (modifierView.Excluded == true)
                 linkgroupModifierProperties.Append("^");
 
-          
+
 
             linkgroupModifierProperties.Append(modifierView.ModifierName);
 
@@ -1254,8 +1304,8 @@ namespace KitBuilderWebApi.Controllers
 
             modifierProperties.Append(" Max=");
             modifierProperties.Append(data.Maximum);
-           // modifierProperties.Append(",");
-           // modifierProperties.Append("\n");
+            // modifierProperties.Append(",");
+            // modifierProperties.Append("\n");
             //modifierProperties.Append(" NumOfFreeToppings = ");
             //modifierProperties.Append(data.NumOfFreePortions);
             //modifierProperties.Append(",");

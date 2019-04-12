@@ -3,8 +3,10 @@ import { Grid, Button } from '@material-ui/core';
 import { AssignKitsTreeTable } from './AssignKitsTreeTable';
 import axios from 'axios';
 import { KbApiMethod } from '../helpers/kbapi'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import withSnackbar from '../PageStyle/withSnackbar';
 const hStyle = { color: 'red' };
+
 const sucesssStyle = { color: 'blue' };
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
@@ -18,12 +20,13 @@ interface IAssignKitsToLocaleState {
 }
 
 interface IAssignKitsToLocaleProps {
-     match: any,
+
+     showAlert:any
 }
 
-export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssignKitsToLocaleState>
+class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssignKitsToLocaleState>
 {
-     constructor(props: any) {
+     constructor(props: IAssignKitsToLocaleProps) {
           super(props);
 
           this.state = {
@@ -144,6 +147,39 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                this.putData(dest, data[i].childs);
           }
      }
+     publishChanges()
+     {
+          var headers = {
+               'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
+          }
+          var urlParam = this.state.kitId;
+          var url = urlKit;
+
+               axios.put(url, urlParam,
+                    {
+                         headers: headers
+                    })
+                    .then(() => {
+                         this.props.showAlert("Kit queued successfully.", "success");
+                       
+                    })
+                    .catch((error) => {
+                  
+                         if(error.response.status == "412")
+                         {    
+                              this.props.showAlert("Kit properties not set for all assigned locales.","error");
+                         }
+                         else   if(error.response.status == "404")
+                         {
+                              this.props.showAlert("Kit properties not set for any assigned locales.", "error");
+                         }
+                         else{
+                              this.props.showAlert("Error in queueing Kit.", "error");
+                         }
+                        
+                         return;
+                    })
+     }
 
      saveChanges() {
           
@@ -225,10 +261,17 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
                          </div>
                     </Grid>
                     <h3>Kit Name: {this.state.kitName}</h3>
-                    <Grid container justify="flex-end">
+                    <Grid container justify= "flex-end" spacing={16}>
+                    <Grid item>
+                    <Button variant="contained" color="primary" onClick={() => this.publishChanges()} >
+                              Publish
+                         </Button>
+                    </Grid>
+                         <Grid item>
                          <Button variant="contained" color="primary" onClick={() => this.saveChanges()} >
                               Save Changes
                          </Button>
+                         </Grid>
                     </Grid>
 
                     <AssignKitsTreeTable kitId = {this.state.kitId} disabled={false} data={data} updateData={this.updateData} />
@@ -236,4 +279,4 @@ export class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps
           );
      }
 }
-export default AssignKitsToLocale;
+export default withSnackbar(AssignKitsToLocale) ;

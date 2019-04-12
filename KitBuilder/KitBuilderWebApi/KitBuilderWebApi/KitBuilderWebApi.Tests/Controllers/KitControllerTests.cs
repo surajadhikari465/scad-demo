@@ -34,16 +34,17 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<Kit>> mockKitRepository;
         private Mock<IRepository<Locale>> mockLocaleRepository;
         private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
-		private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
+        private Mock<IRepository<LinkGroupItem>> mockLinkGroupItemRepository;
         private Mock<IRepository<Items>> mockItemsRepository;
         private Mock<IRepository<KitLinkGroup>> mockKitLinkGroupRepository;
         private Mock<IRepository<KitLinkGroupLocale>> mockKitLinkGroupLocaleRepository;
         private Mock<IRepository<KitLinkGroupItem>> mockKitLinkGroupItemRepository;
         private Mock<IRepository<LocaleType>> mockLocaleTypeRepository;
         private Mock<IRepository<KitLinkGroupItemLocale>> mockKitLinkGroupItemLocaleRepository;
-		//private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
-		private Mock<IServiceProvider> mockServices;
-		private Mock<IUnitOfWork> mockUnitWork;
+        private Mock<IRepository<KitQueue>> mockkitQueueRepository;
+        //private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
+        private Mock<IServiceProvider> mockServices;
+        private Mock<IUnitOfWork> mockUnitWork;
         private List<Kit> kits;
         private List<Items> items;
         private List<LinkGroup> linkGroups;
@@ -53,6 +54,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private List<KitLocale> kitLocaleList;
         private List<KitLinkGroupLocale> kitLinkGroupLocaleList;
         private List<AssignKitToLocaleDto> assignKitToLocaleDtoList;
+
         private Mock<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>> mockCalorieCalculator;
         [TestInitialize]
         public void InitializeTests()
@@ -65,8 +67,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockKitRepository = new Mock<IRepository<Kit>>();
             mockLocaleRepository = new Mock<IRepository<Locale>>();
             mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
-			//mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
-			mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
+            //mockGetKitLocaleQuery = new Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>>();
+            mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
             mockItemsRepository = new Mock<IRepository<Items>>();
             mockKitLinkGroupRepository = new Mock<IRepository<KitLinkGroup>>();
             mockKitLinkGroupLocaleRepository = new Mock<IRepository<KitLinkGroupLocale>>();
@@ -74,9 +76,11 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
             mockKitLinkGroupItemLocaleRepository = new Mock<IRepository<KitLinkGroupItemLocale>>();
             mockLocaleTypeRepository = new Mock<IRepository<LocaleType>>();
-			mockServices = new Mock<IServiceProvider>();
+            mockServices = new Mock<IServiceProvider>();
             mockCalorieCalculator = new Mock<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>>();
             mockUnitWork = new Mock<IUnitOfWork>();
+            mockkitQueueRepository = new Mock<IRepository<KitQueue>>();
+
 
             string locationUrl = "http://localhost:55873/api/Kits/";
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -97,10 +101,11 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockKitLinkGroupItemLocaleRepository.Object,
                 mockLocaleTypeRepository.Object,
                 mockKitInstructionListRepository.Object,
-				mockLogger.Object,
+                mockLogger.Object,
                 mockKitHelper.Object,
-				mockServices.Object,
-                mockCalorieCalculator.Object
+                mockServices.Object,
+                mockCalorieCalculator.Object,
+                mockkitQueueRepository.Object
                 );
 
             MappingHelper.InitializeMapper();
@@ -153,26 +158,26 @@ namespace KitBuilderWebApi.Tests.Controllers
             //     new KitLinkGroupItem{ KitLinkGroupItemId=4, KitLinkGroupId = 1, LinkGroupItemId = 2}
             //};
 
-			foreach (KitLinkGroup kitLinkGroup in kitLinkGroups)
-			{
-				if (kitLinkGroup.KitLinkGroupId == 1)
-				{
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 1, KitLinkGroupId = 1, LinkGroupItemId = 1 });
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 2, KitLinkGroupId = 1, LinkGroupItemId = 2 });
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 3, KitLinkGroupId = 1, LinkGroupItemId = 3});
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 4, KitLinkGroupId = 1, LinkGroupItemId = 4});
-				}
+            foreach (KitLinkGroup kitLinkGroup in kitLinkGroups)
+            {
+                if (kitLinkGroup.KitLinkGroupId == 1)
+                {
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 1, KitLinkGroupId = 1, LinkGroupItemId = 1 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 2, KitLinkGroupId = 1, LinkGroupItemId = 2 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 3, KitLinkGroupId = 1, LinkGroupItemId = 3 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 4, KitLinkGroupId = 1, LinkGroupItemId = 4 });
+                }
 
-				if (kitLinkGroup.KitLinkGroupId == 2)
-				{
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 5, KitLinkGroupId = 2, LinkGroupItemId = 5 });
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 6, KitLinkGroupId = 2, LinkGroupItemId = 6 });
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 7, KitLinkGroupId = 2, LinkGroupItemId = 7 });
-					kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 8, KitLinkGroupId = 2, LinkGroupItemId = 8 });
-				}
-			}
+                if (kitLinkGroup.KitLinkGroupId == 2)
+                {
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 5, KitLinkGroupId = 2, LinkGroupItemId = 5 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 6, KitLinkGroupId = 2, LinkGroupItemId = 6 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 7, KitLinkGroupId = 2, LinkGroupItemId = 7 });
+                    kitLinkGroup.KitLinkGroupItem.Add(new KitLinkGroupItem { KitLinkGroupItemId = 8, KitLinkGroupId = 2, LinkGroupItemId = 8 });
+                }
+            }
 
-			List<LocaleType> localeTypeList = new List<LocaleType>
+            List<LocaleType> localeTypeList = new List<LocaleType>
             {
                   new LocaleType { LocaleTypeCode = "C", LocaleTypeDesc = "Chain", LocaleTypeId =1 },
                   new LocaleType { LocaleTypeCode = "Re", LocaleTypeDesc = "Region", LocaleTypeId =2 },
@@ -188,23 +193,23 @@ namespace KitBuilderWebApi.Tests.Controllers
                                new Locale { LocaleId = 5, LocaleName = "Lamar5", LocaleTypeId =4,MetroId = 6, RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 4, LocaleName = "Austin", LocaleTypeId =3,RegionId=1, ChainId=7 },
                                new Locale { LocaleId = 7, LocaleName = "Chain", LocaleTypeId =1},
-							   new Locale { LocaleId = 8, LocaleName = "FL_MTR", LocaleTypeId =2 ,  RegionId = 1, ChainId= 7, RegionCode = "FL" },
+                               new Locale { LocaleId = 8, LocaleName = "FL_MTR", LocaleTypeId =2 ,  RegionId = 1, ChainId= 7, RegionCode = "FL" },
 							   //new Locale { LocaleId = 9, LocaleName = "FL_SON", LocaleTypeId =1 , StoreId = 2, MetroId = 5, RegionId = 1, ChainId= 4, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 2 },
 							   //new Locale { LocaleId = 10, LocaleName = "MD_CHI", LocaleTypeId =4 , StoreId = 1, MetroId = 2, RegionId = 1, ChainId= 7, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 3 },
 							   //new Locale { LocaleId = 11, LocaleName = "MD_MRT", LocaleTypeId =5 , StoreId = 2, MetroId = 8, RegionId = 1, ChainId= 3, StoreAbbreviation="MD", RegionCode = "MD_MTR", BusinessUnitId = 1 },
 							   //new Locale { LocaleId = 12, LocaleName = "FL_MKT", LocaleTypeId =2 , StoreId = 3, MetroId = 1, RegionId = 1, ChainId= 1, StoreAbbreviation="FL", RegionCode = "FL_MTR", BusinessUnitId = 3 }
 				};
 
-           kitLocaleList = new List<KitLocale> {
+            kitLocaleList = new List<KitLocale> {
                            new KitLocale { KitLocaleId = 1, KitId = 1, LocaleId = 1, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
                            new KitLocale { KitLocaleId = 2, KitId = 1, LocaleId = 6, MinimumCalories = 0, MaximumCalories = 0, Exclude = true, StatusId = 1 },
-						   new KitLocale { KitLocaleId = 3, KitId = 2, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
-						   new KitLocale { KitLocaleId = 4, KitId = 2, LocaleId = 4, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
+                           new KitLocale { KitLocaleId = 3, KitId = 2, LocaleId = 3, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
+                           new KitLocale { KitLocaleId = 4, KitId = 2, LocaleId = 4, MinimumCalories = 0, MaximumCalories = 0, Exclude = false, StatusId = 0 },
 
-			 };
+             };
 
             assignKitToLocaleDtoList = new List<AssignKitToLocaleDto> {
-							   new AssignKitToLocaleDto { LocaleId = localeList[0].LocaleId, LocaleTypeId =localeList[0].LocaleTypeId, IsExcluded = true, IsAssigned = false },
+                               new AssignKitToLocaleDto { LocaleId = localeList[0].LocaleId, LocaleTypeId =localeList[0].LocaleTypeId, IsExcluded = true, IsAssigned = false },
                                new AssignKitToLocaleDto {  LocaleId = localeList[1].LocaleId, LocaleTypeId = localeList[1].LocaleTypeId, IsExcluded = true, IsAssigned = false }
              };
 
@@ -255,19 +260,19 @@ namespace KitBuilderWebApi.Tests.Controllers
             Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
         }
 
-		[TestMethod]
-		public void KitController_GetKitLocale_ValidKitId_Ok()
-		{
-			//Given
-			var kitSearchParameters = 1;
+        [TestMethod]
+        public void KitController_GetKitLocale_ValidKitId_Ok()
+        {
+            //Given
+            var kitSearchParameters = 1;
 
-			//When
-			var response = kitController.GetKitLocale(kitSearchParameters);
-			//Then
-			Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
-		}
+            //When
+            var response = kitController.GetKitLocale(kitSearchParameters);
+            //Then
+            Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Request Expected");
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void KitsController_Save_InvalidKitId_ReturnsBadRequest()
         {
             var kitSaveParameters = new KitDto()
@@ -308,7 +313,7 @@ namespace KitBuilderWebApi.Tests.Controllers
 
             Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
         }
-     
+
         [TestMethod]
         public void KitsController_GetKitPropertiesByLocaleIdKitLocaleRecordDoesNotExist_ReturnsNotFound()
         {
@@ -332,7 +337,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockContext.Setup(c => c.Set<Kit>()).Returns(mockDbSet.Object);
 
             mockKitRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
-           // mockUnitWork.SetupGet(s => s.Context).Returns(mockContext.Object);
+            // mockUnitWork.SetupGet(s => s.Context).Returns(mockContext.Object);
             mockContext.Setup(m => m.Kit).Returns(mockDbSet.Object);
             mockContext.Setup(m => m.KitLocale).Returns(mockKitLocaleDbSet.Object);
 
