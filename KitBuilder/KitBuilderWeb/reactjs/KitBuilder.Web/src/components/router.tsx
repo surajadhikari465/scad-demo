@@ -5,7 +5,7 @@ import InstructionListsPage from './InstructionLists/InstructionListsPage';
 import KitListPage from './Kits';
 import '../css/site.css'
 import AssignKitsToLocale from './AssignKits/AssignKitsToLocale';
-import {KitLinkGroupPage} from './KitLinkGroups/KitLinkGroupsPage';
+import KitLinkGroupPage from './KitLinkGroups/KitLinkGroupsPage';
 import { MuiThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header/header';
