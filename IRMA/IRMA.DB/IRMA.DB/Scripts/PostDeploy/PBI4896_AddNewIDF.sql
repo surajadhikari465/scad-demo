@@ -8,7 +8,7 @@ INSERT INTO [dbo].[InstanceDataFlags]
            ,[CanStoreOverride])
      VALUES
            ('AllowChangeOwnTitle',
-           0,
+           1,
            0)
 GO
 

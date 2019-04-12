@@ -17,6 +17,7 @@ Post-Deployment Script Template
 :r PBI4557_AddOpsgenieKeysToAppConfigApp.sql -- 2018.02.01
 :r PBI18549-AddInStockApplication.sql
 :r PBI4896_AddNewIDF.sql
+:r PBI14424_AddNewShrinkTypeAndGL.sql -- 2019.04.11
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
