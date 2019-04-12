@@ -214,7 +214,7 @@ class KitLinkGroupPage extends React.Component<
               element.properties.Maximum
             ))
         ) {
-          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must be more than maximum."});
+          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must not be more than maximum."});
         }
 
         if (
@@ -224,7 +224,7 @@ class KitLinkGroupPage extends React.Component<
             0
           )
         ) {
-          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must be greater than 0."});
+          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must be greater or equal to 0."});
         }
 
         let sumOfMinimum: number = 0;

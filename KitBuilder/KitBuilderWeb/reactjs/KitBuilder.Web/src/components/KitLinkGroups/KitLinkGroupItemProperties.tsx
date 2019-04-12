@@ -1,5 +1,4 @@
 import * as React from "react";
-import { checkValueLessThanOrEqualToMaxValue } from "../KitLinkGroups/ValidateFunctions";
 import { Grid, TextField, Checkbox, FormHelperText } from "@material-ui/core";
 import DisplayPosition from "./DisplayPosition";
 import MandatoryIcon from './MandatoryIcon';
@@ -41,10 +40,6 @@ export class KitLinkGroupItemProperties extends React.Component<
           MandatoryItem: minimum > 0 ? "true" : "false"
         }
       });
-    } else {
-      this.props.updateError(
-        "Minimum for modifier must be numeric and can have values from 0 to 10."
-      );
     }
   };
 
@@ -53,10 +48,6 @@ export class KitLinkGroupItemProperties extends React.Component<
 
     if (maximum <= 10 && maximum > 0) {
       this.props.onUpdateItem({ properties: { Maximum: maximum } });
-    } else {
-      this.props.updateError(
-        "Maximum for modifier must be numeric and can have values from 1 to 10."
-      );
     }
   };
 
@@ -65,28 +56,21 @@ export class KitLinkGroupItemProperties extends React.Component<
   ) => {
     let numberOfFreePortions = parseInt(event.target.value);
 
-    if (checkValueLessThanOrEqualToMaxValue(numberOfFreePortions, 10)) {
+    if (numberOfFreePortions <= 10 && numberOfFreePortions >= 0) {
       this.props.onUpdateItem({
         properties: { NumOfFreePortions: numberOfFreePortions }
       });
-    } else {
-      this.props.updateError(
-        "Number of free portions for modifier must be numeric and can have values from 0 to 10."
-      );
     }
   };
 
   handleLinkGroupItemDefaultPortions = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (checkValueLessThanOrEqualToMaxValue(parseInt(event.target.value), 10)) {
+    const freePortions = parseInt(event.target.value);
+    if (freePortions <= 10 && freePortions >= 0) {
       this.props.onUpdateItem({
         properties: { DefaultPortions: parseInt(event.target.value) }
       });
-    } else {
-      this.props.updateError(
-        "Default portions for modifier must be numeric and can have values from 0 to 10."
-      );
     }
   };
 
@@ -111,7 +95,7 @@ export class KitLinkGroupItemProperties extends React.Component<
   };
 
   handlePositionChange = (position: number) => {
-    if(!this.props.kitLinkGroupItemsJson.excluded) {
+    if(!this.props.kitLinkGroupItemsJson.excluded && position > 0) {
     this.props.onUpdateItem({ displaySequence: position });
     }
   };

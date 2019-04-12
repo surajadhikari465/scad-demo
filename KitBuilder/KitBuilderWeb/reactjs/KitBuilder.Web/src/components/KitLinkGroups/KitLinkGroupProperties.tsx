@@ -2,11 +2,6 @@ import * as React from "react";
 import { KitLinkGroupItemProperties } from "./KitLinkGroupItemProperties";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import {
-  isNumber,
-  overFlow,
-  checkValueLessThanOrEqualToMaxValue
-} from "../KitLinkGroups/ValidateFunctions";
-import {
   Paper,
   Grid,
   DialogContent,
@@ -34,7 +29,6 @@ class KitLinkGroupProperties extends React.Component<
   IKitLinkGroupPropertiesProps,
   IKitLinkGroupPropertiesState
 > {
-  /* constructor */
   constructor(props: IKitLinkGroupPropertiesProps) {
     super(props);
     this.state = {
@@ -53,49 +47,45 @@ class KitLinkGroupProperties extends React.Component<
       properties
     );
 
-  onfocusOut(event: any) {
+  onfocusOut = (event: any) => {
     this.props.updateError("");
   }
   /* setState methods */
-  handleLinkGroupMinimum(event: React.ChangeEvent<HTMLInputElement>) {
+  handleLinkGroupMinimum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let minimum = parseInt(event.target.value);
 
-    if (isNumber(String(minimum)) && minimum <= 10 && minimum >= 0) {
+    if (minimum <= 10 && minimum >= 0) {
       this.handleUpdateProperties({
         properties: { Minimum: minimum }
       });
     }
   }
 
-  handleLinkGroupMaximum(event: React.ChangeEvent<HTMLInputElement>) {
+  handleLinkGroupMaximum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let maximum = parseInt(event.target.value);
 
-    if (isNumber(String(maximum)) && maximum <= 10 && maximum > 0) {
+    if (maximum <= 10 && maximum > 0) {
       this.handleUpdateProperties({
         properties: { Maximum: maximum }
       });
     }
   }
 
-  handleLinkGroupDisplayOrder(displayOrder: number) {
-    if (isNumber(String(displayOrder)) && !overFlow(displayOrder)) {
+  handleLinkGroupDisplayOrder = (displayOrder: number) => {
+    if (displayOrder > 0) {
       this.handleUpdateProperties({ displaySequence: displayOrder });
     }
   }
 
-  handleLinkGroupNumOfFreeToppings(event: any) {
-    let numberOfFreeToppings = event.target.value;
+  handleLinkGroupNumOfFreeToppings = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let numberOfFreeToppings = parseInt(event.target.value);
     if (
-      isNumber(String(numberOfFreeToppings)) &&
-      checkValueLessThanOrEqualToMaxValue(numberOfFreeToppings, 10)
+      numberOfFreeToppings >= 0 &&
+      numberOfFreeToppings <= 10
     ) {
       this.handleUpdateProperties({
-        properties: { NumOfFreeToppings: parseInt(numberOfFreeToppings) }
+        properties: { NumOfFreeToppings: numberOfFreeToppings }
       });
-    } else {
-      this.props.updateError(
-        "Number Of Free Toppings for link group must be numeric and can have values from 0 to 10."
-      );
     }
   }
 
@@ -111,7 +101,6 @@ class KitLinkGroupProperties extends React.Component<
     ));
   };
 
-  /* html render method */
   render() {
     const disabled = this.props.kitLinkGroupDetails.excluded;
     const errorElements = this.generateErrorElements();
