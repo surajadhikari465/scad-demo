@@ -39,7 +39,7 @@ namespace Icon.Dashboard.Mvc.Controllers
       
         [HttpGet]
         [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Index(DashboardEnvironmentCollectionViewModel customEnvironment = null)
         {
             var chosenEnvironment = new DashboardEnvironmentViewModel();
@@ -56,7 +56,7 @@ namespace Icon.Dashboard.Mvc.Controllers
                 chosenEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
             }
 
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
 
             RemoteServicesService.IconApps = IconDatabaseService.GetApps();
@@ -72,7 +72,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom()
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
@@ -116,12 +116,12 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Edit(string server, string application)
         {
             HttpContext.Items["loggingDataService"] = IconDatabaseService;
             
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
 
             RemoteServicesService.IconApps = IconDatabaseService.GetApps();
@@ -137,7 +137,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region POST
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Index(string server, string application, string command)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
@@ -146,7 +146,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
@@ -155,12 +155,12 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom(DashboardEnvironmentCollectionViewModel customEnvironment)
         {
             var chosenCustomEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
             
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserRoleEnum.EditingPrivileges);
+            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             
             var iconAppsWithLogging = IconDatabaseService.GetApps();
             var mammothAppsWithLogging = MammothDatabaseService.GetApps();

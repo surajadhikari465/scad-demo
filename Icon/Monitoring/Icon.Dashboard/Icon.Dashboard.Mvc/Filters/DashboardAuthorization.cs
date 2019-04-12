@@ -15,18 +15,18 @@ namespace Icon.Dashboard.Mvc.Filters
     /// </summary>
     public sealed class DashboardAuthorization : AuthorizeAttribute
     {
-        public UserRoleEnum RequiredRole { get; set; }
-        internal static string ReadOnlyGroupRole = "IRMA.Applications";
-        internal static string PrivilegedGroupRole = "IRMA.Developers";
-        internal const string AppSettingForReadOnlyGroup = "securityGroupForReadOnly";
-        internal const string AppSettingForEditingGroup = "securityGroupForEditing";
+        public UserAuthorizationLevelEnum RequiredRole { get; set; }
+        internal static string ReadOnlyGroups = "IRMA.Applications";
+        internal static string PrivilegedGroups = "IRMA.Developers";
+        internal const string AppSettingForReadOnlyGroups = "securityGroupForReadOnly";
+        internal const string AppSettingForPrivilegedGroups = "securityGroupForEditing";
         internal const string NotAuthorizedViewName = "~/Views/Shared/NotAuthorized.cshtml";
         internal const string ReadOnlyAuthorizedViewName = "~/Views/Shared/ReadOnlyAuthorized.cshtml";
 
         public DashboardAuthorization() : base()
         {
-            ReadOnlyGroupRole = ConfigurationManager.AppSettings[AppSettingForReadOnlyGroup];
-            PrivilegedGroupRole = ConfigurationManager.AppSettings[AppSettingForEditingGroup];
+            ReadOnlyGroups = ConfigurationManager.AppSettings[AppSettingForReadOnlyGroups];
+            PrivilegedGroups = ConfigurationManager.AppSettings[AppSettingForPrivilegedGroups];
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -44,7 +44,7 @@ namespace Icon.Dashboard.Mvc.Filters
             }
             else if (!IsAuthorized(filterContext.HttpContext.User, RequiredRole))
             {
-                var viewName = (RequiredRole == UserRoleEnum.EditingPrivileges)
+                var viewName = (RequiredRole == UserAuthorizationLevelEnum.EditingPrivileges)
                     ? ReadOnlyAuthorizedViewName 
                     : NotAuthorizedViewName;
                 // The user is not in any of the listed roles show the unauthorized view
@@ -60,22 +60,32 @@ namespace Icon.Dashboard.Mvc.Filters
             };
         }
 
-        internal static bool IsAuthorized(IPrincipal user, UserRoleEnum requiredRole)
+        internal static bool IsAuthorized(IPrincipal user, UserAuthorizationLevelEnum requiredAuthLevel)
         {
-            var userRole = GetUserRole(user);
-            return ((userRole &= requiredRole) == requiredRole);
+            var userAuthLevel = GetAuthorizationLevel(user);
+            return ((userAuthLevel &= requiredAuthLevel) == requiredAuthLevel);
         }
 
-        internal static UserRoleEnum GetUserRole(IPrincipal user)
+        internal static UserAuthorizationLevelEnum GetAuthorizationLevel(IPrincipal user)
         {
-            var role = UserRoleEnum.Unauthorized;
-
             if (user != null)
             {
-                role = (user.IsInRole(ReadOnlyGroupRole) ? UserRoleEnum.ReadOnly : UserRoleEnum.Unauthorized)
-                       | (user.IsInRole(PrivilegedGroupRole) ? UserRoleEnum.EditingPrivileges : UserRoleEnum.Unauthorized);
+                if (!string.IsNullOrWhiteSpace(PrivilegedGroups))
+                {
+                    foreach (var privilegedRole in PrivilegedGroups.Split(','))
+                    {
+                        if (user.IsInRole(privilegedRole)) return UserAuthorizationLevelEnum.EditingPrivileges;
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(ReadOnlyGroups))
+                {
+                    foreach (var readOnlyRole in ReadOnlyGroups.Split(','))
+                    {
+                        if (user.IsInRole(readOnlyRole)) return UserAuthorizationLevelEnum.ReadOnly;
+                    }
+                }
             }
-            return role;
+            return UserAuthorizationLevelEnum.None;
         }
     }
 }

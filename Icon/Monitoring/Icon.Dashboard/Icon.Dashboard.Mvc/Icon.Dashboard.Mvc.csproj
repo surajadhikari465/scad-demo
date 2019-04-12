@@ -125,7 +125,7 @@
     <Compile Include="Filters\MenuOptionsFilter.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Models\InforEsbEnvironmentEnum.cs" />
-    <Compile Include="Models\UserRoleEnum.cs" />
+    <Compile Include="Models\UserAuthorizationLevelEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataFileServiceWrapper.cs" />
     <Compile Include="Services\IMammothDatabaseServiceWrapper.cs" />

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Icon.Dashboard.Mvc.Filters;
+using Icon.Dashboard.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -15,58 +16,210 @@ namespace Icon.Dashboard.Mvc.UnitTests.FilterTests
     public  class GetUserRoleUnitTests : _DashboardAuthorizationFilterTestBase
     {
         [TestMethod]
-        public void WhenUserIs_Null_Role_Should_BeUnauthorized()
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserNull_ShouldHaveAuthLevelNone()
         {
             // Arrange
-            var user = base.UserNull;
+            base.SetStandardSecurityGroups();
+            var nullUser = (IPrincipal)null;
             // Act
-            var role = DashboardAuthorization.GetUserRole(user);
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(nullUser);
             // Assert
-            role.Should().Be(base.Role_Unauthorized);
+            authLevel.Should().Be(UserAuthorizationLevelEnum.None);
         }
 
         [TestMethod]
-        public void WhenUserIs_NotInAnyGroup_Role_Should_BeUnauthorized()
+        public void GetAuthorizationLevel_WithStandardSecurityGroupsl_WhenUserInNoGroups_ShouldHaveAuthLevelNone()
         {
             // Arrange
-            var user = base.UserNotInAnyGroup;
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
             // Act
-            var role = DashboardAuthorization.GetUserRole(user);
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
             // Assert
-            role.Should().Be(base.Role_Unauthorized);
+            authLevel.Should().Be(UserAuthorizationLevelEnum.None);
         }
 
         [TestMethod]
-        public void WhenUserIs_InApplications_Role_Should_BeApplications()
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaApplications_ShouldHaveAuthLevelReadOnly()
         {
             // Arrange
-            var user = base.UserInApplicationsGroup;
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
             // Act
-            var role = DashboardAuthorization.GetUserRole(user);
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
             // Assert
-            role.Should().Be(base.Role_Applications);
+            authLevel.Should().Be(UserAuthorizationLevelEnum.ReadOnly);
         }
 
         [TestMethod]
-        public void WhenUserIs_InDevelopers_Role_Should_BeDeveloper()
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaDevelopersAndIrmaApplications_ShouldHaveAuthLevelPrivileged()
         {
             // Arrange
-            var user = base.UserInDevelopersGroup;
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(false);
             // Act
-            var role = DashboardAuthorization.GetUserRole(user);
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
             // Assert
-            role.Should().Be(base.Role_Developer);
+            authLevel.Should().Be(UserAuthorizationLevelEnum.EditingPrivileges);
         }
 
         [TestMethod]
-        public void WhenUserIs_InDevelopersButNotApplications_Role_Should_BeDeveloper()
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaDevelopersRole_ShouldHaveAuthLevelPrivileged()
         {
             // Arrange
-            var user = base.UserInDevelopersButNotApplicationsGroup;
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(false);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(false);
             // Act
-            var role = DashboardAuthorization.GetUserRole(user);
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
             // Assert
-            role.Should().Be(base.Role_Developer);
+            authLevel.Should().Be(UserAuthorizationLevelEnum.EditingPrivileges);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaSupport_ShouldHaveAuthLevelReadOnly()
+        {
+            // Arrange
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(false);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(false);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.ReadOnly);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaSupportAndIrmaApplications_ShouldHaveAuthLevelReadOnly()
+        {
+            // Arrange
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(false);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.ReadOnly);
+        }
+
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithStandardSecurityGroups_WhenUserInIrmaSupportAndIrmaDevelopers_ShouldHaveAuthLevelPrivileged()
+        {
+            // Arrange
+            base.SetStandardSecurityGroups();
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.EditingPrivileges);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithNullSecurityGroupsInfo_ShouldHaveAuthLevelNone()
+        {
+            // Arrange
+            // simulate no security group entries in config file
+            DashboardAuthorization.ReadOnlyGroups = null;
+            DashboardAuthorization.PrivilegedGroups = null;
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.None);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithNoSecurityGroupsInfo_ShouldHaveAuthLevelNone()
+        {
+            // Arrange
+            // simulate no security group entries in config file
+            DashboardAuthorization.ReadOnlyGroups = "";
+            DashboardAuthorization.PrivilegedGroups = "";
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMASupportRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.None);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithSingleEntryInReadOnlyAndPrivilegedSecurityGroups_WhenUserInIrmaApplications_ShouldHaveAuthLevelReadOnly()
+        {
+            // Arrange
+            DashboardAuthorization.ReadOnlyGroups = $"{IRMAApplicationsRole}";
+            DashboardAuthorization.PrivilegedGroups = $"{IRMADevelopersRole}"; 
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(false);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.ReadOnly);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithSingleEntryInReadOnlyAndPrivilegedSecurityGroups_WhenUserInIrmaDevelopers_ShouldHaveAuthLevelReadOnly()
+        {
+            // Arrange
+            DashboardAuthorization.ReadOnlyGroups = $"{IRMAApplicationsRole}";
+            DashboardAuthorization.PrivilegedGroups = $"{IRMADevelopersRole}";
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.EditingPrivileges);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithNoPrivilegedSecurityGroup_WhenUserInIrmaApplicationsAndIrmaDevelopers_ShouldHaveAuthLevelReadOnly()
+        {
+            // Arrange
+            DashboardAuthorization.ReadOnlyGroups = $"{IRMAApplicationsRole},{IRMASupportRole}";
+            DashboardAuthorization.PrivilegedGroups = "";
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.ReadOnly);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithNoReadOnlySecurityGroup_WhenUserInIrmaDevelopers_ShouldHaveAuthLevelPrivileged()
+        {
+            // Arrange
+            DashboardAuthorization.ReadOnlyGroups = "";
+            DashboardAuthorization.PrivilegedGroups = $"{IRMADevelopersRole}"; 
+            user.Setup(u => u.IsInRole(IRMADevelopersRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.EditingPrivileges);
+        }
+
+        [TestMethod]
+        public void GetAuthorizationLevel_WithNoReadOnlySecurityGroup_WhenUserInIrmaApplications_ShouldHaveAuthLevelNone()
+        {
+            // Arrange
+            DashboardAuthorization.ReadOnlyGroups = "";
+            DashboardAuthorization.PrivilegedGroups = $"{IRMADevelopersRole}";
+            user.Setup(u => u.IsInRole(IRMAApplicationsRole)).Returns(true);
+            // Act
+            var authLevel = DashboardAuthorization.GetAuthorizationLevel(user.Object);
+            // Assert
+            authLevel.Should().Be(UserAuthorizationLevelEnum.None);
         }
     }
 }

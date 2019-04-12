@@ -15,62 +15,16 @@ namespace Icon.Dashboard.Mvc.UnitTests.FilterTests
     [TestClass]
     public abstract class _DashboardAuthorizationFilterTestBase
     {
-        protected const string NameForApplicationsRole = "IRMA.Applications";
-        protected const string NameForDevelopersRole = "IRMA.Developers";
+        protected const string IRMAApplicationsRole = "IRMA.Applications";
+        protected const string IRMADevelopersRole = "IRMA.Developers";
+        protected const string IRMASupportRole = "IRMA.Support";
 
-        protected IPrincipal UserInApplicationsGroup
+        protected Mock<IPrincipal> user = new Mock<IPrincipal>();
+
+        public void SetStandardSecurityGroups()
         {
-            get
-            {
-                var user = new Mock<IPrincipal>();
-                user.Setup(u => u.IsInRole(NameForApplicationsRole)).Returns(true);
-                user.Setup(u => u.IsInRole(NameForDevelopersRole)).Returns(false);
-                return user.Object;
-            }
+            DashboardAuthorization.ReadOnlyGroups = $"{IRMAApplicationsRole},{IRMASupportRole}";
+            DashboardAuthorization.PrivilegedGroups = $"{IRMADevelopersRole}"; 
         }
-
-        protected IPrincipal UserInDevelopersGroup
-        {
-            get
-            {
-                var user = new Mock<IPrincipal>();
-                user.Setup(u => u.IsInRole(NameForApplicationsRole)).Returns(true);
-                user.Setup(u => u.IsInRole(NameForDevelopersRole)).Returns(true);
-                return user.Object;
-            }
-        }
-
-        protected IPrincipal UserNotInAnyGroup
-        {
-            get
-            {
-                var user = new Mock<IPrincipal>();
-                user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
-                return user.Object;
-            }
-        }
-
-        protected IPrincipal UserInDevelopersButNotApplicationsGroup
-        {
-            get
-            {
-                var user = new Mock<IPrincipal>();
-                user.Setup(u => u.IsInRole(NameForApplicationsRole)).Returns(false);
-                user.Setup(u => u.IsInRole(NameForDevelopersRole)).Returns(true);
-                return user.Object;
-            }
-        }
-
-        protected IPrincipal UserNull
-        {
-            get
-            {
-                return (IPrincipal)null;
-            }
-        }
-
-        protected UserRoleEnum Role_Unauthorized => UserRoleEnum.Unauthorized;
-        protected UserRoleEnum Role_Applications => UserRoleEnum.ReadOnly;
-        protected UserRoleEnum Role_Developer => UserRoleEnum.EditingPrivileges;
     }
 }

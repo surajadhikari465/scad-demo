@@ -6,13 +6,12 @@ using System.Web;
 namespace Icon.Dashboard.Mvc.Models
 {
     /// <summary>
-    /// Enumeration of authorized roles within the Dashboard application,
-    ///   corresponding with AD security groups
+    /// Enumeration of authorized privilege levels within the Dashboard application,
     /// </summary>
     [Flags]
-    public enum UserRoleEnum
+    public enum UserAuthorizationLevelEnum
     {
-        Unauthorized = 0x0,
+        None = 0x0,
         ReadOnly = 0x1,
         EditingPrivileges = ReadOnly | 0x2
     }

@@ -26,7 +26,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         #region GET
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Index()
         {
             //enable filter to use the logging service for building menus
@@ -39,7 +39,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Details(string name)
         {
             //enable filter to use the logging service for building menus
@@ -57,7 +57,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Edit(string name)
         {
             //enable filter to use the logging service for building menus
@@ -75,7 +75,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.ReadOnly)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Create()
         {
             //enable filter to use the logging service for building menus
@@ -90,7 +90,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         #region POST
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Index(IEnumerable<EsbEnvironmentViewModel> esbEnvironments)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
@@ -101,7 +101,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Edit(EsbEnvironmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -115,7 +115,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Create(EsbEnvironmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -129,7 +129,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserRoleEnum.EditingPrivileges)]
+        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Delete(string name)
         {
             var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
