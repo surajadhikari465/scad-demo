@@ -1,6 +1,8 @@
 import * as React from 'react'
-import { Grid, Button, Checkbox, FormHelperText } from '@material-ui/core';
+import { Grid, Button, Checkbox, FormHelperText, Divider } from '@material-ui/core';
+import { Delete } from '@material-ui/icons'
 import { LinkGroup, LinkGroupItem } from '../../../types/LinkGroup'
+import CollapseBar from 'src/components/PageStyle/CollapseBar';
 
 interface LinkGroupsRowProps {
     error?: any,
@@ -12,6 +14,8 @@ interface LinkGroupsRowProps {
 }
 
 export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
+
+    const [ isCollapsed, setIsCollapsed ] = React.useState<boolean>(false);
 
     const isItemSelected = (item: LinkGroupItem) => {
         return props.selectedLinkedGroupItems.some(i => i.linkGroupItemId === item.linkGroupItemId);
@@ -34,19 +38,23 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
 
     return <React.Fragment>
         
-        <Grid container justify="space-between">
+        <Grid container justify="space-between" className="pb-3">
             <Grid item>
                 <h6>{props.linkedGroup.groupName}</h6>
             </Grid>
             <Grid>
                 <Button color="secondary" onClick={() => props.onLinkedGroupDeleted(props.linkedGroup)}>
-                    Remove
+                    <Delete/>
                 </Button>
             </Grid>
+            <Divider style={{width: "100%"}}/>
+            <Grid item xs={12}>
+            <CollapseBar collapsed = {isCollapsed} onOpen={() => setIsCollapsed(false)} onClose = {() => setIsCollapsed(true)}/>
+            </Grid>
         </Grid>
-        <Grid container >
+        {!isCollapsed && <Grid container >
             {allItems}
             {props.error ? <Grid item xs={12}><FormHelperText className="px-0" error={true}>{props.error.error}</FormHelperText></Grid> : null}
-        </Grid>
+        </Grid>}
     </React.Fragment>
 }

@@ -25,9 +25,18 @@ const styles = (theme: any) => ({
 
 function SelectKitSearch(props: any) {
 
+    const handlePressEnterToSearch = (e: React.KeyboardEvent) => {
+        e = e || window.event;
+        const ENTER = 13;
+    
+        if(e.keyCode == ENTER){
+            props.onSearch();
+        }
+    }
+
     return (
         <React.Fragment>
-            <Grid container justify="space-between" alignItems="center" className={props.classes.root + ' kit-search-container'}>
+            <Grid container justify="space-between" alignItems="center" className={props.classes.root + ' kit-search-container'} onKeyUp={handlePressEnterToSearch}>
                 <Grid item xs={12} md={5}>
                     <TextField className='search-textfield' margin="dense" variant="outlined" label="Main Item Name" InputLabelProps={{
                         shrink: true,

@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Button from '@material-ui/core/Button'
 import withSnackbar from '../PageStyle/withSnackbar';
+import { Edit, Delete } from '@material-ui/icons';
 
 
 interface IProps {
@@ -60,7 +61,7 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
                             width: 100,
                             Cell: (row) => (
                                 <Button color="primary" onClick={() => this.onSearchResultsCellClick(row)}>
-                                    Edit
+                                    <Edit/>
                                 </Button>
                             )
 
@@ -71,7 +72,7 @@ class DisplayLinkGroups extends React.Component<IProps, IState> {
                             width: 100,
                             Cell: (row) => (
                                 <Button color="secondary" onClick={() => this.props.deleteLinkGroup(row)}>
-                                    Delete
+                                    <Delete/>
                                 </Button>
                             )
 

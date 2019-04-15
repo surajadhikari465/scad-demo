@@ -2,20 +2,17 @@ import * as React from 'react';
 import {Grid} from '@material-ui/core';
 import DisplayKits from './DisplayKits';
 import "@babel/polyfill";
-import SearchKits from './SearchKits';;
-const hStyle = { color: 'red' };
-const sucesssStyle = { color: 'blue' };
-import { KbApiMethod } from '../helpers/kbapi'
+import SearchKits from './SearchKits';
+import { KbApiMethod } from '../helpers/kbapi';
 var urlStart = KbApiMethod("Kits");
 
 import "@babel/polyfill";
 import axios from 'axios';
 import KitFooter from './KitFooter';
 import PageTitle from '../PageTitle';
+import withSnackbar from '../PageStyle/withSnackbar';
 
 interface IKitListsPageState {
-    error: any,
-    message: any
     isLoaded: boolean,
     kits: Array<any>,
     searchMainItemName: string,
@@ -25,16 +22,15 @@ interface IKitListsPageState {
 }
 
 interface IKitsProps {
+    showAlert(message: string, type?: string): void;
 }
 
-export default class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
+class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
 {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            error: null,
-            message: null,
             isLoaded: false,
             kits: [],
             searchMainItemName: "",
@@ -73,8 +69,6 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
         this.setState({ searchScanCode: "" });
         this.setState({ searchkitDescription: "" });
         this.setState({ searchLinkGroupName: "" });
-        this.setState({ error: null });
-        this.setState({ message: null });
         this.setState({ kits: [] });
     }
 
@@ -101,28 +95,17 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
             kits: data
        });
         }) 
-        .then(()=> this.setState({message: "Kit Deleted Successfully"}))
-        .then(()=> this.setState({error: null}))
+        .then(()=> this.props.showAlert("Kit deleted successfully"))
         
-        .catch((error) => 
-        {
-            if(error.response.data.includes("409"))  
-            { 
-                this.setState({
-                error: "Kit Is In Use. Please Make Sure This Kit Is Not Assigned To Any Locale."
-           }) 
-            }   
-            else{
-                this.setState({
-                    error: "Error In Deleting Kit."
-               }) 
+        .catch((error) => {
+            if(error.response.data.includes("409")) { 
+                this.props.showAlert("This kit cannot be deleted because it is assigned to a locale.", "error");
             }  
-            
-                 this.setState({
-                      message: null
-                 }) 
+            else {
+                this.props.showAlert("Error In Deleting Kit.", "error");
+            }  
                  return;
-               });
+            });
         }
 
     createKit() {
@@ -136,15 +119,8 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
     onSearch() {
 
         if (this.state.searchMainItemName == "" && this.state.searchScanCode == "" && this.state.searchkitDescription == "" && this.state.searchLinkGroupName == "") {
-            this.setState({
-                error: "Please Enter At least One Select Criteria."
-            });
-
-            this.setState({
-                message: null
-            })
+            this.props.showAlert("Please enter at least one select criteria.");
             return;
-
         }
         var urlParam ="";
 
@@ -171,48 +147,17 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
             {
                 if(typeof(data) == undefined || data == null || data.length == 0)
                 { 
-                    this.setState({
-                        error: "No Data Found."
-                    });
-        
-                    this.setState({
-                        message: null
-                    })
-
+                    this.props.showAlert("No Data Found.");
                     this.setState({
                         kits: []
-                        })
-                    
-                }
-               
-                else
-                {                      
-                    this.setState({
-                    error: null
-                });
-    
-                this.setState({
-                    message: null
-                })
-                    
-                    
-                    this.setState({
-                    kits: data
-                    })
-
-                }
-               
+                        });
+                } else {                      
+                    this.setState({ kits: data });
+                }     
              }
             )
             .catch((error) => {
-                console.log(error.response.data);
-                this.setState({
-                    error: error.response.data
-                });
-
-                this.setState({
-                    message: null
-                })
+                this.props.showAlert(error.response.data, "error");
             });
     }
 
@@ -221,16 +166,6 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
 
             <React.Fragment>
                 <Grid container justify="center">
-                    <Grid container justify="center">
-                        <div className="error-message" >
-                            <span style={hStyle}> {this.state.error}</span>
-                        </div>
-                    </Grid>
-                    <Grid container justify="center">
-                        <div className="Suncess-message" >
-                            <span style={sucesssStyle}> {this.state.message}</span>
-                        </div>
-                    </Grid>
                     <Grid item xs={10}>
                     <PageTitle icon="search">Search Kits</PageTitle>
                         <SearchKits
@@ -261,3 +196,5 @@ export default class KitListPage extends React.Component<IKitsProps, IKitListsPa
         )
     }
 }
+
+export default withSnackbar(KitListPage);

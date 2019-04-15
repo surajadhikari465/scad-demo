@@ -4,6 +4,7 @@ import ReactTable from "react-table";
 import InstructionListPicker from "./InstructionListPicker";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { Delete } from "@material-ui/icons";
 import CopyLinkGroupButton from "./CopyLinkGroupButton";
 import * as LinkGroupFunctions from "./LinkGroupFunctions";
 import { DialogContent } from '@material-ui/core';
@@ -146,7 +147,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
     const url = `${KbApiMethod("LinkGroups")}/${this.props.data.linkGroupId}/LinkGroupItem/${itemIdToDelete}`;
     Axios.delete(url).then(() => {
       this.setState({ LinkGroupItems: allItemsButDeletedItem });
-      this.props.showAlert("Modifier Deleted Successfully", "success");
+      this.props.showAlert("Modifier deleted successfully.", "success");
     })
     .catch((error) => {
       const message = error.response ? error.response.data : error.message;
@@ -174,7 +175,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
     Axios.post(url, remodeled).then(() => {
         this.getLinkGroupInfo();
         this.setState({showAddModifiers: false});
-        this.props.showAlert("Modifier Added Succesfully", "success");
+        this.props.showAlert("Modifier added succesfully.", "success");
     }).catch((error) => {
       this.props.showAlert(error.message, "error");
     })
@@ -274,7 +275,7 @@ class EditLinkGroup extends React.Component<IProps, IState> {
                   show: true,
                   Cell: row => (
                     <Button color="secondary" onClick = {() => this.removeLinkGroupItem(row.original.linkGroupItemId)}>
-                      Delete
+                      <Delete/>
                     </Button>
                   ),
                   Footer: row => (

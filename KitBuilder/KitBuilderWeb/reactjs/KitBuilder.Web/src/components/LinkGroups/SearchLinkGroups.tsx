@@ -118,11 +118,20 @@ class SearchLinkGroups extends React.Component<IProps, IState> {
     }
   }
 
+  handlePressEnterToSearch = (e: React.KeyboardEvent) => {
+    e = e || window.event;
+    const ENTER = 13;
+
+    if(e.keyCode == ENTER){
+       this.handleSearch();
+    }
+}
+
   render() {
       const { searchBy, name, description, plu } = this.state;
     return (
       <React.Fragment>
-        <Grid container spacing={16} justify="space-between" className="px-3 mb-3" alignContent="center">
+        <Grid container spacing={16} justify="space-between" className="px-3 mb-3" alignContent="center" onKeyUp = {this.handlePressEnterToSearch}>
           <Grid item md={2}>
           <FormControl>
           <InputLabel

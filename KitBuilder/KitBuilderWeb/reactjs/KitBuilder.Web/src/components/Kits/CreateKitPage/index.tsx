@@ -1,6 +1,7 @@
 import * as React from "react";
 import MainItemDisplay from "./MainItem";
-import { Grid, TextField, Button, Switch } from "@material-ui/core";
+import { Grid, TextField, Button, Switch, Paper } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 import StyledPanel from "src/components/PageStyle/StyledPanel";
 import KitTypeSelector from "./KitTypeSelector";
 import LinkGroupTable from "./LinkGroupsTable";
@@ -13,7 +14,7 @@ import { InstructionList } from "src/types/InstructionList";
 import { SelectInstructions } from "./SelectInstructions";
 import PageTitle from "src/components/PageTitle";
 import ConfirmSaveDialog from "./ConfirmSaveDialog";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 interface ICreateKitPageState {
   addItemIsOpen: boolean;
@@ -89,7 +90,13 @@ class CreateKitPage extends React.PureComponent<
         .then(response => {
           const selectedLinkGroupItems = response.kitLinkGroup
             .map((lg: any) => lg.kitLinkGroupItems)
-            .reduce((final: LinkGroupItem[], next: LinkGroupItem[]) => [...final, ...next], []);
+            .reduce(
+              (final: LinkGroupItem[], next: LinkGroupItem[]) => [
+                ...final,
+                ...next
+              ],
+              []
+            );
           const Instructions = response.kitInstructionList.map(
             (kitInstruction: any) => kitInstruction.instructionList
           );
@@ -114,11 +121,15 @@ class CreateKitPage extends React.PureComponent<
         })
         .then(kitLinkGroups => {
           // download all link groups with children
-          const linkGroupPromises: Promise<LinkGroup>[] = kitLinkGroups
-            .map((lg: any) => Axios.get(`${KbApiMethod("LinkGroups")}/${lg.linkGroupId}/true`).then(response => response.data));
+          const linkGroupPromises: Promise<LinkGroup>[] = kitLinkGroups.map(
+            (lg: any) =>
+              Axios.get(
+                `${KbApiMethod("LinkGroups")}/${lg.linkGroupId}/true`
+              ).then(response => response.data)
+          );
 
           Promise.all(linkGroupPromises).then((LinkGroups: LinkGroup[]) => {
-          this.setState({ LinkGroups, loading: false });
+            this.setState({ LinkGroups, loading: false });
           });
         });
     }
@@ -148,7 +159,7 @@ class CreateKitPage extends React.PureComponent<
         });
       }
     });
-    this.setState({errors})
+    this.setState({ errors });
     return !errorSet;
   };
 
@@ -159,7 +170,9 @@ class CreateKitPage extends React.PureComponent<
       Axios.post(KbApiMethod("Kits"), this.buildAddKitPayload())
         .then(r => {
           if (r.status === 200) {
-            const message = this.state.editMode ? "Kit Saved Succesfully" : "Kit Created Succesfully";
+            const message = this.state.editMode
+              ? "Kit saved succesfully."
+              : "Kit created succesfully.";
             this.props.showAlert(message, "success");
           }
         })
@@ -294,21 +307,27 @@ class CreateKitPage extends React.PureComponent<
                 alignItems="center"
                 className="create-kit-inner-container"
               >
+                {!editMode && (
+                  <Grid item xs={12}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => this.setState({ addItemIsOpen: true })}
+                    >
+                      SELECT MAIN ITEM
+                    </Button>
+                  </Grid>
+                )}
                 <Grid item xs={12} md={6}>
                   <Grid
                     container
-                    justify="space-between"
                     alignItems="center"
                     className="create-kit-inner-row-container"
+                    spacing={16}
                   >
                     <Grid item>Main Item:</Grid>
                     <Grid item xs={8}>
-                      <MainItemDisplay
-                        item={this.state.item}
-                        selectMainItem={() =>
-                          this.setState({ addItemIsOpen: true })
-                        }
-                      />
+                      <MainItemDisplay item={this.state.item} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -316,7 +335,6 @@ class CreateKitPage extends React.PureComponent<
                 <Grid item xs={12} md={6}>
                   <Grid
                     container
-                    justify="space-between"
                     alignItems="center"
                     className="create-kit-inner-row-container"
                   >
@@ -332,13 +350,10 @@ class CreateKitPage extends React.PureComponent<
                 <Grid item xs={12} md={6}>
                   <Grid
                     container
-                    justify="space-between"
                     alignItems="center"
                     className="create-kit-inner-row-container"
                   >
-                    <Grid item xs={12} md={4}>
-                      Show Recipe:
-                    </Grid>
+                    <Grid item>Show Recipe:</Grid>
                     <Grid item>
                       <Switch
                         checked={this.state.showRecipe}
@@ -353,13 +368,10 @@ class CreateKitPage extends React.PureComponent<
                 <Grid item xs={12} md={6}>
                   <Grid
                     container
-                    justify="space-between"
                     alignItems="center"
                     className="create-kit-inner-row-container"
                   >
-                    <Grid item xs={12} md={4}>
-                      Mandatory Display:
-                    </Grid>
+                    <Grid item>Mandatory Display:</Grid>
                     <Grid item>
                       <Switch
                         color="primary"
@@ -414,6 +426,21 @@ class CreateKitPage extends React.PureComponent<
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
+                      <Grid container spacing={16} justify="flex-end">
+                        <Grid item>
+                          <Button
+                            disabled={this.state.kitType < 2}
+                            onClick={() =>
+                              this.setState({ addLinkGroupIsOpen: true })
+                            }
+                          >
+                          <Add/>
+                            Add Link Group
+                          </Button>
+                        </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
                   <Grid container justify="center" className="my-5">
                     <Grid item xs={12}>
                       <LinkGroupTable
@@ -430,40 +457,36 @@ class CreateKitPage extends React.PureComponent<
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                <Grid container justify="space-between">
-                <Grid item>
-                   {editMode && <Link to={"/AssignKits/" + this.state.kitId}><Button variant="outlined">Assign Kit</Button></Link> }
-                </Grid>
-                <Grid item>
-                  <Grid container justify="flex-end">
-                    <Grid item>
-                      <Button
-                        disabled={this.state.kitType < 2}
-                        onClick={() =>
-                          this.setState({ addLinkGroupIsOpen: true })
-                        }
-                      >
-                        Add Link Group
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        disabled={!item}
-                        onClick={() =>
-                          this.setState({ confirmCreatKitIsOpen: true })
-                        }
-                        variant="outlined"
-                      >
-                        {editMode ? "Save" : "Create"} Kit
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  </Grid>
-                  </Grid>
-                </Grid>
+               
               </Grid>
             </StyledPanel>
+            <Paper square style={{ position: "fixed", bottom: 0, width: "100%", padding: 8}}>
+            <Grid container justify="center">
+            <Grid item xs={10}>
+
+              <Grid container justify="space-between">
+                <Grid item>
+                  {editMode && (
+                    <Link to={"/AssignKits/" + this.state.kitId}>
+                      <Button variant="outlined">Assign Kit</Button>
+                    </Link>
+                  )}
+                </Grid>
+                <Grid item>
+                  <Button
+                    disabled={!item}
+                    onClick={() =>
+                      this.setState({ confirmCreatKitIsOpen: true })
+                    }
+                    variant="outlined"
+                  >
+                    {editMode ? "Save" : "Create"} Kit
+                  </Button>
+                </Grid>
+              </Grid>
+              </Grid>
+            </Grid>
+            </Paper>
             <LinkgroupKitAddModal
               onAddToKit={this.handleAddLinkGroup}
               kitLinkGroup={this.state.LinkGroups}
@@ -478,7 +501,7 @@ class CreateKitPage extends React.PureComponent<
               }}
             />
             <ConfirmSaveDialog
-              isEdit = {this.state.editMode}
+              isEdit={this.state.editMode}
               open={this.state.confirmCreatKitIsOpen}
               onClose={() => this.setState({ confirmCreatKitIsOpen: false })}
               onCreateKit={() => {

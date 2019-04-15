@@ -9,6 +9,7 @@ import {
   TextField,
   DialogActions
 } from "@material-ui/core";
+import { Delete, Add } from '@material-ui/icons';
 import { Item, LinkGroupItem } from "src/types/LinkGroup";
 import { KbApiMethod } from "../helpers/kbapi";
 import Axios, { AxiosResponse } from "axios";
@@ -77,11 +78,20 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
     this.props.handleAddModifiers(queuedItems);
   };
 
+  handlePressEnterToSearch = (e: React.KeyboardEvent) => {
+    e = e || window.event;
+    const ENTER = 13;
+
+    if(e.keyCode == ENTER){
+       this.onSearch();
+    }
+}
+
   render() {
     return (
       <Dialog open={this.props.isOpen} maxWidth="md" fullWidth={true}>
         <DialogContent>
-          <Grid container justify="space-between" className="mb-3">
+          <Grid container justify="space-between" className="mb-3" onKeyUp = {this.handlePressEnterToSearch}>
             <Grid item md={3}>
               <TextField
                 label="Item Name"
@@ -94,7 +104,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
             </Grid>
             <Grid item md={3}>
               <TextField
-                label="Item Plu"
+                label="Item PLU"
                 value={this.state.plu}
                 onChange={e => this.setState({ plu: e.target.value })}
                 fullWidth
@@ -138,7 +148,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
                         disabled={this.isAlreadyQueued(row.original)}
                         onClick={() => this.handleSelect(row.original)}
                       >
-                        Select
+                        <Add/>
                       </Button>
                     </Grid>
                   </Grid>
@@ -173,7 +183,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
                       color="secondary"
                       onClick={() => this.onDeQueue(row.original)}
                     >
-                      Remove
+                      <Delete/>
                     </Button>
                   </Grid>
                 )

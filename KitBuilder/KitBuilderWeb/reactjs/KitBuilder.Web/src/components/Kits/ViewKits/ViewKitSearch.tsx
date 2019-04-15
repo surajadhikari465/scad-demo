@@ -50,7 +50,14 @@ regions.map((item: any) =>
 
 function ViewKitSearch(props: any) {
     const { regions,metros,stores, regionValue,storeValue,metroValue } = props;
-
+    const handlePressEnterToSearch = (e: React.KeyboardEvent) => {
+        e = e || window.event;
+        const ENTER = 13;
+    
+        if(e.keyCode == ENTER){
+            props.ViewKit();
+        }
+    }
     return (<div className="search-container">
             <Grid container justify="space-between" alignItems="center" spacing={16}>
             <Grid xs = {12} md={2} item>
@@ -83,7 +90,7 @@ function ViewKitSearch(props: any) {
                 <Grid xs = {12} md={2} item>
                 </Grid>
                         <Grid item xs={12} sm={12 } md={2}>
-                            <FormControl className={props.classes.formControl}>
+                            <FormControl className={props.classes.formControl} onKeyUp={handlePressEnterToSearch}>
                                 <TextField
                                     select
                                     onChange={props.onRegionChange}
@@ -100,7 +107,7 @@ function ViewKitSearch(props: any) {
                             </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={12} md={2}>
-                            <FormControl className={props.classes.formControl}>
+                            <FormControl className={props.classes.formControl} onKeyUp={handlePressEnterToSearch}>
                                 <TextField
                                     select
                                     onChange={props.onMetroChange}
@@ -118,7 +125,7 @@ function ViewKitSearch(props: any) {
                             </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={12} md={2}>
-                            <FormControl className={props.classes.formControl}>
+                            <FormControl className={props.classes.formControl} onKeyUp={handlePressEnterToSearch}>
                                 <TextField
                                     select
                                     onChange={props.onStoreChange}

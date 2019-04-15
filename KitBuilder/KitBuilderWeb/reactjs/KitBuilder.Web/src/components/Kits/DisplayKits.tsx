@@ -4,6 +4,7 @@ import "react-table/react-table.css";
 
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Delete, Edit } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 const styles = (theme: any) => ({
     root: {
@@ -61,7 +62,7 @@ function DisplayKits(props: any) {
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
                                 <Button color="primary" className={props.classes.editbutton} onClick={() => props.onEdit(row.original.kitId)}>
-                                    Edit
+                                    <Edit/>
                     </Button>
                             </Grid>
                         )
@@ -73,7 +74,7 @@ function DisplayKits(props: any) {
                         Cell: row => (
                             <Grid container justify="center" alignItems="center">
                                 <Button color="secondary" className={props.classes.deleteButton} onClick={() => props.onDelete(row)}>
-                                    Delete
+                                    <Delete/>
                     </Button>
                             </Grid>
                         )

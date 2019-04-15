@@ -46,10 +46,18 @@ class LinkGroupKitAddModalSearch extends React.PureComponent<
     this.setState({name: "", plu: ""})
   };
 
+  handlePressEnterToSearch = (e: React.KeyboardEvent) => {
+    e = e || window.event;
+    const ENTER = 13;
+
+    if(e.keyCode == ENTER){
+       this.handleSubmit();
+    }
+}
   render() {
     return (
       <React.Fragment>
-        <Grid container justify="space-between" spacing ={16}>
+        <Grid container justify="space-between" spacing ={16} onKeyDown={this.handlePressEnterToSearch}>
           <Grid item xs={12} md={3}>
             <TextField
               label="Name"
