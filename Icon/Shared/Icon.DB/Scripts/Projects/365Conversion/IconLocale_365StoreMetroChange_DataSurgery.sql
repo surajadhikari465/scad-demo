@@ -10,9 +10,11 @@ GO
 -- NOTE: If we need to convert all 365 stores at once,
 -- we can comment the store filter on line 48.
 -- If we want to only update some stores at a time,
--- we need to use the store filter on line 48 and list the store(s)
--- as a comma delimited list, e.g. ('Toledo', 'Kenwood', 'Lake Oswego')
+-- we need to use the store filter on line 48 and list the store BUs
+-- as a comma delimited list, e.g. ('10658','10654','10677')
 -- ====================================================================
+
+DECLARE @buTraitId int = (SELECT TraitID FROM Trait t WHERE t.traitDesc = 'PS Business Unit ID');
 
 IF NOT EXISTS (
 		SELECT 1
@@ -27,6 +29,8 @@ IF NOT EXISTS (
 		,OldMetroName NVARCHAR(100) NOT NULL
 		,NewMetroName NVARCHAR(100) NOT NULL
 		);
+ELSE
+	TRUNCATE TABLE dbo.tmp_365StoreBackup
 
 BEGIN TRY
 	BEGIN TRANSACTION
@@ -45,8 +49,10 @@ BEGIN TRY
 	INNER JOIN dbo.Locale m ON s.parentLocaleID = m.localeID
 	INNER JOIN dbo.Locale r ON m.parentLocaleID = r.localeID
 	INNER JOIN dbo.Locale c ON r.parentLocaleID = c.localeID
+	INNER JOIN dbo.LocaleTrait lt ON s.localeID = lt.localeID
+		AND lt.traitID = @buTraitId
 	WHERE c.localeName = '365'
-		AND s.localeName IN ('Toledo','Kenwood') -- List specific store names here if not doing all 365 stores
+		AND lt.traitValue IN ('') -- List specific store BU numbers here if not doing all 365 stores
 
 	PRINT 'Updating 365 stores will the new metro within the WFM chain...' + CONVERT(NVARCHAR(50), GETDATE(), 121)
 

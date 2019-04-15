@@ -180,6 +180,7 @@
     <Folder Include="eplum\Tables" />
     <Folder Include="Scripts\Projects" />
     <Folder Include="Scripts\Projects\GPM" />
+    <Folder Include="Scripts\Projects\365Conversion" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -814,6 +815,8 @@
     <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
     <Build Include="dbo\Stored Procedures\AuditGlobalItem.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateMammothClosedStores.sql" />
+    <None Include="Scripts\Projects\365Conversion\DeleteLocale_365Store_TSRegion.sql" />
+    <None Include="Scripts\Projects\365Conversion\DeleteLocale_365Store_TSRegion_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -830,8 +833,6 @@
     <None Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="dbo\User Defined Types\ItemAttributesLocaleType.sql" />
     <None Include="Scripts\PreDeploymentScripts\Deduplicate_ItemAttributesLocale_Tables.sql" />
-    <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion.sql" />
-    <None Include="Scripts\PostDeploymentScripts\DeleteLocale_365Store_TSRegion_ROLLBACK.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddMammothAuditApp.sql" />
   </ItemGroup>
   <ItemGroup>

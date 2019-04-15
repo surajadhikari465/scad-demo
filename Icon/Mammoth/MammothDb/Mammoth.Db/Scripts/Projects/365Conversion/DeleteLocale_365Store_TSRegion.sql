@@ -24,7 +24,7 @@ BEGIN TRAN
 	;WITH Store_CTE AS
 	(SELECT *
 	FROM dbo.Locales_TS l
-	WHERE l.BusinessUnitID IN (10672,10666)) -- input specific businessUnitIDs here for CHG request
+	WHERE l.BusinessUnitID IN ()) -- input specific businessUnitIDs here for CHG request
 
 	DELETE FROM Store_CTE
 	OUTPUT

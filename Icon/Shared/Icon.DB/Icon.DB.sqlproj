@@ -135,6 +135,7 @@
     <Folder Include="Scripts\Projects\Infor\Data Audit Scripts\IRMA" />
     <Folder Include="Scripts\Projects\Infor\Data Audit Scripts\Icon" />
     <Folder Include="Scripts\Projects\Infor\Phase 1" />
+    <Folder Include="Scripts\Projects\365Conversion" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -693,9 +694,8 @@
     <None Include="Scripts\PopulateData\AddDeleteNutritionToEventType.sql" />
     <None Include="Scripts\PopulateData\Archive\AppLogArchiveRetentionPolicy.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateIconWebApiApp.sql" />
-    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
-    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery.sql" />
-    <None Include="Scripts\PopulateData\PopulateTraits.sql" />
+    <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery.sql" />
+    <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
