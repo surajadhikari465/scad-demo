@@ -382,13 +382,11 @@ class KitLinkGroupPage extends React.Component<
         }
       }
     });
-
+    this.setState({ errors: { ...this.state.errors, kitLinkGroups, kitLinkGroupItems } });
     if (kitLinkGroups.length > 0 || kitLinkGroupItems.length > 0) {
-      this.setState({ errors: { ...this.state.errors, kitLinkGroups, kitLinkGroupItems } });
       this.props.showAlert("There were input validation errors, please correct and try again.", "error")
       return false;
     }
-
     return true;
   }
 

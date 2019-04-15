@@ -187,7 +187,7 @@ export class KitLinkGroupItemProperties extends React.Component<
                     label="Default"
                     className="number-input"
                     type="number"
-                    value={kitLinkGroupItemsJson.DefaultPortions}
+                    value={kitLinkGroupItemsJson.properties.DefaultPortions}
                     onChange={this.handleLinkGroupItemDefaultPortions}
                     fullWidth
                   />
