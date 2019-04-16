@@ -197,12 +197,12 @@ namespace Icon.Framework
         public const int Designation = 188;
         public const int ParentCompany = 189;
         public const int DataSource = 190;
-        public const int GmoTransparency = 191;
+        public const int NonGmoTransparency = 191;
         public const int ItemDepth = 192;
         public const int ItemHeight = 193;
         public const int ItemWidth = 194;
         public const int Cube = 195;
-        public const int Weight = 196;
+        public const int ItemWeight = 196;
         public const int TrayDepth = 197;
         public const int TrayHeight = 198;
         public const int TrayWidth = 199;
@@ -409,7 +409,7 @@ namespace Icon.Framework
 				{ "GRD", 188 },
 				{ "PCO", 189 },
 				{ "DAT", 190 },
-				{ "GMT", 191 },
+				{ "NGT", 191 },
 				{ "IDP", 192 },
 				{ "IHT", 193 },
 				{ "IWD", 194 },
@@ -623,12 +623,12 @@ namespace Icon.Framework
 			public const string Designation = "Designation";
 			public const string ParentCompany = "Parent Company";
 			public const string DataSource = "Data Source";
-			public const string GmoTransparency = "GMO Transparency";
+			public const string NonGmoTransparency = "Non-GMO Transparency";
 			public const string ItemDepth = "Item Depth";
 			public const string ItemHeight = "Item Height";
 			public const string ItemWidth = "Item Width";
 			public const string Cube = "Cube";
-			public const string Weight = "Weight";
+			public const string ItemWeight = "Item Weight";
 			public const string TrayDepth = "Tray Depth";
 			public const string TrayHeight = "Tray Height";
 			public const string TrayWidth = "Tray Width";
@@ -835,12 +835,12 @@ namespace Icon.Framework
 				{ 188, "Designation" },
 				{ 189, "Parent Company" },
 				{ 190, "Data Source" },
-				{ 191, "GMO Transparency" },
+				{ 191, "Non-GMO Transparency" },
 				{ 192, "Item Depth" },
 				{ 193, "Item Height" },
 				{ 194, "Item Width" },
 				{ 195, "Cube" },
-				{ 196, "Weight" },
+				{ 196, "Item Weight" },
 				{ 197, "Tray Depth" },
 				{ 198, "Tray Height" },
 				{ 199, "Tray Width" },
@@ -1050,12 +1050,12 @@ namespace Icon.Framework
 			public const string Designation = "GRD";
 			public const string ParentCompany = "PCO";
 			public const string DataSource = "DAT";
-			public const string GmoTransparency = "GMT";
+			public const string NonGmoTransparency = "NGT";
 			public const string ItemDepth = "IDP";
 			public const string ItemHeight = "IHT";
 			public const string ItemWidth = "IWD";
 			public const string Cube = "CUB";
-			public const string Weight = "IWT";
+			public const string ItemWeight = "IWT";
 			public const string TrayDepth = "TDP";
 			public const string TrayHeight = "THT";
 			public const string TrayWidth = "TWD";
@@ -1262,7 +1262,7 @@ namespace Icon.Framework
 				{ 188, "GRD" },
 				{ 189, "PCO" },
 				{ 190, "DAT" },
-				{ 191, "GMT" },
+				{ 191, "NGT" },
 				{ 192, "IDP" },
 				{ 193, "IHT" },
 				{ 194, "IWD" },
