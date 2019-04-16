@@ -52,5 +52,23 @@ namespace MammothWebApi.Tests.Services
             // Then
             this.mockDeleteItemLocalePriceCommand.Verify(s => s.Execute(It.IsAny<DeleteItemLocalePriceCommand>()), Times.Exactly(itemsCount));
         }
+
+
+        [TestMethod]
+        public void DeauthorizeItemLocaleService_ValidServiceModelWithNullDefaultScanCode_DeleteItemLocalePriceCommandCalledOnce()
+        {
+            // Given
+            this.itemLocaleServiceModelList = new List<ItemLocaleServiceModel>
+            {
+                new TestItemLocaleServiceModelBuilder().WithRegion("SW").WithScanCode("543210").WithBusinessUnit(1).WithDefaultScanCode(null).Build(),
+            };
+            this.dauthorizeItemLocaleData = new DeauthorizeItemLocale { ItemLocaleServiceModelList = this.itemLocaleServiceModelList };
+
+            // When
+            this.deauthorizeItemLocaleService.Handle(dauthorizeItemLocaleData);
+
+            // Then
+            this.mockDeleteItemLocalePriceCommand.Verify(s => s.Execute(It.IsAny<DeleteItemLocalePriceCommand>()), Times.Once);
+        }
     }
 }

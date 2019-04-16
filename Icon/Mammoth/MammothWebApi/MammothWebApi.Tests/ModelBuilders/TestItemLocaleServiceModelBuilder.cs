@@ -43,6 +43,7 @@ namespace MammothWebApi.Tests.ModelBuilders
         private bool? scaleItem;
         private string useBy;
         private int? shelfLife;
+        private bool? defaultScanCode;
 
         internal TestItemLocaleServiceModelBuilder()
         {
@@ -77,6 +78,7 @@ namespace MammothWebApi.Tests.ModelBuilders
             this.scaleItem = null;
             this.useBy = null;
             this.shelfLife = null;
+            this.defaultScanCode = false;
     }
 
         internal TestItemLocaleServiceModelBuilder WithRegion(string region)
@@ -277,6 +279,12 @@ namespace MammothWebApi.Tests.ModelBuilders
             return this;
         }
 
+        internal TestItemLocaleServiceModelBuilder WithDefaultScanCode(bool? defaultScanCode)
+        {
+            this.defaultScanCode = defaultScanCode;
+            return this;
+        }
+
         internal ItemLocaleServiceModel Build()
         {
             var itemLocaleStaging = new ItemLocaleServiceModel
@@ -315,6 +323,7 @@ namespace MammothWebApi.Tests.ModelBuilders
                 ScaleItem = this.scaleItem,
                 UseBy = this.useBy,
                 ShelfLife = this.shelfLife,
+                DefaultScanCode = this.defaultScanCode
             };
 
             return itemLocaleStaging;

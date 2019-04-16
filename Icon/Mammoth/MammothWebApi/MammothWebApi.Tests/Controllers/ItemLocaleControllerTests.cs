@@ -114,7 +114,7 @@ namespace MammothWebApi.Tests.Controllers
         {
             // Given
             List<ItemLocaleModel> itemLocales = null;
-            string expectedMessage = "The object sent is either null or does not contain any rows.";
+            string expectedMessage = "The object passed is either null or does not contain any rows.";
 
             // When
             var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as BadRequestErrorMessageResult;
@@ -143,7 +143,7 @@ namespace MammothWebApi.Tests.Controllers
         {
             // Given
             List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
-            string expectedMessage = "The object sent is either null or does not contain any rows.";
+            string expectedMessage = "The object passed is either null or does not contain any rows.";
 
             // When
             var response = this.itemLocaleController.AddOrUpdateItemLocale(itemLocales) as BadRequestErrorMessageResult;
@@ -255,6 +255,23 @@ namespace MammothWebApi.Tests.Controllers
             this.mockItemLocaleService.Verify(s => s.Handle(It.Is<AddUpdateItemLocale>(il=>
                 (expectedIrmaItemKey == il.ItemLocales.First().IrmaItemKey) && (expectedDefaultScanCode == il.ItemLocales.First().DefaultScanCode))
                 ), Times.Once);
+        }
+
+        [TestMethod]
+        public void ItemLocaleController_ItemLocaleListMissingDefaultScanCodeDuringDeauthorizeItemLocale_ShouldCallServiceWithNullDefaultScanCode()
+        {
+            // Given
+            List<ItemLocaleModel> itemLocales = new List<ItemLocaleModel>();
+            var testItemLocaleModel = new TestItemLocaleModelBuilder().Build();
+            testItemLocaleModel.DefaultScanCode = null;
+            itemLocales.Add(testItemLocaleModel);
+
+            // When
+            var response = this.itemLocaleController.DeauthorizeItemLocale(itemLocales);
+
+            // Then
+            this.mockDeauthorizeItemLocaleService.Verify(s => s.Handle(It.Is<DeauthorizeItemLocale>(a=>a.ItemLocaleServiceModelList.Single().DefaultScanCode == null)), Times.Once);
+            this.mockItemLocaleService.Verify(s => s.Handle(It.Is<AddUpdateItemLocale>(a=>a.ItemLocales.Single().DefaultScanCode == null)), Times.Once);
         }
 
         //[TestMethod]

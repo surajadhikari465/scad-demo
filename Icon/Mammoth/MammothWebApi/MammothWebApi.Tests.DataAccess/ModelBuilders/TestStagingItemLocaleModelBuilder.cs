@@ -13,9 +13,9 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private int? restrictionAge;
         private bool restrictedHours;
         private bool authorized;
-        private bool discontinued;
+        private bool? discontinued;
         private string labelType;
-        private bool localItem;
+        private bool? localItem;
         private string productCode;
         private string retailUnit;
         private string signDescription;
@@ -23,10 +23,10 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
         private string romanceShort;
         private string locality;
         private decimal msrp;
-        private bool OrderedByInfor;
+        private bool? orderedByInfor;
         private decimal altRetailSize;
         private string altRetailUom;
-        private bool defaultScanCode;
+        private bool? defaultScanCode;
         private DateTime timestamp;
         private Guid transactionId;
         private bool scaleItem;
@@ -51,7 +51,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             romanceLong = "Sign Romance Long";
             romanceShort = "Sign Romance Short";
             msrp = 5.99M;
-            OrderedByInfor = true;
+            orderedByInfor = true;
             altRetailSize = 9.8m;
             altRetailUom = "EA";
             defaultScanCode = true;
@@ -103,7 +103,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestStagingItemLocaleModelBuilder WithDiscontinued(bool discontinued)
+        internal TestStagingItemLocaleModelBuilder WithDiscontinued(bool? discontinued)
         {
             this.discontinued = discontinued;
             return this;
@@ -115,7 +115,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestStagingItemLocaleModelBuilder WithLocalItem(bool localItem)
+        internal TestStagingItemLocaleModelBuilder WithLocalItem(bool? localItem)
         {
             this.localItem = localItem;
             return this;
@@ -169,9 +169,9 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestStagingItemLocaleModelBuilder WithOrderedByInfor(bool OrderedByInfor)
+        internal TestStagingItemLocaleModelBuilder WithOrderedByInfor(bool?orderedByInfor)
         {
-            this.OrderedByInfor = OrderedByInfor;
+            this.orderedByInfor = orderedByInfor;
             return this;
         }
 
@@ -187,7 +187,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             return this;
         }
 
-        internal TestStagingItemLocaleModelBuilder WithDefaultScanCode(bool defaultScanCode)
+        internal TestStagingItemLocaleModelBuilder WithDefaultScanCode(bool? defaultScanCode)
         {
             this.defaultScanCode = defaultScanCode;
             return this;
@@ -217,11 +217,11 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
             {
                 Authorized = authorized,
                 BusinessUnitID = businessUnit,
-                Discontinued = discontinued,
+                Discontinued = discontinued.GetValueOrDefault(false),
                 Discount_Case = discountCase,
                 Discount_TM = discountTm,
                 LabelTypeDesc = labelType,
-                LocalItem = localItem,
+                LocalItem = localItem.GetValueOrDefault(false),
                 Locality = locality,
                 Product_Code = productCode,
                 Region = region,
@@ -233,7 +233,7 @@ namespace MammothWebApi.Tests.DataAccess.ModelBuilders
                 ScanCode = scanCode,
                 Sign_Desc = signDescription,
                 Msrp = msrp,
-                OrderedByInfor = OrderedByInfor,
+                OrderedByInfor = orderedByInfor.GetValueOrDefault(false),
                 AltRetailSize = altRetailSize,
                 AltRetailUOM = altRetailUom,
                 DefaultScanCode = defaultScanCode,

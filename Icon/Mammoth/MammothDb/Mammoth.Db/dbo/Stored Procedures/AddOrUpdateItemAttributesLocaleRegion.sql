@@ -51,11 +51,11 @@ BEGIN
       ,Restriction_Age = B.Restriction_Age
       ,Restriction_Hours = B.Restriction_Hours
       ,Authorized = B.Authorized
-      ,Discontinued = B.Discontinued
-      ,LocalItem = B.LocalItem
+      ,Discontinued = ISNULL(B.Discontinued,0)
+      ,LocalItem = ISNULL(B.LocalItem,0)
       ,ScaleItem = B.ScaleItem
-      ,OrderedByInfor = B.OrderedByInfor
-      ,DefaultScanCode = B.DefaultScanCode
+      ,OrderedByInfor = ISNULL(B.OrderedByInfor,0)
+      ,DefaultScanCode = ISNULL(B.DefaultScanCode,0)
       ,LabelTypeDesc = B.LabelTypeDesc
       ,Product_Code = B.Product_Code
       ,RetailUnit = B.RetailUnit
@@ -103,11 +103,11 @@ BEGIN
       ,Restriction_Age
       ,Restriction_Hours
       ,Authorized
-      ,Discontinued
-      ,LocalItem
+      ,ISNULL(Discontinued,0)
+      ,ISNULL(LocalItem,0)
       ,ScaleItem
-      ,OrderedByInfor
-      ,DefaultScanCode
+      ,ISNULL(OrderedByInfor,0)
+      ,ISNULL(DefaultScanCode,0)
       ,LabelTypeDesc
       ,Product_Code
       ,RetailUnit

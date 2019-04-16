@@ -381,7 +381,187 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 }
             }
         }
-        
+
+        [TestMethod]
+        public void AddOrUpdateItemLocaleCommand_NewItemLocaleWithNullDefaultScanCodeInStaging_AddsRowsInRegionalItemLocaleTable()
+        {
+            // Given
+            List<Item> existingItems = this.db.Connection
+                .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = this.items.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            Guid transactionId = Guid.NewGuid();
+            var expectedItems = new List<StagingItemLocaleModel>();
+            for (int i = 0; i < existingItems.Count; i++)
+            {
+                expectedItems.Add(new TestStagingItemLocaleModelBuilder()
+                    .WithRegion(this.region)
+                    .WithBusinessUnit(this.bizUnitID)
+                    .WithScanCode(existingItems[i].ScanCode)
+                    .WithTimestamp(now)
+                    .WithTransactionId(transactionId)
+                    .WithScaleItem(true)
+                    .WithDefaultScanCode(null)
+                    .Build());
+            }
+
+            AddItemsToStaging(expectedItems);
+
+            // When
+            AddOrUpdateItemLocaleCommand command = new AddOrUpdateItemLocaleCommand { Region = region, Timestamp = now, TransactionId = transactionId };
+            this.commandHandler.Execute(command);
+
+            // Then
+            var actual = this.db.Connection
+                .Query<ItemAttributes_Locale>("SELECT * FROM ItemAttributes_Locale_SW WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = existingItems.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            for (int i = 0; i < expectedItems.Count; i++)
+            {
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
+            }
+        }
+
+        [TestMethod]
+        public void AddOrUpdateItemLocaleCommand_NewItemLocaleWithNullDiscontinuedInStaging_AddsRowsInRegionalItemLocaleTable()
+        {
+            // Given
+            List<Item> existingItems = this.db.Connection
+                .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = this.items.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            Guid transactionId = Guid.NewGuid();
+            var expectedItems = new List<StagingItemLocaleModel>();
+            for (int i = 0; i < existingItems.Count; i++)
+            {
+                expectedItems.Add(new TestStagingItemLocaleModelBuilder()
+                    .WithRegion(this.region)
+                    .WithBusinessUnit(this.bizUnitID)
+                    .WithScanCode(existingItems[i].ScanCode)
+                    .WithTimestamp(now)
+                    .WithTransactionId(transactionId)
+                    .WithScaleItem(true)
+                    .WithDiscontinued(null)
+                    .Build());
+            }
+
+            AddItemsToStaging(expectedItems);
+
+            // When
+            AddOrUpdateItemLocaleCommand command = new AddOrUpdateItemLocaleCommand { Region = region, Timestamp = now, TransactionId = transactionId };
+            this.commandHandler.Execute(command);
+
+            // Then
+            var actual = this.db.Connection
+                .Query<ItemAttributes_Locale>("SELECT * FROM ItemAttributes_Locale_SW WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = existingItems.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            for (int i = 0; i < expectedItems.Count; i++)
+            {
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
+            }
+        }
+
+        [TestMethod]
+        public void AddOrUpdateItemLocaleCommand_NewItemLocaleWithNullLocalItemInStaging_AddsRowsInRegionalItemLocaleTable()
+        {
+            // Given
+            List<Item> existingItems = this.db.Connection
+                .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = this.items.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            Guid transactionId = Guid.NewGuid();
+            var expectedItems = new List<StagingItemLocaleModel>();
+            for (int i = 0; i < existingItems.Count; i++)
+            {
+                expectedItems.Add(new TestStagingItemLocaleModelBuilder()
+                    .WithRegion(this.region)
+                    .WithBusinessUnit(this.bizUnitID)
+                    .WithScanCode(existingItems[i].ScanCode)
+                    .WithTimestamp(now)
+                    .WithTransactionId(transactionId)
+                    .WithScaleItem(true)
+                    .WithLocalItem(null)
+                    .Build());
+            }
+
+            AddItemsToStaging(expectedItems);
+
+            // When
+            AddOrUpdateItemLocaleCommand command = new AddOrUpdateItemLocaleCommand { Region = region, Timestamp = now, TransactionId = transactionId };
+            this.commandHandler.Execute(command);
+
+            // Then
+            var actual = this.db.Connection
+                .Query<ItemAttributes_Locale>("SELECT * FROM ItemAttributes_Locale_SW WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = existingItems.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            for (int i = 0; i < expectedItems.Count; i++)
+            {
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
+            }
+        }
+
+        [TestMethod]
+        public void AddOrUpdateItemLocaleCommand_NewItemLocaleWithNullOrderedByInforInStaging_AddsRowsInRegionalItemLocaleTable()
+        {
+            // Given
+            List<Item> existingItems = this.db.Connection
+                .Query<Item>(@"SELECT * FROM Items WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = this.items.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            Guid transactionId = Guid.NewGuid();
+            var expectedItems = new List<StagingItemLocaleModel>();
+            for (int i = 0; i < existingItems.Count; i++)
+            {
+                expectedItems.Add(new TestStagingItemLocaleModelBuilder()
+                    .WithRegion(this.region)
+                    .WithBusinessUnit(this.bizUnitID)
+                    .WithScanCode(existingItems[i].ScanCode)
+                    .WithTimestamp(now)
+                    .WithTransactionId(transactionId)
+                    .WithScaleItem(true)
+                    .WithOrderedByInfor(null)
+                    .Build());
+            }
+
+            AddItemsToStaging(expectedItems);
+
+            // When
+            AddOrUpdateItemLocaleCommand command = new AddOrUpdateItemLocaleCommand { Region = region, Timestamp = now, TransactionId = transactionId };
+            this.commandHandler.Execute(command);
+
+            // Then
+            var actual = this.db.Connection
+                .Query<ItemAttributes_Locale>("SELECT * FROM ItemAttributes_Locale_SW WHERE ItemID IN @ItemIDs",
+                    new { ItemIDs = existingItems.Select(i => i.ItemID) },
+                    transaction: this.db.Transaction)
+                .ToList();
+
+            for (int i = 0; i < expectedItems.Count; i++)
+            {
+                AssertPropertiesMatchStaged(this.bizUnitID, expectedItems[i], actual[i]);
+            }
+        }
+
         private void AddToItemsTable(List<Item> items)
         {
             string sql = @"INSERT INTO Items
@@ -615,7 +795,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
             Assert.AreEqual(expected.OrderedByInfor, actual.OrderedByInfor, "OrderedByInfor did not match expected");
             Assert.AreEqual(expected.AltRetailSize, actual.AltRetailSize, "AltRetailSize did not match expected");
             Assert.AreEqual(expected.AltRetailUOM, actual.AltRetailUOM, "AltRetailUOM did not match expected");
-            Assert.AreEqual(expected.DefaultScanCode, actual.DefaultScanCode, "DefaultScanCode did not match expected");
+            Assert.AreEqual(expected.DefaultScanCode.GetValueOrDefault(false), actual.DefaultScanCode, "DefaultScanCode did not match expected");
             Assert.IsNotNull(actual.AddedDate, "The AddedDate is NULL.");
         }
     }
