@@ -103,8 +103,8 @@ namespace Icon.Framework
         public virtual DbSet<LocaleSubType> LocaleSubTypes { get; set; }
         public virtual DbSet<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual DbSet<MessageHistory> MessageHistory { get; set; }
-        public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
+        public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)
         {

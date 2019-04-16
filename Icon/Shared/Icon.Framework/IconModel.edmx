@@ -525,12 +525,12 @@
           <Property Name="KitchenDescription" Type="nvarchar" MaxLength="15" />
           <Property Name="ImageURL" Type="nvarchar" MaxLength="255" />
           <Property Name="DataSource" Type="nvarchar" MaxLength="255" />
-          <Property Name="GMOTransparency" Type="nvarchar" MaxLength="255" />
+          <Property Name="NonGMOTransparency" Type="nvarchar" MaxLength="255" />
           <Property Name="ItemDepth" Type="decimal" Precision="10" Scale="4" />
           <Property Name="ItemHeight" Type="decimal" Precision="10" Scale="4" />
           <Property Name="ItemWidth" Type="decimal" Precision="10" Scale="4" />
           <Property Name="Cube" Type="decimal" Precision="10" Scale="4" />
-          <Property Name="Weight" Type="decimal" Precision="10" Scale="4" />
+          <Property Name="ItemWeight" Type="decimal" Precision="10" Scale="4" />
           <Property Name="TrayDepth" Type="decimal" Precision="10" Scale="4" />
           <Property Name="TrayHeight" Type="decimal" Precision="10" Scale="4" />
           <Property Name="TrayWidth" Type="decimal" Precision="10" Scale="4" />
@@ -3530,10 +3530,15 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageHistory" EntitySet="MessageHistory" />
             <End Role="MessageResendStatus" EntitySet="MessageResendStatus" />
           </AssociationSet>
+          <EntitySet Name="MessageQueueNutrition" EntityType="Icon.Framework.Model.MessageQueueNutrition" />
           <EntitySet Name="MessageQueueProduct" EntityType="Icon.Framework.Model.MessageQueueProduct" />
           <AssociationSet Name="FK_MessageQueueProduct_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId">
             <End Role="MessageHistory" EntitySet="MessageHistory" />
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app__MessageQueueNutrition_MessageQueueId" Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId">
+            <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
+            <End Role="MessageQueueNutrition" EntitySet="MessageQueueNutrition" />
           </AssociationSet>
           <AssociationSet Name="FK_MessageQueueProduct_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
@@ -3542,11 +3547,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_MessageQueueProduct_MessageTypeId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId">
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
-          </AssociationSet>
-          <EntitySet Name="MessageQueueNutrition" EntityType="Icon.Framework.Model.MessageQueueNutrition" />
-          <AssociationSet Name="FK_app__MessageQueueNutrition_MessageQueueId" Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId">
-            <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
-            <End Role="MessageQueueNutrition" EntitySet="MessageQueueNutrition" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -5932,6 +5932,85 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MessageQueueNutrition">
+          <Key>
+            <PropertyRef Name="MessageQueueNutritionId" />
+          </Key>
+          <Property Name="MessageQueueNutritionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" />
+          <Property Name="Plu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RecipeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Allergens" Type="String" MaxLength="510" FixedLength="false" Unicode="true" />
+          <Property Name="Ingredients" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ServingsPerPortion" Type="Double" />
+          <Property Name="ServingSizeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ServingPerContainer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HshRating" Type="Int32" />
+          <Property Name="ServingUnits" Type="Byte" />
+          <Property Name="SizeWeight" Type="Int32" />
+          <Property Name="Calories" Type="Int32" />
+          <Property Name="CaloriesFat" Type="Int32" />
+          <Property Name="CaloriesSaturatedFat" Type="Int32" />
+          <Property Name="TotalFatWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="TotalFatPercentage" Type="Int16" />
+          <Property Name="SaturatedFatWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="SaturatedFatPercent" Type="Int16" />
+          <Property Name="PolyunsaturatedFat" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="MonounsaturatedFat" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="CholesterolWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="CholesterolPercent" Type="Int16" />
+          <Property Name="SodiumWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="SodiumPercent" Type="Int16" />
+          <Property Name="PotassiumWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="PotassiumPercent" Type="Int16" />
+          <Property Name="TotalCarbohydrateWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="TotalCarbohydratePercent" Type="Int16" />
+          <Property Name="DietaryFiberWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="DietaryFiberPercent" Type="Int16" />
+          <Property Name="SolubleFiber" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="InsolubleFiber" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="Sugar" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="SugarAlcohol" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="OtherCarbohydrates" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="ProteinWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="ProteinPercent" Type="Int16" />
+          <Property Name="VitaminA" Type="Int16" />
+          <Property Name="Betacarotene" Type="Int16" />
+          <Property Name="VitaminC" Type="Int16" />
+          <Property Name="Calcium" Type="Int16" />
+          <Property Name="Iron" Type="Int16" />
+          <Property Name="VitaminD" Type="Int16" />
+          <Property Name="VitaminE" Type="Int16" />
+          <Property Name="Thiamin" Type="Int16" />
+          <Property Name="Riboflavin" Type="Int16" />
+          <Property Name="Niacin" Type="Int16" />
+          <Property Name="VitaminB6" Type="Int16" />
+          <Property Name="Folate" Type="Int16" />
+          <Property Name="VitaminB12" Type="Int16" />
+          <Property Name="Biotin" Type="Int16" />
+          <Property Name="PantothenicAcid" Type="Int16" />
+          <Property Name="Phosphorous" Type="Int16" />
+          <Property Name="Iodine" Type="Int16" />
+          <Property Name="Magnesium" Type="Int16" />
+          <Property Name="Zinc" Type="Int16" />
+          <Property Name="Copper" Type="Int16" />
+          <Property Name="Transfat" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="CaloriesFromTransfat" Type="Int32" />
+          <Property Name="Om6Fatty" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="Om3Fatty" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="Starch" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="Chloride" Type="Int16" />
+          <Property Name="Chromium" Type="Int16" />
+          <Property Name="VitaminK" Type="Int16" />
+          <Property Name="Manganese" Type="Int16" />
+          <Property Name="Molybdenum" Type="Int16" />
+          <Property Name="Selenium" Type="Int16" />
+          <Property Name="TransfatWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="HazardousMaterialFlag" Type="Int32" />
+          <Property Name="HazardousMaterialTypeCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueNutrition" ToRole="MessageQueueProduct" />
+        </EntityType>
         <EntityType Name="MessageQueueProduct">
           <Key>
             <PropertyRef Name="MessageQueueId" />
@@ -6035,12 +6114,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="KitchenDescription" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="ImageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DataSource" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="GMOTransparency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NonGMOTransparency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ItemDepth" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="ItemHeight" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="ItemWidth" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="Cube" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Weight" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ItemWeight" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="TrayDepth" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="TrayHeight" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="TrayWidth" Type="Decimal" Precision="10" Scale="4" />
@@ -6058,9 +6137,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="BeerStyle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LineExtension" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageQueueProduct" ToRole="MessageHistory" />
+          <NavigationProperty Name="MessageQueueNutrition" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueProduct" ToRole="MessageQueueNutrition" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" FromRole="MessageQueueProduct" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageQueueProduct" ToRole="MessageType" />
-          <NavigationProperty Name="MessageQueueNutrition" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueProduct" ToRole="MessageQueueNutrition" />
         </EntityType>
         <Association Name="FK_MessageQueueProduct_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
@@ -6073,6 +6152,20 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="MessageQueueProduct">
               <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app__MessageQueueNutrition_MessageQueueId">
+          <End Type="Icon.Framework.Model.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueNutrition" Role="MessageQueueNutrition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageQueueProduct">
+              <PropertyRef Name="MessageQueueId" />
+            </Principal>
+            <Dependent Role="MessageQueueNutrition">
+              <PropertyRef Name="MessageQueueId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6097,99 +6190,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="MessageQueueProduct">
               <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="MessageQueueNutrition">
-          <Key>
-            <PropertyRef Name="MessageQueueNutritionId" />
-          </Key>
-          <Property Name="MessageQueueNutritionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MessageQueueId" Type="Int32" Nullable="false" />
-          <Property Name="Plu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RecipeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Allergens" Type="String" MaxLength="510" FixedLength="false" Unicode="true" />
-          <Property Name="Ingredients" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="ServingsPerPortion" Type="Double" />
-          <Property Name="ServingSizeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ServingPerContainer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HshRating" Type="Int32" />
-          <Property Name="ServingUnits" Type="Byte" />
-          <Property Name="SizeWeight" Type="Int32" />
-          <Property Name="Calories" Type="Int32" />
-          <Property Name="CaloriesFat" Type="Int32" />
-          <Property Name="CaloriesSaturatedFat" Type="Int32" />
-          <Property Name="TotalFatWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="TotalFatPercentage" Type="Int16" />
-          <Property Name="SaturatedFatWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="SaturatedFatPercent" Type="Int16" />
-          <Property Name="PolyunsaturatedFat" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="MonounsaturatedFat" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="CholesterolWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="CholesterolPercent" Type="Int16" />
-          <Property Name="SodiumWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="SodiumPercent" Type="Int16" />
-          <Property Name="PotassiumWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="PotassiumPercent" Type="Int16" />
-          <Property Name="TotalCarbohydrateWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="TotalCarbohydratePercent" Type="Int16" />
-          <Property Name="DietaryFiberWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="DietaryFiberPercent" Type="Int16" />
-          <Property Name="SolubleFiber" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="InsolubleFiber" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="Sugar" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="SugarAlcohol" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="OtherCarbohydrates" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="ProteinWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="ProteinPercent" Type="Int16" />
-          <Property Name="VitaminA" Type="Int16" />
-          <Property Name="Betacarotene" Type="Int16" />
-          <Property Name="VitaminC" Type="Int16" />
-          <Property Name="Calcium" Type="Int16" />
-          <Property Name="Iron" Type="Int16" />
-          <Property Name="VitaminD" Type="Int16" />
-          <Property Name="VitaminE" Type="Int16" />
-          <Property Name="Thiamin" Type="Int16" />
-          <Property Name="Riboflavin" Type="Int16" />
-          <Property Name="Niacin" Type="Int16" />
-          <Property Name="VitaminB6" Type="Int16" />
-          <Property Name="Folate" Type="Int16" />
-          <Property Name="VitaminB12" Type="Int16" />
-          <Property Name="Biotin" Type="Int16" />
-          <Property Name="PantothenicAcid" Type="Int16" />
-          <Property Name="Phosphorous" Type="Int16" />
-          <Property Name="Iodine" Type="Int16" />
-          <Property Name="Magnesium" Type="Int16" />
-          <Property Name="Zinc" Type="Int16" />
-          <Property Name="Copper" Type="Int16" />
-          <Property Name="Transfat" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="CaloriesFromTransfat" Type="Int32" />
-          <Property Name="Om6Fatty" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="Om3Fatty" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="Starch" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="Chloride" Type="Int16" />
-          <Property Name="Chromium" Type="Int16" />
-          <Property Name="VitaminK" Type="Int16" />
-          <Property Name="Manganese" Type="Int16" />
-          <Property Name="Molybdenum" Type="Int16" />
-          <Property Name="Selenium" Type="Int16" />
-          <Property Name="TransfatWeight" Type="Decimal" Precision="10" Scale="1" />
-          <Property Name="HazardousMaterialFlag" Type="Int32" />
-          <Property Name="HazardousMaterialTypeCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueNutrition" ToRole="MessageQueueProduct" />
-        </EntityType>
-        <Association Name="FK_app__MessageQueueNutrition_MessageQueueId">
-          <End Type="Icon.Framework.Model.MessageQueueProduct" Role="MessageQueueProduct" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueNutrition" Role="MessageQueueNutrition" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageQueueProduct">
-              <PropertyRef Name="MessageQueueId" />
-            </Principal>
-            <Dependent Role="MessageQueueNutrition">
-              <PropertyRef Name="MessageQueueId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7344,6 +7344,85 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueNutrition">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueNutrition">
+              <MappingFragment StoreEntitySet="MessageQueueNutrition">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="HazardousMaterialTypeCode" ColumnName="HazardousMaterialTypeCode" />
+                <ScalarProperty Name="HazardousMaterialFlag" ColumnName="HazardousMaterialFlag" />
+                <ScalarProperty Name="TransfatWeight" ColumnName="TransfatWeight" />
+                <ScalarProperty Name="Selenium" ColumnName="Selenium" />
+                <ScalarProperty Name="Molybdenum" ColumnName="Molybdenum" />
+                <ScalarProperty Name="Manganese" ColumnName="Manganese" />
+                <ScalarProperty Name="VitaminK" ColumnName="VitaminK" />
+                <ScalarProperty Name="Chromium" ColumnName="Chromium" />
+                <ScalarProperty Name="Chloride" ColumnName="Chloride" />
+                <ScalarProperty Name="Starch" ColumnName="Starch" />
+                <ScalarProperty Name="Om3Fatty" ColumnName="Om3Fatty" />
+                <ScalarProperty Name="Om6Fatty" ColumnName="Om6Fatty" />
+                <ScalarProperty Name="CaloriesFromTransfat" ColumnName="CaloriesFromTransfat" />
+                <ScalarProperty Name="Transfat" ColumnName="Transfat" />
+                <ScalarProperty Name="Copper" ColumnName="Copper" />
+                <ScalarProperty Name="Zinc" ColumnName="Zinc" />
+                <ScalarProperty Name="Magnesium" ColumnName="Magnesium" />
+                <ScalarProperty Name="Iodine" ColumnName="Iodine" />
+                <ScalarProperty Name="Phosphorous" ColumnName="Phosphorous" />
+                <ScalarProperty Name="PantothenicAcid" ColumnName="PantothenicAcid" />
+                <ScalarProperty Name="Biotin" ColumnName="Biotin" />
+                <ScalarProperty Name="VitaminB12" ColumnName="VitaminB12" />
+                <ScalarProperty Name="Folate" ColumnName="Folate" />
+                <ScalarProperty Name="VitaminB6" ColumnName="VitaminB6" />
+                <ScalarProperty Name="Niacin" ColumnName="Niacin" />
+                <ScalarProperty Name="Riboflavin" ColumnName="Riboflavin" />
+                <ScalarProperty Name="Thiamin" ColumnName="Thiamin" />
+                <ScalarProperty Name="VitaminE" ColumnName="VitaminE" />
+                <ScalarProperty Name="VitaminD" ColumnName="VitaminD" />
+                <ScalarProperty Name="Iron" ColumnName="Iron" />
+                <ScalarProperty Name="Calcium" ColumnName="Calcium" />
+                <ScalarProperty Name="VitaminC" ColumnName="VitaminC" />
+                <ScalarProperty Name="Betacarotene" ColumnName="Betacarotene" />
+                <ScalarProperty Name="VitaminA" ColumnName="VitaminA" />
+                <ScalarProperty Name="ProteinPercent" ColumnName="ProteinPercent" />
+                <ScalarProperty Name="ProteinWeight" ColumnName="ProteinWeight" />
+                <ScalarProperty Name="OtherCarbohydrates" ColumnName="OtherCarbohydrates" />
+                <ScalarProperty Name="SugarAlcohol" ColumnName="SugarAlcohol" />
+                <ScalarProperty Name="Sugar" ColumnName="Sugar" />
+                <ScalarProperty Name="InsolubleFiber" ColumnName="InsolubleFiber" />
+                <ScalarProperty Name="SolubleFiber" ColumnName="SolubleFiber" />
+                <ScalarProperty Name="DietaryFiberPercent" ColumnName="DietaryFiberPercent" />
+                <ScalarProperty Name="DietaryFiberWeight" ColumnName="DietaryFiberWeight" />
+                <ScalarProperty Name="TotalCarbohydratePercent" ColumnName="TotalCarbohydratePercent" />
+                <ScalarProperty Name="TotalCarbohydrateWeight" ColumnName="TotalCarbohydrateWeight" />
+                <ScalarProperty Name="PotassiumPercent" ColumnName="PotassiumPercent" />
+                <ScalarProperty Name="PotassiumWeight" ColumnName="PotassiumWeight" />
+                <ScalarProperty Name="SodiumPercent" ColumnName="SodiumPercent" />
+                <ScalarProperty Name="SodiumWeight" ColumnName="SodiumWeight" />
+                <ScalarProperty Name="CholesterolPercent" ColumnName="CholesterolPercent" />
+                <ScalarProperty Name="CholesterolWeight" ColumnName="CholesterolWeight" />
+                <ScalarProperty Name="MonounsaturatedFat" ColumnName="MonounsaturatedFat" />
+                <ScalarProperty Name="PolyunsaturatedFat" ColumnName="PolyunsaturatedFat" />
+                <ScalarProperty Name="SaturatedFatPercent" ColumnName="SaturatedFatPercent" />
+                <ScalarProperty Name="SaturatedFatWeight" ColumnName="SaturatedFatWeight" />
+                <ScalarProperty Name="TotalFatPercentage" ColumnName="TotalFatPercentage" />
+                <ScalarProperty Name="TotalFatWeight" ColumnName="TotalFatWeight" />
+                <ScalarProperty Name="CaloriesSaturatedFat" ColumnName="CaloriesSaturatedFat" />
+                <ScalarProperty Name="CaloriesFat" ColumnName="CaloriesFat" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="SizeWeight" ColumnName="SizeWeight" />
+                <ScalarProperty Name="ServingUnits" ColumnName="ServingUnits" />
+                <ScalarProperty Name="HshRating" ColumnName="HshRating" />
+                <ScalarProperty Name="ServingPerContainer" ColumnName="ServingPerContainer" />
+                <ScalarProperty Name="ServingSizeDesc" ColumnName="ServingSizeDesc" />
+                <ScalarProperty Name="ServingsPerPortion" ColumnName="ServingsPerPortion" />
+                <ScalarProperty Name="Ingredients" ColumnName="Ingredients" />
+                <ScalarProperty Name="Allergens" ColumnName="Allergens" />
+                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
+                <ScalarProperty Name="Plu" ColumnName="Plu" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+                <ScalarProperty Name="MessageQueueNutritionId" ColumnName="MessageQueueNutritionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
@@ -7363,12 +7442,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="TrayWidth" ColumnName="TrayWidth" />
                 <ScalarProperty Name="TrayHeight" ColumnName="TrayHeight" />
                 <ScalarProperty Name="TrayDepth" ColumnName="TrayDepth" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="ItemWeight" ColumnName="ItemWeight" />
                 <ScalarProperty Name="Cube" ColumnName="Cube" />
                 <ScalarProperty Name="ItemWidth" ColumnName="ItemWidth" />
                 <ScalarProperty Name="ItemHeight" ColumnName="ItemHeight" />
                 <ScalarProperty Name="ItemDepth" ColumnName="ItemDepth" />
-                <ScalarProperty Name="GMOTransparency" ColumnName="GMOTransparency" />
+                <ScalarProperty Name="NonGMOTransparency" ColumnName="NonGMOTransparency" />
                 <ScalarProperty Name="DataSource" ColumnName="DataSource" />
                 <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
                 <ScalarProperty Name="KitchenDescription" ColumnName="KitchenDescription" />
@@ -7468,85 +7547,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
                 <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
                 <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MessageQueueNutrition">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueNutrition">
-              <MappingFragment StoreEntitySet="MessageQueueNutrition">
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="HazardousMaterialTypeCode" ColumnName="HazardousMaterialTypeCode" />
-                <ScalarProperty Name="HazardousMaterialFlag" ColumnName="HazardousMaterialFlag" />
-                <ScalarProperty Name="TransfatWeight" ColumnName="TransfatWeight" />
-                <ScalarProperty Name="Selenium" ColumnName="Selenium" />
-                <ScalarProperty Name="Molybdenum" ColumnName="Molybdenum" />
-                <ScalarProperty Name="Manganese" ColumnName="Manganese" />
-                <ScalarProperty Name="VitaminK" ColumnName="VitaminK" />
-                <ScalarProperty Name="Chromium" ColumnName="Chromium" />
-                <ScalarProperty Name="Chloride" ColumnName="Chloride" />
-                <ScalarProperty Name="Starch" ColumnName="Starch" />
-                <ScalarProperty Name="Om3Fatty" ColumnName="Om3Fatty" />
-                <ScalarProperty Name="Om6Fatty" ColumnName="Om6Fatty" />
-                <ScalarProperty Name="CaloriesFromTransfat" ColumnName="CaloriesFromTransfat" />
-                <ScalarProperty Name="Transfat" ColumnName="Transfat" />
-                <ScalarProperty Name="Copper" ColumnName="Copper" />
-                <ScalarProperty Name="Zinc" ColumnName="Zinc" />
-                <ScalarProperty Name="Magnesium" ColumnName="Magnesium" />
-                <ScalarProperty Name="Iodine" ColumnName="Iodine" />
-                <ScalarProperty Name="Phosphorous" ColumnName="Phosphorous" />
-                <ScalarProperty Name="PantothenicAcid" ColumnName="PantothenicAcid" />
-                <ScalarProperty Name="Biotin" ColumnName="Biotin" />
-                <ScalarProperty Name="VitaminB12" ColumnName="VitaminB12" />
-                <ScalarProperty Name="Folate" ColumnName="Folate" />
-                <ScalarProperty Name="VitaminB6" ColumnName="VitaminB6" />
-                <ScalarProperty Name="Niacin" ColumnName="Niacin" />
-                <ScalarProperty Name="Riboflavin" ColumnName="Riboflavin" />
-                <ScalarProperty Name="Thiamin" ColumnName="Thiamin" />
-                <ScalarProperty Name="VitaminE" ColumnName="VitaminE" />
-                <ScalarProperty Name="VitaminD" ColumnName="VitaminD" />
-                <ScalarProperty Name="Iron" ColumnName="Iron" />
-                <ScalarProperty Name="Calcium" ColumnName="Calcium" />
-                <ScalarProperty Name="VitaminC" ColumnName="VitaminC" />
-                <ScalarProperty Name="Betacarotene" ColumnName="Betacarotene" />
-                <ScalarProperty Name="VitaminA" ColumnName="VitaminA" />
-                <ScalarProperty Name="ProteinPercent" ColumnName="ProteinPercent" />
-                <ScalarProperty Name="ProteinWeight" ColumnName="ProteinWeight" />
-                <ScalarProperty Name="OtherCarbohydrates" ColumnName="OtherCarbohydrates" />
-                <ScalarProperty Name="SugarAlcohol" ColumnName="SugarAlcohol" />
-                <ScalarProperty Name="Sugar" ColumnName="Sugar" />
-                <ScalarProperty Name="InsolubleFiber" ColumnName="InsolubleFiber" />
-                <ScalarProperty Name="SolubleFiber" ColumnName="SolubleFiber" />
-                <ScalarProperty Name="DietaryFiberPercent" ColumnName="DietaryFiberPercent" />
-                <ScalarProperty Name="DietaryFiberWeight" ColumnName="DietaryFiberWeight" />
-                <ScalarProperty Name="TotalCarbohydratePercent" ColumnName="TotalCarbohydratePercent" />
-                <ScalarProperty Name="TotalCarbohydrateWeight" ColumnName="TotalCarbohydrateWeight" />
-                <ScalarProperty Name="PotassiumPercent" ColumnName="PotassiumPercent" />
-                <ScalarProperty Name="PotassiumWeight" ColumnName="PotassiumWeight" />
-                <ScalarProperty Name="SodiumPercent" ColumnName="SodiumPercent" />
-                <ScalarProperty Name="SodiumWeight" ColumnName="SodiumWeight" />
-                <ScalarProperty Name="CholesterolPercent" ColumnName="CholesterolPercent" />
-                <ScalarProperty Name="CholesterolWeight" ColumnName="CholesterolWeight" />
-                <ScalarProperty Name="MonounsaturatedFat" ColumnName="MonounsaturatedFat" />
-                <ScalarProperty Name="PolyunsaturatedFat" ColumnName="PolyunsaturatedFat" />
-                <ScalarProperty Name="SaturatedFatPercent" ColumnName="SaturatedFatPercent" />
-                <ScalarProperty Name="SaturatedFatWeight" ColumnName="SaturatedFatWeight" />
-                <ScalarProperty Name="TotalFatPercentage" ColumnName="TotalFatPercentage" />
-                <ScalarProperty Name="TotalFatWeight" ColumnName="TotalFatWeight" />
-                <ScalarProperty Name="CaloriesSaturatedFat" ColumnName="CaloriesSaturatedFat" />
-                <ScalarProperty Name="CaloriesFat" ColumnName="CaloriesFat" />
-                <ScalarProperty Name="Calories" ColumnName="Calories" />
-                <ScalarProperty Name="SizeWeight" ColumnName="SizeWeight" />
-                <ScalarProperty Name="ServingUnits" ColumnName="ServingUnits" />
-                <ScalarProperty Name="HshRating" ColumnName="HshRating" />
-                <ScalarProperty Name="ServingPerContainer" ColumnName="ServingPerContainer" />
-                <ScalarProperty Name="ServingSizeDesc" ColumnName="ServingSizeDesc" />
-                <ScalarProperty Name="ServingsPerPortion" ColumnName="ServingsPerPortion" />
-                <ScalarProperty Name="Ingredients" ColumnName="Ingredients" />
-                <ScalarProperty Name="Allergens" ColumnName="Allergens" />
-                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
-                <ScalarProperty Name="Plu" ColumnName="Plu" />
-                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
-                <ScalarProperty Name="MessageQueueNutritionId" ColumnName="MessageQueueNutritionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

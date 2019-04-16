@@ -56,9 +56,9 @@ ELSE
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
 			VALUES(190, @TraitGroupID, 'DAT', N'Data Source', '');
 			
-	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'GMT')
+	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'NGT')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES(191, @TraitGroupID, 'GMT', N'GMO Transparency', '');
+			VALUES(191, @TraitGroupID, 'NGT', N'NON-GMO Transparency', '');
 			
 	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'IDP')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
@@ -78,7 +78,7 @@ ELSE
 			
 	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'IWT')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 
-			VALUES(196, @TraitGroupID, 'IWT', N'Weight', '');
+			VALUES(196, @TraitGroupID, 'IWT', N'Item Weight', '');
 			
 	IF NOT EXISTS(SELECT 1 FROM dbo.Trait WHERE traitCode= 'TDP')
 	  INSERT dbo.Trait(traitID, traitGroupID, traitCode, traitDesc, traitPattern) 

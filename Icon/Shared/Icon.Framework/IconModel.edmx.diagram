@@ -186,12 +186,12 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueNutrition" Width="1.5" PointX="27.25" PointY="39.625" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueProduct" Width="1.5" PointX="25" PointY="0.75" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueNutrition" Width="1.5" PointX="27.25" PointY="39.625" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

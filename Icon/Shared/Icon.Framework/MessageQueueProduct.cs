@@ -118,12 +118,12 @@ namespace Icon.Framework
         public string KitchenDescription { get; set; }
         public string ImageURL { get; set; }
         public string DataSource { get; set; }
-        public string GMOTransparency { get; set; }
+        public string NonGMOTransparency { get; set; }
         public Nullable<decimal> ItemDepth { get; set; }
         public Nullable<decimal> ItemHeight { get; set; }
         public Nullable<decimal> ItemWidth { get; set; }
         public Nullable<decimal> Cube { get; set; }
-        public Nullable<decimal> Weight { get; set; }
+        public Nullable<decimal> ItemWeight { get; set; }
         public Nullable<decimal> TrayDepth { get; set; }
         public Nullable<decimal> TrayHeight { get; set; }
         public Nullable<decimal> TrayWidth { get; set; }
@@ -142,8 +142,8 @@ namespace Icon.Framework
         public string LineExtension { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
+        public virtual ICollection<MessageQueueNutrition> MessageQueueNutrition { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
-        public virtual ICollection<MessageQueueNutrition> MessageQueueNutrition { get; set; }
     }
 }
