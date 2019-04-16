@@ -504,4 +504,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="LastUpdatedDateUtc" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="95c7711b-7c64-4384-8d88-5cfac1c670ed" ChangeDateTime="04/15/2019 15:20:15">
+    <Property Name="ElementName" Value="[dbo].[KitType].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[KitType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="KitType" />
+  </Operation>
 </Operations>
