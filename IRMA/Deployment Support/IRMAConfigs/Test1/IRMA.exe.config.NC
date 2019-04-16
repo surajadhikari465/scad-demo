@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-  <configSections>
-    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net"/>
-  </configSections>
-	<appSettings>
-		<!-- identifies this application and the environment it is connected to -->
-		<add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
-		<add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
-		<!-- Flag set to true if the database connection strings are encrypted -->
-		<add key="encryptedConnectionStrings" value="False"/>
-	</appSettings>
+	<configSections>
+		<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net"/>
+	</configSections>
+  <appSettings>
+	  <!-- identifies this application and the environment it is connected to -->
+	  <add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
+	  <add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
+	  <!-- Flag set to true if the database connection strings are encrypted -->
+	  <add key="encryptedConnectionStrings" value="false"/>
+  </appSettings>
 
 	<connectionStrings>
+		<!-- Server: idd-ma   Database: ItemCatalog -->
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<!--UK Test Database: idd-uk.ItemCatalog using IRMA Client account-->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=uk-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=$HLvBgOK^y#Rirs;" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=nc-db01-tst01;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=kbV^M2B!p27*irs;" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<!--UK Test Database: idd-uk.ItemCatalog using IRMA Client account-->
-		<add name="ODBC" connectionString="Driver={SQL Server};Server=uk-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=$HLvBgOK^y#Rirs;APP=" />
-		<!--UK Test Database: idT-uk.ItemCatalog using IRMA Reporting account-->
-		<add name="ODBCCrystal" connectionString="Server};Server=uk-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=$HLvBgOK^y#Rrpt;APP=C.Report" />
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=nc-db01-tst01;Database=ItemCatalog;UID=IRSUser;PWD=kbV^M2B!p27*irs;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=nc-db01-tst01;Database=ItemCatalog;UID=IRMAReports;PWD=kbV^M2B!p27*rpt;"/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -38,7 +36,7 @@
 			</layout>
 		</appender>
 		<appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-			<file value="C:\temp\IRMAClient.UK.Dev.log" />
+			<file value="C:\temp\IRMAClient.NC.Test1.log" />
 			<appendToFile value="true" />
 			<rollingStyle value="Composite" />
 			<datePattern value="yyyyMMdd" />

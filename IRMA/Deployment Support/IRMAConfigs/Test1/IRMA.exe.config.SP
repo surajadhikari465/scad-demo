@@ -4,22 +4,21 @@
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net"/>
   </configSections>
   
-  <appSettings>
-      <!-- identifies this application and the environment it is connected to -->
-      <add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
-      <add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
-      <!-- Flag set to true if the database connection strings are encrypted -->
-      <add key="encryptedConnectionStrings" value="False"/>
+	<appSettings>
+     <!-- identifies this application and the environment it is connected to -->
+	  <add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
+	  <add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
+	  <!-- Flag set to true if the database connection strings are encrypted -->
+	  <add key="encryptedConnectionStrings" value="false"/>
+
   </appSettings>
 
-
   <connectionStrings>
-    <!-- Server: idd-mw   Database: ItemCatalog -->
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=mw-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=jx*vUb6P6SmIirs;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=sp-db01-tst01;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=pQQG*HaKy291irs;" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=mw-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=jx*vUb6P6SmIirs;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=mw-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=jx*vUb6P6SmIrpt;"/>
+		<add name="ODBC" connectionString ="Driver={SQL Server};Server=sp-db01-tst01;Database=ItemCatalog;UID=IRSUser;PWD=pQQG*HaKy291irs;APP="/>
+		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=sp-db01-tst01;Database=ItemCatalog;UID=IRMAReports;PWD=pQQG*HaKy291rpt;"/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -38,7 +37,7 @@
       </layout>
     </appender>
 		<appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-			<file value="C:\temp\IRMAClient.MW.Dev.log" />
+			<file value="C:\temp\IRMAClient.SP.Test1.log" />
 			<appendToFile value="true" />
 			<rollingStyle value="Composite" />
 			<datePattern value="yyyyMMdd" />
