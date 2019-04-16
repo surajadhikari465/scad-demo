@@ -196,12 +196,12 @@ namespace Icon.Framework
         public const string Designation = "GRD";
         public const string ParentCompany = "PCO";
         public const string DataSource = "DAT";
-        public const string GmoTransparency = "GMT";
+        public const string NonGmoTransparency = "NGT";
         public const string ItemDepth = "IDP";
         public const string ItemHeight = "IHT";
         public const string ItemWidth = "IWD";
         public const string Cube = "CUB";
-        public const string Weight = "IWT";
+        public const string ItemWeight = "IWT";
         public const string TrayDepth = "TDP";
         public const string TrayHeight = "THT";
         public const string TrayWidth = "TWD";
