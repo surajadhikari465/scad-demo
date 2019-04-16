@@ -91,10 +91,10 @@
                                         </ns0:subTeamName>
                                     </xsl:if>
                                     <ns0:hostSubTeamNumber>
-                                        <xsl:value-of select="HostSubTeam"/>
+                                        <xsl:value-of select="HostSubTeamNumber"/>
                                     </ns0:hostSubTeamNumber>
                                     <ns0:hostSubTeamName>
-                                        <xsl:value-of select="HostSubTeamNumber"/>
+                                        <xsl:value-of select="HostSubTeam"/>
                                     </ns0:hostSubTeamName>
                                 </pfx2:SubTeam>
                                 <pfx2:itemVIN>

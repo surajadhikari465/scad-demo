@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/Publish Received Order Service.process</processProperty>
         </processArchive>
-        <versionProperty>39</versionProperty>
+        <versionProperty>40</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishReceivedOrderService</name>
