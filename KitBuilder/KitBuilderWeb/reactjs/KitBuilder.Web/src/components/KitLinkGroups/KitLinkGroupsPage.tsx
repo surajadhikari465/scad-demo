@@ -475,12 +475,10 @@ class KitLinkGroupPage extends React.Component<
     this.state.kitDetails.kitLinkGroupLocaleList.map((linkGroup: any) => {
       if (linkGroup.properties != null) {
         linkGroup.properties = JSON.stringify(linkGroup.properties);
-        linkGroup.lastModifiedBy = "Priyanka";
       }
       linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
         if (linkGroupItem.properties != null) {
           linkGroupItem.properties = JSON.stringify(linkGroupItem.properties);
-          linkGroupItem.lastModifiedBy = "Priyanka";
         }
       });
     });

@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
+import { Add, Delete } from "@material-ui/icons";
 import { LinkGroup } from "../../../../types/LinkGroup";
 
 const styles = (theme: any) => ({
@@ -71,7 +72,7 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
                       disabled={this.isAlreadyQueued(row.original) || this.isAlreadyAddedToKit(row.original)}
                       onClick={() => this.handleSelect(row.original)}
                     >
-                      Select
+                      <Add/>
                     </Button>
                   </Grid>
                 </Grid>
@@ -108,7 +109,7 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
                     color="secondary"
                     onClick={() => this.props.onDeQueue(row.original)}
                   >
-                    Remove
+                    <Delete/>
                   </Button>
                 </Grid>
               )

@@ -40,7 +40,8 @@ export class CopyLinkGroupButton extends React.Component<IProps, IState> {
   }
 
   CopyLinkGroupClick = () => {
-    const { name, description, errors } = this.state;
+    const { description, errors } = this.state;
+    const name = this.state.name.trim();
     if(name === "") {
       this.setState({
         errors: {
@@ -140,7 +141,7 @@ export class CopyLinkGroupButton extends React.Component<IProps, IState> {
               error = {!!errors.name.length}
               helperText={errors.name.join(" ,")}
               value={name}
-              onChange={e => this.setState({ name: e.target.value.trim(), errors: this.defaultErrors() })}
+              onChange={e => this.setState({ name: e.target.value, errors: this.defaultErrors() })}
               InputLabelProps={{ shrink: true }}
               fullWidth
               className="mt-3 mb-3"
@@ -152,7 +153,7 @@ export class CopyLinkGroupButton extends React.Component<IProps, IState> {
               error = {!!errors.description.length}
               helperText={errors.description.join(" ,")}
               value={description}
-              onChange={e => this.setState({ description: e.target.value.trim(), errors: this.defaultErrors() })}
+              onChange={e => this.setState({ description: e.target.value, errors: this.defaultErrors() })}
               InputLabelProps={{ shrink: true }}
               fullWidth
             />
