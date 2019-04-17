@@ -138,7 +138,7 @@ namespace Icon.Web.Mvc.Controllers
                 };
 
             viewModel.BrandHashKey = CalculateHashKey(viewModel.BrandName, viewModel.BrandAbbreviation);
-            viewModel.TraitHashKey = CalculateHashKey(viewModel.Designation, viewModel.ZipCode, viewModel.Locality, viewModel.ParentCompany); 
+            viewModel.TraitHashKey = CalculateHashKey(viewModel.BrandAbbreviation, viewModel.Designation, viewModel.ZipCode, viewModel.Locality, viewModel.ParentCompany); 
 
             return View(viewModel);
         }
@@ -203,8 +203,10 @@ namespace Icon.Web.Mvc.Controllers
             {
                  ViewData["ErrorMessage"] = ex.Message;
             }
-
+           
             viewModel.BrandList = GetBrandList();
+            viewModel.BrandHashKey = CalculateHashKey(viewModel.BrandName, viewModel.BrandAbbreviation);
+            viewModel.TraitHashKey = CalculateHashKey(viewModel.BrandAbbreviation, viewModel.Designation, viewModel.ZipCode, viewModel.Locality, viewModel.ParentCompany); 
             return View(viewModel);
         }
 
