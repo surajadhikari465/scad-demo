@@ -20,7 +20,8 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
+    [Ignore]
     public class BrandControllerTests
     {
         private BrandController controller;
@@ -29,8 +30,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<ILogger> mockLogger;
         private Mock<IQueryHandler<GetBrandsParameters, List<BrandModel>>> mockGetBrandsQuery;
         private Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>> mockGetHierarchyClassQuery;
-        private Mock<IManagerHandler<AddBrandManager>> mockAddBrandManagerHandler;
-        private Mock<IManagerHandler<UpdateBrandManager>> mockUpdateBrandManagerHandler;
+        private Mock<IManagerHandler<BrandManager>> mockBrandManagerHandler;
         private Mock<IExcelExporterService> mockExcelExporterService;
         private HierarchyClass testBrand;
         private string testBrandName;
@@ -43,8 +43,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockLogger = new Mock<ILogger>();
             mockGetBrandsQuery = new Mock<IQueryHandler<GetBrandsParameters, List<BrandModel>>>();
             mockGetHierarchyClassQuery = new Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>>();
-            mockAddBrandManagerHandler = new Mock<IManagerHandler<AddBrandManager>>();
-            mockUpdateBrandManagerHandler = new Mock<IManagerHandler<UpdateBrandManager>>();
+            mockBrandManagerHandler = new Mock<IManagerHandler<BrandManager>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
 
             testBrandName = "Test Brand";
@@ -54,8 +53,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockLogger.Object,
                 mockGetBrandsQuery.Object,
                 mockGetHierarchyClassQuery.Object,
-                mockAddBrandManagerHandler.Object,
-                mockUpdateBrandManagerHandler.Object,
+                mockBrandManagerHandler.Object,
                 mockExcelExporterService.Object);
 
             transaction = context.Database.BeginTransaction();
@@ -147,7 +145,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var result = controller.Create(viewModel) as ViewResult;
 
             // Then.
-            mockAddBrandManagerHandler.Verify(t => t.Execute(It.IsAny<AddBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
         }
 
         [TestMethod]
@@ -167,7 +165,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var viewData = result.ViewData;
             string expectedSuccessMessage = String.Format("Successfully added brand {0}.", testBrandName);
 
-            mockAddBrandManagerHandler.Verify(t => t.Execute(It.IsAny<AddBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(expectedSuccessMessage, viewData["SuccessMessage"]);
         }
@@ -189,7 +187,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var viewData = result.ViewData;
             string expectedSuccessMessage = String.Format("Successfully added brand {0} with abbreviation {1}.", testBrandName, testBrandAbbreviation);
 
-            mockAddBrandManagerHandler.Verify(t => t.Execute(It.IsAny<AddBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(expectedSuccessMessage, viewData["SuccessMessage"]);
         }
@@ -199,8 +197,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         {
             // Given.
             string errorMessage = "An unexpected error occurred.";
-            mockAddBrandManagerHandler.Setup(t => t.Execute(It.IsAny<AddBrandManager>())).Throws(new CommandException(errorMessage));
-            
+            mockBrandManagerHandler.Setup(t => t.Execute(It.IsAny<BrandManager>())).Throws(new CommandException(errorMessage));
+
             var viewModel = new BrandViewModel
             {
                 BrandName = testBrandName,
@@ -213,7 +211,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var viewData = result.ViewData;
 
-            mockAddBrandManagerHandler.Verify(t => t.Execute(It.IsAny<AddBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(errorMessage, viewData["ErrorMessage"]);
@@ -223,11 +221,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void BrandControllerEditGet_InitialPageLoad_BrandInformationShouldBeDisplayed()
         {
             // Given.
-            testBrand = new TestHierarchyClassBuilder()
-                .WithHierarchyId(Hierarchies.Brands)
-                .WithHierarchyLevel(1)
-                .WithHierarchyParentClassId(null)
-                .WithBrandAbbreviation(testBrandAbbreviation);
+            testBrand = new HierarchyClass(){ hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
 
             testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
 
@@ -288,7 +283,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var result = controller.Edit(viewModel) as ViewResult;
 
             // Then.
-            mockUpdateBrandManagerHandler.Verify(t => t.Execute(It.IsAny<UpdateBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
         }
 
         [TestMethod]
@@ -296,7 +291,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         {
             // Given.
             string successMessage = "Brand update was successful.";
-            
+
             var viewModel = new BrandViewModel
             {
                 BrandName = testBrandName,
@@ -310,7 +305,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var returnedViewModel = result.Model as BrandViewModel;
             var viewData = result.ViewData;
 
-            mockUpdateBrandManagerHandler.Verify(t => t.Execute(It.IsAny<UpdateBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(successMessage, viewData["SuccessMessage"]);
         }
@@ -320,7 +315,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         {
             // Given.
             string errorMessage = "An unexpected error occurred.";
-            mockUpdateBrandManagerHandler.Setup(t => t.Execute(It.IsAny<UpdateBrandManager>())).Throws(new CommandException(errorMessage));
+            mockBrandManagerHandler.Setup(t => t.Execute(It.IsAny<BrandManager>())).Throws(new CommandException(errorMessage));
 
             var viewModel = new BrandViewModel
             {
@@ -335,7 +330,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var returnedViewModel = result.Model as BrandViewModel;
             var viewData = result.ViewData;
 
-            mockUpdateBrandManagerHandler.Verify(t => t.Execute(It.IsAny<UpdateBrandManager>()), Times.Once);
+            mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             mockLogger.Verify(l => l.Error(It.IsAny<string>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(errorMessage, viewData["ErrorMessage"]);

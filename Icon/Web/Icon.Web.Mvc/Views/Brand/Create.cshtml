@@ -17,55 +17,57 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-      <legend>Create New Brand</legend>
+  <fieldset>
+    <legend>Create New Brand</legend>
 
-      <div class="row">
-        @Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
-          @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
-        </div>
+    <div class="row">
+      @Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
+        @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
       </div>
+    </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-          @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
-        </div>
+    <div class="row">
+      @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+        @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
       </div>
+    </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.Designation, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.DropDownList("Designation", new SelectList(Icon.Web.Mvc.Models.BrandViewModel.DesignationList))
-        </div>
-      </div>
+    <hr />
 
-      <div class="row">
-        @Html.LabelFor(model => model.ParentCompany, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.DropDownList("ParentCompany", new SelectList(Model == null || Model.BrandList == null ? new string[]{} : Model.BrandList), "Select a Brand... (Optional)")
-        </div>
+    <div class="row">
+      @Html.LabelFor(model => model.Designation, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.DropDownList("Designation", new SelectList(Icon.Web.Mvc.Models.BrandViewModel.DesignationList), "Select a Designation... (Optional)")
       </div>
+    </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.ZipCode, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.ZipCode, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-          @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "col-md-4 form-property-val" })
-        </div>
+    <div class="row">
+      @Html.LabelFor(model => model.ParentCompany, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.DropDownList("ParentCompany", new SelectList(Model == null || Model.BrandList == null ? new string[]{} : Model.BrandList), "Select a Brand... (Optional)")
       </div>
+    </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.Locality, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.Locality, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-          @Html.ValidationMessageFor(model => model.Locality, null, new { @class = "col-md-4 form-property-val" })
-        </div>
+    <div class="row">
+      @Html.LabelFor(model => model.ZipCode, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.TextBoxFor(model => model.ZipCode, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+        @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "col-md-4 form-property-val" })
       </div>
-    </fieldset>
+    </div>
+
+    <div class="row">
+      @Html.LabelFor(model => model.Locality, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.TextBoxFor(model => model.Locality, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+        @Html.ValidationMessageFor(model => model.Locality, null, new { @class = "col-md-4 form-property-val" })
+      </div>
+    </div>
+  </fieldset>
 
     <div class="row">
       <div class="col-md-offset-2 col-md-1">

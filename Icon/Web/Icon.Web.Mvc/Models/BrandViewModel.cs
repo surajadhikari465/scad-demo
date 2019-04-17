@@ -21,7 +21,7 @@ namespace Icon.Web.Mvc.Models
         [RegularExpression(@"^(Global|Regional)$", ErrorMessage = "Valid values are Global or Regional")]
         public string Designation { get; set; }
 
-        public static IEnumerable<string> DesignationList { get { return new string[] { string.Empty, "Global", "Regional" }; }}
+        public static IEnumerable<string> DesignationList { get { return new string[] { "Global", "Regional" }; }}
 
         [Display(Name = "Parent Company")]
         public string ParentCompany { get; set; }
@@ -35,6 +35,11 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Locality")]
         [RegularExpression(@"^.{1,35}$", ErrorMessage = "Locality should be up to 35 characters length.")]
         public string Locality { get; set; }
+
+        public bool IsBrandCoreUpdateAuthorized { get; set; } //BrandName and BrandAbbreviation update is restricted.
+
+        public string BrandHashKey { get; set; }
+        public string TraitHashKey { get; set; }
 
         public BrandViewModel() { }
 

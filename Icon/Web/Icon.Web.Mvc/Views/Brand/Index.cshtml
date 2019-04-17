@@ -20,16 +20,15 @@
 <hr />
 
 <div id="brands" class="page-section">
-
     @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-default form-submit" })
-
+    
     <hr />
 
     @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.BrandViewModel>()
             .ID("brandGrid")
             .PrimaryKey("HierarchyClassId")
-            .AvgRowHeight("30px")
-            .Height("600px")
+            .AvgRowHeight("25px")
+            .Height("700px")
             .Width("100%")
             .RowVirtualization(true)
             .VirtualizationMode(VirtualizationMode.Fixed)
@@ -37,14 +36,13 @@
             .Columns(columns =>
             {
               columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("int").Width("10%");
-              columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("20%");
-              columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("10%");
+              columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("25%");
+              columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("15%");
               columns.For(c => c.Designation).HeaderText("Designation").DataType("string").Width("10%");
               columns.For(c => c.ParentCompany).HeaderText("Parent Company").DataType("string").Width("10%");
               columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
               columns.For(c => c.Locality).HeaderText("Locality").DataType("string").Width("10%");
-              columns.Unbound("Edit").Template("<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("Edit Link");
-              columns.Unbound("Delete").Template("<a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("Delete Link");
+              columns.Unbound("Action").Template("&nbsp&nbsp&nbsp&nbsp<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a> &nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("Actions");
             })
             .Features(features =>
             {

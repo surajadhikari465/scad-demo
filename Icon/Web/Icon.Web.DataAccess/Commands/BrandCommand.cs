@@ -2,7 +2,7 @@
 
 namespace Icon.Web.DataAccess.Commands
 {
-    public class UpdateBrandCommand
+    public class BrandCommand
     {
         public HierarchyClass Brand { get; set; }
     }

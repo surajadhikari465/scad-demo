@@ -11,7 +11,7 @@ namespace Icon.Web.Tests.Integration.Commands
     [TestClass] [Ignore]
     public class UpdateBrandHierarchyClassTraitsCommandHandlerTests
     {
-        private UpdateBrandHierarchyClassTraitsCommandHandler commandHandler;
+        private BrandHierarchyClassTraitsCommandHandler commandHandler;
         private IconContext context;
         private DbContextTransaction transaction;
         private HierarchyClass testBrand;
@@ -23,7 +23,7 @@ namespace Icon.Web.Tests.Integration.Commands
         public void Initialize()
         {
             context = new IconContext();
-            commandHandler = new UpdateBrandHierarchyClassTraitsCommandHandler(this.context);
+            commandHandler = new BrandHierarchyClassTraitsCommandHandler(this.context);
 
             testBrandAbbreviation = "ABBR";
             updatedBrandAbbreviation = "UPDABBR";

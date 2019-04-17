@@ -27,9 +27,8 @@ namespace Icon.Web.Mvc.App_Start
         protected override void Configure()
         {
             Mapper.CreateMap<AddHierarchyClassManager, AddHierarchyClassCommand>();
-            Mapper.CreateMap<AddBrandManager, AddBrandCommand>();
-            Mapper.CreateMap<UpdateBrandManager, UpdateBrandCommand>();
-            Mapper.CreateMap<UpdateBrandManager, UpdateBrandHierarchyClassTraitsCommand>();
+            Mapper.CreateMap<BrandManager, BrandCommand>();
+            Mapper.CreateMap<BrandManager, UpdateBrandHierarchyClassTraitsCommand>();
             Mapper.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassCommand>();
             Mapper.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassTraitCommand>();
             Mapper.CreateMap<AddHierarchyClassCommand, MessageHierarchyData>()

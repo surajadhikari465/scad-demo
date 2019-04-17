@@ -15,10 +15,14 @@ namespace Icon.Web.Tests.Unit.Managers
     [TestClass] [Ignore]
     public class AddBrandManagerHandlerTests
     {
-        private AddBrandManagerHandler managerHandler;
+        private BrandManagerHandler managerHandler;
         private IconContext context;
-        private Mock<ICommandHandler<AddBrandCommand>> mockAddBrandCommand;
+        private Mock<ICommandHandler<BrandCommand>> mockBrandCommand;
+        private Mock<ICommandHandler<BrandCommandHandler>> mockBrandCommandhandler;
+        private Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>> mockBrandTraitsCommand;
+        private Mock<ICommandHandler<UpdateHierarchyClassTraitCommandHandler>> mockBrandTraitsCommandHandler;
         private Mock<ICommandHandler<AddBrandMessageCommand>> mockAddBrandMessageCommand;
+        private Mock<ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>> mockBrandHierarchyClassTraitsCommand;
         private HierarchyClass testBrand;
         private string testBrandName;
         private string testBrandAbbreviation;
@@ -27,20 +31,20 @@ namespace Icon.Web.Tests.Unit.Managers
         public void Initialize()
         {
             context = new IconContext();
-            mockAddBrandCommand = new Mock<ICommandHandler<AddBrandCommand>>();
+            mockBrandCommand = new Mock<ICommandHandler<BrandCommand>>();
             mockAddBrandMessageCommand = new Mock<ICommandHandler<AddBrandMessageCommand>>();
+            mockBrandHierarchyClassTraitsCommand = new Mock<ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>>();
 
             testBrandName = "Test";
             testBrandAbbreviation = "ABBR";
-
-            testBrand = new TestHierarchyClassBuilder().WithHierarchyId(Hierarchies.Brands).WithHierarchyClassName(testBrandName);
+            testBrand = new HierarchyClass(){ hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
 
             AutoMapperWebConfiguration.Configure();
         }
 
         private void BuildManagerHandler()
         {
-            managerHandler = new AddBrandManagerHandler(context, mockAddBrandCommand.Object, mockAddBrandMessageCommand.Object);
+            managerHandler = new BrandManagerHandler(context, mockBrandCommand.Object, mockBrandHierarchyClassTraitsCommand.Object, mockAddBrandMessageCommand.Object);
         }
 
         [TestMethod]
@@ -48,18 +52,14 @@ namespace Icon.Web.Tests.Unit.Managers
         {
             // Given.
             BuildManagerHandler();
-
-            var manager = new AddBrandManager
-            {
-                Brand = testBrand,
-                BrandAbbreviation = testBrandAbbreviation
-            };
+            
+            var manager = GetBrandManager();
 
             // When.
             managerHandler.Execute(manager);
 
             // Then.
-            mockAddBrandCommand.Verify(c => c.Execute(It.IsAny<AddBrandCommand>()), Times.Once);
+            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Once);
             mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Once);
         }
 
@@ -70,15 +70,11 @@ namespace Icon.Web.Tests.Unit.Managers
             string exceptionMessage = "Duplicate";
             var duplicateValueException = new DuplicateValueException(exceptionMessage);
 
-            mockAddBrandCommand.Setup(c => c.Execute(It.IsAny<AddBrandCommand>())).Throws(duplicateValueException);
+            mockBrandCommand.Setup(c => c.Execute(It.IsAny<BrandCommand>())).Throws(duplicateValueException);
 
             BuildManagerHandler();
 
-            var manager = new AddBrandManager
-            {
-                Brand = testBrand,
-                BrandAbbreviation = testBrandAbbreviation
-            };
+            var manager = GetBrandManager();
 
             // When.
             CommandException caughtException = null;
@@ -87,7 +83,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 managerHandler.Execute(manager);
             }
-            catch (CommandException ex)
+            catch(CommandException ex)
             {
                 caughtException = ex;
             }
@@ -101,18 +97,14 @@ namespace Icon.Web.Tests.Unit.Managers
         public void AddBrand_AddBrandCommandThrowsUnexpectedException_CommandExceptionShouldBeThrownWithMessage()
         {
             // Given.
-            string exceptionMessage = String.Format("An error occurred when adding Brand {0}.", testBrandName);
+            string exceptionMessage = $"An error occurred when processing Brand <{testBrandName}> (ID: 0).";
             var unexpectedException = new Exception(exceptionMessage);
 
-            mockAddBrandCommand.Setup(c => c.Execute(It.IsAny<AddBrandCommand>())).Throws(unexpectedException);
+            mockBrandCommand.Setup(c => c.Execute(It.IsAny<BrandCommand>())).Throws(unexpectedException);
 
             BuildManagerHandler();
 
-            var manager = new AddBrandManager
-            {
-                Brand = testBrand,
-                BrandAbbreviation = testBrandAbbreviation
-            };
+            var manager = GetBrandManager();
 
             // When.
             Exception caughtException = null;
@@ -121,7 +113,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 managerHandler.Execute(manager);
             }
-            catch (CommandException ex)
+            catch(CommandException ex)
             {
                 caughtException = ex;
             }
@@ -135,18 +127,14 @@ namespace Icon.Web.Tests.Unit.Managers
         public void AddBrand_AddHierarchyClassMessageCommandThrowsException_CommandExceptionShouldBeThrownWithMessage()
         {
             // Given.
-            string exceptionMessage = String.Format("An error occurred when adding Brand {0}.", testBrandName);
+            string exceptionMessage = $"An error occurred when processing Brand <{testBrandName}> (ID: 0).";
             var unexpectedException = new Exception(exceptionMessage);
 
             mockAddBrandMessageCommand.Setup(c => c.Execute(It.IsAny<AddBrandMessageCommand>())).Throws(unexpectedException);
 
             BuildManagerHandler();
 
-            var manager = new AddBrandManager
-            {
-                Brand = testBrand,
-                BrandAbbreviation = testBrandAbbreviation
-            };
+            var manager = GetBrandManager();
 
             // When.
             Exception caughtException = null;
@@ -155,7 +143,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 managerHandler.Execute(manager);
             }
-            catch (CommandException ex)
+            catch(CommandException ex)
             {
                 caughtException = ex;
             }
@@ -163,6 +151,11 @@ namespace Icon.Web.Tests.Unit.Managers
             // Then.
             Assert.AreEqual(exceptionMessage, caughtException.Message);
             Assert.AreSame(caughtException.InnerException, unexpectedException);
+        }
+
+        BrandManager GetBrandManager()
+        {
+            return  new BrandManager() { Brand = testBrand, BrandAbbreviation = testBrandAbbreviation, Update = UpdateOptions.Brand | UpdateOptions.Traits };
         }
     }
 }

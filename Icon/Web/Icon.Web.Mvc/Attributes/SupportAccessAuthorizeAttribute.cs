@@ -1,21 +1,19 @@
-﻿namespace Icon.Web.Mvc.Attributes
-{
-    using Icon.Common;
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Web;
-    using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Configuration;
+using System.Web;
+using System.Web.Mvc;
 
+namespace Icon.Web.Mvc.Attributes
+{
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class SupportAccessAuthorizeAttribute : AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (httpContext.Request.IsAuthenticated)
+            if(httpContext.Request.IsAuthenticated)
             {
-                var adminAccessRoles = AppSettingsAccessor.GetStringSetting("AdminAccess").Split(',');
-                if (adminAccessRoles.Any(r => httpContext.User.IsInRole(r)))
+                if(ConfigurationManager.AppSettings["AdminAccess"].Split(',').Any(r => httpContext.User.IsInRole(r.Trim())))
                 {
                     return base.AuthorizeCore(httpContext);
                 }

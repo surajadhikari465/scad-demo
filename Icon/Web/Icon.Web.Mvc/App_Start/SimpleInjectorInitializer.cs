@@ -97,15 +97,14 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(ICommandHandler<DeleteHierarchyClassCommand>), typeof(DeleteHierarchyClassIconEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassCommand>), typeof(UpdateHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddBrandCommand>), typeof(AddBrandMammothEventDecorator));
-            container.RegisterDecorator(typeof(ICommandHandler<UpdateBrandCommand>), typeof(UpdateBrandMammothEventDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<BrandCommand>), typeof(UpdateBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportBrandModel>>), typeof(BulkImportBrandMammothEventDecorator));
 
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetUomParameters, List<UOM>>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetHierarchyLineageParameters, HierarchyClassListModel>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetBrandsParameters, List<BrandModel>>));
 
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddBrandManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateBrandManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BrandManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddEwicExclusionManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<RemoveEwicExclusionManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddEwicMappingManager>));

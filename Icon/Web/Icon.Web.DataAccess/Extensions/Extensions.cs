@@ -138,11 +138,6 @@ namespace Icon.Web.DataAccess.Extensions
             return duplicates.Any();
         }
 
-        public static bool ContainsDuplicateBrandAbbreviation(this IEnumerable<HierarchyClassTrait> hierarchyClassTraits, string brandAbbreviation)
-        {
-            return hierarchyClassTraits.Any(hct => hct.Trait.traitCode == TraitCodes.BrandAbbreviation && hct.traitValue.ToLower() == brandAbbreviation.ToLower());
-        }
-
         public static string ParsePeopleSoftNumber(this string hierarchyClassName)
         {
             if (String.IsNullOrWhiteSpace(hierarchyClassName))
@@ -168,16 +163,10 @@ namespace Icon.Web.DataAccess.Extensions
             context.SaveChanges();
         }
 
-        public static void AddHierarchyClassTrait(this HierarchyClass hierarchyClass, IconContext context, int currentID, string traitValue, bool saveChanges = false)
+        public static void AddHierarchyClassTrait(this HierarchyClass hierarchy, IconContext context, int currentID, string value, bool isForceValue = false)
         {
-            if(string.IsNullOrWhiteSpace(traitValue)) return;
-
-            context.HierarchyClassTrait.Add(new HierarchyClassTrait() { traitID = currentID, traitValue = traitValue.Trim(), hierarchyClassID = hierarchyClass.hierarchyClassID });
-
-            if(saveChanges)
-            {
-                context.SaveChanges();
-            }
+            if(string.IsNullOrWhiteSpace(value) && !isForceValue) return;
+            context.HierarchyClassTrait.Add(new HierarchyClassTrait() { traitID = currentID, traitValue = value?.Trim(), hierarchyClassID = hierarchy.hierarchyClassID });
         }
 
         public static void UpdateHierarchyClassTrait(this HierarchyClassTrait hierarchyClassTrait, IconContext context, string traitValue, bool removeIfNullOrEmpty, bool saveChanges = true)

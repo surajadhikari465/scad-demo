@@ -12,7 +12,7 @@ namespace Icon.Web.Tests.Integration.Commands
     [TestClass] [Ignore]
     public class UpdateBrandCommandHandlerTests
     {
-        private UpdateBrandCommandHandler commandHandler;
+        private BrandCommandHandler commandHandler;
         private IconContext context;
         private DbContextTransaction transaction;
         private HierarchyClass testBrand;
@@ -24,7 +24,7 @@ namespace Icon.Web.Tests.Integration.Commands
         public void Initialize()
         {
             context = new IconContext();
-            commandHandler = new UpdateBrandCommandHandler(this.context);
+            commandHandler = new BrandCommandHandler(this.context);
 
             updatedBrandName = "UpdateBrandTest";
 
@@ -66,7 +66,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 hierarchyClassName = updatedBrandName
             };
 
-            var command = new UpdateBrandCommand
+            var command = new BrandCommand
             {
                 Brand = brandToUpdate
             };
@@ -94,7 +94,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 hierarchyClassName = updatedBrandName.ToUpper()
             };
 
-            var command = new UpdateBrandCommand
+            var command = new BrandCommand
             {
                 Brand = brandToUpdate
             };
@@ -120,7 +120,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 hierarchyClassName = (testBrand.hierarchyClassName + "Unique").ToUpper()
             };
 
-            var command = new UpdateBrandCommand
+            var command = new BrandCommand
             {
                 Brand = brandToUpdate
             };
@@ -144,7 +144,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 hierarchyClassName = updatedBrandName
             };
 
-            var command = new UpdateBrandCommand
+            var command = new BrandCommand
             {
                 Brand = brandToUpdate
             };
@@ -177,7 +177,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 hierarchyClassName = updatedBrandName
             };
 
-            var command = new UpdateBrandCommand
+            var command = new BrandCommand
             {
                 Brand = brandToUpdate
             };

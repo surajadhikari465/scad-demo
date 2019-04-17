@@ -3,25 +3,20 @@ using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 namespace Icon.Web.DataAccess.Decorators
 {
-    public class UpdateBrandMammothEventDecorator : ICommandHandler<UpdateBrandCommand>
+    public class UpdateBrandMammothEventDecorator : ICommandHandler<BrandCommand>
     {
-        private readonly ICommandHandler<UpdateBrandCommand> commandHandler;
+        private readonly ICommandHandler<BrandCommand> commandHandler;
         private IconContext context;
         private ILogger logger;
 
         public UpdateBrandMammothEventDecorator(
-            ICommandHandler<UpdateBrandCommand> commandHandler,
+            ICommandHandler<BrandCommand> commandHandler,
             IconContext context,
             ILogger logger)
         {
@@ -30,16 +25,12 @@ namespace Icon.Web.DataAccess.Decorators
             this.logger = logger;
         }
 
-        public void Execute(UpdateBrandCommand command)
+        public void Execute(BrandCommand command)
         {
             commandHandler.Execute(command);
 
             bool enableMammothEventGeneration;
-
-            if (!Boolean.TryParse(ConfigurationManager.AppSettings["EnableMammothEventGeneration"].ToString(), out enableMammothEventGeneration))
-            {
-                enableMammothEventGeneration = false;
-            }
+            Boolean.TryParse(ConfigurationManager.AppSettings["EnableMammothEventGeneration"].ToString(), out enableMammothEventGeneration);
 
             //Generate mammoth events
             if (enableMammothEventGeneration)

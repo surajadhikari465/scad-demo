@@ -1,12 +1,12 @@
-﻿namespace Icon.Web.Mvc.Attributes
-{
-    using Icon.Common;
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Web;
-    using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using System.Configuration;
 
+namespace Icon.Web.Mvc.Attributes
+{
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class WriteAccessAuthorizeAttribute : AuthorizeAttribute
     {
@@ -18,47 +18,33 @@
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            bool grantAccess;
+            var inforDisableAccess = ConfigurationManager.AppSettings["InforDisableIconInterface"] == "1";
+            bool grantAccess = GlobalDataTeamException || !inforDisableAccess;
 
-            bool inforDisableAccess = AppSettingsAccessor.GetStringSetting("InforDisableIconInterface") == "1" ? true : false;
-
-            grantAccess = GlobalDataTeamException || !inforDisableAccess;
-
-            if (grantAccess && httpContext.Request.IsAuthenticated)
+            if(grantAccess && httpContext.Request.IsAuthenticated)
             {
-                var writeAccessRoles = AppSettingsAccessor.GetStringSetting("WriteAccess").Split(',');
-
-                grantAccess = writeAccessRoles.Any(r => httpContext.User.IsInRole(r));
+                grantAccess = ConfigurationManager.AppSettings["WriteAccess"].Split(',').Any(x => httpContext.User.IsInRole(x.Trim()));
             }
 
-            if (grantAccess)
-            {
-                return base.AuthorizeCore(httpContext);
-            }
-            else
-            {
-                return false;
-            }
+            return grantAccess ? base.AuthorizeCore(httpContext) : false;
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+            if(!filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 // The user is not authenticated
                 base.HandleUnauthorizedRequest(filterContext);
             }
-            else if (!this.Roles.Split(',').Any(filterContext.HttpContext.User.IsInRole))
+            else if(!this.Roles.Split(',').Any(filterContext.HttpContext.User.IsInRole))
             {
-                if (this.SetStatusCode)
+                if(this.SetStatusCode)
                 {
-                    filterContext.HttpContext.Response.StatusCode =
-                        (int)HttpStatusCode.Forbidden;
+                    filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 }
 
-                // The user is not in any of the listed roles => 
-                // show the unauthorized view
-                if (IsJsonResult)
+                // The user is not in any of the listed roles => show the unauthorized view
+                if(IsJsonResult)
                 {
                     filterContext.Result = new JsonResult
                     {

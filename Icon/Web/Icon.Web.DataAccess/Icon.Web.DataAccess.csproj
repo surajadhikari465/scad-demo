@@ -102,7 +102,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.4.5.1\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.4.10.1\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -241,16 +241,16 @@
     <Compile Include="Commands\UpdateVenueCommandHandler.cs" />
     <Compile Include="Commands\UpdateVenueCommand.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyCommand.cs" />
-    <Compile Include="Commands\UpdateBrandCommand.cs" />
+    <Compile Include="Commands\BrandCommand.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyCommandHandler.cs" />
-    <Compile Include="Commands\UpdateBrandCommandHandler.cs" />
+    <Compile Include="Commands\BrandCommandHandler.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyTraitsCommand.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyTraitsCommandHandler.cs" />
     <Compile Include="Commands\UpdateCertificationAgencyCommand.cs" />
     <Compile Include="Commands\UpdateHierarchyClassTraitCommand.cs" />
     <Compile Include="Commands\UpdateHierarchyClassTraitCommandHandler.cs" />
     <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommand.cs" />
-    <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommandHandler.cs" />
+    <Compile Include="Commands\BrandHierarchyClassTraitsCommandHandler.cs" />
     <Compile Include="Commands\UpdateMerchTaxMappingCommand.cs" />
     <Compile Include="Commands\UpdateMessageHistoryMessageCommand.cs" />
     <Compile Include="Commands\UpdateMessageHistoryMessageCommandHandler.cs" />
@@ -317,10 +317,8 @@
     <Compile Include="Managers\UpdatePluRequestManagerHandler.cs" />
     <Compile Include="Managers\UpdatePluCategoryManager.cs" />
     <Compile Include="Managers\AddPluCategoryManager.cs" />
-    <Compile Include="Managers\AddBrandManager.cs" />
     <Compile Include="Managers\UpdatePluCategoryManagerHandler.cs" />
     <Compile Include="Managers\AddPluCategoryManagerHandler.cs" />
-    <Compile Include="Managers\AddBrandManagerHandler.cs" />
     <Compile Include="Managers\AddHierarchyClassManager.cs" />
     <Compile Include="Managers\AddHierarchyClassManagerHandler.cs" />
     <Compile Include="Managers\AddItemManager.cs" />
@@ -335,8 +333,8 @@
     <Compile Include="Managers\DeleteHierarchyClassManager.cs" />
     <Compile Include="Managers\DeleteHierarchyClassManagerHandler.cs" />
     <Compile Include="Managers\LocaleManager.cs" />
-    <Compile Include="Managers\UpdateBrandManager.cs" />
-    <Compile Include="Managers\UpdateBrandManagerHandler.cs" />
+    <Compile Include="Managers\BrandManager.cs" />
+    <Compile Include="Managers\BrandManagerHandler.cs" />
     <Compile Include="Managers\UpdateLocaleManager.cs" />
     <Compile Include="Managers\UpdateLocaleManagerHandler.cs" />
     <Compile Include="Managers\UpdateHierarchyClassManager.cs" />

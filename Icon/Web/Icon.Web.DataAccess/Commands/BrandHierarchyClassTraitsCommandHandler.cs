@@ -1,17 +1,15 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.DataAccess.Extensions;
-using Icon.Web.DataAccess.Infrastructure;
-using System;
 using System.Linq;
 
 namespace Icon.Web.DataAccess.Commands
 {
-    public class UpdateBrandHierarchyClassTraitsCommandHandler : ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>
+    public class BrandHierarchyClassTraitsCommandHandler : ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>
     {
         private IconContext context;
 
-        public UpdateBrandHierarchyClassTraitsCommandHandler(IconContext context)
+        public BrandHierarchyClassTraitsCommandHandler(IconContext context)
         {
             this.context = context;
         }
@@ -19,19 +17,11 @@ namespace Icon.Web.DataAccess.Commands
         public void Execute(UpdateBrandHierarchyClassTraitsCommand data)
         {
             string traitValue;
-            var brandToUpdate = context.HierarchyClass.Single(hc => hc.hierarchyClassID == data.Brand.hierarchyClassID);
-            if(brandToUpdate == null) return;
+            var brand = context.HierarchyClass.Single(hc => hc.hierarchyClassID == data.Brand.hierarchyClassID);
+            if(brand == null) return;
 
-            var allTraits = brandToUpdate.HierarchyClassTrait.ToArray();
-            var existingTrait = allTraits.SingleOrDefault(x => x.Trait.traitCode == TraitCodes.BrandAbbreviation);
-
-            if (existingTrait != null && !string.IsNullOrWhiteSpace(data.BrandAbbreviation) && (string.IsNullOrWhiteSpace(existingTrait.traitValue) ? String.Empty : existingTrait.traitValue).Trim() != data.BrandAbbreviation.Trim())
-            {
-                if (context.HierarchyClassTrait.Where(x => x.hierarchyClassID != brandToUpdate.hierarchyClassID).ContainsDuplicateBrandAbbreviation(data.BrandAbbreviation))
-                {
-                    throw new DuplicateValueException(String.Format("The brand abbreviation {0} already exists.", data.BrandAbbreviation));
-                }
-            }
+            HierarchyClassTrait existingTrait;
+            var allTraits = brand.HierarchyClassTrait.Where(x => x.traitID != Traits.SentToEsb).ToArray();
             
             foreach(var code in new int[]{ Traits.BrandAbbreviation,  Traits.Designation, Traits.ParentCompany, Traits.ZipCode, Traits.Locality })
             {
@@ -59,17 +49,19 @@ namespace Icon.Web.DataAccess.Commands
                         break;
                 }
 
+                if(existingTrait == null && traitValue == null) continue;
+
                 if(existingTrait == null)
                 {
-                    brandToUpdate.AddHierarchyClassTrait(context, code, traitValue);
+                    brand.AddHierarchyClassTrait(context, code, traitValue);
                 }
                 else
                 {
                     existingTrait.UpdateHierarchyClassTrait(context, traitValue, removeIfNullOrEmpty: true, saveChanges: false);
                 }
-
-                context.SaveChanges();
             }
+
+            context.SaveChanges();
         }
     }
 }
