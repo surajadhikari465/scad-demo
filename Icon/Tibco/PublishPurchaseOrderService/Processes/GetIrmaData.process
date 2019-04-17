@@ -183,7 +183,11 @@
                ii.Identifier as DefaultScanCode,
                isb.SubTeam_No as HostSubTeam_No,
                isb.SubTeam_Name as HostSubTeam_Name,
-               oi.QuantityOrdered,
+			   CASE oh.Return_Order 
+					WHEN 0
+						THEN oi.QuantityOrdered
+					ELSE oi.QuantityOrdered * -1 
+			   END as QuantityOrdered,
                iuo.Unit_Abbreviation as OrderedUnitCode,
                iuo.Unit_Name as OrderedUnit,
                CAST(oi.Package_Desc1 as int) as PackSize1,

@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Tue Apr 16 11:57:35 CDT 2019
+#Tue Apr 16 15:05:49 CDT 2019
 5=SharedInventoryManagementLogPublisher.projlib\=
 4=SharedJmsConnections.projlib\=
 3=SharedSchemas_3_0_0_0010.projlib\=

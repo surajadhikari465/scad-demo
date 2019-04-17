@@ -248,7 +248,7 @@
                                         </pfx:locationId>
                                         <pfx:SubTeam>
                                             <ns0:subTeamNumber>
-                                                <xsl:value-of select="OrderTeam_No"/>
+                                                <xsl:value-of select="OrderSubTeam_No"/>
                                             </ns0:subTeamNumber>
                                             <xsl:if test="OrderSubTeam_Name">
                                                 <ns0:subTeamName>

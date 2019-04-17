@@ -103,12 +103,30 @@
                                 <pfx2:defaultScanCode>
                                     <xsl:value-of select="Identifier"/>
                                 </pfx2:defaultScanCode>
-                                <pfx2:quantityOrdered>
-                                    <xsl:value-of select="QuantityOrdered"/>
-                                </pfx2:quantityOrdered>
-                                <pfx2:quantityReceived>
-                                    <xsl:value-of select="QuantityReceived"/>
-                                </pfx2:quantityReceived>
+                                <xsl:choose>
+                                    <xsl:when test="CreditPO = 0">
+                                        <pfx2:quantityOrdered>
+                                            <xsl:value-of select="QuantityOrdered"/>
+                                        </pfx2:quantityOrdered>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx2:quantityOrdered>
+                                            <xsl:value-of select="QuantityOrdered * -1"/>
+                                        </pfx2:quantityOrdered>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="CreditPO = 0">
+                                        <pfx2:quantityReceived>
+                                            <xsl:value-of select="QuantityReceived"/>
+                                        </pfx2:quantityReceived>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx2:quantityReceived>
+                                            <xsl:value-of select="QuantityReceived * -1"/>
+                                        </pfx2:quantityReceived>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                                 <pfx2:receiptStatus>
                                     <xsl:value-of select="ReceiptStatus"/>
                                 </pfx2:receiptStatus>
@@ -207,6 +225,7 @@
 	sth.SubTeam_Name as SubTeam,
 	sth.SubTeam_No as SubTeamNumber,
 	oi.DateReceived as DateReceived,
+	oh.Return_Order as CreditPO, 
 	CAST(ISNULL(oi.QuantityReceived, 0) as int) as QuantityReceived,
 	CAST(oi.QuantityOrdered as int) as QuantityOrdered,
 	oi.Package_Desc1 as Package_Desc1,
@@ -292,6 +311,10 @@
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CreditPO</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>QuantityReceived</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
