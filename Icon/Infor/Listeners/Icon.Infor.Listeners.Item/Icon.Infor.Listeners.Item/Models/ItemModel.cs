@@ -98,12 +98,12 @@ namespace Icon.Infor.Listeners.Item.Models
         public string WFMEligilble { get; set; }
         public string Other3PEligible { get; set; }
         public string DataSource { get; set; }
-        public string GMOTransparency { get; set; }
+        public string NonGMOTransparency { get; set; }
         public string ItemDepth { get; set; }
         public string ItemHeight { get; set; }
         public string ItemWidth { get; set; }
         public string Cube { get; set; }
-        public string Weight { get; set; }
+        public string ItemWeight { get; set; }
         public string TrayDepth { get; set; }
         public string TrayHeight { get; set; }
         public string TrayWidth { get; set; }

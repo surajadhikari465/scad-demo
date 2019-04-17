@@ -65,7 +65,7 @@ BEGIN
 		@wfeTraitId int,
 		@oteTraitId int,
 		@datTraitId int,
-        @gmtTraitId int,
+        @ngtTraitId int,
         @idpTraitId int,
         @ihtTraitId int,
 		@iwdTraitId int,
@@ -139,7 +139,7 @@ BEGIN
 	SET @wfeTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WFE')
 	SET @oteTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OTE')
 	SET @datTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'DAT')
-    SET @gmtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'GMT')
+    SET @ngtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'NGT')
     SET @idpTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IDP')
     SET @ihtTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IHT')
 	SET	@iwdTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IWD')
@@ -308,22 +308,22 @@ BEGIN
 		i.KitchenItem																	AS KitchenItem,
 		i.KitchenDescription															AS KitchenDescription,
 		i.ImageURL																		AS ImageURL,
-		dat.traitValue                                                                  AS  DataSource,		
-		gmt.traitValue  																AS  GMOTransparency,
-		idp.traitValue  																AS  ItemDepth,
-		iht.traitValue  																AS  ItemHeight,
-		iwd.traitValue  																AS  ItemWidth,
-		cub.traitValue  																AS  [Cube],
-		iwt.traitValue  																AS  [Weight],
-		tdp.traitValue  																AS  TrayDepth,
-		tht.traitValue  																AS  TrayHeight,
-		twd.traitValue  																AS  TrayWidth,
-		lbl.traitValue  																AS  Labeling,
-		coo.traitValue  																AS  CountryOfOrigin,
-		pg.traitValue  																	AS  PackageGroup,
-		pgt.traitValue  																AS  PackageGroupType,
-		prl.traitValue  																AS  PrivateLabel,
-		apl.traitValue  																AS  Appellation,
+		dat.traitValue                                                                  AS DataSource,		
+		ngt.traitValue  																AS NonGMOTransparency,
+		idp.traitValue  																AS ItemDepth,
+		iht.traitValue  																AS ItemHeight,
+		iwd.traitValue  																AS ItemWidth,
+		cub.traitValue  																AS [Cube],
+		iwt.traitValue  																AS [ItemWeight],
+		tdp.traitValue  																AS TrayDepth,
+		tht.traitValue  																AS TrayHeight,
+		twd.traitValue  																AS TrayWidth,
+		lbl.traitValue  																AS Labeling,
+		coo.traitValue  																AS CountryOfOrigin,
+		pg.traitValue  																	AS PackageGroup,
+		pgt.traitValue  																AS PackageGroupType,
+		prl.traitValue  																AS PrivateLabel,
+		apl.traitValue  																AS Appellation,
 		CASE 
 					WHEN ft.traitValue is null THEN NULL 
 					WHEN ft.traitValue = 'Y' OR ft.traitValue = 'Yes'
@@ -343,10 +343,10 @@ BEGIN
 					WHEN oc.traitValue is null THEN NULL 
 					WHEN oc.traitValue = 'Y' OR oc.traitValue = 'Yes'
 					 OR oc.traitValue = '1' OR oc.traitValue = 'True'  
-					THEN 1 ELSE 0 END													AS  OrganicClaim,
-		va.traitValue                                                                   AS  Varietal,
-		bes.traitValue                                                                  AS  BeerStyle,
-		lex.traitValue                                                                  AS  LineExtension
+					THEN 1 ELSE 0 END													AS OrganicClaim,
+		va.traitValue                                                                   AS Varietal,
+		bes.traitValue                                                                  AS BeerStyle,
+		lex.traitValue                                                                  AS LineExtension
 
 	from 
 		#itemIDs					ui
@@ -430,7 +430,7 @@ BEGIN
 		LEFT JOIN ItemTrait				wfe			ON	wfe.traitID					= @wfeTraitId AND wfe.itemID = i.itemID AND wfe.localeID = @localeID	
 		LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
         LEFT JOIN ItemTrait				dat			ON	dat.traitID					= @datTraitId AND dat.itemID = i.itemID AND dat.localeID = @localeID
-		LEFT JOIN ItemTrait				gmt			ON	gmt.traitID					= @gmtTraitId AND gmt.itemID = i.itemID AND gmt.localeID = @localeID
+		LEFT JOIN ItemTrait				ngt			ON	ngt.traitID					= @ngtTraitId AND ngt.itemID = i.itemID AND ngt.localeID = @localeID
 		LEFT JOIN ItemTrait				idp			ON	idp.traitID					= @idpTraitId AND idp.itemID = i.itemID AND idp.localeID = @localeID
 		LEFT JOIN ItemTrait				iht			ON	iht.traitID					= @ihtTraitId AND iht.itemID = i.itemID AND iht.localeID = @localeID
 		LEFT JOIN ItemTrait				iwd			ON	iwd.traitID					= @iwdTraitId AND iwd.itemID = i.itemID AND iwd.localeID = @localeID

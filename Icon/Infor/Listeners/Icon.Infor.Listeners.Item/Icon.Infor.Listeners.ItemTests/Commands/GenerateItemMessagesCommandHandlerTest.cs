@@ -122,12 +122,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(traits.First(it => it.traitID == Traits.ProductDescription).traitValue, messageQueueProduct.ProductDescription);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.HiddenItem).traitValue.ParseBoolString(), messageQueueProduct.Hidden);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.DataSource).traitValue, messageQueueProduct.DataSource);
-            Assert.AreEqual(traits.First(it => it.traitID == Traits.GmoTransparency).traitValue, messageQueueProduct.GMOTransparency);
+            Assert.AreEqual(traits.First(it => it.traitID == Traits.NonGmoTransparency).traitValue, messageQueueProduct.NonGMOTransparency);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemDepth).traitValue), messageQueueProduct.ItemDepth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemHeight).traitValue), messageQueueProduct.ItemHeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemWidth).traitValue), messageQueueProduct.ItemWidth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.Cube).traitValue), messageQueueProduct.Cube);
-            Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.Weight).traitValue), messageQueueProduct.Weight);
+            Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemWeight).traitValue), messageQueueProduct.ItemWeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayDepth).traitValue), messageQueueProduct.TrayDepth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayHeight).traitValue), messageQueueProduct.TrayHeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayWidth).traitValue), messageQueueProduct.TrayWidth);
@@ -263,12 +263,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(traits.First(it => it.traitID == Traits.Other3pEligible).traitValue.ParseBoolStringAdvancedNullable(), messageQueueProduct.Other3PEligible, nameof(messageQueueProduct.Other3PEligible));
 
             Assert.AreEqual(traits.First(it => it.traitID == Traits.DataSource).traitValue, messageQueueProduct.DataSource);
-            Assert.AreEqual(traits.First(it => it.traitID == Traits.GmoTransparency).traitValue, messageQueueProduct.GMOTransparency);
+            Assert.AreEqual(traits.First(it => it.traitID == Traits.NonGmoTransparency).traitValue, messageQueueProduct.NonGMOTransparency);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemDepth).traitValue), messageQueueProduct.ItemDepth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemHeight).traitValue), messageQueueProduct.ItemHeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemWidth).traitValue), messageQueueProduct.ItemWidth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.Cube).traitValue), messageQueueProduct.Cube);
-            Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.Weight).traitValue), messageQueueProduct.Weight);
+            Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.ItemWeight).traitValue), messageQueueProduct.ItemWeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayDepth).traitValue), messageQueueProduct.TrayDepth);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayHeight).traitValue), messageQueueProduct.TrayHeight);
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayWidth).traitValue), messageQueueProduct.TrayWidth);
@@ -396,12 +396,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     new ItemTrait { traitID = Traits.WfmEligilble, traitValue = "Y", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.Other3pEligible, traitValue = null, localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.DataSource, traitValue = "Test Data Source", localeID = Locales.WholeFoods },
-                    new ItemTrait { traitID = Traits.GmoTransparency, traitValue = "Test Gmo Transparency", localeID = Locales.WholeFoods },
+                    new ItemTrait { traitID = Traits.NonGmoTransparency, traitValue = "Test Non-Gmo Transparency", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ItemDepth, traitValue = "1.23", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ItemHeight, traitValue = "1.24", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.ItemWidth, traitValue = "1.13", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.Cube, traitValue = "1.1", localeID = Locales.WholeFoods },
-                    new ItemTrait { traitID = Traits.Weight, traitValue = "2.1", localeID = Locales.WholeFoods },
+                    new ItemTrait { traitID = Traits.ItemWeight, traitValue = "2.1", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.TrayDepth, traitValue = "2.2", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.TrayHeight, traitValue = "2.3", localeID = Locales.WholeFoods },
                     new ItemTrait { traitID = Traits.TrayWidth, traitValue = "2.4", localeID = Locales.WholeFoods },

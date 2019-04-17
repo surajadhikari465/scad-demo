@@ -96,12 +96,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 Notes = "Test Notes",
                 HiddenItem = "Test Hidden Item",
                 DataSource = "Test Data Source",
-                GMOTransparency = "Test Gmo Transparency",
+                NonGMOTransparency = "Test Non-Gmo Transparency",
                 ItemDepth = "Test Item Depth",
                 ItemHeight = "Test Item Height",
                 ItemWidth = "Test Item Width",
                 Cube = "Test Cube",
-                Weight = "Test Weight",
+                ItemWeight = "Test Item Weight",
                 TrayDepth = "Test Tray Depth",
                 TrayHeight = "Test Tray Height",
                 TrayWidth = "Test Tray Width",
@@ -205,12 +205,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
             Assert.AreEqual(expectedItem.DataSource, traits.Single(it => it.traitID == Traits.DataSource).traitValue);
-            Assert.AreEqual(expectedItem.GMOTransparency, traits.Single(it => it.traitID == Traits.GmoTransparency).traitValue);
+            Assert.AreEqual(expectedItem.NonGMOTransparency, traits.Single(it => it.traitID == Traits.NonGmoTransparency).traitValue);
             Assert.AreEqual(expectedItem.ItemDepth, traits.Single(it => it.traitID == Traits.ItemDepth).traitValue);
             Assert.AreEqual(expectedItem.ItemHeight, traits.Single(it => it.traitID == Traits.ItemHeight).traitValue);
             Assert.AreEqual(expectedItem.ItemWidth, traits.Single(it => it.traitID == Traits.ItemWidth).traitValue);
             Assert.AreEqual(expectedItem.Cube, traits.Single(it => it.traitID == Traits.Cube).traitValue);
-            Assert.AreEqual(expectedItem.Weight, traits.Single(it => it.traitID == Traits.Weight).traitValue);
+            Assert.AreEqual(expectedItem.ItemWeight, traits.Single(it => it.traitID == Traits.ItemWeight).traitValue);
             Assert.AreEqual(expectedItem.TrayDepth, traits.Single(it => it.traitID == Traits.TrayDepth).traitValue);
             Assert.AreEqual(expectedItem.TrayHeight, traits.Single(it => it.traitID == Traits.TrayHeight).traitValue);
             Assert.AreEqual(expectedItem.TrayWidth, traits.Single(it => it.traitID == Traits.TrayWidth).traitValue);
@@ -304,12 +304,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                 ProductFlavorType = "Test ProductFlavorType",
                 CustomerFriendlyDescription = "Test Customer Friendly Description",
                 DataSource = " Test Data Source",
-                GMOTransparency = "Test Gmo Transparency",
+                NonGMOTransparency = "Test Non-Gmo Transparency",
                 ItemDepth = "Test Item Depth",
                 ItemHeight = "Test Item Height",
                 ItemWidth = "Test Item Width",
                 Cube = "Test Cube",
-                Weight = "Test Weight",
+                ItemWeight = "Test Item Weight",
                 TrayDepth = "Test Tray Depth",
                 TrayHeight = "Test Tray Height",
                 TrayWidth = "Test Tray Width",
@@ -430,12 +430,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(expectedItem.Notes, traits.Single(it => it.traitID == Traits.Notes).traitValue);
             Assert.AreEqual(expectedItem.HiddenItem, traits.Single(it => it.traitID == Traits.HiddenItem).traitValue);
             Assert.AreEqual(expectedItem.DataSource, traits.Single(it => it.traitID == Traits.DataSource).traitValue);
-            Assert.AreEqual(expectedItem.GMOTransparency, traits.Single(it => it.traitID == Traits.GmoTransparency).traitValue);
+            Assert.AreEqual(expectedItem.NonGMOTransparency, traits.Single(it => it.traitID == Traits.NonGmoTransparency).traitValue);
             Assert.AreEqual(expectedItem.ItemDepth, traits.Single(it => it.traitID == Traits.ItemDepth).traitValue);
             Assert.AreEqual(expectedItem.ItemHeight, traits.Single(it => it.traitID == Traits.ItemHeight).traitValue);
             Assert.AreEqual(expectedItem.ItemWidth, traits.Single(it => it.traitID == Traits.ItemWidth).traitValue);
             Assert.AreEqual(expectedItem.Cube, traits.Single(it => it.traitID == Traits.Cube).traitValue);
-            Assert.AreEqual(expectedItem.Weight, traits.Single(it => it.traitID == Traits.Weight).traitValue);
+            Assert.AreEqual(expectedItem.ItemWeight, traits.Single(it => it.traitID == Traits.ItemWeight).traitValue);
             Assert.AreEqual(expectedItem.TrayDepth, traits.Single(it => it.traitID == Traits.TrayDepth).traitValue);
             Assert.AreEqual(expectedItem.TrayHeight, traits.Single(it => it.traitID == Traits.TrayHeight).traitValue);
             Assert.AreEqual(expectedItem.TrayWidth, traits.Single(it => it.traitID == Traits.TrayWidth).traitValue);
@@ -683,12 +683,12 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             item.HiddenItem = "Changed Hidden Item";
             item.CustomerFriendlyDescription = "Changed Customer Friendly Description";
             item.DataSource = "Changed DataSource";
-            item.GMOTransparency = "Changed Gmo Transparency";
+            item.NonGMOTransparency = "Changed Non-Gmo Transparency";
             item.ItemDepth = "Changed Item Depth";
             item.ItemHeight = "Changed Item Height";
             item.ItemWidth = "Changed Item Width";
             item.Cube = "Changed Cube";
-            item.Weight = "Changed Weight";
+            item.ItemWeight = "Changed Item Weight";
             item.TrayDepth = "Changed Tray Depth";
             item.TrayHeight = "Changed Tray Height";
             item.TrayWidth = "Changed Tray Width";
