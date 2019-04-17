@@ -6,8 +6,8 @@ namespace KitBuilder.DataAccess.Enums
 {
     public enum KitType
     {
-        Simple = 0,
-        Fixed = 1,
-        Customizable = 2
+        Simple = 1,
+        Fixed = 2,
+        Customizable = 3
     }
 }
