@@ -189,7 +189,10 @@ namespace Icon.Web.Mvc.Controllers
                         Update = ((!IsAuthorized() || brandHashKey == viewModel.BrandHashKey) ? UpdateOptions.None : UpdateOptions.Brand) | (traitHashKey == viewModel.TraitHashKey ? UpdateOptions.None : UpdateOptions.Traits)
                     };
 
+                    ModelState.Clear();
                     updateBrandManagerHandler.Execute(manager);
+                    viewModel.BrandHashKey = brandHashKey;
+                    viewModel.TraitHashKey = traitHashKey;
                     ViewData["SuccessMessage"] = "Brand update was successful.";
                 }
             }
@@ -203,10 +206,8 @@ namespace Icon.Web.Mvc.Controllers
             {
                  ViewData["ErrorMessage"] = ex.Message;
             }
-           
+            
             viewModel.BrandList = GetBrandList();
-            viewModel.BrandHashKey = CalculateHashKey(viewModel.BrandName, viewModel.BrandAbbreviation);
-            viewModel.TraitHashKey = CalculateHashKey(viewModel.BrandAbbreviation, viewModel.Designation, viewModel.ZipCode, viewModel.Locality, viewModel.ParentCompany); 
             return View(viewModel);
         }
 
