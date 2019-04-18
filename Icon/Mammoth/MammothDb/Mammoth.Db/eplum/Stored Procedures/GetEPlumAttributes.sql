@@ -133,7 +133,8 @@ CREATE TABLE #itemExtended
   IsGrassFed bit,
   IsPastureRaised bit,
   SeafoodCatchType varchar(255),
-  PrimeBeef bit
+  PrimeBeef bit,
+  BrandID int
 )
 
 BEGIN TRY
@@ -171,7 +172,7 @@ JOIN ItemAttributes_Ext ia	on ist.ItemID = ia.ItemID
 	AND ia.AttributeID = @primeBeefId
 
 UPDATE A
-SET BrandName = C.HierarchyClassName
+SET BrandName = C.HierarchyClassName, BrandID = C.HierarchyClassID
 FROM #itemExtended A
 JOIN dbo.Items B on B.ItemID = A.ItemID
 JOIN dbo.HierarchyClass C on C.HierarchyClassID = B.BrandHCID
@@ -757,7 +758,8 @@ SELECT
   ist.isGrassFed,
   ist.IsPastureRaised,
   ist.SeafoodCatchType,
-  ist.PrimeBeef
+  ist.PrimeBeef,
+  ist.BrandID
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
 INNER JOIN dbo.Hierarchy_Merchandise m on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID

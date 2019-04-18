@@ -735,7 +735,7 @@
     <Build Include="esl\Views\ItemStoresByBrandID.sql" />
     <Build Include="stage\Tables\ItemLocaleSupplierDelete.sql" />
     <Build Include="Schemas\eplum.sql" />
-    <Build Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
+    <None Include="eplum\Stored Procedures\GetEPlumAttributes.sql" />
     <Build Include="stage\Tables\ItemStoreKeysEPlum.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\SubTeamCleanUp_PreDeployment.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DropPriceTables.sql" />
