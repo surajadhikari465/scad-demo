@@ -3,6 +3,9 @@
 AS
 BEGIN
 
+    DELETE KitInstructionList
+	WHERE KitId = @KitId
+
 	DELETE KitLinkGroupItem
 	WHERE KitLinkGroupId in ( SELECT KitLinkGroupId FROM KitLinkGroup
 							  WHERE kitid = @KitId ) 
