@@ -85,7 +85,8 @@ BEGIN
 		@IsCostedByWeight				bit,
 		@UnitID							int,
 		@PoundID						int,
-		@UseAvgCost						bit
+		@UseAvgCost						bit,
+		@Item_Description               varchar(60)
 			
 	--**************************************************************************
 	--Populate variables
@@ -159,7 +160,8 @@ BEGIN
 											WHEN vca.UnitCost IS NOT NULL THEN
 												@VendorPackage_Desc1 
 										  END,
-		@IsStoreDistributionCenter		= sv.Distribution_Center
+		@IsStoreDistributionCenter		= sv.Distribution_Center,
+		@Item_Description               = i.Item_Description
 	
 	FROM     
 		Vendor						(nolock) v
@@ -315,7 +317,9 @@ BEGIN
 		[MarkupPercent]			= @MarkupPercent,     
 		[Retail_Unit_ID]		= @Retail_Unit_ID,    
 		[VendorNetDiscount]		= @VendorNetDiscount,    
-		[HandlingCharge]		= @HandlingCharge
+		[HandlingCharge]		= @HandlingCharge,
+		[Item_Description]      = @Item_Description,
+		[ItemCount]             = (SELECT COUNT(OrderItem_ID) FROM OrderItem WHERE Item_Key = @Item_Key AND OrderHeader_ID = @OrderHeader_ID)
 		
 	SET NOCOUNT OFF            
 END
