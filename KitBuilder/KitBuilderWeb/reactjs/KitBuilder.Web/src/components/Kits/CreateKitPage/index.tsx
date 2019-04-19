@@ -39,6 +39,7 @@ interface ICreateKitPageState {
 interface ICreateKitPageProps {
   match: any;
   showAlert: any;
+  history: any;
 }
 
 const newErrorsObject = () => ({
@@ -174,6 +175,10 @@ class CreateKitPage extends React.PureComponent<
               ? "Kit saved succesfully."
               : "Kit created succesfully.";
             this.props.showAlert(message, "success");
+            if(!this.state.editMode) {
+              const editUrl = `/EditKit/${r.data.kitId}`
+              this.props.history.push(editUrl);
+            }
           }
         })
         .catch(e => {

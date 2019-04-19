@@ -880,8 +880,8 @@ namespace KitBuilderWebApi.Controllers
                     kitRepository.UnitOfWork.Context.KitLinkGroup.AddRange(newKitLinkGroupsAndTheirNewItems);
                 }
                 kitRepository.UnitOfWork.Commit();
-
-                return Ok();
+                var kitSaved = kitRepository.GetAll().Where(k => k.ItemId == kitToSave.ItemId).FirstOrDefault();
+                return Ok(kitSaved);
             }
             catch (DbUpdateConcurrencyException DbConcurrencyEx)
             {
