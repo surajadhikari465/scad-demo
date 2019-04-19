@@ -132,6 +132,7 @@ CREATE TABLE #itemExtended
   IsAirChilled bit,
   IsGrassFed bit,
   IsPastureRaised bit,
+  IsDryAged bit,
   SeafoodCatchType varchar(255),
   PrimeBeef bit,
   BrandID int
@@ -192,6 +193,7 @@ SET
   IsAirChilled = sgn.IsAirChilled,
   IsGrassFed = sgn.IsGrassFed,
   IsPastureRaised = sgn.IsPastureRaised,
+  IsDryAged = sgn.IsDryAged,
   SeafoodCatchType = sgn.Seafood_CatchType
 FROM #itemExtended ist
 JOIN dbo.ItemAttributes_Sign sgn on ist.ItemID = sgn.ItemID
@@ -759,7 +761,8 @@ SELECT
   ist.IsPastureRaised,
   ist.SeafoodCatchType,
   ist.PrimeBeef,
-  ist.BrandID
+  ist.BrandID,
+  IsDryAged
 FROM #itemExtended ist
 INNER JOIN dbo.Items i on ist.ItemID = i.ItemID
 INNER JOIN dbo.Hierarchy_Merchandise m on i.HierarchyMerchandiseID = m.HierarchyMerchandiseID
@@ -798,7 +801,6 @@ IF OBJECT_ID('tempdb..#prices') IS NOT NULL
 	DROP TABLE #prices
 IF OBJECT_ID('tempdb..#linkedScanCodePriceKeys') IS NOT NULL
 	DROP TABLE #linkedScanCodePriceKeys
-
 END
 GO
 
