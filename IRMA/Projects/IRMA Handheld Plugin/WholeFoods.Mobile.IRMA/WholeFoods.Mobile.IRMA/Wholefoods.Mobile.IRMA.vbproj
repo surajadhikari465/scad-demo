@@ -73,11 +73,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="WholeFoods.Mobile.Interop.Scanner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\WholeFoods.Mobile.Interop.Scanner.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Reference Libraries\WholeFoods.Mobile.Interop.Scanner.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="HandheldHardware" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />

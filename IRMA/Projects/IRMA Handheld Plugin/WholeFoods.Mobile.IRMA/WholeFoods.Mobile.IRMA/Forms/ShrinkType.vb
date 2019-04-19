@@ -23,11 +23,11 @@ Public Class ShrinkType
         Dim count As Integer = 1
 
         For Each shrinkSubType In mySession.ShrinkSubTypes
-            If (count <= 14) Then
+            If (count <= 15) Then
                 Dim control As Control = getControlByName(btnName + CType(count, String))
                 If (control IsNot Nothing) Then
                     CType(control, Button).Text = shrinkSubType.ShrinkSubType1
-                    CType(control, Button).Tag = shrinkSubType.Abbreviation + "-" + CType(shrinkSubType.ShrinkSubTypeID, String) + "-" + CType(shrinkSubType.InventoryAdjustmentCodeID, String) + "-" + shrinkSubType.ShrinkType
+                    CType(control, Button).Tag = shrinkSubType.Abbreviation + ":" + CType(shrinkSubType.ShrinkSubTypeID, String) + ":" + CType(shrinkSubType.InventoryAdjustmentCodeID, String) + ":" + shrinkSubType.ShrinkType
                     count = count + 1
                 End If
             End If
@@ -167,7 +167,7 @@ Public Class ShrinkType
     Private Sub goToNextScreen(ByVal selectedShrinkSubType As String, ByVal shrinkData As String)
         Dim shrinkInfo() As String
 
-        shrinkInfo = shrinkData.Split("-")
+        shrinkInfo = shrinkData.Split(":")
         mySession.SetShrinkType(shrinkInfo(0) & "," & shrinkInfo(3))
         mySession.SetInventoryAdjustmentCodeId(shrinkInfo(2))
         mySession.SetShrinkSubTypeId(shrinkInfo(1))
@@ -179,5 +179,9 @@ Public Class ShrinkType
     
     Private Sub btnReasonCode14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReasonCode14.Click
         goToNextScreen(btnReasonCode14.Text, btnReasonCode14.Tag.ToString())
+    End Sub
+
+    Private Sub btnReasonCode15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReasonCode15.Click
+        goToNextScreen(btnReasonCode15.Text, btnReasonCode15.Tag.ToString())
     End Sub
 End Class

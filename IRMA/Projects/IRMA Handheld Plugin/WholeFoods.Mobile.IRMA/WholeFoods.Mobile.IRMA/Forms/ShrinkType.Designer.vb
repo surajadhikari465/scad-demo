@@ -40,6 +40,7 @@ Partial Public Class ShrinkType
         Me.Label2 = New System.Windows.Forms.Label
         Me.StoreTeamLabel = New System.Windows.Forms.Label
         Me.btnReasonCode14 = New System.Windows.Forms.Button
+        Me.btnReasonCode15 = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
         'mainMenu1
@@ -125,7 +126,7 @@ Partial Public Class ShrinkType
         'btnReasonCode11
         '
         Me.btnReasonCode11.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
-        Me.btnReasonCode11.Location = New System.Drawing.Point(121, 82)
+        Me.btnReasonCode11.Location = New System.Drawing.Point(122, 82)
         Me.btnReasonCode11.Name = "btnReasonCode11"
         Me.btnReasonCode11.Size = New System.Drawing.Size(112, 25)
         Me.btnReasonCode11.TabIndex = 8
@@ -206,12 +207,22 @@ Partial Public Class ShrinkType
         Me.btnReasonCode14.TabIndex = 14
         Me.btnReasonCode14.Text = "Reason Code"
         '
+        'btnReasonCode15
+        '
+        Me.btnReasonCode15.Font = New System.Drawing.Font("Tahoma", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnReasonCode15.Location = New System.Drawing.Point(3, 268)
+        Me.btnReasonCode15.Name = "btnReasonCode15"
+        Me.btnReasonCode15.Size = New System.Drawing.Size(231, 25)
+        Me.btnReasonCode15.TabIndex = 19
+        Me.btnReasonCode15.Text = "Reason Code"
+        '
         'ShrinkType
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(240, 268)
+        Me.ClientSize = New System.Drawing.Size(240, 297)
+        Me.Controls.Add(Me.btnReasonCode15)
         Me.Controls.Add(Me.btnReasonCode14)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.StoreTeamLabel)
@@ -255,4 +266,5 @@ Partial Public Class ShrinkType
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents StoreTeamLabel As System.Windows.Forms.Label
     Friend WithEvents btnReasonCode14 As System.Windows.Forms.Button
+    Friend WithEvents btnReasonCode15 As System.Windows.Forms.Button
 End Class
