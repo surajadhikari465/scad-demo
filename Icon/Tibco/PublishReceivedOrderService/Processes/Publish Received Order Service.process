@@ -11,7 +11,7 @@
     <pd:starter name="JMS Queue Receiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>70</pd:x>
+        <pd:x>69</pd:x>
         <pd:y>236</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
@@ -104,7 +104,7 @@
                                     <xsl:value-of select="Identifier"/>
                                 </pfx2:defaultScanCode>
                                 <xsl:choose>
-                                    <xsl:when test="CreditPO = 0">
+                                    <xsl:when test="CreditPO=&quot;false&quot;">
                                         <pfx2:quantityOrdered>
                                             <xsl:value-of select="QuantityOrdered"/>
                                         </pfx2:quantityOrdered>
@@ -116,7 +116,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <xsl:choose>
-                                    <xsl:when test="CreditPO = 0">
+                                    <xsl:when test="CreditPO = &quot;false&quot;">
                                         <pfx2:quantityReceived>
                                             <xsl:value-of select="QuantityReceived"/>
                                         </pfx2:quantityReceived>

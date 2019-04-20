@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>InstanceGUID</name>
-			<value>0000012D-0000-0000-0000-000000000000</value>
+			<value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1551979279895</modTime>
+			<modTime>1555610160573</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
@@ -63,7 +63,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1551821959437</modTime>
+			<modTime>1555619780443</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TransactionType</name>
