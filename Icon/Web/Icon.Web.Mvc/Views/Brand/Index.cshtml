@@ -1,27 +1,31 @@
 ﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.BrandViewModel
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
 
 @(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
+        .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
+        .CssPath(Url.Content("~/Content/Infragistics/css/"))
+        .Render()
 )
 
 @{Html.RenderPartial("_HeaderPartial", "Brand Management");}
 
-<div class="page-subsection">@Html.ActionLink("Add New Brand", "Create")</div>
+@if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
+{
+  <div class="page-subsection">@Html.ActionLink("Add New Brand", "Create")</div>
 
-<hr />
+  <hr />
+}
+  <div id="brands" class="page-section">
 
-<div id="brands" class="page-section">
     @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-default form-submit" })
-    
+
     <hr />
 
     @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.BrandViewModel>()
@@ -42,7 +46,8 @@
               columns.For(c => c.ParentCompany).HeaderText("Parent Company").DataType("string").Width("10%");
               columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
               columns.For(c => c.Locality).HeaderText("Locality").DataType("string").Width("10%");
-              columns.Unbound("Action").Template("&nbsp&nbsp&nbsp&nbsp<a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a> &nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("Actions");
+              columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
+              columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
             })
             .Features(features =>
             {
@@ -53,13 +58,13 @@
             })
             .DataSourceUrl(Url.Action("All", "Brand"))
             .DataBind()
-            .Render()
-    )
+            .Render())
 
     <div class="search-alert page-subsection"></div>
-</div>
 
-@section scripts
+  </div>
+
+  @section scripts
 {
     @Scripts.Render("~/Scripts/jquery.fileDownload.js")
-}
+  }

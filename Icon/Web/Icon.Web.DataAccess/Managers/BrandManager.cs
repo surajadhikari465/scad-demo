@@ -1,11 +1,8 @@
-﻿using System;
-using Icon.Framework;
+﻿using Icon.Framework;
+using Icon.Web.Common;
 
 namespace Icon.Web.DataAccess.Managers
 {
-    [Flags]
-    public enum UpdateOptions { None = 0, Brand = 1, Traits = 2 }
-
     public class BrandManager
     {
         public HierarchyClass Brand { get; set; }
@@ -14,6 +11,6 @@ namespace Icon.Web.DataAccess.Managers
         public string ParentCompany { get; set; }
         public string ZipCode { get; set; }
         public string Locality { get; set; }
-        public UpdateOptions Update { get; set; }
+        public Enums.WriteAccess WriteAccess { get; set; }
     }
 }

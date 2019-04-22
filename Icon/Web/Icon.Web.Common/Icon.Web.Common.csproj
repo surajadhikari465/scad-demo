@@ -112,6 +112,7 @@
     <Compile Include="Cache\CachePolicy.cs" />
     <Compile Include="Cache\ICachePolicy.cs" />
     <Compile Include="CommandException.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="FieldValidatorConstants.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExceptionLogger.cs" />

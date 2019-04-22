@@ -35,14 +35,14 @@ namespace Icon.Web.DataAccess.Managers
 
             try
             {
-                if((data.Update & UpdateOptions.Brand) == UpdateOptions.Brand) //Brand & Message updated/set if Brand's core has been updated
+                if((data.WriteAccess & Enums.WriteAccess.Full) == Enums.WriteAccess.Full) //Brand & Message updated/set if Brand's core has been updated
                 {
                     Validate(data);
                     updateBrandCommandHandler.Execute(command);
                     addBrandMessageCommandHandler.Execute(new AddBrandMessageCommand() { Brand = data.Brand, Action = MessageActionTypes.AddOrUpdate });
                 }
 
-                if((data.Update & UpdateOptions.Traits) == UpdateOptions.Traits)
+                if((data.WriteAccess & Enums.WriteAccess.Traits) == Enums.WriteAccess.Traits)
                 {
                     updateHierarchyClassTraitsCommandHandler.Execute(updateHierarchyClassTraitCommand);
                 }

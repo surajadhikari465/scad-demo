@@ -32,6 +32,7 @@ namespace Icon.Web.Mvc.Controllers
         private IExcelExporterService excelExporterService;
 
         const string WRITE_ACCESS = "WriteAccess";
+        const string WRITE_TRAIT_ACCESS = "WriteTraitAccess";
         const string INFOR_DISABLE_ICON_INTERFACE = "InforDisableIconInterface";
 
         public BrandController(
@@ -51,7 +52,7 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Brand
         public ActionResult Index()
         {
-            return View();
+            return View(new BrandViewModel() { UserWriteAccess = GetWriteAccess() });
         }
 
         // GET: Brand/Create
@@ -89,7 +90,7 @@ namespace Icon.Web.Mvc.Controllers
                 ParentCompany = string.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                 ZipCode = string.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Replace(" ", String.Empty),
                 Locality = string.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                Update = UpdateOptions.Brand | UpdateOptions.Traits
+                WriteAccess = Enums.WriteAccess.Full | Enums.WriteAccess.Traits
             };
 
             try
@@ -134,7 +135,7 @@ namespace Icon.Web.Mvc.Controllers
                     Locality = traits.SingleOrDefault(x => x.traitID == Traits.Locality)?.traitValue,
                     ParentCompany = brands.FirstOrDefault(x => string.Compare(x, traits.SingleOrDefault(y => y.traitID == Traits.ParentCompany)?.traitValue.Trim(), true) == 0),
                     BrandList = brands,
-                    IsBrandCoreUpdateAuthorized = IsAuthorized()
+                    UserWriteAccess = GetWriteAccess()
                 };
 
             viewModel.BrandHashKey = CalculateHashKey(viewModel.BrandName, viewModel.BrandAbbreviation);
@@ -186,7 +187,7 @@ namespace Icon.Web.Mvc.Controllers
                         ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                         ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
                         Locality = String.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                        Update = ((!IsAuthorized() || brandHashKey == viewModel.BrandHashKey) ? UpdateOptions.None : UpdateOptions.Brand) | (traitHashKey == viewModel.TraitHashKey ? UpdateOptions.None : UpdateOptions.Traits)
+                        WriteAccess = GetWriteAccess()
                     };
 
                     ModelState.Clear();
@@ -251,16 +252,30 @@ namespace Icon.Web.Mvc.Controllers
                 };
         }
 
-        bool IsAuthorized()
+        Enums.WriteAccess GetWriteAccess()
         {
-            try
+            bool isAuthorized = false;
+            var writeAccess = Enums.WriteAccess.None;
+            
+            foreach(var key in new Enums.WriteAccess[]{ Enums.WriteAccess.Full, Enums.WriteAccess.Traits})
             {
-                return ConfigurationManager.AppSettings[INFOR_DISABLE_ICON_INTERFACE] == "1"
-                    ? true
-                    : ConfigurationManager.AppSettings[WRITE_ACCESS].Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+                try
+                {
+                    isAuthorized = ConfigurationManager.AppSettings[INFOR_DISABLE_ICON_INTERFACE] == "1"
+                        ? true
+                        : ConfigurationManager.AppSettings[key == Enums.WriteAccess.Full ? WRITE_ACCESS : WRITE_TRAIT_ACCESS].Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+                }
+                catch { isAuthorized = false; }
+
+                if(isAuthorized)
+                {
+                    writeAccess |= key;
+                }
             }
-            catch { return false; }
+
+            return writeAccess;
         }
+
 
         string[] GetBrandList()
         {

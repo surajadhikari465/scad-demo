@@ -17,7 +17,6 @@
     @Html.HiddenFor(model => model.HierarchyId)
     @Html.HiddenFor(model => model.HierarchyClassId)
     @Html.HiddenFor(model => model.HierarchyLevel)
-    @Html.HiddenFor(model => model.IsBrandCoreUpdateAuthorized)
     @Html.HiddenFor(model => model.BrandHashKey)
     @Html.HiddenFor(model => model.TraitHashKey)
 
@@ -27,7 +26,7 @@
       <div class="row">
         @Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
         <div>
-          @if(Model.IsBrandCoreUpdateAuthorized)
+          @if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
           {
             @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
             @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
@@ -43,7 +42,7 @@
       <div class="row">
         @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
         <div>
-          @if(Model.IsBrandCoreUpdateAuthorized)
+          @if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
           {
             @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
             @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
@@ -114,7 +113,7 @@
   }
 </div>
 
-@if(Model != null && Model.IsBrandCoreUpdateAuthorized)
+@if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
 {
   <div class="form-footer">
     @Html.ActionLink("Back to Brands", "Index") | @Html.ActionLink("Add New Brand", "Create")

@@ -155,7 +155,7 @@ namespace Icon.Web.Tests.Unit.Managers
 
         BrandManager GetBrandManager()
         {
-            return  new BrandManager() { Brand = testBrand, BrandAbbreviation = testBrandAbbreviation, Update = UpdateOptions.Brand | UpdateOptions.Traits };
+            return  new BrandManager() { Brand = testBrand, BrandAbbreviation = testBrandAbbreviation, WriteAccess = Enums.WriteAccess.Full | Enums.WriteAccess.Traits };
         }
     }
 }

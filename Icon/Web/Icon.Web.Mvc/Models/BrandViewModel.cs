@@ -36,7 +36,7 @@ namespace Icon.Web.Mvc.Models
         [RegularExpression(@"^.{1,35}$", ErrorMessage = "Locality should be up to 35 characters length.")]
         public string Locality { get; set; }
 
-        public bool IsBrandCoreUpdateAuthorized { get; set; } //BrandName and BrandAbbreviation update is restricted.
+        public Enums.WriteAccess UserWriteAccess { get; set; }
 
         public string BrandHashKey { get; set; }
         public string TraitHashKey { get; set; }
