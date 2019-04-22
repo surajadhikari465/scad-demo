@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
@@ -28,7 +29,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service
         {
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<KitBuilderContext>();
-            dbContextOptionsBuilder.UseSqlServer(AppSettingsAccessor.GetStringSetting("KitBuliderDb"));
+            dbContextOptionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["KitBuliderDb"].ConnectionString);
 
             ItemListenerSettings itemListenerSettings = ItemListenerSettings.CreateFromConfig();
 
@@ -37,7 +38,8 @@ namespace KitBuilder.ESB.Listeners.Item.Service
 
 
             container.Register(typeof(IRepository<>), typeof(Repository<>));
-            container.Register<ICommandHandler<ItemAddOrUpdateCommand>, ItemAddOrUpdateCommandHandler>();
+            container.Register<ICommandHandler<ItemAddOrUpdateOrRemoveCommand>, ItemAddOrUpdateOrRemoveCommandHandler>();
+            container.Register<ICommandHandler<ArchiveMessageCommand>, ArchiveMessageCommandHandler>();
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("KitBuidler Item Listener"));
             container.Register(EsbConnectionSettings.CreateSettingsFromConfig);
             container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromConfig()));

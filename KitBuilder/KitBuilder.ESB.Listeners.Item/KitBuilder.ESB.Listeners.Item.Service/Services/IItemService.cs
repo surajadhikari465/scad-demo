@@ -6,6 +6,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Services
 {
     public interface IItemService
     {
-        void AddOrUpdateItems(IEnumerable<ItemModel> items);
+        void AddOrUpdateOrRemoveItems(IEnumerable<ItemModel> items);
+        void ArchiveMessage(IEsbMessage message);
     }
 }

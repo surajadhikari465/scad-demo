@@ -45,7 +45,10 @@ namespace KitBuilder.ESB.Listeners.Item.Service
             {
                 models = messageParser.ParseMessage(args.Message).ToList();
                 if (models.Any())
-                    service.AddOrUpdateItems(models);
+                {
+                    service.AddOrUpdateOrRemoveItems(models);
+                    ArchiveMessage(args.Message);
+                }
             }
             catch (Exception ex)
             {
@@ -54,7 +57,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service
             }
             finally
             {
-                ArchiveMessage(args.Message);
                 models.Clear();
             }
         }
@@ -63,7 +65,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service
         {
             try
             {
-              //  service.ArchiveMessage(message);
+                service.ArchiveMessage(message);
             }
             catch (Exception ex)
             {
@@ -73,28 +75,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service
                             ErrorCode = ApplicationErrors.Codes.UnableToArchiveMessage,
                             ErrorDetails = ApplicationErrors.Messages.UnableToArchiveMessage,
                             Message = message,
-                            Exception = ex
-                        }));
-            }
-        }
-
-        private void ArchiveItems(List<ItemModel> models)
-        {
-            try
-            {
-                if (models.Any())
-                {
-                  //  service.ArchiveItems(models);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(JsonConvert.SerializeObject(
-                        new
-                        {
-                            ErrorCode = ApplicationErrors.Codes.UnableToArchiveItems,
-                            ErrorDetails = ApplicationErrors.Messages.UnableToArchiveItems,
-                            Items = models,
                             Exception = ex
                         }));
             }

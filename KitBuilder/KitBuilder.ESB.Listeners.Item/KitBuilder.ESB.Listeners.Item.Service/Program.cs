@@ -1,17 +1,30 @@
-﻿using Icon.Common;
+﻿using System;
+using Icon.Common;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using ServiceStack.Text;
 using Topshelf;
+using SimpleInjector;
+using NLog;
 
 namespace KitBuilder.ESB.Listeners.Item.Service
 {
     internal class Program
     {
+
+        private static string serviceDescription;
+        private static string serviceDisplayName;
+        private static string serviceName;
+        private static Container container;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public static void Main(string[] args)
         {
-            var container = SimpleInjectorInitializer.InitializeContainer();
-            container.GetInstance<EsbConnectionSettings>().PrintDump();
+           container = SimpleInjectorInitializer.InitializeContainer();
+           serviceDescription = AppSettingsAccessor.GetStringSetting("ServiceDescription", string.Empty);
+           serviceDisplayName = AppSettingsAccessor.GetStringSetting("ServiceDisplayName", string.Empty);
+           serviceName = AppSettingsAccessor.GetStringSetting("ServiceName", string.Empty);
+
+            ValidateSettings();
 
             HostFactory.Run(r =>
             {
@@ -22,10 +35,20 @@ namespace KitBuilder.ESB.Listeners.Item.Service
                     s.WhenStopped(c => c.Close());
                 });
 
-                r.SetDescription(AppSettingsAccessor.GetStringSetting("ServiceDescription"));
-                r.SetDisplayName(AppSettingsAccessor.GetStringSetting("ServiceDisplayName"));
-                r.SetServiceName(AppSettingsAccessor.GetStringSetting("ServiceName"));
+                r.SetDescription(serviceDescription);
+                r.SetDisplayName(serviceDisplayName);
+                r.SetServiceName(serviceName);
             });
+        }
+
+        private static void ValidateSettings()
+        {
+            var esbSettings=container.GetInstance<EsbConnectionSettings>().Dump();
+            logger.Debug(esbSettings);
+            if (serviceDescription == string.Empty) throw new ApplicationException("ServiceDescription must be configured in app.settings before the service can run.");
+            if (serviceDisplayName == string.Empty) throw new ApplicationException("ServiceDisplayName must be configured in app.settings before the service can run.");
+            if (serviceName == string.Empty) throw new ApplicationException("ServiceName must be configured in app.settings before the service can run.");
+           
         }
     }
 }

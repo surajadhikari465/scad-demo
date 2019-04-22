@@ -68,6 +68,8 @@
     <Folder Include="Scripts\Templates" />
     <Folder Include="Jobs" />
     <Folder Include="dbo\User Defined Types" />
+    <Folder Include="app\Tables\" />
+    <Folder Include="app\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -110,6 +112,11 @@
     <Build Include="dbo\Stored Procedures\PublishKitEvents.sql" />
     <Build Include="dbo\Tables\KitQueue.sql" />
     <Build Include="dbo\Tables\KitTypes.sql" />
+    <Build Include="dbo\Stored Procedures\ItemRemove.sql" />
+    <Build Include="dbo\User Defined Types\ItemRemoveType.sql" />
+    <Build Include="app\Tables\MessageType.sql" />
+    <Build Include="app\Tables\MessageHistory.sql" />
+    <Build Include="app\Stored Procedures\MessageHistoryInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />

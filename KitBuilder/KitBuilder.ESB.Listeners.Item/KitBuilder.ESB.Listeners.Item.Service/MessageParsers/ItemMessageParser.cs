@@ -8,7 +8,10 @@ using KitBuilder.ESB.Listeners.Item.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Drawing;
 namespace KitBuilder.ESB.Listeners.Item.Service.MessageParsers
 {
     public class ItemMessageParser : MessageParserBase<items, IEnumerable<ItemModel>>
@@ -36,24 +39,35 @@ namespace KitBuilder.ESB.Listeners.Item.Service.MessageParsers
                 var messageParseTime = DateTime.UtcNow;
 
                 List<ItemModel> models = new List<ItemModel>();
-                foreach (var item in items.item)
+
+                try
                 {
-                    try
-                    {
-                        models.Add(item.ToItemModel(messageId, messageParseTime, sequenceId));
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(JsonConvert.SerializeObject(
+                    Parallel.ForEach(items.item, parallelOptions: new ParallelOptions() { MaxDegreeOfParallelism = 2 }, (currentItem) =>
+                       {
+                           var itemModel = currentItem.ToItemModel(messageId, messageParseTime, sequenceId);
+                           if (itemModel != null)
+                           {
+
+                               logger.Info($"Parsed {messageId}");
+                               models.Add(itemModel);
+                           }
+                           else
+                           {
+                               logger.Warn($"Skipped {messageId} Not an enterprise item.");
+                           }
+                       });
+
+                    message.Acknowledge();
+                } catch (Exception ex)
+                {
+                    logger.Error(JsonConvert.SerializeObject(
                             new
                             {
                                 ErrorCode = ApplicationErrors.Codes.UnableToParseItem,
                                 ErrorDetails = ApplicationErrors.Messages.UnableToParseItem,
                                 InforMessageId = messageId,
-                                Item = item,
                                 Exception = ex
                             }));
-                    }
                 }
 
                 return models;

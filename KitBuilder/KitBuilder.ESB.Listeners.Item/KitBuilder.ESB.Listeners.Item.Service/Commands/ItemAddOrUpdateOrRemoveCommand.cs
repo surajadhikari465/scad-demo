@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KitBuilder.ESB.Listeners.Item.Service.Commands
 {
-    public class ItemAddOrUpdateCommand
+    public class ItemAddOrUpdateOrRemoveCommand
     {
         public IEnumerable<ItemModel> Items { get; set; }
     }
