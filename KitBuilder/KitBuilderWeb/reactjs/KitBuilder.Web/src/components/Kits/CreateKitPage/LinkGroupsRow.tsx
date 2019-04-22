@@ -11,12 +11,12 @@ interface LinkGroupsRowProps {
     onItemUnselected: (item: LinkGroupItem) => void;
     onLinkedGroupDeleted: (linkedGroup: LinkGroup) => void;
     selectedLinkedGroupItems: Array<LinkGroupItem>;
+    disabledLinkGroups: Array<any>;
 }
 
 export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
 
     const [ isCollapsed, setIsCollapsed ] = React.useState<boolean>(false);
-
     const isItemSelected = (item: LinkGroupItem) => {
         return props.selectedLinkedGroupItems.some(i => i.linkGroupItemId === item.linkGroupItemId);
     }
@@ -31,7 +31,8 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
 // @ts-ignore
     const allItems = props.linkedGroup.linkGroupItemDto.map(item => 
     <Grid item xs={6} md={4} key = {item.linkGroupItemId}>
-        <Checkbox className = "item-checkbox" checked={isItemSelected(item)} onChange={(e, checked) => handleSelectionChanged(item, checked)}/> 
+    
+        <Checkbox disabled = {props.disabledLinkGroups.includes(item.linkGroupId)} className = "item-checkbox" checked={isItemSelected(item)} onChange={(e, checked) => handleSelectionChanged(item, checked)}/> 
          {item.item.productDesc} 
     </Grid>
 );
@@ -43,7 +44,7 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
                 <h6>{props.linkedGroup.groupName}</h6>
             </Grid>
             <Grid>
-                <Button color="secondary" onClick={() => props.onLinkedGroupDeleted(props.linkedGroup)}>
+                <Button disabled = {props.disabledLinkGroups.includes(props.linkedGroup.linkGroupId)} color="secondary" onClick={() => props.onLinkedGroupDeleted(props.linkedGroup)}>
                     <Delete/>
                 </Button>
             </Grid>

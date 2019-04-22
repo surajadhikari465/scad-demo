@@ -399,6 +399,7 @@ namespace KitBuilderWebApi.Controllers
                                        LastUpdatedDateUtc = k.LastUpdatedDateUtc,
                                        ItemId = k.ItemId,
                                        KitId = k.KitId,
+                                       KitType = k.KitType,
                                        Item = new ItemsDto
                                        {
                                            ScanCode = i.ScanCode,
@@ -838,6 +839,12 @@ namespace KitBuilderWebApi.Controllers
 
                     var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
+                    var localeRecordExists = kitLinkGroupLocaleRepository.GetAll().Where(klgl =>klgl.Exclude ==false && KitLinkGroupsToRemove.Select(k => k.KitLinkGroupId).Contains(klgl.KitLinkGroupId)).Any();
+
+                    if(localeRecordExists)
+                    {
+                        return StatusCode(StatusCodes.Status409Conflict);
+                    }
 
                     var kitLinkGroupItemsThatHaveExistingKitLinkGroupParent = kitToSave.KitLinkGroup.SelectMany(klg => klg.KitLinkGroupItem.Select(klgi => new KitLinkGroupItem()
                     {

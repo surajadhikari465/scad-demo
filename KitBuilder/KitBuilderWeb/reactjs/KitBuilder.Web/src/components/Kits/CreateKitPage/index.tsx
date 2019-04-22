@@ -34,6 +34,7 @@ interface ICreateKitPageState {
   Instructions: Array<any>;
   showRecipe: boolean;
   isDisplayMandatory: boolean;
+  disabledLinkGroups:Array<any>;
 }
 
 interface ICreateKitPageProps {
@@ -71,7 +72,8 @@ class CreateKitPage extends React.PureComponent<
       item: null,
       Instructions: [],
       showRecipe: false,
-      isDisplayMandatory: false
+      isDisplayMandatory: false,
+      disabledLinkGroups:[]
     };
   }
 
@@ -171,6 +173,12 @@ class CreateKitPage extends React.PureComponent<
       Axios.post(KbApiMethod("Kits"), this.buildAddKitPayload())
         .then(r => {
           if (r.status === 200) {
+            const { LinkGroups } = this.state;
+            const { disabledLinkGroups } = this.state;
+            const linkGroupsLeft = LinkGroups.filter(
+              linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+            );
+            this.setState({ LinkGroups: linkGroupsLeft });
             const message = this.state.editMode
               ? "Kit saved succesfully."
               : "Kit created succesfully.";
@@ -182,7 +190,12 @@ class CreateKitPage extends React.PureComponent<
           }
         })
         .catch(e => {
-          if (e.response) this.props.showAlert(e.response.data, "error");
+          this.setState({ disabledLinkGroups: [] });
+          if (e.response.status = 404)
+          {
+            this.props.showAlert("Cannot delete link group while in use.", "error");
+          }
+         else if (e.response) this.props.showAlert(e.response.data, "error");
         });
     }
   };
@@ -197,10 +210,14 @@ class CreateKitPage extends React.PureComponent<
       showRecipe,
       isDisplayMandatory,
       kitId,
-      selectedLinkGroupItems
+      selectedLinkGroupItems,
+      disabledLinkGroups
     } = this.state;
 
-    const reformatedKitLinkGroup = LinkGroups.map(linkGroup => {
+    var includedLinkGroups =  LinkGroups.filter(
+      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+    );
+    const reformatedKitLinkGroup = includedLinkGroups.map(linkGroup => {
       // @ts-ignore
       const results = selectedLinkGroupItems.filter(
         item => item.linkGroupId === linkGroup.linkGroupId
@@ -245,11 +262,9 @@ class CreateKitPage extends React.PureComponent<
   };
 
   handleRemoveLinkGroup = (linkGroupToRemove: LinkGroup) => {
-    const { LinkGroups } = this.state;
-    const linkGroupsLeft = LinkGroups.filter(
-      linkGroup => linkGroup.linkGroupId !== linkGroupToRemove.linkGroupId
-    );
-    this.setState({ LinkGroups: linkGroupsLeft });
+    const { disabledLinkGroups } = this.state;
+    disabledLinkGroups.push(linkGroupToRemove.linkGroupId);
+    this.setState({ disabledLinkGroups: [...disabledLinkGroups] });
   };
 
   handleSelectMainItem = (item: Item) => {
@@ -458,6 +473,7 @@ class CreateKitPage extends React.PureComponent<
                         }
                         onItemSelected={this.handleLinkGroupItemSelected}
                         onItemUnselected={this.handleLinkGroupItemDeselected}
+                        disabledLinkGroups = {this.state.disabledLinkGroups}
                       />
                     </Grid>
                   </Grid>

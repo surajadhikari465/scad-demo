@@ -9,7 +9,8 @@ interface IAssignKitsTreeTableProps {
     data: any,
     updateData: any,
     disabled: boolean,
-    kitId: number
+    kitId: number,
+    isSimplekitType:boolean
 }
 
 export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTableProps, IAssignKitsTreeTableState>
@@ -189,7 +190,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                                 <input disabled={this.props.disabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
                                             </div>
                                             <div className="btnCenter" style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>
-                                                {item.isAssigned && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
+                                                {item.isAssigned && !this.props.isSimplekitType && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
                                             </div>
                                         </React.Fragment>
                                 }
@@ -198,10 +199,10 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                 !item.collapsed ?
                                     !item.isChildDisabled ?
                                         <div className="tbl-child">
-                                            <AssignKitsTreeTable kitId ={this.props.kitId} disabled={false} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
+                                            <AssignKitsTreeTable isSimplekitType = {this.props.isSimplekitType} kitId ={this.props.kitId} disabled={false} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
                                         </div>
                                         : <div className="tbl-child">
-                                            <AssignKitsTreeTable  kitId ={this.props.kitId}  disabled={true} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
+                                            <AssignKitsTreeTable isSimplekitType = {this.props.isSimplekitType}  kitId ={this.props.kitId}  disabled={true} data={item.childs} updateData={this.props.updateData}></AssignKitsTreeTable>
                                         </div>
                                     : <></>
                             }

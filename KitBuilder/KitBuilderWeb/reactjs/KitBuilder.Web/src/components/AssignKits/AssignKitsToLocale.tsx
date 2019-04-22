@@ -5,18 +5,15 @@ import axios from 'axios';
 import { KbApiMethod } from '../helpers/kbapi'
 import Swal from 'sweetalert2';
 import withSnackbar from '../PageStyle/withSnackbar';
-const hStyle = { color: 'red' };
-
-const sucesssStyle = { color: 'blue' };
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
 
 interface IAssignKitsToLocaleState {
      data: any,
-     error: any,
-     message: any,
      kitId: number,
      kitName: string,
+     kitType:string,
+     isSimplekitType: boolean
 }
 
 interface IAssignKitsToLocaleProps {
@@ -31,10 +28,10 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
           this.state = {
                data: [],
-               error: null,
-               message: null,
                kitId:0,
                kitName: "",
+               kitType:"",
+               isSimplekitType :false,
           }
 
           this.updateData = this.updateData.bind(this);
@@ -60,24 +57,23 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     return response.json();
                     if (response.status === 404) {
                          console.log("Not Found");
-                         this.setState({
-                              error: "Kit Not Found"
-                         })
-
-                         this.setState({
-                              message: null
-                         })
+                         this.props.showAlert("Kit Not Found.", "error")
+                   
                     }
                }).then(data => {
-                    if(data.length > 0) this.setState({kitName: data[0].description});
+                    if(data.length > 0) 
+                    this.setState({kitName: data[0].description, kitType:data[0].kitType}
+                   
+                    );
+ ;
+                    if(data[0].kitType==1)
+                    {
+                    
+                         this.setState({isSimplekitType: true});
+                    }
                }).catch((error) => {
-                    this.setState({
-                         error: "Error in displaying data."
-                    })
-
-                    this.setState({
-                         message: null
-                    })
+          
+                    this.props.showAlert("Error in displaying data.", "error")
                });
      }
 
@@ -91,24 +87,12 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     return response.json();
                     if (response.status === 404) {
                          console.log("Not found");
-                         this.setState({
-                              error: "Data not found."
-                         })
-
-                         this.setState({
-                              message: null
-                         })
+                         this.props.showAlert("Data not found.", "error")
                     }
                }).then(data => {
                     this.parseData(data);
                }).catch((error) => {
-                    this.setState({
-                         error: "Error in displaying data."
-                    })
-
-                    this.setState({
-                         message: null
-                    })
+                    this.props.showAlert("Error in displaying data.", "error")
                });
      }
 
@@ -194,16 +178,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
              .then((result:any) => {
                if (result.value) { 
                     this.saveData();
-               } 
-               else {
-                    this.setState({
-                         error: null
-                    })
-
-                    this.setState({
-                         message: null
-                    })
-               }
+               }   
              });
      }
 
@@ -221,21 +196,13 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                {
                     headers: headers
                }).then(response => {
-                    this.setState({
-                         error: null
-                    })
 
-                    this.setState({
-                         message: "Data saved succesfully."
-                    }, ()=>this.loadData())
+                      this.props.showAlert("Data saved succesfully.", "success")
+                   this.loadData()
                }).catch(error => {
-                    this.setState({
-                         error: "Error in saving data."
-                    })
-
-                    this.setState({
-                         message: null
-                    })
+               
+                    this.props.showAlert("Error in saving data.", "error")
+                   
                });
      }
 
@@ -250,16 +217,6 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
           return (
                <React.Fragment>
-                    <Grid container md={12} justify="center">
-                         <div className="error-message" >
-                              <span style={hStyle}> {this.state.error}</span>
-                         </div>
-                    </Grid>
-                    <Grid container md={12} justify="center">
-                         <div className="Success-message" >
-                              <span style={sucesssStyle}> {this.state.message}</span>
-                         </div>
-                    </Grid>
                     <h3>Kit Name: {this.state.kitName}</h3>
                     <Grid container justify= "flex-end" spacing={16}>
                     <Grid item>
@@ -274,7 +231,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                          </Grid>
                     </Grid>
 
-                    <AssignKitsTreeTable kitId = {this.state.kitId} disabled={false} data={data} updateData={this.updateData} />
+                    <AssignKitsTreeTable kitId = {this.state.kitId} isSimplekitType= {this.state.isSimplekitType} disabled={false} data={data} updateData={this.updateData} />
                </React.Fragment>
           );
      }

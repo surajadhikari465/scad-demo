@@ -10,6 +10,7 @@ using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.Dto;
 using KitBuilderWebApi.Models;
 using LocaleType = KitBuilderWebApi.Helper.LocaleType;
+using KitBuilder.DataAccess.Enums;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -34,12 +35,15 @@ namespace KitBuilderWebApi.Controllers
            var dbContext = Items.UnitOfWork.Context;
 
             var kitExists = dbContext.Kit.Where(k => k.KitId == kitId).ToList();
-            if(kitExists ==null)
+
+  
+                if (kitExists ==null)
             {
                 logger.LogWarning("The object passed is either null or does not contain any rows.");
                 return NotFound();
             }
 
+            
            var locales=  (from l in dbContext.Locale
                           join kl in dbContext.KitLocale 
                           on new { localeId = l.LocaleId, kitId } equals new { localeId = kl.LocaleId, kitId = kl.KitId } into kls
