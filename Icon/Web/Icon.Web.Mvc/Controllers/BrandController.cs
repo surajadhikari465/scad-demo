@@ -167,7 +167,7 @@ namespace Icon.Web.Mvc.Controllers
 
                 if(brandHashKey == viewModel.BrandHashKey && traitHashKey == viewModel.TraitHashKey)
                 {
-                     ViewData["SuccessMessage"] = $"No data change has been detected for {viewModel.BrandName} brand.";
+                    ViewData["SuccessMessage"] = $"No data change has been detected for {viewModel.BrandName} brand.";
                 }
                 else
                 {
@@ -179,6 +179,7 @@ namespace Icon.Web.Mvc.Controllers
                         hierarchyLevel = viewModel.HierarchyLevel
                     };
 
+                    var userAccess = GetWriteAccess();
                     var manager = new BrandManager
                     {
                         Brand = updatedBrand,
@@ -187,11 +188,12 @@ namespace Icon.Web.Mvc.Controllers
                         ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                         ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
                         Locality = String.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                        WriteAccess = GetWriteAccess()
+                        WriteAccess = (brandHashKey != viewModel.BrandHashKey && (userAccess & Enums.WriteAccess.Full) == Enums.WriteAccess.Full ? Enums.WriteAccess.Full : Enums.WriteAccess.None)
+                            | (traitHashKey != viewModel.TraitHashKey  && ((userAccess & Enums.WriteAccess.Traits) == Enums.WriteAccess.Traits || (userAccess & Enums.WriteAccess.Full) == Enums.WriteAccess.Full) ? Enums.WriteAccess.Traits : Enums.WriteAccess.None)
                     };
 
-                    ModelState.Clear();
                     updateBrandManagerHandler.Execute(manager);
+                    ModelState.Clear();
                     viewModel.BrandHashKey = brandHashKey;
                     viewModel.TraitHashKey = traitHashKey;
                     ViewData["SuccessMessage"] = "Brand update was successful.";
@@ -208,6 +210,7 @@ namespace Icon.Web.Mvc.Controllers
                  ViewData["ErrorMessage"] = ex.Message;
             }
             
+            viewModel.UserWriteAccess = GetWriteAccess();
             viewModel.BrandList = GetBrandList();
             return View(viewModel);
         }
