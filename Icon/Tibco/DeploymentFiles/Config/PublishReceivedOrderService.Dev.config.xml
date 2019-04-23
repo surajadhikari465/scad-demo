@@ -34,7 +34,7 @@
         </NameValuePairInteger>
 		<NameValuePairInteger>
             <name>Application/ReceiptEventQueueName</name>
-            <value>>WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1</value>
+            <value>WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.MA.Queue.V1</value>
         </NameValuePairInteger>
         <NameValuePair>
             <name>Application/TransactionType</name>
