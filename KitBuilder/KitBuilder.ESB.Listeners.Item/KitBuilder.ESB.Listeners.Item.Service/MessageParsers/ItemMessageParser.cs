@@ -42,7 +42,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.MessageParsers
 
                 try
                 {
-                    Parallel.ForEach(items.item, parallelOptions: new ParallelOptions() { MaxDegreeOfParallelism = 2 }, (currentItem) =>
+                    Parallel.ForEach(items.item,  new ParallelOptions() { MaxDegreeOfParallelism = 2 }, (currentItem) =>
                        {
                            var itemModel = currentItem.ToItemModel(messageId, messageParseTime, sequenceId);
                            if (itemModel != null)
