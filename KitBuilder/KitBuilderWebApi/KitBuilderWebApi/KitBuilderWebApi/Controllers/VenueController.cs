@@ -48,7 +48,7 @@ namespace KitBuilderWebApi.Controllers
                           join kl in dbContext.KitLocale 
                           on new { localeId = l.LocaleId, kitId } equals new { localeId = kl.LocaleId, kitId = kl.KitId } into kls
                           from p in kls.DefaultIfEmpty()
-                          select new AssignKitToLocaleDto
+                          select new
                           {
                              LocaleTypeId = l.LocaleTypeId,
                              LocaleId = l.LocaleId,
@@ -61,6 +61,7 @@ namespace KitBuilderWebApi.Controllers
                                                 ),
                              IsAssigned = p!= null?p.Exclude ==null || (bool)p.Exclude==false ?true:false : false,
                              IsExcluded = p != null?p.Exclude != null ?(bool) p.Exclude : false : false,
+                             StatusId =  p != null ? p.StatusId : 0,
                           }).ToList();
 
             //this code may be used but requirements are not there yet

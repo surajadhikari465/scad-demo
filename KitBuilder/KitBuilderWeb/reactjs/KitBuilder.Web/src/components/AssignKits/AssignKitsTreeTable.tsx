@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './AssignKitsTreeTable.css';
+import LocaleStatus from 'src/types/Localestatus';
 // import {KitLinkGroupPage} from '../KitLinkGroups/KitLinkGroupsPage'
 
 interface IAssignKitsTreeTableState {
@@ -164,8 +165,9 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                     }
                 </div>
                 <div className="tbl-body">
-                    {data.map((item: any) => (
-                        <React.Fragment key={item.localeId}>
+                    {data.map((item: any) => {
+                        const checkboxesDisabled = this.props.disabled || (item.isAssigned && item.statusId !== LocaleStatus.BUILDING);
+                        return <React.Fragment key={item.localeId}>
                             <div className="tbl-body-item">
                                 {
                                     LocaleTypeID != venueLocaleTypeId ?
@@ -177,17 +179,17 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                 <div style={{ width: '150px' }}>{item.localeName}</div>
                                 <div style={{ width: '150px' }}>{item.localeAbbreviation}</div>
                                 <div style={{ width: '150px' }}>
-                                    <input type="checkbox" disabled={this.props.disabled} style={chkboxStyle} checked={item.isAssigned} onChange={() => this.onAssignClicked(item)} />
+                                    <input type="checkbox" disabled={checkboxesDisabled} style={chkboxStyle} checked={item.isAssigned} onChange={() => this.onAssignClicked(item)} />
                                 </div>
                                 {
                                     !showView ?
                                         <div style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 480px)' } : { width: 'calc(100% - 450px)' }}>
-                                            <input disabled={this.props.disabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
+                                            <input disabled={checkboxesDisabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
                                         </div>
                                         :
                                         <React.Fragment>
                                             <div style={{ width: '150px' }}>
-                                                <input disabled={this.props.disabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
+                                                <input disabled={checkboxesDisabled} type="checkbox" style={chkboxStyle} checked={item.isExcluded} onChange={() => this.onExcludeClicked(item)} />
                                             </div>
                                             <div className="btnCenter" style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>
                                                 {item.isAssigned && !this.props.isSimplekitType && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
@@ -207,7 +209,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                     : <></>
                             }
                         </React.Fragment>
-                    ))}
+                    })}
                 </div>
             </div>
         );
