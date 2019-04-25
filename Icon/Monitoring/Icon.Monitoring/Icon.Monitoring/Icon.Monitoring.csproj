@@ -150,6 +150,7 @@
     <Compile Include="Monitors\MammothApiControllerMonitor.cs" />
     <Compile Include="Monitors\MammothItemLocaleControllerMonitor.cs" />
     <Compile Include="Monitors\MammothPriceControllerMonitor.cs" />
+    <Compile Include="Monitors\InStockDequeueProcessMonitor.cs" />
     <Compile Include="Monitors\PosPushStartTimeMonitor.cs" />
     <Compile Include="Monitors\MammothPrimeAffinityControllerMonitor.cs" />
     <Compile Include="Monitors\PushControllerMonitor.cs" />

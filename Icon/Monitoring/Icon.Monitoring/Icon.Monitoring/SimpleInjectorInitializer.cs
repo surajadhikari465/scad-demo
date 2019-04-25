@@ -56,6 +56,7 @@
             container.RegisterSingleton<IMammothPrimeAffinityControllerMonitorSettings, MammothPrimeAffinityControllerMonitorSettings>();
             container.RegisterSingleton<IMammothExpiringTprServiceMonitorSettings, MammothExpiringTprServiceMonitorSettings>();
             container.RegisterSingleton<IMammothActivePriceServiceMonitorSettings, MammothActivePriceServiceMonitorSettings>();
+            container.RegisterSingleton<IInStockDequeueProcessMonitorSettings, InStockDequeueProcessMonitorSettings>();
             container.RegisterSingleton<IMonitorCache, MonitorCache>();
 
             container.RegisterSingleton<IMonitorService, MonitorService>();

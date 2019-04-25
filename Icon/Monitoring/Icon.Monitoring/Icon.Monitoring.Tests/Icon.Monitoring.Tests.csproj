@@ -181,6 +181,7 @@
     <Compile Include="Monitors\MammothActivePriceServiceMonitorTests.cs" />
     <Compile Include="Monitors\MammothExpiringTprServiceMonitorTests.cs" />
     <Compile Include="Monitors\MammothPrimeAffinityControllerMonitorTests.cs" />
+    <Compile Include="Monitors\InStockDequeueProcessMonitorTests.cs" />
     <Compile Include="Monitors\PosPushJobMonitorTests.cs" />
     <Compile Include="Monitors\PushControllerMonitorTests.cs" />
     <Compile Include="Monitors\GloConControllerMonitorTests.cs" />

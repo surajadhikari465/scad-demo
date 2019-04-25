@@ -116,6 +116,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountParameters.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountQuery.cs" />
+    <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableParameters.cs" />
+    <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableQuery.cs" />
     <Compile Include="Queries\GetItemMovementTableRowCountParameters.cs" />
     <Compile Include="Queries\GetAppLogByAppAndMessageParameters.cs" />
     <Compile Include="Queries\GetAppLogByAppAndMessageQuery.cs" />

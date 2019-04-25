@@ -137,6 +137,7 @@
     <Compile Include="Queries\GetDvoJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaJobStatusQueryTests.cs" />
     <Compile Include="Queries\GetIrmaStatusIdTest.cs" />
+    <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableQueryTests.cs" />
     <Compile Include="Queries\GetMammothJobScheduleQueryTests.cs" />
     <Compile Include="Queries\GetLatestAppLogByAppNameQueryTests.cs" />
     <Compile Include="Queries\GetMammothApiMessageQueueIdQueryTests.cs" />

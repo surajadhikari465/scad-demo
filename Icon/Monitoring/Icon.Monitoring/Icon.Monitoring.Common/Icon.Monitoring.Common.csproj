@@ -111,11 +111,13 @@
     <Compile Include="MonitorCache.cs" />
     <Compile Include="Settings\DvoBulkImportJobMonitorSettings.cs" />
     <Compile Include="Settings\IDvoBulkImportJobMonitorSettings.cs" />
+    <Compile Include="Settings\IInStockDequeueProcessMonitorSettings.cs" />
     <Compile Include="Settings\IMammothExpiringTprServiceMonitorSettings.cs" />
     <Compile Include="Settings\IMammothActivePriceServiceMonitorSettings.cs" />
     <Compile Include="Settings\IMonitorSettings.cs" />
     <Compile Include="PagerDuty\IOpsgenieTrigger.cs" />
     <Compile Include="Settings\IMammothPrimeAffinityControllerMonitorSettings.cs" />
+    <Compile Include="Settings\InStockDequeueProcessMonitorSettings.cs" />
     <Compile Include="Settings\IVimLocaleConJobMonitorSettings.cs" />
     <Compile Include="Settings\ITLogConJobMonitorSettings.cs" />
     <Compile Include="Settings\MammothExpiringTprServiceMonitorSettings.cs" />
