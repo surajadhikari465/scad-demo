@@ -21,6 +21,8 @@ using KitInstructionList = KitBuilder.DataAccess.DatabaseModels.KitInstructionLi
 using LocaltypeModel = KitBuilder.DataAccess.DatabaseModels.LocaleType;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using KitBuilderWebApi.Models;
+using LocaleStatus = KitBuilder.DataAccess.Enums.Status;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -42,7 +44,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaltypeModel> localeTypeRepository;
-        private IHelper<KitDto, KitSearchParameters> kitHelper;
+        private IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper;
         private const string deleteKitSpName = "DeleteKitByKitId";
         private const string publishKitEvents = "PublishKitEvents";
 
@@ -63,7 +65,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
                              ILogger<KitController> logger,
-                             IHelper<KitDto, KitSearchParameters> kitHelper,
+                             IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper,
                              IServiceProvider services,
                              IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator,
                              IRepository<KitQueue> kitQueueRepository
@@ -376,6 +378,38 @@ namespace KitBuilderWebApi.Controllers
             return Ok(kit);
         }
 
+        private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
+        {
+            var statusArray = kitLocales.Select(kl => kl.StatusId);
+
+            if (statusArray.Count() == 0 || statusArray.All(status => status == (int) LocaleStatus.Building))
+            {
+                return LocaleStatus.Building;
+            }
+            else if (statusArray.Contains((int)LocaleStatus.Modifying) || statusArray.Contains((int)LocaleStatus.Building))
+            {
+                return LocaleStatus.Modifying;
+            } else if (statusArray.All(status => status == (int)LocaleStatus.PublishQueued))
+            {
+                return LocaleStatus.PublishQueued;
+            } else if (statusArray.All(status => status == (int) LocaleStatus.PublishReQueued || status == (int) LocaleStatus.PublishQueued))
+            {
+                return LocaleStatus.PublishReQueued;
+            } else if (statusArray.All(status => status == (int) LocaleStatus.Published))
+            {
+                return LocaleStatus.Published;
+            } else if (statusArray.All(status => status == 6))
+            {
+                return LocaleStatus.PublishFailed;
+            } else if (statusArray.All(status => status == (int) LocaleStatus.Published || status == (int) LocaleStatus.PublishFailed))
+            {
+                return LocaleStatus.PartiallyPublished;
+            } else
+            {
+                return 0;
+            }
+        }
+
         [HttpGet(Name = "GetKits")]
         public IActionResult GetKits(KitSearchParameters kitSearchParameters)
         {
@@ -392,13 +426,14 @@ namespace KitBuilderWebApi.Controllers
 
             var kitsBeforePaging = from k in kitRepository.GetAll()
                                    join i in itemsRepository.GetAll() on k.ItemId equals i.ItemId
-                                   select new KitDto()
+                                   select new KitDtoWithStatus
                                    {
                                        Description = k.Description,
                                        InsertDateUtc = k.InsertDateUtc,
                                        LastUpdatedDateUtc = k.LastUpdatedDateUtc,
                                        ItemId = k.ItemId,
                                        KitId = k.KitId,
+                                       KitStatus = GetKitStatusFromLocales(k.KitLocale.ToArray()),
                                        KitType = k.KitType,
                                        Item = new ItemsDto
                                        {
@@ -410,7 +445,17 @@ namespace KitBuilderWebApi.Controllers
 
             BuildQueryToFilterKitData(kitSearchParameters, ref kitsBeforePaging);
 
-            var kitsAfterPaging = PagedList<KitDto>.Create(kitsBeforePaging,
+            var statuses = kitLocaleRepository.GetAll().Where(kl => kitsBeforePaging.Select(k => k.KitId).Contains(kl.KitId)).Select(kl => kl.Status.StatusId).ToList();
+            if(statuses.Contains(6))
+            {
+                //one or more of the local publishes failed
+            } else if(statuses.Contains(5))
+            {
+                //one or more of the locals has pending changes
+            }
+
+
+            var kitsAfterPaging = PagedList<KitDtoWithStatus>.Create(kitsBeforePaging,
                 kitSearchParameters.PageNumber,
                 kitSearchParameters.PageSize
             );
@@ -1166,7 +1211,7 @@ namespace KitBuilderWebApi.Controllers
         }
 
         internal void BuildQueryToFilterKitData(KitSearchParameters kitSearchParameters,
-            ref IQueryable<KitDto> kitsBeforePaging)
+            ref IQueryable<KitDtoWithStatus> kitsBeforePaging)
         {
             if (!string.IsNullOrEmpty(kitSearchParameters.KitDescription))
             {

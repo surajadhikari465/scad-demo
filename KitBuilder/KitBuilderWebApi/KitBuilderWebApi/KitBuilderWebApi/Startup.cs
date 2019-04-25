@@ -76,6 +76,7 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
             services.AddScoped<IHelper<InstructionListDto, InstructionListsParameters>, InstructionListHelper>();
             services.AddScoped<IHelper<KitDto, KitSearchParameters>, KitHelper>();
+            services.AddScoped<IHelper<KitDtoWithStatus, KitSearchParameters>, KitWithStatusHelper>();
             services.AddScoped<IHelper<ItemsDto, KitItemParameters>, KitItemHelper>();
             services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
 

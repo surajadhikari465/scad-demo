@@ -48,19 +48,23 @@ class KitListPage extends React.Component<IKitsProps, IKitListsPageState>
         
         this.onDelete = this.onDelete.bind(this);
     }
-    mainItemChange(event: any) {
+    mainItemChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ searchMainItemName: event.target.value });
     }
 
-    scanCodeChange(event: any) {
+    scanCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ searchScanCode: event.target.value });
     }
 
-    linkGroupChange(event: any) {
+    linkGroupChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ searchLinkGroupName: event.target.value });
     }
 
-    kitDescriptionChange(event: any) {
+    handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        
+    }
+
+    kitDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ searchkitDescription: event.target.value });
     }
 
