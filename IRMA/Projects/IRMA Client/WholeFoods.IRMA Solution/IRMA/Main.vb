@@ -757,23 +757,18 @@ me_exit:
     gsUG_CultureDisplayName = CultureInfo.CurrentCulture.DisplayName
     gsUG_DateMask = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern
 
-    ' are connection string encrypted?
-    Dim encrypted As Boolean = CType(ConfigurationManager.AppSettings("encryptedConnectionStrings"), Boolean)
-    If encrypted Then
-      Dim encryptor As New Encryptor()
-      gsODBCConnect = encryptor.Decrypt(ConfigurationManager.ConnectionStrings("ODBC").ConnectionString())
-      gsCrystal_Connect = encryptor.Decrypt(ConfigurationManager.ConnectionStrings("ODBCCrystal").ConnectionString())
-      gsCrystalUser = encryptor.Decrypt(ConfigurationServices.AppSettings("username"))
-      gsCrystalPassword = encryptor.Decrypt(ConfigurationServices.AppSettings("password"))
-    Else
-      gsODBCConnect = ConfigurationManager.ConnectionStrings("ODBC").ConnectionString()
-      gsCrystal_Connect = ConfigurationManager.ConnectionStrings("ODBCCrystal").ConnectionString()
-      gsCrystalUser = ConfigurationServices.AppSettings("username")
-      gsCrystalPassword = ConfigurationServices.AppSettings("password")
-    End If
+        ' are connection string encrypted?
+        Dim encrypted As Boolean = CType(ConfigurationManager.AppSettings("encryptedConnectionStrings"), Boolean)
+        ' Removed unused legacy vars from if-encrypted blocks below: gsCrystal_Connect, gsCrystalUser, gsCrystalPassword
+        If encrypted Then
+            Dim encryptor As New Encryptor()
+            gsODBCConnect = encryptor.Decrypt(ConfigurationManager.ConnectionStrings("ODBC").ConnectionString())
+        Else
+            gsODBCConnect = ConfigurationManager.ConnectionStrings("ODBC").ConnectionString()
+        End If
 
-    '-- Check for any command line parameters.
-    gbUseLocalTime = False
+        '-- Check for any command line parameters.
+        gbUseLocalTime = False
     If InStr(1, UCase(VB.Command()), "USELOCALTIME") Then
       sCaption = sCaption & " --- TEST MODE (Using Local Time) ---"
       gbUseLocalTime = True

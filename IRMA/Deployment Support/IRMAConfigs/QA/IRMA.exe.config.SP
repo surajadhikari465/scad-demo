@@ -14,10 +14,9 @@
 	<connectionStrings>
 		<!-- Server: idd-ma   Database: ItemCatalog_Test -->
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-sp\spq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=R8592F33J%Vu;" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV55xBhUYNgJi4JTfRCJSXOVm1GOgngsAcEwBcxuHgjyBq9olCzQetO8uiBQtj3blEyvu65JmZJ9MMSKPdE0sZzr97mgUIzb13xIwDa7jAoGdne" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-sp\spq;Database=ItemCatalog;UID=IRSUser;PWD=R8592F33J%Vu;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-sp\spq;Database=ItemCatalog;UID=IRMAReports;PWD=aY6U71#1y&f9;"/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfCtRVbmO1XEOdhXEh3vu3NFx0j2HWMiX8ZFbEhesXHEoAfM0hoNlfoJVOJkC8z6NISb+sIG+FzCehZY2UcTshpZJ4vSZhAzRIq0X00EZtAsb"/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

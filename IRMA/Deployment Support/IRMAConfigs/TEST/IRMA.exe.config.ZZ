@@ -16,7 +16,6 @@
 	<connectionStrings>
 		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=cewd8526\ss2016;Initial Catalog=IRMA.DB;User Id=IRSUser;Password=Sql16!rm@;" />
 		<add name="ODBC" connectionString ="Driver={SQL Server};Server=cewd8526\ss2016;Database=IRMA.DB;UID=IRSUser;PWD=Sql16!rm@;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=cewd8526\ss2016;Database=IRMA.DB;UID=IRMAReports;PWD=;"/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

@@ -18,8 +18,6 @@
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
 		<!--UK Test Database: idd-uk.ItemCatalog using IRMA Client account-->
 		<add name="ODBC" connectionString="Driver={SQL Server};Server=uk-db01-tst01;Database=ItemCatalog;UID=IRSUser;PWD=G%rfUbn0e!wfirs;APP=" />
-		<!--UK Test Database: idT-uk.ItemCatalog using IRMA Reporting account-->
-		<add name="ODBCCrystal" connectionString="Server};Server=uk-db01-tst01;Database=ItemCatalog;UID=IRMAReports;PWD=G%rfUbn0e!wfrpt;APP=C.Report" />
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

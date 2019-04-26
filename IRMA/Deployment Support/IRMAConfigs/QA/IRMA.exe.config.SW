@@ -13,10 +13,9 @@
 
   <connectionStrings>
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idq-sw\swq;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=TM4100@4ev2a;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV559w696TAuzKEddrwtE/+DvhOkPGbZizen3Cs7B13g3DGP/jqd4fxcCTtcFUijYwqrR0kEjGPjP2Yoe82cK+lBLVfSDoLdp39/64KACwXevW1" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRSUser;PWD=TM4100@4ev2a;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idq-sw\swq;Database=ItemCatalog;UID=IRMAReports;PWD=E129Ny&R46Bd;"/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfCtRVbmO1XEOdhXEh3vu3NESLngkTk+vPvTBl1GOu45m+g498M1YnG+RhB6z4XIsQtrzqnpxdGoW66V7Ahm61DBiFBrN/X+hj0HSqEf8KJKV"/>
   </connectionStrings>
 
 

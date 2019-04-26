@@ -16,7 +16,6 @@
   	<!-- ** Active settings here. ** -->
 	<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=rm-db01-dev;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=@@ysfZ7%yTIQirs;" />
 	<add name="ODBC" connectionString ="Driver={SQL Server};Server=rm-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=@@ysfZ7%yTIQirs;APP="/>
-	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=rm-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=@@ysfZ7%yTIQrpt;"/>
   </connectionStrings>
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
   <log4net>

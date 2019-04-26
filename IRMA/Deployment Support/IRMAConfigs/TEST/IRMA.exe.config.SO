@@ -16,7 +16,6 @@
 	<connectionStrings>
 		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-so\sod;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=anoel;" />
 		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idd-so\sod;Database=ItemCatalog_Test;UID=IRSUser;PWD=anoel;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=idd-so\sod;Database=ItemCatalog_Test;UID=IRMAReports;PWD=v1tam1n;"/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

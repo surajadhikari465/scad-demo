@@ -18,7 +18,6 @@
     <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=sp-db01-tst01;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=pQQG*HaKy291irs;" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
 		<add name="ODBC" connectionString ="Driver={SQL Server};Server=sp-db01-tst01;Database=ItemCatalog;UID=IRSUser;PWD=pQQG*HaKy291irs;APP="/>
-		<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=sp-db01-tst01;Database=ItemCatalog;UID=IRMAReports;PWD=pQQG*HaKy291rpt;"/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

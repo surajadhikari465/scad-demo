@@ -17,7 +17,6 @@
     
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
 	<add name="ODBC" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRSUser;PWD=PerjXwWHrs$3;APP="/>
-	<add name="ODBCCrystal" connectionString ="Driver={SQL Server};Server=xx-db01-dev;Database=ItemCatalog;UID=IRMAReports;PWD=PerjXwWHrs$3;"/>		
   </connectionStrings>
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
   <log4net>
