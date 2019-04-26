@@ -1,13 +1,13 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
+using Mehdime.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Mehdime.Entity;
-using System.Data.Entity.SqlServer;
-using System.Data.Entity;
 
 namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
 {
@@ -34,14 +34,6 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             _ambientDbContextLocator = ambientDbContextLocator;
         }
 
-        public Expression<Func<IAppLog, int>> DefaultAppLogOrderBy
-        {
-            get
-            {
-                return (x => x.AppLogID);
-            }
-        }
-
         public IAppLog GetSingleAppLog(int appLogId)
         {
             return DbContext.AppLogs.Find(appLogId);
@@ -51,14 +43,14 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize)
         {
-            return GetPagedAppLogs(DefaultAppLogOrderBy, page, pageSize, QuerySortOrder.Unspecified);
+            return GetPagedAppLogs(DefaultOrderBy, page, pageSize, QuerySortOrder.Unspecified);
         }
 
         public IEnumerable<IAppLog> GetPagedAppLogsByApp(string appName,
             int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize)
         {
-            return GetPagedAppLogsByApp(appName, DefaultAppLogOrderBy, page, pageSize, QuerySortOrder.Unspecified);
+            return GetPagedAppLogsByApp(appName, DefaultOrderBy, page, pageSize, QuerySortOrder.Unspecified);
         }
 
         public IEnumerable<IAppLog> GetPagedAppLogs(
@@ -67,12 +59,9 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             int pageSize = PagingConstants.DefaultPageSize,
             QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
-            return GetPagedAppLogsWithFilter(
-                l => l != null,
-                orderBy,
-                page,
-                pageSize,
-                sortOrder);
+            var convertedOrderBy = ExpressionConvert<AppLog, IAppLog, int>(orderBy);
+
+            return GetPagedAppLogsWithFilterForEntity(null, convertedOrderBy, page, pageSize, sortOrder);
         }
 
         public IEnumerable<IAppLog> GetPagedAppLogsByApp(string appName,
@@ -100,7 +89,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             int pageSize = PagingConstants.DefaultPageSize,
             QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
-            return GetPagedAppLogsWithFilter(filter, DefaultAppLogOrderBy, page, pageSize, sortOrder);
+            return GetPagedAppLogsWithFilter(filter, DefaultOrderBy, page, pageSize, sortOrder);
         }
 
         public IEnumerable<IAppLog> GetPagedAppLogsWithFilter(
@@ -195,7 +184,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             return null;
         }
 
-        #region private 
+        #region private
         public Expression<Func<AppLog, int>> DefaultOrderByForEntity
         {
             get
@@ -215,7 +204,7 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
         private static Expression<Func<AppLog, T>> ExpressionConvert<AppLog, IAppLog, T>(Expression<Func<IAppLog, T>> expression)
         {
             // Add the boxing operation, but get a weakly typed expression
-            Expression converted = Expression.Convert(expression.Body, typeof(AppLog));
+            Expression converted = Expression.Convert(expression.Body, typeof(T));
             // Use Expression.Lambda to get back to strong typing
             return Expression.Lambda<Func<AppLog, T>>(converted, expression.Parameters);
         }
@@ -227,26 +216,51 @@ namespace Icon.Dashboard.MammothDatabaseAccess.Repositories
             int pageSize = PagingConstants.DefaultPageSize,
             QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
-            switch (sortOrder)
+            if (filter == null)
             {
-                case QuerySortOrder.Ascending:
-                    return DbContext.AppLogs
-                        .Where(filter)
-                        .OrderBy(orderBy)
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .Include(l => l.App)
-                        .ToList();
-                case QuerySortOrder.Unspecified:
-                case QuerySortOrder.Descending:
-                default:
-                    return DbContext.AppLogs
-                        .Where(filter)
-                        .OrderByDescending(orderBy)
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .Include(l => l.App)
-                        .ToList();
+                switch (sortOrder)
+                {
+                    case QuerySortOrder.Ascending:
+                        return DbContext.AppLogs
+                            .OrderBy(orderBy)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .Include(l => l.App)
+                            .ToList();
+                    case QuerySortOrder.Unspecified:
+                    case QuerySortOrder.Descending:
+                    default:
+                        return DbContext.AppLogs
+                            .OrderByDescending(orderBy)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .Include(l => l.App)
+                            .ToList();
+                }
+            }
+            else
+            {
+                switch (sortOrder)
+                {
+                    case QuerySortOrder.Ascending:
+                        return DbContext.AppLogs
+                            .Where(filter)
+                            .OrderBy(orderBy)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .Include(l => l.App)
+                            .ToList();
+                    case QuerySortOrder.Unspecified:
+                    case QuerySortOrder.Descending:
+                    default:
+                        return DbContext.AppLogs
+                            .Where(filter)
+                            .OrderByDescending(orderBy)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .Include(l => l.App)
+                            .ToList();
+                }
             }
         }
 

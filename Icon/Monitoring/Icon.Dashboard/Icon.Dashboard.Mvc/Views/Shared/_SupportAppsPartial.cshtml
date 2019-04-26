@@ -1,13 +1,5 @@
-﻿@model IDictionary<string, string>
-
-@{
-    var activeEnvironment = Model
-        .FirstOrDefault(e => e.Value.Equals(Request.Url.Host, StringComparison.InvariantCultureIgnoreCase))
-        .Key;
-    var envSwitcher = new Icon.Dashboard.Mvc.Helpers.EnvironmentSwitcher();
-    var tibcoUrl = envSwitcher.GetTibcoAdminServerForEnivronment(activeEnvironment);
-    var mwsUrl = envSwitcher.GetMammothWebSupportServerForEnivronment(activeEnvironment);
-    var iconWebUrl = envSwitcher.GetIconWebServerForEnvironment(activeEnvironment);
+﻿@{
+    var envManager = new Icon.Dashboard.Mvc.Services.DashboardEnvironmentManager();
 }
 
 <li class="dropdown">
@@ -15,21 +7,27 @@
         Support Apps
     </a>
     <ul class="dropdown-menu">
-        <li class="btn-link">
-            <a class="dropdown-item" href="@mwsUrl">
-                Mammoth Web Support
-            </a>
-        </li>
-        <li class="btn-link">
-            <a class="dropdown-item" href="@iconWebUrl">
-                Icon Web
-            </a>
-        </li>
-        <li class="btn-link">
-            <a class="dropdown-item" href="@tibcoUrl">
-                TIBCO Admin
-            </a>
-        </li>
+        @foreach (var environmentEnum in Enum.GetValues(typeof(Icon.Dashboard.Mvc.Models.EnvironmentEnum)).Cast<Icon.Dashboard.Mvc.Models.EnvironmentEnum>())
+        {
+            if (environmentEnum == Icon.Dashboard.Mvc.Models.EnvironmentEnum.Prd)
+            {
+                continue;
+            }
+            <li>
+                <span class="label label-@Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(environmentEnum)">
+                    @environmentEnum.ToString()
+                </span>
+            </li>
+            var supportLinksForEnvironment = envManager.GetSupportServerLinks(environmentEnum);
+            foreach (var supportLink in supportLinksForEnvironment)
+            {
+                <li class="btn-link">
+                    <a class="dropdown-item" href="@supportLink.Item2">
+                        <span class="text-@Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(environmentEnum)">@supportLink.Item1</span>
+                    </a>
+                </li>
+            }
+        }
     </ul>
 </li>
 

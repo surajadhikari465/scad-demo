@@ -13,28 +13,54 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class EsbController : BaseDashboardController
     {
+        protected IDashboardEnvironmentManager dashboardEnvironmentManager { get; private set; } 
+        protected IEsbEnvironmentManager esbEnvironmentManager { get; private set; } 
+        protected IRemoteWmiServiceWrapper remoteServicesService { get; private set; } 
+
         public EsbController() : this(null, null, null, null, null) { }
 
         public EsbController(
-            HttpServerUtilityBase serverUtility = null,
             IIconDatabaseServiceWrapper iconDbService = null,
-            string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
-            IMammothDatabaseServiceWrapper mammothDbService = null)
-            : base(serverUtility, iconDbService, pathToXmlDataFile, dataServiceWrapper, mammothDbService) { }
+            IMammothDatabaseServiceWrapper mammothDbService = null,
+            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
+            IEsbEnvironmentManager esbEnvironmentMgmtSvc = null,
+            IRemoteWmiServiceWrapper remoteServicesService = null)
+            : base (iconDbService, mammothDbService)
+        {
+            this.dashboardEnvironmentManager = dashboardEnvironmentManager ?? new DashboardEnvironmentManager();
+            this.esbEnvironmentManager = esbEnvironmentMgmtSvc ?? new EsbEnvironmentManager();
+            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(iconDbService, mammothDbService, esbEnvironmentManager);
+        }
 
         #region GET
 
         [HttpGet]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Index()
+        public ActionResult Index(string environment = null)
         {
-            //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var environmentManager = new DashboardEnvironmentManager();
+
+            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
+            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
+            {
+                // determine the default environment based on the hosting web server
+                chosenEnvironmentEnum = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
+            }
+            var chosenEnvironmentViewModel = environmentManager.BuildEnvironmentViewModel(chosenEnvironmentEnum);
+
+            var commandsEnabled = chosenEnvironmentEnum != EnvironmentEnum.Prd &&
+                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
+            
+            var appViewModels = remoteServicesService.LoadRemoteServices(chosenEnvironmentViewModel, commandsEnabled);
+
+            ViewBag.CommandsEnabled = commandsEnabled;
+
             ViewBag.Action = nameof(Index);
             ViewBag.Title = "Configure ESB Apps";
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var viewData = DashboardDataFileService.GetEsbEnvironments(dataFileWebServerPath);
+
+            var viewData = esbEnvironmentManager.GetEsbEnvironmentDefinitionsWithAppsPopulated(appViewModels);
             return View(viewData);
         }
 
@@ -43,14 +69,14 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Details(string name)
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
             if (String.IsNullOrWhiteSpace(name))
             {
                 return RedirectToAction("Index");
             }
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(dataFileWebServerPath, name);
+            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);
             ViewBag.Action = "Details";
             ViewBag.Title = String.Format("View ESB Environment \"{0}\" Configuration", esbEnvironment.Name);
             return View(esbEnvironment);
@@ -61,14 +87,14 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Edit(string name)
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
             if (String.IsNullOrWhiteSpace(name))
             {
                 return RedirectToAction("Index");
             }
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(dataFileWebServerPath, name);
+            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);;
 
             ViewBag.Title = String.Format("Edit ESB Environment \"{0}\" Configuration", esbEnvironment.Name);
             return View(esbEnvironment);
@@ -79,7 +105,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Create()
         {
             //enable filter to use the logging service for building menus
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
             var viewModel = new EsbEnvironmentViewModel();
             ViewBag.Title = "Create New ESB Environment Configuration";
@@ -91,12 +118,28 @@ namespace Icon.Dashboard.Mvc.Controllers
         #region POST
         [HttpPost]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Index(IEnumerable<EsbEnvironmentViewModel> esbEnvironments)
+        public ActionResult Index(IEnumerable<EsbEnvironmentViewModel> esbEnvironments, string environment = null)
         {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var environmentManager = new DashboardEnvironmentManager();
 
-            var updated = DashboardDataFileService.ReconfigureEsbApps(dataFileWebServerPath, esbEnvironments);
+            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
+            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
+            {
+                // determine the default environment based on the hosting web server
+                chosenEnvironmentEnum = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
+            }
+            var chosenEnvironmentViewModel = environmentManager.BuildEnvironmentViewModel(chosenEnvironmentEnum);
+
+            var commandsEnabled = chosenEnvironmentEnum != EnvironmentEnum.Prd &&
+                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);;
+
+            var existingServiceDefinitions = remoteServicesService.LoadRemoteServices(chosenEnvironmentViewModel, commandsEnabled);
             
+            esbEnvironmentManager.ReconfigureEsbApps(esbEnvironments, existingServiceDefinitions);
+
+            //TODO figure out if we have to restart _all_ services or not...
+            //RemoteServicesService.RestartServices(esbEnvironments);
+
             return RedirectToAction(nameof(Index), "Esb");
         }
 
@@ -106,8 +149,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-                DashboardDataFileService.UpdateEsbEnvironment(dataFileWebServerPath, model);
+                esbEnvironmentManager.UpdateEsbEnvironmenDefinition( model);
                 return RedirectToAction("Details", "Esb", new { name = model.Name });
             }
 
@@ -120,8 +162,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-                DashboardDataFileService.AddEsbEnvironment(dataFileWebServerPath, model);
+                esbEnvironmentManager.AddEsbEnvironmentDefinition( model);
                 return RedirectToAction("Index");
             }
 
@@ -132,11 +173,10 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Delete(string name)
         {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var esbEnvironment = DashboardDataFileService.GetEsbEnvironment(dataFileWebServerPath, name);
+            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);
             if (esbEnvironment != null)
             {
-                DashboardDataFileService.DeleteEsbEnvironment(dataFileWebServerPath, esbEnvironment);
+                esbEnvironmentManager.DeleteEsbEnvironmentDefinition(esbEnvironment);
             }
             return RedirectToAction("Index");
         }

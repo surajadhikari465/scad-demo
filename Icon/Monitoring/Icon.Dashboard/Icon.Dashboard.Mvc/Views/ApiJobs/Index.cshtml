@@ -62,7 +62,7 @@
         });
 
         @* javascript variables set from server-side Razor code for redrawPaging.js*@
-        var urlForRedrawPagingAction = '@(Url.Action("RedrawPaging", "ApiJobs", new { routeParameter = ViewBag.JobType ?? String.Empty}))';
+        var urlForRedrawPagingAction = '@(Url.Action("RedrawPaging", "ApiJobs", new { appName = ViewBag.JobType ?? String.Empty}))';
      </script>
 
     @Scripts.Render("~/Scripts/redrawPaging.js")

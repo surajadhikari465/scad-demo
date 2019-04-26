@@ -7,7 +7,6 @@ using Icon.Dashboard.Mvc.Services;
 using Moq;
 using System.Collections.Generic;
 using Icon.Dashboard.Mvc.ViewModels;
-using Icon.Dashboard.DataFileAccess.Models;
 using System.Threading.Tasks;
 
 namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
@@ -25,9 +24,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
                 .Setup(s => s.LoadRemoteService( It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<bool>()))
-                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                    //It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -47,9 +43,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
                 .Setup(s => s.LoadRemoteService( It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<bool>()))
-                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                    //It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                    //It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
                 .Returns(testService);
             var controller = ConstructController();
 
@@ -66,16 +59,13 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var testService = base.FakeServiceViewModelA;
             var postModel = base.FakeServiceViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testService);
             var controller = ConstructController();
 
             //When
             ActionResult result = controller.Edit(postModel);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s.SaveAppSettings( postModel), Times.Once);
+            mockRemoteWmiSerivceWrapper.Verify(s => s.SaveRemoteServiceAppSettings( postModel), Times.Once);
         }
 
         [TestMethod]
@@ -84,9 +74,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             //Given
             var testService = base.FakeServiceViewModelA;
             var postModel = base.FakeServiceViewModelA;
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(testService);
             var controller = ConstructController();
 
             //When

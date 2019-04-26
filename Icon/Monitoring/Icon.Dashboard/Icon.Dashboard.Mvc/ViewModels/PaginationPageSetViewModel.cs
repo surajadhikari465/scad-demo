@@ -1,4 +1,5 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
+using Icon.Dashboard.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,35 +16,41 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public const int DefaultNumberOfPagesInQuickLinks = PagingConstants.NumberOfQuickLinks;
 
         public PaginationPageSetViewModel()
-            : this(null, null, DefaultNumberOfPagesInQuickLinks) { }
+            : this(null, null) { }
 
-        public PaginationPageSetViewModel(int numberOfPagesInQuickLinks)
-            : this(null, null, numberOfPagesInQuickLinks) { }
-
-        public PaginationPageSetViewModel(string actionName, string controllerName)
-            : this(actionName, controllerName, DefaultNumberOfPagesInQuickLinks) { }
-
-        public PaginationPageSetViewModel(string actionName,
-            string controllerName,
-            int numberOfPagesInQuickLinks)
+        public PaginationPageSetViewModel(
+            string actionName,
+            string controllerName)
         {
             ActionName = actionName;
             ControllerName = controllerName;
-            NumberOfPagesInQuickLinks = numberOfPagesInQuickLinks;
+            NumberOfPagesInQuickLinks = DefaultNumberOfPagesInQuickLinks;
             QuickLinks = new List<PaginationPageViewModel>(NumberOfPagesInQuickLinks);
         }
 
-        public PaginationPageSetViewModel(string actionName, string controllerName, int numberOfPagesInQuickLinks, int page, int pageSize) 
-            : this(actionName, controllerName, numberOfPagesInQuickLinks, page, pageSize, null)
+        public PaginationPageSetViewModel(
+            string actionName,
+            string controllerName,
+            int page,
+            int pageSize,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error) 
+            : this(actionName, controllerName, page, pageSize, null, errorLevelEnum)
         {
         }
 
-        public PaginationPageSetViewModel(string actionName, string controllerName, int numberOfPagesInQuickLinks, int page, int pageSize, string id) 
-            : this(actionName, controllerName, numberOfPagesInQuickLinks)
+        public PaginationPageSetViewModel(
+            string actionName,
+            string controllerName,
+            int page,
+            int pageSize,
+            string id,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)  
+            : this(actionName, controllerName)
         {
             CurrentPage = page;
             PageSize = pageSize;
-            RouteParameter = id;
+            AppName = id;
+            ErrorLevel = errorLevelEnum;
 
             BuildPageLinks();
         }
@@ -52,10 +59,10 @@ namespace Icon.Dashboard.Mvc.ViewModels
         {
             if (CurrentPage > 1)
             {
-                PreviousPage = new PaginationPageViewModel(CurrentPage - 1, PageSize, RouteParameter, "Newer");
+                PreviousPage = new PaginationPageViewModel(CurrentPage - 1, PageSize, AppName, "Newer");
             }
 
-            NextPage = new PaginationPageViewModel(CurrentPage + 1, PageSize, RouteParameter, "Older");
+            NextPage = new PaginationPageViewModel(CurrentPage + 1, PageSize, AppName, "Older");
 
             if (NumberOfPagesInQuickLinks > 0)
             {
@@ -65,7 +72,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
                 }
                 for (int i = QuickLinkStartingPageNumber; i < QuickLinkStartingPageNumber + NumberOfPagesInQuickLinks; i++)
                 {
-                    QuickLinks.Add(new PaginationPageViewModel(i, PageSize, RouteParameter, i.ToString()));
+                    QuickLinks.Add(new PaginationPageViewModel(i, PageSize, AppName, i.ToString()));
                 }
             }
         }
@@ -78,9 +85,9 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public int PageSize { get; set; }
 
         /// <summary>
-        /// Parameter passed when building the route, such as id or type
+        /// Parameter passed when building the route, specifying the name of the logged application
         /// </summary>
-        public string RouteParameter { get; set; }
+        public string AppName { get; set; }
 
         /// <summary>
         /// Name of MVC Action to use when building link
@@ -111,6 +118,8 @@ namespace Icon.Dashboard.Mvc.ViewModels
         /// Data used to for list of page links used for quickly skipping to pages, typically pages 1-10 for example
         /// </summary>
         public List<PaginationPageViewModel> QuickLinks { get; set; }
+        
+        public LogErrorLevelEnum ErrorLevel { get; set; }
 
         public int QuickLinkStartingPageNumber
         {

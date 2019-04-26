@@ -1,4 +1,5 @@
-﻿using Icon.Dashboard.DataFileAccess.Models;
+﻿using Icon.Dashboard.Mvc.Helpers;
+using Icon.Dashboard.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,51 +14,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public IconApplicationViewModel()
         {
             this.ValidCommands = new List<string>();
-        }
-
-        public IconApplicationViewModel(IIconApplication app) : this()
-        {
-            if (app != null)
-            {
-                this.Name = app.Name;
-                this.Server = app.Server;
-                this.ConfigFilePath = app.ConfigFilePath;
-                this.DisplayName = app.DisplayName;
-                this.Status = app.GetStatus();
-                this.ValidCommands = app.ValidCommands;
-                this.StatusIsGreen = app.StatusIsGreen;
-                this.LoggingName = app.LoggingName;
-                this.LoggingID = app.LoggingID;
-                this.AppSettings = app.AppSettings == null
-                    ? new Dictionary<string, string>()
-                    : app.AppSettings.ToDictionary(e=>e.Key, e=>e.Value);
-                this.EsbConnectionSettings = (app.EsbConnectionSettings ==  null)
-                    ? new Dictionary<string, string>()
-                    : app.EsbConnectionSettings.ToDictionary(e => e.Key, e => e.Value);
-
-                this.ConfigFilePathIsValid = File.Exists(this.ConfigFilePath);
-            }
-        }
-
-        public IIconApplication ToDataModel()
-        {
-            IIconApplication app = null;
-
-            app = new IconService();
-            app.Server = this.Server;
-            app.Name = this.Name;
-            app.DisplayName = this.DisplayName;
-            app.ConfigFilePath = this.ConfigFilePath;
-            app.LoggingName = this.LoggingName;
-
-            if (this.AppSettings != null)
-            {
-                // Updating basic settings does not need to call a save to the app.config's appsettings.
-                this.AppSettings.ToList().ForEach(e =>
-                    app.AppSettings[e.Key] = e.Value ?? string.Empty);
-            }
-
-            return app;
         }
         
         public Dictionary<string, string> AppSettings { get; set; }
@@ -108,6 +64,40 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         [DisplayName("Description")]
         public string Description { get; set; }
-        
+
+        public EsbConnectionTypeEnum EsbConnectionType
+        {
+            get
+            {
+                var esbConnectionType = EsbConnectionTypeEnum.None;
+                if (this.EsbConnectionSettings != null && this.EsbConnectionSettings.Any())
+                {
+                    if (this.Name.IndexOf("Ewic", Utils.StrcmpOption) > 0
+                        || this.DisplayName.IndexOf("Ewic", Utils.StrcmpOption) > 0)
+                    {
+                        esbConnectionType = EsbConnectionTypeEnum.Ewic;
+                    }
+                    else if (this.Name.IndexOf("Mammoth", Utils.StrcmpOption) > 0
+                        || this.DisplayName.IndexOf("Mammoth", Utils.StrcmpOption) > 0)
+                    {
+                        esbConnectionType = EsbConnectionTypeEnum.Mammoth;
+                    }
+                    else
+                    {
+                        esbConnectionType = EsbConnectionTypeEnum.Icon;
+                    }
+                }
+                return esbConnectionType;
+            }
+        }
+
+        public bool HasEsbConfiguration
+        {
+            get
+            {
+                //return this.EsbConnectionSettings != null && this.EsbConnectionSettings.Any();
+                return EsbConnectionType != EsbConnectionTypeEnum.None;
+            }
+        }
     }
 }

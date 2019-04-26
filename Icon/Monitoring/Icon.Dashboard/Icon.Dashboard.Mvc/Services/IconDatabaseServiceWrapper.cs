@@ -1,5 +1,6 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.IconDatabaseAccess;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,46 +11,69 @@ namespace Icon.Dashboard.Mvc.Services
 {
     public class IconDatabaseServiceWrapper : IIconDatabaseServiceWrapper
     {
-        public IIconDatabaseService IconLoggingService { get; private set; }
+        public IIconDatabaseService DatabaseService { get; private set; }
 
         public IconDatabaseServiceWrapper(IIconDatabaseService dataService = null)
         {
-            IconLoggingService = dataService ?? new IconDataService();
+            DatabaseService = dataService ?? new IconDataService();
         }
 
         public IApp GetApp(string appName)
         {
-            return IconLoggingService.GetApp(appName);
+            return DatabaseService.GetApp(appName);
         }
 
         public IApp GetApp(int appID)
         {
-            return IconLoggingService.GetApp(appID);
+            return DatabaseService.GetApp(appID);
         }
 
         public List<IconLoggedAppViewModel> GetApps()
         {
-            var apps = IconLoggingService.GetApps();
+            var apps = DatabaseService.GetApps();
             var appViewModels = new List<IconLoggedAppViewModel>(apps.Count());
-            foreach( var app in apps)
+            foreach (var app in apps)
             {
                 appViewModels.Add(new IconLoggedAppViewModel(app));
             }
             return appViewModels;
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(
+            string appName,
+            int page = PagingConstants.DefaultPage,
+            int pageSize = PagingConstants.DefaultPageSize,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            var appLogs = IconLoggingService.GetPagedAppLogsByApp(appName, page, pageSize);
-            var logViewModels = AppLogViewModelsFromEntities(appLogs);
-            return logViewModels;
+            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            {
+                var appLogs = DatabaseService.GetPagedAppLogsByApp(appName, page, pageSize);
+                var logViewModels = AppLogViewModelsFromEntities(appLogs);
+                return logViewModels;
+            }
+            else
+            {
+                var appId = GetAppIdForAppName(appName);
+                Expression<Func<IAppLog, bool>> filter = appLog => appLog.AppID == appId && appLog.Level == errorLevelEnum.ToString(); 
+                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+            }
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage,
+            int pageSize = PagingConstants.DefaultPageSize,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            var appLogs = IconLoggingService.GetPagedAppLogs(page, pageSize);
-            var logViewModels = AppLogViewModelsFromEntities(appLogs);
-            return logViewModels;
+            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            {
+                var appLogs = DatabaseService.GetPagedAppLogs(page, pageSize);
+                var logViewModels = AppLogViewModelsFromEntities(appLogs);
+                return logViewModels;
+            }
+            else
+            {
+                Expression<Func<IAppLog, bool>> filter = appLog => appLog.Level == errorLevelEnum.ToString(); 
+                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+            }
         }
 
         public List<IconLogEntryViewModel> GetPagedFilteredAppLogs(
@@ -58,7 +82,7 @@ namespace Icon.Dashboard.Mvc.Services
            int pageSize = PagingConstants.DefaultPageSize,
            QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
-            var appLogs = IconLoggingService.GetPagedAppLogsWithFilter(filter, page, pageSize, sortOrder);
+            var appLogs = DatabaseService.GetPagedAppLogsWithFilter(filter, page, pageSize, sortOrder);
             var logViewModels = AppLogViewModelsFromEntities(appLogs);
             return logViewModels;
         }
@@ -75,20 +99,20 @@ namespace Icon.Dashboard.Mvc.Services
 
         public IconLogEntryViewModel GetSingleAppLog(int appLogId)
         {
-            var appLog = IconLoggingService.GetSingleAppLog(appLogId);
+            var appLog = DatabaseService.GetSingleAppLog(appLogId);
             var logViewModel = new IconLogEntryViewModel(appLog);
             return logViewModel;
         }
 
         public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel)
         {
-            var logEntryReport = IconLoggingService.GetRecentLogEntriesReport(appName, timePeriod, logLevel);
+            var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appName, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
         public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(int appID, TimeSpan timePeriod, LoggingLevel logLevel)
         {
-            var logEntryReport = IconLoggingService.GetRecentLogEntriesReport(appID, timePeriod, logLevel);
+            var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appID, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
@@ -113,11 +137,17 @@ namespace Icon.Dashboard.Mvc.Services
             return null;
         }
 
+        public int GetAppIdForAppName(string appName)
+        {
+            var app = DatabaseService.GetApp(appName);
+            return app.AppID;
+        }
+
         public List<ApiMessageJobSummaryViewModel> GetPagedApiJobSummaries(
             int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize)
         {
-            var jobSummaries = IconLoggingService.GetPagedApiJobSummaries(page, pageSize);
+            var jobSummaries = DatabaseService.GetPagedApiJobSummaries(page, pageSize);
             var jobSummaryViewModels = JobSummaryViewModelsFromEntities(jobSummaries);
             return jobSummaryViewModels;
         }
@@ -127,7 +157,7 @@ namespace Icon.Dashboard.Mvc.Services
             int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize)
         {
-            var jobSummaries = IconLoggingService.GetPagedApiJobSummariesByMessageType(messageType, page, pageSize);
+            var jobSummaries = DatabaseService.GetPagedApiJobSummariesByMessageType(messageType, page, pageSize);
             var jobSummaryViewModels = JobSummaryViewModelsFromEntities(jobSummaries);
             return jobSummaryViewModels;
         }
@@ -144,7 +174,7 @@ namespace Icon.Dashboard.Mvc.Services
 
         public ApiMessageJobTimedReportViewModel GetApiJobSummaryReport(string messageType, DateTime startTime, DateTime endTime)
         {
-            var jobSummaryReport = IconLoggingService.GetApiJobSummaryReport(messageType, startTime, endTime);
+            var jobSummaryReport = DatabaseService.GetApiJobSummaryReport(messageType, startTime, endTime);
             var jobSummaryReportViewModel = JobSummaryReportViewModelFromEntity(jobSummaryReport);
             return jobSummaryReportViewModel;
         }
@@ -157,7 +187,7 @@ namespace Icon.Dashboard.Mvc.Services
 
         public PendingMessagesViewModel GetPendingMessages()
         {
-            var pendingMessages = IconLoggingService.GetPendingMessageCountByMessageType();
+            var pendingMessages = DatabaseService.GetPendingMessageCountByMessageType();
             return new PendingMessagesViewModel(pendingMessages);            
         }
     }

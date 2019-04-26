@@ -26,13 +26,24 @@ namespace Icon.Dashboard.Mvc
             );
 
             routes.MapRoute(
-                name: "LogsWithId",
-                url: "Logs/{action}/{id}",
+                name: "IconLogsWithId",
+                url: "IconLogs/{action}/{appName}",
                 defaults: new
                 {
-                    controller = "Logs",
+                    controller = "IconLogs",
                     action = "Index",
-                    id = UrlParameter.Optional
+                    appName = UrlParameter.Optional
+                }
+            );
+
+            routes.MapRoute(
+                name: "MammothLogsWithId",
+                url: "MammothLogs/{action}/{appName}",
+                defaults: new
+                {
+                    controller = "MammothLogs",
+                    action = "Index",
+                    appName = UrlParameter.Optional
                 }
             );
 

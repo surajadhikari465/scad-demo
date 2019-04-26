@@ -40,95 +40,89 @@
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.JmsUsername, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JmsUsernameIcon, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.JmsUsername, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.JmsUsername, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JmsUsernameIcon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsUsernameIcon, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.JmsPassword, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JmsPasswordIcon, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.JmsPassword, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.JmsPassword, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JmsPasswordIcon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsPasswordIcon, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                    @Html.LabelFor(model => model.JndiUsernameIcon, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    <div class="col-xs-8">
+                        @Html.EditorFor(model => model.JndiUsernameIcon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiUsernameIcon, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                    @Html.LabelFor(model => model.JndiPasswordIcon, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    <div class="col-xs-8">
+                        @Html.EditorFor(model => model.JndiPasswordIcon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiPasswordIcon, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.JndiUsername, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JmsUsernameMammoth, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.JndiUsername, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.JndiUsername, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JmsUsernameMammoth, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsUsernameMammoth, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.JndiPassword, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JmsPasswordMammoth, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.JndiPassword, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.JndiPassword, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                @*<div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.ConnectionFactoryName, htmlAttributes: new { @class = "control-label col-xs-4" })
-                    <div class="col-xs-8">
-                        @Html.EditorFor(model => model.ConnectionFactoryName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ConnectionFactoryName, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.SslPassword, htmlAttributes: new { @class = "control-label col-xs-4" })
-                    <div class="col-xs-8">
-                        @Html.EditorFor(model => model.SslPassword, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.SslPassword, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                @*<div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.QueueName, htmlAttributes: new { @class = "control-label col-xs-4" })
-                    <div class="col-xs-8">
-                        @Html.EditorFor(model => model.QueueName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.QueueName, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.SessionMode, htmlAttributes: new { @class = "control-label col-xs-4" })
-                    <div class="col-xs-8">
-                        @Html.EditorFor(model => model.SessionMode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.SessionMode, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JmsPasswordMammoth, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsPasswordMammoth, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.CertificateName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JndiUsernameMammoth, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.CertificateName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CertificateName, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JndiUsernameMammoth, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiUsernameMammoth, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.CertificateStoreName, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JndiPasswordMammoth, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.CertificateStoreName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CertificateStoreName, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JndiPasswordMammoth, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiPasswordMammoth, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                    @Html.LabelFor(model => model.JmsUsernameEwic, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    <div class="col-xs-8">
+                        @Html.EditorFor(model => model.JmsUsernameEwic, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsUsernameEwic, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.CertificateStoreLocation, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JmsPasswordEwic, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.CertificateStoreLocation, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CertificateStoreLocation, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JmsPasswordEwic, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JmsPasswordEwic, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.ReconnectDelay, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JndiUsernameEwic, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.ReconnectDelay, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ReconnectDelay, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JndiUsernameEwic, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiUsernameEwic, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-                    @Html.LabelFor(model => model.NumberOfListenerThreads, htmlAttributes: new { @class = "control-label col-xs-4" })
+                    @Html.LabelFor(model => model.JndiPasswordEwic, htmlAttributes: new { @class = "control-label col-xs-4" })
                     <div class="col-xs-8">
-                        @Html.EditorFor(model => model.NumberOfListenerThreads, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.NumberOfListenerThreads, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.JndiPasswordEwic, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JndiPasswordEwic, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

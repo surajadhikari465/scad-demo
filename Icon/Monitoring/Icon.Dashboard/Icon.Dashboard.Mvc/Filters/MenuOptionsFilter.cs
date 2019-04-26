@@ -23,16 +23,20 @@ namespace Icon.Dashboard.Mvc.Helpers
             var url = filterContext.RequestContext.HttpContext.Request.Url;
             var viewBag = filterContext.Controller.ViewBag;
 
-            viewBag.EnvironmentOptions = new EnvironmentSwitcher().GetWebServersForEnvironments();
-
             var allMessageTypes = IconApiControllerMessageType.GetAll();
             viewBag.MenuOptionsForApiJobs = GetMenuOptionsForApiJobs(url, controllerName, allMessageTypes);
 
-            var loggingDataService = filterContext.HttpContext.Items["loggingDataService"];
-            if (null != loggingDataService && loggingDataService is IIconDatabaseServiceWrapper)
+            var iconDbService = filterContext.HttpContext.Items["iconLoggingDataService"];
+            if (null != iconDbService && iconDbService is IIconDatabaseServiceWrapper)
             {
-                var allApps = (loggingDataService as IIconDatabaseServiceWrapper).GetApps();
-                viewBag.MenuOptionsForAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
+                var allApps = (iconDbService as IIconDatabaseServiceWrapper).GetApps();
+                viewBag.MenuOptionsForIconAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
+            }
+            var mammothDbService = filterContext.HttpContext.Items["mammothLoggingDataService"];
+            if (null != mammothDbService && mammothDbService is IMammothDatabaseServiceWrapper)
+            {
+                var allApps = (mammothDbService as IMammothDatabaseServiceWrapper).GetApps();
+                viewBag.MenuOptionsForMammothAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
             }
         }
 
@@ -47,7 +51,7 @@ namespace Icon.Dashboard.Mvc.Helpers
 
             foreach (var eachKnownApp in knownApps)
             {
-                isActive = (controllerName == "Logs"
+                isActive = ((controllerName == "IconLogs" || controllerName == "MammothLogs")
                     && !String.IsNullOrWhiteSpace(requestIdParameter)
                     && requestIdParameter == eachKnownApp.AppName);
                 

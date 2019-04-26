@@ -111,34 +111,49 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseDashboardController.cs" />
+    <Compile Include="Controllers\MammothLogsController.cs" />
     <Compile Include="Filters\DashboardAuthorization.cs" />
     <Compile Include="Helpers\BeginCollectionItemHelper.cs" />
+    <Compile Include="Helpers\DashboardExtensions.cs" />
     <Compile Include="Infrastructure\TempDataKeys.cs" />
     <Compile Include="Controllers\ApiJobsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\EsbController.cs" />
-    <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\IconLogsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EnvironmentSwitcher.cs" />
+    <Compile Include="Models\ApplicationTypeEnum.cs" />
+    <Compile Include="Models\LogErrorLevelEnum.cs" />
+    <Compile Include="Services\DashboardEnvironmentManager.cs" />
     <Compile Include="Filters\MenuOptionsFilter.cs" />
     <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Models\DashboardCustomConfigSectionGroup.cs" />
+    <Compile Include="Models\EnvironmentEnum.cs" />
+    <Compile Include="Models\EsbConnectionTypeEnum.cs" />
+    <Compile Include="Models\EsbEnvironmentCollection.cs" />
+    <Compile Include="Models\EsbEnvironmentElement.cs" />
+    <Compile Include="Models\EsbEnvironmentEnum.cs" />
+    <Compile Include="Models\EsbEnvironmentsSection.cs" />
+    <Compile Include="Models\EsbSettings.cs" />
     <Compile Include="Models\InforEsbEnvironmentEnum.cs" />
     <Compile Include="Models\UserAuthorizationLevelEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DataFileServiceWrapper.cs" />
+    <Compile Include="Services\AppConfigAssistant.cs" />
+    <Compile Include="Services\EsbEnvironmentManager.cs" />
+    <Compile Include="Services\IDashboardEnvironmentManager.cs" />
+    <Compile Include="Services\IEsbEnvironmentManager.cs" />
     <Compile Include="Services\IMammothDatabaseServiceWrapper.cs" />
     <Compile Include="Services\IRemoteWmiServiceWrapper.cs" />
     <Compile Include="Services\MammothDatabaseServiceWrapper.cs" />
     <Compile Include="Services\IconDatabaseServiceWrapper.cs" />
-    <Compile Include="Services\IDataFileServiceWrapper.cs" />
     <Compile Include="Services\IIconDatabaseServiceWrapper.cs" />
     <Compile Include="Services\RemoteWmiServiceWrapper.cs" />
     <Compile Include="ViewModels\ApiMessageJobSummaryViewModel.cs" />
     <Compile Include="ViewModels\ApiMessageJobTimedReportViewModel.cs" />
     <Compile Include="ViewModels\DashboardEnvironmentCollectionViewModel.cs" />
     <Compile Include="ViewModels\EsbEnvironmentViewModel.cs" />
+    <Compile Include="ViewModels\IconLogEntryCollectionViewModel.cs" />
     <Compile Include="ViewModels\IconServiceAppViewModel.cs" />
     <Compile Include="ViewModels\RecentLogEntriesReportCollectionViewModel.cs" />
     <Compile Include="ViewModels\RecentLogEntriesReportViewModel.cs" />
@@ -154,10 +169,6 @@
     <Compile Include="ViewModels\DashboardEnvironmentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DashboardApplicationsTest.xml" />
-    <Content Include="App_Data\SampleDataFile.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -178,14 +189,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="App_Data\Applications.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="EsbEnvironments.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Properties\PublishProfiles\DEV.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
@@ -249,21 +259,21 @@
     <Content Include="Views\Shared\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
-    <Content Include="Views\Logs\Index.cshtml" />
+    <Content Include="Views\IconLogs\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconLogEntryViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationTypeEnum.cshtml" />
     <Content Include="Views\Shared\_PaginationPartial.cshtml" />
-    <Content Include="Views\Shared\_SubMenuForAppLogs.cshtml" />
+    <Content Include="Views\Shared\_SubMenuForIconAppLogs.cshtml" />
     <Content Include="Views\ApiJobs\Index.cshtml" />
     <Content Include="Views\Shared\_SubMenuForApiJobs.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApiMessageJobSummaryViewModel.cshtml" />
     <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportPartial.cshtml" />
     <Content Include="Views\ApiJobs\Pending.cshtml" />
     <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportResultPartial.cshtml" />
-    <Content Include="Views\Logs\_RecentLogEntriesReportCollectionPartial.cshtml" />
-    <Content Include="Views\Logs\_RecentLogEntriesReportPartial.cshtml" />
+    <Content Include="Views\Shared\_RecentLogEntriesReportCollectionPartial.cshtml" />
+    <Content Include="Views\Shared\_RecentLogEntriesReportPartial.cshtml" />
     <Content Include="Views\ApiJobs\_ApiJobsTablePartial.cshtml" />
-    <Content Include="Views\Logs\_AppLogTablePartial.cshtml" />
+    <Content Include="Views\Shared\_AppLogTablePartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Esb\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\EsbEnvironmentViewModel.cshtml" />
@@ -274,7 +284,6 @@
     <Content Include="Views\Shared\NotAuthorized.cshtml" />
     <Content Include="Views\Shared\ReadOnlyAuthorized.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconEsbAppSummaryViewModel.cshtml" />
-    <Content Include="Views\Shared\_AdminMenuPartial.cshtml" />
     <Content Include="Views\Shared\_SupportAppsPartial.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
@@ -283,6 +292,8 @@
     <Content Include="Views\Shared\DisplayTemplates\DashboardEnvironmentViewModel.cshtml" />
     <Content Include="Views\Home\Custom.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\AppServerViewModel.cshtml" />
+    <Content Include="Views\Shared\_SubMenuForMammothAppLogs.cshtml" />
+    <Content Include="Views\MammothLogs\Index.cshtml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -298,10 +309,6 @@
       <Project>{c31dceae-c79b-4466-b592-f1c58c7c1e2c}</Project>
       <Name>Icon.Dashboard.CommonDatabaseAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Icon.Dashboard.DataFileAccess\Icon.Dashboard.DataFileAccess.csproj">
-      <Project>{c95b11a1-662c-4380-921f-feaebfe77a7f}</Project>
-      <Name>Icon.Dashboard.DataFileAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Icon.Dashboard.IconDatabaseAccess\Icon.Dashboard.IconDatabaseAccess.csproj">
       <Project>{4b5102ce-6f3a-4c31-81da-483f3dff988f}</Project>
       <Name>Icon.Dashboard.IconDatabaseAccess</Name>
@@ -310,8 +317,8 @@
       <Project>{eb1c6c33-8ee5-4777-a7f9-85d2d3beba85}</Project>
       <Name>Icon.Dashboard.MammothDatabaseAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Icon.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
-      <Project>{3D756762-6F47-4A5D-B81D-BA023B96F094}</Project>
+    <ProjectReference Include="..\Icon.Dashboard.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
+      <Project>{3d756762-6f47-4a5d-b81d-ba023b96f094}</Project>
       <Name>Icon.Dashboard.RemoteServicesAccess</Name>
     </ProjectReference>
   </ItemGroup>
@@ -319,7 +326,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -380,7 +389,8 @@
   </ProjectExtensions>
   <Import Project="..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets" Condition="Exists('..\packages\CodeAssassin.ConfigTransform.1.2\tools\CodeAssassin.ConfigTransform.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)Icon.Dashboard.DataFileAccess\Schema\Applications.xsd" "$(ProjectDir)App_Data" /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

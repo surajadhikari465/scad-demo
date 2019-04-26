@@ -202,6 +202,10 @@ a.esbAppAnchor {
     color: #000;
 }
 
+span.esbAppAnchor {
+    color: #000;
+}
+
 a:hover.esbAppAnchor, a:focus.esbAppAnchor {
     color: #0026ff;
     text-decoration: underline;
@@ -236,4 +240,29 @@ a:hover.appServerAnchor, a:focus.appServerAnchor {
 .dashboardEnvPanel {
     border: 4px solid #3366cc;
     border-radius: 10px;
+}
+
+.open > .dropdown-toggle {
+    background: transparent !important;
+
+}
+
+.logEntryMessageText {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 480px;
+}
+
+.logEntryLoggerText {
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    max-width:200px;
+}
+
+tr:hover td {
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
 }

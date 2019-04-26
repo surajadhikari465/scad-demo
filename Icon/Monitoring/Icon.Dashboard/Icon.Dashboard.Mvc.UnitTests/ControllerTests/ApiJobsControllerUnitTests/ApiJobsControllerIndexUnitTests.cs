@@ -7,7 +7,6 @@ using Icon.Dashboard.Mvc.Services;
 using Moq;
 using System.Collections.Generic;
 using Icon.Dashboard.Mvc.ViewModels;
-using Icon.Dashboard.DataFileAccess.Models;
 using System.Threading.Tasks;
 using System.Linq;
 using Icon.Dashboard.CommonDatabaseAccess;
@@ -23,13 +22,13 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected ApiJobsController ConstructController()
         {
-            return ConstructController(base.iconDbServiceWrapper, base.serverUtility);
+            return ConstructController(base.iconDbServiceWrapper, base.mammothDbServiceWrapper);
         }
 
-        protected ApiJobsController ConstructController(IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            HttpServerUtilityBase serverUtility = null)
+        protected ApiJobsController ConstructController(IIconDatabaseServiceWrapper iconDbServiceWrapper = null,
+            IMammothDatabaseServiceWrapper mammothDbServiceWrapper = null)
         {
-            var controller = new ApiJobsController(base.serverUtility, base.iconDbServiceWrapper);
+            var controller = new ApiJobsController( base.iconDbServiceWrapper);
             base.SetupMockHttpContext(controller, loggingDataServiceName, mockIconLoggingServiceWrapper);
             return controller;
         }
@@ -108,7 +107,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             Assert.IsNotNull(controller.HttpContext.Items);
             Assert.IsTrue(controller.HttpContext.Items.Contains(loggingDataServiceName));
             Assert.IsNotNull(controller.HttpContext.Items[loggingDataServiceName]);
-            Assert.IsInstanceOfType(controller.HttpContext.Items[loggingDataServiceName], typeof(IIconDatabaseServiceWrapper));
+            Assert.IsInstanceOfType(controller.HttpContext.Items[loggingDataServiceName], typeof(Mock<IIconDatabaseServiceWrapper>));
         }
 
         [TestMethod]
@@ -127,7 +126,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             Assert.IsNotNull(controller.HttpContext.Items);
             Assert.IsTrue(controller.HttpContext.Items.Contains(loggingDataServiceName));
             Assert.IsNotNull(controller.HttpContext.Items[loggingDataServiceName]);
-            Assert.IsInstanceOfType(controller.HttpContext.Items[loggingDataServiceName], typeof(IIconDatabaseServiceWrapper));
+            Assert.IsInstanceOfType(controller.HttpContext.Items[loggingDataServiceName], typeof(Mock<IIconDatabaseServiceWrapper>));
         }
 
         [TestMethod]
@@ -175,7 +174,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Then
             Assert.IsNotNull(controller.ViewBag.PaginationPageSetViewModel);
             Assert.IsInstanceOfType(controller.ViewBag.PaginationPageSetViewModel, typeof(PaginationPageSetViewModel));
-            Assert.AreEqual(messageType.ToString(), ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).RouteParameter);
+            Assert.AreEqual(messageType.ToString(), ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).AppName);
         }
 
         [TestMethod]
@@ -194,7 +193,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Then
             Assert.IsNotNull(controller.ViewBag.PaginationPageSetViewModel);
             Assert.IsInstanceOfType(controller.ViewBag.PaginationPageSetViewModel, typeof(PaginationPageSetViewModel));
-            Assert.AreEqual(messageType.ToString(), ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).RouteParameter);
+            Assert.AreEqual(messageType.ToString(), ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).AppName);
             Assert.AreEqual(page, ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).CurrentPage);
             Assert.AreEqual(pageSize, ((PaginationPageSetViewModel)controller.ViewBag.PaginationPageSetViewModel).PageSize);
         }

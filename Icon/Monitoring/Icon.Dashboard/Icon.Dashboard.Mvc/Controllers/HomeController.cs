@@ -9,8 +9,6 @@ using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Filters;
 using System.Security.Principal;
-using Icon.Dashboard.DataFileAccess.Models;
-using Icon.Dashboard.RemoteServicesAccess;
 using System.IO;
 using System.Configuration;
 using System.Xml.Linq;
@@ -19,51 +17,48 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class HomeController : BaseDashboardController
     {
-        public HomeController() : this(null, null, null, null, null, null) { }
+        protected IDashboardEnvironmentManager dashboardEnvironmentManager { get; private set; } 
+        protected IEsbEnvironmentManager esbEnvironmentManager { get; private set; } 
+        protected IRemoteWmiServiceWrapper remoteServicesService { get; private set; } 
+
+        public HomeController() : this(null, null, null, null, null ) { }
 
         public HomeController(
-            HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper iconDataBaseService = null,
-            string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
+            IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
+            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
+            IEsbEnvironmentManager esbEnvironmentManager = null,
             IRemoteWmiServiceWrapper remoteServicesService = null)
-            : base(serverUtility,
-                  iconDataBaseService,
-                  pathToXmlDataFile,
-                  dataServiceWrapper,
-                  mammothDbService,
-                  remoteServicesService) { }
+            : base (iconDbService, mammothDbService)
+        {
+            this.dashboardEnvironmentManager = dashboardEnvironmentManager ?? new DashboardEnvironmentManager();
+            this.esbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
+            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(iconDbService, mammothDbService, esbEnvironmentManager);
+        }
 
         #region GET
       
         [HttpGet]
         [MenuOptionsFilter]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Index(DashboardEnvironmentCollectionViewModel customEnvironment = null)
+        public ActionResult Index(string environment = null)
         {
-            var chosenEnvironment = new DashboardEnvironmentViewModel();
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var environmentManager = new DashboardEnvironmentManager();
 
-            if (customEnvironment == null  || customEnvironment.Environments.Count<1)
+            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
+            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
             {
                 // determine the default environment based on the hosting web server
-                var envSwitcher = new EnvironmentSwitcher();
-                chosenEnvironment = envSwitcher.GetDefaultEnvironment(Request.Url.Host);
+                chosenEnvironmentEnum = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
             }
-            else
-            { 
-                // use the selected environment in the provided model
-                chosenEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
-            }
+            var chosenEnvironmentViewModel = environmentManager.BuildEnvironmentViewModel(chosenEnvironmentEnum);
 
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            var commandsEnabled = chosenEnvironmentEnum != EnvironmentEnum.Prd &&
+                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
 
-            RemoteServicesService.IconApps = IconDatabaseService.GetApps();
-            RemoteServicesService.MammothApps = MammothDatabaseService.GetApps();
-            RemoteServicesService.EsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
-
-            var appViewModels = RemoteServicesService.LoadRemoteServices(chosenEnvironment, commandsEnabled);
+            var appViewModels = remoteServicesService.LoadRemoteServices(chosenEnvironmentViewModel, commandsEnabled);
 
             ViewBag.CommandsEnabled = commandsEnabled;
 
@@ -75,42 +70,13 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom()
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
-            var envSwitcher = new EnvironmentSwitcher();
-            var defaultEnvironment = EnvironmentEnum.Undefined;
-            var environmentCollection = new DashboardEnvironmentCollectionViewModel();
+            var environmentManager = new DashboardEnvironmentManager();
+            var defaultEnvironment = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
+            var environmentCollection = environmentManager.BuildEnvironmentCollection(defaultEnvironment);
 
-            var defaultEnvironmentName = envSwitcher.GetWebServersForEnvironments()
-                    .FirstOrDefault(e => e.Value.Equals(Request.Url.Host, StringComparison.InvariantCultureIgnoreCase)).Key;
-            if (string.IsNullOrWhiteSpace(defaultEnvironmentName))
-            {
-                // when debugging on local system
-                defaultEnvironment = EnvironmentEnum.Dev;
-            }
-            else
-            {
-                Enum.TryParse(defaultEnvironmentName, out defaultEnvironment);
-            }
-
-            foreach (var environment in Enum.GetValues(typeof(EnvironmentEnum)).Cast<EnvironmentEnum>())
-            {
-                if (environment == EnvironmentEnum.Undefined) continue;
-
-                var defaultAppServersForEnvironment = envSwitcher.GetDefaultAppServersForEnvironment(environment);
-                var environmentViewModel = new DashboardEnvironmentViewModel()
-                {
-                    Name = environment.ToString(),
-                    AppServers = defaultAppServersForEnvironment
-                       .Select(s => new AppServerViewModel { ServerName = s })
-                       .ToList()
-                };
-                environmentCollection.Environments.Add(environmentViewModel);
-                if (environment == defaultEnvironment)
-                {
-                    environmentCollection.SelectedEnvIndex = environmentCollection.Environments.IndexOf(environmentViewModel);
-                }
-            }
             return View(environmentCollection);
         }
 
@@ -119,16 +85,16 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Edit(string server, string application)
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var environmentManager = new DashboardEnvironmentManager();
 
-            RemoteServicesService.IconApps = IconDatabaseService.GetApps();
-            RemoteServicesService.MammothApps = MammothDatabaseService.GetApps();
-            RemoteServicesService.EsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
+            var environment = environmentManager.GetEnvironmentFromAppserver(server);
+            var commandsEnabled = environment != EnvironmentEnum.Prd &&
+                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
 
-            var appViewModel = RemoteServicesService.LoadRemoteService(server, application, commandsEnabled);
+            var appViewModel = remoteServicesService.LoadRemoteService(server, application, commandsEnabled);
+
             ViewBag.CommandsEnabled = commandsEnabled;
 
             return View(appViewModel);
@@ -140,8 +106,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Index(string server, string application, string command)
         {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.ExecuteServiceCommand(dataFileWebServerPath, application, server, command);
+            remoteServicesService.ExecuteServiceCommand(server, application, command);
             return RedirectToAction("Index", "Home");
         }
 
@@ -149,8 +114,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
         public ActionResult Edit(IconApplicationViewModel appViewModel)
         {
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            DashboardDataFileService.SaveAppSettings(appViewModel);
+            var environmentManager = new DashboardEnvironmentManager();
+            remoteServicesService.SaveRemoteServiceAppSettings(appViewModel);
             return RedirectToAction("Edit", "Home", new { server = appViewModel.Server, application = appViewModel.Name });
         }
 
@@ -158,20 +123,19 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom(DashboardEnvironmentCollectionViewModel customEnvironment)
         {
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
             var chosenCustomEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
-            
-            var commandsEnabled = DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
+           
+            var environmentManager = new DashboardEnvironmentManager();
+            var commandsEnabled = !chosenCustomEnvironment.Name.Equals(EnvironmentEnum.Prd.ToString(), Utils.StrcmpOption) &&
+                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             
             var iconAppsWithLogging = IconDatabaseService.GetApps();
             var mammothAppsWithLogging = MammothDatabaseService.GetApps();
-            var dataFileWebServerPath = Utils.GetPathForDataFile(ServerUtility, DataFileName);
-            var allEsbEnvironments = DashboardDataFileService.GetEsbEnvironmentsWithoutApplications(dataFileWebServerPath);
+            var allEsbEnvironments = esbEnvironmentManager.GetEsbEnvironmentDefinitions();
 
-            var appViewModels = RemoteServicesService.LoadRemoteServices(chosenCustomEnvironment,
-                commandsEnabled,
-                iconAppsWithLogging,
-                mammothAppsWithLogging,
-                allEsbEnvironments);
+            var appViewModels = remoteServicesService.LoadRemoteServices(chosenCustomEnvironment, commandsEnabled);
 
             ViewBag.CommandsEnabled = commandsEnabled;
 

@@ -2,27 +2,32 @@
 
 function redrawPagingSucceeded(responseHtml) {
     if (typeof console !== "undefined") console.log("redrawPagingSucceeded ajax call succeeded");
+
     $("#pagingDiv").html(responseHtml);
 }
 
 function redrawPagingFailed(e) {
-    console.log("redrawPagingFailed ajax call error");
-    if (typeof console !== "undefined") { console.log(e); }
+    if (typeof console !== "undefined") {
+        console.log("redrawPagingFailed ajax call error");
+        console.log(e);
+    }
 }
 
 function redrawPaging(partialViewHtml) {
     if (typeof console !== "undefined") console.log("redrawPaging() called");
+   
     if (partialViewHtml) {
         var xmlDoc = $.parseXML(partialViewHtml);
         var divWithData = xmlDoc.firstChild;
         if (divWithData) {
             var page = divWithData.getAttribute("data-page");
             var pageSize = divWithData.getAttribute("data-pageSize");
-            var id = divWithData.getAttribute("data-route-parameter");
+            var appName = divWithData.getAttribute("data-appName");
+            var errorLevel = $("#ErrorLevel").find("option:selected").text();
             $.ajax({
                 type: "GET",
                 url: urlForRedrawPagingAction,
-                data: { routeParameter: id, page: page, pageSize: pageSize },
+                data: { appName: appName, page: page, pageSize: pageSize, errorLevel: errorLevel },
                 success: redrawPagingSucceeded,
                 error: redrawPagingFailed
             });

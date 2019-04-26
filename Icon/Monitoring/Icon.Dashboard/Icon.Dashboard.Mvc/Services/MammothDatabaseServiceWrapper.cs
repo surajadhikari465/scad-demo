@@ -1,5 +1,6 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.MammothDatabaseAccess;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,26 +11,26 @@ namespace Icon.Dashboard.Mvc.Services
 {
     public class MammothDatabaseServiceWrapper : IMammothDatabaseServiceWrapper
     {
-        public IMammothDatabaseService MammothLoggingService { get; private set; }
+        public IMammothDatabaseService DatabaseService { get; private set; }
 
         public MammothDatabaseServiceWrapper(IMammothDatabaseService dataService = null)
         {
-            MammothLoggingService = dataService ?? new MammothDataService();
+            DatabaseService = dataService ?? new MammothDataService();
         }
 
         public IApp GetApp(string appName)
         {
-            return MammothLoggingService.GetApp(appName);
+            return DatabaseService.GetApp(appName);
         }
 
         public IApp GetApp(int appID)
         {
-            return MammothLoggingService.GetApp(appID);
+            return DatabaseService.GetApp(appID);
         }
 
         public List<IconLoggedAppViewModel> GetApps()
         {
-            var apps = MammothLoggingService.GetApps();
+            var apps = DatabaseService.GetApps();
             var appViewModels = new List<IconLoggedAppViewModel>(apps.Count());
             foreach (var app in apps)
             {
@@ -38,18 +39,41 @@ namespace Icon.Dashboard.Mvc.Services
             return appViewModels;
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(string appName, int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(
+            string appName,
+            int page = PagingConstants.DefaultPage,
+            int pageSize = PagingConstants.DefaultPageSize,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            var appLogs = MammothLoggingService.GetPagedAppLogsByApp(appName, page, pageSize);
-            var logViewModels = AppLogViewModelsFromEntities(appLogs);
-            return logViewModels;
+            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            {
+                var appLogs = DatabaseService.GetPagedAppLogsByApp(appName, page, pageSize);
+                var logViewModels = AppLogViewModelsFromEntities(appLogs);
+                return logViewModels;
+            }
+            else
+            {
+                var appId = GetAppIdForAppName(appName);
+                Expression<Func<IAppLog, bool>> filter = appLog => appLog.AppID == appId && appLog.Level == errorLevelEnum.ToString(); 
+                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+            }
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage, int pageSize = PagingConstants.DefaultPageSize)
+        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage,
+            int pageSize = PagingConstants.DefaultPageSize,
+            LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            var appLogs = MammothLoggingService.GetPagedAppLogs(page, pageSize);
-            var logViewModels = AppLogViewModelsFromEntities(appLogs);
-            return logViewModels;
+            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            {
+                var appLogs = DatabaseService.GetPagedAppLogs(page, pageSize);
+                var logViewModels = AppLogViewModelsFromEntities(appLogs);
+                return logViewModels;
+            }
+            else
+            {
+                Expression<Func<IAppLog, bool>> filter = appLog => appLog.Level == errorLevelEnum.ToString(); 
+                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+            }
         }
 
         public List<IconLogEntryViewModel> GetPagedFilteredAppLogs(
@@ -58,7 +82,7 @@ namespace Icon.Dashboard.Mvc.Services
            int pageSize = PagingConstants.DefaultPageSize,
            QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
-            var appLogs = MammothLoggingService.GetPagedAppLogsWithFilter(filter, page, pageSize, sortOrder);
+            var appLogs = DatabaseService.GetPagedAppLogsWithFilter(filter, page, pageSize, sortOrder);
             var logViewModels = AppLogViewModelsFromEntities(appLogs);
             return logViewModels;
         }
@@ -75,20 +99,20 @@ namespace Icon.Dashboard.Mvc.Services
 
         public IconLogEntryViewModel GetSingleAppLog(int appLogId)
         {
-            var appLog = MammothLoggingService.GetSingleAppLog(appLogId);
+            var appLog = DatabaseService.GetSingleAppLog(appLogId);
             var logViewModel = new IconLogEntryViewModel(appLog);
             return logViewModel;
         }
 
         public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel)
         {
-            var logEntryReport = MammothLoggingService.GetRecentLogEntriesReport(appName, timePeriod, logLevel);
+            var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appName, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
         public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(int appID, TimeSpan timePeriod, LoggingLevel logLevel)
         {
-            var logEntryReport = MammothLoggingService.GetRecentLogEntriesReport(appID, timePeriod, logLevel);
+            var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appID, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
@@ -111,6 +135,12 @@ namespace Icon.Dashboard.Mvc.Services
                 return emptyLogEntryReports;
             }
             return null;
+        }
+
+        public int GetAppIdForAppName(string appName)
+        {
+            var app = DatabaseService.GetApp(appName);
+            return app.AppID;
         }
     }
 }

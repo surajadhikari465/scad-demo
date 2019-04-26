@@ -2,11 +2,10 @@
 using Mehdime.Entity;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.SqlServer;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,7 +61,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Repositories
         {
             var convertedOrderBy = ExpressionConvert<AppLog, IAppLog, int>(orderBy);
 
-            return GetPagedAppLogsWithFilterForEntity(null, convertedOrderBy, page,  pageSize,  sortOrder);
+            return GetPagedAppLogsWithFilterForEntity(null, convertedOrderBy, page, pageSize, sortOrder);
         }
 
         public IEnumerable<IAppLog> GetPagedAppLogsByApp(string appName,
@@ -185,7 +184,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Repositories
             return null;
         }
 
-        #region private        
+        #region private
         public Expression<Func<AppLog, int>> DefaultOrderByForEntity
         {
             get

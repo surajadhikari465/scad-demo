@@ -20,8 +20,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         public void MvcRouting_UrlWithoutAction_GetsDefaultActionRoute()
         {
             // Arrange
-            //string controller = "aaaa";
-            //string action = "bbbb";
             SetupRequestUrl($"~/");
             var routes = RegisterRoutesForTest();
             // Act

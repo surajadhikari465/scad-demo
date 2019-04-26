@@ -1,4 +1,4 @@
-﻿using Icon.Dashboard.DataFileAccess.Models;
+﻿using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.RemoteServicesAccess;
 using System;
@@ -15,52 +15,44 @@ namespace Icon.Dashboard.Mvc.Services
 {
     public class RemoteWmiServiceWrapper : IRemoteWmiServiceWrapper
     {
-        public IRemoteWmiAccessService WmiService { get; private set; }
+        public IRemoteWmiAccessService WmiService { get;  set; }
 
-        public IEnumerable<IconLoggedAppViewModel> IconApps { get; set; }
-        public IEnumerable<IconLoggedAppViewModel> MammothApps { get; set; }
-        public IEnumerable<EsbEnvironmentViewModel> EsbEnvironments { get; set; }
+        public IIconDatabaseServiceWrapper IconDbService { get; set; }
+        public IMammothDatabaseServiceWrapper MammothDbService { get; set; }
+        public IEsbEnvironmentManager EsbEnvironmentManager { get; set; }
+
+        public RemoteWmiServiceWrapper(
+            IIconDatabaseServiceWrapper iconDbService = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null,
+            IEsbEnvironmentManager esbEnvironmentManager = null)
+       : this(null, iconDbService, mammothDbService, esbEnvironmentManager) { }
 
         public RemoteWmiServiceWrapper(IRemoteWmiAccessService dataService = null,
-            IEnumerable<IconLoggedAppViewModel> iconApps = null,
-            IEnumerable<IconLoggedAppViewModel> mammothApps = null,
-            IEnumerable<EsbEnvironmentViewModel> esbEnvironments = null)
+            IIconDatabaseServiceWrapper iconDbService = null,
+            IMammothDatabaseServiceWrapper mammothDbService = null,
+            IEsbEnvironmentManager esbEnvironmentManager = null)
         {
-            WmiService = dataService ?? new RemoteWmiAccessService();
-            IconApps = iconApps ?? new List<IconLoggedAppViewModel>();
-            MammothApps = mammothApps ?? new List<IconLoggedAppViewModel>();
-            EsbEnvironments = esbEnvironments ?? new List<EsbEnvironmentViewModel>();
+            this.WmiService = dataService ?? new RemoteWmiAccessService();
+            this.IconDbService = iconDbService ?? new IconDatabaseServiceWrapper();
+            this.MammothDbService = mammothDbService ?? new MammothDatabaseServiceWrapper();
+            this.EsbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
         }
 
         public IconApplicationViewModel LoadRemoteService(string server, string application, bool commandsEnabled)
         {
-            return LoadRemoteService(server, application, commandsEnabled, IconApps, MammothApps, EsbEnvironments);
-        }
-
-        public IconApplicationViewModel LoadRemoteService(string server, string application, bool commandsEnabled,
-            IEnumerable<IconLoggedAppViewModel> iconAppList,
-            IEnumerable<IconLoggedAppViewModel> mammothAppList,
-            IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments)
-        {
             var remoteServiceModel = WmiService.LoadRemoteService(server, application);
 
-            return CreateViewModel(server, remoteServiceModel, commandsEnabled, iconAppList, mammothAppList, allEsbEnvironments);
+            return CreateViewModel(server, remoteServiceModel, commandsEnabled);
         }
 
         public IconApplicationViewModel CreateViewModel(string serverName,
            RemoteServiceModel remoteService,
            bool commandsEnabled)
         {
-            return CreateViewModel(serverName, remoteService, commandsEnabled, this.IconApps, this.MammothApps, this.EsbEnvironments);
-        }
+            var iconApps = IconDbService.GetApps();
+            var mammothApps = MammothDbService.GetApps();
+            var esbEnvironments = EsbEnvironmentManager.GetEsbEnvironmentDefinitions();
 
-        public IconApplicationViewModel CreateViewModel(string serverName, 
-            RemoteServiceModel remoteService,
-            bool commandsEnabled,
-            IEnumerable<IconLoggedAppViewModel> iconAppList,
-            IEnumerable<IconLoggedAppViewModel> mammothAppList,
-            IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments)
-        {
             var appViewModel = new IconApplicationViewModel()
             {
                 Name = remoteService.FullName,
@@ -82,6 +74,7 @@ namespace Icon.Dashboard.Mvc.Services
 
             try
             {
+                ;
                 if (IsRunningAsUnitTest())
                 {
                     // testing or loading service from local machine, just use filename without path
@@ -89,17 +82,7 @@ namespace Icon.Dashboard.Mvc.Services
                 }
                 else
                 {
-                    string configPathOnHost = string.Empty;
-                    if (appViewModel.ConfigFilePath.Contains("-"))
-                    {
-                        configPathOnHost = appViewModel.ConfigFilePath.Substring(0, appViewModel.ConfigFilePath.IndexOf('-'));
-                    }
-                    configPathOnHost = appViewModel.ConfigFilePath.Replace(":", "$").Replace("\"", "").Trim();
-
-                    // use the unc path
-                    appViewModel.ConfigFilePath = $"\\\\{appViewModel.Server}\\{configPathOnHost}";
-                    //var config = ConfigurationManager.OpenExeConfiguration(uncPath);
-                    //appViewModel.ConfigFilePath = config.FilePath;
+                    appViewModel.ConfigFilePath = GetConfigUncPath(appViewModel.Server, remoteService.ConfigFilePath);
                 }
 
                 if (System.IO.File.Exists(appViewModel.ConfigFilePath))
@@ -117,16 +100,16 @@ namespace Icon.Dashboard.Mvc.Services
                         });
 
                     var nonEsbSettings = allAppSettings
-                        .Where(s => !EsbEnvironmentDefinition.EsbAppSettingsNames.Contains(s.Key))
+                        .Where(s => !EsbAppSettings.EsbAppSettingsNames.Contains(s.Key))
                         .ToList();
                     nonEsbSettings.ForEach(e => appViewModel.AppSettings.Add(e.Key, e.Value));
 
                     var esbEnvironmentSettings = allAppSettings
-                        .Where(s => EsbEnvironmentDefinition.EsbAppSettingsNames.Contains(s.Key))
+                        .Where(s => EsbAppSettings.EsbAppSettingsNames.Contains(s.Key))
                         .ToList();
                     esbEnvironmentSettings.ForEach(e => appViewModel.EsbConnectionSettings.Add(e.Key, e.Value));
 
-                    appViewModel.CurrentEsbEnvironment = FindEsbEnvironmentForApp(allEsbEnvironments, appViewModel.EsbConnectionSettings);
+                    appViewModel.CurrentEsbEnvironment = FindEsbEnvironmentForApp(esbEnvironments, appViewModel.EsbConnectionSettings);
 
                     // populate logging id and name from config file and database App data 
                     if (appViewModel.Family.Contains("Mammoth"))
@@ -134,7 +117,11 @@ namespace Icon.Dashboard.Mvc.Services
                         appViewModel.LoggingID = GetLoggingIdFromConfig(appConfig);
                         if (appViewModel.LoggingID.GetValueOrDefault(0) > 0)
                         {
-                            appViewModel.LoggingName = GetLoggingNameFromId(mammothAppList, appViewModel.LoggingID.Value);
+                            appViewModel.LoggingName = GetLoggingNameFromId(mammothApps, appViewModel.LoggingID.Value);
+                            if (string.IsNullOrWhiteSpace(appViewModel.LoggingName))
+                            {
+                                string x = "whu happa?";
+                            }
                         }
                     }
                     else
@@ -142,7 +129,7 @@ namespace Icon.Dashboard.Mvc.Services
                         appViewModel.LoggingID = GetLoggingIdFromConfig(appConfig);
                         if (appViewModel.LoggingID.GetValueOrDefault(0) > 0)
                         {
-                            appViewModel.LoggingName = GetLoggingNameFromId(iconAppList, appViewModel.LoggingID.Value);
+                            appViewModel.LoggingName = GetLoggingNameFromId(iconApps, appViewModel.LoggingID.Value);
                         }
                     }
                 }
@@ -159,6 +146,35 @@ namespace Icon.Dashboard.Mvc.Services
             return appViewModel;
         }
 
+        /// <summary>
+        /// Converts PathName from a WMI ManagementObject into a UNC path to a configuration file
+        /// </summary>
+        /// <param name="serverName">The remote server name for the start of the UNC path</param>
+        /// <param name="pathName">PathName from a WMI Management Object representing a remote service, for example
+        ///     "E:\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe"  -displayname "Icon API Controller - Hierarchy" -servicename "IconAPIController-Hierarchy"</param>
+        /// <returns>UNC path to the config file, for example
+        ///     "\\vm-icon-test1\E$\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe.config" </returns>
+        public string GetConfigUncPath(string serverName, string pathName)
+        {
+            // remove quotation marks
+            string configPathOnHost = pathName.Replace("\"", "");
+            if (configPathOnHost.Contains("-"))
+            {
+                // remove any parameters (we only want the path to the executable)
+                configPathOnHost = configPathOnHost.Substring(0, configPathOnHost.IndexOf('-'));
+            }
+            // replace local drive letter from remote server with an administrative share path ($ instead of :)
+            configPathOnHost = configPathOnHost.Replace(":", "$");
+            // trim and add .config suffix
+            configPathOnHost = configPathOnHost.Trim();
+            configPathOnHost += ".config";
+
+            // build the unc path using the server and converted path
+            configPathOnHost = $"\\\\{serverName}\\{configPathOnHost}";
+
+            return configPathOnHost;
+        }
+
         public bool IsRunningAsUnitTest()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -167,15 +183,6 @@ namespace Icon.Dashboard.Mvc.Services
 
         public List<IconApplicationViewModel> LoadRemoteServices(DashboardEnvironmentViewModel customEnvironment, bool commandsEnabled)
         {
-            return LoadRemoteServices(customEnvironment, commandsEnabled, this.IconApps, this.MammothApps, this.EsbEnvironments);
-        }
-
-        public List<IconApplicationViewModel> LoadRemoteServices(DashboardEnvironmentViewModel customEnvironment,
-            bool commandsEnabled,
-            IEnumerable<IconLoggedAppViewModel> iconAppList,
-            IEnumerable<IconLoggedAppViewModel> mammothAppList,
-            IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments)
-        {
             var appViewModels = new List<IconApplicationViewModel>();
 
             foreach (var serverName in customEnvironment.AppServers.Select(s => s.ServerName))
@@ -183,7 +190,7 @@ namespace Icon.Dashboard.Mvc.Services
                 var remoteServiceModels = WmiService.LoadRemoteServices(serverName);
 
                 appViewModels.AddRange(remoteServiceModels.Select(s =>
-                    CreateViewModel(serverName, s, commandsEnabled, iconAppList, mammothAppList, allEsbEnvironments)));
+                    CreateViewModel(serverName, s, commandsEnabled)));
             }
 
             return appViewModels;
@@ -268,57 +275,107 @@ namespace Icon.Dashboard.Mvc.Services
             }
             return loggingId;
         }
-        
-        public string FindEsbEnvironmentForApp(IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments,
-            Dictionary<string,string> appSettingsForEsb)
+
+        public void ExecuteServiceCommand(string server, string application, string command)
+        {
+            switch (command)
+            {
+                case "Start":
+                case "start":
+                    WmiService.StartRemoteService(server, application, new string[] { });
+                    break;
+                case "Stop":
+                case "stop":
+                    WmiService.StopRemoteService(server, application, new string[] { });
+                    break;
+                default:
+                    throw new ArgumentException($"Unexpected command '{command}' for ExecuteServiceCommand");
+            }
+        }
+
+        public void RestartServices(IEnumerable<EsbEnvironmentViewModel> esbEnvironments)
+        {
+            foreach (var esbEnvironment in esbEnvironments)
+            {
+                RestartServices(esbEnvironment.AppsInEnvironment);
+            }
+        }
+
+        public void RestartServices(IEnumerable<IconApplicationViewModel> applications)
+        {
+            foreach (var appToRestart in applications)
+            {
+                WmiService.StopRemoteService(appToRestart.Server, appToRestart.Name, new string[] { });
+                //TODO need pause/threading here?
+                WmiService.StartRemoteService(appToRestart.Server, appToRestart.Name, new string[] { });
+            }
+        }
+
+        public string FindEsbEnvironmentForApp(IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments, Dictionary<string,string> esbConnectionSettings)
         {
             var serverUrlKey = nameof(EsbEnvironmentViewModel.ServerUrl);
             if (allEsbEnvironments == null) throw new ArgumentNullException(nameof(allEsbEnvironments));
 
-            if (appSettingsForEsb.Any() && appSettingsForEsb.ContainsKey(serverUrlKey))
+            if (esbConnectionSettings.Any() && esbConnectionSettings.ContainsKey(serverUrlKey))
             {
-                var hostsForApp = GetHostsFromServerUrl(appSettingsForEsb[serverUrlKey]);
+                var hostsForApp = Services.EsbEnvironmentManager.GetHostsFromServerUrl(esbConnectionSettings[serverUrlKey]);
                 if (hostsForApp != null)
                 {
                     foreach (var env in allEsbEnvironments)
                     {
-                        var hostsForEnvironment = GetHostsFromServerUrl(env.ServerUrl);
-                        if (hostsForEnvironment != null)
+                        var hostsInEsbEnvironment = Services.EsbEnvironmentManager.GetHostsFromServerUrl(env.ServerUrl);
+                        if (hostsInEsbEnvironment != null)
                         {
-                            bool match = false;
-                            foreach( var appHost in hostsForApp)
+                            foreach (var appHost in hostsForApp)
                             {
-                                match = hostsForEnvironment.Contains(appHost);
-                                if (!match) break;
+                                if (hostsInEsbEnvironment.Contains(appHost))
+                                {
+                                    return env.Name;
+                                }
                             }
-                            if (match) return env.Name;
                         }
                     }
                 }
             }
             return string.Empty;
         }
-        
-        public static IEnumerable<string> GetHostsFromServerUrl(string serverUrlSettingValue)
+
+        public void SaveRemoteServiceAppSettings(IconApplicationViewModel appViewModel)
         {
-            if (String.IsNullOrWhiteSpace(serverUrlSettingValue)) return null;
-            var hosts = new List<string>();
-            // server url app setting could contain a single url or two urls separated by a comma
-            var serverUrls = serverUrlSettingValue.Split(',');
-            foreach (var serverUrl in serverUrls)
+            try
             {
-                var systemUri = new Uri(serverUrl);
-                if (systemUri.Host.Contains("."))
-                {
-                    //we only want the first element of the domain host (e.g. "myMachine" out of "myMachine.wfm.pvt")
-                    hosts.Add(systemUri.Host.Split('.')[0]);
-                }
-                else
-                {
-                    hosts.Add(systemUri.Host);
-                }
+                var appConfig = XDocument.Load(appViewModel.ConfigFilePath);
+
+                // combine the AppSettings and the ESB-related subset of AppSettings into 1 collection
+                var combinedDictionary = CombineDictionariesIgnoreDuplicates(
+                    appViewModel.AppSettings, appViewModel.EsbConnectionSettings);
+
+                // create XML elements for each setting
+                var updatedElements = combinedDictionary.Select(i =>
+                        new XElement("add",
+                            new XAttribute("key", i.Key),
+                            new XAttribute("value", i.Value ?? String.Empty)));
+
+                //replace the existing appSettings node in the XML file with the new element collection
+                var configAppSettingsElement = appConfig.Root.Element("appSettings");
+                configAppSettingsElement.ReplaceNodes(updatedElements);
+                appConfig.Save(appViewModel.ConfigFilePath);
             }
-            return hosts;
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private static Dictionary<T, U> CombineDictionariesIgnoreDuplicates<T, U>(params Dictionary<T, U>[] dictionaries)
+        {
+            // In case there are any duplicates between the two dictionaries, convert the 
+            // combined dictionary to a lookup (which handles multiple values per key) and 
+            // then re -convert back to a dictionary using only the first value per key
+            var combinedDictionaryWithDuplicatesIgnored = dictionaries.SelectMany(dict => dict)
+                       .ToLookup(pair => pair.Key, pair => pair.Value)
+                       .ToDictionary(group => group.Key, group => group.First());
+            return combinedDictionaryWithDuplicatesIgnored;
         }
     }
 }

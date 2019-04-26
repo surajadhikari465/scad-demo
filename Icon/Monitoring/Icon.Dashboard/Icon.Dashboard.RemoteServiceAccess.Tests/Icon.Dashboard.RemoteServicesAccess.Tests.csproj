@@ -99,7 +99,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Icon.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
+    <ProjectReference Include="..\Icon.Dashboard.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
       <Project>{3d756762-6f47-4a5d-b81d-ba023b96f094}</Project>
       <Name>Icon.Dashboard.RemoteServicesAccess</Name>
     </ProjectReference>

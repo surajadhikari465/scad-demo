@@ -1,5 +1,4 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
-using Icon.Dashboard.DataFileAccess.Models;
 using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using Moq;
@@ -17,27 +16,18 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 {
     public class _MvcControllerUnitTestBase
     {
-        protected string dataFilePath = "MvcDashboardUnitTestData.xml";
-        protected Mock<HttpServerUtilityBase> mockServerUtility = new Mock<HttpServerUtilityBase>();
-        protected Mock<IDataFileServiceWrapper> mockDataServiceWrapper = new Mock<IDataFileServiceWrapper>();
+        protected Mock<HttpContextBase> mockHttpContext = new Mock<HttpContextBase>();
         protected Mock<IIconDatabaseServiceWrapper> mockIconLoggingServiceWrapper = new Mock<IIconDatabaseServiceWrapper>();
         protected Mock<IMammothDatabaseServiceWrapper> mockMammothLoggingServiceWrapper = new Mock<IMammothDatabaseServiceWrapper>();
+        protected Mock<IDashboardEnvironmentManager> mockDashboardEnvironmentManager = new Mock<IDashboardEnvironmentManager>();
+        protected Mock<IEsbEnvironmentManager> mockEsbEnvironmentMgmtSvc = new Mock<IEsbEnvironmentManager>();
         protected Mock<IRemoteWmiServiceWrapper> mockRemoteWmiSerivceWrapper = new Mock<IRemoteWmiServiceWrapper>();
-        protected Mock<HttpContextBase> mockHttpContext = new Mock<HttpContextBase>();
 
         public _MvcControllerUnitTestBase()
         {
             SetupFakeIconApplicationData();
             SetupFakeIconAppLogData();
             SetupFakeApiJobSummaryData();
-            SetupStubServerUtility();
-        }
-
-        private void SetupStubServerUtility()
-        {
-            var testDataFilePath = File.Exists(dataFilePath) ? dataFilePath : $"..\\..\\{dataFilePath}";
-            mockServerUtility.Setup(s => s.MapPath(It.IsAny<string>()))
-                .Returns(testDataFilePath);
         }
 
         protected void SetMockHttpContext(Controller controller)
@@ -59,21 +49,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             mockHttpContext.Setup(c => c.Items).Returns(itemsDictionary);
         }
 
-        protected HttpServerUtilityBase serverUtility
-        {
-            get
-            {
-                return mockServerUtility.Object;
-            }
-        }
-
-        protected IDataFileServiceWrapper dataServiceWrapper
-        {
-            get
-            {
-                return mockDataServiceWrapper.Object;
-            }
-        }
         protected IIconDatabaseServiceWrapper iconDbServiceWrapper
         {
             get
@@ -89,6 +64,23 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             }
         }
 
+        protected IDashboardEnvironmentManager dashboardEnvironmentManager
+        {
+            get
+            {
+                return mockDashboardEnvironmentManager.Object;
+            }
+        }
+
+
+        protected IEsbEnvironmentManager esbEnvironmentManager
+        {
+            get
+            {
+                return mockEsbEnvironmentMgmtSvc.Object;
+            }
+        }
+
         protected IRemoteWmiServiceWrapper wmiServiceWrapper
         {
             get
@@ -97,18 +89,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             }
         }
 
-        protected IconService fakeServiceA = null;
-        protected IconService fakeServiceB = null;
         protected IconApplicationViewModel FakeServiceViewModelA = null;
         protected IconApplicationViewModel FakeServiceViewModelB = null;
-
-        protected List<IIconApplication> AllFakeApps
-        {
-            get
-            {
-                return new List<IIconApplication>() { fakeServiceA, fakeServiceB };
-            }
-        }
 
         protected List<IconApplicationViewModel> AllFakeAppViewModels
         {
@@ -121,15 +103,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected void SetupFakeIconApplicationData()
         {
-            fakeServiceA = Mock.Of<IconService>();
-            fakeServiceA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //fakeServiceA.DataFlowFrom = "None";
-            //fakeServiceA.DataFlowTo = "ESB";
-            fakeServiceA.DisplayName = "AAAAAA Service";
-            fakeServiceA.Name = "Fake.Name.AAAAAA";
-            fakeServiceA.Server = "test-Server1";
-            //Mock.Get(fakeServiceA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
-
             FakeServiceViewModelA = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelA.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
             //FakeServiceViewModelA.DataFlowFrom = "None";
@@ -138,15 +111,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             FakeServiceViewModelA.Name = "Fake.Name.AAAAAA";
             FakeServiceViewModelA.Server = "test-Server1";
             //Mock.Get(FakeServiceViewModelA).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
-
-            fakeServiceB = Mock.Of<IconService>();
-            fakeServiceB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";
-            //fakeServiceB.DataFlowFrom = "None";
-            //fakeServiceB.DataFlowTo = "Unknown";
-            fakeServiceB.DisplayName = "BBBB Service";
-            fakeServiceB.Name = "Fake.Name.BBBBB";
-            fakeServiceB.Server = "test-Server1";
-            //Mock.Get(fakeServiceB).SetupGet(a => a.TypeOfApplication).Returns(ApplicationTypeEnum.WindowsService);
 
             FakeServiceViewModelB = Mock.Of<IconApplicationViewModel>();
             FakeServiceViewModelB.ConfigFilePath = @"\\xxxxxx\uuuuuuu\aaa\bbbbbb\asdfl.xml";

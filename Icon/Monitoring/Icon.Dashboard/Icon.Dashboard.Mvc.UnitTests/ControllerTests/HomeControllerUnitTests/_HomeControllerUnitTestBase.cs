@@ -15,27 +15,26 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
 
         protected HomeController ConstructController()
         {
-            return ConstructController(base.serverUtility,
+            return ConstructController(
                 base.iconDbServiceWrapper,
-                base.dataFilePath,
-                base.dataServiceWrapper,
                 base.mammothDbServiceWrapper,
+                base.dashboardEnvironmentManager,
+                base.esbEnvironmentManager,
                 base.wmiServiceWrapper);
         }
 
         protected HomeController ConstructController(
-            HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper loggingServiceWrapper = null,
-            string pathToXmlDataFile = null,
-            IDataFileServiceWrapper dataServiceWrapper = null,
+            IIconDatabaseServiceWrapper iconDbLoggingWrapper = null,
             IMammothDatabaseServiceWrapper mammothLoggingWrapper = null,
+            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
+            IEsbEnvironmentManager esbEnvironmentMgmtSvc = null,
             IRemoteWmiServiceWrapper remoteWmiServiceWrapper = null)
         {
-            var controller = new HomeController(serverUtility,
-                loggingServiceWrapper,
-                pathToXmlDataFile,
-                dataServiceWrapper,
+            var controller = new HomeController(
+                iconDbLoggingWrapper,
                 mammothDbServiceWrapper,
+                dashboardEnvironmentManager,
+                esbEnvironmentMgmtSvc,
                 remoteWmiServiceWrapper);
             base.SetupMockHttpContext(controller);
             return controller;

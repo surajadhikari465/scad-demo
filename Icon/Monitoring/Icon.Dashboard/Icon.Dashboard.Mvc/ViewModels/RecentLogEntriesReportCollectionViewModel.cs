@@ -17,7 +17,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         {
 
             HoursConsideredRecent = hoursForRecent;
-            PollingRefreshIntervalSeconds = pollingInterval;
+            PollingRefreshIntervalMilliseconds = pollingInterval;
             Reports = new List<RecentLogEntriesReportViewModel>();
         }
 
@@ -25,6 +25,6 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         public int HoursConsideredRecent { get; set; }
 
-        public int PollingRefreshIntervalSeconds { get; set; }
+        public int PollingRefreshIntervalMilliseconds { get; set; }
     }
 }

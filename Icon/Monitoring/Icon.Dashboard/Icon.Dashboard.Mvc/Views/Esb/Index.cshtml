@@ -26,8 +26,10 @@
                              v-for="(app, appIndex) in env.AppsInEnvironment"
                              :key="app.id">
                             <a v-bind:href="app.AppConfigUrl" class="esbAppAnchor">
+                            <span class="esbAppAnchor">
                                 {{app.DisplayName}} ({{app.Server}})
-                            </a>
+                            </span>
+                           </a>
                         </div>
                     </draggable>
                 </div>
@@ -40,12 +42,6 @@
                     <img id="saveChangesLoadingImg" src="~/Content/Images/loading_blue_on_yellow.gif" class="hidden" />
                     Save Changes
                 </button>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-offset-2 col-xs-8 margin-top-10">
-                @Html.ActionLink("Define New ESB Environment", "Create", "Esb", null, new { @class = "btn btn-info btn-block" })
             </div>
         </div>
     </div>
@@ -79,8 +75,6 @@ var vueData = {
         <text>
         {
             id: @envCounter,
-            //newAppNameText: "",
-            //newAppServerText: "",
             Name: '@eachEnvironment.Name',
             TargetHostName: '@eachEnvironment.TargetHostName',
             DetailsUrl: '@Html.Raw(Url.Action("Details", "Esb", new { name = eachEnvironment.Name }))',
@@ -116,5 +110,4 @@ var vueData = {
 </script>
 
 @Scripts.Render("~/Scripts/vue_dashboard_esb_connections.js")
-
 }

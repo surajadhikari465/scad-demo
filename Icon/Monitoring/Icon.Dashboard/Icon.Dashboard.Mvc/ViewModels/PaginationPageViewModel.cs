@@ -24,7 +24,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public PaginationPageViewModel(int page, int pageSize, string id, string textForLink)
             : this(page, pageSize)
         {
-            RouteParameter = id;
+            AppName = id;
             TextForLink = textForLink;
         }
 
@@ -41,7 +41,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         /// <summary>
         /// Parameter passed when building the route, such as id or type
         /// </summary>
-        public string RouteParameter { get; set; }
+        public string AppName { get; set; }
 
         /// <summary>
         /// Text to display for the link

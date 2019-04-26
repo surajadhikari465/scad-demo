@@ -1,0 +1,74 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconLogEntryCollectionViewModel
+
+@using Icon.Dashboard.Mvc.Helpers
+
+@if (Model.RecentLogEntriesReport != null && Model.RecentLogEntriesReport.Reports.Any())
+{
+    <div class="container-wide">
+        <div class="row">
+            @{Html.RenderPartial("_RecentLogEntriesReportCollectionPartial", Model.RecentLogEntriesReport.Reports);}
+        </div>
+    </div>
+}
+
+<p></p>
+
+<div class="container-wide">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-offset-3 col-sm-6 col-lg-4">
+            <label class="control-label col-xs-3">Error Level:</label>
+            <div class="col-xs-9">
+                @Html.EnumDropDownListFor(m => m.ErrorLevel, "-error level", new { @class = "form-control" })
+            </div>
+        </div>
+        <input class="hidden" id="appName" name="appName" value="@Model.AppName" />
+        <input class="hidden" id="page" name="page" value="@Model.PaginationModel.CurrentPage" />
+        <input class="hidden" id="pageSize" name="pageSize" value="@Model.PaginationModel.PageSize" />
+        <input class="hidden" id="errorLevel" name="errorLevel" value="@Model.ErrorLevel" />
+    </div>
+</div>
+
+<div class="container-wide">
+    @{ Html.RenderPartial("_AppLogTablePartial", Model); }
+</div>
+
+<div id="pagingDiv">
+    @{Html.RenderPartial("_PaginationPartial", Model.PaginationModel); }
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+    @{
+        int millisecondsForRecentErrorsPolling = Model.RecentLogEntriesReport.PollingRefreshIntervalMilliseconds;
+        int hoursConsideredRecent = Model.RecentLogEntriesReport.HoursConsideredRecent;
+        List<int> appIDs = new List<int>();
+
+        foreach(var appID in Model.RecentLogEntriesReport.Reports.Where(e => e.AppID > 0).Select(e => e.AppID))
+        {
+            appIDs.Add(appID);
+        }
+    }
+
+    @* javascript variables set from server-side Razor code for appLogs.js*@
+    var urlForTableRefresh = "@Url.Action("TableRefresh", "IconLogs")"; 
+    var urlForGetRecentErrorsAction = '@(Url.Action("RecentErrors", "IconLogs"))';
+    var intervalMilliseconds = @millisecondsForRecentErrorsPolling;
+    var arrayOfFunctions = [];
+
+    function buildArrayOfFunctions() {
+        @foreach (var appID in appIDs)
+        {
+            @: var func@(appID) = function(){ getRecentErrors(@(appID), @(hoursConsideredRecent));}
+            @: arrayOfFunctions.push( func@(appID) );
+        }
+    }
+
+    @* javascript variable set from server-side Razor code for readrawPaging.js*@
+    var urlForRedrawPagingAction = "@(Url.Action("RedrawPaging", "IconLogs"))";
+
+    </script>
+
+    @Scripts.Render("~/Scripts/appLogs.js")
+
+    @Scripts.Render("~/Scripts/redrawPaging.js")
+}

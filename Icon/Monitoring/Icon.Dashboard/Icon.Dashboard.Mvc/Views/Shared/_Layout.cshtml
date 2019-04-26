@@ -32,14 +32,25 @@
                     <a href="@Url.Action("Index", "Home")">Home</a>
                 </li>
 
-                @if (ViewBag.MenuOptionsForAppLogs != null && ViewBag.MenuOptionsForAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
+                @if (ViewBag.MenuOptionsForIconAppLogs != null && ViewBag.MenuOptionsForIconAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
                 {
-                    Html.RenderPartial("_SubMenuForAppLogs", ViewBag.MenuOptionsForAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
+                    Html.RenderPartial("_SubMenuForIconAppLogs", ViewBag.MenuOptionsForIconAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
                 }
                 else
                 {
                     <li>
-                        <a href="@Url.Action("Index", "ApiJobs")">API Job Monitor</a>
+                        <a href="@Url.Action("Index", "IconLogs")">Icon App Logs</a>
+                    </li>
+                }
+
+                @if (ViewBag.MenuOptionsForMammothAppLogs != null && ViewBag.MenuOptionsForMammothAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
+                {
+                    Html.RenderPartial("_SubMenuForMammothAppLogs", ViewBag.MenuOptionsForMammothAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Index", "MammothLogs")">Mammoth App Logs</a>
                     </li>
                 }
 
@@ -58,15 +69,9 @@
                     <a href="@Url.Action("Index", "Esb")">ESB Connections</a>
                 </li>
 
-                @if (ViewBag.EnvironmentOptions != null && ViewBag.EnvironmentOptions is IDictionary<string, string>)
-                {
-                    Html.RenderPartial("_SupportAppsPartial", ViewBag.EnvironmentOptions as IDictionary<string, string>);
+                @{Html.RenderPartial("_SupportAppsPartial");}
 
-                    Html.RenderPartial("_EnvironmentSelectorPartial", ViewBag.EnvironmentOptions as IDictionary<string, string>);
-
-                    @*Html.RenderPartial("_AdminMenuPartial", ViewBag.EnvironmentOptions as IDictionary
-                    <string, string>);*@
-                }
+                @{Html.RenderPartial("_EnvironmentSelectorPartial"); }
             </ul>
         </div>
     </nav>

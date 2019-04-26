@@ -1,16 +1,16 @@
-﻿@model Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum?
+﻿@model Icon.Dashboard.Mvc.Models.ApplicationTypeEnum?
 
 @{
     string displayName = Model.ToString();
-    switch (Model)
+    switch (Model.GetValueOrDefault(Icon.Dashboard.Mvc.Models.ApplicationTypeEnum.WindowsService))
     {
-        case Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum.WindowsService:
+        case Icon.Dashboard.Mvc.Models.ApplicationTypeEnum.WindowsService:
             displayName = "Windows Service";
             break;
-        case Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum.ScheduledTask:
+        case Icon.Dashboard.Mvc.Models.ApplicationTypeEnum.ScheduledTask:
             displayName = "Scheduled Task";
             break;
-        case Icon.Dashboard.DataFileAccess.Models.ApplicationTypeEnum.Unknown:
+        case Icon.Dashboard.Mvc.Models.ApplicationTypeEnum.Unknown:
         default:
             break;
     }

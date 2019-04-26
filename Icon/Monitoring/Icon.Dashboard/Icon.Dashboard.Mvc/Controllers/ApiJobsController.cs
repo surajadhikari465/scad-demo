@@ -13,13 +13,11 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class ApiJobsController : BaseDashboardController
     {
-        public ApiJobsController() : this(null, null, null) { }
+        public ApiJobsController() : this(null) { }
 
-        public ApiJobsController(
-            HttpServerUtilityBase serverUtility = null,
-            IIconDatabaseServiceWrapper iconDbService = null,
+        public ApiJobsController(IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null)
-            : base (serverUtility, iconDbService, mammothDbService ) { }
+            : base(iconDbService, mammothDbService) { }
 
         #region GET
 
@@ -28,7 +26,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
             //enable filter to use the data service
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
             var jobSummaries = GetJobSummariesAndSetRelatedViewData(id, page, pageSize);
 
             return View(jobSummaries);
@@ -38,17 +37,19 @@ namespace Icon.Dashboard.Mvc.Controllers
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Pending()
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
             var pendingMessages = IconDatabaseService.GetPendingMessages();
             return View(pendingMessages);
         }
 
         [HttpGet]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult RedrawPaging(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
+        public ActionResult RedrawPaging(string appName = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
-            HttpContext.Items["loggingDataService"] = IconDatabaseService;
-            var pagingData = GetPaginationViewModel(routeParameter, page, pageSize);
+            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
+            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var pagingData = GetPaginationViewModel(appName, page, pageSize);
             return PartialView("_PaginationPartial", pagingData);
         }
 
@@ -88,16 +89,16 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult TableRefresh(string routeParameter = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
+        public ActionResult TableRefresh(string appName = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {
-            var jobSummaries = GetJobSummariesAndSetRelatedViewData(routeParameter, page, pageSize);
+            var jobSummaries = GetJobSummariesAndSetRelatedViewData(appName, page, pageSize);
             return PartialView("_ApiJobsTablePartial", jobSummaries);
         }
         #endregion
 
         protected PaginationPageSetViewModel GetPaginationViewModel(int page, int pageSize)
         {
-            var pagingData = new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize);
+            var pagingData = new PaginationPageSetViewModel("TableRefresh", "ApiJobs", page, pageSize);
             return pagingData;
         }
 
@@ -105,7 +106,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             var pagingData = String.IsNullOrWhiteSpace(jobType)
                ? GetPaginationViewModel(page, pageSize)
-               : new PaginationPageSetViewModel("TableRefresh", "ApiJobs", PagingConstants.NumberOfQuickLinks, page, pageSize, jobType);
+               : new PaginationPageSetViewModel("TableRefresh", "ApiJobs",  page, pageSize, jobType);
             return pagingData;
         }
 

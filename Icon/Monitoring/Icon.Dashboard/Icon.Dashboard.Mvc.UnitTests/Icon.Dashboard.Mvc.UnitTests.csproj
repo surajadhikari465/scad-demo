@@ -134,22 +134,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ControllerTests\ApiJobsControllerUnitTests\ApiJobsControllerIndexUnitTests.cs" />
-    <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerCreateUnitTests.cs" />
-    <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerDetailsUnitTests.cs" />
     <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerEditUnitTests.cs" />
     <Compile Include="ControllerTests\HomeControllerUnitTests\_HomeControllerUnitTestBase.cs" />
-    <Compile Include="ControllerTests\LogsControllerUnitTests\LogsControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\IconLogsControllerUnitTests\IconLogsControllerIndexUnitTests.cs" />
     <Compile Include="ControllerTests\_MvcControllerUnitTestBase.cs" />
     <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerIndexUnitTests.cs" />
     <Compile Include="FilterTests\IsAuthorizedUnitTests.cs" />
     <Compile Include="FilterTests\GetUserRoleUnitTests.cs" />
     <Compile Include="FilterTests\_DashboardAuthorizationFilterTestBase.cs" />
-    <Compile Include="HelperTests\EnvironmentSwitcherUnitTests.cs" />
+    <Compile Include="HelperTests\DashboardEnvironmentManagerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingUnitTests\EsbSwitchRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\ApiJobsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\DefaultRoutingUnitTests.cs" />
-    <Compile Include="RoutingUnitTests\LogsRoutingUnitTests.cs" />
+    <Compile Include="RoutingUnitTests\MammothLogsRoutingUnitTests.cs" />
+    <Compile Include="RoutingUnitTests\IconLogsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\HomeRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\_MvcRoutingUnitTestBase.cs" />
     <Compile Include="ServiceTests\DataFileServiceUnitTests.cs" />
@@ -161,16 +160,12 @@
       <Project>{c31dceae-c79b-4466-b592-f1c58c7c1e2c}</Project>
       <Name>Icon.Dashboard.CommonDatabaseAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Icon.Dashboard.DataFileAccess\Icon.Dashboard.DataFileAccess.csproj">
-      <Project>{c95b11a1-662c-4380-921f-feaebfe77a7f}</Project>
-      <Name>Icon.Dashboard.DataFileAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Icon.Dashboard.Mvc\Icon.Dashboard.Mvc.csproj">
       <Project>{05b111c4-587a-42a1-964f-472ccef00196}</Project>
       <Name>Icon.Dashboard.Mvc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Icon.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
-      <Project>{3D756762-6F47-4A5D-B81D-BA023B96F094}</Project>
+    <ProjectReference Include="..\Icon.Dashboard.RemoteServicesAccess\Icon.Dashboard.RemoteServicesAccess.csproj">
+      <Project>{3d756762-6f47-4a5d-b81d-ba023b96f094}</Project>
       <Name>Icon.Dashboard.RemoteServicesAccess</Name>
     </ProjectReference>
   </ItemGroup>

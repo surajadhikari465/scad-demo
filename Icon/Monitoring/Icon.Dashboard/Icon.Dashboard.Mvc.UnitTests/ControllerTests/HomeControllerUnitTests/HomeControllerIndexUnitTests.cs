@@ -7,7 +7,6 @@ using Icon.Dashboard.Mvc.Services;
 using Moq;
 using System.Collections.Generic;
 using Icon.Dashboard.Mvc.ViewModels;
-using Icon.Dashboard.DataFileAccess.Models;
 using System.Threading.Tasks;
 
 namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
@@ -23,8 +22,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         {
             //Given
             var fakeData = base.AllFakeAppViewModels;
-            base.mockDataServiceWrapper
-                .Setup(s => s.GetApplications( It.IsAny<string>()))
+            base.mockEsbEnvironmentMgmtSvc
+                .Setup(s => s.GetEsbEnvironmentDefinitions())
+                .Returns(new List<EsbEnvironmentViewModel>());
+            base.mockRemoteWmiSerivceWrapper
+                .Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(), It.IsAny<bool>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 
@@ -42,13 +44,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
             var fakeData = base.AllFakeAppViewModels;
             int expectedCount = fakeData.Count;
             base.mockRemoteWmiSerivceWrapper
-                .Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(),
-                    It.IsAny<bool>()))
-                //.Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(),
-                //    It.IsAny<bool>(),
-                //    It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                //    It.IsAny<IEnumerable<IconLoggedAppViewModel>>(),
-                //    It.IsAny<IEnumerable<EsbEnvironmentViewModel>>()))
+                .Setup(s => s.LoadRemoteServices(It.IsAny<DashboardEnvironmentViewModel>(), It.IsAny<bool>()))
                 .Returns(fakeData);
             var controller = ConstructController();
 
@@ -66,18 +62,15 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Index_Post_Should_IssueStartCommand()
         {
             //Given
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 
             //When
-            var result = controller.Index(fakeServiceA.Name, fakeServiceA.Server, cmd);
+            var result = controller.Index(FakeServiceViewModelA.Name, FakeServiceViewModelA.Server, cmd);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s
-                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
+            mockRemoteWmiSerivceWrapper.Verify(s => s
+                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(), cmd),
                 Times.Once);
         }
 
@@ -85,18 +78,15 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Index_Post_Should_IssueStopCommand()
         {
             //Given
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Stop";
 
             //When
-            var result = controller.Index(fakeServiceA.Name, fakeServiceA.Server, cmd);
+            var result = controller.Index(FakeServiceViewModelA.Name, FakeServiceViewModelA.Server, cmd);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s
-                .ExecuteServiceCommand( It.IsAny<string>(),  It.IsAny<string>(), It.IsAny<string>(), cmd),
+            mockRemoteWmiSerivceWrapper.Verify(s => s
+                .ExecuteServiceCommand( It.IsAny<string>(),  It.IsAny<string>(), cmd ),
                 Times.Once);
         }
 
@@ -104,18 +94,15 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Index_Post_ShouldIssueAnyCommand()
         {
             //Given
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "DoIt";
 
             //When
-            var result = controller.Index(fakeServiceA.Name, fakeServiceA.Server, cmd);
+            var result = controller.Index(FakeServiceViewModelA.Name, FakeServiceViewModelA.Server, cmd);
 
             //Then
-            mockDataServiceWrapper.Verify(s => s
-                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), cmd),
+            mockRemoteWmiSerivceWrapper.Verify(s => s
+                .ExecuteServiceCommand( It.IsAny<string>(), It.IsAny<string>(),  cmd),
                 Times.Once);
         }
 
@@ -123,14 +110,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Index_Post_Should_RedirectToGetAfterExecutingCommand()
         {
             //Given
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 
             //When
-            var result = controller.Index(fakeServiceA.Name, fakeServiceA.Server, cmd);
+            var result = controller.Index(FakeServiceViewModelA.Name, FakeServiceViewModelA.Server, cmd);
 
             //Then
             Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
@@ -141,14 +125,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests.HomeControllerUnitTests
         public void MvcHomeController_Index_Post_Should_RedirectToGetWithExpectedRouteValues()
         {
             //Given
-            mockDataServiceWrapper
-                .Setup(s => s.GetApplication( It.IsAny<string>(),  It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(FakeServiceViewModelA);
             var controller = ConstructController();
             const string cmd = "Start";
 
             //When
-            var result = controller.Index(fakeServiceA.Name, fakeServiceA.Server, cmd);
+            var result = controller.Index(FakeServiceViewModelA.Name, FakeServiceViewModelA.Server, cmd);
 
             //Then
             Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));

@@ -1,4 +1,4 @@
-﻿using Icon.Dashboard.DataFileAccess.Models;
+﻿using Icon.Dashboard.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -28,21 +28,24 @@ namespace Icon.Dashboard.Mvc.Helpers
             string environmentClass = "default";
             switch (environment)
             {
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Dev:
+                case EnvironmentEnum.Dev:
+                    environmentClass = "default";
+                    break;
+                case EnvironmentEnum.Test:
                     environmentClass = "primary";
                     break;
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Test:
-                    environmentClass = "info";
-                    break;
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.QA:
+                case EnvironmentEnum.QA:
                     environmentClass = "warning";
                     break;
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Prd:
+                case EnvironmentEnum.Perf:
+                    environmentClass = "info";
+                    break;
+                case EnvironmentEnum.Prd:
                     environmentClass = "danger";
                     break;
-                case Icon.Dashboard.DataFileAccess.Models.EnvironmentEnum.Undefined:
+                case EnvironmentEnum.Undefined:
                 default:
-                    environmentClass = "default";
+                    environmentClass = "basic";
                     break;
             }
             return environmentClass;
