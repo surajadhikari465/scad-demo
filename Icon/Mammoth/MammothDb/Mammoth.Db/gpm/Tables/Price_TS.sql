@@ -26,6 +26,12 @@ CREATE CLUSTERED INDEX [CIX_GpmPrice_TS]
     ON [FG_RM];
 GO
 
+CREATE NONCLUSTERED INDEX IX_Price_TS_ItemID_BusinessUnitID_PriceType_StartDate_EndDate
+	ON gpm.Price_TS (ItemID ASC, BusinessUnitID ASC, PriceType ASC, StartDate ASC, EndDate ASC)
+	INCLUDE (Region, Price, PriceTypeAttribute, SellableUOM, Multiple, TagExpirationDate, PercentOff, CurrencyCode)
+	ON FG_RM;
+GO
+
 CREATE TRIGGER [gpm].[Trigger_Price_TS]
     ON [gpm].[Price_TS]
     FOR DELETE, UPDATE

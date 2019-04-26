@@ -23,7 +23,9 @@
 
 GO
 
-CREATE INDEX [IX_Items_ScanCode] ON [dbo].[Items] ([ScanCode]) INCLUDE ([ItemID])
+CREATE NONCLUSTERED INDEX IX_Items_ScanCode
+	ON dbo.Items (ScanCode ASC)
+	INCLUDE (ItemID, Desc_Product, PackageUnit, RetailSize, RetailUOM, FoodStampEligible, BrandHCID, PSNumber)
 
 GO
 
