@@ -166,7 +166,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                 </div>
                 <div className="tbl-body">
                     {data.map((item: any) => {
-                        const checkboxesDisabled = this.props.disabled || (item.isAssigned && item.statusId !== LocaleStatus.BUILDING);
+                        const checkboxesDisabled = this.props.disabled || (item.isAssigned && item.statusId > LocaleStatus.BUILDING);
                         return <React.Fragment key={item.localeId}>
                             <div className="tbl-body-item">
                                 {
