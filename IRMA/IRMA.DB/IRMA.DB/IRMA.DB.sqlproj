@@ -3375,6 +3375,7 @@
     <None Include="Scripts\PostDeploy\PBI14520_AddAmazonInStockEnabledStoreVendorIdToAppConfig.sql" />
     <None Include="Scripts\PostDeploy\PBI4883_RemoveObsoleteHCDBObjects.sql" />
     <None Include="Scripts\Other\RemoveFTPForClosedStores.sql" />
+    <None Include="Scripts\PostDeploy\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
