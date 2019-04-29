@@ -377,9 +377,6 @@ BEGIN
 		AND         Inserted.Sent = 1
 		AND         Inserted.OrderType_ID <> 3
 		AND         Inserted.OriginalCloseDate is null
-		AND         (s.mega_store = 1 
-		 OR			 s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('WFMBannerStoresForOrdering', 'IRMA CLIENT'), '|'))
-		 OR          s.BusinessUnit_ID in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('StoreBUsForAMZExtract', 'IRMA CLIENT'), '|')))	
 
 		SELECT @Error_No = @@ERROR
 	END
