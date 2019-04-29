@@ -145,6 +145,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     })
                     .then(() => {
                          this.props.showAlert("Kit queued successfully.", "success");
+                         this.loadData();
                        
                     })
                     .catch((error) => {
@@ -197,8 +198,8 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     headers: headers
                }).then(response => {
 
-                      this.props.showAlert("Data saved succesfully.", "success")
-                   this.loadData()
+                    this.props.showAlert("Data saved succesfully.", "success")
+                    this.loadData();
                }).catch(error => {
                
                     this.props.showAlert("Error in saving data.", "error")
