@@ -143,7 +143,7 @@ function ViewKitSearch(props: any) {
                         </Grid>
                         <Grid item xs={12} sm={12} md={2}>
                             <Button variant="outlined" disabled={props.disableViewKitButton} className = "full-width" color="primary" onClick={props.ViewKit}>
-                                View Kit
+                                {props.disableViewKitButton ? "Loading..." : "View Kit"}
                             </Button>
                         </Grid>
                         <Grid xs = {12} md={2} item>

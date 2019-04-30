@@ -25,6 +25,7 @@ function KitResults(props: any) {
 
       <ReactTable
         data={props.kitsViewData}
+        noDataText = "No Link Groups"
         columns={[
           {
             Header: "LinkGroupId",
@@ -99,7 +100,7 @@ function KitResults(props: any) {
         className="-striped -highlight"
       />
 
-      <Grid container justify="flex-end" spacing={16}>
+      <Grid container justify="space-between" spacing={16} className="px-3 pb-3">
         <Grid xs={12} md={12} item>
         </Grid>
         <Grid item xs={12} md={3}>
@@ -128,9 +129,13 @@ function KitResults(props: any) {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <Button variant="outlined" disabled={props.disableSaveButton} color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
+        <Grid container alignItems="center" alignContent="center" style={{height: "100%"}}>
+        <Grid item xs={12}>
+          <Button fullWidth variant="outlined" disabled={props.disableSaveButton} color="primary" className={props.classes.button} onClick={() => props.onSaveChanges()} >
             Save Changes
                 </Button>
+                </Grid>
+                </Grid>
         </Grid>
       </Grid>
     </React.Fragment>

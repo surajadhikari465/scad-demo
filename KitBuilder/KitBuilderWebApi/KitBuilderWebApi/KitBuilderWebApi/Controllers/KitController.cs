@@ -143,9 +143,10 @@ namespace KitBuilderWebApi.Controllers
         public IActionResult GetKitView(int kitId, int storeId)
         {
             int? localeIdWithKitLocaleRecord = getlocaleIdAtWhichkitRecordExits(kitId, storeId);
+            var kit = kitRepository.GetAll().Where(k => k.KitId == kitId).FirstOrDefault();
             KitView kitView = new KitView();
 
-            if (localeIdWithKitLocaleRecord == null)
+            if (localeIdWithKitLocaleRecord == null || kit == null)
             {
                 kitView.ErrorMessage = "Kit does not exist for selected store.";
                 return Ok(kitView);
@@ -159,7 +160,7 @@ namespace KitBuilderWebApi.Controllers
                 return Ok(kitView);
             }
 
-            kitView = BuildKitView(kitProperties, storeId);
+            kitView = BuildKitView(kitProperties, storeId, kit);
 
             if (kitView == null)
             {
@@ -174,7 +175,7 @@ namespace KitBuilderWebApi.Controllers
 
         }
 
-        internal KitView BuildKitView(KitPropertiesDto kitProperties, int storeId)
+        internal KitView BuildKitView(KitPropertiesDto kitProperties, int storeId, Kit kit)
         {
             KitView kitView = new KitView();
             Task<KitLocaleDto> kitLocaleDtoTask;
@@ -212,13 +213,15 @@ namespace KitBuilderWebApi.Controllers
                 return kitView;
             }
 
-            if (kitLocaleDto.MaximumCalories != null && kitLocaleDto.MinimumCalories != null && kitLocaleDto.RegularPrice != null
+            if ((kitLocaleDto.MaximumCalories != null || kit.KitType == KitType.Simple) && kitLocaleDto.MinimumCalories != null && kitLocaleDto.RegularPrice != null
                 && kitLocaleDto.AuthorizedByStore != null
                 && kitLocaleDto.Exclude != null)
             {
-
-
-                if (maximumCalories == null || maximumCalories == 0)
+                if (kit.KitType == KitType.Simple && kitLocaleDto.MaximumCalories == null)
+                {
+                    kitView.MaximumCalories = (int)kitLocaleDto.MinimumCalories;
+                }
+                else if (maximumCalories == null || maximumCalories == 0)
                 {
                     kitView.MaximumCalories = (int)kitLocaleDto.MaximumCalories;
                 }
