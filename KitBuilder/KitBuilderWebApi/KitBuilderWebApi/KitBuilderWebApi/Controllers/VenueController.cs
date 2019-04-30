@@ -21,14 +21,93 @@ namespace KitBuilderWebApi.Controllers
     readonly IRepository<Kit> Items;
     readonly ILogger<VenueController> logger;
     readonly IHelper<VenueInfo, VenueParameters> Helper;
-   
-    public VenueController(IRepository<Kit> itemsRepository, ILogger<VenueController> log, IHelper<VenueInfo, VenueParameters> itemHelper)
+
+       
+        public VenueController(IRepository<Kit> itemsRepository, ILogger<VenueController> log, IHelper<VenueInfo, VenueParameters> itemHelper)
     {
       Items = itemsRepository;
       logger = log;
       Helper = itemHelper;
     }
+        private int GetLocaleIdByLocaleType(Locale locale, LocaleType type)
+        {
+            switch (type)
+            {
+                case LocaleType.Chain:
+                    return locale.ChainId ?? 0;
+                case LocaleType.Region:
+                    return locale.RegionId ?? 0;
+                case LocaleType.Metro:
+                    return locale.MetroId ?? 0;
+                case LocaleType.Store:
+                    return locale.StoreId ?? 0;
+                case LocaleType.Venue:
+                    return locale.LocaleId;
+                default:
+                    return 0;
+            }
+        }
+        [HttpGet("Locale/{kitId}/{localeId}", Name = "GetLocaleChildren")]
+        public IActionResult GetLocalesBySubLocale(int kitId, int localeId)
+        {
+            var db = Items.UnitOfWork.Context;
+            var searchLocale = db.Locale.Where(l => l.LocaleId == localeId).FirstOrDefault();
 
+            var locales = db.KitLocale.Where(kl => kl.KitId == kitId);
+            var loc = locales.Where(kl => kl.LocaleId == localeId).FirstOrDefault();
+            var excludedLocales = locales.Where(kl => kl.Exclude == true).Select(kl => new KitLocale() { LocaleId = kl.LocaleId, Locale = kl.Locale }).ToList();
+            var assigned = loc != null;
+
+
+            //make sure that the locale is either assigned, or has an assigned parent.
+            if(!assigned && searchLocale.ChainId != null)
+            {
+                var l = db.KitLocale.Where(kl => kl.LocaleId == searchLocale.ChainId && kl.KitId == kitId).FirstOrDefault();
+                if (l != null && l.Exclude != true) assigned = true;
+            }
+            if(!assigned && searchLocale.RegionId != null)
+            {
+                var l = db.KitLocale.Where(kl => kl.LocaleId == searchLocale.RegionId && kl.KitId == kitId).FirstOrDefault();
+                if (l != null && l.Exclude != true) assigned = true;
+            }
+            if (!assigned && searchLocale.MetroId != null)
+            {
+                var l = db.KitLocale.Where(kl => kl.LocaleId == searchLocale.MetroId && kl.KitId == kitId).FirstOrDefault();
+                if (l != null && l.Exclude != true) assigned = true;
+            }
+            if (!assigned && searchLocale.StoreId != null)
+            {
+                var l = db.KitLocale.Where(kl => kl.LocaleId == searchLocale.StoreId && kl.KitId == kitId).FirstOrDefault();
+                if (l != null && l.Exclude != true) assigned = true;
+            }
+
+            if(!assigned)
+            {
+                //return empty list
+                return Ok(new List<Locale>());
+            }
+
+            var excludedLocalIds = excludedLocales.Select(local => local.LocaleId).ToList();
+            var excludedChainIds = excludedLocales.Where(locale => locale.Locale.LocaleTypeId == (int)LocaleType.Chain).Select(locale => locale.LocaleId).ToList();
+            var excludedRegionIds = excludedLocales.Where(locale => locale.Locale.LocaleTypeId == (int)LocaleType.Region).Select(locale => locale.LocaleId).ToList();
+            var excludedMetroIds = excludedLocales.Where(locale => locale.Locale.LocaleTypeId == (int)LocaleType.Metro).Select(locale => locale.LocaleId).ToList();
+            var excludedStoreIds = excludedLocales.Where(locale => locale.Locale.LocaleTypeId == (int)LocaleType.Store).Select(locale => locale.LocaleId).ToList();
+            if (searchLocale == null)
+            {
+                logger.LogWarning("Kit not found or did not contain any locales.");
+                return NotFound();
+            }
+            //find all locales that are children of this locale, and make sure none are excluded or have excluded parents.
+            var regionsNotAlreadyInList = db.Locale
+                .Where(local => localeId == (GetLocaleIdByLocaleType(local, (LocaleType)searchLocale.LocaleTypeId)))
+                .Where(local => !excludedLocalIds.Contains(local.LocaleId))
+                .Where(local => !excludedChainIds.Contains(local.ChainId ?? 0))
+                .Where(local => !excludedRegionIds.Contains(local.RegionId ?? 0))
+                .Where(local => !excludedMetroIds.Contains(local.MetroId ?? 0))
+                .Where(local => !excludedStoreIds.Contains(local.StoreId ?? 0))
+                .ToList();
+            return Ok(regionsNotAlreadyInList);
+        }
         [HttpGet("{kitId}", Name = "GetLocales")]
         public IActionResult GetStoresHierarchyWithVenue(int kitId)
         {
