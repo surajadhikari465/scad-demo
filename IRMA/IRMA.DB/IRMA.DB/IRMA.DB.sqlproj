@@ -3334,7 +3334,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemVendorLaneFile.sql" />
     <None Include="SQL Agent Job\Amazon Vendor Lane Data Feed - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\VendorLaneExtract.sql" />
-    <None Include="Scripts\PostDeploy\Archive\Add_IDF_for_EnableIconSignCaptionUpdates.sql" />
+    <None Include="Scripts\PostDeploy\PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql" />
     <Build Include="Schema\amz\Tables\DeletedOrderItem.sql" />
     <None Include="Scripts\PostDeploy\Archive\PopulateAmzEventTypeTable.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_PriceUpdate.sql" />

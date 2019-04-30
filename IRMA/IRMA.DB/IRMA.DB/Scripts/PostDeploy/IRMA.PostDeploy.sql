@@ -18,6 +18,7 @@ Post-Deployment Script Template
 :r PBI18549-AddInStockApplication.sql
 :r PBI4896_AddNewIDF.sql
 :r PBI14424_AddNewShrinkTypeAndGL.sql -- 2019.04.11
+:r PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
