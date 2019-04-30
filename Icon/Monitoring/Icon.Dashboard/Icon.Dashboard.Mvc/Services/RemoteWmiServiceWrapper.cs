@@ -21,20 +21,26 @@ namespace Icon.Dashboard.Mvc.Services
         public IMammothDatabaseServiceWrapper MammothDbService { get; set; }
         public IEsbEnvironmentManager EsbEnvironmentManager { get; set; }
 
+        public bool MammothDbEnabled { get; set; }
+
         public RemoteWmiServiceWrapper(
+            bool useMammothDb = false,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
             IEsbEnvironmentManager esbEnvironmentManager = null)
-       : this(null, iconDbService, mammothDbService, esbEnvironmentManager) { }
+       : this(useMammothDb, null, iconDbService, mammothDbService, esbEnvironmentManager) { }
 
-        public RemoteWmiServiceWrapper(IRemoteWmiAccessService dataService = null,
+        public RemoteWmiServiceWrapper(
+            bool useMammothDb = false,
+            IRemoteWmiAccessService dataService = null,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
             IEsbEnvironmentManager esbEnvironmentManager = null)
         {
+            this.MammothDbEnabled = useMammothDb;
             this.WmiService = dataService ?? new RemoteWmiAccessService();
             this.IconDbService = iconDbService ?? new IconDatabaseServiceWrapper();
-            this.MammothDbService = mammothDbService ?? new MammothDatabaseServiceWrapper();
+            this.MammothDbService = this.MammothDbEnabled ? mammothDbService ?? new MammothDatabaseServiceWrapper() : null;
             this.EsbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
         }
 
@@ -50,7 +56,7 @@ namespace Icon.Dashboard.Mvc.Services
            bool commandsEnabled)
         {
             var iconApps = IconDbService.GetApps();
-            var mammothApps = MammothDbService.GetApps();
+            var mammothApps = this.MammothDbEnabled ? MammothDbService.GetApps() : new List<IconLoggedAppViewModel>();
             var esbEnvironments = EsbEnvironmentManager.GetEsbEnvironmentDefinitions();
 
             var appViewModel = new IconApplicationViewModel()
@@ -118,10 +124,6 @@ namespace Icon.Dashboard.Mvc.Services
                         if (appViewModel.LoggingID.GetValueOrDefault(0) > 0)
                         {
                             appViewModel.LoggingName = GetLoggingNameFromId(mammothApps, appViewModel.LoggingID.Value);
-                            if (string.IsNullOrWhiteSpace(appViewModel.LoggingName))
-                            {
-                                string x = "whu happa?";
-                            }
                         }
                     }
                     else

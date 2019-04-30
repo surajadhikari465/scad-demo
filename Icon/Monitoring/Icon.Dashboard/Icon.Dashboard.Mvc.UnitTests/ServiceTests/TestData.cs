@@ -222,5 +222,21 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             StartMode = "Auto",
             RunningAs = @"wfm\IconTestUserDev"
         };
+
+        public RemoteServiceModel SampleMammothItemLocaleControllerMAService = new RemoteServiceModel
+        {
+            SystemName = "CEWD6592",
+            DisplayName = "Mammoth ItemLocale Controller (Instance: MA)",
+            FullName = "Mammoth.ItemLocale.Controller$MA",
+            Description = "Processes events off the Mammoth.ItemLocaleChangeQueue and sends them to the WebApi.",
+            ConfigFilePath = @"E:\SampleAppConfig_A.exe.config",
+            LoggingID = 0,
+            LoggingName = "",
+            Environment = "TEST",
+            State = "Running",
+            ProcessId = 61684,
+            StartMode = "Auto",
+            RunningAs = @"wfm\MammothTest"
+        };
     }
 }

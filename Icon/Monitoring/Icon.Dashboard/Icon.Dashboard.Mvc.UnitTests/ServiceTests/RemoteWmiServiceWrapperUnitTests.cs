@@ -35,7 +35,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             mockEsbEnvironmentManager.Setup(s => s.GetEsbEnvironmentDefinitions()).Returns(testData.EsbEnvironments);
             mockWMiSvc.Setup(s => s.LoadRemoteService(server, application)) .Returns(testData.SampleGloconService);
 
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object,
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
                 mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
 
             // Act
@@ -61,6 +61,29 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             Assert.AreEqual("Global Controller", actualViewModel.LoggingName);
         }
 
+        [TestMethod]
+        public void CreateViewModel_WhenMammothDatabaseDisabled_ReturnsBlankLoggingName()
+        {
+            // Arrange
+            string server = "vm-test1";
+            string application = "Mammoth.ItemLocale.Controller$MA";
+            bool commandsEnabled = true;
+
+            mockIconDbService.Setup(s => s.GetApps()).Returns(testData.IconApps);
+            mockEsbEnvironmentManager.Setup(s => s.GetEsbEnvironmentDefinitions())
+                .Returns(testData.EsbEnvironments);
+            mockWMiSvc.Setup(s => s.LoadRemoteService(server, application))
+                .Returns(testData.SampleMammothItemLocaleControllerMAService);
+
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(false, mockWMiSvc.Object,
+                mockIconDbService.Object, null, mockEsbEnvironmentManager.Object);
+
+            // Act
+            var actualViewModel = wmiServiceWrapper.CreateViewModel(server, testData.SampleMammothItemLocaleControllerMAService, commandsEnabled);
+
+            // Assert
+            Assert.AreEqual("", actualViewModel.LoggingName);
+        }
 
         [TestMethod]
         public void GetConfigUncPath_WhenReturnsApiControllerRemoteServiceObject_PopulatesViewModelWithExpectedProperties()
@@ -70,7 +93,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             string pathName = @"""E:\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe""  -displayname ""Icon API Controller - Hierarchy"" -servicename ""IconAPIController-Hierarchy""";
             string expectedUncPath = @"\\vm-test1\E$\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe.config";
             
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object,
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
                 mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
 
             // Act

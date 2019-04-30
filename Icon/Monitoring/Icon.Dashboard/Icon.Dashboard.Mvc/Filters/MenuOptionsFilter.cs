@@ -3,6 +3,7 @@ using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,11 +33,14 @@ namespace Icon.Dashboard.Mvc.Helpers
                 var allApps = (iconDbService as IIconDatabaseServiceWrapper).GetApps();
                 viewBag.MenuOptionsForIconAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
             }
-            var mammothDbService = filterContext.HttpContext.Items["mammothLoggingDataService"];
-            if (null != mammothDbService && mammothDbService is IMammothDatabaseServiceWrapper)
+            if (Utils.GetMammothDbEnabledFlag())
             {
-                var allApps = (mammothDbService as IMammothDatabaseServiceWrapper).GetApps();
-                viewBag.MenuOptionsForMammothAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
+                var mammothDbService = filterContext.HttpContext.Items["mammothLoggingDataService"];
+                if (null != mammothDbService && mammothDbService is IMammothDatabaseServiceWrapper)
+                {
+                    var allApps = (mammothDbService as IMammothDatabaseServiceWrapper).GetApps();
+                    viewBag.MenuOptionsForMammothAppLogs = GetMenuOptionsForAppLogs(url, controllerName, allApps);
+                }
             }
         }
 

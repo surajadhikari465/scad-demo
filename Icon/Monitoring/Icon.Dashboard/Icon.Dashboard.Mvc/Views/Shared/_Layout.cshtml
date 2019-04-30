@@ -47,12 +47,6 @@
                 {
                     Html.RenderPartial("_SubMenuForMammothAppLogs", ViewBag.MenuOptionsForMammothAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
                 }
-                else
-                {
-                    <li>
-                        <a href="@Url.Action("Index", "MammothLogs")">Mammoth App Logs</a>
-                    </li>
-                }
 
                 @if (ViewBag.MenuOptionsForApiJobs != null && ViewBag.MenuOptionsForApiJobs is IDictionary<string, bool>)
                 {

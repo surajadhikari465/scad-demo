@@ -33,7 +33,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             this.dashboardEnvironmentManager = dashboardEnvironmentManager ?? new DashboardEnvironmentManager();
             this.esbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
-            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(iconDbService, mammothDbService, esbEnvironmentManager);
+            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(Utils.GetMammothDbEnabledFlag(), iconDbService, mammothDbService, esbEnvironmentManager);
         }
 
         #region GET
@@ -141,7 +141,7 @@ namespace Icon.Dashboard.Mvc.Controllers
 
             return View("Index", appViewModels);
         }
-      
+
         #endregion}
     }
 }

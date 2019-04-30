@@ -143,5 +143,11 @@ namespace Icon.Dashboard.Mvc.Helpers
                 return val;
             }
         }
+        
+        public static bool GetMammothDbEnabledFlag()
+        {
+            bool.TryParse(ConfigurationManager.AppSettings["mammothDatabaseEnabled"], out bool isEnabled);
+            return isEnabled;
+        }
     }
 }

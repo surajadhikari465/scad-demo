@@ -29,7 +29,7 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             this.dashboardEnvironmentManager = dashboardEnvironmentManager ?? new DashboardEnvironmentManager();
             this.esbEnvironmentManager = esbEnvironmentMgmtSvc ?? new EsbEnvironmentManager();
-            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(iconDbService, mammothDbService, esbEnvironmentManager);
+            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(Utils.GetMammothDbEnabledFlag(), iconDbService, mammothDbService, esbEnvironmentManager);
         }
 
         #region GET

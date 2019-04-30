@@ -12,7 +12,10 @@
         @Html.DisplayFor(model => model.Server) (@Html.DisplayFor(model => model.HostName))
     </td>
     <td>
-        @Html.ActionLink(Model.LoggingName + " Log", "Index", logController, new { id = Model.LoggingName })
+        @if (!string.IsNullOrWhiteSpace(Model.LoggingName))
+        {
+            @Html.ActionLink(Model.LoggingName + " Log", "Index", logController, new { id = Model.LoggingName })
+        }
     </td>
     <td>
         @Html.ActionLink(Model.DisplayName, "Edit", new { server = Model.Server, application = Model.Name }, null)
