@@ -578,19 +578,25 @@ Module EInvoicingModule
             Dim invFile As FileInfo = New FileInfo(filePath)
             ' Load/import.
             logger.InfoFormat("Importing: {0}", filePath)
-            Try
-                eInv.LoadEInvoicingData(filePath)
-            Catch ex As Exception
-                logger.ErrorFormat("Error loading e-inv '{0}', error: ", invFile.FullName, ex.ToString)
-                logInnerException(ex)
-                moveInvFileToErrors(invFile.FullName)
-                Continue For
-            End Try
+            Dim retry As Integer = 3
+            While retry > 0
+                Try
+                    eInv.LoadEInvoicingData(filePath)
+                Catch ex As Exception
+                    retry = retry - 1
+                    If retry = 0 Then
+                        logger.Error("Error loading e-inv :" & invFile.FullName & "; error :" & ex.ToString, ex)
+                        logInnerException(ex)
+                        moveInvFileToErrors(invFile.FullName)
+                        Continue For
+                    End If
+                End Try
+            End While
             EInvoicing_CurrentInvoice.Filename = filePath
             Try
                 eInv.ParseInvoicesFromXML(eInv.XMLData, Nothing)
             Catch ex As Exception
-                logger.ErrorFormat("Error parsing XML in e-inv '{0}', error: ", invFile.FullName, ex.ToString)
+                logger.Error("Error parsing XML in e-inv :" & invFile.FullName & "; error :" & ex.ToString, ex)
                 logInnerException(ex)
                 moveInvFileToErrors(invFile.FullName)
                 Continue For
