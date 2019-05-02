@@ -8,6 +8,8 @@ using System;
 using System.Configuration;
 using System.IO;
 using NLog;
+using AmazonLoad.Common;
+using System.Globalization;
 
 namespace AmazonLoad.MammothItemLocale
 {
@@ -114,7 +116,9 @@ namespace AmazonLoad.MammothItemLocale
                 case "resetprocessed":
                     ResetProcessedRecords();
                     break;
-
+                case "opsgenietest":
+                    OpsGenieTest();
+                    break;
                 case "help":
                     DisplayHelp();
                     break;
@@ -130,6 +134,11 @@ namespace AmazonLoad.MammothItemLocale
             logger.Info($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
             
             
+        }
+
+        public static void OpsGenieTest()
+        {
+            MammothItemLocaleBuilder.SendOpsGenieAlert("AmazonLoad.MammothLocale Test Ops Genie Message", "this  is just a test.", new System.Collections.Generic.Dictionary<string, string> { { "Exception", "test" } });
         }
 
         private static void DisplayHelp()

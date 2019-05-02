@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
+using System.Globalization;
+using System.Configuration;
 
 namespace AmazonLoad.MammothItemLocale
 {
@@ -120,10 +122,22 @@ namespace AmazonLoad.MammothItemLocale
         }
 
 
+        public static void SendOpsGenieAlert(string message, string description, Dictionary<string, string> details = null)
+        {
+
+            var sendOpsGenie = ConfigurationManager.AppSettings["SendOpsGenieAlert"];
+
+            if (sendOpsGenie.ToLower() == "true")
+            {
+                var alert = new OpsgenieTrigger();
+                alert.TriggerAlert(message, description, details);
+            }
+        }
+
 
             public static void ProcessMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToEsb = true )
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToEsb)
         {
 
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
@@ -163,6 +177,15 @@ namespace AmazonLoad.MammothItemLocale
                         logger.Info($"group range {first}-{last} failed");
                         logger.Info(ex.Message);
                         logger.Info("");
+
+                        var details = new Dictionary<string, string>()
+                        {
+                            { "Exception", ex.Message },
+                            { "InnerException", ex.InnerException !=null ? ex.InnerException.Message : "" },
+                            { "StackTrace", ex.StackTrace }
+                        };
+
+                        SendOpsGenieAlert($"AmazonLoad.MammothLocale failed at {DateTime.Now.ToString("G", DateTimeFormatInfo.InvariantInfo) }", "", details);
                     }
                 }
             }

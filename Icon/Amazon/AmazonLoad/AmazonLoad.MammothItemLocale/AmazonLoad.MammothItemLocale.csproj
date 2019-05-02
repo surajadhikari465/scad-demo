@@ -93,6 +93,9 @@
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
     </Reference>
+    <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Opsgenie.Alert.2019.4.16.3\lib\net40\Opsgenie.Alert.dll</HintPath>
+    </Reference>
     <Reference Include="OutputColorizer, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OutputColorizer.1.1.0\lib\net45\OutputColorizer.dll</HintPath>
     </Reference>
