@@ -1,0 +1,143 @@
+﻿@using WebSupport.Helpers
+@using WebSupport.Models
+@using System.Data
+@using WebSupport.DataAccess;
+
+@model WebSupport.ViewModels.RequeueEventViewModel
+@{ /**/
+           ViewBag.Title = "Requeue Events"; }
+
+<h2>Requeue In Stock Events</h2>
+<br />
+
+<div class="row container-fluid">
+  @using(Html.BeginForm("Index", "RequeueEvents", null, FormMethod.Post, new { @class = "" }))
+  {
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit">
+        @Html.LabelFor(x => x.Region, new { @class = "control-label" })
+        @Html.DropDownListFor(x => x.Region, Model.Regions, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
+      </div>
+
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit">
+        @Html.LabelFor(x => x.EventType, new { @class = "control-label" })
+        @Html.DropDownListFor(x => x.EventType, Model.Events, new { @class = "form-control", id = "Event", onchange = "HideElement()" })
+      </div>
+
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray;width:inherit;">
+        @Html.LabelFor(x => x.DateFrom, new { @class = "control-label" })
+        <div class="input-group bootstrap-datetimepicker-widget">
+          <div class="input-group date" id="dtpDateFrom" style="width:150px">
+            @Html.TextBoxFor(model => Model.DateFrom, new { @class = "form-control" })
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-th"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit;">
+        @Html.LabelFor(x => x.DateTo, new { @class = "control-label" })
+        <div class="input-group bootstrap-datetimepicker-widget">
+          <div class="input-group date" id="dtpDateTo" style="width:150px">
+            @Html.TextBoxFor(model => Model.DateTo, new { @class = "form-control" })
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-th"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-offset-0 col-sm-2" style="height:57px; padding-top:22px;">
+        <input type="submit" value="Search" class="btn btn-primary form-submit col-md-offset-3" name="btnRefresh" />
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <hr />
+
+    <div id="divView" class="col-sm-12" style="overflow-x:auto;">
+      @{if(!Model.IsSuccess)
+        {
+          <div style="background-color:lightyellow; border:2px solid; padding:15px">
+            <h2 style="text-align:center; color:darkred">Processing error</h2>
+            <p>@Model.Error</p>
+            <hr />
+            <p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persists.</p>
+          </div>
+        }
+        else
+        {
+          if(Model.ResultTable != null)
+          {
+            @Html.Label("Event Code:", new { @style = "font-size:small; color:gray; margin-right: 10px;" })
+            @Html.Label(Model.EventType, new { @style = "color:darkgreen;" })
+
+            if(Model.ResultTable.Rows.Count == 0)
+            {
+              <p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+            }
+            else
+            {
+              <table>
+                <tr>
+                  <th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
+
+                  @foreach(DataColumn column in Model.ResultTable.Columns)
+                  {
+                    <th style="text-align:left; height:30px; background:rgb(220, 218, 218)">&nbsp&nbsp&nbsp @column.Caption.Replace("_", " ")</th>
+                  }
+                </tr>
+
+                @foreach(DataRow row in Model.ResultTable.Rows)
+                {
+                  <tr>
+                    <td align="left" style="padding-left:5px">
+                      @*<input type="checkbox" name="cbIsSelected" value="@row["ArchiveID"]" onclick="" />*@
+                      <input type="checkbox" name="cbIsSelected" value="@row[0]" onclick="" />
+                    </td>
+
+                    @foreach(var val in row.ItemArray)
+                    {
+                      if(val.GetType() != typeof(String))
+                      {
+                        <td align="right" style="padding-right:5px; padding-right:5px;">@val</td> }
+                      else
+                      {
+                        <td align="left" style="padding-left:15px; padding-right:15px">@val</td>}
+                    }
+                  </tr>
+                }
+              </table>
+
+              <br />
+              <div class="form-group col-sm-offset-2">
+                <input type="submit" value="Queue Message(s)" class="btn btn-primary form-submit col-md-offset-3" id="cmdSend" name="btnSend" style="background-color:#4CAF50" />
+              </div>
+            }
+          }
+        }
+      }
+    </div>
+  }
+</div>
+
+<script type="text/javascript">
+  $(function () {
+    var i;
+    var names = ["#dtpDateFrom", "#dtpDateTo"];
+    for (i = 0; i < names.length; i++)
+      $(names[i]).datetimepicker({ format: 'MM/DD/YYYY' });
+  });
+
+  $(document).on('change', '#Region, #Event', function () {
+    var e = document.getElementById("divView");
+    if (e != null) e.style.display = "none";
+  });
+</script>
+
+

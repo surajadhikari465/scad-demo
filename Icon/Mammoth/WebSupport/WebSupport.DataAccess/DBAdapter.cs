@@ -60,7 +60,7 @@ namespace WebSupport.DataAccess
     {
       try
       {
-        using(var cmd = new SqlCommand(spName, connection) { CommandType = cmdType })
+        using(var cmd = new SqlCommand(spName, connection) { CommandType = cmdType, CommandTimeout = 300 })
         {
           if(parameters != null && parameters.Where(x => x != null).Any())
             cmd.Parameters.AddRange(parameters.Where(x => x != null).ToArray());

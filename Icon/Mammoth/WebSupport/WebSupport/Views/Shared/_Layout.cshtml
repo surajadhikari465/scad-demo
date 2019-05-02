@@ -35,7 +35,13 @@
                     <li>@Html.ActionLink("Manage Jobs", "Index", "ManageJobs")</li>
                     <li>@Html.ActionLink("EPlum / ESL Load", "Index", "EPlumESLLoad")</li>
                     <li>@Html.ActionLink("Refresh Prime PSG", "Index", "RefreshPsg")</li>
-                    <li>@Html.ActionLink("Honeycrisp Messages", "Index", "MessageExport")</li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">In Stock<b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Honeycrisp Messages", "Index", "MessageExport")</li>
+                        <li>@Html.ActionLink("Requeue In Stock Events", "Index", "RequeueEvents")</li>
+                      </ul>
+                    </li>
                   </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>Hello, @User.Identity.Name!</a></li>
