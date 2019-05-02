@@ -32,15 +32,20 @@ GO
 DECLARE @InventoryAdjustmentCode_ID int
 SELECT @InventoryAdjustmentCode_ID = InventoryAdjustmentCode_ID FROM dbo.InventoryAdjustmentCode WHERE Abbreviation= 'IL'
 
+SET IDENTITY_INSERT dbo.ShrinkSubType ON; 
 IF NOT EXISTS(SELECT 1 FROM dbo.ShrinkSubType WHERE ReasonCodeDescription = 'Needs Approval-Inventory Loss')
 INSERT INTO [dbo].[ShrinkSubType]
-           ([InventoryAdjustmentCode_ID]
+           ([ShrinkSubType_ID]
+		   ,[InventoryAdjustmentCode_ID]
            ,[ReasonCodeDescription]
            ,[LastUpdateUser_Id]
            ,[LastUpdateDateTime])
      VALUES
-           (@InventoryAdjustmentCode_ID,
+           (15,
+		   @InventoryAdjustmentCode_ID,
            'Needs Approval-Inventory Loss',
            0,
            CURRENT_TIMESTAMP)
+		   
+SET IDENTITY_INSERT dbo.ShrinkSubType OFF;
 GO
