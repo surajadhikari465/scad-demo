@@ -1,0 +1,44 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Application/InstanceId=207
+Application/IrmaTransferOrderQueue=WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SW.Queue.V1
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
+
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-sw\swp;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/Username=TibcoDataWriter
+Connections/JDBC/IRMA/Password=#!a/vDoaIuo4oKcB64GmLZ4A+ILdTEwFgTWPT5MUpMCEIeH3F6g8kzsg==
+
+Connections/JMS/ESB/JndiContextUrl=ssl://cerp1617.wfm.pvt:37293,ssl://cerp1616.wfm.pvt:37293,ssl://odrp1609.wfm.pvt:37293,ssl://odrp1610.wfm.pvt:37293
+Connections/JMS/ESB/JndiUsername=jndiIconUser
+Connections/JMS/ESB/JndiPassword=#!ye6tH0jZLjYg7GpYoZu8kxszO7fG0PfaGqQcI9id/oA=
+Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
+Connections/JMS/ESB/Username=iconUser
+Connections/JMS/ESB/Password=#!evC18AnhZ6pJxwXD1h/zDqlNi8ultwuqu+VpCf1dToU=
+
+Connections/JMS/SB1/Url=ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233
+Connections/JMS/SB1/Username=sb1_HCTransferOrderUser
+Connections/JMS/SB1/Password=#!bdlIboUkq2/ffOAL4PsW80WHqkNVumOLfa6F/+Ulu2rnItoJrVB04w==
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- Publish Transfer Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Publish Transfer Order Service Process Archive,Publish Transfer Order Service Process Archive-1,machine=cerp1643
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- Publish Transfer Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Publish Transfer Order Service Process Archive,Publish Transfer Order Service Process Archive-2,machine=cerp1644
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- Publish Transfer Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Publish Transfer Order Service Process Archive,Publish Transfer Order Service Process Archive-3,machine=odrp1634
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- Publish Transfer Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Publish Transfer Order Service Process Archive,Publish Transfer Order Service Process Archive-4,machine=odrp1635

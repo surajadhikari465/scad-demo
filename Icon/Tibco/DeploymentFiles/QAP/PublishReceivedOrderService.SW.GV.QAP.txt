@@ -1,0 +1,44 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Application/InstanceId=307
+Application/ReceiptEventQueueName=WFMSB1.Irma.SupplyChain.InventoryMgmt.ReceiptOrder.SW.Queue.V1
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
+
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-sw\swq;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/Username=TibcoDataWriter
+Connections/JDBC/IRMA/Password=#!Au7uqiI62/LDe3aF8jfOwK1jWdfv0lEPxbQmJOt40JKRW8YO2Br0OA==
+
+Connections/JMS/ESB/JndiContextUrl=ssl://cerd1630.wfm.pvt:27293,ssl://cerd1631.wfm.pvt:27293
+Connections/JMS/ESB/JndiUsername=jndiIconUser
+Connections/JMS/ESB/JndiPassword=#!CZL/0Wp3bdr3BfJGoAtgQclqkr1NAnZ8YGZF9ghcImlfv+u6DrKEKr0PTmychcaA
+Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
+Connections/JMS/ESB/Username=iconUser
+Connections/JMS/ESB/Password=#!8BLt/quuggtGbFmSF6Qn38rCK4GCSGHv8rcsTXy4yqU=
+
+Connections/JMS/SB1/Url=ssl://cerd1660.wfm.pvt:27233,ssl://cerd1661.wfm.pvt:27233
+Connections/JMS/SB1/Username=sb1_HCReceiptOrderUser
+Connections/JMS/SB1/Password=#!ZaTRQVw53vuXUCNmmfmlRGvZqT9DBst/mdUmcJNW8sCRzEpydhT+dA==
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- Published Receive Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Receive Order Service Process Archive,Published Receive Order Service Process Archive-1,machine=cerd1662
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- Published Receive Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Receive Order Service Process Archive,Published Receive Order Service Process Archive-2,machine=cerd1663
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- Published Receive Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Receive Order Service Process Archive,Published Receive Order Service Process Archive-3,machine=cerd1664
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- Published Receive Order Service Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Published Receive Order Service Process Archive,Published Receive Order Service Process Archive-4,machine=cerd1665
