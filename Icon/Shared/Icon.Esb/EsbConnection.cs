@@ -15,7 +15,6 @@ namespace Icon.Esb
         public EsbConnectionSettings Settings { get; set; }
 
         public event EventHandler<EMSException> ExceptionHandlers;
-
         public bool IsConnected
         {
             get
@@ -78,11 +77,19 @@ namespace Icon.Esb
 
         private X509Certificate GetEsbCert()
         {
-            var store = new X509Store(Settings.CertificateStoreName, Settings.CertificateStoreLocation);
-            store.Open(OpenFlags.ReadOnly);
-            var cert = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Settings.CertificateName, true)[0];
-            store.Close();
-            return cert;
+            try
+            {
+                var store = new X509Store(Settings.CertificateStoreName, Settings.CertificateStoreLocation);
+                store.Open(OpenFlags.ReadOnly);
+                var cert = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Settings.CertificateName, true)[0];
+                store.Close();
+                return cert;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Unable to find certificate: {Settings.CertificateName}, ESB certificate is missing or invalid", ex);
+            }
+
         }
 
         private void ConnectionExceptionHandler(object sender, EMSExceptionEventArgs args)
