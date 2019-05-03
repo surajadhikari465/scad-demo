@@ -47,6 +47,15 @@ namespace KitBuilderWebApi.Controllers
                     return 0;
             }
         }
+        private int getLocalAssignedParent(List<int> ids, Locale locale)
+        {
+            if (ids.Contains(locale.LocaleId)) return locale.LocaleId;
+            else if (ids.Contains(locale.StoreId ?? 0)) return (int)locale.StoreId;
+            else if (ids.Contains(locale.MetroId ?? 0)) return (int)locale.MetroId;
+            else if (ids.Contains(locale.RegionId ?? 0)) return (int)locale.MetroId;
+            else if (ids.Contains(locale.ChainId ?? 0)) return (int)locale.MetroId;
+            else return 0;
+        } 
         [HttpGet("Locale/{kitId}/{localeId}", Name = "GetLocaleChildren")]
         public IActionResult GetLocalesBySubLocale(int kitId, int localeId)
         {
@@ -54,6 +63,7 @@ namespace KitBuilderWebApi.Controllers
             var searchLocale = db.Locale.Where(l => l.LocaleId == localeId).FirstOrDefault();
 
             var locales = db.KitLocale.Where(kl => kl.KitId == kitId);
+            var assignedLocaleIds = locales.Select(l => l.LocaleId).ToList();
             var loc = locales.Where(kl => kl.LocaleId == localeId).FirstOrDefault();
             var excludedLocales = locales.Where(kl => kl.Exclude == true).Select(kl => new KitLocale() { LocaleId = kl.LocaleId, Locale = kl.Locale }).ToList();
             var assigned = loc != null;
@@ -105,6 +115,24 @@ namespace KitBuilderWebApi.Controllers
                 .Where(local => !excludedRegionIds.Contains(local.RegionId ?? 0))
                 .Where(local => !excludedMetroIds.Contains(local.MetroId ?? 0))
                 .Where(local => !excludedStoreIds.Contains(local.StoreId ?? 0))
+                .Select(local => new
+                {
+                    local.LocaleId,
+                    local.LocaleName,
+                    local.LocaleTypeId,
+                    local.StoreId,
+                    local.MetroId,
+                    local.RegionId,
+                    local.ChainId,
+                    local.LocaleOpenDate,
+                    local.LocaleCloseDate,
+                    local.RegionCode,
+                    local.BusinessUnitId,
+                    local.StoreAbbreviation,
+                    local.CurrencyCode,
+                    local.Hospitality,
+                    inheritsPropertiesFrom = getLocalAssignedParent(assignedLocaleIds, local),
+                })
                 .ToList();
             return Ok(regionsNotAlreadyInList);
         }
