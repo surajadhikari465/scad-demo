@@ -221,6 +221,7 @@ namespace Icon.Framework
         public const int LineExtension = 212;
         public const int ZipCode = 213;
         public const int Locality = 214;
+        public const int TouchPointGroupId = 215;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -432,7 +433,8 @@ namespace Icon.Framework
 				{ "BES", 211 },
 				{ "LEX", 212 },
 				{ "ZIP", 213 },
-				{ "LCL", 214 }
+				{ "LCL", 214 },
+                { "TPG", 215 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -647,8 +649,10 @@ namespace Icon.Framework
 			public const string LineExtension = "Line Extension";
 			public const string ZipCode = "Zip Code";
 			public const string Locality = "Locality";
-			
-			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
+            public const string TouchPointGroupId = "TouchPoint Group Id";
+
+
+            private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
 				{ 0, "Product Description" },
 				{ 1, "POS Description" },
@@ -858,7 +862,8 @@ namespace Icon.Framework
 				{ 211, "Beer Style" },
 				{ 212, "Line Extension" },
 				{ 213, "Zip Code" },
-				{ 214, "Locality" }
+				{ 214, "Locality" },
+                { 215, "TouchPoint Group Id" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1074,6 +1079,7 @@ namespace Icon.Framework
 			public const string LineExtension = "LEX";
 			public const string ZipCode = "ZIP";
 			public const string Locality = "LCL";
+            public const string TouchPointGroupId = "TPG";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1285,7 +1291,8 @@ namespace Icon.Framework
 				{ 211, "BES" },
 				{ 212, "LEX" },
 				{ 213, "ZIP" },
-				{ 214, "LCL" }
+				{ 214, "LCL" },
+                { 215, "TPG" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}
