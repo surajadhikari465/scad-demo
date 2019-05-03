@@ -4,8 +4,7 @@
 @using WebSupport.DataAccess;
 
 @model WebSupport.ViewModels.RequeueEventViewModel
-@{ /**/
-           ViewBag.Title = "Requeue Events"; }
+@{ ViewBag.Title = "Requeue Events"; }
 
 <h2>Requeue In Stock Events</h2>
 <br />
@@ -51,7 +50,7 @@
       </div>
 
       <div class=" col-sm-offset-0 col-sm-2" style="height:57px; padding-top:22px;">
-        <input type="submit" value="Search" class="btn btn-primary form-submit col-md-offset-3" name="btnRefresh" />
+        <input type="submit" name="ActionGet" value="Search" class="btn btn-primary form-submit col-md-offset-3" />
       </div>
     </div>
 
@@ -70,55 +69,62 @@
             <p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persists.</p>
           </div>
         }
+        else if(ViewData["FYI"] != null)
+        {
+          <div class="alert alert-success alert-dismissable" style="background-color:lightyellow; padding:5px">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>@ViewData["FYI"].ToString()</strong>
+          </div>
+        }
         else
         {
-          if(Model.ResultTable != null)
+          if(!String.IsNullOrWhiteSpace(Model.EventType))
           {
             @Html.Label("Event Code:", new { @style = "font-size:small; color:gray; margin-right: 10px;" })
             @Html.Label(Model.EventType, new { @style = "color:darkgreen;" })
+          }
 
-            if(Model.ResultTable.Rows.Count == 0)
-            {
-              <p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
-            }
-            else
-            {
-              <table>
+          if(Model.ResultTable == null || Model.ResultTable.Rows.Count == 0)
+          {
+            <p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+          }
+          else
+          {
+            <table>
+              <tr>
+                <th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
+
+                @foreach(DataColumn column in Model.ResultTable.Columns)
+                {
+                  <th style="text-align:left; height:30px; background:rgb(220, 218, 218)">&nbsp&nbsp&nbsp @column.Caption.Replace("_", " ")</th>
+                }
+              </tr>
+
+              @foreach(DataRow row in Model.ResultTable.Rows)
+              {
                 <tr>
-                  <th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
+                  <td align="left" style="padding-left:5px">
+                    @*<input type="checkbox" name="cbIsSelected" value="@row["ArchiveID"]" onclick="" />*@
+                    <input type="checkbox" name="cbIsSelected" value="@row[0]" onclick="" />
+                  </td>
 
-                  @foreach(DataColumn column in Model.ResultTable.Columns)
+                  @foreach(var val in row.ItemArray)
                   {
-                    <th style="text-align:left; height:30px; background:rgb(220, 218, 218)">&nbsp&nbsp&nbsp @column.Caption.Replace("_", " ")</th>
+                    if(val.GetType() != typeof(String))
+                    {
+                      <td align="right" style="padding-right:5px; padding-right:5px;">@val</td> }
+                    else
+                    {
+                      <td align="left" style="padding-left:15px; padding-right:15px">@val</td>}
                   }
                 </tr>
+              }
+            </table>
 
-                @foreach(DataRow row in Model.ResultTable.Rows)
-                {
-                  <tr>
-                    <td align="left" style="padding-left:5px">
-                      @*<input type="checkbox" name="cbIsSelected" value="@row["ArchiveID"]" onclick="" />*@
-                      <input type="checkbox" name="cbIsSelected" value="@row[0]" onclick="" />
-                    </td>
-
-                    @foreach(var val in row.ItemArray)
-                    {
-                      if(val.GetType() != typeof(String))
-                      {
-                        <td align="right" style="padding-right:5px; padding-right:5px;">@val</td> }
-                      else
-                      {
-                        <td align="left" style="padding-left:15px; padding-right:15px">@val</td>}
-                    }
-                  </tr>
-                }
-              </table>
-
-              <br />
-              <div class="form-group col-sm-offset-2">
-                <input type="submit" value="Queue Message(s)" class="btn btn-primary form-submit col-md-offset-3" id="cmdSend" name="btnSend" style="background-color:#4CAF50" />
-              </div>
-            }
+            <br />
+            <div class="form-group col-sm-offset-2">
+              <input type="submit" name="ActionSubmit" value="Queue Message(s)" class="btn btn-primary form-submit col-md-offset-3" style="background-color:#4CAF50" />
+            </div>
           }
         }
       }
@@ -139,5 +145,3 @@
     if (e != null) e.style.display = "none";
   });
 </script>
-
-

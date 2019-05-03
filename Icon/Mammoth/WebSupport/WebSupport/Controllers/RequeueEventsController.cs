@@ -16,9 +16,9 @@ namespace WebSupport.Controllers
         const string UNEXPECTED_ERROR = "Unexpected error occurred";
 
         public RequeueEventsController(ILogger argLogger)
-		{
-			logger = argLogger;
-		}
+        {
+            logger = argLogger;
+        }
 
         [HttpGet]
         public ActionResult Index()
@@ -32,21 +32,14 @@ namespace WebSupport.Controllers
             try
             {
                 ViewModel.Error = null;
-                var region = ViewModel.Region; //ViewModel.Regions[ViewModel.RegionID].Text;
 
-                if(Request.Form["btnSend"] != null) RequeueMessages(ViewModel);
-
-                using(var db = new DBAdapter(region))
+                if(Request.Form["ActionGet"] != null)
                 {
-                    var dataSet = db.ExecuteDataSet("amz.RequeueMessages",
-                                                    CommandType.StoredProcedure,
-                                                    new SqlParameter[]{ new SqlParameter("@action", "Get"),
-                                                                        new SqlParameter("@eventCode", ViewModel.EventType),
-                                                                        new SqlParameter("@dateFrom", SqlDbType.Date) { Value = ViewModel.DateFrom },
-                                                                        new SqlParameter("@dateTo", SqlDbType.Date) { Value = ViewModel.DateTo }}
-                                                   );
-
-                    ViewModel.ResultTable = dataSet.Tables.Count == 0 ? new DataTable() : dataSet.Tables[0];
+                   Get(ViewModel);
+                }
+                else if(Request.Form["ActionSubmit"] != null)
+                {
+                   Submit(ViewModel);
                 }
             }
             catch(Exception ex)
@@ -64,28 +57,45 @@ namespace WebSupport.Controllers
             return View(ViewModel);
         }
 
-        void RequeueMessages(RequeueEventViewModel view)
-		{
+        void Get(RequeueEventViewModel view)
+        {
+            using(var db = new DBAdapter(view.Region))
+            {
+                var dataSet = db.ExecuteDataSet("amz.GetInStockEventsByType",
+                                                CommandType.StoredProcedure,
+                                                new SqlParameter[]{ new SqlParameter("@eventCode", view.EventType),
+                                                                    new SqlParameter("@dateFrom", SqlDbType.Date) { Value = view.DateFrom },
+                                                                    new SqlParameter("@dateTo", SqlDbType.Date) { Value = view.DateTo }});
+
+                view.ResultTable = dataSet.Tables.Count == 0 ? null : dataSet.Tables[0];
+            }
+        }
+
+        void Submit(RequeueEventViewModel view)
+        {
             int id = 0;
-			var arrayIDs = (Request.Form["cbIsSelected"] ?? String.Empty).Split(',')
-								.Where(x => int.TryParse(x, out id))
-								.Select(x => id).Distinct().ToArray();
+            var tvp = Icon.Common.Extensions.ToTvp((Request.Form["cbIsSelected"] ?? String.Empty).Split(',')
+                                .Where(x => int.TryParse(x, out id))
+                                .Distinct()
+                                .Select(x => new{ Key = x }),
+                                "@IDs", "dbo.IntType");
 
-            if(!arrayIDs.Any()) return;
+            if(tvp == null || (tvp.Value as DataTable).Rows.Count == 0)
+            {
+                ViewData["FYI"] = "No events has been selected to re-queue. Please select one or more events and try again.";
+            }
+            else
+            {
+                using(var db = new DBAdapter(view.Region))
+                {
+                    int.TryParse(db.ExecuteScalar("amz.RequeueMessages",
+                                                  CommandType.StoredProcedure,
+                                                  new SqlParameter("@eventCode", view.EventType),
+                                                  tvp).ToString(), out id);
 
-            var table = new DataTable("IntType");
-			table.Columns.Add(new DataColumn("Key", typeof(int)));
-
-            foreach(var val in arrayIDs)
-				table.Rows.Add(val);
-
-
-			using (var db = new DBAdapter(view.Region))
-		        db.ExecuteNonQuery("amz.RequeueMessages",
-                                   CommandType.StoredProcedure,
-				                   new SqlParameter[]{ new SqlParameter("@action", "Requeue"),
-                                                       new SqlParameter("@eventCode", view.EventType),
-				                                       new SqlParameter("@IDs", SqlDbType.Structured){ TypeName = "dbo.IntType", Value = table }});
+                    ViewData["FYI"] = $"Event code {view.EventType}: {id.ToString()} events have been submitted.";
+               }
+            }
         }
     }
 }

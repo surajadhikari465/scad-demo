@@ -10,8 +10,6 @@ namespace WebSupport.ViewModels
 {
     public class RequeueEventViewModel
     {
-        public const int MaxNumberOfItems = 1000;
-
         public string Error { get; set; }
         public bool IsSuccess { get { return String.IsNullOrEmpty(Error); } }
         public DataTable ResultTable { get; set; }

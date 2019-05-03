@@ -72,5 +72,22 @@ namespace WebSupport.DataAccess
       catch { throw; }
       finally { Close(); }
     }
+
+     public object ExecuteScalar(string sql, CommandType cmdType, params SqlParameter[] parameters)
+    {
+      try
+      {
+        using(var cmd = new SqlCommand(sql, connection) { CommandType = cmdType, CommandTimeout = 300 })
+        {
+          if(parameters != null && parameters.Where(x => x != null).Any())
+            cmd.Parameters.AddRange(parameters.Where(x => x != null).ToArray());
+
+          Open();
+          return cmd.ExecuteScalar();
+        }
+      }
+      catch { throw; }
+      finally { Close(); }
+    }
   }
 }
