@@ -131,8 +131,6 @@ namespace Icon.Dashboard.Mvc.Controllers
             var commandsEnabled = !chosenCustomEnvironment.Name.Equals(EnvironmentEnum.Prd.ToString(), Utils.StrcmpOption) &&
                 DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             
-            var iconAppsWithLogging = IconDatabaseService.GetApps();
-            var mammothAppsWithLogging = MammothDatabaseService.GetApps();
             var allEsbEnvironments = esbEnvironmentManager.GetEsbEnvironmentDefinitions();
 
             var appViewModels = remoteServicesService.LoadRemoteServices(chosenCustomEnvironment, commandsEnabled);

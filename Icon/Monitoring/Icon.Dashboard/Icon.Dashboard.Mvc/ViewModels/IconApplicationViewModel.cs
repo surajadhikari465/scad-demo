@@ -33,7 +33,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("Server")]
         public string Server { get; set; }
 
-        [DisplayName("App Family")]
+        [DisplayName("Family")]
         public string Family { get; set; }
         
         public string Status { get; set; }
@@ -43,7 +43,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         public virtual bool StatusIsGreen { get; set; }
 
-        [DisplayName("Log Name")]
+        [DisplayName("LogName")]
         public string LoggingName { get; set; }
 
         [DisplayName("Log ID")]
@@ -57,7 +57,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         public bool CommandsEnabled { get; set; }
 
-        [DisplayName("Running As")]
+        [DisplayName("Account")]
         public string AccountName { get; set; }
 
         public string HostName { get; set; }

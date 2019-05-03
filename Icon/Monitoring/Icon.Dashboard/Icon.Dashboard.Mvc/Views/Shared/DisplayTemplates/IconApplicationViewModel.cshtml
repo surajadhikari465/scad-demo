@@ -14,7 +14,7 @@
     <td>
         @if (!string.IsNullOrWhiteSpace(Model.LoggingName))
         {
-            @Html.ActionLink(Model.LoggingName + " Log", "Index", logController, new { id = Model.LoggingName })
+            @Html.ActionLink(Model.LoggingName + " Log Viewer", "Index", logController, new { appName = Model.LoggingName }, null)
         }
     </td>
     <td>

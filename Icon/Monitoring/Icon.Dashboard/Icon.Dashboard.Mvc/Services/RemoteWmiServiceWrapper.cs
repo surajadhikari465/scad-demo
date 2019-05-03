@@ -64,6 +64,7 @@ namespace Icon.Dashboard.Mvc.Services
                 Name = remoteService.FullName,
                 DisplayName = remoteService.DisplayName,
                 Server = serverName,
+                Description = remoteService.Description,
                 Family = remoteService.FullName.Contains("Mammoth") ? "Mammoth" : "Icon",
                 ConfigFilePath = remoteService.ConfigFilePath,
                 CommandsEnabled = commandsEnabled,
