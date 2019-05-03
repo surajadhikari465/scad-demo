@@ -10,6 +10,7 @@ insert into @IncludedStores
 select store_no
 from   Store
 where  mega_store = 1
+and    ISNULL([dbo].[fn_InstanceDataValue] ('Include365StoresForInforOrdering', NULL), 0) = 1
 union
 select s.store_no
 from   Store s
