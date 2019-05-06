@@ -4,6 +4,7 @@ using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
 using KitBuilderWebApi.Controllers;
 using KitBuilderWebApi.Helper;
+using KitBuilderWebApi.Models;
 using KitBuilderWebApi.QueryParameters;
 using KitBuilderWebApi.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<KitInstructionList>> mockKitInstructionListRepository;
         private Mock<IRepository<InstructionList>> mockInstrunctionListRepository;
 
-        private Mock<IHelper<KitDto, KitSearchParameters>> mockKitHelper;
+        private Mock<IHelper<KitDtoWithStatus, KitSearchParameters>> mockKitHelper;
 
         private KitController kitController;
         private Mock<ILogger<KitController>> mockLogger;
@@ -49,7 +50,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private List<Items> items;
         private List<LinkGroup> linkGroups;
         private List<KitLinkGroup> kitLinkGroups;
-        private List<KitDto> kitsDto;
+        private List<KitDtoWithStatus> kitsDto;
         IList<KitLinkGroupItem> KitLinkGroupItems;
         private List<KitLocale> kitLocaleList;
         private List<KitLinkGroupLocale> kitLinkGroupLocaleList;
@@ -86,7 +87,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(locationUrl);
 
-            mockKitHelper = new Mock<IHelper<KitDto, KitSearchParameters>>();
+            mockKitHelper = new Mock<IHelper<KitDtoWithStatus, KitSearchParameters>>();
 
             kitController = new KitController(mockLinkGroupRepository.Object,
                 mockInstrunctionListRepository.Object,
@@ -214,7 +215,7 @@ namespace KitBuilderWebApi.Tests.Controllers
              };
 
             kitsDto = (from k in kits
-                       select new KitDto()
+                       select new KitDtoWithStatus()
                        {
                            Description = k.Description,
                            InsertDateUtc = k.InsertDateUtc,
@@ -252,7 +253,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             kitController.ControllerContext = new ControllerContext();
             kitController.ControllerContext.HttpContext = httpContext.Object;
 
-            mockKitHelper.Setup(s => s.SetOrderBy(It.IsAny<IQueryable<KitDto>>(), kitSearchParameters)).Returns(kitsBeforePaging.OrderBy(orderBy));
+            mockKitHelper.Setup(s => s.SetOrderBy(It.IsAny<IQueryable<KitDtoWithStatus>>(), kitSearchParameters)).Returns(kitsBeforePaging.OrderBy(orderBy));
 
             //When
             var response = kitController.GetKits(kitSearchParameters);

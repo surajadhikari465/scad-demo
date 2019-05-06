@@ -173,9 +173,6 @@ namespace KitBuilderWebApi.Services
 					kitLinkGroupItemLocaleDto.AuthorizedByStore = false;
 				}
 			}
-
-			//kitLocaleDto.AuthorizedByStore = itemStorePriceModelList.Where(i => i.ItemId == kitLocaleDto.Kit.ItemId).Select(a => a.Authorized).FirstOrDefault();
-			//kitLocaleDto.AuthorizedByStore = kitLocaleDto.AuthorizedByStore == null ? false : kitLocaleDto.AuthorizedByStore;
 		}
 
 		internal void UpdateKitLocaleForNutrition(KitLocaleDto kitLocaleDto, IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList)
@@ -205,8 +202,9 @@ namespace KitBuilderWebApi.Services
 		{
 			try
 			{
-
-				foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale.Where(i => i.Exclude == false))
+				int kitDefaultCalories = 0;
+				//foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale.Where(i => i.Exclude == false))
+				foreach (KitLinkGroupLocaleDto kitLinkGroupDto in kitLocaleDto.KitLinkGroupLocale)
 				{
 					dynamic kitLinkGroupProperties = JsonConvert.DeserializeObject(kitLinkGroupDto.Properties);
 					int kitLinkGroupMaxCalories = 0;
@@ -215,36 +213,50 @@ namespace KitBuilderWebApi.Services
 					int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true).Count();
 					int[,] modifierMax = new int[modifierCounter, 2];
 
-					foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true))
+					foreach (KitLinkGroupItemLocaleDto kitLinkGroupItemLocaleDto in kitLinkGroupDto.KitLinkGroupItemLocales)
 					{
 						dynamic kitLinkGroupItemProperties = JsonConvert.DeserializeObject(kitLinkGroupItemLocaleDto.Properties);
 						int kitLinkGroupItemMax = kitLinkGroupItemProperties.Maximum;
 						int kitLinkGroupItemMin = kitLinkGroupItemProperties.Minimum;
+						int kitLinkGroupItemDefault = kitLinkGroupItemProperties.DefaultPortions;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
-						//If a modifier is mandatory, then the minimum portion of the modifier will be included in the caloric calculation
-						if (Convert.ToBoolean(kitLinkGroupItemProperties.MandatoryItem))
+						//Calculate the total calories of all default modifiers in all the link groups, including excluded link groups,
+						//so that the total calories of all default modifiers can be deducted from the calculated kit maximum calories.
+						if (kitLinkGroupItemDefault > 0)
 						{
-							kitLinkGroupMaxCalories += (kitLinkGroupItemCalories * kitLinkGroupItemMin);
-							//Get the maximum number of portions are allowed after the minimum number of portions of a mandatory modifier is considered.
-							kitLinkGroupMaxPortion -= kitLinkGroupItemMin;
-
-							if (kitLinkGroupMaxPortion > 0)
-							{
-								modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
-								//In case the mandatory modifier has the highest calories, get the remaining of the number of portions left that can be used in the max calories calculation
-								//after the minimum number of portion is used in the calculation.
-								modifierMax[arrayIndex, 1] = kitLinkGroupItemMax - kitLinkGroupItemMin;
-
-								arrayIndex++;
-							}
+							kitDefaultCalories = kitDefaultCalories + kitLinkGroupItemCalories * kitLinkGroupItemDefault;
 						}
-						else if (kitLinkGroupMaxPortion > 0)
-						{
-							modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
-							modifierMax[arrayIndex, 1] = kitLinkGroupItemMax;
 
-							arrayIndex++;
+						if (kitLinkGroupDto.Exclude == false)
+						{
+							if (kitLinkGroupItemLocaleDto.Exclude == false && kitLinkGroupItemLocaleDto.AuthorizedByStore == true)
+							{
+								//If a modifier is mandatory, then the minimum portion of the modifier will be included in the caloric calculation
+								if (Convert.ToBoolean(kitLinkGroupItemProperties.MandatoryItem))
+								{
+									kitLinkGroupMaxCalories += (kitLinkGroupItemCalories * kitLinkGroupItemMin);
+									//Get the maximum number of portions are allowed after the minimum number of portions of a mandatory modifier is considered.
+									kitLinkGroupMaxPortion -= kitLinkGroupItemMin;
+
+									if (kitLinkGroupMaxPortion > 0)
+									{
+										modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
+										//In case the mandatory modifier has the highest calories, get the remaining of the number of portions left that can be used in the max calories calculation
+										//after the minimum number of portion is used in the calculation.
+										modifierMax[arrayIndex, 1] = kitLinkGroupItemMax - kitLinkGroupItemMin;
+
+										arrayIndex++;
+									}
+								}
+								else if (kitLinkGroupMaxPortion > 0)
+								{
+									modifierMax[arrayIndex, 0] = kitLinkGroupItemCalories;
+									modifierMax[arrayIndex, 1] = kitLinkGroupItemMax;
+
+									arrayIndex++;
+								}
+							}
 						}
 					}
 
@@ -279,6 +291,8 @@ namespace KitBuilderWebApi.Services
 					kitLinkGroupDto.MaximumCalories = kitLinkGroupMaxCalories;
 					kitLocaleDto.MaximumCalories = (kitLocaleDto.MaximumCalories ?? 0) + kitLinkGroupMaxCalories;
 				}
+
+				kitLocaleDto.MaximumCalories = (kitLocaleDto.MaximumCalories == null) ? null : kitLocaleDto.MaximumCalories + kitLocaleDto.MinimumCalories - kitDefaultCalories;
 			}
 			catch (Exception e)
 			{

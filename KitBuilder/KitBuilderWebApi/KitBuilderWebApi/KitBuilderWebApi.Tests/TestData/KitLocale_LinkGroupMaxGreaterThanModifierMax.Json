@@ -446,7 +446,7 @@
 						"KitLinkGroupItemLocaleId": 97,
 						"KitLinkGroupItemId": 33,
 						"KitLinkGroupLocaleId": 52,
-						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"0\",\"MandatoryItem\":\"false\"}",
+						"Properties": "{\"Minimum\":\"0\",\"Maximum\":\"1\",\"NumOfFreePortions\":\"0\",\"DefaultPortions\":\"1\",\"MandatoryItem\":\"false\"}",
 						"DisplaySequence": 0,
 						"Exclude": false,
 						"InsertDateUtc": "2019-02-08T19:03:52.1423248",

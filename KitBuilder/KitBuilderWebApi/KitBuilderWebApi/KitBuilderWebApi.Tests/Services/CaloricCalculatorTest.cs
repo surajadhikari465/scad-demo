@@ -104,7 +104,7 @@ namespace KitBuilderWebApi.Tests.Services
 			Assert.AreEqual(830, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k =>  k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(330, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
 			Assert.AreEqual(400, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
-			Assert.AreEqual(1560, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
+			Assert.AreEqual(1900, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
 		}
 
 		[TestMethod]
@@ -149,10 +149,10 @@ namespace KitBuilderWebApi.Tests.Services
 			//Then
 			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
 			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
-			Assert.IsNull(kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(0, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(200, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
 			Assert.AreEqual(360, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
-			Assert.AreEqual(560, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
+			Assert.AreEqual(900, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
 		}
 
 		[TestMethod]
@@ -197,10 +197,10 @@ namespace KitBuilderWebApi.Tests.Services
 			//Then
 			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
 			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
-			Assert.IsNull(kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(0,kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(200, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
 			Assert.AreEqual(320, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
-			Assert.AreEqual(520, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
+			Assert.AreEqual(680, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
 		}
 		[TestMethod]
 		public void CaloricCalculator_KitMainItemUnauthorized_LogErrorReturnKitLocaleWithAuthStatusOnly()
