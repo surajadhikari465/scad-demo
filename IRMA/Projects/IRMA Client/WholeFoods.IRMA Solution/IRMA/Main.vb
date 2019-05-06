@@ -2460,17 +2460,23 @@ me_exit:
   End Sub
 
   Private Sub tsbEdit_SearchText_KeyDown(sender As Object, e As KeyEventArgs) Handles tsbEdit_SearchText.KeyDown
-        If (e.Control) Then
-            If tsbEdit_SearchText.Text.Length > 0 Then
-                Select Case e.KeyCode
-                    Case Keys.I : tsbEdit_Search_Identifier_Click(Nothing, Nothing)
-                    Case Keys.P : tsbEdit_Search_PO_Click(Nothing, Nothing)
-                End Select
-            Else
-                Select Case e.KeyCode
-                    Case Keys.V : tsbEdit_SearchText.Text = Clipboard.GetText()
-                End Select
-            End If
-        End If
-    End Sub
+    If (e.Control) Then
+      Dim control As ToolStripTextBox = DirectCast(sender, ToolStripTextBox)
+
+      Select Case e.KeyCode
+        Case Keys.A : control.SelectAll()
+        Case Keys.C : If control.SelectedText.Length > 0 Then Clipboard.SetText(control.SelectedText)
+        Case Keys.V
+          Dim txt As String = Clipboard.GetText()
+
+          If Not String.IsNullOrEmpty(txt) Then
+            Dim index = control.SelectionStart
+            control.Text = String.Format("{0}{1}{2}", control.Text.Substring(0, index), txt, control.Text.Substring(index + control.SelectionLength))
+            control.SelectionStart = index + txt.Length
+          End If
+        Case Keys.I : If control.Text.Length > 0 Then tsbEdit_Search_Identifier_Click(Nothing, Nothing)
+        Case Keys.P : If control.Text.Length > 0 Then tsbEdit_Search_PO_Click(Nothing, Nothing)
+      End Select
+    End If
+  End Sub
 End Class
