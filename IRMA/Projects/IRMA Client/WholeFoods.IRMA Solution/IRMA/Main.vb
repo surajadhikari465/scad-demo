@@ -2474,6 +2474,14 @@ me_exit:
             control.Text = String.Format("{0}{1}{2}", control.Text.Substring(0, index), txt, control.Text.Substring(index + control.SelectionLength))
             control.SelectionStart = index + txt.Length
           End If
+        Case Keys.X
+          If (control.SelectionLength > 0) Then
+            Dim index = control.SelectionStart
+            Clipboard.SetText(control.SelectedText)
+
+            control.Text = String.Format("{0}{1}", control.Text.Substring(0, index), control.Text.Substring(index + control.SelectionLength))
+            control.SelectionStart = index
+          End If
         Case Keys.I : If control.Text.Length > 0 Then tsbEdit_Search_Identifier_Click(Nothing, Nothing)
         Case Keys.P : If control.Text.Length > 0 Then tsbEdit_Search_PO_Click(Nothing, Nothing)
       End Select
