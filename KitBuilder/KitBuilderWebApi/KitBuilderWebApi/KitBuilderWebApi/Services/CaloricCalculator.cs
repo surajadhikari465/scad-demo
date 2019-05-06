@@ -44,6 +44,8 @@ namespace KitBuilderWebApi.Services
 			{
 				KitLocale kitLocale = (kitLocaleRepository.GetAll().Where(kl => kl.KitLocaleId == kitLocaleByStoreParameters.KitLocaleId)
 					 .Include(k => k.Kit).ThenInclude(i => i.Item)
+					 .Include(k => k.Kit).ThenInclude(il => il.KitInstructionList)
+					 .Include(k => k.Kit).ThenInclude(klg => klg.KitLinkGroup).ThenInclude(lg => lg.LinkGroup)
 					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
 					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
 					 .ThenInclude(i => i.Item)).FirstOrDefault();

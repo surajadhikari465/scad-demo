@@ -18,6 +18,9 @@ namespace KitBuilder.DataAccess.Dto
 		[Required]
 		public int KitLocaleId { get; set; }
 		public string Properties { get; set; }
+		public int Minimum { get; set; }
+		public int Maximum { get; set; }
+		public int NumOfFreeToppings { get; set; }
 		public int? DisplaySequence { get; set; }
 		public int? MinimumCalories { get; set; }
 		public int? MaximumCalories { get; set; }

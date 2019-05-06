@@ -13,6 +13,9 @@ namespace KitBuilder.DataAccess.Dto
 		public int KitLinkGroupLocaleId { get; set; }
 		public int? ItemId { get; set; }
 		public string Properties { get; set; }
+		public int Minimum { get; set; }
+		public int Maximum { get; set; }
+		public int NumOfFreePortion { get; set; }
 		[Required]
 		public int DisplaySequence { get; set; }
 		public bool? Exclude { get; set; }
