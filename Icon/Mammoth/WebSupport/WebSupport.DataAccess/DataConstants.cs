@@ -111,17 +111,13 @@ namespace WebSupport.DataAccess
             {
                 {"INV_ADJ", "Inventory Adjustment" },
                 {"PO_CRE", "Purchase Order Creation" },
-                {"PO_DEL", "Purchase Order Deletion" },
-                {"PO_LINE_ADD", "Purchase Order Line Item Add" },
                 {"PO_LINE_DEL", "Purchase Order Line Item Deletion" },
-               
+                {"PO_DEL", "Purchase Order Deletion" },
                 {"PO_MOD", "Purchase Order Modification" },
                 {"RCPT_CRE", "Order Receipt Creation" },
                 {"TSF_CRE", "Transfer Order Creation" },
                 {"TSF_DEL", "Transfer Order Deletion" },
-                {"TSF_LINE_ADD", "Transfer Line Item Add" },
                 {"TSF_LINE_DEL", "Transfer Line Item Deletion" },
-                {"TSF_MOD", "Transfer Order Modification" }
             };
     }
 }
