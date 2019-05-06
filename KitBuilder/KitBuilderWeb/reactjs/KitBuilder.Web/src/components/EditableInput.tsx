@@ -37,20 +37,28 @@ export default class EditableContent extends React.PureComponent<
     };
   }
 
+  componentDidUpdate(oldProps: EditableContentProps) {
+    if(oldProps.value !== this.props.value)
+    this.setState({value: this.props.value})
+  }
+
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const error = this.props.isValid(value);
     this.setState({ error, value });
-
-    // only update the value if it is valid
-    if (!error) {
-      this.props.onChange(value);
-    }
   };
 
   handleBlur = () => {
-    const { value } = this.props;
-    this.setState({ value, editMode: false });
+    const { value } = this.state;
+    const error = this.props.isValid(value);
+    this.setState({ editMode: false });
+
+    // only update the value if it is valid
+    if (!error) {
+      this.props.onChange(value);    
+    } else {
+      this.setState({ value: this.props.value });
+    }
   };
 
   handleClick = () => {
