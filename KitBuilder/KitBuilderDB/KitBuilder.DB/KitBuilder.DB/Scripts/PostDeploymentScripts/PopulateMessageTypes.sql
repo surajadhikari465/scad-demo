@@ -4,7 +4,7 @@
  ,@ERR_STA AS SMALLINT
  ,@scriptKey AS NVARCHAR(200)
 
- SET @scriptKey = 'PopulateAppRoles'
+ SET @scriptKey = 'PopulateMessageTypes'
 
  IF(NOT exists(Select * from app.PostDeploymentScriptHistory where ScriptKey = @scriptKey))
 BEGIN
@@ -14,8 +14,17 @@ BEGIN
 			-- Populate Status Table.
 			SET IDENTITY_INSERT dbo.Status ON;
 			
-			if not exists(select * from ApplicationRoles where Role = 'Edit')
-				insert into ApplicationRoles (Role, ADGroups) values ('Edit', 'IrmaDevelopers')
+			if not exists(select * from app.MessageType where MessageTypeName = 'Item')
+				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('1', 'Item')
+
+			if not exists(select * from app.MessageType where MessageTypeName = 'Locale')
+				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('2', 'Locale')
+
+			if not exists(select * from app.MessageType where MessageTypeName = 'Kit')
+				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('3', 'Kit')
+
+			if not exists(select * from app.MessageType where MessageTypeName = 'Instructions')
+				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('4', 'Instructions')
 
 			SET IDENTITY_INSERT dbo.Status OFF;
 		
