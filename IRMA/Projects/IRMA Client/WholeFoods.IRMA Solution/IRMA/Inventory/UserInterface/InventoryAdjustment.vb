@@ -252,7 +252,7 @@ Friend Class frmInventoryAdjustment
         Dim _reason As String = cmbReason.SelectedItem.ToString()
         Dim _allowSubtract As Boolean = True
 
-        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank" Or _reason = "IL-Needs Approval-Inventory Loss") Then _allowSubtract = False
+        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") Then _allowSubtract = False
         If (_allowSubtract = True And optSubtract.Checked = True) Then
             _quantity = _quantity * -1
             _weight = _weight * -1
@@ -552,7 +552,7 @@ Friend Class frmInventoryAdjustment
         'Enabled Units when a costed by weight item is sold in retail as each
         Dim _reason As String = cmbReason.SelectedItem.ToString()
         If Me._costedByWeight Then
-            If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank" Or _reason = "IL-Needs Approval-Inventory Loss") And Me._isSoldAsEachCostedByWeightItem Then
+            If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") And Me._isSoldAsEachCostedByWeightItem Then
                 Me.optUnits.Enabled = True
             Else
                 Me.optUnits.Enabled = False
@@ -561,7 +561,7 @@ Friend Class frmInventoryAdjustment
         End If
 
         ' en/dis-able the shrink subtype combo box based on the main adjustment type
-        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank" Or _reason = "IL-Needs Approval-Inventory Loss") Then
+        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") Then
             Me.cmbShrinkSubtype.Enabled = True
         Else
             Me.cmbShrinkSubtype.SelectedIndex = -1
@@ -794,7 +794,6 @@ Friend Class frmInventoryAdjustment
         Dim idxFoodBank As Integer = cmbReason.FindString("FB-Food Bank")
         Dim idxSamples As Integer = cmbReason.FindString("SM-Samples")
         Dim idxSpoilage As Integer = cmbReason.FindString("SP-Spoilage")
-        Dim idxInventoryLoss As Integer = cmbReason.FindString("IL-Needs Approval-Inventory Loss")
 
 
         ' the subtype control was bound with a data table having the same schema as the dbo.ShrinkSubtype table
@@ -807,8 +806,6 @@ Friend Class frmInventoryAdjustment
             cmbReason.SelectedIndex = idxFoodBank
         ElseIf (shrinkSubtype_Desc).StartsWith("Sampling", StringComparison.CurrentCultureIgnoreCase) Then
             cmbReason.SelectedIndex = idxSamples
-        ElseIf (shrinkSubtype_Desc).StartsWith("Needs Approval", StringComparison.CurrentCultureIgnoreCase) Then
-            cmbReason.SelectedIndex = idxInventoryLoss
         Else
             cmbReason.SelectedIndex = idxSpoilage
         End If

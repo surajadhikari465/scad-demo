@@ -16,7 +16,7 @@ BEGIN
 		AdjustmentDescription AS 'Description',
 		InventoryAdjustmentCode_ID As InventoryAdjustmentCode_ID
 	FROM InventoryAdjustmentCode
-	WHERE Abbreviation in ('SM', 'SP', 'FB', 'IL')
+	WHERE Abbreviation in ('SM', 'SP', 'FB')
     
     SET NOCOUNT OFF
 END
