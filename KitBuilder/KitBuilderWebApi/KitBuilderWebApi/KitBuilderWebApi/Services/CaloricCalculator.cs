@@ -211,6 +211,9 @@ namespace KitBuilderWebApi.Services
 					dynamic kitLinkGroupProperties = JsonConvert.DeserializeObject(kitLinkGroupDto.Properties);
 					int kitLinkGroupMaxCalories = 0;
 					int kitLinkGroupMaxPortion = kitLinkGroupProperties.Maximum;
+					kitLinkGroupDto.Maximum = kitLinkGroupProperties.Maximum;
+					kitLinkGroupDto.Minimum = kitLinkGroupProperties.Minimum;
+					kitLinkGroupDto.NumOfFreeToppings = kitLinkGroupProperties.NumOfFreeToppings;
 					int arrayIndex = 0;
 					int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true).Count();
 					int[,] modifierMax = new int[modifierCounter, 2];
@@ -221,6 +224,9 @@ namespace KitBuilderWebApi.Services
 						int kitLinkGroupItemMax = kitLinkGroupItemProperties.Maximum;
 						int kitLinkGroupItemMin = kitLinkGroupItemProperties.Minimum;
 						int kitLinkGroupItemDefault = kitLinkGroupItemProperties.DefaultPortions;
+						kitLinkGroupItemLocaleDto.Maximum = kitLinkGroupItemProperties.Maximum;
+						kitLinkGroupItemLocaleDto.Minimum = kitLinkGroupItemProperties.Minimum;
+						kitLinkGroupItemLocaleDto.NumOfFreePortion = kitLinkGroupItemProperties.NumOfFreePortion;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
 						//Calculate the total calories of all default modifiers in all the link groups, including excluded link groups,
