@@ -8,7 +8,8 @@ const ApiMethods  = {
      Items: "/api/Items/",
      LinkGroupItemSearch:"/api/LinkGroups/LinkGroupItemSearch",
      LocalesByType: "/api/Locales/GetLocaleByType",
-     Locales:"api/Locales"
+     Locales:"api/Locales", 
+     Login: "api/Authentication/Login"
 }
 
 export function KbApiMethod(name: string) {

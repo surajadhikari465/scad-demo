@@ -277,30 +277,30 @@ namespace KitBuilderWebApi.Controllers
             if (!IsInstructionInUse(instructionListId))
             {
                try
-                {
-                    foreach(InstructionListMember il in members)
-                    {
-                        instructionListMemberRepository.Delete(il);
-                    }
-                    var pluNumbersList = members.Select(s => s.PluNumber).ToList();
+               {
+                   foreach(InstructionListMember il in members)
+                   {
+                       instructionListMemberRepository.Delete(il);
+                   }
+                   var pluNumbersList = members.Select(s => s.PluNumber).ToList();
 
-                    var pluNumbers = availablePluNumberRespository.GetAll().Where(p => pluNumbersList.Contains(p.PluNumber)).ToList();
+                   var pluNumbers = availablePluNumberRespository.GetAll().Where(p => pluNumbersList.Contains(p.PluNumber)).ToList();
 
-                    foreach (AvailablePluNumber plu in pluNumbers)
-                    {
-                        plu.InUse = false;
-                        plu.LastUpdatedDateUtc = DateTime.UtcNow; ;
-                    }
-                    instructionListRepository.Delete(list);
-                    instructionListRepository.UnitOfWork.Commit();
-                    return Ok();
+                   foreach (AvailablePluNumber plu in pluNumbers)
+                   {
+                       plu.InUse = false;
+                       plu.LastUpdatedDateUtc = DateTime.UtcNow; ;
+                   }
+                   instructionListRepository.Delete(list);
+                   instructionListRepository.UnitOfWork.Commit();
+                   return Ok();
 
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex.Message);
-                    return StatusCode(500, "A problem happened while handling your request.");
-                }
+               }
+               catch (Exception ex)
+               {
+                   logger.LogError(ex.Message);
+                   return StatusCode(500, "A problem happened while handling your request.");
+               }
             }
             else
             {
@@ -338,10 +338,10 @@ namespace KitBuilderWebApi.Controllers
                 return StatusCode(409, "Instruction List with this name alreadys exists.");
             }
 
-             var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
-             instructionList.StatusId = defaultStatus.StatusId;
-             instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
-             instructionList.InsertDateUtc = DateTime.UtcNow;
+            var instructionList = Mapper.Map<InstructionList>(instructionListAddDto);
+            instructionList.StatusId = defaultStatus.StatusId;
+            instructionList.LastUpdatedDateUtc = DateTime.UtcNow;
+            instructionList.InsertDateUtc = DateTime.UtcNow;
 
             instructionListRepository.Add(instructionList);
 

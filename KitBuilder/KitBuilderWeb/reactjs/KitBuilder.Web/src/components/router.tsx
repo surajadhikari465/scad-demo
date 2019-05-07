@@ -15,6 +15,7 @@ import ViewKit from './Kits/ViewKits/ViewKit';
 import Footer from './PageStyle/Footer';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { createGenerateClassName } from '@material-ui/core/styles';
+import LoginPage from './Login/Login'
 
 const generateClassName = createGenerateClassName({
   dangerouslyUseGlobalCSS: true
@@ -68,6 +69,7 @@ class AppRouter extends React.Component {
               <Header />
               <Switch>
                 <Route exact path="/" component={InstructionListsPage} />
+                <Route exact path="/Login" component={LoginPage} />
                 <Route path="/Instructions" component={InstructionListsPage} />
                 <Route path="/LinkGroups" component={LinkGroupsPage} />
                 <Route path="/Kits" component={KitListPage} />
