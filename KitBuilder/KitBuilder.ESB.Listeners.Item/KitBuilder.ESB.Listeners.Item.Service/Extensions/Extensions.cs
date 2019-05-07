@@ -23,19 +23,22 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
 
             if (enterpriseAttributes == null) return null;
 
-            return new ItemModel
+            var itemModel = new ItemModel
             {
                 ItemId = item.id,
                 ScanCode = enterpriseAttributes.scanCodes.First().code,
                 MerchandiseHierarchyClassId = GetHierarchyClassId(enterpriseAttributes, HierarchyNames.Merchandise),
                 BrandsHierarchyName = GetHierarchyClassName(enterpriseAttributes, HierarchyNames.Brands),
                 CustomerFriendlyDescription = GetTraitValue(enterpriseAttributes, TraitCodes.CustomerFriendlyDescription),
+                ProductDescription = GetTraitValue(enterpriseAttributes, TraitCodes.ProductDescription),
                 FlexibleText = GetTraitValue(enterpriseAttributes, TraitCodes.FlexibleText),
                 KitchenDescription = enterpriseAttributes.kitchenDescription,
                 ImageUrl = enterpriseAttributes.imageUrl,
-                KitchenItem = enterpriseAttributes.isKitchenItemSpecified ? enterpriseAttributes.isKitchenItem : false,
-                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false,
+                KitchenItem = enterpriseAttributes.isKitchenItemSpecified && enterpriseAttributes.isKitchenItem,
+                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified && enterpriseAttributes.isHospitalityItem,
             };
+
+            return itemModel;
         }
 
      

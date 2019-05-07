@@ -25,8 +25,8 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
         public void Execute(ItemAddOrUpdateOrRemoveCommand data)
         {
             // get hospitality items.
-            var hospitalityItemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null && (i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false)));
-            var nonHospitalityItemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null && !(i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false)));
+            var hospitalityItemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null && (i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false))).ToList();
+            var nonHospitalityItemsWithoutErrors = data.Items.Where(i => i.ErrorCode == null && !(i.HospitalityItem.GetValueOrDefault(false) || i.KitchenItem.GetValueOrDefault(false))).ToList();
 
             try
             {
@@ -59,14 +59,14 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
             }
         }
 
-        private void RemoveItems(IRepository<Items> repo, IEnumerable<ItemModel> data)
+        private void RemoveItems(IRepository<Items> repo, List<ItemModel> data)
         {
             if (!data.Any()) return;
             var items = data.Select(i => new { ItemId = i.ItemId}).ToTvp("items", "dbo.ItemRemoveType");
             repo.UnitOfWork.Context.Database.ExecuteSqlCommand("exec dbo.ItemRemove @items", items);
         }
 
-        private void AddOrUpdateItems(IRepository<Items> repo, IEnumerable<ItemModel> data)
+        private void AddOrUpdateItems(IRepository<Items> repo, List<ItemModel> data)
         {
 
             if (!data.Any()) return;

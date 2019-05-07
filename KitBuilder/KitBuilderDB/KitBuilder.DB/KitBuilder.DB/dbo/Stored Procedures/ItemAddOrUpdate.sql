@@ -55,8 +55,7 @@ BEGIN
 					,i.KitchenDesc = ai.KitchenDesc
 					,i.BrandName = ai.BrandName
 					,i.ImageUrl = ai.ImageUrl
-					,i.InsertDateUtc = ai.InsertDateUtc
-					,i.LastUpdatedDateUtc = ai.LastUpdatedDateUtc
+					,i.LastUpdatedDateUtc = GETUTCDATE()
 					,i.FlexibleText = ai.FlexibleText
 			FROM dbo.Items i
 				INNER JOIN #allItems AI ON i.ItemId = AI.ItemId
