@@ -1,19 +1,23 @@
 import * as React from 'react';
 import { Grid, Button } from '@material-ui/core';
-import { AssignKitsTreeTable } from './AssignKitsTreeTable';
+import AssignKitsTreeTable from './AssignKitsTreeTable';
 import axios from 'axios';
 import { KbApiMethod } from '../helpers/kbapi'
-import Swal from 'sweetalert2';
 import withSnackbar from '../PageStyle/withSnackbar';
+import ConfirmDialog from '../ConfirmDialog';
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
 
 interface IAssignKitsToLocaleState {
-     data: any,
-     kitId: number,
-     kitName: string,
-     kitType:string,
-     isSimplekitType: boolean
+     data: any;
+     kitId: number;
+     kitName: string;
+     kitType:string;
+     isSimplekitType: boolean;
+     assignedLocales: number[];
+     excludedLocales: number[];
+     showPublishConfirm: boolean;
+     showSaveConfirm: boolean;
 }
 
 interface IAssignKitsToLocaleProps {
@@ -32,10 +36,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                kitName: "",
                kitType:"",
                isSimplekitType :false,
+               assignedLocales: [],
+               excludedLocales: [],
+               showPublishConfirm: false,
+               showSaveConfirm: false,
           }
-
-          this.updateData = this.updateData.bind(this);
-          this.saveChanges = this.saveChanges.bind(this);
      }
 
      componentDidMount() {
@@ -48,7 +53,49 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           });
      }
 
-     loadKit() {
+     toggleShowPublishConfirm = () => {
+          this.setState({ showPublishConfirm: !this.state.showPublishConfirm })
+     }
+
+     toggleShowSaveConfirm = () => {
+          this.setState({ showSaveConfirm: !this.state.showSaveConfirm })
+     }
+
+     toggleLocaleExcluded = (localeId: number) => {
+          const oldExcludedLocales = this.state.excludedLocales;
+          const { assignedLocales }= this.state;
+          let excludedLocales;
+
+          if(oldExcludedLocales.includes(localeId)) {
+               excludedLocales = oldExcludedLocales.filter((id) => id !== localeId);
+          }
+          else {
+               excludedLocales = [...oldExcludedLocales, localeId ];
+               if(assignedLocales.includes(localeId)) {
+                    this.toggleLocaleAssigned(localeId);
+               }
+          }
+          this.setState({ excludedLocales });
+     }
+
+     toggleLocaleAssigned = (localeId: number) => {
+          const oldAssignedLocales = this.state.assignedLocales;
+          const { excludedLocales }= this.state;
+          let assignedLocales;
+
+          if(oldAssignedLocales.includes(localeId)) {
+               assignedLocales = oldAssignedLocales.filter((id) => id !== localeId);
+          }
+          else {
+               assignedLocales = [...oldAssignedLocales, localeId ];
+               if(excludedLocales.includes(localeId)) {
+                    this.toggleLocaleExcluded(localeId);
+               }
+          }
+          this.setState({ assignedLocales });
+     }
+
+     loadKit = () => {
           const { kitId } = this.state;
           let url = urlKit;
                    url = url + '/' + kitId;
@@ -77,7 +124,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                });
      }
 
-     loadData() {
+     loadData = () => {
           const { kitId } = this.state;
           let url = urlStart;
 
@@ -96,14 +143,22 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                });
      }
 
-     parseData(data: any) {
+     parseData = (data: any) => {
+          this.setState({ assignedLocales: [], excludedLocales: [] });
           var parsed_data = [];
 
           var map = {};
           for (var i = 0; i < data.length; i++) {
                data[i].childs = [];
-               data[i].collapsed = true;
                map[data[i].localeId] = data[i];
+
+               if(data[i].isAssigned) {
+                    this.toggleLocaleAssigned(data[i].localeId);
+               }
+
+               if(data[i].isExcluded) {
+                    this.toggleLocaleExcluded(data[i].localeId);
+               }
 
                if (data[i].localeTypeId == 1) {
                     parsed_data.push(data[i]);
@@ -121,17 +176,24 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           });
      }
 
-     putData(dest: Array<any>, data: Array<any>) {
+     putData = (dest: Array<any>, data: Array<any>) => {
+          const { excludedLocales, assignedLocales } = this.state;
           for (var i = 0; i < data.length; i++) {
                var item = JSON.parse(JSON.stringify(data[i]));
-               delete item.collapsed;
                delete item.childs;
-               if (item.isAssigned == true || item.isExcluded == true)
-                    dest.push(item);
+               const isAssigned = assignedLocales.includes(item.localeId);
+               const isExcluded = excludedLocales.includes(item.localeId);
+
+               if (isAssigned || isExcluded)
+                    dest.push({
+                              ...item,
+                              isAssigned,
+                              isExcluded 
+                         });
                this.putData(dest, data[i].childs);
           }
      }
-     publishChanges()
+     publishChanges = () =>
      {
           var headers = {
                'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
@@ -146,7 +208,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     .then(() => {
                          this.props.showAlert("Kit queued successfully.", "success");
                          this.loadData();
-                       
+                         this.toggleShowPublishConfirm();
                     })
                     .catch((error) => {
                   
@@ -162,28 +224,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                               this.props.showAlert("Error in queueing Kit.", "error");
                          }
                         
-                         return;
+                         this.toggleShowPublishConfirm();
                     })
      }
 
-     saveChanges() {
-          
-          Swal({
-               title: 'Are you sure you want to save your changes?',
-               type: 'info',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Ok'
-             })
-             .then((result:any) => {
-               if (result.value) { 
-                    this.saveData();
-               }   
-             });
-     }
-
-     saveData() {
+     saveData = () => {
           var { data, kitId } = this.state;
           var dest: Array<any>;
           dest = [];
@@ -200,17 +245,12 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
                     this.props.showAlert("Data saved succesfully.", "success")
                     this.loadData();
+                    this.toggleShowSaveConfirm();
                }).catch(error => {
                
-                    this.props.showAlert("Error in saving data.", "error")
-                   
+                    this.props.showAlert("Error in saving data.", "error");
+                    this.toggleShowSaveConfirm();
                });
-     }
-
-     updateData() {
-          this.setState({
-               data: this.state.data
-          });
      }
 
      render() {
@@ -221,18 +261,40 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     <h3>Kit Name: {this.state.kitName}</h3>
                     <Grid container justify= "flex-end" spacing={16}>
                     <Grid item>
-                    <Button variant="contained" color="primary" onClick={() => this.publishChanges()} >
+                    <Button variant="contained" color="primary" onClick={this.toggleShowPublishConfirm} >
                               Publish
                          </Button>
                     </Grid>
                          <Grid item>
-                         <Button variant="contained" color="primary" onClick={() => this.saveChanges()} >
+                         <Button variant="contained" color="primary" onClick={this.toggleShowSaveConfirm} >
                               Save Changes
                          </Button>
                          </Grid>
                     </Grid>
 
-                    <AssignKitsTreeTable kitId = {this.state.kitId} isSimplekitType= {this.state.isSimplekitType} disabled={false} data={data} updateData={this.updateData} />
+                    <AssignKitsTreeTable
+                         toggleLocaleAssigned = {this.toggleLocaleAssigned}
+                         toggleLocaleExcluded = {this.toggleLocaleExcluded}
+                         assignedLocales={this.state.assignedLocales}
+                         excludedLocales={this.state.excludedLocales}
+                         kitId = {this.state.kitId} 
+                         isSimplekitType= {this.state.isSimplekitType} 
+                         disabled={false} 
+                         data={data} />
+
+                         <ConfirmDialog 
+                         message ="Are you sure you want to save your changes?"
+                         open={this.state.showSaveConfirm}
+                         onConfirm={this.saveData}
+                         onClose={this.toggleShowSaveConfirm} 
+                         />
+
+                         <ConfirmDialog 
+                         message ="Are you sure you want to publish?"
+                         open={this.state.showPublishConfirm}
+                         onConfirm={this.publishChanges}
+                         onClose={this.toggleShowPublishConfirm} 
+                         />
                </React.Fragment>
           );
      }

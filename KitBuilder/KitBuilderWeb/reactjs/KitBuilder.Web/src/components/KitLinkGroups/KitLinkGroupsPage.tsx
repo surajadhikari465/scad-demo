@@ -13,6 +13,7 @@ import {
 import PageTitle from "../PageTitle";
 import Footer from '../PageStyle/Footer';
 import withSnackbar from '../PageStyle/withSnackbar';
+import { History } from 'history';
 
 var urlStart = KbApiMethod("Kits");
 
@@ -29,6 +30,7 @@ interface IKitLinkGroupPageProps {
   kitId: number;
   localeId: number;
   showAlert(messag: string, type?: string): void;
+  history: History;
 }
 
 interface IKitLinkGroupLocale {
@@ -552,7 +554,15 @@ class KitLinkGroupPage extends React.Component<
           <Paper square style={{position: "fixed", bottom: 0, width: "100%", padding: 8}}>
           <Grid container justify="center">
           <Grid item xs={10}>
-          <Grid container justify="flex-end">
+          <Grid container justify="flex-end" spacing={16}>
+          <Grid item>
+          <Button
+          variant="outlined"
+          onClick = {this.props.history.goBack}
+          >
+            Back
+          </Button>
+          </Grid>
           <Grid item>
                   <Button
                   variant="contained"
@@ -560,8 +570,7 @@ class KitLinkGroupPage extends React.Component<
                     disabled={this.state.disableSaveButton}
                     onClick={this.handleSaveButton}
                   >
-                    {" "}
-                    Save Changes{" "}
+                    Save Changes
                   </Button>
                   </Grid>
                   </Grid>

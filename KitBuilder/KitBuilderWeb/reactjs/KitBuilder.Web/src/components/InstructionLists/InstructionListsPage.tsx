@@ -7,7 +7,6 @@ import axios from 'axios';
 const hStyle = { color: 'red' };
 const sucesssStyle = { color: 'blue' };
 import { KbApiMethod } from '../helpers/kbapi'
-import Swal from 'sweetalert2'
 import './style.css';
 import PageStyle from './PageStyle';
 import PageTitle from '../PageTitle';
@@ -15,6 +14,7 @@ import CreateEdiInstructionDialog from './CreateEditInstructionsDialog';
 import EditableContent from '../EditableInput';
 import { InstructionList } from 'src/types/InstructionList';
 import withSnackbar from '../PageStyle/withSnackbar';
+import ConfirmDialog from '../ConfirmDialog';
 
 var urlStart = KbApiMethod("InstructionList");
 
@@ -34,7 +34,8 @@ interface IInstructionListsPageState {
      isEditInstructions: boolean,
      isSaveDisabled: boolean,
      isPublishDisabled: boolean,
-     status:string
+     status:string,
+     showConfirmDeleteDialog: boolean,
 }
 
 interface IInstructionListsPageProps {
@@ -62,8 +63,13 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                isEditInstructions: false,
                isSaveDisabled: true,
                isPublishDisabled: true,
-               status:""
+               status:"",
+               showConfirmDeleteDialog: false,
           }
+     }
+
+     toggleShowConfirmDeleteDialog = () => {
+          this.setState({ showConfirmDeleteDialog: !this.state.showConfirmDeleteDialog })
      }
 
      setInstructionListHack = (data: Array<any>) => {
@@ -260,31 +266,6 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
           this.setState({
                isSaveDisabled: false,
           })
-     }
-
-
-     deleteInstruction = () => {
-          this.setState({ dialogOpen: false, }, () => {
-          Swal({
-               title: 'Are you sure that you want to delete this Instructions list?',
-               type: 'info',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Ok'
-          })
-               .then((result: any) => {
-                    if (result.value) {
-                         this.deleteInstructionData();
-                    }
-                    else {
-                         this.setState({
-                              error: null,
-                              message: null,
-                         });
-                    }
-               });
-          });
      }
 
      deleteInstructionData = () => {
@@ -651,7 +632,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          instructionValue={this.state.currentInstructionTypeValue}
                          instructionTypeName={this.state.instructionTypeName}
                          onAddMember={this.onAddMember}
-                         deleteInstruction={this.deleteInstruction}
+                         deleteInstruction={this.toggleShowConfirmDeleteDialog}
                          onPublishChanges={this.onPublishChanges}
                          onSaveChanges={this.onSaveChanges}
                          isLoaded={this.state.isLoaded}
@@ -667,9 +648,16 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                          onCancel = {this.handleDialogClose}
                          updateCurrentInstructionName = {this.updateCurrentInstructionName}
                          createNewInstruction = {this.handleCreateNewInstructionList}
-                         onDelete = {this.deleteInstruction}
+                         onDelete = {this.toggleShowConfirmDeleteDialog}
                          onClose = {this.handleDialogClose}
                     />
+
+                    <ConfirmDialog
+                         open = {this.state.showConfirmDeleteDialog}
+                         message="Are you sure you want to delete this instructions list?"
+                         onClose ={this.toggleShowConfirmDeleteDialog}
+                         onConfirm={this.deleteInstructionData}
+                         />
 
                     <Snackbar
                          anchorOrigin={{ vertical, horizontal }}

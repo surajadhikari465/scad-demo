@@ -22,10 +22,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "3.1.0",
     "react-select": "^2.1.2",
-    "react-table": "^6.8.6",
-    "redux": "^4.0.1",
-    "sweetalert": "^2.1.2",
-    "sweetalert2": "^7.33.1"
+    "react-table": "^6.10.0",
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -33,7 +31,7 @@
     "build:dev": "env-cmd .env.dev npm run build && rename build KB.Dev",
     "build:test": "env-cmd .env.test npm run build && rename build KB.Test",
     "build:qa": "env-cmd .env.qa npm run build && rename build KB.QA",
-	"build:perf": "env-cmd .env.perf npm run build && rename build KB.Perf",
+    "build:perf": "env-cmd .env.perf npm run build && rename build KB.Perf",
     "build:production": "env-cmd .env.production npm run build && rename build KB.Production",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"

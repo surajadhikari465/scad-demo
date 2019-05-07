@@ -13,8 +13,8 @@ import Axios from "axios";
 import { InstructionList } from "src/types/InstructionList";
 import { SelectInstructions } from "./SelectInstructions";
 import PageTitle from "src/components/PageTitle";
-import ConfirmSaveDialog from "./ConfirmSaveDialog";
 import { Link } from "react-router-dom";
+import ConfirmDialog from 'src/components/ConfirmDialog';
 
 interface ICreateKitPageState {
   addItemIsOpen: boolean;
@@ -521,11 +521,14 @@ class CreateKitPage extends React.PureComponent<
                 this.setState({ addItemIsOpen: false });
               }}
             />
-            <ConfirmSaveDialog
-              isEdit={this.state.editMode}
+            <ConfirmDialog
+              message = {
+                this.state.editMode ? 
+                "Are you sure you want to save this kit?" : 
+                "Are you sure you want to create a new kit?"}
               open={this.state.confirmCreatKitIsOpen}
               onClose={() => this.setState({ confirmCreatKitIsOpen: false })}
-              onCreateKit={() => {
+              onConfirm={() => {
                 this.setState({ confirmCreatKitIsOpen: false });
                 this.handleAddKit();
               }}

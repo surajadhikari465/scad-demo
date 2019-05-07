@@ -9,12 +9,12 @@ import {
 
 interface IConfirmSaveDialogProps {
   onClose: any;
-  onCreateKit: any;
-  isEdit: boolean;
+  onConfirm(): void;
   open: boolean;
+  message: string;
 }
 
-export default function ConfirmSaveDialog(props: IConfirmSaveDialogProps) {
+export default function ConfirmDialog(props: IConfirmSaveDialogProps) {
   return (
     <Dialog
       open={props.open}
@@ -24,10 +24,7 @@ export default function ConfirmSaveDialog(props: IConfirmSaveDialogProps) {
     >
       <DialogContent>
         <DialogContentText>
-          { props.isEdit ?
-          "Are you sure you want to save this kit?" :
-          "Are you sure you want to create a new kit?"
-          }
+        { props.message }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -35,7 +32,7 @@ export default function ConfirmSaveDialog(props: IConfirmSaveDialogProps) {
           Cancel
         </Button>
         <Button
-          onClick={props.onCreateKit}
+          onClick={props.onConfirm}
           variant="outlined"
           color="primary"
           autoFocus
