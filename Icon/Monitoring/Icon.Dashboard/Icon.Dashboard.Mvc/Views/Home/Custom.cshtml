@@ -21,14 +21,13 @@
                 </div>
                 <div class="panel-body">
                     <draggable class="draggable-div"
-                               v-model="env.AppsInEnvironment"
-                               :list="env.AppsInEnvironment"
+                               v-model="env.AppServers"
+                               :list="env.AppServers"
                                :options="{group:'myOptions'}">
                         <div class="env-drag-item"
                              v-for="(app, appIndex) in env.AppServers"
                              :key="app.id">
                             {{app.ServerName}}
-                            @*</a>*@
                         </div>
                     </draggable>
                 </div>
@@ -42,11 +41,6 @@
                 </button>
             </div>
         </div>
-        @*<div class="row">
-            <div class="col-xs-offset-2 col-xs-8 margin-top-10">
-                @Html.ActionLink("Define New Dashboard Environment", "Create", "Environment", null, new { @class = "btn btn-info btn-block" })
-            </div>
-        </div>*@
     </div>
 </div>
 
