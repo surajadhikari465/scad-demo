@@ -76,7 +76,9 @@
 	[AdminNotes] [varchar](5000) NULL,
 	[ResolutionCodeID] [int] NULL,
 	[PaymentTypeID] [int] NULL,
-	[LineItemSuspended] [bit] NULL
+	[LineItemSuspended] [bit] NULL,
+  [OrderType_ID] [int] NOT NULL,
+  [InsertDate] DateTime default(GetDate())
 ) ON [PRIMARY]
 GO
 

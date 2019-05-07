@@ -89,7 +89,7 @@ BEGIN
 				,Freight3Party,LineItemFreight3Party,HandlingCharge,eInvoiceQuantity,SACCost,OrderItemCOOL,OrderItemBIO,Carrier,InvoiceQuantityUnit,InvoiceCost,InvoiceExtendedCost
 				,InvoiceExtendedFreight,InvoiceTotalWeight,VendorCostHistoryID,OrigReceivedItemCost,OrigReceivedItemUnit,CatchWeightCostPerWeight,QuantityShipped,WeightShipped
 				,OHOrderDate,SustainabilityRankingID,eInvoiceWeight,ReasonCodeDetailID,ReceivingDiscrepancyReasonCodeID,PaidCost,ApprovedDate,ApprovedByUserId,AdminNotes
-				,ResolutionCodeID,PaymentTypeID,LineItemSuspended)
+				,ResolutionCodeID,PaymentTypeID,LineItemSuspended, OrderType_ID)
 		  SELECT OrderItem_ID,OrderHeader_ID,Item_Key,ExpirationDate,QuantityOrdered,QuantityUnit,QuantityReceived,Total_Weight,Units_per_Pallet,Cost,UnitCost,UnitExtCost,CostUnit
 				,QuantityDiscount,DiscountType,AdjustedCost,Handling,HandlingUnit,Freight,FreightUnit,DateReceived,OriginalDateReceived,Comments,LineItemCost,LineItemHandling
 				,LineItemFreight,ReceivedItemCost,ReceivedItemHandling,ReceivedItemFreight,LandedCost,MarkupPercent,MarkupCost,Package_Desc1,Package_Desc2,Package_Unit_ID
@@ -97,7 +97,7 @@ BEGIN
 				,Freight3Party,LineItemFreight3Party,HandlingCharge,eInvoiceQuantity,SACCost,OrderItemCOOL,OrderItemBIO,Carrier,InvoiceQuantityUnit,InvoiceCost,InvoiceExtendedCost
 				,InvoiceExtendedFreight,InvoiceTotalWeight,VendorCostHistoryID,OrigReceivedItemCost,OrigReceivedItemUnit,CatchWeightCostPerWeight,QuantityShipped,WeightShipped
 				,OHOrderDate,SustainabilityRankingID,eInvoiceWeight,ReasonCodeDetailID,ReceivingDiscrepancyReasonCodeID,PaidCost,ApprovedDate,ApprovedByUserId,AdminNotes
-				,ResolutionCodeID,PaymentTypeID,LineItemSuspended
+				,ResolutionCodeID,PaymentTypeID,LineItemSuspended, @OrderType_ID
 		  FROM OrderItem (nolock)
 		 WHERE OrderItem_ID = @OrderItem_ID
 	    

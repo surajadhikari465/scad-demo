@@ -3366,6 +3366,9 @@
     <None Include="Scripts\PostDeploy\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetUnsentInStockMessages.sql" />
     <None Include="Scripts\PostDeploy\PBI18549-AddInStockApplication.sql" />
+    <None Include="Scripts\PreDeploy\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
+    <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
+    <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
