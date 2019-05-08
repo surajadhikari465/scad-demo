@@ -14,294 +14,305 @@ using Amazon.S3.Model;
 
 namespace Audit
 {
-	public class AuditController
-	{
-		DataTable statusTable;
-		readonly SpecInfo spec;
-		readonly Hashtable hsVariables;
-		readonly ILogger logger = new NLogLogger(typeof(AuditService));
+    public class AuditController
+    {
+        DataTable statusTable;
+        readonly SpecInfo spec;
+        readonly Hashtable hsVariables;
+        readonly ILogger logger = new NLogLogger(typeof(AuditService));
 
-		const char SPACE = ' ';
-		const string GLOBAL = "Global";
-		const string AUDIT_SERVICE = "AuditService";
+        const char SPACE = ' ';
+        const string GLOBAL = "Global";
+        const string AUDIT_SERVICE = "AuditService";
 
-		public AuditController(SpecInfo spec, DataTable statTable = null, Hashtable tableVariable = null)
-		{
-			this.spec = spec;
-			this.statusTable = statTable;
-			this.hsVariables = tableVariable ?? new Hashtable();
-		}
+        public AuditController(SpecInfo spec, DataTable statTable = null, Hashtable tableVariable = null)
+        {
+            this.spec = spec;
+            this.statusTable = statTable;
+            this.hsVariables = tableVariable ?? new Hashtable();
+        }
 
-		void DeleteFile(string filePath)
-		{
-			try { if(!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath)) { File.Delete(filePath); } }
-			catch(Exception ex) { logger.Error("AuditController.DeleteFile()", ex); }
-		}
+        void DeleteFile(params string[] files)
+        {
+            if(files == null || files.Length == 0) return;
 
-		public void Execute()
-		{
-			const string DATE_PARAM = "{Date}";
-			const string REGION_PARAM = "{Region}";
-			const string DATE_FORMAT = "yyyyMMdd_HHmm";
-			const string BIT_TRUE = "1";
-			const string BIT_FALSE = "0";
+            foreach(var f in files.Where(x => File.Exists(x)))
+            {
+                try { File.Delete(f); }
+                catch(Exception ex) { logger.Error("AuditController.DeleteFile()", ex); }
+            }
+        }
 
-			if(this.spec == null || !this.spec.IsValid) return;
+        public void Execute()
+        {
+            const string DATE_PARAM = "{Date}";
+            const string REGION_PARAM = "{Region}";
+            const string DATE_FORMAT = "yyyyMMdd";
+            const string BIT_TRUE = "1";
+            const string BIT_FALSE = "0";
 
-			string delimiter = this.spec.Config.Delimiter.ToString();
+            if(this.spec == null || !this.spec.IsValid) return;
 
-			try
-			{
-				this.logger.Info($"{AUDIT_SERVICE}: Processing {this.spec.Config.Name}");
-				var items = this.spec.Config.IsGlobal
-					? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} ",
-																												argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
-																												argRegion: new Region(){ Id = 0, Code = GLOBAL, Name = GLOBAL })}
+            string delimiter = this.spec.Config.Delimiter.ToString();
 
-					: this.spec.Regions.Where(x => IsReady(x))
-								.Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}',",
-																								 argFileName: Path.Combine(this.spec.DirPath, x.Code, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
-																								 argRegion: x))
-					.ToArray();
+            try
+            {
+                this.logger.Info($"{AUDIT_SERVICE}: Processing {this.spec.Config.Name}");
+                var items = this.spec.Config.IsGlobal
+                    ? new AuditOutputInfo[] { new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} ",
+                                                                                                                argFileName: Path.Combine(this.spec.DirPath, GLOBAL, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, "Global")),
+                                                                                                                argRegion: new Region(){ Id = 0, Code = GLOBAL, Name = GLOBAL })}
 
-				foreach(var item in items)
-				{
-					int groupId = -1;
-					int rowCount = 0;
-					int rowActual = 0;
-					bool isComplete, hasData;
-					Exception errException = null;
-					var boolIDs = new HashSet<int>();   //Column IDs of typeof(bool);
-					var stringIDs = new HashSet<int>(); //Column IDs of typeof(string);
-					var readerQueue = new Queue<AuditReader>();
+                    : this.spec.Regions.Where(x => IsReady(x))
+                                .Select(x => new AuditOutputInfo(argQuery: $"exec {this.spec.Config.Proc} @Region = '{x.Code}',",
+                                                                                                 argFileName: Path.Combine(this.spec.DirPath, x.Code, this.spec.Config.FileName.Replace(DATE_PARAM, DateTime.Now.ToString(DATE_FORMAT)).Replace(REGION_PARAM, x.Code)),
+                                                                                                 argRegion: x))
+                    .ToArray();
 
-					hasData = isComplete = false;
+                foreach(var item in items)
+                {
+                    int groupId = -1;
+                    int rowCount = 0;
+                    int rowActual = 0;
+                    bool isComplete, hasData;
+                    Exception errException = null;
+                    var boolIDs = new HashSet<int>();   //Column IDs of typeof(bool);
+                    var stringIDs = new HashSet<int>(); //Column IDs of typeof(string);
+                    var readerQueue = new Queue<AuditReader>();
 
-					if(!Directory.Exists(Path.GetDirectoryName(item.FileName)))
-					{
-						Directory.CreateDirectory(Path.GetDirectoryName(item.FileName));
-					}
-					DeleteFile(item.FileName);
+                    hasData = isComplete = false;
 
-					using(var conn = new SqlConnection(this.spec.ConnectionString))
-					using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}", conn) { CommandTimeout = this.spec.CommandTimeOut })
-					{
-						conn.Open();
-						rowCount = (int)sqlCommand.ExecuteScalar();
-					}
+                    if(!Directory.Exists(Path.GetDirectoryName(item.FileName)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(item.FileName));
+                    }
+                    DeleteFile(item.FileName);
 
-					if(rowCount == 0) continue; //No data available
+                    using(var conn = new SqlConnection(this.spec.ConnectionString))
+                    using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}", conn) { CommandTimeout = this.spec.CommandTimeOut })
+                    {
+                        conn.Open();
+                        rowCount = (int)sqlCommand.ExecuteScalar();
+                    }
 
-					Task taskGet = new Task(() =>
-						{
-							try
-							{
-								while(true)
-								{
-									if(errException != null) break;
+                    if(rowCount == 0) continue; //No data available
 
-									if(readerQueue.Count > 3) //Limit the number of open readers.
-									{
-										Thread.Sleep(500);
-										continue;
-									}
+                    Task taskGet = new Task(() =>
+                        {
+                            try
+                            {
+                                while(true)
+                                {
+                                    if(errException != null) break;
 
-									var reader = new AuditReader(this.spec, item, ++groupId);
-									reader.Execute();
+                                    if(readerQueue.Count > 3) //Limit the number of open readers.
+                                    {
+                                        Thread.Sleep(500);
+                                        continue;
+                                    }
 
-									switch(reader.CurrentStatus)
-									{
-										case AuditReader.Status.Ready:
-											readerQueue.Enqueue(reader);
-											break;
-										case AuditReader.Status.Failed:
-											errException = new Exception($"{AUDIT_SERVICE} : AuditReader failed: { this.spec.Config.Name }");
-											break;
-										default:
-											isComplete = true;
-											break;
-									}
+                                    var reader = new AuditReader(this.spec, item, ++groupId);
+                                    reader.Execute();
 
-									if(isComplete) break;
-								}
-							}
-							catch(Exception ex) { errException = ex; }
-						});
-					taskGet.Start();
+                                    switch(reader.CurrentStatus)
+                                    {
+                                        case AuditReader.Status.Ready:
+                                            readerQueue.Enqueue(reader);
+                                            break;
+                                        case AuditReader.Status.Failed:
+                                            errException = new Exception($"{AUDIT_SERVICE} : AuditReader failed: { this.spec.Config.Name }");
+                                            break;
+                                        default:
+                                            isComplete = true;
+                                            break;
+                                    }
 
-					Task taskWrite = new Task(() =>
-					{
-						bool isHeader = false;
+                                    if(isComplete) break;
+                                }
+                            }
+                            catch(Exception ex) { errException = ex; }
+                        });
+                    taskGet.Start();
 
-						try
-						{
-							while(true)
-							{
-								if(errException != null || (readerQueue.Count == 0 && isComplete)) break;
+                    Task taskWrite = new Task(() =>
+                    {
+                        bool isHeader = false;
 
-								if(readerQueue.Count == 0) //Is next reader available? If not, let's take a nap.
-								{
-									Thread.Sleep(5000);
-									continue;
-								}
+                        try
+                        {
+                            while(true)
+                            {
+                                if(errException != null || (readerQueue.Count == 0 && isComplete)) break;
 
-								using(var queReader = readerQueue.Dequeue())
-								using(var fs = new FileStream(item.FileName, FileMode.Append))
-								using(var writer = new StreamWriter(fs))
-								{
-									if(!isHeader) //Create and write header
-									{
-										var names = new List<string>();
-										for(int i = 0; i < queReader.DataReader.FieldCount; i++)
-										{
-											names.Add(queReader.DataReader.GetName(i));
+                                if(readerQueue.Count == 0) //Is next reader available? If not, let's take a nap.
+                                {
+                                    Thread.Sleep(5000);
+                                    continue;
+                                }
 
-											var fieldType = queReader.DataReader.GetFieldType(i);
+                                using(var queReader = readerQueue.Dequeue())
+                                using(var fs = new FileStream(item.FileName, FileMode.Append))
+                                using(var writer = new StreamWriter(fs))
+                                {
+                                    if(!isHeader) //Create and write header
+                                    {
+                                        var names = new List<string>();
+                                        for(int i = 0; i < queReader.DataReader.FieldCount; i++)
+                                        {
+                                            names.Add(queReader.DataReader.GetName(i));
 
-											if(fieldType == typeof(bool))
-											{
-												boolIDs.Add(i);
-											}
-											else if(fieldType == typeof(string))
-											{
-												stringIDs.Add(i);
-											}
-										}
+                                            var fieldType = queReader.DataReader.GetFieldType(i);
 
-										writer.WriteLine(String.Join(delimiter, names));
-										isHeader = hasData = true;
-									}
+                                            if(fieldType == typeof(bool))
+                                            {
+                                                boolIDs.Add(i);
+                                            }
+                                            else if(fieldType == typeof(string))
+                                            {
+                                                stringIDs.Add(i);
+                                            }
+                                        }
 
-									while(queReader.DataReader.Read())
-									{
-										rowActual++;
-										var data = new object[queReader.DataReader.FieldCount];
-										queReader.DataReader.GetValues(data);
+                                        writer.WriteLine(String.Join(delimiter, names));
+                                        isHeader = hasData = true;
+                                    }
 
-										Parallel.ForEach(boolIDs, (i) =>
-											{
-												if(!(data[i] is DBNull))
-												{
-													data[i] = (bool)data[i] ? BIT_TRUE : BIT_FALSE;
-												}
-											});
+                                    while(queReader.DataReader.Read())
+                                    {
+                                        rowActual++;
+                                        var data = new object[queReader.DataReader.FieldCount];
+                                        queReader.DataReader.GetValues(data);
 
-										Parallel.ForEach(stringIDs, (i) =>
-										{
-											if(!(data[i] is DBNull))
-											{
-												var value = data[i].ToString().Trim();
-												data[i] = (value.IndexOf(delimiter) >= 0) ? value.Replace(spec.Config.Delimiter, SPACE).Trim() : value;
-											}
-										});
+                                        Parallel.ForEach(boolIDs, (i) =>
+                                            {
+                                                if(!(data[i] is DBNull))
+                                                {
+                                                    data[i] = (bool)data[i] ? BIT_TRUE : BIT_FALSE;
+                                                }
+                                            });
 
-										writer.WriteLine(String.Join(delimiter, data.Select(x => x is DBNull ? String.Empty : x)));
-									}
+                                        Parallel.ForEach(stringIDs, (i) =>
+                                        {
+                                            if(!(data[i] is DBNull))
+                                            {
+                                                var value = data[i].ToString().Trim();
+                                                data[i] = (value.IndexOf(delimiter) >= 0) ? value.Replace(spec.Config.Delimiter, SPACE).Trim() : value;
+                                            }
+                                        });
 
-									queReader.Dispose();
-									if(errException != null) { break; }
-								}
-							}
-						}
-						catch(Exception ex) { errException = ex; }
-					});
-					taskWrite.Start();
+                                        writer.WriteLine(String.Join(delimiter, data.Select(x => x is DBNull ? String.Empty : x)));
+                                    }
 
-					Task.WhenAll(taskGet, taskWrite).Wait();
+                                    queReader.Dispose();
+                                    if(errException != null) { break; }
+                                }
+                            }
+                        }
+                        catch(Exception ex) { errException = ex; }
+                    });
+                    taskWrite.Start();
 
-					try
-					{
-						if(errException != null)
-						{
-							this.logger.Error($"{AUDIT_SERVICE} Exception:", errException);
-						}
-						else if(hasData)
-						{
-							this.logger.Info($"{AUDIT_SERVICE}: Completed {this.spec.Config.Name}. Total number of records: {rowActual.ToString()}");
+                    Task.WhenAll(taskGet, taskWrite).Wait();
 
-							CreateZip(item);
-							if(this.spec.Profile.IsS3Bucket)
-							{
-								UploadFileAsync(item).Wait();
-							}
-							else
-							{
-								if(!Directory.Exists(this.spec.Profile.DestinationDir))
-								{
-									Directory.CreateDirectory(this.spec.Profile.DestinationDir);
-								}
-								File.Move(item.ZipFile, Path.Combine(this.spec.Profile.DestinationDir, Path.GetFileName(item.ZipFile)));
-							}
-						}
-					}
-					catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE} Exception:", ex); }
-					finally { DeleteFile(item.FileName); }
-				}
-			}
-			catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE} Exception:", ex); }
-		}
+                    try
+                    {
+                        if(errException != null)
+                        {
+                            this.logger.Error($"{AUDIT_SERVICE} Exception:", errException);
+                        }
+                        else if(hasData)
+                        {
+                            this.logger.Info($"{AUDIT_SERVICE}: Completed {this.spec.Config.Name}. Total number of records: {rowActual.ToString()}");
 
-		void CreateZip(AuditOutputInfo outputInfo)
-		{
-			var dirFrom = Path.GetDirectoryName(outputInfo.FileName);
-			var zipDir = Path.Combine(this.spec.DirPath, $"{this.spec.Config.Proc}_{outputInfo.Region.Code}_Zip");
-			outputInfo.ZipFile = Path.Combine(zipDir, Path.ChangeExtension(Path.GetFileName(outputInfo.FileName), "zip"));
+                            CreateZip(item);
+                            if(this.spec.Profile.IsS3Bucket)
+                            {
+                                UploadFileAsync(item).Wait();
+                            }
+                            else
+                            {
+                                if(!Directory.Exists(this.spec.Profile.DestinationDir))
+                                {
+                                    Directory.CreateDirectory(this.spec.Profile.DestinationDir);
+                                }
 
-			if(!Directory.Exists(zipDir)) Directory.CreateDirectory(zipDir);
-			ZipFile.CreateFromDirectory(dirFrom, outputInfo.ZipFile);
-			DeleteFile(outputInfo.FileName);
-		}
+                                var filePath = Path.Combine(this.spec.Profile.DestinationDir, Path.GetFileName(item.ZipFile));
+                                DeleteFile(filePath);
+                                File.Move(item.ZipFile, filePath);
+                            }
 
-		DataRow GetStatusRecord(Region region)
-		{
-			try { return this.statusTable == null ? null : this.statusTable.Select(String.Format("Name = '{0}' AND Region = '{1}'", this.spec.Config.Name, region.Code)).FirstOrDefault(); }
-			catch { return null; }
-		}
+                            SetStatus(item.Region);
+                        }
+                    }
+                    catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE} Exception:", ex); }
+                    finally { DeleteFile(item.FileName, item.ZipFile); }
+                }
+            }
+            catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE} Exception:", ex); }
+        }
 
-		public bool IsReady(Region region)
-		{
-			try
-			{
-				var row = GetStatusRecord(region);
-				return row == null ? true : ((DateTime)row["LastDT"]).AddMinutes(this.spec.Config.Interval) < DateTime.Now;
-			}
-			catch { return true; }
-		}
+        void CreateZip(AuditOutputInfo outputInfo)
+        {
+            var dirFrom = Path.GetDirectoryName(outputInfo.FileName);
+            var zipDir = Path.Combine(this.spec.DirPath, $"{this.spec.Config.Proc}_{outputInfo.Region.Code}_Zip");
+            outputInfo.ZipFile = Path.Combine(zipDir, Path.ChangeExtension(Path.GetFileName(outputInfo.FileName), "zip"));
 
-		public void SetStatus(Region region)
-		{
-			try
-			{
-				if(this.statusTable == null || region == null) return;
+            if(Directory.Exists(zipDir)) Directory.Delete(zipDir, true);
+            Directory.CreateDirectory(zipDir);
+            ZipFile.CreateFromDirectory(dirFrom, outputInfo.ZipFile);
+            DeleteFile(outputInfo.FileName);
+        }
 
-				var row = GetStatusRecord(region);
-				if(row == null) statusTable.Rows.Add(new object[] { this.spec.Config.Name, region.Code, DateTime.Now });
-				else row["LastDT"] = DateTime.Now;
-			}
-			catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE}: AuditController.StatusSet()", ex); }
-		}
+        DataRow GetStatusRecord(Region region)
+        {
+            try { return this.statusTable == null ? null : this.statusTable.Select(String.Format("Name = '{0}' AND Region = '{1}'", this.spec.Config.Name, region.Code)).FirstOrDefault(); }
+            catch { return null; }
+        }
 
-		private async Task UploadFileAsync(AuditOutputInfo outputInfo)
-		{
-			try
-			{
-				if(outputInfo == null || !File.Exists(outputInfo.ZipFile)) return;
+        public bool IsReady(Region region)
+        {
+            try
+            {
+                var row = GetStatusRecord(region);
+                return row == null ? true : ((DateTime)row["LastDT"]).AddMinutes(this.spec.Config.Interval) < DateTime.Now;
+            }
+            catch { return true; }
+        }
 
-				var client = new AmazonS3Client(awsAccessKeyId: this.hsVariables.ContainsKey(this.spec.Profile.AccessKey) ? this.hsVariables[this.spec.Profile.AccessKey].ToString() : this.spec.Profile.AccessKey,
-																				awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
-																				clientConfig: new AmazonS3Config() { ServiceURL = this.spec.Profile.BucketRegion });
+        public void SetStatus(Region region)
+        {
+            try
+            {
+                if(this.statusTable == null || region == null) return;
 
-				var request = new PutObjectRequest
-				{
-					BucketName = spec.Profile.BucketName,
-					Key = $"{spec.Profile.DestinationDir}/{Path.GetFileName(outputInfo.ZipFile)}",
-					FilePath = outputInfo.ZipFile
-				};
+                var row = GetStatusRecord(region);
+                if(row == null) statusTable.Rows.Add(new object[] { this.spec.Config.Name, region.Code, DateTime.Now });
+                else row["LastDT"] = DateTime.Now;
+            }
+            catch(Exception ex) { this.logger.Error($"{AUDIT_SERVICE}: AuditController.StatusSet()", ex); }
+        }
 
-				var response = await client.PutObjectAsync(request);
-				logger.Info($"Audit file {Path.GetFileName(outputInfo.ZipFile)} has been successfuly uploaded to {request.Key}. Http status code {response.HttpStatusCode.ToString()}");
-			}
-			catch(Exception ex) { logger.Error("AmazonS3Exception: UploadFileAsync.", ex); }
-		}
-	}
+        private async Task UploadFileAsync(AuditOutputInfo outputInfo)
+        {
+            try
+            {
+                if(outputInfo == null || !File.Exists(outputInfo.ZipFile)) return;
+
+                var client = new AmazonS3Client(awsAccessKeyId: this.hsVariables.ContainsKey(this.spec.Profile.AccessKey) ? this.hsVariables[this.spec.Profile.AccessKey].ToString() : this.spec.Profile.AccessKey,
+                                                                                awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
+                                                                                clientConfig: new AmazonS3Config() { ServiceURL = this.spec.Profile.BucketRegion });
+
+                var request = new PutObjectRequest
+                {
+                    BucketName = spec.Profile.BucketName,
+                    Key = $"{spec.Profile.DestinationDir}/{Path.GetFileName(outputInfo.ZipFile)}",
+                    FilePath = outputInfo.ZipFile
+                };
+
+                var response = await client.PutObjectAsync(request);
+                logger.Info($"Audit file {Path.GetFileName(outputInfo.ZipFile)} has been successfuly uploaded to {request.Key}. Http status code {response.HttpStatusCode.ToString()}");
+            }
+            catch(Exception ex) { logger.Error("AmazonS3Exception: UploadFileAsync.", ex); }
+        }
+    }
 }

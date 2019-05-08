@@ -107,6 +107,8 @@ BEGIN
 	    [AltRetailUOM] [nvarchar](25) NULL,
 	    [DefaultScanCode] [bit] NOT NULL,
 	    [IrmaItemKey] [int] NULL,
+      [CreatedDate] [varchar](25) NULL,
+      [ModifiedDate] [varchar](25) NULL,
       INDEX ix_itemId_LocaleId nonclustered (ItemID, LocaleId));
     
 	  INSERT INTO #items
@@ -157,7 +159,9 @@ BEGIN
 	  	s.AltRetailSize [AltRetailSize],
 	  	s.AltRetailUOM [AltRetailUOM],
 	  	s.DefaultScanCode [DefaultScanCode],
-	  	s.IrmaItemKey [IrmaItemKey]
+	  	s.IrmaItemKey [IrmaItemKey],
+      Convert(varchar, s.AddedDate, 120),
+      convert(varchar, s.ModifiedDate, 120)
     FROM #group A
     INNER JOIN dbo.ItemLocaleAttributes s ON s.ItemID = A.ItemID and s.BusinessUnitID = A.BU
     INNER JOIN dbo.Items i ON s.ItemID = i.ItemID

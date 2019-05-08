@@ -50,17 +50,17 @@ BEGIN
       SELECT B.ItemID,
            B.BU AS BusinessUnitID,
            B.ScanCode,
-           Cast(A.StartDate as Date) StartDate,
-           A.EndDate,
+           Convert(varchar, A.StartDate, 23) StartDate,
+           Convert(varchar, A.EndDate, 23) EndDate,
            A.Price,
            A.PercentOff,
            A.PriceType,
            A.PriceTypeAttribute AS PriceReasonCode, --price reason type modify
            A.CurrencyCode,
            A.Multiple,
-           A.TagExpirationDate,
-           A.InsertDateUtc,
-           A.ModifiedDateUtc,
+           Convert(varchar, A.TagExpirationDate, 120) TagExpirationDate, 
+           Convert(varchar, A.InsertDateUtc, 120) InsertDateUtc, 
+           Convert(varchar, A.ModifiedDateUtc, 120) ModifiedDateUtc, 
            B.Authorized,
            A.SellableUOM
       INTO #items
