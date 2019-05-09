@@ -78,6 +78,13 @@ namespace Icon.Web.Controllers
                 viewModel = PopulateViewModelDropDowns(viewModel);
                 return View(viewModel);
             }
+            if(viewModel.LocaleSubTypeId == 1
+                && (viewModel.TouchPointGroupId ?? String.Empty).Trim().Length == 0)
+            {
+                    ModelState.AddModelError("TouchPointGroupId", "TouchPoint Group Id is Required for Hospitality subtype.");
+                    viewModel = PopulateViewModelDropDowns(viewModel);
+                    return View(viewModel);
+            }
 
             AddVenueManager manager = new AddVenueManager
             {
@@ -90,7 +97,8 @@ namespace Icon.Web.Controllers
                 LocaleSubType = localeSubTypes.Where(ls => ls.localeSubTypeID == viewModel.LocaleSubTypeId).Select(s => s.localeSubTypeDesc).First(),
                 UserName = User.Identity.Name,
                 LocaleTypeId = LocaleTypes.Venue,
-                OwnerOrgPartyId = viewModel.OwnerOrgPartyId
+                OwnerOrgPartyId = viewModel.OwnerOrgPartyId,
+                TouchPointGroupId = viewModel.TouchPointGroupId,
             };
 
             try

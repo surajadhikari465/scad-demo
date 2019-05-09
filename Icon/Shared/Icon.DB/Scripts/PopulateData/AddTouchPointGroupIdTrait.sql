@@ -1,4 +1,4 @@
-﻿USE [IconDev]
+﻿USE [icon]
 GO
 SET IDENTITY_INSERT [dbo].[Trait] ON
 GO

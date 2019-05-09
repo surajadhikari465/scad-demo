@@ -40,6 +40,7 @@ namespace Icon.Web.DataAccess.Commands
                 {
                 
                     new LocaleTrait { traitID = Traits.ModifiedUser, traitValue = data.UserName },
+                    new LocaleTrait { traitID = Traits.TouchPointGroupId, traitValue = data.TouchPointGroupId },
                 }
             };
 

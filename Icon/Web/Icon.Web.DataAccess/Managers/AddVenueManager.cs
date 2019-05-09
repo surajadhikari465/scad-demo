@@ -35,5 +35,6 @@ namespace Icon.Web.DataAccess.Managers
         public int LocaleSubTypeId { get; set; }
         public string UserName { get; set; }
         public int OwnerOrgPartyId { get; set; }
+        public string TouchPointGroupId { get; set; }
     }
 }

@@ -47,5 +47,8 @@ namespace Icon.Web.Mvc.Models
         [Editable(false)]
         public IEnumerable<SelectListItem> LocaleSubTypes { get; set; }
 
+        [Display(Name = "TouchPoint Group Id")]
+        [StringLength(50, ErrorMessage = "The TouchPoint Group Id cannot exceed 50 characters. ")]
+        public string TouchPointGroupId { get; set; }
     }
 }
