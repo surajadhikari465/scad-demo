@@ -52,8 +52,8 @@ namespace KitBuilderWebApi.Controllers
             if (ids.Contains(locale.LocaleId)) return locale.LocaleId;
             else if (ids.Contains(locale.StoreId ?? 0)) return (int)locale.StoreId;
             else if (ids.Contains(locale.MetroId ?? 0)) return (int)locale.MetroId;
-            else if (ids.Contains(locale.RegionId ?? 0)) return (int)locale.MetroId;
-            else if (ids.Contains(locale.ChainId ?? 0)) return (int)locale.MetroId;
+            else if (ids.Contains(locale.RegionId ?? 0)) return (int)locale.RegionId;
+            else if (ids.Contains(locale.ChainId ?? 0)) return (int)locale.ChainId;
             else return 0;
         } 
         [HttpGet("Locale/{kitId}/{localeId}", Name = "GetLocaleChildren")]
