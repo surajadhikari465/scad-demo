@@ -8,11 +8,13 @@ namespace KitBuilder.DataAccess.Enums
     {
         Disabled = 1,
         Building = 2,
-        PublishQueued = 3,
-        Published = 4,
-        Modifying = 5,
-        PublishFailed = 6,
-        PublishReQueued = 7,
-        PartiallyPublished = 8
+        ReadytoPublish =3,
+        PublishQueued = 4,
+        Published = 5,
+        Modifying = 6,
+        PublishFailed = 7,
+        PublishReQueued = 8,
+        PartiallyPublished = 9
+
    }
 }
