@@ -55,6 +55,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
+    <OutputPath>bin\Perf\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
@@ -155,27 +158,34 @@
     <Compile Include="SimpleInjectorInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
-	  <TransformOnBuild>true</TransformOnBuild>
+      <TransformOnBuild>true</TransformOnBuild>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Dev.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="App.Perf.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
-	  <IsTransformFile>true</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>

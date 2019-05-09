@@ -70,6 +70,9 @@
     <Folder Include="dbo\User Defined Types" />
     <Folder Include="app\Tables\" />
     <Folder Include="app\Stored Procedures\" />
+    <Folder Include="Scripts\PostDeploymentScripts\Archive" />
+    <Folder Include="Scripts\PreDeplolymentScripts" />
+    <Folder Include="Scripts\PreDeplolymentScripts\Archive" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -129,5 +132,8 @@
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
     <None Include="Jobs\KitBuilder_Data_History_Purge.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateMessageTypes.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />
   </ItemGroup>
 </Project>
