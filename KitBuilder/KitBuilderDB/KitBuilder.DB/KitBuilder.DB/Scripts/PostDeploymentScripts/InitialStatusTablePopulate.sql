@@ -17,16 +17,17 @@ BEGIN
 			SET IDENTITY_INSERT dbo.Status ON;
 			MERGE INTO Status AS Target
 			USING(VALUES(1, N'DIS', N'Disabled'),
-						(2, N'B', N'Building '),
-						(3, N'PQ', N'Publish Queued'),
-						(4, N'P', N'Published'),
-						(5, N'M', N'Modifying'),
-						(6, N'PF', N'PublishFailed'),
-						(7, N'PRQ', N'Publish ReQueued'),
-						(8, N'PP', N'Partially Published'),
-						(9, N'UA', N'Unauthorized'),
-						(10, N'P', N'Processed'),
-						(11, N'U', N'UnProcessed')
+						(2, N'B', N'Building'),
+						(3, N'RP', N'ReadyToPublish'),
+						(4, N'PQ', N'Publish Queued'),
+						(5, N'P', N'Published'),
+						(6, N'M', N'Modifying'),
+						(7, N'PF', N'PublishFailed'),
+						(8, N'PRQ', N'Publish ReQueued'),
+						(9, N'PP', N'Partially Published'),
+						(10, N'UA', N'Unauthorized'),
+						(11, N'P', N'Processed'),
+						(12, N'U', N'UnProcessed')
 					) 
 			AS Source(StatusID, StatusCode, StatusDescription)
 			ON Target.StatusID=Source.StatusID
