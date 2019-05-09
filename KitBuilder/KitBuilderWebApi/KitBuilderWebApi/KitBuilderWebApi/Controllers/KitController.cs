@@ -47,7 +47,8 @@ namespace KitBuilderWebApi.Controllers
         private IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper;
         private const string deleteKitSpName = "DeleteKitByKitId";
         private const string publishKitEvents = "PublishKitEvents";
-
+        private const string ADDORUPDATEACTION = "AddOrUpdate";
+        private const string DELETEACTION = "Delete";
         private IServiceProvider services;
         private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
 
@@ -650,8 +651,9 @@ namespace KitBuilderWebApi.Controllers
             }
             try
             {
-                var param1 = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
-                linkGroupRepository.ExecWithStoreProcedure(publishKitEvents + " @kitId", param1);
+                var paramKitId = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
+                var paramAction = new SqlParameter("action", SqlDbType.NVarChar) { Value = ADDORUPDATEACTION };
+                linkGroupRepository.ExecWithStoreProcedure(publishKitEvents + " @kitId, @Action", paramKitId, paramAction);
 
                 return NoContent();
             }

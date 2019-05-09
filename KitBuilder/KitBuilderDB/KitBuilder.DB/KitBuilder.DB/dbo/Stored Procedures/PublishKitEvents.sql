@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[PublishKitEvents] @kitId INT
+	,@Action NVARCHAR(20)
 AS
 BEGIN
 	CREATE TABLE #IncludedVenues (
@@ -158,16 +159,24 @@ BEGIN
 	INSERT INTO KitQueue (
 		KitId
 		,StoreId
+		,StoreName
 		,VenueId
+		,VenueName
 		,kitLocaleId
+		,Action
 		,STATUS
 		)
 	SELECT @kitId
-		,StoreId
+		,iv.StoreId
+		,s.LocaleName
 		,VenueId
+		,v.LocaleName
 		,KitlocaleId
+		,@Action
 		,'U'
-	FROM #IncludedVenues
+	FROM #IncludedVenues iv
+	INNER JOIN dbo.Locale s ON s.LocaleId = iv.StoreId
+	INNER JOIN dbo.Locale v ON v.LocaleId = iv.VenueID
 
 	UPDATE KitLocale
 	SET StatusId = (
