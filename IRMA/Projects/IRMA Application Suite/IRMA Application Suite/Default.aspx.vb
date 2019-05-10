@@ -11,11 +11,9 @@ Partial Public Class _Default
 
     Dim blnIRMAClientUsed As Boolean = False
     Dim blnPOETUsed As Boolean = False
-    Dim blnPromoPlannerUsed As Boolean = False
     Dim blnReportManagerUsed As Boolean = False
     Dim blnSLIMUsed As Boolean = False
     Dim blnStoreOpsUsed As Boolean = False
-    Dim blnStoreOrderGuideUsed As Boolean = False
     Dim sIRMAClientVersion As String = String.Empty
     Dim sSystemVersion As String = String.Empty
     Dim SqlConn As SqlConnection = New SqlConnection("Data Source=idt-ce\ced;Initial Catalog=BuildConfiguration;User Id=BuildConfigUser;Password=BuildConfigUser;")
@@ -150,8 +148,6 @@ Partial Public Class _Default
                     Case Else
                         sURL = "http://poet"
                 End Select
-            Case "PROMO PLANNER"
-                sURL = String.Format("http://{0}/PromoPlanner{1}", AppServer, WebAppSuffix)
             Case "REPORT MANAGER"
                 sURL = String.Format("http://{0}/ReportManager{1}", AppServer, WebAppSuffix)
             Case "SLIM"
@@ -161,8 +157,6 @@ Partial Public Class _Default
                 If AppServer.ToLower.Contains("iax") Then
                     sURL = "http://" & AppServer.ToLower.Replace("iax", "iaq") & "/StoreOps"
                 End If
-            Case "STORE ORDER GUIDE"
-                sURL = "http://" & AppServer & "/StoreOrderGuide"
         End Select
 
         Return sURL
@@ -260,11 +254,9 @@ Partial Public Class _Default
         SetURL(GetApplicationURL("DVO", AppServer, WebAppSuffix), True, "DVO", lnkDVO) ' Forcing True for is-used... all regions use DVO...
         lnkDVO.Attributes.Add("target", "_blank") ' Open in new tab/window (other links already do, by default).
         SetURL(GetApplicationURL("POET", AppServer, WebAppSuffix), blnPOETUsed, "POET", lnkPOET)
-        SetURL(GetApplicationURL("PROMO PLANNER", AppServer, WebAppSuffix), blnPromoPlannerUsed, "PROMO PLANNER", lnkPromoPlanner)
         SetURL(GetApplicationURL("REPORT MANAGER", AppServer, WebAppSuffix), blnReportManagerUsed, "REPORT MANAGER", lnkReportManager)
         SetURL(GetApplicationURL("SLIM", AppServer, WebAppSuffix), blnSLIMUsed, "SLIM", lnkSLIM)
         SetURL(GetApplicationURL("STORE OPS", AppServer, WebAppSuffix), blnStoreOpsUsed, "STORE OPS", lnkStoreOps)
-        SetURL(GetApplicationURL("STORE ORDER GUIDE", AppServer, WebAppSuffix), blnStoreOrderGuideUsed, "STORE ORDER GUIDE", lnkStoreOrderGuide)
 
         If blnIsDev Then
             lblClientInfo.Text = GetLastWriteTime("\\" & Dns.GetHostName.ToString & "\WebApps$\Deployment\" & cboRegion.SelectedValue.ToUpper & "\IRMA_Dev\IRMA.application")
@@ -292,11 +284,9 @@ Partial Public Class _Default
         If cboRegion.SelectedValue.ToUpper = "CE" And cboEnvironment.SelectedItem.Text.ToUpper <> "TEST" Then
             blnIRMAClientUsed = False
             blnPOETUsed = True
-            blnPromoPlannerUsed = False
             blnReportManagerUsed = False
             blnSLIMUsed = False
             blnStoreOpsUsed = False
-            blnStoreOrderGuideUsed = False
 
             sSystemVersion = "No IRMA System Version"
             sIRMAClientVersion = "version not found"
@@ -318,16 +308,12 @@ Partial Public Class _Default
                         sIRMAClientVersion = reader("Version").ToString
                     Case "POET"
                         blnPOETUsed = CBool(reader("UsedByRegion"))
-                    Case "PROMO PLANNER"
-                        blnPromoPlannerUsed = CBool(reader("UsedByRegion"))
                     Case "REPORT MANAGER"
                         blnReportManagerUsed = CBool(reader("UsedByRegion"))
                     Case "SLIM"
                         blnSLIMUsed = CBool(reader("UsedByRegion"))
                     Case "STORE OPS"
                         blnStoreOpsUsed = CBool(reader("UsedByRegion"))
-                    Case "STORE ORDER GUIDE"
-                        blnStoreOrderGuideUsed = CBool(reader("UsedByRegion"))
                     Case "SYSTEM"
                         sSystemVersion = reader("Version").ToString
                 End Select

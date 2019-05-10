@@ -103,13 +103,6 @@
                     </td>
                 </tr>  
                 <tr>
-                    <td style="width: 1149px; height: 21px;">
-                        <asp:HyperLink ID="lnkPromoPlanner" runat="server" Font-Bold="True" Font-Names="Arial"
-                            Font-Size="11pt" ForeColor="Blue" Style="text-align: left" Width="304px" Target="_blank">Promo Planner</asp:HyperLink></td>
-                    <td style="width: 1260px; text-align: right; height: 21px;">
-                    </td>
-                </tr>
-                <tr>
                     <td style="width: 1149px">
                         <asp:HyperLink ID="lnkReportManager" runat="server" Font-Bold="True" Font-Names="Arial"
                             Font-Size="11pt" ForeColor="Blue" Style="text-align: left" Width="304px" Target="_blank">Report Manager</asp:HyperLink></td>
@@ -127,13 +120,6 @@
                     <td style="width: 1149px">
                         <asp:HyperLink ID="lnkStoreOps" runat="server" Font-Bold="True" Font-Names="Arial"
                             Font-Size="11pt" ForeColor="Blue" Style="text-align: left" Width="304px" Target="_blank">Store Ops</asp:HyperLink></td>
-                    <td style="width: 1260px; text-align: right">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 1149px">
-                        <asp:HyperLink ID="lnkStoreOrderGuide" runat="server" Font-Bold="True" Font-Names="Arial"
-                            Font-Size="11pt" ForeColor="Blue" Style="text-align: left" Width="304px" Target="_blank">Store Order Guide</asp:HyperLink></td>
                     <td style="width: 1260px; text-align: right">
                     </td>
                 </tr>

@@ -369,21 +369,14 @@ Friend Class frmMain
     logger.Debug("mnuLocationsReport_Click exit")
   End Sub
 
-  Public Sub mnuNotAvailableItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_NotAvailableItems.Click
-    logger.Debug("mnuNotAvailableItems_Click entry")
-    frmNotAvailableReport.ShowDialog()
-    frmNotAvailableReport.Dispose()
-    logger.Debug("mnuNotAvailableItems_Click exit")
-  End Sub
+    Public Sub mnuNotAvailableItems_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_NotAvailableItems.Click
+        logger.Debug("mnuNotAvailableItems_Click entry")
+        frmNotAvailableReport.ShowDialog()
+        frmNotAvailableReport.Dispose()
+        logger.Debug("mnuNotAvailableItems_Click exit")
+    End Sub
 
-  Public Sub mnuOrderGuide_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Item_OrderGuide.Click
-    logger.Debug("mnuOrderGuide_Click entry")
-    frmOrderGuideReport.ShowDialog()
-    frmOrderGuideReport.Dispose()
-    logger.Debug("mnuOrderGuide_Click exit")
-  End Sub
-
-  Public Sub mnuOrderReports_APUpload_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_APUpload.Click
+    Public Sub mnuOrderReports_APUpload_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuReports_Order_APUpload.Click
     logger.Debug("mnuOrderReports_APUpload_Click entry")
     frmAPUploadReports.ShowDialog()
     frmAPUploadReports.Dispose()
@@ -961,7 +954,6 @@ me_exit:
     mnuReports_Item_ItemOnHandComparisonBetweenLocation.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_ItemOnHandComparisonBetweenLocation")
     mnuReports_Item_ItemOrderHistory.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_ItemOrderHistory")
     mnuReports_Item_NotAvailableItems.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_NotAvailableItems")
-    mnuReports_Item_OrderGuide.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_OrderGuide")
     mnuReports_Item_ReorderSummaryByVendor.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_ReorderSummaryByVendor")
     mnuReports_Item_ShipperItems.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_ShipperItems")
     mnuReports_Item_UPCLabels.Enabled = (gbSuperUser Or Not blnIsAdminOnly) And GetRegionalMenuAccess(ds, "mnuReports_Item_UPCLabels")
