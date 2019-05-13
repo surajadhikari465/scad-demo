@@ -120,15 +120,14 @@ foreach($valueDef in $relDocInValues){
 
 $targetEnv = $relValuesInHash.TargetEnv
 $targetEnvShort = $relValuesInHash.TargetEnvShort
-$relYear = $relValuesInHash.ReleaseYear
-$relInst = $relValuesInHash.ReleaseInstance
+$relId = $relValuesInHash.ReleaseId
 
 # Create local release-doc folder, if needed.
 $relDocFolder = "c:\temp\reldoc\"
 if(-not (Test-Path $relDocFolder)){
     New-Item -Verbose -ItemType Directory $relDocFolder
 }
-$relDoc = ($relDocFolder + "IRMA Apps Release $relYear-$relInst.$targetEnvShort.htm")
+$relDoc = ($relDocFolder + "IRMA Apps Release $relId.$targetEnvShort.htm")
 
 # Replace values in HTML file with input values.
 foreach($keyName in $relValuesInHash.keys){
@@ -171,14 +170,21 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SP___TargetEnv__.properties`n"
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SO___TargetEnv__.properties`n"
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SW___TargetEnv__.properties`n"
-        } elseif ($app -like "PublishInventorySpoilageService" `
+        } elseif (
+            # ** HoneyCrisp Apps!
+                $app -like "PublishInventorySpoilageService" `
             -or $app -like "PublishPurchaseOrderService" `
             -or $app -like "PublishReceivedOrderService" `
             -or $app -like "PublishTransferOrderService" `
             -or $app -like "RePublishInventoryMessagesService" `
             ) {
-            # **Currently only PN for HC TIBCO.
-            $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_PN___TargetEnv__.properties`n"
+            if($targetEnv -like "QA"){
+                # Generate only regions specified for HoneyCrisp TIBCO.
+                $hcTibcoRegionsList = ($relValuesInHash.HcTibcoRegions).Split(",")
+                foreach($region in $hcTibcoRegionsList){
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_" + $region + "___TargetEnv__.properties`n"
+                }
+            }
         }
         else {
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "___TargetEnv__.properties`n"
@@ -188,11 +194,39 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
 
     $propsHtm = BuildHtmlListItems -List $propsListTxt -Delim "`n" # Remove any extra lines so we dont create empty HTML list-item tags.
     $propFilesHtm = ""
+
+    $hcGenQAFLinks = $false
+    if($relValuesInHash.HcGenerateQafLinks -like "1"){ $hcGenQAFLinks = $true }
     if($targetEnv -like "QA"){
         $tibcoEnv = "QAF"
-        $propFilesHtm = $tibcoPropsHtmTmpl.Replace("__DeployPropFileList__", $propsHtm).Replace("__TargetEnv__", $tibcoEnv) # Apply properties-files list to tibco-props template, then replace env refs.
+        # Only generate QAF links if we've deployed HC apps there, based on input setting.
+        if(-not $hcGenQAFLinks){
+            $propFilesHtmWithoutHC = ""
+            $propsList = $propsHtm.Split("`n")
+            foreach($propLine in $propsList){
+                if($propLine.contains("PublishInventorySpoilageService") `
+                   -or $propLine.contains("PublishPurchaseOrderService") `
+                   -or $propLine.contains("PublishReceivedOrderService") `
+                   -or $propLine.contains("PublishTransferOrderService") `
+                   -or $propLine.contains("RePublishInventoryMessagesService") `
+                ){
+                    # We skip this app line, so we don't add to app list.
+                    continue
+                } else {
+                    $propFilesHtmWithoutHC += $propLine + "`n"
+                }
+            }
+            # Remove any trailing new-line chars from our rebuild of properties list.
+            $propFilesHtmWithoutHC = $propFilesHtmWithoutHC.trim()
+            # Now, we use the list we just generated (which will NOT have the HC apps) and we generate our tibco-properties-files HTML block.
+            $propFilesHtm = $tibcoPropsHtmTmpl.Replace("__DeployPropFileList__", $propFilesHtmWithoutHC).Replace("__TargetEnv__", $tibcoEnv) # Apply properties-files list to tibco-props template, then replace env refs.
+        } else {
+            $propFilesHtm = $tibcoPropsHtmTmpl.Replace("__DeployPropFileList__", $propsHtm).Replace("__TargetEnv__", $tibcoEnv) # Apply properties-files list to tibco-props template, then replace env refs.
+        }
+        # After generating the QAF links above, we change the tibco env var to be our next QA env, which will be generated below.
         $tibcoEnv = "QAP"
     } else {
+        # Not targeting QA env.
         $tibcoEnv = $targetEnvShort
     }
     $propFilesHtm += "`n`n" + $tibcoPropsHtmTmpl.Replace("__DeployPropFileList__", $propsHtm).Replace("__TargetEnv__", $tibcoEnv)
