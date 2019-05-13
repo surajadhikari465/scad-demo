@@ -13,6 +13,7 @@ interface ILinkGroupTableProps {
   onLinkGroupRemoved: (linkedGroup: LinkGroup) => void;
   selectedLinkGroupItems: Array<LinkGroupItem>;
   disabledLinkGroups:Array<any>;
+  onBulkSelectChange:any;
 }
 
 export default function LinkGroupTable(props: ILinkGroupTableProps) {
@@ -31,6 +32,7 @@ export default function LinkGroupTable(props: ILinkGroupTableProps) {
             onItemUnselected = {props.onItemUnselected}
             onLinkedGroupDeleted={props.onLinkGroupRemoved}
             disabledLinkGroups={props.disabledLinkGroups}
+            onBulkSelectChange={(isChecked: boolean) => props.onBulkSelectChange(isChecked, index)}
           />
         </div>
       ))

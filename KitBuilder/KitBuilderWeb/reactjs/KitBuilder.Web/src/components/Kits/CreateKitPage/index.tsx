@@ -290,6 +290,17 @@ class CreateKitPage extends React.PureComponent<
     }
   };
 
+  handleBulkSelectChange = (isChecked: boolean, index: number) => {
+    const { LinkGroups } = this.state;
+    const mappedItems = LinkGroups[index].linkGroupItemDto;
+    if (isChecked) {
+      this.setState({selectedLinkGroupItems: [...this.state.selectedLinkGroupItems,  ...mappedItems]})
+    } else {
+      const itemsToChecked = this.state.selectedLinkGroupItems.filter(l => mappedItems.some(x => x.linkGroupId !== l.linkGroupId));
+      this.setState({selectedLinkGroupItems: [...itemsToChecked]})
+    }
+  }
+
   handleLinkGroupItemDeselected = (itemToRemove: LinkGroupItem) => {
     const { selectedLinkGroupItems } = this.state;
     const itemsLeftAfterFilter = selectedLinkGroupItems.filter(
@@ -474,6 +485,7 @@ class CreateKitPage extends React.PureComponent<
                         onItemSelected={this.handleLinkGroupItemSelected}
                         onItemUnselected={this.handleLinkGroupItemDeselected}
                         disabledLinkGroups = {this.state.disabledLinkGroups}
+                        onBulkSelectChange = {this.handleBulkSelectChange}
                       />
                     </Grid>
                   </Grid>

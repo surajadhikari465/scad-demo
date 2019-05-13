@@ -9,9 +9,10 @@ interface LinkGroupsRowProps {
     linkedGroup: LinkGroup,
     onItemSelected: (item: LinkGroupItem) => void;
     onItemUnselected: (item: LinkGroupItem) => void;
-    onLinkedGroupDeleted: (linkedGroup: LinkGroup) => void;
+    onLinkedGroupDeleted: (linkedGroup: LinkGroup) => void;    
     selectedLinkedGroupItems: Array<LinkGroupItem>;
     disabledLinkGroups: Array<any>;
+    onBulkSelectChange: any;
 }
 
 export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
@@ -27,7 +28,7 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
             } else {
                 props.onItemUnselected(item);
             }
-    }
+    }    
 // @ts-ignore
     const allItems = props.linkedGroup.linkGroupItemDto.map(item => 
     <Grid item xs={6} md={4} key = {item.linkGroupItemId}>
@@ -42,12 +43,15 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
         <Grid container justify="space-between" className="pb-3">
             <Grid item>
                 <h6>{props.linkedGroup.groupName}</h6>
-            </Grid>
+            </Grid>            
+        <Grid>
+            <Checkbox  className = "item-checkbox" onChange={(e) => props.onBulkSelectChange(e.target.checked)} />  SelectAll/UnSelectAll
+        </Grid>
             <Grid>
                 <Button disabled = {props.disabledLinkGroups.includes(props.linkedGroup.linkGroupId)} color="secondary" onClick={() => props.onLinkedGroupDeleted(props.linkedGroup)}>
                     <Delete/>
                 </Button>
-            </Grid>
+            </Grid>           
             <Divider style={{width: "100%"}}/>
             <Grid item xs={12}>
             <CollapseBar collapsed = {isCollapsed} onOpen={() => setIsCollapsed(false)} onClose = {() => setIsCollapsed(true)}/>

@@ -24,3 +24,7 @@ export interface LinkGroup {
     insertDateUtc: string,
     linkGroupItemDto: Array<LinkGroupItem>,
 }
+export interface LinkGroupItemId {
+    linkGroupId: number
+    
+}
