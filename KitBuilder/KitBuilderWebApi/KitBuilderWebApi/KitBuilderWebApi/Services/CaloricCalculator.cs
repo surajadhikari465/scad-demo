@@ -18,18 +18,21 @@ namespace KitBuilderWebApi.Services
 	public class CaloricCalculator : IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>
 	{
 		private IRepository<KitLocale> kitLocaleRepository;
+		private IRepository<Items> itemsRepository;
 		private IRepository<Locale> localeRepository;
 		private IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService;
 		private IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService;
 		private ILogger<CaloricCalculator> logger;
 
 		public CaloricCalculator(IRepository<KitLocale> kitLocaleRepository,
+							IRepository<Items> itemsRepository,
 							IRepository<Locale> localeRepository,
 							IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>> getAuthorizedStatusAndPriceService,
 							IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>> getNutritionService,
 							ILogger<CaloricCalculator> logger)
 		{
 			this.kitLocaleRepository = kitLocaleRepository;
+			this.itemsRepository = itemsRepository;
 			this.localeRepository = localeRepository;
 			this.getAuthorizedStatusAndPriceService = getAuthorizedStatusAndPriceService;
 			this.getNutritionService = getNutritionService;
@@ -43,15 +46,40 @@ namespace KitBuilderWebApi.Services
 			try
 			{
 				KitLocale kitLocale = (kitLocaleRepository.GetAll().Where(kl => kl.KitLocaleId == kitLocaleByStoreParameters.KitLocaleId)
-					 .Include(k => k.Kit).ThenInclude(i => i.Item)
 					 .Include(k => k.Kit).ThenInclude(il => il.KitInstructionList)
-					 .Include(k => k.Kit).ThenInclude(klg => klg.KitLinkGroup).ThenInclude(lg => lg.LinkGroup)
+					 .Include(k => k.KitLinkGroupLocale).ThenInclude(klg => klg.KitLinkGroup).ThenInclude(lg => lg.LinkGroup)
 					 .Include(kll => kll.KitLinkGroupLocale).ThenInclude(k => k.KitLinkGroupItemLocale)
 					 .ThenInclude(i => i.KitLinkGroupItem).ThenInclude(i => i.LinkGroupItem)
 					 .ThenInclude(i => i.Item)).FirstOrDefault();
 
+				var json = JsonConvert.SerializeObject(kitLocale, Formatting.Indented,
+				new JsonSerializerSettings
+				{
+					PreserveReferencesHandling = PreserveReferencesHandling.Objects
+				});
+
 				if (kitLocale != null)
 				{
+					string mainItemScanCode = itemsRepository.Get(kitLocale.Kit.ItemId).ScanCode;
+					kitLocale.Kit.Item = new Items();
+					kitLocale.Kit.Item.ItemId = kitLocale.Kit.ItemId;
+					kitLocale.Kit.Item.ScanCode = mainItemScanCode;
+
+					kitLocale.Kit.Item.LinkGroupItem.Clear();
+					kitLocale.Kit.KitLinkGroup.Clear();
+
+					if (kitLocale.KitLinkGroupLocale != null)
+					{
+						foreach (KitLinkGroupLocale kitLinkGrouplocale in kitLocale.KitLinkGroupLocale)
+						{
+							if (kitLinkGrouplocale.KitLinkGroup != null)
+							{
+								kitLinkGrouplocale.KitLinkGroup.LinkGroup.LinkGroupItem.Clear();
+								kitLinkGrouplocale.KitLinkGroup.KitLinkGroupItem.Clear();
+								kitLinkGrouplocale.KitLinkGroup.KitLinkGroupLocale.Clear();
+							}
+						}
+					}
 					kitLocaleDto = Mapper.Map<KitLocaleDto>(kitLocale);
 				}
 				else
@@ -67,8 +95,8 @@ namespace KitBuilderWebApi.Services
 					var resultPrice = getAuthorizedStatusAndPriceService.Run(storeItemsList);
 					var itemStorePriceModelList = await resultPrice;
 
-                    //update kitlocale with Price and Store Authorization Status
-                    UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
+					//update kitlocale with Price and Store Authorization Status
+					UpdateKitLocaleForPrice(kitLocaleDto, itemStorePriceModelList);
 
 					if (kitLocaleDto.AuthorizedByStore == true)
 					{
@@ -97,7 +125,7 @@ namespace KitBuilderWebApi.Services
 			{
 				logger.LogError(e.Message);
 			}
-			
+
 			return kitLocaleDto;
 		}
 
@@ -226,7 +254,7 @@ namespace KitBuilderWebApi.Services
 						int kitLinkGroupItemDefault = kitLinkGroupItemProperties.DefaultPortions;
 						kitLinkGroupItemLocaleDto.Maximum = kitLinkGroupItemProperties.Maximum;
 						kitLinkGroupItemLocaleDto.Minimum = kitLinkGroupItemProperties.Minimum;
-						kitLinkGroupItemLocaleDto.NumOfFreePortion = kitLinkGroupItemProperties.NumOfFreePortion;
+						kitLinkGroupItemLocaleDto.NumOfFreePortion = kitLinkGroupItemProperties.NumOfFreePortions;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
 						//Calculate the total calories of all default modifiers in all the link groups, including excluded link groups,
@@ -275,7 +303,7 @@ namespace KitBuilderWebApi.Services
 
 					//The loop will end when either the Max on the KitLinkGroup is reached, 
 					//or all the available/authorized modifiers in the KitLinkGroup have been looped thru
-					while (kitLinkGroupMaxPortion > 0 && j <= modifierCounter - 1) 
+					while (kitLinkGroupMaxPortion > 0 && j <= modifierCounter - 1)
 					{
 						for (int i = 0; i < sortedByFirstElement.GetLength(0); i++)
 						{

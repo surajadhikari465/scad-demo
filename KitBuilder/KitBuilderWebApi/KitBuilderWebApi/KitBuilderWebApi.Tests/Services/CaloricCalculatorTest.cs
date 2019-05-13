@@ -27,6 +27,7 @@ namespace KitBuilderWebApi.Tests.Services
 		private string projectPath;
 		private Mock<IUnitOfWork> mockUnitWork;
 		private Mock<IRepository<KitLocale>> mockKitLocaleRepository;
+		private Mock<IRepository<Items>> mockItemsRepository;
 		private Mock<IRepository<Locale>> mockLocaleRepository;
 		private Mock<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>> mockGetAuthorizedStatusAndPriceService;
 		private Mock<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>> mockGetNutritionService;
@@ -39,12 +40,14 @@ namespace KitBuilderWebApi.Tests.Services
 		public void InitializeTest()
 		{
 			mockKitLocaleRepository = new Mock<IRepository<KitLocale>>();
+			mockItemsRepository = new Mock<IRepository<Items>>();
 			mockLocaleRepository = new Mock<IRepository<Locale>>();
 			mockGetAuthorizedStatusAndPriceService = new Mock<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>>();
 			mockGetNutritionService = new Mock<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>>();
 			mockLogger = new Mock<ILogger<CaloricCalculator>>();
 
 			caloricCalculator = new CaloricCalculator(mockKitLocaleRepository.Object,
+				mockItemsRepository.Object,
 				mockLocaleRepository.Object,
 				mockGetAuthorizedStatusAndPriceService.Object,
 				mockGetNutritionService.Object,
@@ -80,11 +83,11 @@ namespace KitBuilderWebApi.Tests.Services
 			IEnumerable<ItemNutritionAttributesDictionary> itemCaloriesList = JsonConvert.DeserializeObject<IEnumerable<ItemNutritionAttributesDictionary>>(json);
 
 			var mockContext = new Mock<KitBuilderContext>();
-			var mockDbSet = GetMockDbSet<KitLocale>(kitLocales);
-			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSet.Object);
+			var mockDbSetKitLocale = GetMockDbSet<KitLocale>(kitLocales);
+			mockContext.Setup(c => c.Set<KitLocale>()).Returns(mockDbSetKitLocale.Object);
 
 			mockKitLocaleRepository.Setup(m => m.GetAll()).Returns(kitLocales.AsQueryable());
-			mockContext.Setup(m => m.KitLocale).Returns(mockDbSet.Object);
+			mockContext.Setup(m => m.KitLocale).Returns(mockDbSetKitLocale.Object);
 
 			mockGetAuthorizedStatusAndPriceService.Setup(p => p.Run(It.IsAny<IEnumerable<StoreItem>>())).ReturnsAsync(itemStorePriceModelList);
 			mockGetNutritionService.Setup(n => n.Run(It.IsAny<ItemNutritionRequestModel>())).ReturnsAsync(itemCaloriesList);
@@ -101,7 +104,7 @@ namespace KitBuilderWebApi.Tests.Services
 			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
 			Assert.AreEqual((decimal)9.99, kitLocaleDto.Result.RegularPrice, "Kit main item price is wrong.");
 			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
-			Assert.AreEqual(830, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k =>  k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(830, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(330, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
 			Assert.AreEqual(400, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
 			Assert.AreEqual(1900, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
@@ -197,7 +200,7 @@ namespace KitBuilderWebApi.Tests.Services
 			//Then
 			Assert.AreEqual(true, kitLocaleDto.Result.AuthorizedByStore, "Kit main item authorization status is wrong.");
 			Assert.AreEqual(850, kitLocaleDto.Result.MinimumCalories, "Kit minimum calories is retrived/mapped wrong.");
-			Assert.AreEqual(0,kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
+			Assert.AreEqual(0, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 50).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit first link group maximum calories is caculated wrong.");
 			Assert.AreEqual(200, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 51).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit second link group maximum calories is caculated wrong.");
 			Assert.AreEqual(320, kitLocaleDto.Result.KitLinkGroupLocale.Where(k => k.KitLinkGroupLocaleId == 52).Select(k => k.MaximumCalories).FirstOrDefault(), "Kit third link group maximum calories is caculated wrong.");
 			Assert.AreEqual(680, kitLocaleDto.Result.MaximumCalories, "Kit max calories is calculated wrong.");
@@ -260,11 +263,22 @@ namespace KitBuilderWebApi.Tests.Services
 			List<Locale> locale = JsonConvert.DeserializeObject<List<Locale>>(json);
 
 			var mockContext = new Mock<KitBuilderContext>();
-			var mockDbSet = GetMockDbSet<Locale>(locale);
-			mockContext.Setup(c => c.Set<Locale>()).Returns(mockDbSet.Object);
+			var mockDbSetLocale = GetMockDbSet<Locale>(locale);
+			mockContext.Setup(c => c.Set<Locale>()).Returns(mockDbSetLocale.Object);
 
 			mockLocaleRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
-			mockContext.Setup(m => m.Locale).Returns(mockDbSet.Object);
+			mockContext.Setup(m => m.Locale).Returns(mockDbSetLocale.Object);
+
+			//
+			filePath = Path.Combine(projectPath, "TestData", "Items_KitMainItem.Json");
+			json = System.IO.File.ReadAllText(filePath);
+			List<Items> items = JsonConvert.DeserializeObject<List<Items>>(json);
+
+			var mockDbSetItems = GetMockDbSet<Items>(items);
+			mockContext.Setup(c => c.Set<Items>()).Returns(mockDbSetItems.Object);
+
+			mockItemsRepository.Setup(s => s.Get(It.IsAny<int>())).Returns(items[0]);
+			mockContext.Setup(m => m.Items).Returns(mockDbSetItems.Object);
 		}
 
 		private Mock<DbSet<T>> GetMockDbSet<T>(List<T> objectPassed) where T : class
