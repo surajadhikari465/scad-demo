@@ -18,6 +18,7 @@ interface IAssignKitsToLocaleState {
      excludedLocales: number[];
      showPublishConfirm: boolean;
      showSaveConfirm: boolean;
+     isReadyToPublish:boolean
 }
 
 interface IAssignKitsToLocaleProps {
@@ -40,6 +41,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                excludedLocales: [],
                showPublishConfirm: false,
                showSaveConfirm: false,
+               isReadyToPublish:true
           }
      }
 
@@ -146,14 +148,20 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
      parseData = (data: any) => {
           this.setState({ assignedLocales: [], excludedLocales: [] });
           var parsed_data = [];
-
+          var isAssignedToOneLocation = false;
           var map = {};
+
           for (var i = 0; i < data.length; i++) {
                data[i].childs = [];
                map[data[i].localeId] = data[i];
-
+       
+               if(data[i].isAssigned && data[i].statusId !=3)
+               {
+                      this.setState({isReadyToPublish:false})
+               }
                if(data[i].isAssigned) {
                     this.toggleLocaleAssigned(data[i].localeId);
+                    isAssignedToOneLocation = true;
                }
 
                if(data[i].isExcluded) {
@@ -171,6 +179,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                map[data[i].parentLocaleId].childs.push(data[i]);
           }
 
+           if(!isAssignedToOneLocation)
+           {
+               this.setState({isReadyToPublish:false})
+           }
+           
           this.setState({
                data: parsed_data
           });
@@ -255,13 +268,15 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
      render() {
           const { data } = this.state;
-
+          const { isReadyToPublish } = this.state;
+          
           return (
                <React.Fragment>
                     <h3>Kit Name: {this.state.kitName}</h3>
                     <Grid container justify= "flex-end" spacing={16}>
                     <Grid item>
-                    <Button variant="contained" color="primary" onClick={this.toggleShowPublishConfirm} >
+                    
+                    <Button disabled ={!isReadyToPublish} variant="contained" color="primary" onClick={this.toggleShowPublishConfirm} >
                               Publish
                          </Button>
                     </Grid>

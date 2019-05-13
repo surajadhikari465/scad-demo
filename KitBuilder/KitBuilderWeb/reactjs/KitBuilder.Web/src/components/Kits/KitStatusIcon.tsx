@@ -6,14 +6,18 @@ interface IKitStatusIconProps {
 const KitStatusIcon = (props: IKitStatusIconProps) => {
     
     switch(props.status) {
-        case 1: return null;
+        case 1: return <>Disabled</>;
         case 2: return <>Building</>;
-        case 3: return <>Publish Queued</>;
-        case 4: return <>Published</>;
-        case 5: return <>Modifying</>;
-        case 6: return <>Publish Failed</>;
-        case 7: return <>Publish Requeued</>;
-        case 8: return <>Partially Published</>;
+        case 3: return <>Ready To Publish</>;
+        case 4: return <>Publish Queued</>;
+        case 5: return <>Published</>;
+        case 6: return <>Modifying</>;
+        case 7: return <>Publish Failed</>;
+        case 8: return <>Publish Requeued</>;
+        case 9: return <>Partially Published</>;
+        case 10: return <>Unauthorized</>;
+        case 11: return <>Processed</>;
+        case 11: return <>UnProcessed</>;
         default: return null;
     }
 }

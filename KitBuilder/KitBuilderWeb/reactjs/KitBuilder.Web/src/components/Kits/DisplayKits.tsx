@@ -1,12 +1,12 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-
+import KitStatusIcon from './KitStatusIcon';
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Delete, Edit } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
-import KitStatusIcon from './KitStatusIcon';
+
 const styles = (theme: any) => ({
     root: {
       //  marginTop: theme.spacing.unit*2,
@@ -38,7 +38,9 @@ function DisplayKits(props: any) {
                             <div style={{ textAlign: "center" }}>Status</div>
                           ),
                         accessor: "kitStatus",
-                        Cell: (row) => <div style={{textAlign: "center", fontWeight: "bold"}}><KitStatusIcon status={row.value}/></div>
+                        Cell: row => (
+                            <div style={{textAlign: "center", fontWeight: "bold"}}><KitStatusIcon status={row.value}/></div>
+                          )
                     },
                     {
                         Header: () => (

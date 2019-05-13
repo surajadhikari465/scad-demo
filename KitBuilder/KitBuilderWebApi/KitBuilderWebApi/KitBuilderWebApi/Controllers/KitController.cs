@@ -66,7 +66,7 @@ namespace KitBuilderWebApi.Controllers
                              IRepository<LocaltypeModel> localeTypeRepository,
                              IRepository<KitInstructionList> kitInstructionListRepository,
                              ILogger<KitController> logger,
-                             IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper,
+                            IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper,
                              IServiceProvider services,
                              IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator,
                              IRepository<KitQueue> kitQueueRepository
@@ -382,38 +382,7 @@ namespace KitBuilderWebApi.Controllers
             return Ok(kit);
         }
 
-        private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
-        {
-            var statusArray = kitLocales.Select(kl => kl.StatusId);
-
-            if (statusArray.Count() == 0 || statusArray.All(status => status == (int) LocaleStatus.Building))
-            {
-                return LocaleStatus.Building;
-            }
-            else if (statusArray.Contains((int)LocaleStatus.Modifying) || statusArray.Contains((int)LocaleStatus.Building))
-            {
-                return LocaleStatus.Modifying;
-            } else if (statusArray.All(status => status == (int)LocaleStatus.PublishQueued))
-            {
-                return LocaleStatus.PublishQueued;
-            } else if (statusArray.All(status => status == (int) LocaleStatus.PublishReQueued || status == (int) LocaleStatus.PublishQueued))
-            {
-                return LocaleStatus.PublishReQueued;
-            } else if (statusArray.All(status => status == (int) LocaleStatus.Published))
-            {
-                return LocaleStatus.Published;
-            } else if (statusArray.All(status => status == 6))
-            {
-                return LocaleStatus.PublishFailed;
-            } else if (statusArray.All(status => status == (int) LocaleStatus.Published || status == (int) LocaleStatus.PublishFailed))
-            {
-                return LocaleStatus.PartiallyPublished;
-            } else
-            {
-                return 0;
-            }
-        }
-
+      
         [HttpGet(Name = "GetKits")]
         public IActionResult GetKits(KitSearchParameters kitSearchParameters)
         {
@@ -450,10 +419,11 @@ namespace KitBuilderWebApi.Controllers
             BuildQueryToFilterKitData(kitSearchParameters, ref kitsBeforePaging);
 
             var statuses = kitLocaleRepository.GetAll().Where(kl => kitsBeforePaging.Select(k => k.KitId).Contains(kl.KitId)).Select(kl => kl.Status.StatusId).ToList();
-            if(statuses.Contains(6))
+            if (statuses.Contains(6))
             {
                 //one or more of the local publishes failed
-            } else if(statuses.Contains(5))
+            }
+            else if (statuses.Contains(5))
             {
                 //one or more of the locals has pending changes
             }
@@ -593,6 +563,19 @@ namespace KitBuilderWebApi.Controllers
             {
                 kitLocale.InsertDateUtc = DateTime.UtcNow;
                 kitLocale.LastUpdatedDateUtc = DateTime.Now;
+
+                if (kitLocale.Exclude != true)
+                {
+                    if(kit.KitType == KitType.Simple)
+                    {
+                        kitLocale.StatusId = (int)LocaleStatus.ReadytoPublish;
+                    }
+                    else
+                    {
+                        kitLocale.StatusId = (int)LocaleStatus.Building;
+                    }
+                
+                }
             }
 
             var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
@@ -608,6 +591,11 @@ namespace KitBuilderWebApi.Controllers
                 currentKit.MinimumCalories = toBeUpdatedKit.MinimumCalories;
                 currentKit.Exclude = toBeUpdatedKit.Exclude;
                 currentKit.LastUpdatedDateUtc = DateTime.UtcNow;
+
+                if (kitToUpdate.Exclude != true && kit.KitType == KitType.Simple)
+                {
+                    kitToUpdate.StatusId = (int)LocaleStatus.ReadytoPublish;
+                }
             }
 
             try
@@ -681,6 +669,7 @@ namespace KitBuilderWebApi.Controllers
                 return BadRequest(ModelState);
             }
             var kitLocaleID = kitPropertiesDto.KitLinkGroupLocaleList.FirstOrDefault().KitLocaleId;
+            var kitLocale = kitLocaleRepository.Get(kitLocaleID);
 
             var passedInKitLinkGroupItemLocales = kitPropertiesDto.KitLinkGroupLocaleList.SelectMany(x => x.KitLinkGroupItemLocaleList);
 
@@ -725,6 +714,7 @@ namespace KitBuilderWebApi.Controllers
 
             UpdateKitLinkGroupItemLocale(kitLinkGroupItemLocalesToUpdate, kitPropertiesDto);
 
+            kitLocale.StatusId = (int)LocaleStatus.ReadytoPublish;
             try
             {
                 kitLinkGroupLocaleRepository.UnitOfWork.Commit();
@@ -852,7 +842,32 @@ namespace KitBuilderWebApi.Controllers
                 else
                 {
                     var kit = kitRepository.GetAll().Where(k => k.KitId == kitToSave.KitId).FirstOrDefault();
+                    var kitLocales = kitLocaleRepository.GetAll().Where(k => k.KitId == kitToSave.KitId);
 
+                    if (kitToSave.KitType != KitType.Simple && (kitLocales.Where(k => k.StatusId == (int)LocaleStatus.Published
+                            || k.StatusId == (int)LocaleStatus.PublishQueued
+                            || k.StatusId == (int)LocaleStatus.PublishReQueued).Any()) )
+                    {
+                            foreach (KitLocale kitlocale in kitLocales)
+                            {
+                                kitlocale.StatusId = (int)LocaleStatus.Modifying;
+                            }
+                    }
+
+                   else if (kitToSave.KitType == KitType.Simple)
+                    {
+                        foreach (KitLocale kitlocale in kitLocales)
+                        {
+                            kitlocale.StatusId = (int)LocaleStatus.ReadytoPublish;
+                        }
+                    }
+                    else
+                    {
+                        foreach (KitLocale kitlocale in kitLocales)
+                        {
+                            kitlocale.StatusId = (int)LocaleStatus.Building;
+                        }
+                    }
                     if (kit == null)
                     {
                         // error
@@ -889,9 +904,9 @@ namespace KitBuilderWebApi.Controllers
 
                     var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
-                    var localeRecordExists = kitLinkGroupLocaleRepository.GetAll().Where(klgl =>klgl.Exclude ==false && KitLinkGroupsToRemove.Select(k => k.KitLinkGroupId).Contains(klgl.KitLinkGroupId)).Any();
+                    var localeRecordExists = kitLinkGroupLocaleRepository.GetAll().Where(klgl => klgl.Exclude == false && KitLinkGroupsToRemove.Select(k => k.KitLinkGroupId).Contains(klgl.KitLinkGroupId)).Any();
 
-                    if(localeRecordExists)
+                    if (localeRecordExists)
                     {
                         return StatusCode(StatusCodes.Status409Conflict);
                     }
@@ -1417,6 +1432,49 @@ namespace KitBuilderWebApi.Controllers
 
             return checkKitLocale.Any() || checkLinkGroupLocale.Any();
 
+        }
+    
+        private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
+        {
+            var statusArray = kitLocales.Where(s=>s.Exclude == false).Select(kl => kl.StatusId);
+
+            if (statusArray.Count() == 0 || statusArray.Any(status => status == (int)LocaleStatus.Building))
+            {
+                return LocaleStatus.Building;
+            }
+            else if (statusArray.Any(status => status == (int)LocaleStatus.Modifying))
+            {
+                return LocaleStatus.Modifying;
+            }
+            else if (statusArray.Any(status => status == (int)LocaleStatus.ReadytoPublish))
+            {
+                return LocaleStatus.ReadytoPublish;
+            }
+            else if (statusArray.All(status => status == (int)LocaleStatus.PublishQueued))
+            {
+                return LocaleStatus.PublishQueued;
+            }
+            else if (statusArray.All(status => status == (int)LocaleStatus.PublishReQueued))
+            {
+                return LocaleStatus.PublishReQueued;
+            }
+            else if (statusArray.Any(status => status == (int)LocaleStatus.PartiallyPublished))
+            {
+                return LocaleStatus.PartiallyPublished;
+            }
+                
+            else if (statusArray.All(status => status == (int)LocaleStatus.Disabled))
+            {
+                return LocaleStatus.Disabled;
+            }
+            else if (statusArray.All(status => status == (int)LocaleStatus.Published))
+            {
+                return LocaleStatus.Published;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
