@@ -3316,7 +3316,6 @@
     <None Include="Scripts\PostDeploy\Archive\HC_DropTriggerOrderItemAddUpdDel.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30599-InsertAMAZONintoOrderExternalSource.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI30732 - PostDeploy Grant Permission - Grant User Send Email Permission.sql" />
-    <None Include="Scripts\PostDeploy\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs2\GetInstanceDataFlagStoreValues.sql" />
     <Build Include="Schema\amz\StoredProcedures\DequeueReceipts.sql" />
     <Build Include="Schema\amz\StoredProcedures\DequeueOrders.sql" />
@@ -3326,9 +3325,14 @@
     <Build Include="Schema\amz\Tables\TransferQueue.sql" />
     <Build Include="Schema\amz\StoredProcedures\DequeueTransfers.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteNutriFactsFromIcon.sql" />
-    <None Include="Scripts\PostDeploy\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetUnsentInStockMessages.sql" />
-    <None Include="Scripts\PostDeploy\PBI18549-AddInStockApplication.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI18549-AddInStockApplication.sql" />
+    <None Include="Scripts\PostDeploy\PBI4896_AddNewIDF.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI14520_AddAmazonInStockEnabledStoreVendorIdToAppConfig.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI4883_RemoveObsoleteHCDBObjects.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI18549-AddInStockApplication.sql" />
     <None Include="Scripts\PreDeploy\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
@@ -3338,8 +3342,6 @@
     <None Include="IRMA.DB.publish.xml" />
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
-    <None Include="Scripts\PostDeploy\PBI14520_AddAmazonInStockEnabledStoreVendorIdToAppConfig.sql" />
-    <None Include="Scripts\PostDeploy\PBI4883_RemoveObsoleteHCDBObjects.sql" />
     <None Include="Scripts\Other\RemoveFTPForClosedStores.sql" />
     <None Include="Scripts\PostDeploy\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
   </ItemGroup>

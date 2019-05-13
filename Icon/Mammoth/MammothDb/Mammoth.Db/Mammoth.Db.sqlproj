@@ -809,7 +809,6 @@
     <Build Include="dbo\Stored Procedures\AuditItemLocale.sql" />
     <Build Include="dbo\Stored Procedures\AuditGPMPrice.sql" />
     <Build Include="app\Tables\AppLogArchive.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddEslOnePlumAppsToAppTable.sql" />
     <Build Include="gpm\Stored Procedures\UpdatePrice.sql" />
     <Build Include="stage\Tables\ItemLocaleExportStaging.sql" />
     <Build Include="stage\Stored Procedures\ItemLocaleExport.sql" />
@@ -817,6 +816,10 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\UpdateMammothClosedStores.sql" />
     <None Include="Scripts\Projects\365Conversion\DeleteLocale_365Store_TSRegion.sql" />
     <None Include="Scripts\Projects\365Conversion\DeleteLocale_365Store_TSRegion_ROLLBACK.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddEslOnePlumAppsToAppTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AppLogArchiveRetentionPolicy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\AddMammothAuditApp.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\Deduplicate_ItemAttributesLocale_Tables.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -829,11 +832,8 @@
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
     <None Include="Scripts\Projects\GPM\R10PriceAudit_Pre765.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AppLogArchiveRetentionPolicy.sql" />
     <None Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="dbo\User Defined Types\ItemAttributesLocaleType.sql" />
-    <None Include="Scripts\PreDeploymentScripts\Deduplicate_ItemAttributesLocale_Tables.sql" />
-    <None Include="Scripts\PostDeploymentScripts\AddMammothAuditApp.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

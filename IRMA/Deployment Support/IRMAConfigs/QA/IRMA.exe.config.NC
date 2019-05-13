@@ -8,15 +8,18 @@
 	  <add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
 	  <add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
 	  <!-- Flag set to true if the database connection strings are encrypted -->
-	  <add key="encryptedConnectionStrings" value="false"/>
+	  <add key="encryptedConnectionStrings" value="True"/>
   </appSettings>
 
 	<connectionStrings>
-		<!-- Server: idd-ma   Database: ItemCatalog_Test -->
+		<!-- 
+		!! IMPORTANT NOTE !!
+		Encrypted connection strings cannot have HTML-encoded ampersands, so leave them as-is/plain (no encode).
+		-->
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV557ybdyuZH/4nAp50Z5+I/9F94mamUvwK+7ri4/MpQZ0NAeHspc9fraXNwgL+r2JWeIZAIVl+NlGHBpI8/Ak0Fhfc/w6JcpwXVCmbUurR+/Sx" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV55/Lcr+4eB1CZ86Ikkh+aaUnyvmF5ntNMVf8B573S54yGHPlxWD0oL/ZKvTtgWayRA/Qpeg4hxdnLj3l+wgLX6+9mcj+0sRQ1MLwPtVcOs787" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfM2kfeqL7F7/XNFZHFoxBgb5Ursw7bGcpHZcxwEXSDS5AQ15ddginHrerIfQOAyiSPNQnBVnFPi+JJPcIazufaQIEnJYDqV1xzoo5xq9huI35qiS1BcXWijSLJruLZ159g=="/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfE6XqBICoxlJsXrxRnqBIijInkYstR1O5vAVwMidgCfPsyX36lfsWjPhrLg8vqPdrCKFSwf2oybB5J5AB90myBbG3tic9eNGGQRa7KOFHFib"/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

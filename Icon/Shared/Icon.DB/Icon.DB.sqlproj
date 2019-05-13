@@ -691,11 +691,12 @@
     <None Include="Scripts\PopulateData\Archive\PopulateNewItemSignAttributeColumnsWithExistingData.sql" />
     <Build Include="nutrition\User Defined Types\Plu.sql" />
     <Build Include="nutrition\Stored Procedures\DeleteNutritionItems.sql" />
-    <None Include="Scripts\PopulateData\AddDeleteNutritionToEventType.sql" />
     <None Include="Scripts\PopulateData\Archive\AppLogArchiveRetentionPolicy.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateIconWebApiApp.sql" />
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery.sql" />
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddDeleteNutritionToEventType.sql" />
+    <None Include="Scripts\PopulateData\PopulateTraits.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

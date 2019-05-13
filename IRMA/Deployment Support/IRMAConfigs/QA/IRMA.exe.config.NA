@@ -4,18 +4,21 @@
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net"/>
   </configSections>
   <appSettings>
-	  <!-- identifies this application and the environment it is connected to -->
-	  <add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
-	  <add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
-	  <!-- Flag set to true if the database connection strings are encrypted -->
-	  <add key="encryptedConnectionStrings" value="False"/>
+    <!-- identifies this application and the environment it is connected to -->
+    <add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
+    <add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
+    <!-- Flag set to true if the database connection strings are encrypted -->
+    <add key="encryptedConnectionStrings" value="True"/>
   </appSettings>
   <connectionStrings>
-    <!-- Server: idd-ma   Database: ItemCatalog_Test -->
+    <!-- 
+    !! IMPORTANT NOTE !!
+    Encrypted connection strings cannot have HTML-encoded ampersands, so leave them as-is/plain (no encode).
+    -->
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV554BUG0HQYRSYQ3Yiu6sZXXcKC7HxeT04oLxce7JcumFwMAD0yggRydlmRoz6e4/6vOV8M7yETP0bHQxLIU8EdWtQz7hgQhysTo4aIAbEpyHw" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="MUWrij6TPyvWW1YnTDV556qG/+vxml8IChHojOHEWHxXBsFKS1Bsio52pDcU5mcJS7SVuWLcDorfL9Pg3l30DXGIAKas74EaksV31fO6nQgjX3/UyFOoid8Vnw5JIe8B" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfM2kfeqL7F7/XNFZHFoxBgYiUi2AiIxFu0khuC0eIcQuMr+qyG/qKGRVYZC2uZWGmhnzEHmTA3KMisLzAJEx/fxreH3opMSf6axv4MzGmVW9i3R29rhv4OfHvUlT2P1kFg=="/>
+    <add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfE6XqBICoxlJsXrxRnqBIig/Ae5dHfog7LQucAohnfNcd0e2hECklaQx5+H6T0FLvxsvPTkJvc9AYn8RAHv6l0bnFFtuBwL8uA7Pb8w2fb2S"/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
@@ -45,7 +48,7 @@
       </layout>
     </appender>
   </log4net>
-  
+
   <system.net>
     <mailSettings>
       <!-- use for production -->
@@ -56,6 +59,6 @@
   </system.net>
 
   <startup useLegacyV2RuntimeActivationPolicy="true">
-      <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0" />
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0" />
   </startup>
 </configuration>

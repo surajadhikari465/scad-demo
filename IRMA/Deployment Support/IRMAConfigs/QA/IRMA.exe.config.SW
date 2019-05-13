@@ -8,7 +8,7 @@
 	  <add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
 	  <add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
 	  <!-- Flag set to true if the database connection strings are encrypted -->
-	  <add key="encryptedConnectionStrings" value="false"/>
+	  <add key="encryptedConnectionStrings" value="True"/>
   </appSettings>
 
   <connectionStrings>

@@ -13,7 +13,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01 PBI 12345
 */
 
-:r .\Scripts\PopulateData\AddDeleteNutritionToEventType.sql --2019.02.11 PBI 4535
 :r .\Scripts\PopulateData\PopulateTraits.sql --2019.03.29 PBI 19318
 :r .\Scripts\PopulateData\AddTouchPointGroupIdTrait.sql --2019.05.03 PBI 14513
 

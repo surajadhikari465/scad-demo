@@ -12,6 +12,6 @@ Post-Deployment Script Template
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
+
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql
-:r .\AddMammothAuditApp.sql
