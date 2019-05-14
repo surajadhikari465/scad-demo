@@ -113,17 +113,19 @@ namespace KitBuilderWebApi.Services
 					}
 					else
 					{
-						logger.LogWarning(string.Format("The kit main item {0} is not authorized for store with Locale Id of {1}.", kitLocaleDto.Kit.ItemId, kitLocaleByStoreParameters.StoreLocaleId));
+						logger.LogWarning(
+                            $"The kit main item {kitLocaleDto.Kit.ItemId} is not authorized for store with Locale Id of {kitLocaleByStoreParameters.StoreLocaleId}.");
 					}
 				}
 				else
 				{
-					logger.LogWarning("kitLocaleDto cannot be derived from KitLocale with KitLocaleId : " + kitLocaleByStoreParameters.KitLocaleId.ToString());
+					logger.LogWarning($"kitLocaleDto cannot be derived from KitLocale with KitLocaleId : {kitLocaleByStoreParameters.KitLocaleId.ToString()}");
 				}
 			}
 			catch (Exception e)
 			{
 				logger.LogError(e.Message);
+                if (e.InnerException!=null) logger.LogError(e.InnerException.Message);
 			}
 
 			return kitLocaleDto;

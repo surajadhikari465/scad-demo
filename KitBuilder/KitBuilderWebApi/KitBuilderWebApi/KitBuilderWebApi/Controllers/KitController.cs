@@ -186,7 +186,10 @@ namespace KitBuilderWebApi.Controllers
                 kitLocaleDtoTask = calorieCalculator.Run(new GetKitLocaleByStoreParameters { KitLocaleId = kitProperties.KitLocaleId, StoreLocaleId = storeId });
             }
             catch (Exception ex)
-            {
+            { 
+                logger.LogError(message: "BuildKitView Error");
+                logger.LogError(message: $"{ex.Message}");
+                if (ex.InnerException != null) logger.LogError(message: $"{ex.InnerException.Message}");
                 kitView.ErrorMessage = "Error in getting data from mammoth.";
                 return kitView;
             }
@@ -280,7 +283,7 @@ namespace KitBuilderWebApi.Controllers
                         }
                         else
                         {
-                            kitView.ErrorMessage = " Error in fetching info from mammoth.";
+                            kitView.ErrorMessage = "Error in fetching info from mammoth. kitLinkGroupItemLocaleDto is null.";
                         }
                     }
                     linkGroupView.Modifiers = linkGroupView.Modifiers.OrderBy(s => s.AuthorizedByStore).ThenBy(a => a.Excluded).ToList();
@@ -291,7 +294,7 @@ namespace KitBuilderWebApi.Controllers
             }
             else
             {
-                kitView.ErrorMessage = " Error in fetching info from Mammoth.";
+                kitView.ErrorMessage = " Error in fetching info from Mammoth. Unknown kit type.";
                 return kitView;
             }
         }
