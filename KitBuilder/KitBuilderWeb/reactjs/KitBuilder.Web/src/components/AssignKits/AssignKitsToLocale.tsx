@@ -149,16 +149,22 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           this.setState({ assignedLocales: [], excludedLocales: [] });
           var parsed_data = [];
           var isAssignedToOneLocation = false;
+          var disablePublish = false;
           var map = {};
 
           for (var i = 0; i < data.length; i++) {
                data[i].childs = [];
                map[data[i].localeId] = data[i];
-       
-               if(data[i].isAssigned && data[i].statusId !=3)
-               {
+
+              
+              if((data[i].isAssigned && data[i].statusId !=3 ) )
+               {     if(data[i].statusId !=5)
+                    {
+                      disablePublish = true;
                       this.setState({isReadyToPublish:false})
+                    }
                }
+               
                if(data[i].isAssigned) {
                     this.toggleLocaleAssigned(data[i].localeId);
                     isAssignedToOneLocation = true;
@@ -179,7 +185,20 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                map[data[i].parentLocaleId].childs.push(data[i]);
           }
 
-           if(!isAssignedToOneLocation)
+          var allPublished  = data.filter(function(el:any)
+          {
+               return el.statusId !=5 && el.isAssigned
+          });
+
+           if(allPublished.length == 0 && isAssignedToOneLocation)
+          {
+               this.setState({isReadyToPublish:false})
+          }
+           else if(!disablePublish && isAssignedToOneLocation)
+           {
+               this.setState({isReadyToPublish:true})
+           }
+          else if(!isAssignedToOneLocation)
            {
                this.setState({isReadyToPublish:false})
            }

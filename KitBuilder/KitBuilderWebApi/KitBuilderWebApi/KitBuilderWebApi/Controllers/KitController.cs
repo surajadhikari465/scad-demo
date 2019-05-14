@@ -592,10 +592,10 @@ namespace KitBuilderWebApi.Controllers
                 currentKit.Exclude = toBeUpdatedKit.Exclude;
                 currentKit.LastUpdatedDateUtc = DateTime.UtcNow;
 
-                if (kitToUpdate.Exclude != true && kit.KitType == KitType.Simple)
-                {
-                    kitToUpdate.StatusId = (int)LocaleStatus.ReadytoPublish;
-                }
+                //if (kitToUpdate.Exclude != true && kit.KitType == KitType.Simple)
+                //{
+                //    kitToUpdate.StatusId = (int)LocaleStatus.ReadytoPublish;
+                //}
             }
 
             try
