@@ -44,10 +44,11 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
             <Grid item>
                 <h6>{props.linkedGroup.groupName}</h6>
             </Grid>            
-        <Grid>
-            <Checkbox  className = "item-checkbox" onChange={(e) => props.onBulkSelectChange(e.target.checked)} />  SelectAll/UnSelectAll
-        </Grid>
-            <Grid>
+            <Grid container justify = "center">
+            <Checkbox className = "item-checkbox" onChange={(e) => props.onBulkSelectChange(e.target.checked)}/>
+            SelectAll/UnSelectAll
+           </Grid>
+            <Grid container justify = "flex-end">
                 <Button disabled = {props.disabledLinkGroups.includes(props.linkedGroup.linkGroupId)} color="secondary" onClick={() => props.onLinkedGroupDeleted(props.linkedGroup)}>
                     <Delete/>
                 </Button>
