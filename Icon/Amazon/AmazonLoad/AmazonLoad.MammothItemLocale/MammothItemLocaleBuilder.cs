@@ -134,7 +134,7 @@ namespace AmazonLoad.MammothItemLocale
             }
         }
 
-
+        
             public static void ProcessMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
             string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToEsb)
@@ -169,13 +169,15 @@ namespace AmazonLoad.MammothItemLocale
                               SendMessagesToEsbServerSideGroups(chunk.ToList(), esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToEsb);
                           });
                         logger.Info($"finalizing groups {first}-{last}");
-                        sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0");
+                        sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0",commandTimeout: connectionTimeoutSeconds);
 
                     }
                     catch (Exception ex)
                     {
                         logger.Info($"group range {first}-{last} failed");
                         logger.Info(ex.Message);
+                        if (ex.InnerException !=null)
+                                logger.Info(ex.InnerException.Message);
                         logger.Info("");
 
                         var details = new Dictionary<string, string>()
@@ -208,16 +210,33 @@ namespace AmazonLoad.MammothItemLocale
             paramters.Add("GroupSize", dbType: DbType.Int32, direction: ParameterDirection.Input, value: numberOfRecordsPerEsbMessage);
             paramters.Add("MaxRows", dbType: DbType.Int32, direction: ParameterDirection.Input, value: maxNumberOfRows);
 
-            var rowCount = mammothSqlConnection.QueryFirst<int>("stage.ItemLocaleExport", paramters, commandTimeout: connectionTimeoutSeconds, commandType: CommandType.StoredProcedure); 
+            var rowCount = mammothSqlConnection.QueryFirst<int>("stage.ItemLocaleExport", paramters, commandTimeout: connectionTimeoutSeconds, commandType: CommandType.StoredProcedure);
+
+            // remove the control characters that are breaking the xml generation.
+            logger.Info($"fixing invisible bits");
+            mammothSqlConnection.Execute("update stage.ItemLocaleExportStaging set ScaleExtraText=Replace(ScaleExtraText, char(0x1e), '') where ScaleExtraText like '%'+char(0x1e)+'%'", commandTimeout: connectionTimeoutSeconds, commandType: CommandType.Text);
+
             return rowCount;
+
         }
 
         internal static void SendMessagesToEsbServerSideGroups(List<MammothItemLocaleModel> models,
             IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
             string nonReceivingSysName, string transactionType, int groupId, bool sendToEsbFlag = true)
         {
+            string message = "";
             if (!models.Any()) return;
-            string message = MessageBuilderForMammothItemLocale.BuildMessage(models);
+            try
+            {
+                message = MessageBuilderForMammothItemLocale.BuildMessage(models);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                if (ex.InnerException != null) logger.Error(ex.InnerException.Message);
+                throw;
+            }
+
             string messageId = Guid.NewGuid().ToString();
             var headers = new Dictionary<string, string>
             {
