@@ -28,13 +28,27 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             SetupFakeIconApplicationData();
             SetupFakeIconAppLogData();
             SetupFakeApiJobSummaryData();
+            SetupFakeEnvironmentData();
+            mockDashboardEnvironmentManager
+                .Setup(e => e.BuildEnvironmentViewModelFromWebhost(It.IsAny<string>()))
+                .Returns(FakeEnvironmentViewModel);
+            mockDashboardEnvironmentManager
+                .Setup(e => e.GetEnvironment(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(FakeEnvironmentViewModel);
         }
 
         protected void SetMockHttpContext(Controller controller)
         {
             var mockRequest = new Mock<HttpRequestBase>();
             mockRequest.Setup(r => r.Url).Returns(new Uri("http://fakeserver/IconDashboard/Home/Index", UriKind.Absolute));
-            mockHttpContext.Setup(req => req.Request).Returns(mockRequest.Object);
+            mockRequest.Setup(r => r.Cookies).Returns(new HttpCookieCollection { });
+
+            var mockResponse = new Mock<HttpResponseBase>();
+            mockResponse.Setup(r => r.Cookies).Returns(new HttpCookieCollection { });
+
+            mockHttpContext.Setup(c => c.Request).Returns(mockRequest.Object);
+            mockHttpContext.Setup(c => c.Response).Returns(mockResponse.Object);
+
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object, new RouteData(), controller);
         }
 
@@ -72,7 +86,6 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             }
         }
 
-
         protected IEsbEnvironmentManager esbEnvironmentManager
         {
             get
@@ -92,6 +105,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         protected IconApplicationViewModel FakeServiceViewModelA = null;
         protected IconApplicationViewModel FakeServiceViewModelB = null;
 
+        protected DashboardEnvironmentViewModel FakeEnvironmentViewModel = null;
+
         protected List<IconApplicationViewModel> AllFakeAppViewModels
         {
             get
@@ -99,6 +114,20 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
                 var list = new List<IconApplicationViewModel>() { FakeServiceViewModelA, FakeServiceViewModelB };
                 return list;
             }
+        }
+
+        private void SetupFakeEnvironmentData()
+        {
+            FakeEnvironmentViewModel = new DashboardEnvironmentViewModel
+            {
+                Name = "UnitTest",
+                id = 1,
+                AppServers = new List<AppServerViewModel>
+                {
+                    new AppServerViewModel { id = 11, parentId = 1, ServerName = "fakeServer1" },
+                    new AppServerViewModel { id = 12, parentId = 1, ServerName = "fakeServer2" },
+                }
+            };
         }
 
         protected void SetupFakeIconApplicationData()

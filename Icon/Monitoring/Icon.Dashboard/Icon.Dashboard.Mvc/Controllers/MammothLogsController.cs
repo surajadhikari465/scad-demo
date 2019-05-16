@@ -14,11 +14,13 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class MammothLogsController : BaseDashboardController
     {
-        public MammothLogsController() : this(null, null) { }
+        public MammothLogsController() : this(null, null, null) { }
 
-        public MammothLogsController(IIconDatabaseServiceWrapper iconDbService = null,
+        public MammothLogsController(
+            IDashboardEnvironmentManager environmentManager = null,
+            IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null)
-            : base(iconDbService, mammothDbService) { }
+            : base(environmentManager, iconDbService, mammothDbService) { }
 
         #region GET
         [HttpGet]
@@ -29,13 +31,16 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+
             var viewModel = new IconLogEntryCollectionViewModel();
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
             viewModel.ErrorLevel = errorLevelEnum;
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = "Mammoth Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = currentEnvironment.Name + " DB Mammoth Dashboard Log Viewer (All Mammoth Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
 
             }
@@ -43,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = appName + " Log Viewer";
+                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
 
@@ -63,6 +68,9 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             var recentLogEntryReportForApp = MammothDatabaseService.GetRecentLogEntriesReportForApp(
                 appID, new TimeSpan(hours, 0, 0), LoggingLevel.Error);
             return PartialView("_RecentLogEntriesReportPartial", recentLogEntryReportForApp);
@@ -75,6 +83,9 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
             var pagingData = (string.IsNullOrWhiteSpace(appName))
                 ? new PaginationPageSetViewModel("TableRefresh", "IconLogs", page, pageSize, errorLevelEnum)
@@ -89,20 +100,23 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
 
             var viewModel = new IconLogEntryCollectionViewModel();
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = "Mammoth Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = currentEnvironment.Name + " DB Mammoth Dashboard Log Viewer (All Mammoth Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
             }
             else
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = appName + " Log Viewer";
+                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
             return PartialView("_AppLogTablePartial", viewModel);

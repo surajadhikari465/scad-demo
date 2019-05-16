@@ -14,11 +14,13 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class IconLogsController : BaseDashboardController
     {
-        public IconLogsController() : this(null, null) { }
+        public IconLogsController() : this(null, null, null) { }
 
-        public IconLogsController(IIconDatabaseServiceWrapper iconDbService = null,
+        public IconLogsController(
+            IDashboardEnvironmentManager environmentManager = null,
+            IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null)
-            : base(iconDbService, mammothDbService) { }
+            : base(environmentManager, iconDbService, mammothDbService) { }
 
         #region GET
         [HttpGet]
@@ -29,13 +31,16 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+
             var viewModel = new IconLogEntryCollectionViewModel();
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
             viewModel.ErrorLevel = errorLevelEnum;
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = "ICON Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = currentEnvironment.Name + " DB ICON Dashboard Log Viewer (All Icon Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
 
             }
@@ -43,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = appName + " Log Viewer";
+                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
 
@@ -63,6 +68,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             var recentLogEntryReportForApp = IconDatabaseService.GetRecentLogEntriesReportForApp(
                 appID, new TimeSpan(hours, 0, 0), LoggingLevel.Error);
             return PartialView("_RecentLogEntriesReportPartial", recentLogEntryReportForApp);
@@ -75,6 +82,8 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
             var pagingData = (string.IsNullOrWhiteSpace(appName))
                 ? new PaginationPageSetViewModel("TableRefresh", "IconLogs", page, pageSize, errorLevelEnum)
@@ -89,20 +98,22 @@ namespace Icon.Dashboard.Mvc.Controllers
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
             Enum.TryParse(errorLevel, out LogErrorLevelEnum errorLevelEnum);
 
             var viewModel = new IconLogEntryCollectionViewModel();
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = "ICON Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = currentEnvironment.Name + " DB ICON Dashboard Log Viewer (All Icon Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
             }
             else
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = appName + " Log Viewer";
+                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
             return PartialView("_AppLogTablePartial", viewModel);

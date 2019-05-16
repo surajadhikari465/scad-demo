@@ -22,13 +22,15 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 
         protected ApiJobsController ConstructController()
         {
-            return ConstructController(base.iconDbServiceWrapper, base.mammothDbServiceWrapper);
+            return ConstructController(base.dashboardEnvironmentManager, base.iconDbServiceWrapper, base.mammothDbServiceWrapper);
         }
 
-        protected ApiJobsController ConstructController(IIconDatabaseServiceWrapper iconDbServiceWrapper = null,
+        protected ApiJobsController ConstructController(
+            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
+            IIconDatabaseServiceWrapper iconDbServiceWrapper = null,
             IMammothDatabaseServiceWrapper mammothDbServiceWrapper = null)
         {
-            var controller = new ApiJobsController( base.iconDbServiceWrapper);
+            var controller = new ApiJobsController(dashboardEnvironmentManager, iconDbServiceWrapper, mammothDbServiceWrapper);
             base.SetupMockHttpContext(controller, loggingDataServiceName, mockIconLoggingServiceWrapper);
             return controller;
         }
@@ -69,7 +71,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             ActionResult result = controller.Index();
 
             //Then
-            const string expectedTitle = "API Controller Message Jobs Summary";
+            const string expectedTitle = "UnitTest DB API Controller Message Jobs Summary";
             Assert.IsNotNull(controller.ViewBag.Title);
             Assert.IsInstanceOfType(controller.ViewBag.Title, typeof(string));
             Assert.AreEqual(expectedTitle, controller.ViewBag.Title.ToString());
@@ -87,7 +89,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             ActionResult result = controller.Index(messageType);
 
             //Then
-            string expectedTitle = "API Controller " + messageType.ToString() + " Message Jobs";
+            string expectedTitle = "UnitTest DB API Controller " + messageType.ToString() + " Message Jobs";
             Assert.IsNotNull(controller.ViewBag.Title);
             Assert.IsInstanceOfType(controller.ViewBag.Title, typeof(string));
             Assert.AreEqual(expectedTitle, controller.ViewBag.Title.ToString());

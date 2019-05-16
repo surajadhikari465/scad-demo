@@ -15,21 +15,23 @@ using Icon.Dashboard.Mvc.Models;
 namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
 {
     [TestClass]
-    public class LogsControllerIndexUnitTests : _MvcControllerUnitTestBase
+    public class IconLogsControllerIndexUnitTests : _MvcControllerUnitTestBase
     {
-        public LogsControllerIndexUnitTests() : base() { }
+        public IconLogsControllerIndexUnitTests() : base() { }
 
         private const string loggingDataServiceName = "loggingDataService";
 
         protected IconLogsController ConstructController()
         {
-            return ConstructController(base.iconDbServiceWrapper, base.mammothDbServiceWrapper);
+            return ConstructController(base.dashboardEnvironmentManager, base.iconDbServiceWrapper, base.mammothDbServiceWrapper);
         }
 
-        protected IconLogsController ConstructController(IIconDatabaseServiceWrapper iconDbServiceWrapper = null,
+        protected IconLogsController ConstructController(
+            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
+            IIconDatabaseServiceWrapper iconDbServiceWrapper = null,
             IMammothDatabaseServiceWrapper mammothDbServiceWrapper = null)
         {
-            var controller = new IconLogsController(base.iconDbServiceWrapper);
+            var controller = new IconLogsController(dashboardEnvironmentManager, iconDbServiceWrapper, mammothDbServiceWrapper);
             base.SetupMockHttpContext(controller, loggingDataServiceName, mockIconLoggingServiceWrapper);
             return controller;
         }
@@ -67,7 +69,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         public void MvcLogsController_Index_GetUnfiltered_Should_Set_ViewBagTitle()
         {
             //Given
-            const string expectedTitle = "ICON Dashboard Log Viewer (All Icon Apps)";
+            const string expectedTitle = "UnitTest DB ICON Dashboard Log Viewer (All Icon Apps)";
             var controller = ConstructController();
 
             //When
@@ -86,7 +88,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Given
             var fakeApp = base.FakeAppB;
             string name = fakeApp.AppName;
-            string expectedTitle = fakeApp.AppName + " Log Viewer";
+            string expectedTitle = "UnitTest DB " + fakeApp.AppName + " Log Viewer";
             var controller = ConstructController();
 
             //When

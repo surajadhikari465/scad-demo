@@ -62,7 +62,6 @@ namespace Icon.Dashboard.Mvc.Services
             return defaultServers;
         }
 
-
         public List<Tuple<string, string>> GetSupportServerLinks(EnvironmentEnum environment)
         {
             var serverLinks = new List<Tuple<string, string>>();
@@ -128,7 +127,6 @@ namespace Icon.Dashboard.Mvc.Services
             return serverLinks;
         }
 
-
         public EnvironmentEnum GetDefaultEnvironmentEnumFromWebhost(string webhost)
         {
             var defaultEnvironment = EnvironmentEnum.Undefined;
@@ -137,7 +135,7 @@ namespace Icon.Dashboard.Mvc.Services
             return defaultEnvironment;
         }
 
-        public EnvironmentEnum GetEnvironmentFromAppserver(string appserver)
+        public EnvironmentEnum GetEnvironmentEnumFromAppserver(string appserver)
         {
             var environmentEnum = EnvironmentEnum.Undefined;
 
@@ -191,6 +189,12 @@ namespace Icon.Dashboard.Mvc.Services
             return environmentViewModel;
         }
 
+        public DashboardEnvironmentViewModel BuildEnvironmentViewModelFromWebhost(string webhost)
+        {
+            var environmentEnum = GetDefaultEnvironmentEnumFromWebhost(webhost);
+            return BuildEnvironmentViewModel(environmentEnum);
+        }
+
         public DashboardEnvironmentViewModel BuildEnvironmentViewModel(EnvironmentEnum environment, List<string> defaultAppServersForEnvironment)
         {
             var environmentViewModel = new DashboardEnvironmentViewModel()
@@ -203,7 +207,29 @@ namespace Icon.Dashboard.Mvc.Services
             return environmentViewModel;
         }
 
-        public DashboardEnvironmentCollectionViewModel BuildEnvironmentCollection(EnvironmentEnum selectedEnvironment)
+        public DashboardEnvironmentCollectionViewModel BuildEnvironmentCollection(EnvironmentEnum selectedEnvironmentEnum)
+        {
+            var environmentCollection = BuildStandardEnvironmentCollection();
+
+            var selectedEnvironmentElement = environmentCollection.Environments
+                .FirstOrDefault(e=>e.Name.Equals(selectedEnvironmentEnum.ToString(), Utils.StrcmpOption));
+            environmentCollection.SelectedEnvIndex = environmentCollection.Environments.IndexOf(selectedEnvironmentElement);
+
+            return environmentCollection;
+        }
+
+        public DashboardEnvironmentCollectionViewModel BuildEnvironmentCollection(DashboardEnvironmentViewModel selectedEnvironment)
+        {
+            var environmentCollection = BuildStandardEnvironmentCollection();
+
+            var selectedEnvironmentElement = environmentCollection.Environments
+                .FirstOrDefault(e => e.Name.Equals(selectedEnvironment.Name, Utils.StrcmpOption));
+            environmentCollection.SelectedEnvIndex = environmentCollection.Environments.IndexOf(selectedEnvironmentElement);
+
+            return environmentCollection;
+        }
+
+        public DashboardEnvironmentCollectionViewModel BuildStandardEnvironmentCollection()
         {
             var environmentCollection = new DashboardEnvironmentCollectionViewModel();
 
@@ -220,7 +246,6 @@ namespace Icon.Dashboard.Mvc.Services
                        .ToList()
                 };
                 environmentCollection.Environments.Add(environmentViewModel);
-                //}
             }
             var customEnvironment = new DashboardEnvironmentViewModel()
             {
@@ -228,10 +253,42 @@ namespace Icon.Dashboard.Mvc.Services
                 AppServers = new List<AppServerViewModel>()
             };
             environmentCollection.Environments.Add(customEnvironment);
-            environmentCollection.SelectedEnvIndex = environmentCollection.Environments.IndexOf(customEnvironment);
 
             return environmentCollection;
         }
 
+        public DashboardEnvironmentViewModel GetEnvironment(string webhost, string environment = null)
+        {
+            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
+            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
+            {
+                // determine the default environment based on the hosting web server
+                chosenEnvironmentEnum = GetDefaultEnvironmentEnumFromWebhost(webhost);
+            }
+            var chosenEnvironmentViewModel = BuildEnvironmentViewModel(chosenEnvironmentEnum);
+            return chosenEnvironmentViewModel;
+        }
+
+        public bool EnvironmentIsProduction(DashboardEnvironmentViewModel chosenEnvironment)
+        {
+            // check app config for app servers associated w/ prd
+            var productionAppServers = GetDefaultAppServersForEnvironment(EnvironmentEnum.Prd);
+            foreach(var chosenAppServer in chosenEnvironment.AppServers)
+            {
+                if (productionAppServers.Any(s=> s.Equals(chosenAppServer.ServerName, Utils.StrcmpOption)))
+                {
+                    return true;
+                }
+            }
+            // just in case, check for app servers containing "prd" in them
+            foreach(var chosenAppServer in chosenEnvironment.AppServers)
+            {
+                if (chosenAppServer.ServerName.IndexOf("prd", Utils.StrcmpOption)!=-1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

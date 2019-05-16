@@ -13,21 +13,19 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class EsbController : BaseDashboardController
     {
-        protected IDashboardEnvironmentManager dashboardEnvironmentManager { get; private set; } 
         protected IEsbEnvironmentManager esbEnvironmentManager { get; private set; } 
         protected IRemoteWmiServiceWrapper remoteServicesService { get; private set; } 
 
         public EsbController() : this(null, null, null, null, null) { }
 
         public EsbController(
+            IDashboardEnvironmentManager environmentManager = null,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
-            IDashboardEnvironmentManager dashboardEnvironmentManager = null,
             IEsbEnvironmentManager esbEnvironmentMgmtSvc = null,
             IRemoteWmiServiceWrapper remoteServicesService = null)
-            : base (iconDbService, mammothDbService)
+            : base (environmentManager, iconDbService, mammothDbService)
         {
-            this.dashboardEnvironmentManager = dashboardEnvironmentManager ?? new DashboardEnvironmentManager();
             this.esbEnvironmentManager = esbEnvironmentMgmtSvc ?? new EsbEnvironmentManager();
             this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(Utils.GetMammothDbEnabledFlag(), iconDbService, mammothDbService, esbEnvironmentManager);
         }
@@ -36,24 +34,18 @@ namespace Icon.Dashboard.Mvc.Controllers
 
         [HttpGet]
         [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Index(string environment = null)
+        public ActionResult Index()
         {
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-            var environmentManager = new DashboardEnvironmentManager();
 
-            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
-            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
-            {
-                // determine the default environment based on the hosting web server
-                chosenEnvironmentEnum = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
-            }
-            var chosenEnvironmentViewModel = environmentManager.BuildEnvironmentViewModel(chosenEnvironmentEnum);
-
-            var commandsEnabled = chosenEnvironmentEnum != EnvironmentEnum.Prd &&
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+            
+            var commandsEnabled = !EnvironmentManager.EnvironmentIsProduction(currentEnvironment) &&
                 DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
             
-            var appViewModels = remoteServicesService.LoadRemoteServices(chosenEnvironmentViewModel, commandsEnabled);
+            var appViewModels = remoteServicesService.LoadRemoteServices(currentEnvironment, commandsEnabled);
 
             ViewBag.CommandsEnabled = commandsEnabled;
 
@@ -72,13 +64,16 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+
             if (String.IsNullOrWhiteSpace(name))
             {
                 return RedirectToAction("Index");
             }
             var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);
             ViewBag.Action = "Details";
-            ViewBag.Title = String.Format("View ESB Environment \"{0}\" Configuration", esbEnvironment.Name);
+            ViewBag.Title = String.Format("{0} Dashboard: View ESB Environment \"{1}\" Configuration", currentEnvironment.Name, esbEnvironment.Name);
             return View(esbEnvironment);
         }
 
@@ -90,13 +85,16 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+
             if (String.IsNullOrWhiteSpace(name))
             {
                 return RedirectToAction("Index");
             }
             var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);;
 
-            ViewBag.Title = String.Format("Edit ESB Environment \"{0}\" Configuration", esbEnvironment.Name);
+            ViewBag.Title = String.Format("{0} Dashoard: Edit ESB Environment \"{1}\" Configuration", currentEnvironment.Name, esbEnvironment.Name);
             return View(esbEnvironment);
         }
 
@@ -108,8 +106,11 @@ namespace Icon.Dashboard.Mvc.Controllers
             HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
             HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
 
+            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
+            ViewBag.Environment = currentEnvironment.Name;
+
             var viewModel = new EsbEnvironmentViewModel();
-            ViewBag.Title = "Create New ESB Environment Configuration";
+            ViewBag.Title = String.Format("{0} Dashboard: Create New ESB Environment Configuration", currentEnvironment.Name);
             return View(viewModel);
         }
 
