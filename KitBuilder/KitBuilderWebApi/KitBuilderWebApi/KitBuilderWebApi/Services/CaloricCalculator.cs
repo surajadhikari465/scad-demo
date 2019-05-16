@@ -256,7 +256,8 @@ namespace KitBuilderWebApi.Services
 						int kitLinkGroupItemDefault = kitLinkGroupItemProperties.DefaultPortions;
 						kitLinkGroupItemLocaleDto.Maximum = kitLinkGroupItemProperties.Maximum;
 						kitLinkGroupItemLocaleDto.Minimum = kitLinkGroupItemProperties.Minimum;
-						kitLinkGroupItemLocaleDto.NumOfFreePortion = kitLinkGroupItemProperties.NumOfFreePortions;
+						kitLinkGroupItemLocaleDto.NumOfFreePortions = kitLinkGroupItemProperties.NumOfFreePortions;
+						kitLinkGroupItemLocaleDto.DefaultPortions = kitLinkGroupItemProperties.DefaultPortions;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
 						//Calculate the total calories of all default modifiers in all the link groups, including excluded link groups,
