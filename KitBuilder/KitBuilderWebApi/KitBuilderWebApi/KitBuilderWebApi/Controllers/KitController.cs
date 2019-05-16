@@ -567,9 +567,7 @@ namespace KitBuilderWebApi.Controllers
                 kitLocale.InsertDateUtc = DateTime.UtcNow;
                 kitLocale.LastUpdatedDateUtc = DateTime.Now;
 
-                if (kitLocale.Exclude != true)
-                {
-                    if(kit.KitType == KitType.Simple)
+                if (kit.KitType == KitType.Simple)
                     {
                         kitLocale.StatusId = (int)LocaleStatus.ReadytoPublish;
                     }
@@ -577,8 +575,6 @@ namespace KitBuilderWebApi.Controllers
                     {
                         kitLocale.StatusId = (int)LocaleStatus.Building;
                     }
-                
-                }
             }
 
             var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));

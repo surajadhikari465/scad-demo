@@ -172,6 +172,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
                if(data[i].isExcluded) {
                     this.toggleLocaleExcluded(data[i].localeId);
+                    isAssignedToOneLocation = true;
                }
 
                if (data[i].localeTypeId == 1) {
@@ -187,7 +188,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
           var allPublished  = data.filter(function(el:any)
           {
-               return el.statusId !=5 && el.isAssigned
+               return el.statusId !=5 && (el.isAssigned || el.isExcluded)
           });
 
            if(allPublished.length == 0 && isAssignedToOneLocation)
