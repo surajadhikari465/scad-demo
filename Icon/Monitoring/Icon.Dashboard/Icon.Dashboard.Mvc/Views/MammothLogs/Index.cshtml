@@ -1,13 +1,12 @@
-﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconLogEntryViewModel>
+﻿@model Icon.Dashboard.Mvc.ViewModels.IconLogEntryCollectionViewModel
 
-@if (ViewBag.RecentLogEntriesReportList != null && ViewBag.RecentLogEntriesReportList is IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>)
+@using Icon.Dashboard.Mvc.Helpers
+
+@if (Model.RecentLogEntriesReport != null && Model.RecentLogEntriesReport.Reports.Any())
 {
     <div class="container-wide">
         <div class="row">
-            @{
-                var reports = ViewBag.RecentLogEntriesReportList as IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>;
-                Html.RenderPartial("_RecentLogEntriesReportCollectionPartial", reports);
-            }
+            @{Html.RenderPartial("_RecentLogEntriesReportCollectionPartial", Model.RecentLogEntriesReport.Reports);}
         </div>
     </div>
 }
@@ -15,61 +14,58 @@
 <p></p>
 
 <div class="container-wide">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-offset-3 col-sm-6 col-lg-4">
+            <label class="control-label col-xs-3">Error Level:</label>
+            <div class="col-xs-9">
+                @Html.EnumDropDownListFor(m => m.ErrorLevel, "-error level", new { @class = "form-control" })
+            </div>
+        </div>
+        <input class="hidden" id="appName" name="appName" value="@Model.AppName" />
+        <input class="hidden" id="page" name="page" value="@Model.PaginationModel.CurrentPage" />
+        <input class="hidden" id="pageSize" name="pageSize" value="@Model.PaginationModel.PageSize" />
+        <input class="hidden" id="errorLevel" name="errorLevel" value="@Model.ErrorLevel" />
+    </div>
+</div>
+
+<div class="container-wide">
     @{ Html.RenderPartial("_AppLogTablePartial", Model); }
 </div>
 
 <div id="pagingDiv">
-    @if (ViewBag.PaginationPageSetViewModel != null && ViewBag.PaginationPageSetViewModel is Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel)
-    {
-        Html.RenderPartial("_PaginationPartial", ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel);
-    }
+    @{Html.RenderPartial("_PaginationPartial", Model.PaginationModel); }
 </div>
 
 @section scripts {
     <script type="text/javascript">
-        @{
-            int millisecondsForRecentErrorsPolling = 30;
-            int hoursConsideredRecent = 24;
-            List<int> appIDs = new List<int>();
+    @{
+        int millisecondsForRecentErrorsPolling = Model.RecentLogEntriesReport.PollingRefreshIntervalMilliseconds;
+        int hoursConsideredRecent = Model.RecentLogEntriesReport.HoursConsideredRecent;
+        List<int> appIDs = new List<int>();
 
-            if (ViewBag.MillisecondsForRecentErrorsPolling != null)
-            {
-                Int32.TryParse(ViewBag.MillisecondsForRecentErrorsPolling.ToString(), out millisecondsForRecentErrorsPolling);
-            }
-            if (ViewBag.RecentLogEntriesHours != null)
-            {
-                Int32.TryParse(ViewBag.RecentLogEntriesHours.ToString(), out hoursConsideredRecent);
-            }
-
-            if (ViewBag.RecentLogEntriesReportList != null && ViewBag.RecentLogEntriesReportList is IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>)
-            {
-                var reports = ViewBag.RecentLogEntriesReportList as IEnumerable<Icon.Dashboard.Mvc.ViewModels.RecentLogEntriesReportViewModel>;
-                foreach (var appID in reports.Where(e => e.AppID > 0).Select(e => e.AppID))
-                {
-                    appIDs.Add(appID);
-                }
-            }
+        foreach(var appID in Model.RecentLogEntriesReport.Reports.Where(e => e.AppID > 0).Select(e => e.AppID))
+        {
+            appIDs.Add(appID);
         }
+    }
 
-        @* javascript variables set from server-side Razor code for appLogs.js*@
-        var intervalMilliseconds = @millisecondsForRecentErrorsPolling;
-        var urlForGetRecentErrorsAction = '@(Url.Action("RecentErrors", "MammothLogs"))';
-        var arrayOfFunctions = [];
+    @* javascript variables set from server-side Razor code for appLogs.js*@
+    var urlForTableRefresh = "@Url.Action("TableRefresh", "MammothLogs")";
+    var urlForGetRecentErrorsAction = '@(Url.Action("RecentErrors", "MammothLogs"))';
+    var intervalMilliseconds = @millisecondsForRecentErrorsPolling;
+    var arrayOfFunctions = [];
 
-        function buildArrayOfFunctions() {
-            @foreach (var appID in appIDs)
-            {
-                @: var func@(appID) = function(){ getRecentErrors(@(appID), @(hoursConsideredRecent));}
-                @: arrayOfFunctions.push( func@(appID) );
-            }
+    function buildArrayOfFunctions() {
+        @foreach (var appID in appIDs)
+        {
+            @: var func@(appID) = function(){ getRecentErrors(@(appID), @(hoursConsideredRecent));}
+            @: arrayOfFunctions.push( func@(appID) );
         }
+    }
 
-        @* javascript variables set from server-side Razor code for readrawPaging.js*@
-        var urlForRedrawPagingAction = '@(Url.Action("RedrawPaging", "MammothLogs", new { appName = ViewBag.AppName ?? String.Empty }))';
+    @* javascript variable set from server-side Razor code for readrawPaging.js*@
+    var urlForRedrawPagingAction = "@(Url.Action("RedrawPaging", "MammothLogs"))";
 
-        function ErrorLevelIndexChanged() {
-
-        }
     </script>
 
     @Scripts.Render("~/Scripts/appLogs.js")

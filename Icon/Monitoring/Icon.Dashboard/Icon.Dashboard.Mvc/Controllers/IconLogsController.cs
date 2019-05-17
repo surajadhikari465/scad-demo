@@ -40,7 +40,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = currentEnvironment.Name + " DB ICON Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = $"Icon {currentEnvironment.Name} DB Log Viewer (All Icon Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
 
             }
@@ -48,7 +48,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
+                viewModel.Title = $"Icon {currentEnvironment.Name} DB \"{appName}\" Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
 
@@ -106,14 +106,14 @@ namespace Icon.Dashboard.Mvc.Controllers
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = currentEnvironment.Name + " DB ICON Dashboard Log Viewer (All Icon Apps)";
+                viewModel.Title = $"Icon {currentEnvironment.Name} DB Log Viewer (All Icon Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
             }
             else
             {
                 viewModel.LogEntries = IconDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
+                viewModel.Title = $"Icon {currentEnvironment.Name} DB \"{appName}\" Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
             return PartialView("_AppLogTablePartial", viewModel);

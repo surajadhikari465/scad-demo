@@ -66,64 +66,54 @@ namespace Icon.Dashboard.Mvc.Services
         {
             var serverLinks = new List<Tuple<string, string>>();
 
-            var mammothWebSupportConfigValue = GetAppConfigValue($"mammothWebSupport_{environment}");
+            serverLinks.AddRange(GetSupportAppLinksFromConfig(environment, "iconDashboard", "Icon Dashboard"));
+            serverLinks.AddRange(GetSupportAppLinksFromConfig(environment, "mammothWebSupport", "Mammoth Web Support"));
+            serverLinks.AddRange(GetSupportAppLinksFromConfig(environment, "iconWeb", "Icon Web"));
+            serverLinks.AddRange(GetSupportAppLinksFromConfig(environment, "tibcoAdminServer", "TIBCO Admin"));
 
-            if (!string.IsNullOrWhiteSpace(mammothWebSupportConfigValue))
-            { 
-                // is there more than one entry in a comma-separated list?
-                if (mammothWebSupportConfigValue.Contains(","))
-                {
-                    int i = 1;
-                    foreach (var separateServerUrl in mammothWebSupportConfigValue.Split(','))
-                    {
-                        serverLinks.Add(new Tuple<string, string>($"Mammoth Web Support {environment} {i}", separateServerUrl));
-                        i++;
-                    }
-                }
-                else
-                {
-                    serverLinks.Add(new Tuple<string, string>($"Mammoth Web Support {environment}", mammothWebSupportConfigValue));
-                }
-            }
+            return serverLinks;
+        }
 
-            var iconWebConfigValue = GetAppConfigValue($"iconWeb_{environment}");
-            if (!string.IsNullOrWhiteSpace(iconWebConfigValue))
+        /// <summary>
+        /// Returns a list of string pairs representing a URL link and the text to display for that link in the client.
+        ///   Reads from the application .config file to find an expected app setting key-value in the format
+        ///   like the following:
+        ///   <add key="iconWeb_Test" value="http://icon-test/" />
+        ///   <add key="mammothWebSupport_QA" value="http://irmaqaapp1/MammothWebSupport" />
+        ///   <add key="tibcoAdminServer_QA" value="https://cerd1673:28090/,https://cerd1674:28090/" />
+        /// </summary>
+        /// <param name="environment">The dashboard environment (Dev,Test,QA,Perf,Prd)</param>
+        /// <param name="appSettingKeyPrefix">The app setting key root (without the _ and environment suffix),
+        ///     for example "iconWeb" or "mammothWebSupport"</param>
+        /// <param name="linkDisplayPrefix">The leading text to display to the user for the link,
+        ///     for example "Icon Web" or "Mammoth Web Support"</param>
+        /// <returns>A list of string tuples representing the link text and url, for example 
+        ///     "Icon Web Test", "http://icon-test/"
+        ///     or
+        ///     "TIBCO Admin Web 1", "https://cerd1673:28090/"
+        ///     "TIBCO Admin Web 2", "https://cerd1674:28090/"
+        ///     </returns>
+        private List<Tuple<string,string>> GetSupportAppLinksFromConfig(EnvironmentEnum environment, string appSettingKeyPrefix, string linkDisplayPrefix)
+        {
+            var serverLinks = new List<Tuple<string, string>>();
+            var configValue = GetAppConfigValue($"{appSettingKeyPrefix}_{environment}");
+            if (!string.IsNullOrWhiteSpace(configValue))
             {
                 // is there more than one entry in a comma-separated list?
-                if (iconWebConfigValue.Contains(","))
+                if (configValue.Contains(","))
                 {
                     int i = 1;
-                    foreach (var separateServerUrl in iconWebConfigValue.Split(','))
+                    foreach (var separateServerUrl in configValue.Split(','))
                     {
-                        serverLinks.Add(new Tuple<string, string>($"Icon Web {environment} {i}", separateServerUrl));
+                        serverLinks.Add(new Tuple<string, string>($"{linkDisplayPrefix} {environment} {i}", separateServerUrl));
                         i++;
                     }
                 }
                 else
                 {
-                    serverLinks.Add(new Tuple<string, string>($"Icon Web {environment}", iconWebConfigValue));
+                    serverLinks.Add(new Tuple<string, string>($"{linkDisplayPrefix} {environment}", configValue));
                 }
             }
-            
-            var tibcoAdminConfigValue = GetAppConfigValue("tibcoAdminServer_" + environment);
-            if (!string.IsNullOrWhiteSpace(tibcoAdminConfigValue))
-            {
-                // is there more than one entry in a comma-separated list?
-                if (tibcoAdminConfigValue.Contains(","))
-                {
-                    int i = 1;
-                    foreach (var separateServerUrl in tibcoAdminConfigValue.Split(','))
-                    {
-                        serverLinks.Add(new Tuple<string, string>($"TIBCO Admin {environment} {i}", separateServerUrl));
-                        i++;
-                    }
-                }
-                else
-                {
-                    serverLinks.Add(new Tuple<string, string>($"TIBCO Admin {environment}", tibcoAdminConfigValue));
-                }
-            }
-
             return serverLinks;
         }
 

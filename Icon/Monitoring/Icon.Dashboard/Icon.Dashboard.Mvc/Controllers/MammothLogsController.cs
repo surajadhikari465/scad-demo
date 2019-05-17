@@ -40,7 +40,7 @@ namespace Icon.Dashboard.Mvc.Controllers
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = currentEnvironment.Name + " DB Mammoth Dashboard Log Viewer (All Mammoth Apps)";
+                viewModel.Title = $"Mammoth {currentEnvironment.Name} DB Log Viewer (All Mammoth Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
 
             }
@@ -48,13 +48,13 @@ namespace Icon.Dashboard.Mvc.Controllers
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
+                viewModel.Title = $"Mammoth {currentEnvironment.Name} DB \"{appName}\" Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
 
             var allApps = MammothDatabaseService.GetApps();
             var recentLogEntriesReport = new RecentLogEntriesReportCollectionViewModel();
-            recentLogEntriesReport.Reports = IconDatabaseService.GetEmptyLogEntriesReportList(allApps);
+            recentLogEntriesReport.Reports = MammothDatabaseService.GetEmptyLogEntriesReportList(allApps);
             recentLogEntriesReport.HoursConsideredRecent = GetHoursForRecentErrors();
             recentLogEntriesReport.PollingRefreshIntervalMilliseconds = GetMillisecondsForRecentErrorsPolling();
             viewModel.RecentLogEntriesReport = recentLogEntriesReport;
@@ -109,14 +109,14 @@ namespace Icon.Dashboard.Mvc.Controllers
             if (string.IsNullOrWhiteSpace(appName))
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogs(page, pageSize, errorLevelEnum);
-                viewModel.Title = currentEnvironment.Name + " DB Mammoth Dashboard Log Viewer (All Mammoth Apps)";
+                viewModel.Title = $"Mammoth {currentEnvironment.Name} DB Log Viewer (All Mammoth Apps)";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, errorLevelEnum);
             }
             else
             {
                 viewModel.LogEntries = MammothDatabaseService.GetPagedAppLogsByApp(appName, page, pageSize, errorLevelEnum);
                 viewModel.AppName = appName;
-                viewModel.Title = currentEnvironment.Name + " DB " + appName + " Log Viewer";
+                viewModel.Title = $"Mammoth {currentEnvironment.Name} DB \"{appName}\" Log Viewer";
                 viewModel.PaginationModel = new PaginationPageSetViewModel( "TableRefresh", "IconLogs", page, pageSize, appName, errorLevelEnum);
             }
             return PartialView("_AppLogTablePartial", viewModel);

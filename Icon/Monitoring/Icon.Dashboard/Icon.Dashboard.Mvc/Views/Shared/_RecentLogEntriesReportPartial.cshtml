@@ -16,7 +16,7 @@
     var controller = ViewContext.RouteData.Values["controller"].ToString(); //IconLogs or MammothLogs
 }
         
-<a id="logEntryReportContent@(Model.AppID)" href="@Url.Action("Index", controller, new { id = Model.Name })" class="btn btn-link btn-block">
+<a id="logEntryReportContent@(Model.AppID)" href="@Url.Action("Index", controller, new { appName = Model.Name })" class="btn btn-link btn-block">
     @logName
     @if (Model.AppID > 0)
     {
