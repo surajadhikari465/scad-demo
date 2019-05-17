@@ -7,7 +7,7 @@ BEGIN
 	UPDATE top(@batchSize) ma
 	   SET Status = 'P'
 	OUTPUT inserted.InstructionListQueueID, inserted.KeyID, inserted.Status,inserted.MessageTimestampUtc, inserted.InsertDateUtc
-	  FROM dbo.instructionlistqueue ma WITH (UPDLOCK, READPAST)  
+	  FROM dbo.InstructionListQueue ma WITH (UPDLOCK, READPAST)  
 	 WHERE Status = 'U'
   
 	SET NOCOUNT OFF

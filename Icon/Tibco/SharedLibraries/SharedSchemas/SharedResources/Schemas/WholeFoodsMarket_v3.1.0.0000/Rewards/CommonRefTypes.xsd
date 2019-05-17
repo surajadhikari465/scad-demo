@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RewardMgmt/CommonRefTypes/V1" xmlns:prf="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:amt="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RewardMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" schemaLocation="../Amount/Amount.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/CommonRefTypes/V1" schemaLocation="../Price/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="RewardDescType">
+		<xs:annotation>
+			<xs:documentation>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="RewardMultiple">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="RewardTypeIdType">
+		<xs:annotation>
+			<xs:documentation>
+				"Inherits enumeration from Price"
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="prf:PriceTypeIdTypeEnum"/>
+	</xs:simpleType>
+	<xs:simpleType name="RewardTypeDescType">
+		<xs:annotation>
+			<xs:documentation>
+				"Inherits enumeration from Price"
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="prf:PriceTypeDescTypeEnum"/>
+	</xs:simpleType>
+	<xs:simpleType name="BreakPointStartQty">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="BreakPointEndQty">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmIntType"/>
+	</xs:simpleType>
+	<xs:simpleType name="RewardPercent">
+		<xs:restriction base="crf:PercentageType"/>
+	</xs:simpleType>
+	<!-- ================== -->
+	<!-- Complex Types			   -->
+	<!-- ================== -->
+	<xs:complexType name="RewardAmount">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="amt:AmountType"/>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

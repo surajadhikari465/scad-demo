@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/KitBuilder/KitLocale.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.1000/Item/Item.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/KitBuilder/KitLocale.xsd" schemaLocation="/SharedResources/Schemas/KitBuilder/KitLocale.xsd"/>
+    <pd:name>Processes/GetKitLocaleInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="KitLocaleId" type="xsd:int"/>
+                    <xsd:element name="StoreId" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>149</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-JSON/ns2:ActivityOutputClass/JSON">
+            <JSON>
+                <xsl:if test="kitLocaleId">
+                    <kitLocaleId>
+                        <xsl:value-of select="kitLocaleId"/>
+                    </kitLocaleId>
+                </xsl:if>
+                <xsl:if test="kitId">
+                    <kitId>
+                        <xsl:value-of select="kitId"/>
+                    </kitId>
+                </xsl:if>
+                <xsl:if test="localeId">
+                    <localeId>
+                        <xsl:value-of select="localeId"/>
+                    </localeId>
+                </xsl:if>
+                <xsl:if test="minimumCalories">
+                    <minimumCalories>
+                        <xsl:value-of select="minimumCalories"/>
+                    </minimumCalories>
+                </xsl:if>
+                <xsl:if test="maximumCalories">
+                    <maximumCalories>
+                        <xsl:value-of select="maximumCalories"/>
+                    </maximumCalories>
+                </xsl:if>
+                <xsl:if test="exclude">
+                    <exclude>
+                        <xsl:value-of select="exclude"/>
+                    </exclude>
+                </xsl:if>
+                <xsl:if test="authorizedByStore">
+                    <authorizedByStore>
+                        <xsl:value-of select="authorizedByStore"/>
+                    </authorizedByStore>
+                </xsl:if>
+                <xsl:if test="statusId">
+                    <statusId>
+                        <xsl:value-of select="statusId"/>
+                    </statusId>
+                </xsl:if>
+                <xsl:if test="insertDateUtc">
+                    <insertDateUtc>
+                        <xsl:value-of select="insertDateUtc"/>
+                    </insertDateUtc>
+                </xsl:if>
+                <xsl:if test="lastUpdatedDateUtc">
+                    <lastUpdatedDateUtc>
+                        <xsl:value-of select="lastUpdatedDateUtc"/>
+                    </lastUpdatedDateUtc>
+                </xsl:if>
+                <xsl:if test="string-length(regularPrice)>0">
+                    <xsl:if test="regularPrice">
+                        <regularPrice>
+                            <xsl:value-of select="regularPrice"/>
+                        </regularPrice>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:for-each select="kit">
+                    <kit>
+                        <xsl:if test="kitId">
+                            <kitId>
+                                <xsl:value-of select="kitId"/>
+                            </kitId>
+                        </xsl:if>
+                        <xsl:if test="itemId">
+                            <itemId>
+                                <xsl:value-of select="itemId"/>
+                            </itemId>
+                        </xsl:if>
+                        <xsl:if test="kitType">
+                            <kitType>
+                                <xsl:value-of select="kitType"/>
+                            </kitType>
+                        </xsl:if>
+                        <xsl:if test="isDisplayMandatory">
+                            <isDisplayMandatory>
+                                <xsl:value-of select="isDisplayMandatory"/>
+                            </isDisplayMandatory>
+                        </xsl:if>
+                        <xsl:if test="showRecipe">
+                            <showRecipe>
+                                <xsl:value-of select="showRecipe"/>
+                            </showRecipe>
+                        </xsl:if>
+                        <xsl:if test="description">
+                            <description>
+                                <xsl:value-of select="description"/>
+                            </description>
+                        </xsl:if>
+                        <xsl:if test="insertDateUtc">
+                            <insertDateUtc>
+                                <xsl:value-of select="insertDateUtc"/>
+                            </insertDateUtc>
+                        </xsl:if>
+                        <xsl:if test="lastUpdatedDateUtc">
+                            <lastUpdatedDateUtc>
+                                <xsl:value-of select="lastUpdatedDateUtc"/>
+                            </lastUpdatedDateUtc>
+                        </xsl:if>
+                        <xsl:for-each select="item">
+                            <item>
+                                <xsl:if test="itemId">
+                                    <itemId>
+                                        <xsl:value-of select="itemId"/>
+                                    </itemId>
+                                </xsl:if>
+                                <xsl:if test="scanCode">
+                                    <scanCode>
+                                        <xsl:value-of select="scanCode"/>
+                                    </scanCode>
+                                </xsl:if>
+                                <xsl:if test="productDesc">
+                                    <productDesc>
+                                        <xsl:value-of select="productDesc"/>
+                                    </productDesc>
+                                </xsl:if>
+                                <xsl:if test="customerFriendlyDesc">
+                                    <customerFriendlyDesc>
+                                        <xsl:value-of select="customerFriendlyDesc"/>
+                                    </customerFriendlyDesc>
+                                </xsl:if>
+                                <xsl:if test="kitchenDesc">
+                                    <kitchenDesc>
+                                        <xsl:value-of select="kitchenDesc"/>
+                                    </kitchenDesc>
+                                </xsl:if>
+                                <xsl:if test="brandName">
+                                    <brandName>
+                                        <xsl:value-of select="brandName"/>
+                                    </brandName>
+                                </xsl:if>
+                                <xsl:if test="imageUrl">
+                                    <imageUrl>
+                                        <xsl:value-of select="imageUrl"/>
+                                    </imageUrl>
+                                </xsl:if>
+                                <xsl:if test="insertDateUtc">
+                                    <insertDateUtc>
+                                        <xsl:value-of select="insertDateUtc"/>
+                                    </insertDateUtc>
+                                </xsl:if>
+                                <xsl:if test="flexibleText">
+                                    <flexibleText>
+                                        <xsl:value-of select="flexibleText"/>
+                                    </flexibleText>
+                                </xsl:if>
+                                <xsl:if test="kit">
+                                    <kit>
+                                        <xsl:value-of select="kit"/>
+                                    </kit>
+                                </xsl:if>
+                                <xsl:if test="linkGroupItemDto">
+                                    <linkGroupItemDto>
+                                        <xsl:value-of select="linkGroupItemDto"/>
+                                    </linkGroupItemDto>
+                                </xsl:if>
+                            </item>
+                        </xsl:for-each>
+                        <xsl:if test="count(kitInstructionList) > 0">
+                            <xsl:for-each select="kitInstructionList">
+                                <kitInstructionList>
+                                    <xsl:if test="kitInstructionListId">
+                                        <kitInstructionListId>
+                                            <xsl:value-of select="kitInstructionListId"/>
+                                        </kitInstructionListId>
+                                    </xsl:if>
+                                    <xsl:if test="kitId">
+                                        <kitId>
+                                            <xsl:value-of select="kitId"/>
+                                        </kitId>
+                                    </xsl:if>
+                                    <xsl:if test="instructionListId">
+                                        <instructionListId>
+                                            <xsl:value-of select="instructionListId"/>
+                                        </instructionListId>
+                                    </xsl:if>
+                                    <xsl:if test="instructionList">
+                                        <instructionList>
+                                            <xsl:value-of select="instructionList"/>
+                                        </instructionList>
+                                    </xsl:if>
+                                    <xsl:if test="kitInstructionListNavigation">
+                                        <kitInstructionListNavigation>
+                                            <xsl:value-of select="kitInstructionListNavigation"/>
+                                        </kitInstructionListNavigation>
+                                    </xsl:if>
+                                </kitInstructionList>
+                            </xsl:for-each>
+                        </xsl:if>
+                        <xsl:if test="kitLinkGroup">
+                            <kitLinkGroup>
+                                <xsl:value-of select="kitLinkGroup"/>
+                            </kitLinkGroup>
+                        </xsl:if>
+                        <xsl:if test="kitLocale">
+                            <kitLocale>
+                                <xsl:value-of select="kitLocale"/>
+                            </kitLocale>
+                        </xsl:if>
+                    </kit>
+                </xsl:for-each>
+                <xsl:if test="locale">
+                    <locale>
+                        <xsl:value-of select="locale"/>
+                    </locale>
+                </xsl:if>
+                <xsl:if test="status">
+                    <status>
+                        <xsl:value-of select="status"/>
+                    </status>
+                </xsl:if>
+                <xsl:if test="kitLinkGroupItemLocale">
+                    <kitLinkGroupItemLocale>
+                        <xsl:value-of select="kitLinkGroupItemLocale"/>
+                    </kitLinkGroupItemLocale>
+                </xsl:if>
+                <xsl:for-each select="kitLinkGroupLocale">
+                    <kitLinkGroupLocale>
+                        <xsl:if test="kitLinkGroupLocaleId">
+                            <kitLinkGroupLocaleId>
+                                <xsl:value-of select="kitLinkGroupLocaleId"/>
+                            </kitLinkGroupLocaleId>
+                        </xsl:if>
+                        <xsl:if test="kitLinkGroupId">
+                            <kitLinkGroupId>
+                                <xsl:value-of select="kitLinkGroupId"/>
+                            </kitLinkGroupId>
+                        </xsl:if>
+                        <xsl:if test="kitLocaleId">
+                            <kitLocaleId>
+                                <xsl:value-of select="kitLocaleId"/>
+                            </kitLocaleId>
+                        </xsl:if>
+                        <xsl:if test="properties">
+                            <properties>
+                                <xsl:value-of select="properties"/>
+                            </properties>
+                        </xsl:if>
+                        <xsl:if test="minimum">
+                            <minimum>
+                                <xsl:value-of select="minimum"/>
+                            </minimum>
+                        </xsl:if>
+                        <xsl:if test="maximum">
+                            <maximum>
+                                <xsl:value-of select="maximum"/>
+                            </maximum>
+                        </xsl:if>
+                        <xsl:if test="numOfFreeToppings">
+                            <numOfFreeToppings>
+                                <xsl:value-of select="numOfFreeToppings"/>
+                            </numOfFreeToppings>
+                        </xsl:if>
+                        <xsl:if test="displaySequence">
+                            <displaySequence>
+                                <xsl:value-of select="displaySequence"/>
+                            </displaySequence>
+                        </xsl:if>
+                        <xsl:if test="minimumCalories">
+                            <minimumCalories>
+                                <xsl:value-of select="minimumCalories"/>
+                            </minimumCalories>
+                        </xsl:if>
+                        <xsl:if test="maximumCalories">
+                            <maximumCalories>
+                                <xsl:value-of select="maximumCalories"/>
+                            </maximumCalories>
+                        </xsl:if>
+                        <xsl:if test="exclude">
+                            <exclude>
+                                <xsl:value-of select="exclude"/>
+                            </exclude>
+                        </xsl:if>
+                        <xsl:if test="insertDateUtc">
+                            <insertDateUtc>
+                                <xsl:value-of select="insertDateUtc"/>
+                            </insertDateUtc>
+                        </xsl:if>
+                        <xsl:if test="lastUpdatedDateUtc">
+                            <lastUpdatedDateUtc>
+                                <xsl:value-of select="lastUpdatedDateUtc"/>
+                            </lastUpdatedDateUtc>
+                        </xsl:if>
+                        <xsl:if test="lastModifiedBy">
+                            <lastModifiedBy>
+                                <xsl:value-of select="lastModifiedBy"/>
+                            </lastModifiedBy>
+                        </xsl:if>
+                        <xsl:for-each select="kitLinkGroup">
+                            <kitLinkGroup>
+                                <xsl:if test="kitLinkGroupId">
+                                    <kitLinkGroupId>
+                                        <xsl:value-of select="kitLinkGroupId"/>
+                                    </kitLinkGroupId>
+                                </xsl:if>
+                                <xsl:if test="kitId">
+                                    <kitId>
+                                        <xsl:value-of select="kitId"/>
+                                    </kitId>
+                                </xsl:if>
+                                <xsl:if test="linkGroupId">
+                                    <linkGroupId>
+                                        <xsl:value-of select="linkGroupId"/>
+                                    </linkGroupId>
+                                </xsl:if>
+                                <xsl:if test="insertDateUtc">
+                                    <insertDateUtc>
+                                        <xsl:value-of select="insertDateUtc"/>
+                                    </insertDateUtc>
+                                </xsl:if>
+                                <xsl:for-each select="linkGroup">
+                                    <linkGroup>
+                                        <xsl:if test="linkGroupId">
+                                            <linkGroupId>
+                                                <xsl:value-of select="linkGroupId"/>
+                                            </linkGroupId>
+                                        </xsl:if>
+                                        <xsl:if test="groupName">
+                                            <groupName>
+                                                <xsl:value-of select="groupName"/>
+                                            </groupName>
+                                        </xsl:if>
+                                        <xsl:if test="groupDescription">
+                                            <groupDescription>
+                                                <xsl:value-of select="groupDescription"/>
+                                            </groupDescription>
+                                        </xsl:if>
+                                        <xsl:if test="itemScanCode">
+                                            <itemScanCode>
+                                                <xsl:value-of select="itemScanCode"/>
+                                            </itemScanCode>
+                                        </xsl:if>
+                                        <xsl:if test="itemDescription">
+                                            <itemDescription>
+                                                <xsl:value-of select="itemDescription"/>
+                                            </itemDescription>
+                                        </xsl:if>
+                                        <xsl:if test="insertDateUtc">
+                                            <insertDateUtc>
+                                                <xsl:value-of select="insertDateUtc"/>
+                                            </insertDateUtc>
+                                        </xsl:if>
+                                        <xsl:if test="linkGroupItemDto">
+                                            <linkGroupItemDto>
+                                                <xsl:value-of select="linkGroupItemDto"/>
+                                            </linkGroupItemDto>
+                                        </xsl:if>
+                                    </linkGroup>
+                                </xsl:for-each>
+                                <xsl:if test="kitLinkGroupItem">
+                                    <kitLinkGroupItem>
+                                        <xsl:value-of select="kitLinkGroupItem"/>
+                                    </kitLinkGroupItem>
+                                </xsl:if>
+                                <xsl:if test="kitLinkGroupLocale">
+                                    <kitLinkGroupLocale>
+                                        <xsl:value-of select="kitLinkGroupLocale"/>
+                                    </kitLinkGroupLocale>
+                                </xsl:if>
+                            </kitLinkGroup>
+                        </xsl:for-each>
+                        <xsl:for-each select="kitLinkGroupItemLocales">
+                            <kitLinkGroupItemLocales>
+                                <xsl:if test="kitLinkGroupItemLocaleId">
+                                    <kitLinkGroupItemLocaleId>
+                                        <xsl:value-of select="kitLinkGroupItemLocaleId"/>
+                                    </kitLinkGroupItemLocaleId>
+                                </xsl:if>
+                                <xsl:if test="kitLinkGroupItemId">
+                                    <kitLinkGroupItemId>
+                                        <xsl:value-of select="kitLinkGroupItemId"/>
+                                    </kitLinkGroupItemId>
+                                </xsl:if>
+                                <xsl:if test="kitLinkGroupLocaleId">
+                                    <kitLinkGroupLocaleId>
+                                        <xsl:value-of select="kitLinkGroupLocaleId"/>
+                                    </kitLinkGroupLocaleId>
+                                </xsl:if>
+                                <xsl:if test="itemId">
+                                    <itemId>
+                                        <xsl:value-of select="itemId"/>
+                                    </itemId>
+                                </xsl:if>
+                                <xsl:if test="properties">
+                                    <properties>
+                                        <xsl:value-of select="properties"/>
+                                    </properties>
+                                </xsl:if>
+                                <xsl:if test="minimum">
+                                    <minimum>
+                                        <xsl:value-of select="minimum"/>
+                                    </minimum>
+                                </xsl:if>
+                                <xsl:if test="maximum">
+                                    <maximum>
+                                        <xsl:value-of select="maximum"/>
+                                    </maximum>
+                                </xsl:if>
+                                <xsl:if test="displaySequence">
+                                    <displaySequence>
+                                        <xsl:value-of select="displaySequence"/>
+                                    </displaySequence>
+                                </xsl:if>
+                                <xsl:if test="exclude">
+                                    <exclude>
+                                        <xsl:value-of select="exclude"/>
+                                    </exclude>
+                                </xsl:if>
+                                <xsl:if test="authorizedByStore">
+                                    <authorizedByStore>
+                                        <xsl:value-of select="authorizedByStore"/>
+                                    </authorizedByStore>
+                                </xsl:if>
+                                <xsl:if test="calories">
+                                    <calories>
+                                        <xsl:value-of select="calories"/>
+                                    </calories>
+                                </xsl:if>
+                                <xsl:if test="servingsPerPortion">
+                                    <servingsPerPortion>
+                                        <xsl:value-of select="servingsPerPortion"/>
+                                    </servingsPerPortion>
+                                </xsl:if>
+                                <xsl:if test="servingSizeDesc">
+                                    <servingSizeDesc>
+                                        <xsl:value-of select="servingSizeDesc"/>
+                                    </servingSizeDesc>
+                                </xsl:if>
+                                <xsl:if test="regularPrice">
+                                    <regularPrice>
+                                        <xsl:value-of select="regularPrice"/>
+                                    </regularPrice>
+                                </xsl:if>
+                                <xsl:if test="insertDateUtc">
+                                    <insertDateUtc>
+                                        <xsl:value-of select="insertDateUtc"/>
+                                    </insertDateUtc>
+                                </xsl:if>
+                                <xsl:if test="string-length(lastUpdatedDateUtc)>0">
+                                    <xsl:if test="lastUpdatedDateUtc">
+                                        <lastUpdatedDateUtc>
+                                            <xsl:value-of select="lastUpdatedDateUtc"/>
+                                        </lastUpdatedDateUtc>
+                                    </xsl:if>
+                                </xsl:if>
+                                <xsl:if test="lastModifiedBy">
+                                    <lastModifiedBy>
+                                        <xsl:value-of select="lastModifiedBy"/>
+                                    </lastModifiedBy>
+                                </xsl:if>
+                                <xsl:for-each select="kitLinkGroupItem">
+                                    <kitLinkGroupItem>
+                                        <xsl:if test="kitLinkGroupItemId">
+                                            <kitLinkGroupItemId>
+                                                <xsl:value-of select="kitLinkGroupItemId"/>
+                                            </kitLinkGroupItemId>
+                                        </xsl:if>
+                                        <xsl:if test="kitLinkGroupId">
+                                            <kitLinkGroupId>
+                                                <xsl:value-of select="kitLinkGroupId"/>
+                                            </kitLinkGroupId>
+                                        </xsl:if>
+                                        <xsl:if test="linkGroupItemId">
+                                            <linkGroupItemId>
+                                                <xsl:value-of select="linkGroupItemId"/>
+                                            </linkGroupItemId>
+                                        </xsl:if>
+                                        <xsl:if test="insertDateUtc">
+                                            <insertDateUtc>
+                                                <xsl:value-of select="insertDateUtc"/>
+                                            </insertDateUtc>
+                                        </xsl:if>
+                                        <xsl:for-each select="linkGroupItem">
+                                            <linkGroupItem>
+                                                <xsl:if test="linkGroupItemId">
+                                                    <linkGroupItemId>
+                                                        <xsl:value-of select="linkGroupItemId"/>
+                                                    </linkGroupItemId>
+                                                </xsl:if>
+                                                <xsl:if test="linkGroupId">
+                                                    <linkGroupId>
+                                                        <xsl:value-of select="linkGroupId"/>
+                                                    </linkGroupId>
+                                                </xsl:if>
+                                                <xsl:if test="itemId">
+                                                    <itemId>
+                                                        <xsl:value-of select="itemId"/>
+                                                    </itemId>
+                                                </xsl:if>
+                                                <xsl:if test="insertDateUtc">
+                                                    <insertDateUtc>
+                                                        <xsl:value-of select="insertDateUtc"/>
+                                                    </insertDateUtc>
+                                                </xsl:if>
+                                                <xsl:for-each select="item">
+                                                    <item>
+                                                        <xsl:if test="itemId">
+                                                            <itemId>
+                                                                <xsl:value-of select="itemId"/>
+                                                            </itemId>
+                                                        </xsl:if>
+                                                        <xsl:if test="scanCode">
+                                                            <scanCode>
+                                                                <xsl:value-of select="scanCode"/>
+                                                            </scanCode>
+                                                        </xsl:if>
+                                                        <xsl:if test="productDesc">
+                                                            <productDesc>
+                                                                <xsl:value-of select="productDesc"/>
+                                                            </productDesc>
+                                                        </xsl:if>
+                                                        <xsl:if test="customerFriendlyDesc">
+                                                            <customerFriendlyDesc>
+                                                                <xsl:value-of select="customerFriendlyDesc"/>
+                                                            </customerFriendlyDesc>
+                                                        </xsl:if>
+                                                        <xsl:if test="kitchenDesc">
+                                                            <kitchenDesc>
+                                                                <xsl:value-of select="kitchenDesc"/>
+                                                            </kitchenDesc>
+                                                        </xsl:if>
+                                                        <xsl:if test="brandName">
+                                                            <brandName>
+                                                                <xsl:value-of select="brandName"/>
+                                                            </brandName>
+                                                        </xsl:if>
+                                                        <xsl:if test="imageUrl">
+                                                            <imageUrl>
+                                                                <xsl:value-of select="imageUrl"/>
+                                                            </imageUrl>
+                                                        </xsl:if>
+                                                        <xsl:if test="insertDateUtc">
+                                                            <insertDateUtc>
+                                                                <xsl:value-of select="insertDateUtc"/>
+                                                            </insertDateUtc>
+                                                        </xsl:if>
+                                                        <xsl:if test="flexibleText">
+                                                            <flexibleText>
+                                                                <xsl:value-of select="flexibleText"/>
+                                                            </flexibleText>
+                                                        </xsl:if>
+                                                        <xsl:if test="kit">
+                                                            <kit>
+                                                                <xsl:value-of select="kit"/>
+                                                            </kit>
+                                                        </xsl:if>
+                                                        <xsl:if test="linkGroupItemDto">
+                                                            <linkGroupItemDto>
+                                                                <xsl:value-of select="linkGroupItemDto"/>
+                                                            </linkGroupItemDto>
+                                                        </xsl:if>
+                                                    </item>
+                                                </xsl:for-each>
+                                            </linkGroupItem>
+                                        </xsl:for-each>
+                                        <xsl:if test="kitLinkGroupItemLocales">
+                                            <kitLinkGroupItemLocales>
+                                                <xsl:value-of select="kitLinkGroupItemLocales"/>
+                                            </kitLinkGroupItemLocales>
+                                        </xsl:if>
+                                    </kitLinkGroupItem>
+                                </xsl:for-each>
+                                <xsl:if test="kitLocale">
+                                    <kitLocale>
+                                        <xsl:value-of select="kitLocale"/>
+                                    </kitLocale>
+                                </xsl:if>
+                                <xsl:if test="numOfFreePortions">
+                                    <numOfFreePortions>
+                                        <xsl:value-of select="numOfFreePortions"/>
+                                    </numOfFreePortions>
+                                </xsl:if>
+                                <xsl:if test="defaultPortions">
+                                    <defaultPortions>
+                                        <xsl:value-of select="defaultPortions"/>
+                                    </defaultPortions>
+                                </xsl:if>
+                            </kitLinkGroupItemLocales>
+                        </xsl:for-each>
+                    </kitLinkGroupLocale>
+                </xsl:for-each>
+            </JSON>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:JSON"/>
+    <pd:endX>956</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1555348109857</pd:targetNamespace>
+    <pd:activity name="Invoke REST API">
+        <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+        <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+        <pd:x>372</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <enableProtocolUI>None</enableProtocolUI>
+            <restMethodUI>GET</restMethodUI>
+            <restResponseType>JSON</restResponseType>
+            <authChoiceUI>No Authentication</authChoiceUI>
+            <WADLPaths/>
+            <WADLBaseURL/>
+            <restMethodIDUI/>
+            <restURI/>
+            <restInputReferNode>
+                <xsd:element name="Parameters">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Query" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Header" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Body" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Form" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Text" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Binary" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" minOccurs="0">
+                                                        <xsd:complexType>
+                                                            <xsd:choice>
+                                                                <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                <xsd:element name="text" type="xsd:string"/>
+                                                                <xsd:element name="fileName" type="xsd:string"/>
+                                                            </xsd:choice>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restInputReferNode>
+            <restOutputReferNode>
+                <xsd:element name="header">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restOutputReferNode>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <URI>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Application/KitBuilderURI,  &quot;Kits/&quot;, $Start/root/KitLocaleId, '/GetKitCalories/', $Start/root/StoreId)"/>
+                </URI>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx2:JSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Invoke-REST-API/ns2:RESTOutput/msg"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>531</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;API call didn't return data&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;404&quot;"/>
+                </messageCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Invoke REST API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke REST API</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Invoke-REST-API/ns2:RESTOutput/StatusCode !="404"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke REST API</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

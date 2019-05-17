@@ -26,7 +26,7 @@ BEGIN
 						(8, N'PRQ', N'Publish ReQueued'),
 						(9, N'PP', N'Partially Published'),
 						(10, N'UA', N'Unauthorized'),
-						(11, N'P', N'Processed'),
+						(11, N'PR', N'Processed'),
 						(12, N'U', N'UnProcessed')
 					) 
 			AS Source(StatusID, StatusCode, StatusDescription)

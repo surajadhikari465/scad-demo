@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="JSON" type="JSONType"/>
+	<xs:complexType name="itemType">
+		<xs:all>
+			<xs:element name="itemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="scanCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="productDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="customerFriendlyDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitchenDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="brandName" type="xs:string" minOccurs="0"/>
+			<xs:element name="imageUrl" type="xs:string" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="flexibleText" type="xs:string" minOccurs="0"/>
+			<xs:element name="kit" type="xs:string" minOccurs="0"/>
+			<xs:element name="linkGroupItemDto" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="kitType">
+		<xs:sequence>
+			<xs:element name="kitId" type="xs:int" minOccurs="0"/>
+			<xs:element name="itemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitType" type="xs:byte" minOccurs="0"/>
+			<xs:element name="isDisplayMandatory" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="showRecipe" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastUpdatedDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="item" type="itemType" minOccurs="0"/>
+			<xs:element name="kitInstructionList" type="kitInstructionListType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="kitLinkGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLocale" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="kitLinkGroupLocaleType">
+		<xs:sequence>
+			<xs:element name="kitLinkGroupLocaleId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitLinkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitLocaleId" type="xs:int" minOccurs="0"/>
+			<xs:element name="properties" type="xs:string" minOccurs="0"/>
+			<xs:element name="minimum" type="xs:short" minOccurs="0"/>
+			<xs:element name="maximum" type="xs:short" minOccurs="0"/>
+			<xs:element name="numOfFreeToppings" type="xs:short" minOccurs="0"/>
+			<xs:element name="displaySequence" type="xs:short" minOccurs="0"/>
+			<xs:element name="minimumCalories" type="xs:string" minOccurs="0"/>
+			<xs:element name="maximumCalories" type="xs:string" minOccurs="0"/>
+			<xs:element name="exclude" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastUpdatedDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastModifiedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLinkGroup" type="kitLinkGroupType" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItemLocales" type="kitLinkGroupItemLocalesType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="kitLinkGroupType">
+		<xs:all>
+			<xs:element name="kitLinkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitId" type="xs:int" minOccurs="0"/>
+			<xs:element name="linkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="linkGroup" type="linkGroupType" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItem" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLinkGroupLocale" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="kitLinkGroupItemLocalesType">
+		<xs:all>
+			<xs:element name="kitLinkGroupItemLocaleId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitLinkGroupLocaleId" type="xs:int" minOccurs="0"/>
+			<xs:element name="itemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="properties" type="xs:string" minOccurs="0"/>
+			<xs:element name="minimum" type="xs:int" minOccurs="0"/>
+			<xs:element name="maximum" type="xs:int" minOccurs="0"/>
+			<xs:element name="numOfFreePortions" type="xs:short" minOccurs="0"/>
+			<xs:element name="defaultPortions" type="xs:short" minOccurs="0"/>
+			<xs:element name="displaySequence" type="xs:short" minOccurs="0"/>
+			<xs:element name="exclude" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="authorizedByStore" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="calories" type="xs:string" minOccurs="0"/>
+			<xs:element name="servingsPerPortion" type="xs:string" minOccurs="0"/>
+			<xs:element name="servingSizeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="regularPrice" type="xs:string" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastUpdatedDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastModifiedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItem" type="kitLinkGroupItemType" minOccurs="0"/>
+			<xs:element name="kitLocale" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="linkGroupType">
+		<xs:all>
+			<xs:element name="linkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="groupName" type="xs:string" minOccurs="0"/>
+			<xs:element name="groupDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="itemScanCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="itemDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="linkGroupItemDto" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="kitLinkGroupItemType">
+		<xs:all>
+			<xs:element name="kitLinkGroupItemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitLinkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="linkGroupItemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="linkGroupItem" type="linkGroupItemType" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItemLocales" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="kitInstructionListType">
+		<xs:all>
+			<xs:element name="kitInstructionListId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitId" type="xs:int" minOccurs="0"/>
+			<xs:element name="instructionListId" type="xs:int" minOccurs="0"/>
+			<xs:element name="instructionList" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitInstructionListNavigation" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="JSONType">
+		<xs:sequence>
+			<xs:element name="kitLocaleId" type="xs:int" minOccurs="0"/>
+			<xs:element name="kitId" type="xs:int" minOccurs="0"/>
+			<xs:element name="localeId" type="xs:int" minOccurs="0"/>
+			<xs:element name="minimumCalories" type="xs:string" minOccurs="0"/>
+			<xs:element name="maximumCalories" type="xs:string" minOccurs="0"/>
+			<xs:element name="exclude" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="authorizedByStore" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="statusId" type="xs:short" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="lastUpdatedDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="regularPrice" type="xs:float" minOccurs="0"/>
+			<xs:element name="kit" type="kitType" minOccurs="0"/>
+			<xs:element name="locale" type="xs:string" minOccurs="0"/>
+			<xs:element name="status" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLinkGroupItemLocale" type="xs:string" minOccurs="0"/>
+			<xs:element name="kitLinkGroupLocale" type="kitLinkGroupLocaleType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="linkGroupItemType">
+		<xs:all>
+			<xs:element name="linkGroupItemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="linkGroupId" type="xs:int" minOccurs="0"/>
+			<xs:element name="itemId" type="xs:int" minOccurs="0"/>
+			<xs:element name="instructionListId" type="xs:int" minOccurs="0"/>
+			<xs:element name="insertDateUtc" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="instructionList" type="xs:string" minOccurs="0"/>
+			<xs:element name="item" type="itemType" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

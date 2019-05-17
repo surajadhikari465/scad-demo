@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/KitBuilder/Events.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/KitBuilder/KitEvents.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.wfm.com/KitBuilder/Events.xsd" schemaLocation="/SharedResources/Schemas/KitBuilder/Events.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/KitBuilder/KitEvents.xsd" schemaLocation="/SharedResources/Schemas/KitBuilder/KitEvents.xsd"/>
+    <pd:name>Processes/GroupKitEventsByStoreId.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:Events"/>
+    <pd:startX>107</pd:startX>
+    <pd:startY>62</pd:startY>
+    <pd:returnBindings>
+        <pfx2:Events>
+            <xsl:copy-of select="$GroupedEvents/AccumulatedOutput/pfx2:Events/pfx2:EventType"/>
+        </pfx2:Events>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:Events"/>
+    <pd:endX>922</pd:endX>
+    <pd:endY>179</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1554127895367</pd:targetNamespace>
+    <pd:activity name="SortyByStoreId">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>139</pd:x>
+        <pd:y>189</pd:y>
+        <config>
+            <element ref="pfx2:Events"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Events>
+                <xsl:for-each select="$Start/pfx2:Events/pfx2:EventType">
+                    <xsl:sort select="pfx2:StoreId" data-type="number"/>
+                    <pfx2:EventType>
+                        <pfx2:KitQueueId>
+                            <xsl:value-of select="pfx2:KitQueueId"/>
+                        </pfx2:KitQueueId>
+                        <pfx2:KitID>
+                            <xsl:value-of select="pfx2:KitID"/>
+                        </pfx2:KitID>
+                        <pfx2:StoreId>
+                            <xsl:value-of select="pfx2:StoreId"/>
+                        </pfx2:StoreId>
+                        <pfx2:StoreName>
+                            <xsl:value-of select="pfx2:StoreName"/>
+                        </pfx2:StoreName>
+                        <pfx2:VenueId>
+                            <xsl:value-of select="pfx2:VenueId"/>
+                        </pfx2:VenueId>
+                        <pfx2:VenueName>
+                            <xsl:value-of select="pfx2:VenueName"/>
+                        </pfx2:VenueName>
+                        <pfx2:kitLocaleId>
+                            <xsl:value-of select="pfx2:kitLocaleId"/>
+                        </pfx2:kitLocaleId>
+                        <pfx2:Action>
+                            <xsl:value-of select="pfx2:Action"/>
+                        </pfx2:Action>
+                        <pfx2:Status>
+                            <xsl:value-of select="pfx2:Status"/>
+                        </pfx2:Status>
+                    </pfx2:EventType>
+                </xsl:for-each>
+            </pfx2:Events>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UniqueStoreIds">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>315</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="StoreId" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each-group select="$Start/pfx2:Events/pfx2:EventType" group-by="pfx2:StoreId">
+                    <StoreId>
+                        <xsl:value-of select="pfx2:StoreId"/>
+                    </StoreId>
+                </xsl:for-each-group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="IterateByStoreId">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>95</pd:y>
+        <pd:width>298</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$UniqueStoreIds/root/StoreId</pd:over>
+            <pd:iterationElementSlot>CurrentStoreId</pd:iterationElementSlot>
+            <pd:indexSlot>k</pd:indexSlot>
+            <pd:outSlot>GroupedEvents</pd:outSlot>
+            <pd:activityOutputName>EventsOfCurrentStore</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>EventsOfCurrentStore</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>EventsOfCurrentStore</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="EventsOfCurrentStore">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>563</pd:x>
+            <pd:y>166</pd:y>
+            <config>
+                <element ref="pfx2:Events"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:Events>
+                    <xsl:copy-of select="$SortyByStoreId/pfx2:Events/pfx2:EventType[pfx2:StoreId = $CurrentStoreId/StoreId][1]"/>
+                </pfx2:Events>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SortyByStoreId</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SortyByStoreId</pd:from>
+        <pd:to>UniqueStoreIds</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IterateByStoreId</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UniqueStoreIds</pd:from>
+        <pd:to>IterateByStoreId</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

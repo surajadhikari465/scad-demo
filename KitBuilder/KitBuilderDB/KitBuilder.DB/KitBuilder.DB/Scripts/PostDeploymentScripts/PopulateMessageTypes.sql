@@ -12,7 +12,7 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
 			-- Populate Status Table.
-			SET IDENTITY_INSERT dbo.Status ON;
+			SET IDENTITY_INSERT app.MessageType ON;
 			
 			if not exists(select * from app.MessageType where MessageTypeName = 'Item')
 				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('1', 'Item')
@@ -26,7 +26,7 @@ BEGIN
 			if not exists(select * from app.MessageType where MessageTypeName = 'Instructions')
 				insert into app.MessageType (MessageTypeId, MessageTypeName) values ('4', 'Instructions')
 
-			SET IDENTITY_INSERT dbo.Status OFF;
+			SET IDENTITY_INSERT app.MessageType OFF;
 		
 		INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE())
 		COMMIT TRANSACTION;

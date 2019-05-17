@@ -7,4 +7,3 @@
     CONSTRAINT [PK_MessageHistoryId] PRIMARY KEY CLUSTERED ([MessageHistoryId] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_MessageHistory_MessageType] FOREIGN KEY ([MessageTypeId]) REFERENCES [app].[MessageType] ([MessageTypeId])
 );
-

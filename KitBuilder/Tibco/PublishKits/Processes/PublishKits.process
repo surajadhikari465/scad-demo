@@ -1,0 +1,1140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/KitBuilder/Events.xsd" xmlns:pfx4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx5="http://schemas.wfm.com/KitBuilder/KitEvents.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns82="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns102="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns8="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns7="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns72="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns13="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns9="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns14="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns92="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:ns83="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.1.0.0000/Item/Item.xsd"/>
+    <pd:name>Processes/PublishKits.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>127</pd:x>
+        <pd:y>127</pd:y>
+        <config>
+            <StartTime>1552543200000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%Application/PublisherTimerInMilliseconds%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1404</pd:endX>
+    <pd:endY>136</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1538071349052</pd:targetNamespace>
+    <pd:group name="SendMessages">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>654</pd:x>
+        <pd:y>211</pd:y>
+        <pd:width>694</pd:width>
+        <pd:height>303</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GroupEvents/pfx5:Events/pfx5:EventType/pfx5:StoreId</pd:over>
+            <pd:iterationElementSlot>CurrentStoreId</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get Kit Caloric Info</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update-KitLocale-Publish-Failed-1</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CatchSendingToEsbException</pd:from>
+            <pd:to>Update KitQueue Table With ESB Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update KitQueue Table With ESB Error</pd:from>
+            <pd:to>Update KitLocale Publish Failed</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Kit Caloric Info</pd:from>
+            <pd:to>Map Kit Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Kit Data</pd:from>
+            <pd:to>SendToESB</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update KitLocale Publish Failed</pd:from>
+            <pd:to>Log Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendToESB</pd:from>
+            <pd:to>Update-KitLocale-Publish-Failed-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log Error</pd:from>
+            <pd:to>Generate Final Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Update KitQueue Table With ESB Error">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>868</pd:x>
+            <pd:y>423</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>UPDATE dbo.KitQueue
+SET Status ='F',
+	MessageTimestampUtc = GETUTCDATE()
+WHERE kitLocaleId = ?
+       AND StoreId = ?
+</statement>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>kitLocaleId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StoreId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <kitLocaleId>
+                        <xsl:choose>
+                            <xsl:when test="exists($GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:kitLocaleId)">
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:kitLocaleId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </kitLocaleId>
+                    <StoreId>
+                        <xsl:value-of select="$CurrentStoreId/pfx5:StoreId"/>
+                    </StoreId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CatchSendingToEsbException">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>734</pd:x>
+            <pd:y>405</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="SendToESB">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1036</pd:x>
+            <pd:y>294</pd:y>
+            <config>
+                <processName>/Processes/SendToESB.process</processName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$Map-Kit-Data/pfx6:items"/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update KitLocale Publish Failed">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>1001</pd:x>
+            <pd:y>415</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE dbo.KitLocale
+SET StatusId =(select StatusID from Status where statuscode='PF'),
+	LastUpdatedDateUtc = GETUTCDATE()
+WHERE KitLocaleId = ?
+</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KitLocaleId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <KitLocaleId>
+                        <xsl:choose>
+                            <xsl:when test="exists($GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:kitLocaleId)">
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:kitLocaleId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KitLocaleId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Kit Caloric Info">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>767</pd:x>
+            <pd:y>299</pd:y>
+            <config>
+                <processName>/Processes/GetKitLocaleInfo.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <KitLocaleId>
+                        <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:kitLocaleId"/>
+                    </KitLocaleId>
+                    <StoreId>
+                        <xsl:value-of select="$CurrentStoreId/pfx5:StoreId"/>
+                    </StoreId>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Kit Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>919</pd:x>
+            <pd:y>292</pd:y>
+            <config>
+                <element ref="pfx6:items"/>
+            </config>
+            <pd:inputBindings>
+                <pfx6:items>
+                    <pfx6:item>
+                        <xsl:if test="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:Action">
+                            <xsl:attribute name="ns6:Action">
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:Action"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <pfx6:id>
+                            <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/kit/itemId"/>
+                        </pfx6:id>
+                        <pfx6:base>
+                            <ns7:type>
+                                <ns8:code>
+                                    <xsl:value-of select="&quot;RTL&quot;"/>
+                                </ns8:code>
+                            </ns7:type>
+                            <ns7:consumerInformation>
+                                <ns82:stockItemConsumerProductLabel>
+                                    <xsl:if test="$Get-Kit-Caloric-Info/JSON/minimumCalories">
+                                        <ns9:minCalories>
+                                            <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/minimumCalories"/>
+                                        </ns9:minCalories>
+                                    </xsl:if>
+                                    <xsl:if test="$Get-Kit-Caloric-Info/JSON/maximumCalories">
+                                        <ns9:maxCalories>
+                                            <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/maximumCalories"/>
+                                        </ns9:maxCalories>
+                                    </xsl:if>
+                                </ns82:stockItemConsumerProductLabel>
+                            </ns7:consumerInformation>
+                        </pfx6:base>
+                        <pfx6:locale>
+                            <ns72:id>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:StoreId"/>
+                            </ns72:id>
+                            <ns72:name>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:StoreName"/>
+                            </ns72:name>
+                            <ns72:type>
+                                <ns10:code>
+                                    <xsl:value-of select="&quot;STR&quot;"/>
+                                </ns10:code>
+                                <ns10:description>
+                                    <xsl:value-of select="&quot;Store&quot;"/>
+                                </ns10:description>
+                            </ns72:type>
+                            <ns72:storeItemAttributes>
+                                <ns83:scanCode>
+                                    <xsl:if test="$Get-Kit-Caloric-Info/JSON/kit/item/itemId">
+                                        <ns102:id>
+                                            <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/kit/item/itemId"/>
+                                        </ns102:id>
+                                    </xsl:if>
+                                    <ns102:code>
+                                        <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/kit/item/scanCode"/>
+                                    </ns102:code>
+                                </ns83:scanCode>
+                                <xsl:if test="exists($Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale/kitLinkGroup)">
+                                    <ns83:groups>
+                                        <xsl:attribute name="ns6:Action">
+                                            <xsl:value-of select="&quot;Replace&quot;"/>
+                                        </xsl:attribute>
+                                        <xsl:for-each select="$Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale[exclude=&quot;false&quot;]">
+                                            <ns92:group>
+                                                <ns92:id>
+                                                    <xsl:value-of select="concat(&quot;KBG_&quot;,kitLinkGroupLocaleId )"/>
+                                                </ns92:id>
+                                                <xsl:if test="kitLinkGroup/linkGroup/groupDescription">
+                                                    <ns92:description>
+                                                        <xsl:value-of select="kitLinkGroup/linkGroup/groupDescription"/>
+                                                    </ns92:description>
+                                                </xsl:if>
+                                                <xsl:if test="kitLinkGroup/linkGroup/groupName">
+                                                    <ns92:name>
+                                                        <xsl:value-of select="kitLinkGroup/linkGroup/groupName"/>
+                                                    </ns92:name>
+                                                </xsl:if>
+                                                <xsl:if test="displaySequence">
+                                                    <ns92:displayOrder>
+                                                        <xsl:value-of select="displaySequence"/>
+                                                    </ns92:displayOrder>
+                                                </xsl:if>
+                                                <xsl:if test="minimum">
+                                                    <ns92:minimum>
+                                                        <xsl:value-of select="minimum"/>
+                                                    </ns92:minimum>
+                                                </xsl:if>
+                                                <xsl:if test="maximum">
+                                                    <ns92:maximum>
+                                                        <xsl:value-of select="maximum"/>
+                                                    </ns92:maximum>
+                                                </xsl:if>
+                                                <xsl:if test="numOfFreeToppings">
+                                                    <ns92:numFreePortions>
+                                                        <xsl:value-of select="numOfFreeToppings"/>
+                                                    </ns92:numFreePortions>
+                                                </xsl:if>
+                                                <xsl:if test="../kit/isDisplayMandatory">
+                                                    <ns92:mandatoryToShow>
+                                                        <xsl:value-of select="../kit/isDisplayMandatory"/>
+                                                    </ns92:mandatoryToShow>
+                                                </xsl:if>
+                                                <xsl:if test="../kit/showRecipe">
+                                                    <ns92:isShowRecipe>
+                                                        <xsl:value-of select="../kit/showRecipe"/>
+                                                    </ns92:isShowRecipe>
+                                                </xsl:if>
+                                                <xsl:if test="count(kitLinkGroupItemLocales[exclude=&quot;false&quot; and authorizedByStore=&quot;true&quot;]) > 0">
+                                                    <ns92:groups>
+                                                        <xsl:for-each select="kitLinkGroupItemLocales[exclude=&quot;false&quot; and authorizedByStore=&quot;true&quot;]">
+                                                            <ns92:group>
+                                                                <ns92:id>
+                                                                    <xsl:value-of select="itemId"/>
+                                                                </ns92:id>
+                                                                <xsl:if test="displaySequence">
+                                                                    <ns92:displayOrder>
+                                                                        <xsl:value-of select="displaySequence"/>
+                                                                    </ns92:displayOrder>
+                                                                </xsl:if>
+                                                                <xsl:if test="minimum">
+                                                                    <ns92:minimum>
+                                                                        <xsl:value-of select="minimum"/>
+                                                                    </ns92:minimum>
+                                                                </xsl:if>
+                                                                <xsl:if test="maximum">
+                                                                    <ns92:maximum>
+                                                                        <xsl:value-of select="maximum"/>
+                                                                    </ns92:maximum>
+                                                                </xsl:if>
+                                                                <xsl:if test="defaultPortions">
+                                                                    <ns92:defaultPortions>
+                                                                        <xsl:value-of select="defaultPortions"/>
+                                                                    </ns92:defaultPortions>
+                                                                </xsl:if>
+                                                                <xsl:if test="numOfFreePortions">
+                                                                    <ns92:numFreePortions>
+                                                                        <xsl:value-of select="numOfFreePortions"/>
+                                                                    </ns92:numFreePortions>
+                                                                </xsl:if>
+                                                                <ns92:extraPrice>
+                                                                    <xsl:if test="regularPrice">
+                                                                        <ns14:amount>
+                                                                            <xsl:value-of select="regularPrice"/>
+                                                                        </ns14:amount>
+                                                                    </xsl:if>
+                                                                </ns92:extraPrice>
+                                                            </ns92:group>
+                                                        </xsl:for-each>
+                                                    </ns92:groups>
+                                                </xsl:if>
+                                            </ns92:group>
+                                        </xsl:for-each>
+                                    </ns83:groups>
+                                </xsl:if>
+                                <xsl:if test="exists($Get-Kit-Caloric-Info/JSON/kit/kitInstructionList/kitInstructionListId)">
+                                    <ns83:lists>
+                                        <xsl:for-each select="$Get-Kit-Caloric-Info/JSON/kit/kitInstructionList">
+                                            <ns13:list>
+                                                <xsl:if test="instructionListId">
+                                                    <ns13:id>
+                                                        <xsl:value-of select="instructionListId"/>
+                                                    </ns13:id>
+                                                </xsl:if>
+                                                <ns13:type>
+                                                    <ns13:code>
+                                                        <xsl:value-of select="'CookingInstructions'"/>
+                                                    </ns13:code>
+                                                    <ns13:description>
+                                                        <xsl:value-of select="'Cooking Instructions'"/>
+                                                    </ns13:description>
+                                                </ns13:type>
+                                            </ns13:list>
+                                        </xsl:for-each>
+                                    </ns83:lists>
+                                </xsl:if>
+                                <xsl:choose>
+                                    <xsl:when test="exists($Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale)">
+                                        <ns83:calorieDisplayMode>
+                                            <xsl:value-of select="&quot;Range&quot;"/>
+                                        </ns83:calorieDisplayMode>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <ns83:calorieDisplayMode>
+                                            <xsl:value-of select="&quot;Single&quot;"/>
+                                        </ns83:calorieDisplayMode>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns72:storeItemAttributes>
+                            <ns72:locales>
+                                <xsl:variable name="var" select="$CurrentStoreId/pfx5:StoreId"/>
+                                <xsl:for-each select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[StoreId=$var]">
+                                    <ns11:locale>
+                                        <ns72:id>
+                                            <xsl:value-of select="VenueId"/>
+                                        </ns72:id>
+                                        <ns72:name>
+                                            <xsl:value-of select="VenueName"/>
+                                        </ns72:name>
+                                        <ns72:type>
+                                            <ns10:code>
+                                                <xsl:value-of select="&quot;VNU&quot;"/>
+                                            </ns10:code>
+                                            <ns10:description>
+                                                <xsl:value-of select="&quot;Venue&quot;"/>
+                                            </ns10:description>
+                                        </ns72:type>
+                                    </ns11:locale>
+                                </xsl:for-each>
+                            </ns72:locales>
+                        </pfx6:locale>
+                    </pfx6:item>
+                </pfx6:items>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log Error">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>1127</pd:x>
+            <pd:y>407</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO [dbo].[AppLog]
+           ([AppID]
+           ,[Level]
+           ,[Logger]
+           ,[UserName]
+           ,[MachineName]
+           ,[InsertDateUtc]
+           ,[LogDateUtc]
+           ,[Thread]
+           ,[Message]
+           ,[CallSite]
+           ,[Exception]
+           ,[StackTrace])
+     VALUES
+(
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>AppID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Level</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Logger</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>UserName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>MachineName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>InsertDateUtc</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>LogDateUtc</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Thread</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Message</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>CallSite</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>Exception</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StackTrace</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <AppID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationId"/>
+                    </AppID>
+                    <Level>
+                        <xsl:value-of select="&quot;Error&quot;"/>
+                    </Level>
+                    <Logger>
+                        <xsl:value-of select="&quot;Publish Kit&quot;"/>
+                    </Logger>
+                    <UserName>
+                        <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                    </UserName>
+                    <MachineName>
+                        <xsl:value-of select="BW:getHostName()"/>
+                    </MachineName>
+                    <InsertDateUtc>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </InsertDateUtc>
+                    <LogDateUtc>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </LogDateUtc>
+                    <Thread>
+                        <xsl:value-of select="&quot;1&quot;"/>
+                    </Thread>
+                    <Message>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/Msg)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Message>
+                    <CallSite>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/ProcessStack)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </CallSite>
+                    <Exception>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/MsgCode)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </Exception>
+                    <StackTrace>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/StackTrace)">
+                                <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </StackTrace>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update-KitLocale-Publish-Failed-1">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>1178</pd:x>
+            <pd:y>294</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE dbo.KitLocale
+SET StatusId =(select StatusID from Status where statuscode='P'),
+	LastUpdatedDateUtc = GETUTCDATE()
+WHERE KitLocaleId = ?
+</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KitLocaleId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <KitLocaleId>
+                        <xsl:choose>
+                            <xsl:when test="exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId)">
+                                <xsl:value-of select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KitLocaleId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Final Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>1256</pd:x>
+            <pd:y>417</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <pfx4:ActivityInput/>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="GetUnprocessedEvents">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>325</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <processName>/Processes/GetUnprocessedEvents.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch All">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>607</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>84</pd:x>
+        <pd:y>209</pd:y>
+        <pd:width>487</pd:width>
+        <pd:height>302</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>simpleGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GroupEvents</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GroupEvents</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Update-KitLocaleTable</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update-KitLocaleTable</pd:from>
+            <pd:to>Update-KitQueue</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update-KitQueue</pd:from>
+            <pd:to>Generate Group Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GroupEvents">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>242</pd:x>
+            <pd:y>287</pd:y>
+            <config>
+                <processName>/Processes/GroupKitEventsByStoreId.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:Events>
+                    <xsl:for-each select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1">
+                        <pfx5:EventType>
+                            <pfx5:KitQueueId>
+                                <xsl:value-of select="KitQueueId"/>
+                            </pfx5:KitQueueId>
+                            <pfx5:KitID>
+                                <xsl:value-of select="KitID"/>
+                            </pfx5:KitID>
+                            <pfx5:StoreId>
+                                <xsl:value-of select="StoreId"/>
+                            </pfx5:StoreId>
+                            <pfx5:StoreName>
+                                <xsl:value-of select="StoreName"/>
+                            </pfx5:StoreName>
+                            <pfx5:VenueId>
+                                <xsl:value-of select="VenueId"/>
+                            </pfx5:VenueId>
+                            <pfx5:VenueName>
+                                <xsl:value-of select="VenueName"/>
+                            </pfx5:VenueName>
+                            <pfx5:kitLocaleId>
+                                <xsl:value-of select="kitLocaleId"/>
+                            </pfx5:kitLocaleId>
+                            <pfx5:Action>
+                                <xsl:value-of select="Action"/>
+                            </pfx5:Action>
+                            <pfx5:Status>
+                                <xsl:value-of select="&quot;P&quot;"/>
+                            </pfx5:Status>
+                        </pfx5:EventType>
+                    </xsl:for-each>
+                </pfx5:Events>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>118</pd:x>
+            <pd:y>412</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Generate Group Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>513</pd:x>
+            <pd:y>417</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <pfx4:ActivityInput>
+                    <message>
+                        <xsl:value-of select="&quot;Group Events Error&quot;"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="&quot;error&quot;"/>
+                    </messageCode>
+                </pfx4:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update-KitLocaleTable">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>254</pd:x>
+            <pd:y>407</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE dbo.KitLocale
+SET StatusId =(select StatusID from Status where statuscode='PF'),
+	LastUpdatedDateUtc =GETUTCDATE ()
+WHERE KitLocaleId = ?
+</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KitLocaleId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <KitLocaleId>
+                        <xsl:choose>
+                            <xsl:when test="exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId)">
+                                <xsl:value-of select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KitLocaleId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update-KitQueue">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>378</pd:x>
+            <pd:y>409</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE dbo.KitQueue
+SET Status = 'F',
+	MessageTimestampUtc =GETUTCDATE ()
+WHERE kitLocaleId = ?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>KitLocaleId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <KitLocaleId>
+                        <xsl:choose>
+                            <xsl:when test="exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId)">
+                                <xsl:value-of select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </KitLocaleId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Log Final Error">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1402</pd:x>
+        <pd:y>610</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO [dbo].[AppLog]
+           ([AppID]
+           ,[Level]
+           ,[Logger]
+           ,[UserName]
+           ,[MachineName]
+           ,[InsertDateUtc]
+           ,[LogDateUtc]
+           ,[Thread]
+           ,[Message]
+           ,[CallSite]
+           ,[Exception]
+           ,[StackTrace])
+     VALUES
+(
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>AppID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Level</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Logger</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>UserName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MachineName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>InsertDateUtc</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>LogDateUtc</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Thread</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Message</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>CallSite</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Exception</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>StackTrace</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <AppID>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/ApplicationId"/>
+                </AppID>
+                <Level>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </Level>
+                <Logger>
+                    <xsl:value-of select="&quot;Publish Kit&quot;"/>
+                </Logger>
+                <UserName>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </UserName>
+                <MachineName>
+                    <xsl:value-of select="BW:getHostName()"/>
+                </MachineName>
+                <InsertDateUtc>
+                    <xsl:value-of select="current-dateTime()"/>
+                </InsertDateUtc>
+                <LogDateUtc>
+                    <xsl:value-of select="current-dateTime()"/>
+                </LogDateUtc>
+                <Thread>
+                    <xsl:value-of select="&quot;1&quot;"/>
+                </Thread>
+                <Message>
+                    <xsl:value-of select="$GetUnprocessedEvents/root/GetMessageResultString"/>
+                </Message>
+                <CallSite>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/ProcessStack)">
+                            <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </CallSite>
+                <Exception>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/MsgCode)">
+                            <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Exception>
+                <StackTrace>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/StackTrace)">
+                            <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </StackTrace>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PublishFinalErrorMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>723</pd:x>
+        <pd:y>609</pd:y>
+        <config>
+            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:ErrorMessage>
+                <ns12:Application>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProjectName"/>
+                </ns12:Application>
+                <ns12:MessageID>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:MessageID>
+                <ns12:MessageProperties>
+                    <ns12:NameValuePair>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="name">
+                            <xsl:value-of select="local-name(current())"/>
+                        </xsl:attribute>
+                        <xsl:attribute xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="value">
+                            <xsl:value-of select="current()"/>
+                        </xsl:attribute>
+                    </ns12:NameValuePair>
+                </ns12:MessageProperties>
+                <ns12:Message>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Data/*"/>
+                </ns12:Message>
+                <ns12:ErrorCode>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                </ns12:ErrorCode>
+                <ns12:ErrorDetails>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </ns12:ErrorDetails>
+                <ns12:ErrorSeverity>
+                    <xsl:value-of select="&quot;Fatal&quot;"/>
+                </ns12:ErrorSeverity>
+            </ns12:ErrorMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SendMessages</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>GetUnprocessedEvents</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetUnprocessedEvents</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>ZeroMessages</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>not(exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1/KitID))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetUnprocessedEvents</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>SendMessages</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Final Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch All</pd:from>
+        <pd:to>PublishFinalErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PublishFinalErrorMessage</pd:from>
+        <pd:to>Log Final Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

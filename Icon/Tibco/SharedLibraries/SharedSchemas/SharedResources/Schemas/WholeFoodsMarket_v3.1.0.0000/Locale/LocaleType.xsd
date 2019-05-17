@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:erf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.3">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="localeType" type="LocaleTypeType"/>
+	<xs:complexType name="LocaleTypeType">
+		<xs:sequence>
+			<xs:element name="code" type="lrf:LocaleCodeType">
+				<xs:annotation>
+					<xs:documentation>CMP, CHN, REG, MTR, STR, OFF, VNU</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="lrf:LocaleDescType">
+				<xs:annotation>
+					<xs:documentation>Company, Chain, Region, Metro, Store, Office, Venue</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

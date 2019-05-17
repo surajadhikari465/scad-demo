@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports     -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item/Item.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements    -->
+	<!-- ================== -->
+	<xs:element name="PurchaseOrders">
+		<xs:annotation>
+			<xs:documentation>Transfer Order Schema</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="PurchaseOrder" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="purchaseOrderNumber" type="crf:WfmStrType"/>
+								<xs:element name="externalPurchaseOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="externalSource" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType">
+									<xs:annotation>
+										<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="purchaseType" type="crf:WfmStrType"/>
+								<xs:element name="supplierNumber" type="crf:WfmStrType"/>
+								<xs:element name="locationNumber" type="crf:WfmIntType"/>
+								<xs:element name="locationName" type="crf:NameType"/>
+								<xs:element name="prePacked" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="OrderSubTeam" type="OrderSubTeamType"/>
+								<xs:element name="status" type="crf:WfmStrType"/>
+								<xs:element name="userInfo" type="ivf:UserType"/>
+								<xs:element name="approverInfo" type="ivf:UserType" minOccurs="0"/>
+								<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
+								<xs:element name="approveDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
+								<xs:element name="closeDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
+								<xs:element name="purchaseOrderTermsCode" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="freightTermsCode" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="purchaseOrderComments" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:sequence>
+									<xs:element name="PurchaseOrderDetail" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="PurchaseOrderDetailNumber" type="crf:IdIntType"/>
+												<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
+												<xs:element name="locationId" type="crf:WfmStrType" minOccurs="1"/>
+												<xs:element name="SubTeam" type="ivf:SubTeamType"/>
+												<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
+												<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+												<xs:element name="packSize1" type="crf:WfmIntType"/>
+												<xs:element name="packSize2" type="crf:WfmIntType"/>
+												<xs:element name="uomConvRetailUom" type="crf:WfmStrType" minOccurs="0"/>
+												<xs:element name="itemCost" type="crf:WfmStrType"/>
+												<xs:element name="costType" type="crf:TypeType" minOccurs="0"/>
+												<xs:element name="earliestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+												<xs:element name="latestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+												<xs:element name="expectedArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+												<xs:element name="carrierSCAC" type="crf:WfmStrType" minOccurs="0"/>
+												<xs:element name="shipmentType" type="crf:WfmStrType" minOccurs="0"/>
+												<xs:element name="documentNumber" type="crf:WfmStrType" minOccurs="0"/>
+												<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PurchaseOrderDelete" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="purchaseOrderNumber" type="crf:WfmStrType"/>
+								<xs:element name="externalPurchaseOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="externalSource" type="crf:WfmStrType" minOccurs="0"/>
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType">
+									<xs:annotation>
+										<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="locationNumber" type="crf:WfmIntType"/>
+								<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
+								<xs:element name="cancelUserInfo" type="ivf:UserType" minOccurs="0"/>
+								<xs:element name="cancelDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
+								<xs:element name="purchaseOrderDeletionDetail" type="PurchaseOrderDeletionDetailType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="OrderSubTeamType">
+		<xs:sequence>
+			<xs:element name="orderSubTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="orderSubTeamName" type="crf:NameType"/>
+			<xs:element name="orderTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="orderTeamName" type="crf:NameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PurchaseOrderDeletionDetailType">
+		<xs:sequence>
+			<xs:element name="PurchaseOrderDetailNumber" type="crf:IdIntType" minOccurs="0"/>
+			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
+			<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

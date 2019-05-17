@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd"
+	 targetNamespace="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="ErrorMessage">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Application"/>
+				<xs:element ref="MessageID"/>
+				<xs:element ref="MessageProperties"/>
+				<xs:element ref="Message"/>
+				<xs:element ref="ErrorCode"/>
+				<xs:element ref="ErrorDetails"/>
+				<xs:element ref="ErrorSeverity"/>
+				<xs:element ref="ExtendedErrorProperties" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="DeadLetterExceptionType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="Application" type="xs:string"/>
+	<xs:element name="MessageID" type="xs:string"/>
+	<xs:element name="Message" type="xs:string"/>
+	<xs:element name="ErrorCode" type="xs:string"/>
+	<xs:element name="ErrorDetails" type="xs:string"/>
+	<xs:element name="ErrorSeverity" type="xs:string"/>
+	<xs:element name="ExtendedErrorProperties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="NameValuePair" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MessageProperties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="NameValuePair" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NameValuePair">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string"/>
+			<xs:attribute name="value" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

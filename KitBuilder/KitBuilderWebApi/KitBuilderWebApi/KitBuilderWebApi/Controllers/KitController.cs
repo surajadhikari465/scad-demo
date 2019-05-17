@@ -1453,9 +1453,9 @@ namespace KitBuilderWebApi.Controllers
             {
                 return LocaleStatus.PublishQueued;
             }
-            else if (statusArray.All(status => status == (int)LocaleStatus.PublishReQueued))
+            else if (statusArray.All(status => status == (int)LocaleStatus.PublishFailed))
             {
-                return LocaleStatus.PublishReQueued;
+                return LocaleStatus.PublishFailed;
             }
             else if (statusArray.Any(status => status == (int)LocaleStatus.PartiallyPublished))
             {
