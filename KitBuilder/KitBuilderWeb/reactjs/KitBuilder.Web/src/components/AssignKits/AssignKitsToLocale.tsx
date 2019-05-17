@@ -315,6 +315,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                          kitId = {this.state.kitId} 
                          isSimplekitType= {this.state.isSimplekitType} 
                          disabled={false} 
+                         excludeDisabled={false} 
                          data={data} />
 
                          <ConfirmDialog 

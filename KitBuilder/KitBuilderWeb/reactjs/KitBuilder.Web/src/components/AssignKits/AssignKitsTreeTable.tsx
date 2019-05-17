@@ -20,6 +20,7 @@ interface IAssignKitsTreeTableProps {
     excludedLocales: number[];
     toggleLocaleAssigned(localeId: number): void;
     toggleLocaleExcluded(localeId: number): void;
+    excludeDisabled: boolean;
 }
 
 export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTableProps, IAssignKitsTreeTableState>
@@ -139,6 +140,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                         const isExcluded = this.props.excludedLocales.includes(item.localeId);
                         
                         const checkboxesDisabled = this.props.disabled || (isAssigned && item.statusId > LocaleStatus.READYTOPUBLISH);
+                        const excludeDisabled = this.props.excludeDisabled || (isAssigned && item.statusId > LocaleStatus.READYTOPUBLISH); 
                         return <React.Fragment key={item.localeId}>
                             <div className="tbl-body-item">
                                 {
@@ -156,12 +158,12 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                 {
                                     !showView ?
                                         <div style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 480px)' } : { width: 'calc(100% - 450px)' }}>
-                                            <input disabled={checkboxesDisabled} type="checkbox" style={chkboxStyle} checked={isExcluded} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
+                                            <input disabled={excludeDisabled} type="checkbox" style={chkboxStyle} checked={isExcluded} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
                                         </div>
                                         :
                                         <React.Fragment>
                                             <div style={{ width: '150px' }}>
-                                                <input disabled={checkboxesDisabled} type="checkbox" style={chkboxStyle} checked={this.props.excludedLocales.includes(item.localeId)} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
+                                                <input disabled={excludeDisabled} type="checkbox" style={chkboxStyle} checked={this.props.excludedLocales.includes(item.localeId)} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
                                             </div>
                                             <div className="btnCenter" style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>
                                                 {item.isAssigned && !this.props.isSimplekitType && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
@@ -183,6 +185,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                             kitId ={this.props.kitId}
                                             data={item.childs} 
                                             disabled={isExcluded || this.props.disabled}
+                                            excludeDisabled={isExcluded || this.props.excludeDisabled ||item.statusId > LocaleStatus.READYTOPUBLISH}
                                             />
                                         </div>
                             }
