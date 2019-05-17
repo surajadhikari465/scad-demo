@@ -63,11 +63,26 @@ function onError(data) {
 function fillLookup(lookup, columnKey) {
     var columnLayouts = $("#storeGrid").igGrid('option', 'columnLayouts');
 
-    // navigate down to the store-level (but not nown to venue level)
-    while (columnLayouts[0].columnLayouts
-        && columnLayouts[0].columnLayouts[0].columns[0].headerText !== "Venue") {
-            columnLayouts = columnLayouts[0].columnLayouts;
+    if (columnKey=='LocaleSubTypeId')
+    {
+        var hasChildColumnLayouts = true;
+        while (hasChildColumnLayouts) {
+            if (columnLayouts[0].columnLayouts) {
+                columnLayouts = columnLayouts[0].columnLayouts;
+            }
+            else {
+                hasChildColumnLayouts = false;
+            }
+        }
     }
+    else {
+        while (columnLayouts[0].columnLayouts
+            && columnLayouts[0].columnLayouts[0].columns[0].headerText !== "Venue") {
+            columnLayouts = columnLayouts[0].columnLayouts;
+        }
+    }
+    // navigate down to the store-level (but not nown to venue level)
+  
 
     var storeColumnLayout = columnLayouts[0];
 
