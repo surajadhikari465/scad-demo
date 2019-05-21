@@ -44,6 +44,9 @@
                         <pfx2:StoreName>
                             <xsl:value-of select="pfx2:StoreName"/>
                         </pfx2:StoreName>
+                        <pfx2:StoreBusinessUnitId>
+                            <xsl:value-of select="pfx2:StoreBusinessUnitId"/>
+                        </pfx2:StoreBusinessUnitId>
                         <pfx2:VenueId>
                             <xsl:value-of select="pfx2:VenueId"/>
                         </pfx2:VenueId>

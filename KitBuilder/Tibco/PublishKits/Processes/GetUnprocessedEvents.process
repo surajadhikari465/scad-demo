@@ -32,6 +32,7 @@
                                                         <xsd:element name="KitID" type="xsd:int"/>
                                                         <xsd:element name="StoreId" type="xsd:int"/>
                                                         <xsd:element name="StoreName" type="xsd:string"/>
+                                                        <xsd:element name="StoreBusinessUnitId" type="xsd:int"/>
                                                         <xsd:element name="VenueId" type="xsd:int"/>
                                                         <xsd:element name="VenueName" type="xsd:string"/>
                                                         <xsd:element name="kitLocaleId" type="xsd:int"/>
@@ -230,6 +231,7 @@
                                                         <xsd:element name="KitID" type="xsd:int"/>
                                                         <xsd:element name="StoreId" type="xsd:int"/>
                                                         <xsd:element name="StoreName" type="xsd:string"/>
+                                                        <xsd:element name="StoreBusinessUnitId" type="xsd:int"/>
                                                         <xsd:element name="VenueId" type="xsd:int"/>
                                                         <xsd:element name="VenueName" type="xsd:string"/>
                                                         <xsd:element name="kitLocaleId" type="xsd:int"/>

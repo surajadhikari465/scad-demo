@@ -22,18 +22,18 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>1404</pd:endX>
-    <pd:endY>136</pd:endY>
+    <pd:endX>1647</pd:endX>
+    <pd:endY>124</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1538071349052</pd:targetNamespace>
     <pd:group name="SendMessages">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>654</pd:x>
-        <pd:y>211</pd:y>
+        <pd:x>652</pd:x>
+        <pd:y>204</pd:y>
         <pd:width>694</pd:width>
-        <pd:height>303</pd:height>
+        <pd:height>350</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -57,11 +57,18 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Update-KitLocale-Publish-Failed-1</pd:from>
+            <pd:from>SendToESB</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Kit Caloric Info</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>CatchSendingToEsbException</pd:from>
@@ -82,7 +89,8 @@
             <pd:to>Map Kit Data</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Get-Kit-Caloric-Info/JSON/authorizedByStore = "true"</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Map Kit Data</pd:from>
@@ -99,13 +107,6 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>SendToESB</pd:from>
-            <pd:to>Update-KitLocale-Publish-Failed-1</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
             <pd:from>Log Error</pd:from>
             <pd:to>Generate Final Error</pd:to>
             <pd:lineType>Default</pd:lineType>
@@ -115,8 +116,8 @@
         <pd:activity name="Update KitQueue Table With ESB Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>868</pd:x>
-            <pd:y>423</pd:y>
+            <pd:x>865</pd:x>
+            <pd:y>484</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -160,8 +161,8 @@ WHERE kitLocaleId = ?
         <pd:activity name="CatchSendingToEsbException">
             <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
             <pd:resourceType>ae.activities.catch</pd:resourceType>
-            <pd:x>734</pd:x>
-            <pd:y>405</pd:y>
+            <pd:x>731</pd:x>
+            <pd:y>466</pd:y>
             <pd:handler>true</pd:handler>
             <config>
                 <catchAll>true</catchAll>
@@ -171,8 +172,8 @@ WHERE kitLocaleId = ?
         <pd:activity name="SendToESB">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>1036</pd:x>
-            <pd:y>294</pd:y>
+            <pd:x>1122</pd:x>
+            <pd:y>289</pd:y>
             <config>
                 <processName>/Processes/SendToESB.process</processName>
             </config>
@@ -183,8 +184,8 @@ WHERE kitLocaleId = ?
         <pd:activity name="Update KitLocale Publish Failed">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1001</pd:x>
-            <pd:y>415</pd:y>
+            <pd:x>998</pd:x>
+            <pd:y>476</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -220,8 +221,8 @@ WHERE KitLocaleId = ?
         <pd:activity name="Get Kit Caloric Info">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>767</pd:x>
-            <pd:y>299</pd:y>
+            <pd:x>783</pd:x>
+            <pd:y>386</pd:y>
             <config>
                 <processName>/Processes/GetKitLocaleInfo.process</processName>
             </config>
@@ -239,8 +240,8 @@ WHERE KitLocaleId = ?
         <pd:activity name="Map Kit Data">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>919</pd:x>
-            <pd:y>292</pd:y>
+            <pd:x>971</pd:x>
+            <pd:y>286</pd:y>
             <config>
                 <element ref="pfx6:items"/>
             </config>
@@ -278,10 +279,10 @@ WHERE KitLocaleId = ?
                         </pfx6:base>
                         <pfx6:locale>
                             <ns72:id>
-                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:StoreId"/>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreBusinessUnitId"/>
                             </ns72:id>
                             <ns72:name>
-                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[1]/pfx5:StoreName"/>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreName"/>
                             </ns72:name>
                             <ns72:type>
                                 <ns10:code>
@@ -405,7 +406,7 @@ WHERE KitLocaleId = ?
                                             <ns13:list>
                                                 <xsl:if test="instructionListId">
                                                     <ns13:id>
-                                                        <xsl:value-of select="instructionListId"/>
+                                                        <xsl:value-of select="concat(&quot;CI_&quot;, instructionListId)"/>
                                                     </ns13:id>
                                                 </xsl:if>
                                                 <ns13:type>
@@ -421,7 +422,7 @@ WHERE KitLocaleId = ?
                                     </ns83:lists>
                                 </xsl:if>
                                 <xsl:choose>
-                                    <xsl:when test="exists($Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale)">
+                                    <xsl:when test="exists($Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale/kitLinkGroup)">
                                         <ns83:calorieDisplayMode>
                                             <xsl:value-of select="&quot;Range&quot;"/>
                                         </ns83:calorieDisplayMode>
@@ -462,8 +463,8 @@ WHERE KitLocaleId = ?
         <pd:activity name="Log Error">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1127</pd:x>
-            <pd:y>407</pd:y>
+            <pd:x>1124</pd:x>
+            <pd:y>468</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -616,48 +617,11 @@ WHERE KitLocaleId = ?
                 </jdbcUpdateActivityInput>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Update-KitLocale-Publish-Failed-1">
-            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1178</pd:x>
-            <pd:y>294</pd:y>
-            <config>
-                <timeout>10</timeout>
-                <commit>false</commit>
-                <emptyStrAsNil>false</emptyStrAsNil>
-                <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
-                <statement>UPDATE dbo.KitLocale
-SET StatusId =(select StatusID from Status where statuscode='P'),
-	LastUpdatedDateUtc = GETUTCDATE()
-WHERE KitLocaleId = ?
-</statement>
-                <Prepared_Param_DataType>
-                    <parameter>
-                        <parameterName>KitLocaleId</parameterName>
-                        <dataType>INTEGER</dataType>
-                    </parameter>
-                </Prepared_Param_DataType>
-            </config>
-            <pd:inputBindings>
-                <jdbcUpdateActivityInput>
-                    <KitLocaleId>
-                        <xsl:choose>
-                            <xsl:when test="exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId)">
-                                <xsl:value-of select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </KitLocaleId>
-                </jdbcUpdateActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
         <pd:activity name="Generate Final Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>1256</pd:x>
-            <pd:y>417</pd:y>
+            <pd:x>1253</pd:x>
+            <pd:y>478</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -763,6 +727,9 @@ WHERE KitLocaleId = ?
                             <pfx5:StoreName>
                                 <xsl:value-of select="StoreName"/>
                             </pfx5:StoreName>
+                            <pfx5:StoreBusinessUnitId>
+                                <xsl:value-of select="StoreBusinessUnitId"/>
+                            </pfx5:StoreBusinessUnitId>
                             <pfx5:VenueId>
                                 <xsl:value-of select="VenueId"/>
                             </pfx5:VenueId>
@@ -890,8 +857,8 @@ WHERE kitLocaleId = ?</statement>
     <pd:activity name="Log Final Error">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>1402</pd:x>
-        <pd:y>610</pd:y>
+        <pd:x>1654</pd:x>
+        <pd:y>620</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -1040,8 +1007,8 @@ WHERE kitLocaleId = ?</statement>
     <pd:activity name="PublishFinalErrorMessage">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>723</pd:x>
-        <pd:y>609</pd:y>
+        <pd:x>809</pd:x>
+        <pd:y>608</pd:y>
         <config>
             <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
             <spawn>true</spawn>
@@ -1079,13 +1046,43 @@ WHERE kitLocaleId = ?</statement>
             </ns12:ErrorMessage>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>SendMessages</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="Update-KitLocale-Publish">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1449</pd:x>
+        <pd:y>370</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE dbo.KitLocale
+SET StatusId =(select StatusID from Status where statuscode='P'),
+	LastUpdatedDateUtc = GETUTCDATE()
+WHERE KitLocaleId = ?
+</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>KitLocaleId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <KitLocaleId>
+                    <xsl:choose>
+                        <xsl:when test="exists($GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId)">
+                            <xsl:value-of select="$GetUnprocessedEvents/root/Resultsets/ResultSet1/Record1[1]/kitLocaleId"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </KitLocaleId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Timer</pd:from>
         <pd:to>GetUnprocessedEvents</pd:to>
@@ -1124,15 +1121,29 @@ WHERE kitLocaleId = ?</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Catch All</pd:from>
-        <pd:to>PublishFinalErrorMessage</pd:to>
+        <pd:from>PublishFinalErrorMessage</pd:from>
+        <pd:to>Log Final Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>PublishFinalErrorMessage</pd:from>
-        <pd:to>Log Final Error</pd:to>
+        <pd:from>SendMessages</pd:from>
+        <pd:to>Update-KitLocale-Publish</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update-KitLocale-Publish</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch All</pd:from>
+        <pd:to>PublishFinalErrorMessage</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

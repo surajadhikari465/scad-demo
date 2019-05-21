@@ -18,6 +18,7 @@
 			<xs:element name="KitID" type="xs:int"/>
 			<xs:element name="StoreId" type="xs:int"/>
 			<xs:element name="StoreName" type="xs:string"/>
+			<xs:element name="StoreBusinessUnitId" type="xs:int"/>
 			<xs:element name="VenueId" type="xs:int"/>
 			<xs:element name="VenueName" type="xs:string"/>
 			<xs:element name="kitLocaleId" type="xs:int"/>

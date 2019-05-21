@@ -16,6 +16,7 @@ BEGIN
 		,inserted.KitID
 		,inserted.StoreId
 		,inserted.StoreName
+		,l.BusinessUnitId as StoreBusinessUnitId
 		,inserted.VenueId
 		,inserted.VenueName
 		,inserted.kitLocaleId
@@ -25,6 +26,7 @@ BEGIN
 			,READPAST
 			)
 	JOIN QkitLocaleId ki ON kq.kitLocaleId = ki.kitLocaleId
+    JOIN Locale l on kq.StoreId = l.LocaleId
 	WHERE STATUS = 'U'
 
 	SET NOCOUNT OFF
