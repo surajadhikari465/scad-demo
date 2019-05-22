@@ -37,25 +37,25 @@ namespace Icon.Web.DataAccess.Commands
             existingLocale.localeCloseDate = data.CloseDate;
             existingBusinessUnit.traitValue = data.BusinessUnitId;
 
-            AddOrUpdateTraitValue(TraitCodes.StoreAbbreviation, existingLocale, data.StoreAbbreviation);
-            AddOrUpdateTraitValue(TraitCodes.ContactPerson, existingLocale, data.ContactPerson);
-            AddOrUpdateTraitValue(TraitCodes.PhoneNumber, existingLocale, data.PhoneNumber);
-            AddOrUpdateTraitValue(TraitCodes.ModifiedDate, existingLocale, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture));
-            AddOrUpdateTraitValue(TraitCodes.Fax, existingLocale, data.Fax);
-            AddOrUpdateTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
-            AddOrUpdateTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
-            AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
-            AddOrUpdateTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
-            AddOrUpdateTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
-            AddOrUpdateTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
-            AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);
-            AddOrUpdateTraitValue(TraitCodes.PrimenowMerchantIdEncrypted, existingLocale, data.PrimeMerchantIDEncrypted);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.StoreAbbreviation, existingLocale, data.StoreAbbreviation);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.ContactPerson, existingLocale, data.ContactPerson);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.PhoneNumber, existingLocale, data.PhoneNumber);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.ModifiedDate, existingLocale, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture));
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.Fax, existingLocale, data.Fax);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.IrmaStoreId, existingLocale, data.IrmaStoreId);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.PrimenowMerchantIdEncrypted, existingLocale, data.PrimeMerchantIDEncrypted);
 
             // set the currency code trait based on the country set for the Locale
             var currencyCode = GetCurrencyCodeForCountry(data.CountryId);
             if (!String.IsNullOrWhiteSpace(currencyCode))
             {
-                AddOrUpdateTraitValue(TraitCodes.CurrencyCode, existingLocale, currencyCode);
+                AddOrUpdateOrRemoveTraitValue(TraitCodes.CurrencyCode, existingLocale, currencyCode);
             }
 
             UpdateAddress(existingLocale, data);
@@ -89,16 +89,16 @@ namespace Icon.Web.DataAccess.Commands
             }
         }
 
-        private void AddOrUpdateTraitValue(string traitCode, Locale existingLocale, string traitValue)
+        private void AddOrUpdateOrRemoveTraitValue(string traitCode, Locale existingLocale, string traitValue)
         {
-            LocaleTrait trait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode);
-
             traitValue = string.IsNullOrWhiteSpace(traitValue) ? null : traitValue.Trim();
-            
-            if(trait == null || traitValue == null) return;
+            LocaleTrait localeTrait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode && lt.localeID == existingLocale.localeID);
 
-            if(trait == null)
-            {
+            // no existing localeTrait no value: Do nothing.
+            if (localeTrait == null && traitValue == null) return;
+
+            // no existing localeTrait new value: Add LocaleTrait
+            if (localeTrait == null && traitValue != null)
                 existingLocale.LocaleTrait.Add(new LocaleTrait
                 {
                     localeID = existingLocale.localeID,
@@ -106,18 +106,14 @@ namespace Icon.Web.DataAccess.Commands
                     traitValue = traitValue,
                     Trait = context.Trait.First(t => t.traitCode == traitCode)
                 });
-            }
-            else
-            {
-                if(traitValue == null)
-                {
-                    existingLocale.LocaleTrait.Remove(trait);
-                }
-                else
-                {
-                    trait.traitValue = traitValue;
-                }
-            }
+
+            // existing localeTrait no value: Remove existing LocaleTrait
+            if (localeTrait != null && traitValue == null)
+                context.LocaleTrait.Remove(localeTrait);
+            
+            // existing localeTrait new value: update LocaleTrait
+            if (localeTrait != null && traitValue != null)
+                localeTrait.traitValue = traitValue;
         }
 
         private void UpdateEwicAgencyId(Locale existingLocale, UpdateLocaleCommand data)
