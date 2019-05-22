@@ -178,12 +178,10 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             -or $app -like "PublishTransferOrderService" `
             -or $app -like "RePublishInventoryMessagesService" `
             ) {
-            if($targetEnv -like "QA"){
-                # Generate only regions specified for HoneyCrisp TIBCO.
-                $hcTibcoRegionsList = ($relValuesInHash.HcTibcoRegions).Split(",")
-                foreach($region in $hcTibcoRegionsList){
-                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_" + $region + "___TargetEnv__.properties`n"
-                }
+            # Generate only regions specified for HoneyCrisp TIBCO.
+            $hcTibcoRegionsList = ($relValuesInHash.HcTibcoRegions).Split(",")
+            foreach($region in $hcTibcoRegionsList){
+                $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_" + $region + "___TargetEnv__.properties`n"
             }
         }
         else {
