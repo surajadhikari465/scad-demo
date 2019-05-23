@@ -3336,6 +3336,7 @@
     <None Include="Scripts\PreDeploy\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
+    <None Include="Scripts\PostDeploy\PBI21205_OrderPurgeScheduleUpdates.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
