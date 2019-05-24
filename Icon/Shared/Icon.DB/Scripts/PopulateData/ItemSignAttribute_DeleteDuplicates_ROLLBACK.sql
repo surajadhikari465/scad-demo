@@ -3,6 +3,8 @@
 -- Bug 8247: Icon has duplicated records in ItemSignAttribute table
 --======================================
 
+DELETE FROM app.PostDeploymentScriptHistory WHERE ScriptKey = 'DeleteItemSignAttributeDuplicates';
+
 SET IDENTITY_INSERT dbo.ItemSignAttribute ON
 
 INSERT INTO dbo.ItemSignAttribute
