@@ -32,6 +32,7 @@
 	[VenueCode]			NVARCHAR (255)	NULL,
 	[VenueOccupant]     NVARCHAR (255) NULL,
 	[VenueSubType]		NVARCHAR (255) NULL,
+	[TouchPointGroupId] NVARCHAR (255) NULL,
     [InProcessBy]       INT            NULL,
     [ProcessedDate]     DATETIME2 (7)  NULL,
     CONSTRAINT [PK_app.MessageQueueLocale] PRIMARY KEY CLUSTERED ([MessageQueueId] ASC) WITH (FILLFACTOR = 80),

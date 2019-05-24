@@ -49,6 +49,7 @@ namespace Icon.Framework
         public string VenueCode { get; set; }
         public string VenueOccupant { get; set; }
         public string VenueSubType { get; set; }
+        public string TouchPointGroupId { get; set; }
     
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }

@@ -699,6 +699,7 @@
     <None Include="Scripts\PopulateData\PopulateTraits.sql" />
     <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates.sql" />
     <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
+    <None Include="Scripts\PopulateData\AddTouchPointGroupIdTrait.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

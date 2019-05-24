@@ -5777,6 +5777,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="VenueOccupant" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="VenueSubType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
+          <Property Name="TouchPointGroupId" Type="String" Nullable="true" MaxLength="255" Unicode="true" />
         </EntityType>
         <Association Name="FK_app_MessageQueueLocale_MessageStatus">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
