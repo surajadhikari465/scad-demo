@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by VigneshMuthukumar (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/TransactionMgmt/RetailTransaction/LineItemType/TransactionItemBaseType/V1" xmlns:lif="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItemType/CommonRefTypes/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/LineItem/Sale/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="7.3">
 	<!-- ================== -->
 	<!-- Schema Imports             -->

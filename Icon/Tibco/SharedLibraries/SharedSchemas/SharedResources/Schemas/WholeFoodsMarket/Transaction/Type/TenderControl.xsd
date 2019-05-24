@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" xmlns:tpf="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/TenderControl/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Common/CommonRefEnumTypes.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/Type/CommonRefTypes/V2" schemaLocation="CommonRefTypes.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
@@ -11,6 +14,7 @@
 	<xs:element name="tenderControl" type="TenderControlType"/>
 	<xs:complexType name="TenderControlType">
 		<xs:sequence>
+			<xs:element name="type" type="txf:TypeType" minOccurs="0"/>
 			<xs:choice>
 				<xs:element name="bankDeposit" type="tpf:BankDepositType">
 					<xs:annotation>
@@ -59,6 +63,7 @@
 				</xs:element>
 				<xs:element name="tillSettles" type="tpf:TillSettlesType"/>
 				<xs:element name="safeSettles" type="tpf:SafeSettlesType"/>
+				<xs:element name="tipIn" type="tpf:TipInType"/>
 			</xs:choice>
 			<xs:element name="transactionLink" type="txf:TransactionLinkType" minOccurs="0"/>
 			<xs:element name="adjustments" type="tpf:AdjustmentsTenderType" minOccurs="0">

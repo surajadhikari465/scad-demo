@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType">
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/PurchaseOrder.xsd"/>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType">
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
     <pd:name>Processes/SendtoEsb.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -257,7 +257,7 @@
                 <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                <ns0:ActivityInput>
                     <OtherProperties>
                         <TransactionID>
                             <xsl:value-of select="concat($Start/Input/BusinessUnitID, $_globalVariables/ns1:GlobalVariables/Application/TransactionType, $Start/Input/MessageNumber)"/>

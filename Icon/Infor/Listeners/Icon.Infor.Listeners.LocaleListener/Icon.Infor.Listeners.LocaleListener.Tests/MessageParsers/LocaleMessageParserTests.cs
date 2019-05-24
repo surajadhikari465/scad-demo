@@ -222,7 +222,7 @@ namespace Icon.Infor.Listeners.LocaleListener.Tests.MessageParsers
                 AssertTraitsAreEqual(Traits.Codes.PhoneNumber, xmlTraits, locale.LocaleTraits.Where(lt => lt.TraitId == Traits.PhoneNumber).FirstOrDefault().TraitValue);
                 AssertTraitsAreEqual(Traits.Codes.Fax, xmlTraits, locale.LocaleTraits.Where(lt => lt.TraitId == Traits.Fax).FirstOrDefault().TraitValue);
                 AssertTraitsAreEqual(Traits.Codes.ContactPerson, xmlTraits, locale.LocaleTraits.Where(lt => lt.TraitId == Traits.ContactPerson).FirstOrDefault().TraitValue);
-                AssertTraitsAreEqual(Traits.Codes.EwicAgency, xmlTraits, locale.EwicAgency);
+               // AssertTraitsAreEqual(Traits.Codes.EwicAgency, xmlTraits, locale.EwicAgency);
                 AssertTraitsAreEqual(Traits.Codes.IrmaStoreId, xmlTraits, locale.LocaleTraits.Where(lt => lt.TraitId == Traits.IrmaStoreId).FirstOrDefault().TraitValue);
                 AssertTraitsAreEqual(Traits.Codes.StorePosType, xmlTraits, locale.LocaleTraits.Where(lt => lt.TraitId == Traits.StorePosType).FirstOrDefault().TraitValue);
             }

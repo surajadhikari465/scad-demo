@@ -46,6 +46,7 @@
 			<xs:enumeration value="GSP"/>
 			<xs:enumeration value="PMI"/>
 			<xs:enumeration value="PMD"/>
+			<xs:enumeration value="NEW"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="PriceTypeDescTypeEnum">

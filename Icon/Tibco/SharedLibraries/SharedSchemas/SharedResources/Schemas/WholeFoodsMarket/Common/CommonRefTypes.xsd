@@ -320,11 +320,11 @@
 			<xs:element name="hierarchy" type="ihy:HierarchyType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="GroupsType">
+	<!--<xs:complexType name="GroupsType">
 		<xs:sequence>
 			<xs:element name="group" type="grp:GroupTypeType" maxOccurs="unbounded"/>
 		</xs:sequence>
-	</xs:complexType>
+	</xs:complexType>-->
 	<xs:complexType name="LinksType">
 		<xs:sequence>
 			<xs:element name="link" type="lnk:LinkTypeType" maxOccurs="unbounded"/>

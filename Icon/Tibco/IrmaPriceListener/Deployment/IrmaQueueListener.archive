@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/IrmaPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>42</versionProperty>
+        <versionProperty>43</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>IrmaQueueListener</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\VSTS\Source\Repos\Icon\Icon\Tibco\DeploymentFiles\IrmaPriceListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\IrmaPriceListener.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

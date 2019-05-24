@@ -98,7 +98,7 @@ namespace Icon.Infor.Listeners.LocaleListener.MessageParsers
             model.Address.TimeZoneName = address.timezone.code; //The name of the timezone is actually in the timezone code of the message
             model.Address.Latitude = address.latitude;
             model.Address.Longitude = address.longitude;
-            model.EwicAgency = GetTraitValue(localeMessage.traits, Traits.Codes.EwicAgency);
+            //model.EwicAgency = GetTraitValue(localeMessage.traits, Traits.Codes.EwicAgency);
             model.Action = localeMessage.Action;
             model.SequenceId = sequenceId;
             model.InforMessageId = inforMessageId;

@@ -992,14 +992,10 @@
             <grp:type>Consumable</grp:type>
           </psg:group>
         </iea:selectionGroups>
-        <iea:kit>
-          <kit1:kitItem>
-            <kit1:imageUrl>https://arboretum.orangetheoryfitness.com/</kit1:imageUrl>
-            <kit1:kitchenItem>1</kit1:kitchenItem>
-            <kit1:kitchenDescription>KitDescription</kit1:kitchenDescription>
-            <kit1:hospitalityItem>0</kit1:hospitalityItem>
-          </kit1:kitItem>
-        </iea:kit>
+        <iea:imageUrl>https://arboretum.orangetheoryfitness.com/</iea:imageUrl>
+        <iea:isKitchenItem>1</iea:isKitchenItem>
+        <iea:kitchenDescription>KitDescription</iea:kitchenDescription>
+        <iea:isHospitalityItem>0</iea:isHospitalityItem>
       </lcl:enterpriseItemAttributes>
     </locale>
   </item>

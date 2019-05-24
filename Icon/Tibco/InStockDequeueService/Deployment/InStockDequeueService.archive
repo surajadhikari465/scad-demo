@@ -10,7 +10,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/StarterDequeueProcess.process</processProperty>
         </processArchive>
-        <versionProperty>10</versionProperty>
+        <versionProperty>12</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>InStockDequeueService</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\AzureDevOps\Source\Repos\SCAD\Icon\Tibco\DeploymentFiles\InStockDequeueService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\InStockDequeueService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

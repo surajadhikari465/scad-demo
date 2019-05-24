@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:rwd="http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:drf="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:irf="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:rwd="http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:drf="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:igp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:lrf="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
 	<!-- ================== -->
@@ -9,6 +9,8 @@
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="../Price/Price.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/RewardMgmt/Reward/V2" schemaLocation="../Rewards/Rewards.xsd"/>
 	<xs:import namespace="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" schemaLocation="../SelectionGroup/SelectionGroup.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" schemaLocation="ItemGroupType.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" schemaLocation="../Common/ListType.xsd"/>
 	<!-- ================== -->
 	<!-- Global Elements             -->
 	<!-- ================== -->
@@ -17,12 +19,19 @@
 		<xs:sequence>
 			<xs:element name="scanCode" type="sis:ScanCodeType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="links" type="crf:LinksType" minOccurs="0"/>
-			<xs:element name="groups" type="crf:GroupsType" minOccurs="0"/>
+			<xs:element name="groups" type="igp:ItemGroupsType" minOccurs="0"/>
 			<xs:element name="hierarchies" type="crf:HierarchiesType" minOccurs="0"/>
 			<xs:element name="traits" type="crf:TraitsType" minOccurs="0"/>
 			<xs:element name="prices" type="prc:PricesType" minOccurs="0"/>
 			<xs:element name="rewards" type="rwd:RewardsType" minOccurs="0"/>
 			<xs:element name="selectionGroups" type="drf:SelectionGroupsType" minOccurs="0"/>
+			<xs:element name="lists" type="lrf:ListsType" minOccurs="0"/>
+			<xs:element name="calorieDisplayMode" type="crf:WfmStrType" minOccurs="0"/>
+			<!--<xs:element name="kit" type="kit:KitType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kit builder information and other elements to be contained here</xs:documentation>
+				</xs:annotation>
+			</xs:element>-->
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

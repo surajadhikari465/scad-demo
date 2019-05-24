@@ -57,7 +57,7 @@ namespace AmazonLoad.IconItemLocale.Tests
         {
             // Given
             TestRegion = "MA";
-            int expectedValidStoreCount = 59;
+            int expectedValidStoreCount = 60;
 
             // When
             var iconStoreData = IconItemLocaleBuilder.LoadIconStoreData(TestRegion, iconConnectionString);

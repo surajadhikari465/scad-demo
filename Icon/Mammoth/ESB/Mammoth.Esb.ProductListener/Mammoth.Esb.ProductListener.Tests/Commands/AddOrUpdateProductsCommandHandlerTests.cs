@@ -64,8 +64,15 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
 
-            var kitAttributes = ReadKitAttributesDynamic(itemId);
-            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+            bool useSchemaWithKit;
+            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
+                useSchemaWithKit = false;
+
+            if (useSchemaWithKit)
+            {
+                var kitAttributes = ReadKitAttributesDynamic(itemId);
+                AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+            }
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -98,10 +105,17 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
-         
 
-            var kitAttributes = ReadKitAttributesDynamic(itemId);
-            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+
+            bool useSchemaWithKit;
+            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
+                useSchemaWithKit = false;
+
+            if (useSchemaWithKit)
+            {
+                var kitAttributes = ReadKitAttributesDynamic(itemId);
+                AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+            }
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);

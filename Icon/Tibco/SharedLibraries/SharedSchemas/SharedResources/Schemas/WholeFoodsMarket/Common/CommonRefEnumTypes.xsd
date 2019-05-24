@@ -23,6 +23,12 @@
 			<xs:enumeration value="Reset"/>
 			<xs:enumeration value="Update"/>
 			<xs:enumeration value="Replace"/>
+			<xs:enumeration value="Exclude"/>
+			<xs:enumeration value="AddOrUpdateInstruction"/>
+			<xs:enumeration value="ClearInstruction"/>
+			<xs:enumeration value="IsPartOf"/>
+			<xs:enumeration value="AddsTo"/>
+			<xs:enumeration value="IsRemovedFrom"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="LanguageCodeEnum">
@@ -134,13 +140,6 @@
 		<xs:restriction base="crf:WfmStrType">
 			<xs:enumeration value="Up"/>
 			<xs:enumeration value="Down"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="TransactionTypeEnum">
-		<xs:restriction base="crf:WfmStrType">
-			<xs:enumeration value="Retail"/>
-			<xs:enumeration value="Eat-In"/>
-			<xs:enumeration value="Catering"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

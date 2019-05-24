@@ -68,9 +68,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 // Hospitality Attributes
                 if (useSchameWithKit)
                 {
-                    var hospitalityInformation = enterpriseItemAttributes.kit;
-
-                    itemModel.KitItemAttributes = ParseHospitalityElements(hospitalityInformation);
+                    itemModel.KitItemAttributes = ParseHospitalityElements(enterpriseItemAttributes);
                 }
 
                 itemModelCollection.Add(itemModel);
@@ -79,19 +77,16 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             return itemModelCollection;
         }
 
-        private KitItemAttributesModel ParseHospitalityElements(Contracts.KitType hospitalityInformation)
+        private KitItemAttributesModel ParseHospitalityElements(Contracts.EnterpriseItemAttributesType itemInformation)
         {
 
             var hospitalityModel = new KitItemAttributesModel();
-            if (hospitalityInformation == null) return hospitalityModel;
+            if (itemInformation == null) return hospitalityModel;
 
-            var kitItem = hospitalityInformation.kitItem;
-            if (kitItem == null) return hospitalityModel;
-
-            hospitalityModel.KitchenDescription = kitItem.kitchenDescription;
-            hospitalityModel.HospitalityItem = kitItem.hospitalityItemSpecified && kitItem.hospitalityItem;
-            hospitalityModel.KitchenItem = kitItem.kitchenItemSpecified && kitItem.kitchenItem;
-            hospitalityModel.ImageUrl = kitItem.imageUrl;
+            hospitalityModel.KitchenDescription = itemInformation.kitchenDescription;
+            hospitalityModel.HospitalityItem = itemInformation.isHospitalityItemSpecified && itemInformation.isHospitalityItem;
+            hospitalityModel.KitchenItem = itemInformation.isKitchenItemSpecified && itemInformation.isKitchenItem;
+            hospitalityModel.ImageUrl = itemInformation.imageUrl;
 
             return hospitalityModel;
 
