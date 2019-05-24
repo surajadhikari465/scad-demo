@@ -148,7 +148,7 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="KitBuilder.DataAccess, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\KitBuilder.DataAccess.2019.4.23.1\lib\netstandard2.0\KitBuilder.DataAccess.dll</HintPath>
+      <HintPath>..\packages\KitBuilder.DataAccess.2019.5.15.1\lib\netstandard2.0\KitBuilder.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
