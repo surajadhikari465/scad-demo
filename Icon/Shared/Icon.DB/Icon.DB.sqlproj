@@ -697,6 +697,8 @@
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
     <None Include="Scripts\PopulateData\Archive\AddDeleteNutritionToEventType.sql" />
     <None Include="Scripts\PopulateData\PopulateTraits.sql" />
+    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates.sql" />
+    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
