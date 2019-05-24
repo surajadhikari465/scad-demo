@@ -364,8 +364,6 @@
     <Content Include="Views\PriceRefresh\Index.cshtml" />
     <Content Include="Views\EPlumESLLoad\Index.cshtml" />
     <Content Include="Views\RegionGpmStatus\Index.cshtml" />
-    <Content Include="Views\RefreshPsg\Index.cshtml" />
-    <Content Include="Views\MessageExport\Index.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\RefreshPsg\Index.cshtml" />
