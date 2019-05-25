@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2a5f4ff7231f42409271498aab8ca17b" Name="Icon" ZoomLevel="100" DisplayType="false">
+      <Diagram DiagramId="2a5f4ff7231f42409271498aab8ca17b" Name="Icon" ZoomLevel="84" DisplayType="false">
         <EntityTypeShape EntityType="Icon.Framework.Model.Item" Width="1.5" PointX="3" PointY="4.875" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ItemType" Width="1.5" PointX="0.75" PointY="5" />
         <EntityTypeShape EntityType="Icon.Framework.Model.ScanCode" Width="1.5" PointX="5.25" PointY="7.75" />
@@ -174,11 +174,7 @@
         <AssociationConnector Association="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" />
         <EntityTypeShape EntityType="Icon.Framework.Model.LocaleSubType" Width="1.5" PointX="5.375" PointY="52.5" />
         <AssociationConnector Association="Icon.Framework.Model.LocaleType_LocaleSubType_FK1" />
-        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueLocale" Width="1.5" PointX="28.75" PointY="5.875" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" />
         <EntityTypeShape EntityType="Icon.Framework.Model.MessageHistory" Width="1.5" PointX="22.75" PointY="2.25" />
-        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageHistory_MessageType" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" />
@@ -192,6 +188,10 @@
         <AssociationConnector Association="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" />
         <AssociationConnector Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" />
+        <EntityTypeShape EntityType="Icon.Framework.Model.MessageQueueLocale" Width="1.5" PointX="28" PointY="6.125" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" />
+        <AssociationConnector Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" />
         </Diagram>
       <Diagram DiagramId="0eb77304f12b49cabc6727652309682d" Name="Item" ZoomLevel="62" >
         </Diagram>

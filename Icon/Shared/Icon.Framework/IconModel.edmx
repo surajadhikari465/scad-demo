@@ -303,6 +303,7 @@
           <Property Name="VenueCode" Type="nvarchar" MaxLength="255" />
           <Property Name="VenueOccupant" Type="nvarchar" MaxLength="255" />
           <Property Name="VenueSubType" Type="nvarchar" MaxLength="255" />
+          <Property Name="TouchPointGroupId" Type="nvarchar" MaxLength="255" />
           <Property Name="InProcessBy" Type="int" />
           <Property Name="ProcessedDate" Type="datetime2" Precision="7" />
         </EntityType>
@@ -3488,20 +3489,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="LocaleType" EntitySet="LocaleType" />
             <End Role="LocaleSubType" EntitySet="LocaleSubTypes" />
           </AssociationSet>
-          <EntitySet Name="MessageQueueLocale" EntityType="Icon.Framework.Model.MessageQueueLocale" />
-          <AssociationSet Name="FK_app_MessageQueueLocale_MessageStatus" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus">
-            <End Role="MessageStatus" EntitySet="MessageStatus" />
-            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType">
-            <End Role="MessageType" EntitySet="MessageType" />
-            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
-          </AssociationSet>
           <EntitySet Name="MessageHistory" EntityType="Icon.Framework.Model.MessageHistory" />
-          <AssociationSet Name="FK_app_MessageQueueLocale_MessageHistory" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_MessageHistory_MessageStatus" Association="Icon.Framework.Model.FK_MessageHistory_MessageStatus">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageHistory" EntitySet="MessageHistory" />
@@ -3547,6 +3535,19 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_MessageQueueProduct_MessageTypeId" Association="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId">
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
+          </AssociationSet>
+          <EntitySet Name="MessageQueueLocale" EntityType="Icon.Framework.Model.MessageQueueLocale" />
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageHistory" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageStatus" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -3889,9 +3890,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageType" FromRole="MessageType" ToRole="MessageQueueProductSelectionGroup" />
           <NavigationProperty Name="MessageQueueBusinessUnitInProcess" Relationship="Icon.Framework.Model.FK_MessageQueueBusinessUnitInProcess_MessageType" FromRole="MessageType" ToRole="MessageQueueBusinessUnitInProcess" />
           <NavigationProperty Name="APIMessageMonitorLog" Relationship="Icon.Framework.Model.FK_APIMessageMonitorLog_MessageTypeId" FromRole="MessageType" ToRole="APIMessageMonitorLog" />
-          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageType" ToRole="MessageQueueLocale" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageType" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueProduct" />
+          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageType" ToRole="MessageQueueLocale" />
           </EntityType>
         <EntityType Name="MessageStatus">
           <Key>
@@ -3903,9 +3904,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueueItemLocale" />
           <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueuePrice" />
           <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageStatus" FromRole="MessageStatus" ToRole="MessageQueueProductSelectionGroup" />
-          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageStatus" ToRole="MessageQueueLocale" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageStatus" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" FromRole="MessageStatus" ToRole="MessageQueueProduct" />
+          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageStatus" ToRole="MessageQueueLocale" />
         </EntityType>
         <EntityType Name="ItemTrait">
           <Key>
@@ -5735,74 +5736,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="MessageQueueLocale">
-          <Key>
-            <PropertyRef Name="MessageQueueId" />
-          </Key>
-          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
-          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
-          <Property Name="MessageHistoryId" Type="Int32" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="LocaleId" Type="Int32" Nullable="false" />
-          <Property Name="OwnerOrgPartyId" Type="Int32" Nullable="false" />
-          <Property Name="StoreAbbreviation" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LocaleOpenDate" Type="DateTime" Precision="0" />
-          <Property Name="LocaleCloseDate" Type="DateTime" Precision="0" />
-          <Property Name="LocaleTypeId" Type="Int32" Nullable="false" />
-          <Property Name="ParentLocaleId" Type="Int32" />
-          <Property Name="BusinessUnitId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AddressId" Type="Int32" />
-          <Property Name="AddressUsageCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="CountryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="TerritoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TerritoryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="CityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Latitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Longitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TimezoneCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="TimezoneName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InProcessBy" Type="Int32" />
-          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageQueueLocale" ToRole="MessageStatus" />
-          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageQueueLocale" ToRole="MessageType" />
-          <Property Name="VenueCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="VenueOccupant" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="VenueSubType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
-          <Property Name="TouchPointGroupId" Type="String" Nullable="true" MaxLength="255" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_app_MessageQueueLocale_MessageStatus">
-          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageStatus">
-              <PropertyRef Name="MessageStatusId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_app_MessageQueueLocale_MessageType">
-          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="MessageTypeId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="MessageHistory">
           <Key>
             <PropertyRef Name="MessageHistoryId" />
@@ -5815,7 +5748,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="InProcessBy" Type="Int32" />
           <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
           <Property Name="MessageHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueLocale" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageStatus" FromRole="MessageHistory" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageHistory_MessageType" FromRole="MessageHistory" ToRole="MessageType" />
           <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueHierarchy" />
@@ -5824,21 +5756,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageQueueProductSelectionGroup" Relationship="Icon.Framework.Model.FK_MessageQueueProductSelectionGroup_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueProductSelectionGroup" />
           <NavigationProperty Name="MessageResendStatus" Relationship="Icon.Framework.Model.FK_MessageRetryStatus_MessageHistory" FromRole="MessageHistory" ToRole="MessageResendStatus" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageHistory" ToRole="MessageQueueProduct" />
+          <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageHistory" ToRole="MessageQueueLocale" />
         </EntityType>
-        <Association Name="FK_app_MessageQueueLocale_MessageHistory">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MessageHistory_MessageStatus">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="*" />
@@ -6190,6 +6109,88 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               <PropertyRef Name="MessageTypeId" />
             </Principal>
             <Dependent Role="MessageQueueProduct">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MessageQueueLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="OwnerOrgPartyId" Type="Int32" Nullable="false" />
+          <Property Name="StoreAbbreviation" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleOpenDate" Type="DateTime" Precision="0" />
+          <Property Name="LocaleCloseDate" Type="DateTime" Precision="0" />
+          <Property Name="LocaleTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ParentLocaleId" Type="Int32" />
+          <Property Name="BusinessUnitId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="AddressUsageCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CountryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TerritoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TerritoryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TimezoneCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TimezoneName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VenueCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VenueOccupant" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VenueSubType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TouchPointGroupId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageHistory" FromRole="MessageQueueLocale" ToRole="MessageHistory" />
+          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageStatus" FromRole="MessageQueueLocale" ToRole="MessageStatus" />
+          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageQueueLocale" ToRole="MessageType" />
+        </EntityType>
+        <Association Name="FK_app_MessageQueueLocale_MessageHistory">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_MessageQueueLocale_MessageStatus">
+          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="MessageStatusId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_MessageQueueLocale_MessageType">
+          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
               <PropertyRef Name="MessageTypeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -7290,47 +7291,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MessageQueueLocale">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueLocale">
-              <MappingFragment StoreEntitySet="MessageQueueLocale">
-                <ScalarProperty Name="VenueSubType" ColumnName="VenueSubType" />
-                <ScalarProperty Name="VenueOccupant" ColumnName="VenueOccupant" />
-                <ScalarProperty Name="VenueCode" ColumnName="VenueCode" />
-                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
-                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="TimezoneName" ColumnName="TimezoneName" />
-                <ScalarProperty Name="TimezoneCode" ColumnName="TimezoneCode" />
-                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="TerritoryCode" ColumnName="TerritoryCode" />
-                <ScalarProperty Name="TerritoryName" ColumnName="TerritoryName" />
-                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
-                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
-                <ScalarProperty Name="AddressUsageCode" ColumnName="AddressUsageCode" />
-                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
-                <ScalarProperty Name="BusinessUnitId" ColumnName="BusinessUnitId" />
-                <ScalarProperty Name="ParentLocaleId" ColumnName="ParentLocaleId" />
-                <ScalarProperty Name="LocaleTypeId" ColumnName="LocaleTypeId" />
-                <ScalarProperty Name="LocaleCloseDate" ColumnName="LocaleCloseDate" />
-                <ScalarProperty Name="LocaleOpenDate" ColumnName="LocaleOpenDate" />
-                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
-                <ScalarProperty Name="StoreAbbreviation" ColumnName="StoreAbbreviation" />
-                <ScalarProperty Name="OwnerOrgPartyId" ColumnName="OwnerOrgPartyId" />
-                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
-                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MessageHistory">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageHistory">
               <MappingFragment StoreEntitySet="MessageHistory">
@@ -7543,6 +7503,48 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
                 <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueLocale">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueLocale">
+              <MappingFragment StoreEntitySet="MessageQueueLocale">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="TouchPointGroupId" ColumnName="TouchPointGroupId" />
+                <ScalarProperty Name="VenueSubType" ColumnName="VenueSubType" />
+                <ScalarProperty Name="VenueOccupant" ColumnName="VenueOccupant" />
+                <ScalarProperty Name="VenueCode" ColumnName="VenueCode" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="TimezoneName" ColumnName="TimezoneName" />
+                <ScalarProperty Name="TimezoneCode" ColumnName="TimezoneCode" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="TerritoryCode" ColumnName="TerritoryCode" />
+                <ScalarProperty Name="TerritoryName" ColumnName="TerritoryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="AddressUsageCode" ColumnName="AddressUsageCode" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="BusinessUnitId" ColumnName="BusinessUnitId" />
+                <ScalarProperty Name="ParentLocaleId" ColumnName="ParentLocaleId" />
+                <ScalarProperty Name="LocaleTypeId" ColumnName="LocaleTypeId" />
+                <ScalarProperty Name="LocaleCloseDate" ColumnName="LocaleCloseDate" />
+                <ScalarProperty Name="LocaleOpenDate" ColumnName="LocaleOpenDate" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="StoreAbbreviation" ColumnName="StoreAbbreviation" />
+                <ScalarProperty Name="OwnerOrgPartyId" ColumnName="OwnerOrgPartyId" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
                 <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
