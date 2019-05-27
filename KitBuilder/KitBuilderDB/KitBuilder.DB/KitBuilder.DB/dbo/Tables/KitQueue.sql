@@ -15,7 +15,7 @@
 GO
 
 ALTER TABLE [dbo].[KitQueue] ADD
-CONSTRAINT Check_KitStatus CHECK ([Status] in ('U','PR','PF'))
+CONSTRAINT Check_KitStatus CHECK ([Status] in ('U','PR','F'))
 GO
 
 ALTER TABLE [dbo].[KitQueue] ADD  CONSTRAINT [DF_KitQueue_InsertDate]  DEFAULT (sysdatetime()) FOR [InsertDateUtc]

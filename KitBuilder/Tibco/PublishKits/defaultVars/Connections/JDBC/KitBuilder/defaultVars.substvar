@@ -3,15 +3,15 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ConnectionString</name>
-			<value>jdbc:sqlserver://rds-kitbuilder-dev-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder</value>
+			<value>jdbc:sqlserver://rds-kitbuilder-test-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1554928480209</modTime>
+			<modTime>1558728337041</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!l/DOuyjlPXwTS6bfjN36g+TWgppVyPEfpkH6o2wzJ1I1sJ0FFQ75eA==</value>
+			<value>#!wNlJQ63dP8dTls6bySuX2j50MPhykxGAZYr59c3Wc0CrMtf9fjrIpg==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
