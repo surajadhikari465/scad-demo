@@ -262,9 +262,10 @@ namespace Icon.ApiController.DataAccess.Queries
 				.Single(l => l.localeID == localeId);
 
 			var store = venue.Locale2;
-			var metro = store.Locale2;
+            var metro = store.Locale2;
 			var region = metro.Locale2;
 			var chain = region.Locale2;
+            
 
 			var localeLineage = new LocaleLineageModel// chain
 			{
@@ -288,7 +289,8 @@ namespace Icon.ApiController.DataAccess.Queries
 									{
 										LocaleId = store.localeID,
 										LocaleName = store.localeName,
-										DescendantLocales = new List<LocaleLineageModel>
+                                        BusinessUnitId =  store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId) ?.traitValue ?? string.Empty,
+                                        DescendantLocales = new List<LocaleLineageModel>
 										{
 											new LocaleLineageModel// venue
 											{

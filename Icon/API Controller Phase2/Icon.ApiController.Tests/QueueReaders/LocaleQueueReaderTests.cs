@@ -1135,7 +1135,8 @@ namespace Icon.ApiController.Tests.QueueReaders
 
 			// Then.
 			var venue = miniBulk.locales[0].locales[0].locales[0].locales[0].locales[0];
-			var action = venue.Action;
+            var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
+            var action = venue.Action;
 			var actionSpecified = venue.ActionSpecified;
 			var localeId = venue.id;
 			var localeName = venue.name;
@@ -1151,6 +1152,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			Assert.IsNotNull(localeType);
 			Assert.AreEqual(Contracts.LocaleCodeType.VNU, localeTypeCode);
 			Assert.AreEqual(Contracts.LocaleDescType.Venue, localeTypeDesc);
+            Assert.AreEqual(businessUnitId, store.id);
 			Assert.AreEqual(4, localeTraits.Length);
 			Assert.IsNull(locales);
 		}
