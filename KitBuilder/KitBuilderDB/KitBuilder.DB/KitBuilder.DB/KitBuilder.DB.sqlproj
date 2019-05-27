@@ -133,6 +133,7 @@
     <None Include="Scripts\Templates\StartDataTransformation.sql" />
     <None Include="Jobs\KitBuilder_Data_History_Purge.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateMessageTypes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateLocaleKitAndInstructionTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />
