@@ -4,10 +4,6 @@
 	ScanCode NVARCHAR(13) NOT NULL,
 	ScanCodeTypeId INT NOT NULL,
 	InforMessageId UNIQUEIDENTIFIER NOT NULL,
-	SequenceId NUMERIC(22, 0) NULL,
-  HospitalityItem bit null,
-  KitchenItem bit null,
-  KitchenDescription nvarchar(15) null,
-  ImageURL nvarchar(255) null
+	SequenceId NUMERIC(22, 0) NULL
 )
 GO
