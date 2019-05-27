@@ -221,7 +221,11 @@ namespace Icon.Framework
         public const int LineExtension = 212;
         public const int ZipCode = 213;
         public const int Locality = 214;
-        public const int TouchPointGroupId = 215;
+        public const int TouchpointGroupId = 215;
+        public const int HospitalityItem = 216;
+        public const int KitchenItem = 217;
+        public const int KitchenDescription = 218;
+        public const int ImageUrl = 219;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -434,7 +438,11 @@ namespace Icon.Framework
 				{ "LEX", 212 },
 				{ "ZIP", 213 },
 				{ "LCL", 214 },
-                { "TPG", 215 }
+				{ "TPG", 215 },
+				{ "HI", 216 },
+				{ "KI", 217 },
+				{ "KD", 218 },
+				{ "URL", 219 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -649,10 +657,13 @@ namespace Icon.Framework
 			public const string LineExtension = "Line Extension";
 			public const string ZipCode = "Zip Code";
 			public const string Locality = "Locality";
-            public const string TouchPointGroupId = "TouchPoint Group Id";
-
-
-            private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
+			public const string TouchpointGroupId = "TouchPoint Group Id";
+			public const string HospitalityItem = "Hospitality Item";
+			public const string KitchenItem = "Kitchen Item";
+			public const string KitchenDescription = "Kitchen Description";
+			public const string ImageUrl = "Image Url";
+			
+			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
 				{ 0, "Product Description" },
 				{ 1, "POS Description" },
@@ -863,7 +874,11 @@ namespace Icon.Framework
 				{ 212, "Line Extension" },
 				{ 213, "Zip Code" },
 				{ 214, "Locality" },
-                { 215, "TouchPoint Group Id" }
+				{ 215, "TouchPoint Group Id" },
+				{ 216, "Hospitality Item" },
+				{ 217, "Kitchen Item" },
+				{ 218, "Kitchen Description" },
+				{ 219, "Image Url" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1079,7 +1094,11 @@ namespace Icon.Framework
 			public const string LineExtension = "LEX";
 			public const string ZipCode = "ZIP";
 			public const string Locality = "LCL";
-            public const string TouchPointGroupId = "TPG";
+			public const string TouchpointGroupId = "TPG";
+			public const string HospitalityItem = "HI";
+			public const string KitchenItem = "KI";
+			public const string KitchenDescription = "KD";
+			public const string ImageUrl = "URL";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1292,7 +1311,11 @@ namespace Icon.Framework
 				{ 212, "LEX" },
 				{ 213, "ZIP" },
 				{ 214, "LCL" },
-                { 215, "TPG" }
+				{ 215, "TPG" },
+				{ 216, "HI" },
+				{ 217, "KI" },
+				{ 218, "KD" },
+				{ 219, "URL" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

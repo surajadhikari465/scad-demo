@@ -220,5 +220,10 @@ namespace Icon.Framework
         public const string LineExtension = @"";
         public const string ZipCode = @"^[0-9]{5}(?:-[0-9]{4})?$";
         public const string Locality = @"^.{1,35}$";
-	}
+        public const string TouchpointGroupId = @"";
+        public const string HospitalityItem = @"";
+        public const string KitchenItem = @"";
+        public const string KitchenDescription = @"";
+        public const string ImageUrl = @"";
+    }
 }

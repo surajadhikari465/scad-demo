@@ -54,12 +54,7 @@ namespace Icon.Infor.Listeners.Item.Commands
                     ScanCode = i.ScanCode,
                     ScanCodeTypeId = ScanCodeTypes.Ids[i.ScanCodeType],
                     InforMessageId = i.InforMessageId,
-                    SequenceId = i.SequenceId,
-                    HospitalityItem = i.HospitalityItem,
-                    KitchenItem = i.KitchenItem,
-                    KitchenDescription = i.KitchenDescription,
-                    ImageUrl = i.ImageUrl,
-
+                    SequenceId = i.SequenceId
                 }).ToTvp("items", "infor.ItemAddOrUpdateType");
 
             context.Database.ExecuteSqlCommand("exec infor.ItemAddOrUpdate @items", items);
@@ -67,7 +62,8 @@ namespace Icon.Infor.Listeners.Item.Commands
 
         private void AddOrUpdateItemTraits(IconContext context, IEnumerable<ItemModel> data)
         {
-            var itemTraits = data.SelectMany(i => new[] {
+            var itemTraits = data.SelectMany(i => new[]
+            {
                 new ItemTraitModel(i.ItemId, Traits.ProductDescription, i.ProductDescription, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.PosDescription, i.PosDescription, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.FoodStampEligible, i.FoodStampEligible, Locales.WholeFoods),
@@ -136,10 +132,16 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.OrganicClaim, i.OrganicClaim, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.Varietal, i.Varietal, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.BeerStyle, i.BeerStyle, Locales.WholeFoods),
-                new ItemTraitModel(i.ItemId, Traits.LineExtension, i.LineExtension, Locales.WholeFoods)
-            }).ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
+                new ItemTraitModel(i.ItemId, Traits.LineExtension, i.LineExtension, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.KitchenDescription, i.KitchenDescription, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.ImageUrl, i.ImageUrl, Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.KitchenItem, i.KitchenItem.HasValue ? i.KitchenItem.Value.BoolToString() : "0",Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.KitchenItem, i.HospitalityItem.HasValue ? i.HospitalityItem.Value.BoolToString() : "0",Locales.WholeFoods),
+            });
 
-            context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraits);
+            var itemTraitsTvp = itemTraits.ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
+
+            context.Database.ExecuteSqlCommand("exec infor.ItemTraitAddOrUpdate @itemTraits", itemTraitsTvp);
         }
 
         private void AddOrUpdateItemHierarchyClasses(IconContext context, IEnumerable<ItemModel> data)

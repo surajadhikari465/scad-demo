@@ -734,6 +734,7 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
+    <None Include="Scripts\PopulateData\PopulateHospitalityTraits.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

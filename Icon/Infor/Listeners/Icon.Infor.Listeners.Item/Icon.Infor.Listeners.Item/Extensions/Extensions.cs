@@ -99,10 +99,6 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 WicEligible = GetTraitValue(enterpriseAttributes, TraitCodes.WicEligible),
                 ShelfLife = GetTraitValue(enterpriseAttributes, TraitCodes.ShelfLife),
                 SelfCheckoutItemTareGroup = GetTraitValue(enterpriseAttributes, TraitCodes.SelfCheckoutItemTareGroup),
-                KitchenDescription = enterpriseAttributes.kitchenDescription,
-                ImageUrl = enterpriseAttributes.imageUrl,
-                KitchenItem = enterpriseAttributes.isKitchenItemSpecified ? enterpriseAttributes.isKitchenItem : false,
-                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false,
                 Line = GetTraitValue(enterpriseAttributes, TraitCodes.Line),
                 SKU = GetTraitValue(enterpriseAttributes, TraitCodes.Sku),
                 PriceLine = GetTraitValue(enterpriseAttributes, TraitCodes.PriceLine),
@@ -135,7 +131,11 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 OrganicClaim = GetTraitValue(enterpriseAttributes, TraitCodes.OrganicClaim),
                 Varietal = GetTraitValue(enterpriseAttributes, TraitCodes.Varietal),
                 BeerStyle = GetTraitValue(enterpriseAttributes, TraitCodes.BeerStyle),
-                LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension)
+                LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension),
+                KitchenDescription = enterpriseAttributes.kitchenDescription,
+                ImageUrl = enterpriseAttributes.imageUrl,
+                KitchenItem = enterpriseAttributes.isKitchenItemSpecified ? enterpriseAttributes.isKitchenItem : false,
+                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false
             };
         }
 

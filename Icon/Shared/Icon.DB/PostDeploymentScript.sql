@@ -16,6 +16,7 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\PopulateTraits.sql --2019.03.29 PBI 19318
 :r .\Scripts\PopulateData\AddTouchPointGroupIdTrait.sql --2019.05.03 PBI 14513
 :r .\Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates.sql --2019.05.22 PBI 8247
+:r .\Scripts\PopulateData\PopulateHospitalityTraits.sql -- 2019.05.26 PBI 21601
 
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

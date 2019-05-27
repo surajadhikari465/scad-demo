@@ -86,7 +86,11 @@ BEGIN
 		@ocTraitId int,
 		@varTraitId int,
 		@besTraitId int,
-		@lexTraitId int
+		@lexTraitId int, 
+		@kiTraitId int, 
+		@hiTraitId int, 
+		@kdTraitId int, 
+		@urlTraitId int
 		
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
@@ -161,6 +165,10 @@ BEGIN
 	SET	@varTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'VAR')
 	SET	@besTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'BES')
 	SET	@lexTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LEX')
+	SET	@kiTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'KI')
+	SET	@hiTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HI')
+	SET	@kdTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'KD')
+	SET	@urlTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'URL')
 
 	insert into 
 		app.MessageQueueProduct
@@ -304,10 +312,10 @@ BEGIN
 			WHEN ote.traitValue = 'Y' OR ote.traitValue = 'Yes'
 			 OR ote.traitValue = '1' OR ote.traitValue = 'True'  
 			THEN 1 ELSE 0 END															AS Other3PEligible,
-		i.HospitalityItem																AS HospitalityItem,
-		i.KitchenItem																	AS KitchenItem,
-		i.KitchenDescription															AS KitchenDescription,
-		i.ImageURL																		AS ImageURL,
+		hi.traitValue																	AS HospitalityItem,
+		ki.traitvalue																	AS KitchenItem,
+		kd.traitValue       															AS KitchenDescription,
+		url.traitValue																	AS ImageURL,
 		dat.traitValue                                                                  AS DataSource,		
 		ngt.traitValue  																AS NonGMOTransparency,
 		idp.traitValue  																AS ItemDepth,
@@ -452,6 +460,10 @@ BEGIN
 		LEFT JOIN ItemTrait				va			ON	va.traitID					= @varTraitId AND va.itemID = i.itemID  AND va.localeID = @localeID
 		LEFT JOIN ItemTrait				bes			ON	bes.traitID					= @besTraitId AND bes.itemID = i.itemID AND bes.localeID = @localeID
 		LEFT JOIN ItemTrait				lex			ON	lex.traitID					= @lexTraitId AND lex.itemID = i.itemID AND lex.localeID = @localeID
+		LEFT JOIN ItemTrait				ki			ON	ki.traitID					= @kiTraitId AND ki.itemID = i.itemID AND ki.localeID = @localeID
+		LEFT JOIN ItemTrait				hi			ON	hi.traitID					= @hiTraitId AND hi.itemID = i.itemID AND hi.localeID = @localeID
+		LEFT JOIN ItemTrait				kd			ON	kd.traitID					= @kdTraitId AND kd.itemID = i.itemID AND kd.localeID = @localeID
+		LEFT JOIN ItemTrait				url			ON	url.traitID					= @urlTraitId AND url.itemID = i.itemID AND url.localeID = @localeID
 	
 	where
 		it.itemTypeID <> @couponItemTypeId
