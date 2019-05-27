@@ -161,6 +161,7 @@ namespace Icon.Web.Controllers
                     CurrencyCode = locale.CurrencyCode,
                     VenueCode = locale.VenueCode,
                     VenueOccupant = locale.VenueOccupant,
+                    TouchPointGroupId = locale.TouchPointGroupId,
                     LocaleSubType = locale.LocaleSubType,
                     LocaleSubTypeId = localeSubTypes.Where(l => l.localeSubTypeDesc == locale.LocaleSubType).Select(ls => ls.localeSubTypeID).FirstOrDefault(),
 
@@ -371,7 +372,8 @@ namespace Icon.Web.Controllers
                 VenueCode = localeRow.VenueCode,
                 VenueOccupant = localeRow.VenueOccupant,
                 LocaleSubTypeId = localeRow.LocaleSubTypeId,
-                UserName = User.Identity.Name
+                UserName = User.Identity.Name, 
+                TouchPointGroupId = localeRow.TouchPointGroupId
             };
 
             return venueModel;

@@ -121,6 +121,11 @@ namespace Icon.Web.Mvc.Models
           
         }
 
+        public static string GetTouchPointId(Locale locale)
+        {
+            LocaleTrait touchPointIdTrait = locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.TouchPointGroupId);
+            return touchPointIdTrait == null ? string.Empty : touchPointIdTrait.traitValue;
+        }
         public static string GetTerritoryCode(Locale locale)
         {
             LocaleAddress localeAddress = locale.LocaleAddress.FirstOrDefault();

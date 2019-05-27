@@ -14,5 +14,6 @@ namespace Icon.Web.DataAccess.Commands
         public string VenueOccupant { get; set; }
         public int ParentLocaleId { get; set; }
         public int? LocaleTypeId { get; set; }
+        public string TouchPointGroupId { get; set; }
     }
 }

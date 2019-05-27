@@ -220,5 +220,6 @@ namespace Icon.Framework
         public const string LineExtension = "Line Extension";
         public const string ZipCode = "Zip Code";
         public const string Locality = "Locality";
+        public const string TouchPointGroupid = "TouchPoint Group Id";
 	}
 }

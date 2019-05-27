@@ -315,6 +315,7 @@
                                                         column.For(x => x.VenueCode).HeaderText("Venue Code").Width("15%");
                                                         column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("15%");
                                                         column.For(x => x.CloseDate).HeaderText("Close Date").DataType("date").Width("15%");
+                                                        column.For(x => x.TouchPointGroupId).HeaderText("TouchPoint Group Id").Width("15%");
                                                         column.For(x => x.ChildLocaleTypeCode).Hidden(true);
                                                         column.For(x => x.LocaleId).Hidden(true);
                                                         column.For(x => x.ParentLocaleId).Hidden(true);
@@ -351,6 +352,7 @@
                                                                         .AllowCustomValue(false)
                                                                         .Virtualization(true)
                                                                         .DropDownWidth(600));
+                                            
                                                         })  // ColumnSettings (Venue Features)
                                                         .EditMode(GridEditMode.RowEditTemplate)
                                                         .RowEditDialogHeight("800px")

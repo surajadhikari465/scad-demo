@@ -22,6 +22,7 @@ namespace Icon.Web.DataAccess.Managers
             VenueOccupant = venueModel.VenueOccupant;
             LocaleSubTypeId = venueModel.LocaleSubTypeId;
             UserName = venueModel.UserName;
+            TouchPointGroupId = venueModel.TouchPointGroupId;
         }
 
         public int LocaleId { get; set; }
@@ -35,5 +36,6 @@ namespace Icon.Web.DataAccess.Managers
         public string VenueOccupant { get; set; }
         public int LocaleSubTypeId { get; set; }
         public string UserName { get; set; }
+        public string TouchPointGroupId { get; set; }
     }
 }

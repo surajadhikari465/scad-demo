@@ -65,6 +65,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private PostalCode postalCode;
         private Territory territory;
         private Timezone timezone;
+        private string touchPointGroupId;
 
 		
 
@@ -99,6 +100,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			venueOccupant = "New Occupant";
 			venueSubType = "Hospatality";
 			currencyCode = "USD";
+            touchPointGroupId = "TPG1";
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
             mockEmailClient = new Mock<IEmailClient>();
@@ -156,6 +158,13 @@ namespace Icon.ApiController.Tests.QueueReaders
 					traitID = Traits.LocaleSubtype,
 					traitValue = venueSubType
 				};
+
+                var touchPointGroupIdTrait = new LocaleTrait
+                {
+                    localeID = venue.localeID,
+                    traitID = Traits.TouchPointGroupId,
+                    traitValue = touchPointGroupId
+                };
 
 				context.LocaleTrait.Add(venueSubTypeTrait);
 				context.SaveChanges();
@@ -1142,7 +1151,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			Assert.IsNotNull(localeType);
 			Assert.AreEqual(Contracts.LocaleCodeType.VNU, localeTypeCode);
 			Assert.AreEqual(Contracts.LocaleDescType.Venue, localeTypeDesc);
-			Assert.AreEqual(3, localeTraits.Length);
+			Assert.AreEqual(4, localeTraits.Length);
 			Assert.IsNull(locales);
 		}
 

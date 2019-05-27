@@ -27,18 +27,14 @@ namespace Icon.Web.DataAccess.Commands
             existingLocale.localeOpenDate = data.OpenDate;
             existingLocale.localeCloseDate = data.CloseDate;
 
-            AddOrUpdateTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
-            AddOrUpdateTraitValue(TraitCodes.LocaleSubtype, existingLocale, data.LocaleSubType);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.LocaleSubtype, existingLocale, data.LocaleSubType);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.VenueCode, existingLocale, data.VenueCode);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.VenueOccupant, existingLocale, data.VenueOccupant);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.TouchPointGroupId, existingLocale, data.TouchPointGroupId);
 
-            if (!string.IsNullOrWhiteSpace(data.VenueCode))
-            {
-                AddOrUpdateTraitValue(TraitCodes.VenueCode, existingLocale, data.VenueCode);
-            }
 
-            if (!string.IsNullOrWhiteSpace(data.VenueOccupant))
-            {
-                AddOrUpdateTraitValue(TraitCodes.VenueOccupant, existingLocale, data.VenueOccupant);
-            }
+
 
             context.SaveChanges();
         }
@@ -67,11 +63,12 @@ namespace Icon.Web.DataAccess.Commands
 
         }
 
-        private void AddOrUpdateTraitValue(string traitCode, Locale existingLocale, string traitValue)
+        private void AddOrUpdateOrRemoveTraitValue(string traitCode, Locale existingLocale, string traitValue)
         {
-            LocaleTrait trait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode);
+            LocaleTrait trait = existingLocale.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == traitCode );
 
-            if (trait == null)
+            if (trait == null && string.IsNullOrWhiteSpace(traitValue)) return;
+            if (trait == null && !string.IsNullOrWhiteSpace(traitValue))
             {
                 existingLocale.LocaleTrait.Add(new LocaleTrait
                 {
@@ -81,10 +78,12 @@ namespace Icon.Web.DataAccess.Commands
                     Trait = context.Trait.First(t => t.traitCode == traitCode)
                 });
             }
-            else
-            {
+            if (trait != null && !string.IsNullOrWhiteSpace(traitValue))
                 trait.traitValue = traitValue;
-            }
+
+            if (trait != null && string.IsNullOrWhiteSpace(traitValue))
+                context.LocaleTrait.Remove(trait);
+          
         }
      
     }

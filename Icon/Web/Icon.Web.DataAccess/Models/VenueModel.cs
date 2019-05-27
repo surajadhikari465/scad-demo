@@ -16,6 +16,7 @@ namespace Icon.Web.DataAccess.Models
         public string VenueOccupant { get; set; }
         public int LocaleSubTypeId { get; set; }
         public string UserName { get; set; }
+        public string TouchPointGroupId { get; set; }
 
     }
 }

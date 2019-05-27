@@ -60,11 +60,11 @@ namespace Icon.Web.Mvc.Models
         public string Fax { get; set; }
         public string CurrencyCode { get; set; }
 
-				public bool Ident { get; set; }
-				public string LiquorLicense { get; set; }
-				public string PrimeMerchantID { get; set; }
-				public string PrimeMerchantIDEncrypted { get; set; }
-				public string LocalZone { get; set; }
+	    public bool Ident { get; set; }
+	    public string LiquorLicense { get; set; }
+	    public string PrimeMerchantID { get; set; }
+	    public string PrimeMerchantIDEncrypted { get; set; }
+	    public string LocalZone { get; set; }
 
         // Venue Properties
         public string LocaleSubType { get; set; }
@@ -75,6 +75,7 @@ namespace Icon.Web.Mvc.Models
         [StringLength(255, ErrorMessage = "The Venue Occupant value cannot exceed 255 characters. ")]
         public string VenueOccupant { get; set; }
         public int LocaleSubTypeId { get; set; }
+        public string TouchPointGroupId { get; set; }
 
         public LocaleGridRowViewModel() { }
 
@@ -117,6 +118,7 @@ namespace Icon.Web.Mvc.Models
             LocaleSubType = LocaleAccessor.GetLocaleSubType(locale);
             VenueCode = LocaleAccessor.GetVenueCode(locale);
             VenueOccupant = LocaleAccessor.GetVenueOccupant(locale);
+            TouchPointGroupId = LocaleAccessor.GetTouchPointId(locale);
             Locales = new List<LocaleGridRowViewModel>();
 						Ident = LocaleAccessor.GetIdent(locale);
 						LiquorLicense = LocaleAccessor.GetLiquorLicensing(locale);

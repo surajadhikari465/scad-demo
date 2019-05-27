@@ -239,7 +239,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						};
 						if (localeTypeId == 5)
 						{
-							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString();
+							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
 							storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
 						}
 						else
@@ -372,8 +372,23 @@ namespace Icon.ApiController.Controller.QueueReaders
 							}
 						}
 					}
-				}
-			};
+				},
+                new Contracts.TraitType
+                {
+                    code = TraitCodes.TouchPointGroupId,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = "TouchPoint Group Id",  // hard coding for now. Icon.Framework needs to be built and the nuget package updated.
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = localeLineage.TouchPointGroupId,
+                            }
+                        }
+                    }
+                }
+            };
 		}
 
 		private Contracts.TraitType[] CreateStoreLocaleTraits(LocaleLineageModel localeLineage)
