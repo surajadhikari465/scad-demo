@@ -466,6 +466,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Store.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utility\IconWebAppSettings.cs" />
     <Compile Include="Utility\IInfragisticsHelper.cs" />
     <Compile Include="Utility\InfragisticsHelper.cs" />
     <Compile Include="Utility\InfragisticsSortParameterPaseResult.cs" />

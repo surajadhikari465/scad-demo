@@ -12,7 +12,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddBrandManagerHandlerTests
     {
         private BrandManagerHandler managerHandler;
@@ -52,8 +52,14 @@ namespace Icon.Web.Tests.Unit.Managers
         {
             // Given.
             BuildManagerHandler();
-            
-            var manager = GetBrandManager();
+
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = "TestBrand",
+                hierarchyClassID = 1
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Full);
 
             // When.
             managerHandler.Execute(manager);
@@ -74,7 +80,13 @@ namespace Icon.Web.Tests.Unit.Managers
 
             BuildManagerHandler();
 
-            var manager = GetBrandManager();
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = "TestBrand",
+                hierarchyClassID = 1
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Full);
 
             // When.
             CommandException caughtException = null;
@@ -104,7 +116,13 @@ namespace Icon.Web.Tests.Unit.Managers
 
             BuildManagerHandler();
 
-            var manager = GetBrandManager();
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = testBrandName,
+                hierarchyClassID = testBrand.hierarchyClassID
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Full);
 
             // When.
             Exception caughtException = null;
@@ -134,7 +152,13 @@ namespace Icon.Web.Tests.Unit.Managers
 
             BuildManagerHandler();
 
-            var manager = GetBrandManager();
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = testBrandName,
+                hierarchyClassID = testBrand.hierarchyClassID
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Full);
 
             // When.
             Exception caughtException = null;
@@ -153,9 +177,83 @@ namespace Icon.Web.Tests.Unit.Managers
             Assert.AreSame(caughtException.InnerException, unexpectedException);
         }
 
-        BrandManager GetBrandManager()
+        [TestMethod]
+        public void AddBrand_UserWriteAccessIsFull_AllCommandHandlersCalled()
         {
-            return  new BrandManager() { Brand = testBrand, BrandAbbreviation = testBrandAbbreviation, WriteAccess = Enums.WriteAccess.Full | Enums.WriteAccess.Traits };
+            // Given.
+            BuildManagerHandler();
+
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = "TestBrand",
+                hierarchyClassID = 1
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Full);
+
+            // When.
+            managerHandler.Execute(manager);
+
+            // Then.
+            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Once);
+            mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Once);
+            mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void AddBrand_UserWriteAccessIsTraits_AllCommandHandlersCalled()
+        {
+            // Given.
+            BuildManagerHandler();
+
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = "TestBrand",
+                hierarchyClassID = 1
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.Traits);
+
+            // When.
+            managerHandler.Execute(manager);
+
+            // Then.
+            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Never);
+            mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Never);
+            mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void AddBrand_UserWriteAccessIsNone_ZeroCommandHandlersCalled()
+        {
+            // Given.
+            BuildManagerHandler();
+
+            HierarchyClass hierarchyClass = new HierarchyClass
+            {
+                hierarchyClassName = "TestBrand",
+                hierarchyClassID = 1
+            };
+
+            var manager = GetBrandManager(hierarchyClass, String.Empty, Enums.WriteAccess.None);
+
+            // When.
+            managerHandler.Execute(manager);
+
+            // Then.
+            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Never);
+            mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Never);
+            mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Never);
+        }
+
+        BrandManager GetBrandManager(HierarchyClass testBrand, string brandAbbreviation, Enums.WriteAccess userAccess)
+        {
+            return  new BrandManager()
+            {
+                Brand = testBrand,
+                BrandAbbreviation = testBrandAbbreviation,
+                WriteAccess = userAccess
+            };
         }
     }
 }

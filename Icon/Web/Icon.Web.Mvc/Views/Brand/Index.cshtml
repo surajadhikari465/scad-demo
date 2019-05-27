@@ -16,12 +16,11 @@
 
 @{Html.RenderPartial("_HeaderPartial", "Brand Management");}
 
-@if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
-{
+
   <div class="page-subsection">@Html.ActionLink("Add New Brand", "Create")</div>
 
   <hr />
-}
+
   <div id="brands" class="page-section">
 
     @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-default form-submit" })

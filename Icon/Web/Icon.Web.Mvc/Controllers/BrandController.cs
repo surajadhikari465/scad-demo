@@ -20,6 +20,8 @@ using System.Web.Mvc;
 using System.Configuration;
 using System.Text;
 using System.Security.Cryptography;
+using Icon.Common;
+using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -30,23 +32,22 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery;
         private IManagerHandler<BrandManager> updateBrandManagerHandler;
         private IExcelExporterService excelExporterService;
-
-        const string WRITE_ACCESS = "WriteAccess";
-        const string WRITE_TRAIT_ACCESS = "WriteTraitAccess";
-        const string INFOR_DISABLE_ICON_INTERFACE = "InforDisableIconInterface";
+        private IconWebAppSettings settings;
 
         public BrandController(
             ILogger logger,
             IQueryHandler<GetBrandsParameters, List<BrandModel>> getBrandsQuery,
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery,
             IManagerHandler<BrandManager> updateBrandManagerHandler,
-            IExcelExporterService excelExporterService)
+            IExcelExporterService excelExporterService,
+            IconWebAppSettings settings)
         {
             this.logger = logger;
             this.getBrandsQuery = getBrandsQuery;
             this.getHierarchyClassQuery = getHierarchyClassQuery;
             this.updateBrandManagerHandler = updateBrandManagerHandler;
             this.excelExporterService = excelExporterService;
+            this.settings = settings;
         }
 
         // GET: Brand
@@ -188,8 +189,7 @@ namespace Icon.Web.Mvc.Controllers
                         ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                         ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
                         Locality = String.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                        WriteAccess = (brandHashKey != viewModel.BrandHashKey && (userAccess & Enums.WriteAccess.Full) == Enums.WriteAccess.Full ? Enums.WriteAccess.Full : Enums.WriteAccess.None)
-                            | (traitHashKey != viewModel.TraitHashKey  && ((userAccess & Enums.WriteAccess.Traits) == Enums.WriteAccess.Traits || (userAccess & Enums.WriteAccess.Full) == Enums.WriteAccess.Full) ? Enums.WriteAccess.Traits : Enums.WriteAccess.None)
+                        WriteAccess = userAccess
                     };
 
                     updateBrandManagerHandler.Execute(manager);
@@ -245,38 +245,44 @@ namespace Icon.Web.Mvc.Controllers
         private BrandViewModel EmptyViewModel()
         {
             return new BrandViewModel
-                {
-                    BrandName = String.Empty,
-                    BrandAbbreviation = String.Empty,
-                    HierarchyId = -1,
-                    HierarchyClassId = -1,
-                    HierarchyLevel = HierarchyLevels.Parent,
-                    BrandList = GetBrandList()
-                };
+            {
+                BrandName = String.Empty,
+                BrandAbbreviation = String.Empty,
+                HierarchyId = -1,
+                HierarchyClassId = -1,
+                HierarchyLevel = HierarchyLevels.Parent,
+                BrandList = GetBrandList()
+            };
         }
 
-        Enums.WriteAccess GetWriteAccess()
+        /// <summary>
+        /// If Icon is disabled, users cannot edit brand name or brand abbreviation, even if they are part of WriteAccess setting.
+        /// If Icon is enabled, users can only edit brand name and brand abbreviation if they are part of WriteAccess setting.
+        /// Regardless of Icon disabled setting, users can edit brand traits if they are part of WriteTraitAccess setting.
+        /// </summary>
+        /// <returns>Enums.WriteAccess value
+        /// None if user has no access to edit anything
+        /// Full if user can edit both Brand name & abbreviation and Brand traits
+        /// Traits if user can edit only Brand traits.
+        /// </returns>
+        private Enums.WriteAccess GetWriteAccess()
         {
-            bool isAuthorized = false;
-            var writeAccess = Enums.WriteAccess.None;
-            
-            foreach(var key in new Enums.WriteAccess[]{ Enums.WriteAccess.Full, Enums.WriteAccess.Traits})
-            {
-                try
-                {
-                    isAuthorized = ConfigurationManager.AppSettings[INFOR_DISABLE_ICON_INTERFACE] == "1"
-                        ? true
-                        : ConfigurationManager.AppSettings[key == Enums.WriteAccess.Full ? WRITE_ACCESS : WRITE_TRAIT_ACCESS].Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
-                }
-                catch { isAuthorized = false; }
+            bool isIconEnabled = this.settings.IconInterfaceEnabled;
+            bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+            bool hasTraitWriteAccess = this.settings.TraitWriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
 
-                if(isAuthorized)
-                {
-                    writeAccess |= key;
-                }
+            var userAccess = Enums.WriteAccess.None;
+
+            if (isIconEnabled && hasWriteAccess)
+            {
+                userAccess = Enums.WriteAccess.Full;
+            }
+            else if (hasTraitWriteAccess)
+            {
+                userAccess = Enums.WriteAccess.Traits;
             }
 
-            return writeAccess;
+            return userAccess;
         }
 
 
@@ -287,7 +293,10 @@ namespace Icon.Web.Mvc.Controllers
 
         string CalculateHashKey(params string[] values)
         {
-            if(values == null || values.Length == 0) return String.Empty;
+            if (values == null || values.Length == 0)
+            {
+                return String.Empty;
+            }
 
             var hashBuilder = new StringBuilder();
             using(var sha = MD5.Create())

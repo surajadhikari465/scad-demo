@@ -10,18 +10,19 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Controllers;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
+using Icon.Web.Mvc.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
     [TestClass]
-    [Ignore]
     public class BrandControllerTests
     {
         private BrandController controller;
@@ -35,6 +36,10 @@ namespace Icon.Web.Tests.Unit.Controllers
         private HierarchyClass testBrand;
         private string testBrandName;
         private string testBrandAbbreviation;
+        private IconWebAppSettings settings;
+        private Mock<ControllerContext> mockControllerContext;
+        private Mock<IIdentity> mockIdentity;
+        private string userName;
 
         [TestInitialize]
         public void Initialize()
@@ -45,6 +50,9 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetHierarchyClassQuery = new Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>>();
             mockBrandManagerHandler = new Mock<IManagerHandler<BrandManager>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
+            settings = new IconWebAppSettings();
+            mockControllerContext = new Mock<ControllerContext>();
+            mockIdentity = new Mock<IIdentity>();
 
             testBrandName = "Test Brand";
             testBrandAbbreviation = "TSTBRND";
@@ -54,9 +62,25 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockGetBrandsQuery.Object,
                 mockGetHierarchyClassQuery.Object,
                 mockBrandManagerHandler.Object,
-                mockExcelExporterService.Object);
+                mockExcelExporterService.Object,
+                settings);
 
             transaction = context.Database.BeginTransaction();
+
+            userName = "Test User";
+            mockIdentity.SetupGet(i => i.Name).Returns(userName);
+            mockIdentity.SetupGet(i => i.IsAuthenticated).Returns(true);
+            mockControllerContext.SetupGet(m => m.HttpContext.User).Returns(new GenericPrincipal(mockIdentity.Object, null));
+            controller.ControllerContext = mockControllerContext.Object;
+            mockControllerContext.Setup(c => c.HttpContext.User.IsInRole(It.Is<string>(s => s == userName))).Returns(true);
+
+            // default settings for all tests
+            settings.IconInterfaceEnabled = false;
+            settings.WriteAccessGroups = "";
+            settings.TraitWriteAccessGroups = "";
+
+            // setup for get brands list
+            mockGetBrandsQuery.Setup(bq => bq.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
         }
 
         private void StageTestBrand()
@@ -238,6 +262,112 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual(viewModel.HierarchyClassId, testBrand.hierarchyClassID);
             Assert.AreEqual(viewModel.BrandName, testBrand.hierarchyClassName);
             Assert.AreEqual(viewModel.BrandAbbreviation, testBrand.HierarchyClassTrait.Single(hct => hct.traitID == Traits.BrandAbbreviation).traitValue);
+        }
+
+        [TestMethod]
+        public void BrandControllerEditGet_IconInterfaceNotEnabledAndNoTraitWriteAccess_UserAccessSetToNone()
+        {
+            // Given.
+            settings.IconInterfaceEnabled = false;
+            settings.WriteAccessGroups = userName;
+            settings.TraitWriteAccessGroups = "";
+            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
+            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
+            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
+            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
+
+            // When.
+            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
+
+            // Then.
+            var viewModel = result.Model as BrandViewModel;
+            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.None);
+        }
+
+        [TestMethod]
+        public void BrandControllerEditGet_IconInterfaceEnabledAndUserInWriteAccess_UserAccessSetToFull()
+        {
+            // Given.
+            settings.IconInterfaceEnabled = true;
+            settings.WriteAccessGroups = userName;
+            settings.TraitWriteAccessGroups = "";
+            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
+            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
+            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
+            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
+
+            // When.
+            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
+
+            // Then.
+            var viewModel = result.Model as BrandViewModel;
+            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.Full);
+        }
+
+        [TestMethod]
+        public void BrandControllerEditGet_IconInterfaceEnabledAndUserNotInWriteAccessButUserInTraitWriteAccess_UserAccessSetToTraits()
+        {
+            // Given.
+            settings.IconInterfaceEnabled = true;
+            settings.WriteAccessGroups = "";
+            settings.TraitWriteAccessGroups = userName;
+            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
+            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
+            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
+            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
+
+            // When.
+            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
+
+            // Then.
+            var viewModel = result.Model as BrandViewModel;
+            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.Traits);
+        }
+
+        [TestMethod]
+        public void BrandControllerEditGet_IconInterfaceNotEnabledButUserInTraitWriteAccess_UserAccessSetToTraits()
+        {
+            // Given.
+            settings.IconInterfaceEnabled = false;
+            settings.WriteAccessGroups = "";
+            settings.TraitWriteAccessGroups = userName;
+            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
+            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
+            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
+            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
+
+            // When.
+            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
+
+            // Then.
+            var viewModel = result.Model as BrandViewModel;
+            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.Traits);
+        }
+
+        [TestMethod]
+        public void BrandControllerEditGet_IconInterfaceNotEnabledAndUserNotInTraitWriteAccess_UserAccessSetToNone()
+        {
+            // Given.
+            settings.IconInterfaceEnabled = false;
+            settings.WriteAccessGroups = "";
+            settings.TraitWriteAccessGroups = "";
+            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
+            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
+            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
+            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
+            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
+            
+
+            // When.
+            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
+
+            // Then.
+            var viewModel = result.Model as BrandViewModel;
+            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.None);
         }
 
         [TestMethod]

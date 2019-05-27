@@ -82,6 +82,7 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Singleton);
             container.Register<IInfragisticsHelper, InfragisticsHelper>(Lifestyle.Singleton);
             container.RegisterOpenGeneric(typeof(ICachePolicy<>), typeof(CachePolicy<>), Lifestyle.Singleton);
+            container.RegisterSingle(() => IconWebAppSettings.CreateSettingsFromConfig());
             
             container.RegisterManyForOpenGeneric(typeof(IExcelModelMapper<,>), typeof(IExcelModelMapper<,>).Assembly);
             container.RegisterManyForOpenGeneric(typeof(IExcelValidatorFactory<>), typeof(IExcelValidatorFactory<>).Assembly);

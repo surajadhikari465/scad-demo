@@ -21,94 +21,147 @@
     @Html.HiddenFor(model => model.TraitHashKey)
 
     <fieldset>
-      <legend>Edit Brand</legend>
+        <legend>Edit Brand</legend>
 
-      <div class="row">
-        @Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
-        <div>
-          @if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
-          {
-            @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
-            @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
-          }
-          else
-          {
-            @Html.HiddenFor(model => model.BrandName)
-            @Html.Label(Model.BrandName ?? String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
-          }
+        <div class="row">
+            @Html.LabelFor(model => model.BrandName, new { @class = "col-md-2 form-label" })
+            <div>
+                @if (Model != null && Model.UserWriteAccess == Icon.Web.Common.Enums.WriteAccess.Full)
+                {
+                    @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input", @id = "brandName" })
+                    @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "col-md-4 form-property-val" })
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.BrandName)
+                    @Html.Label(Model.BrandName ?? String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
         </div>
-      </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
-        <div>
-          @if(Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
-          {
-            @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-            @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
-          }
-          else
-          {
-            @Html.HiddenFor(model => model.BrandAbbreviation)
-            @Html.Label(Model.BrandAbbreviation, new { @class = "form-label col-md-1", @style = "text-align:left" })
-          }
+        <div class="row">
+            @Html.LabelFor(model => model.BrandAbbreviation, new { @class = "col-md-2 form-label" })
+            <div>
+                @if (Model != null && Model.UserWriteAccess == Icon.Web.Common.Enums.WriteAccess.Full)
+                {
+                    @Html.TextBoxFor(model => model.BrandAbbreviation, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+                    @Html.ValidationMessageFor(model => model.BrandAbbreviation, null, new { @class = "col-md-4 form-property-val" })
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.BrandAbbreviation)
+                    @Html.Label(Model.BrandAbbreviation, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
         </div>
-      </div>
 
-      <hr />
+        <hr />
 
-      <div class="row">
-        @Html.LabelFor(model => model.Designation, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.DropDownList("Designation", new SelectList(Icon.Web.Mvc.Models.BrandViewModel.DesignationList), "Select a Designation... (Optional)")
-        </div>
-      </div>
+        @if (Model != null && 
+            (Model.UserWriteAccess == Icon.Web.Common.Enums.WriteAccess.Traits
+            || Model.UserWriteAccess == Icon.Web.Common.Enums.WriteAccess.Full))
+        {
+            <div class="row">
+                @Html.LabelFor(model => model.Designation, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.DropDownList("Designation", new SelectList(Icon.Web.Mvc.Models.BrandViewModel.DesignationList), "Select a Designation... (Optional)")
+                </div>
+            </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.ParentCompany, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.DropDownList("ParentCompany", new SelectList(Model == null || Model.BrandList == null ? new string[] { } : Model.BrandList), "Select a Brand... (Optional)")
-        </div>
-      </div>
+            <div class="row">
+                @Html.LabelFor(model => model.ParentCompany, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.DropDownList("ParentCompany", new SelectList(Model == null || Model.BrandList == null ? new string[] { } : Model.BrandList), "Select a Brand... (Optional)")
+                </div>
+            </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.ZipCode, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.ZipCode, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-          @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "col-md-4 form-property-val" })
-        </div>
-      </div>
+            <div class="row">
+                @Html.LabelFor(model => model.ZipCode, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.ZipCode, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+                    @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
 
-      <div class="row">
-        @Html.LabelFor(model => model.Locality, new { @class = "col-md-2 form-label" })
-        <div>
-          @Html.TextBoxFor(model => model.Locality, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
-          @Html.ValidationMessageFor(model => model.Locality, null, new { @class = "col-md-4 form-property-val" })
-        </div>
-      </div>
+            <div class="row">
+                @Html.LabelFor(model => model.Locality, new { @class = "col-md-2 form-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.Locality, new { @class = "col-md-6 form-input", @id = "brandAbbreviation" })
+                    @Html.ValidationMessageFor(model => model.Locality, null, new { @class = "col-md-4 form-property-val" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @Html.HiddenFor(model => model.Designation)
+                @if (Model.Designation != null)
+                {
+                    @Html.Label(Model.Designation, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+                else
+                {
+                    @Html.Label(String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
+            <div class="row">
+                @Html.HiddenFor(model => model.ParentCompany)
+                @if (Model.Designation != null)
+                {
+                    @Html.Label(Model.ParentCompany, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+                else
+                {
+                    @Html.Label(String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
+            <div class="row">
+                @Html.HiddenFor(model => model.ZipCode)
+                @if (Model.Designation != null)
+                {
+                    @Html.Label(Model.ZipCode, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+                else
+                {
+                    @Html.Label(String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
+            <div class="row">
+                @Html.HiddenFor(model => model.Locality)
+                @if (Model.Designation != null)
+                {
+                    @Html.Label(Model.Locality, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+                else
+                {
+                    @Html.Label(String.Empty, new { @class = "form-label col-md-1", @style = "text-align:left" })
+                }
+            </div>
+        }
+
     </fieldset>
 
     <div class="row">
-      <div class="col-md-offset-2 col-md-1">
+        <div class="col-md-offset-2 col-md-1">
         <input type="submit" value="Save" id="saveButton" class="btn btn-default form-submit" />
-      </div>
+        </div>
     </div>
 
     <div class="validation-section page-subsection">
-      @if(ViewData["SuccessMessage"] != null)
-      {
-        <div class="alert alert-success alert-dismissable">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <strong>@ViewData["SuccessMessage"].ToString()</strong>
-        </div>
-      }
-      @if(ViewData["ErrorMessage"] != null)
-      {
-        <div class="alert alert-danger alert-dismissable">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <strong>@ViewData["ErrorMessage"].ToString()</strong>
-        </div>
-      }
+        @if(ViewData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>@ViewData["SuccessMessage"].ToString()</strong>
+            </div>
+        }
+        @if(ViewData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>@ViewData["ErrorMessage"].ToString()</strong>
+            </div>
+        }
     </div>
   }
 </div>
