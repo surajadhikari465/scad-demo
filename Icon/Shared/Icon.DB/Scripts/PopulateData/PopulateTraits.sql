@@ -156,3 +156,4 @@ ELSE
     
     INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey, GETDATE());
   END
+  GO
