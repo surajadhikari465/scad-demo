@@ -2201,7 +2201,7 @@ me_exit:
   Private Sub tsbEdit_Search_Identifier_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEdit_Search_Identifier.Click
     logger.Debug("tsbEdit_Search_Identifier_Click")
 
-    tsbEdit_SearchText.Text = tsbEdit_SearchText.Text.Replace(" ", String.Empty)
+    tsbEdit_SearchText.Text = tsbEdit_SearchText.Text.Replace(" ", String.Empty).Replace(vbCr, String.Empty).Replace(vbLf, String.Empty)
 
     If Not IsNumeric(tsbEdit_SearchText.Text) Then
       MsgBox("Identifier is missing or is not numeric." + VB.vbCrLf + "Please verify your input and try again.", MsgBoxStyle.Information)
