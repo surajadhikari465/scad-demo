@@ -31,7 +31,7 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateOrRemoveTraitValue(TraitCodes.LocaleSubtype, existingLocale, data.LocaleSubType);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.VenueCode, existingLocale, data.VenueCode);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.VenueOccupant, existingLocale, data.VenueOccupant);
-            AddOrUpdateOrRemoveTraitValue(TraitCodes.TouchPointGroupId, existingLocale, data.TouchPointGroupId);
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.TouchpointGroupId, existingLocale, data.TouchPointGroupId);
 
 
 

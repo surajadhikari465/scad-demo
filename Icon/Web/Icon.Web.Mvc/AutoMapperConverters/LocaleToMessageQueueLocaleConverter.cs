@@ -71,7 +71,7 @@ namespace Icon.Web.Mvc.AutoMapperConverters
 			LocaleTrait venueSubType = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.LocaleSubtype);
 			destination.VenueSubType = venueSubType == null ? null : venueSubType.traitValue;
 
-            LocaleTrait TouchGroupGroupId = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.TouchPointGroupId);
+            LocaleTrait TouchGroupGroupId = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.TouchpointGroupId);
             destination.TouchPointGroupId = TouchGroupGroupId == null ? null : TouchGroupGroupId.traitValue;
 			// end of Venue related Traits
 
