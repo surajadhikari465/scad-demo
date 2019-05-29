@@ -26,7 +26,7 @@ BEGIN
 			vi.ItemTypeCode as ItemTypeCode
 		FROM
 			#ValidatedItems vi
-		WHERE NOT EXISTS (SELECT 1 FROM ValidatedScanCode vsc WHERE vsc.ScanCode = vi.ScanCode)
+		WHERE NOT EXISTS (SELECT 1 FROM ValidatedScanCode vsc WITH (UPDLOCK) WHERE vsc.ScanCode = vi.ScanCode)
 
 		UPDATE VSC
 		SET ItemTypeCode = vil.ItemTypeCode
