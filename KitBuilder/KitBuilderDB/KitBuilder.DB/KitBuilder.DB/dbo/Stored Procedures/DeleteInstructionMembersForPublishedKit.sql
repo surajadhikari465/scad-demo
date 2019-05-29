@@ -3,7 +3,7 @@
 AS
 BEGIN
 
-DECLARE @PublishedStatusId int = (select StatusID from Status where statuscode='P')
+DECLARE @PublishedStatusId int = (select StatusID from Status where statuscode='PR')
 
 
 UPDATE AvailablePluNumber

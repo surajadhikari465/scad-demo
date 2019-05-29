@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" xmlns:WFM.UID="java://UID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:ns2="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" xmlns:WFM.UID="java://UID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx3="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:ns2="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.1000/Common/ListType.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
     <pd:name>Processes/SendToESB.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -28,8 +29,8 @@
     <pd:startY>177</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>1128</pd:endX>
-    <pd:endY>170</pd:endY>
+    <pd:endX>1398</pd:endX>
+    <pd:endY>183</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1552590882893</pd:targetNamespace>
@@ -141,19 +142,23 @@
                 <ns1:ActivityInput>
                     <OtherProperties>
                         <TransactionID>
-                            <xsl:value-of select="WFM.UID:UID()"/>
+                            <xsl:value-of select="$Create-Message-Header/pfx3:MessageHeaders/pfx3:TransactionID"/>
                         </TransactionID>
-                        <xsl:if test="$Start/InstructionData/InstructionMembers[1]/InstructionCode">
+                        <xsl:if test="$Create-Message-Header/pfx3:MessageHeaders/pfx3:TransactionType">
                             <TransactionType>
-                                <xsl:value-of select="$Start/InstructionData/InstructionMembers[1]/InstructionCode"/>
+                                <xsl:value-of select="$Create-Message-Header/pfx3:MessageHeaders/pfx3:TransactionType"/>
                             </TransactionType>
                         </xsl:if>
-                        <Source>
-                            <xsl:value-of select="&quot;KitBuilder&quot;"/>
-                        </Source>
-                        <nonReceivingSysName>
-                            <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/NonReceivingSystems"/>
-                        </nonReceivingSysName>
+                        <xsl:if test="$Create-Message-Header/pfx3:MessageHeaders/pfx3:Source">
+                            <Source>
+                                <xsl:value-of select="$Create-Message-Header/pfx3:MessageHeaders/pfx3:Source"/>
+                            </Source>
+                        </xsl:if>
+                        <xsl:if test="$Create-Message-Header/pfx3:MessageHeaders/pfx3:nonReceivingSysName">
+                            <nonReceivingSysName>
+                                <xsl:value-of select="$Create-Message-Header/pfx3:MessageHeaders/pfx3:nonReceivingSysName"/>
+                            </nonReceivingSysName>
+                        </xsl:if>
                     </OtherProperties>
                     <Body>
                         <xsl:value-of select="$Render-XML/xmlString"/>
@@ -216,8 +221,8 @@
     <pd:activity name="Render XML">
         <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
         <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-        <pd:x>454</pd:x>
-        <pd:y>190</pd:y>
+        <pd:x>335</pd:x>
+        <pd:y>180</pd:y>
         <config>
             <renderAsText>text</renderAsText>
             <validateInput>true</validateInput>
@@ -228,13 +233,103 @@
             <xsl:copy-of select="$Map-Data/pfx2:lists"/>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Group</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="Render Message Headers JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1047</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx3:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <ns13:ActivityInputClass>
+                <xsl:copy-of select="$Create-Message-Header/pfx3:MessageHeaders"/>
+            </ns13:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Archive Instruction Message">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>1220</pd:x>
+        <pd:y>192</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
+            <schema>app</schema>
+            <catalog/>
+            <ProcedureName>MessageHistoryInsert;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@MessageTypeId</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@Message</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@MessageHeader</colName>
+                    <colType>1</colType>
+                    <dataType>-9</dataType>
+                    <typeName>nvarchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <MessageTypeId>
+                        <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/MessageTypeId"/>
+                    </MessageTypeId>
+                    <Message>
+                        <xsl:value-of select="tib:render-xml($Start/InstructionData, true(), true())"/>
+                    </Message>
+                    <MessageHeader>
+                        <xsl:value-of select="$Render-Message-Headers-JSON/ns13:ActivityOutputClass/jsonString"/>
+                    </MessageHeader>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create Message Header">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>474</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <element ref="pfx3:MessageHeaders"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:MessageHeaders>
+                <pfx3:TransactionID>
+                    <xsl:value-of select="WFM.UID:UID()"/>
+                </pfx3:TransactionID>
+                <pfx3:TransactionType>
+                    <xsl:value-of select="&quot;Instruction&quot;"/>
+                </pfx3:TransactionType>
+                <pfx3:Source>
+                    <xsl:value-of select="&quot;KitBuilder&quot;"/>
+                </pfx3:Source>
+                <pfx3:nonReceivingSysName>
+                    <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/NonReceivingSystems"/>
+                </pfx3:nonReceivingSysName>
+            </pfx3:MessageHeaders>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Map Data</pd:to>
@@ -250,7 +345,35 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render Message Headers JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Message Headers JSON</pd:from>
+        <pd:to>Archive Instruction Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Archive Instruction Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
         <pd:from>Render XML</pd:from>
+        <pd:to>Create Message Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Message Header</pd:from>
         <pd:to>Group</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/PublishInstructionList.process</processProperty>
         </processArchive>
-        <versionProperty>23</versionProperty>
+        <versionProperty>25</versionProperty>
         <authorProperty>Amit</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishInstructionListService</name>

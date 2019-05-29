@@ -58,6 +58,14 @@
 			<modTime>1541714181129</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>MessageTypeId</name>
+			<value>4</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1559141823281</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>NonReceivingSystems</name>
 			<value>AMZ,DW,KB,ESL1Plum,Infor,Mammoth,Slaw,Spice</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -67,11 +75,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PublisherTimerInMilliseconds</name>
-			<value>30000</value>
+			<value>300</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1554311264293</modTime>
+			<modTime>1558459293068</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
