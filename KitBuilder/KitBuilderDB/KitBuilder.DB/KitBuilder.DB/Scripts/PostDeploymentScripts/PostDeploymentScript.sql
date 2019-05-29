@@ -17,3 +17,4 @@ Post-Deployment Script Template
 :r PopualteKitBuilderAppRoles.sql -- 05.06.2019
 :r PopulateMessageTypes.sql  -- 05.07.2019
 :r PopulateLocaleKitAndInstructionTypes.sql -- 05.27.2019
+:r PopulateInstructionMemberPluNumbers.sql -- 05.29.2019
