@@ -308,6 +308,7 @@
         Me.SlawItemLocaleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SlawPriceMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SupportRestoreDeleteItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SupportDeleteItemFromPlumCorpChgQueueTmp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuData_UnprocessedPushFiles = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdministration_IRMAConfiguration = New System.Windows.Forms.ToolStripMenuItem()
@@ -1403,7 +1404,7 @@
         '
         'mnuData
         '
-        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.mnuData_CancelAllSales, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.SupportRestoreDeleteItemToolStripMenuItem, Me.mnuData_UnprocessedPushFiles})
+        Me.mnuData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuData_BatchRollback, Me.mnuData_CancelAllSales, Me.IconItemRefreshMenuItem, Me.R10ItemRefreshToolStripMenuItem, Me.mnuData_RestoreDeletedItem, Me.mnuData_ScalePOSPush, Me.SlawItemRefreshMenuItem, Me.SupportRestoreDeleteItemToolStripMenuItem, Me.SupportDeleteItemFromPlumCorpChgQueueTmp, Me.mnuData_UnprocessedPushFiles})
         Me.mnuData.Name = "mnuData"
         resources.ApplyResources(Me.mnuData, "mnuData")
         '
@@ -1457,6 +1458,11 @@
         '
         Me.SupportRestoreDeleteItemToolStripMenuItem.Name = "SupportRestoreDeleteItemToolStripMenuItem"
         resources.ApplyResources(Me.SupportRestoreDeleteItemToolStripMenuItem, "SupportRestoreDeleteItemToolStripMenuItem")
+        '
+        'SupportDeleteItemFromPlumCorpChgQueueTmp
+        '
+        Me.SupportDeleteItemFromPlumCorpChgQueueTmp.Name = "SupportDeleteItemFromPlumCorpChgQueueTmp"
+        resources.ApplyResources(Me.SupportDeleteItemFromPlumCorpChgQueueTmp, "SupportDeleteItemFromPlumCorpChgQueueTmp")
         '
         'mnuData_UnprocessedPushFiles
         '
@@ -2166,5 +2172,6 @@
     Friend WithEvents mnuData_CancelAllSales As ToolStripMenuItem
     Friend WithEvents SupportRestoreDeleteItemToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents tslTitle As ToolStripStatusLabel
+    Friend WithEvents SupportDeleteItemFromPlumCorpChgQueueTmp As ToolStripMenuItem
 #End Region
 End Class

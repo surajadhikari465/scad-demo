@@ -3337,6 +3337,8 @@
     <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
     <None Include="Scripts\PostDeploy\PBI21205_OrderPurgeScheduleUpdates.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItemsValidate.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

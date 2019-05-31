@@ -482,6 +482,22 @@
     <Compile Include="Administration\MenuAdmin\UserInterface\Form_ManageMenuAccess.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\BusinessLogic\PlumCorpChgDeleteModel.vb" />
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\BusinessLogic\PlumCorpChgDeleteValidateRequestBO.vb" />
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\BusinessLogic\PlumCorpChgQueueTmpItemDeleteBO.vb" />
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\DataAccess\PlumCorpChgQueueTmpItemDeleteDAO.vb" />
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpDeleteError.Designer.vb">
+      <DependentUpon>PlumCorpChgQueueTmpDeleteError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpDeleteError.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpItemDelete.Designer.vb">
+      <DependentUpon>PlumCorpChgQueueTmpItemDelete.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpItemDelete.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Administration\POSPush\BusinessLogic\BatchIdDefaultBO.vb" />
     <Compile Include="Administration\POSPush\BusinessLogic\DataValidationBO.vb" />
     <Compile Include="Administration\POSPush\BusinessLogic\POSChangeTypeBO.vb" />
@@ -3583,6 +3599,12 @@
     <EmbeddedResource Include="Administration\MenuAdmin\UserInterface\Form_ManageMenuAccess.resx">
       <DependentUpon>Form_ManageMenuAccess.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpDeleteError.resx">
+      <DependentUpon>PlumCorpChgQueueTmpDeleteError.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PlumCorpChgQueueTmpItemDelete\UserInterface\PlumCorpChgQueueTmpItemDelete.resx">
+      <DependentUpon>PlumCorpChgQueueTmpItemDelete.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Administration\POSPush\UserInterface\ManagePOSStore\Form_DeleteStorePOSConfig.resx">
       <DependentUpon>Form_DeleteStorePOSConfig.vb</DependentUpon>

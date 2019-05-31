@@ -2,15 +2,10 @@ Option Explicit On
 Option Strict On
 
 Imports log4net
-Imports System.Collections.Specialized
 Imports System.Configuration
-Imports System.Data.Common
 Imports System.Data.SqlClient
-Imports System.Diagnostics
 Imports System.IO
 Imports System.Data
-Imports System.Runtime.Serialization
-Imports System.Text
 Imports System.Text.RegularExpressions
 Imports WholeFoods.Utility.Encryption
 
@@ -572,13 +567,32 @@ Namespace WholeFoods.Utility.DataAccess
             'logger.Debug("_executeScalar exit")
         End Function
 
+    Public Function ExecuteScalar(ByVal spName As String, ByVal transaction As SqlTransaction, ParamArray ByVal parameters As SqlParameter()) As Object
+      Dim command As SqlCommand = GetDataCommand(spName, transaction, True)
+      command.Parameters.AddRange(parameters)
+
+      Try
+        If command.Connection.State = ConnectionState.Closed Then
+          OpenCommandConnection(command)
+        End If
+
+        Return command.ExecuteScalar()
+      Catch e As Exception
+        logger.Error("Exception during DataFactory._executeScalar:", e)
+        throwException("Failed to execute ExecuteScalar method for statement " & spName, e)
+        Return Nothing
+      Finally
+        command.Connection.Close()
+      End Try
+    End Function
+
 #End Region
 
 #Region "ExecuteStoredProcedure"
 
 #Region "       StoredProc.ArrayList"
 
-        Public Function ExecuteStoredProcedure(ByVal strProcedureName As String) As ArrayList
+    Public Function ExecuteStoredProcedure(ByVal strProcedureName As String) As ArrayList
             Return _executeStoredProcedure(strProcedureName, Nothing, Nothing, False)
         End Function
 
