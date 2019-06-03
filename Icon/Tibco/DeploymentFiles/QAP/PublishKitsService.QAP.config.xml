@@ -86,7 +86,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/KitBuilder/Password</name>
-            <value>#!UXSvYbo7JMi6tVg7S0MF5xa4kV5MM54blCFXL8kZgLD9ItEEhO72xQ==</value>
+            <value>#!7BuFtZ0El2xFUFWcfIRh7W4oKJorRYn5UNZnbO82UwQ0o91pxgNZtnAo+HIar6Ta</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/KitBuilder/SqlDBDriver</name>
@@ -660,10 +660,10 @@
         </localRepoInstance>
     </repoInstances>
     <services>
-        <bw name="Publish Kits Service Archive.par">
+        <bw name="Process Archive.par">
             <enabled>true</enabled>
             <bindings>
-                <binding name="Publish Kits Service Archive-1">
+                <binding name="Process Archive-1">
                     <machine>cerd1662</machine>
                     <product>
                         <type>bwengine</type>
@@ -677,7 +677,7 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
-                <binding name="Publish Kits Service Archive-2">
+                <binding name="Process Archive-2">
                     <machine>cerd1663</machine>
                     <product>
                         <type>bwengine</type>
@@ -691,7 +691,7 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
-				 <binding name="Publish Kits Service Archive-3">
+				 <binding name="Process Archive-3">
                     <machine>cerd1664</machine>
                     <product>
                         <type>bwengine</type>
@@ -705,7 +705,7 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
-				 <binding name="Publish Kits Service Archive-4">
+				 <binding name="Process Archive-4">
                     <machine>cerd1665</machine>
                     <product>
                         <type>bwengine</type>

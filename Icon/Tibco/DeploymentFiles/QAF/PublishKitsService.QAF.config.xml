@@ -660,10 +660,10 @@
         </localRepoInstance>
     </repoInstances>
     <services>
-        <bw name="Publish Kits Service Archive.par">
+        <bw name="Process Archive.par">
             <enabled>true</enabled>
             <bindings>
-                <binding name="Publish Kits Service Archive-1">
+                <binding name="Process Archive-1">
                     <machine>cerd1673</machine>
                     <product>
                         <type>bwengine</type>
@@ -677,7 +677,7 @@
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
-                <binding name="Publish Kits Service Archive-2">
+                <binding name="Process Archive-2">
                     <machine>cerd1674</machine>
                     <product>
                         <type>bwengine</type>
