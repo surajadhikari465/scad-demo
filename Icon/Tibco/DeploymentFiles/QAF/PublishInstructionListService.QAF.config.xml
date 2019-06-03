@@ -32,13 +32,17 @@
             <name>Application/MessageType</name>
             <value>text</value>
         </NameValuePair>
+		 <NameValuePair>
+            <name>Application/MessageTypeId</name>
+            <value>4</value>
+        </NameValuePair>
         <NameValuePair>
             <name>Application/NonReceivingSystems</name>
             <value>AMZ,DW,KB,ESL1Plum,Infor,Mammoth,Slaw,Spice</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/PublisherTimerInMilliseconds</name>
-            <value>30000</value>
+            <value>300</value>
         </NameValuePair>
         <NameValuePair>
             <name>ArchivePriceMessageSettings/ActionAddOrUpdate</name>
