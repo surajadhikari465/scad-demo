@@ -163,7 +163,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                     description = Contracts.LocaleDescType.Store
                                 },
                                 Item = new Contracts.StoreItemAttributesType
-                                {                                
+                                {
                                     scanCode = new Contracts.ScanCodeType[]
                                     {
                                         new Contracts.ScanCodeType
@@ -173,7 +173,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                                             typeId = message.ScanCodeTypeId,
                                             typeIdSpecified = true,
                                             typeDescription = message.ScanCodeTypeDesc
-                                        }                                    
+                                        }
                                     },
                                     traits = new Contracts.TraitType[]
                                     {
@@ -377,8 +377,11 @@ namespace Icon.ApiController.Controller.QueueReaders
                     AddLinkedItem(message, message.PreviousLinkedItemScanCode, links, groups, Contracts.ActionEnum.Delete);
                 }
 
-                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).links = links.Any() ? links.ToArray() : null;
-                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups.group = groups.Any() ? groups.ToArray() : null;
+               (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).links = links.Any() ? links.ToArray() : null;
+
+                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups =
+
+                new Contracts.ItemGroupsType { @group = groups.Any() ? groups.ToArray() : null };
             }
         }
 
@@ -410,19 +413,19 @@ namespace Icon.ApiController.Controller.QueueReaders
             }
 
             links.Add(new Contracts.LinkTypeType
-                        {
-                            parentIdSpecified = true,
-                            childIdSpecified = true,
-                            parentId = linkedItem.itemID,
-                            childId = message.ItemId
-                        });
+            {
+                parentIdSpecified = true,
+                childIdSpecified = true,
+                parentId = linkedItem.itemID,
+                childId = message.ItemId
+            });
             groups.Add(new Contracts.ItemGroupTypeType
-                        {
-                            ActionSpecified = true,
-                            Action = action,
-                            id = linkedItem.itemID.ToString() + "_" + message.ItemId.ToString(),
-                            description = groupTypeDescription
-                        });
+            {
+                ActionSpecified = true,
+                Action = action,
+                id = linkedItem.itemID.ToString() + "_" + message.ItemId.ToString(),
+                description = groupTypeDescription
+            });
         }
 
         private Contracts.ActionEnum GetMessageAction(int messageActionId)
