@@ -34,3 +34,4 @@ CREATE NONCLUSTERED INDEX [IX_Price_SO_ItemID] ON [dbo].[Price_SO]
        [PriceID] ASC
 )
 INCLUDE ([AddedDate]) ON [FG_SO]
+GO
