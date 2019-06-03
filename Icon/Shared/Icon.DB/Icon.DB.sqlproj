@@ -489,7 +489,7 @@
     <Build Include="app\Stored Procedures\MessageQueueDeleteControllerFromBusinessUnitInProcess.sql" />
     <Build Include="app\Stored Procedures\MessageQueueUpdateControllerBusinessUnitInProcess.sql" />
     <Build Include="dbo\Tables\DeliverySystem.sql" />
-    <None Include="app\Stored Procedures\PDX_LocationHierarchyFile.sql" />
+    <Build Include="app\Stored Procedures\PDX_LocationHierarchyFile.sql" />
     <Build Include="app\Tables\MessageQueueBusinessUnitInProcess.sql" />
     <Build Include="app\Tables\MessageQueuePriceArchive.sql" />
     <Build Include="app\Tables\MessageQueueItemLocaleArchive.sql" />

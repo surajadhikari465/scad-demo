@@ -836,7 +836,7 @@
     <Build Include="schema\dbo\Stored Procedures\Procs1\DoFSAWarehouseSend.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ImportOrderDetail.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ImportOrderHeader.sql" />
-    <None Include="schema\dbo\Stored Procedures\Procs1\DVO_ProcessBulkOrders.sql" />
+    <Build Include="schema\dbo\Stored Procedures\Procs1\DVO_ProcessBulkOrders.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\Dynamic_POSSearchForNonBatchedChanges.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\DynamicMovement.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs1\EIM_AddChainNamesToIdList.sql" />
@@ -1998,7 +1998,7 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchasesToSalesCompSubTeamDetail.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchasesToSalesCompSubTeamSummary.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurchToSalesComp.sql" />
-    <None Include="schema\dbo\Stored Procedures\Procs3\PurgeItemHistoryDaily.sql" />
+    <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeItemHistoryDaily.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeLog.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgePriceHistoryDaily.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PurgeStraight.sql" />
@@ -3156,7 +3156,7 @@
     <Build Include="schema\mammoth\Tables\ItemChangeEventType.sql" />
     <Build Include="schema\mammoth\Tables\ItemLocaleChangeQueue.sql" />
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
-    <None Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
+    <Build Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Scale_Storage.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_GetStorageDataByItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_AddStorageDataToItem.sql" />
@@ -3165,8 +3165,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_InsertUpdateStorageData.sql" />
     <Build Include="Schema\infor\Tables\tmpGpmLatestPbd.sql" />
     <Build Include="Schema\infor\Tables\tmpGpmFuturePbd.sql" />
-    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorCostHistory.sql" />
-    <None Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorDealHistory.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorCostHistory.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeVendorDealHistory.sql" />
     <None Include="SQL Agent Job\ItemCatalog - VendorCostDealHistory Purge.sql" />
     <Build Include="Schema\dbo\Functions\fn_GetInstanceDataFlagStoreValues.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeEIM.sql" />
