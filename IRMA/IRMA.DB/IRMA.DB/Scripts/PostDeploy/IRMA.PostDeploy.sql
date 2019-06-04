@@ -14,8 +14,6 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
-:r PBI4896_AddNewIDF.sql -- 2019.04.09
-:r PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28

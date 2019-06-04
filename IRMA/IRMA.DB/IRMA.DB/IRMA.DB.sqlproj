@@ -3297,7 +3297,6 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AMZ_ItemVendorLaneFile.sql" />
     <None Include="SQL Agent Job\Amazon Vendor Lane Data Feed - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\VendorLaneExtract.sql" />
-    <None Include="Scripts\PostDeploy\PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql" />
     <Build Include="Schema\amz\Tables\DeletedOrderItem.sql" />
     <None Include="Scripts\PostDeploy\Archive\PopulateAmzEventTypeTable.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_PriceUpdate.sql" />
@@ -3328,7 +3327,6 @@
     <Build Include="Schema\amz\StoredProcedures\GetUnsentInStockMessages.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI4557_AddOpsgenieKeysToAppConfigApp.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI18549-AddInStockApplication.sql" />
-    <None Include="Scripts\PostDeploy\PBI4896_AddNewIDF.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI14520_AddAmazonInStockEnabledStoreVendorIdToAppConfig.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI4883_RemoveObsoleteHCDBObjects.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
@@ -3336,6 +3334,8 @@
     <None Include="Scripts\PreDeploy\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI4896_AddNewIDF.sql" />
     <None Include="Scripts\PostDeploy\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItems.sql" />
