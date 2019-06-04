@@ -60,6 +60,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -123,7 +124,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApplicationDatabaseConfiguration.cs" />
     <Compile Include="Models\ApplicationTypeEnum.cs" />
+    <Compile Include="Models\ConnectionStringConfigElement.cs" />
+    <Compile Include="Models\DatabaseCategoryEnum.cs" />
+    <Compile Include="Models\DatabaseDefinition.cs" />
     <Compile Include="Models\LogErrorLevelEnum.cs" />
     <Compile Include="Services\DashboardEnvironmentManager.cs" />
     <Compile Include="Filters\MenuOptionsFilter.cs" />
@@ -151,10 +156,11 @@
     <Compile Include="Services\RemoteWmiServiceWrapper.cs" />
     <Compile Include="ViewModels\ApiMessageJobSummaryViewModel.cs" />
     <Compile Include="ViewModels\ApiMessageJobTimedReportViewModel.cs" />
+    <Compile Include="ViewModels\AppDatabaseConfigurationViewModel.cs" />
     <Compile Include="ViewModels\DashboardEnvironmentCollectionViewModel.cs" />
+    <Compile Include="ViewModels\AppDatabaseViewModel.cs" />
     <Compile Include="ViewModels\EsbEnvironmentViewModel.cs" />
     <Compile Include="ViewModels\IconLogEntryCollectionViewModel.cs" />
-    <Compile Include="ViewModels\IconServiceAppViewModel.cs" />
     <Compile Include="ViewModels\RecentLogEntriesReportCollectionViewModel.cs" />
     <Compile Include="ViewModels\RecentLogEntriesReportViewModel.cs" />
     <Compile Include="ViewModels\IconLogEntryViewModel.cs" />
@@ -255,7 +261,6 @@
     <Content Include="Views\Shared\DisplayTemplates\IconApplicationViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\IconApplicationViewModel.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\IconApplicationDetailsViewModel.cshtml" />
     <Content Include="Views\Shared\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
@@ -294,6 +299,7 @@
     <Content Include="Views\Shared\DisplayTemplates\AppServerViewModel.cshtml" />
     <Content Include="Views\Shared\_SubMenuForMammothAppLogs.cshtml" />
     <Content Include="Views\MammothLogs\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\AppDatabaseViewModel.cshtml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

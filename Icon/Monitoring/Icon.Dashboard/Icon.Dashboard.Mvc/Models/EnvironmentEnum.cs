@@ -12,6 +12,7 @@ namespace Icon.Dashboard.Mvc.Models
         Test,
         QA,
         Perf,
-        Prd
+        Prd,
+        Tst1
     }
 }

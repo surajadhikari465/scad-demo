@@ -92,7 +92,6 @@ namespace Icon.Dashboard.Mvc.Controllers
 
             var appViewModel = remoteServicesService.LoadRemoteService(server, application, commandsEnabled);
 
-
             return View(appViewModel);
         }
         #endregion

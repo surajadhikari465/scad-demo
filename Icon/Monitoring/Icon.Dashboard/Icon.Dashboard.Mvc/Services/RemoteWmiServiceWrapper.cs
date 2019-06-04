@@ -10,6 +10,9 @@ using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Xml.Linq;
+using System.Data.Common;
+using System.Data.EntityClient;
+using System.Data.SqlClient;
 
 namespace Icon.Dashboard.Mvc.Services
 {
@@ -135,6 +138,10 @@ namespace Icon.Dashboard.Mvc.Services
                             appViewModel.LoggingName = GetLoggingNameFromId(iconApps, appViewModel.LoggingID.Value);
                         }
                     }
+
+                    // load database configuration
+                    var dbInfo = ReadDatabaseConfiguration(appViewModel.ConfigFilePath);
+                    appViewModel.DatabaseConfiguration = new AppDatabaseConfigurationViewModel(dbInfo);
                 }
                 else
                 {
@@ -350,7 +357,7 @@ namespace Icon.Dashboard.Mvc.Services
                 var appConfig = XDocument.Load(appViewModel.ConfigFilePath);
 
                 // combine the AppSettings and the ESB-related subset of AppSettings into 1 collection
-                var combinedDictionary = CombineDictionariesIgnoreDuplicates(
+                var combinedDictionary = AppConfigAssistant.CombineDictionariesIgnoreDuplicates(
                     appViewModel.AppSettings, appViewModel.EsbConnectionSettings);
 
                 // create XML elements for each setting
@@ -370,15 +377,240 @@ namespace Icon.Dashboard.Mvc.Services
             }
         }
 
-        private static Dictionary<T, U> CombineDictionariesIgnoreDuplicates<T, U>(params Dictionary<T, U>[] dictionaries)
+        public DatabaseDefinition CreateDatabaseDefinitionFromConfigElement(ConnectionStringConfigElement csElement)
         {
-            // In case there are any duplicates between the two dictionaries, convert the 
-            // combined dictionary to a lookup (which handles multiple values per key) and 
-            // then re -convert back to a dictionary using only the first value per key
-            var combinedDictionaryWithDuplicatesIgnored = dictionaries.SelectMany(dict => dict)
-                       .ToLookup(pair => pair.Key, pair => pair.Value)
-                       .ToDictionary(group => group.Key, group => group.First());
-            return combinedDictionaryWithDuplicatesIgnored;
+            var db = new DatabaseDefinition();
+
+            var sqlStringBuilder = new SqlConnectionStringBuilder();
+            if ( !string.IsNullOrWhiteSpace(csElement.ProviderName) && csElement.ProviderName.Contains("EntityClient"))
+            {
+                db.IsEntityFramework = true;
+                var efStringBuilder = new EntityConnectionStringBuilder();
+                try
+                {
+                    efStringBuilder.ConnectionString = csElement.ConnectionString;
+                    sqlStringBuilder.ConnectionString = efStringBuilder.ProviderConnectionString;
+                }
+                catch (ArgumentException argEx)
+                {
+                    // the connection string may say it is using EntityClient but not have a valid EF connection string,
+                    //  in which case just use the conection string as-is
+                    sqlStringBuilder.ConnectionString = csElement.ConnectionString;
+                }
+            }
+            else
+            {
+                db.IsEntityFramework = false;
+                sqlStringBuilder.ConnectionString = csElement.ConnectionString;
+            }
+
+            db.ServerName = sqlStringBuilder.DataSource;
+            db.DatabaseName = sqlStringBuilder.InitialCatalog;
+            db.ConnectionStringName = csElement.Name;
+
+            if (csElement.Name.IndexOf("Icon", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                db.Category = DatabaseCategoryEnum.Icon;
+            }
+            else if (csElement.Name.IndexOf("Mammoth", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                db.Category = DatabaseCategoryEnum.Mammoth;
+            }
+            else if (csElement.Name.IndexOf("ItemCatalog", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                db.Category = DatabaseCategoryEnum.IRMA;
+            }
+            else if (csElement.Name.Equals("Vim", StringComparison.InvariantCultureIgnoreCase))
+            {
+                db.Category = DatabaseCategoryEnum.Vim;
+            }
+            else if (csElement.Name.StartsWith("dbLog"))
+            {
+                if (db.DatabaseName.IndexOf("Icon", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    db.Category = DatabaseCategoryEnum.Icon;
+                }
+                else if (db.DatabaseName.IndexOf("Mammoth", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    db.Category = DatabaseCategoryEnum.Mammoth;
+                }
+                else if (db.DatabaseName.IndexOf("ItemCatalog", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    db.Category = DatabaseCategoryEnum.IRMA;
+                }
+            }
+            else
+            {
+                db.Category = DatabaseCategoryEnum.Other;
+            }
+
+            db.Environment = DetermineDatabaseEnvironment(db.Category, db.ServerName, db.DatabaseName);
+
+            return db;
+        }
+
+        public ApplicationDatabaseConfiguration ReadDatabaseConfiguration(string appConfigPath)
+        {
+            var dbConfig = new ApplicationDatabaseConfiguration();
+
+            if (System.IO.File.Exists(appConfigPath))
+            {
+                var appConfig = XDocument.Load(appConfigPath);
+                if (appConfig.Root.Element("connectionStrings").Elements()
+                    .FirstOrDefault(e=>e.Name.ToString().EndsWith("EncryptedData")) != null)
+                {
+                    // encrypted connection string
+                    var encryptedDb = new DatabaseDefinition
+                    {
+                        ServerName = "{Encrypted}",
+                        DatabaseName = "{Encrypted}",
+                        ConnectionStringName = "{Encrypted}",
+                        Environment = EnvironmentEnum.Undefined,
+                        Category = DatabaseCategoryEnum.Encrypted
+                    };
+                    dbConfig.Connections.Add(encryptedDb);
+                }
+                else
+                {
+                    var connectionStringElements = appConfig.Root.Element("connectionStrings").Elements()
+                            .Select(e => new ConnectionStringConfigElement(
+                                name: e.Attribute("name")?.Value,
+                                providerName: e.Attribute("providerName")?.Value,
+                                connectionString: e.Attribute("connectionString")?.Value))
+                            .ToList();
+
+                    foreach (var csElement in connectionStringElements)
+                    {
+                        var db = CreateDatabaseDefinitionFromConfigElement(csElement);
+                        dbConfig.Connections.Add(db);
+                    }
+                }
+
+                var nlogElement = appConfig.Root.Elements()
+                    .FirstOrDefault(rootEl => rootEl.Name.ToString().Contains("nlog"));
+                if (nlogElement != null)
+                {
+                    // element name may have namespace preceding like "xsi:type" or "{{http://www.w3.org/2001/04/xmlenc#}Name}"
+                    var targetElement = nlogElement.Descendants().FirstOrDefault(e => e.Name.ToString().EndsWith("target"));
+                    if (targetElement != null)
+                    {
+                        if (targetElement.Attributes().Any(a => a.Name.ToString().EndsWith("type"))
+                            && targetElement.Attributes().FirstOrDefault(a => a.Name.ToString().EndsWith("type")).Value == "Database"
+                            && targetElement.Attributes().Any(a => a.Name == "name")
+                            && targetElement.Attributes().Any(a => a.Name == "connectionString"))
+                        {
+                            var loggingCsElement = new ConnectionStringConfigElement(
+                                name: targetElement.Attribute("name").Value,
+                                providerName: "SqlClient",
+                                connectionString: targetElement.Attribute("connectionString").Value
+                            );
+                            var loggingDb = CreateDatabaseDefinitionFromConfigElement(loggingCsElement);
+                            loggingDb.IsUsedForLogging = true;
+                            dbConfig.Connections.Add(loggingDb);
+                        }
+                    }
+                }
+            }
+            return dbConfig;
+        }
+
+        public EnvironmentEnum DetermineDatabaseEnvironment(DatabaseCategoryEnum category, string serverName, string databaseName)
+        {
+            var env = EnvironmentEnum.Undefined;
+
+            switch (category)
+            {
+                case DatabaseCategoryEnum.Icon:
+                    switch (serverName.ToUpper())
+                    {
+                        case @"CEWD1815\SQLSHARED2012D":
+                        case @"SQL-ICON16-TST":
+                            if (databaseName.ToUpper() == "ICON")
+                            {
+                                env = EnvironmentEnum.Test;
+                            }
+                            else if (databaseName.ToUpper() == "ICONDEV" || databaseName.ToUpper() == "ICON2016")
+                            {
+                                env = EnvironmentEnum.Dev;
+                            }
+                            else if (databaseName.ToUpper() == "ICONLOADTEST")
+                            {
+                                env = EnvironmentEnum.Perf;
+                            }
+                            break;
+                        case @"ICON-DB01-TST01":
+                            env = EnvironmentEnum.Tst1;
+                            break;
+                        case @"IDQ-ICON\SQLSHARED3Q":
+                            env = EnvironmentEnum.QA;
+                            break;
+                        case @"IDP-ICON\SHARED3P":
+                            env = EnvironmentEnum.Prd;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case DatabaseCategoryEnum.Mammoth:
+                    switch (serverName.ToUpper())
+                    {
+                        case @"MAMMOTH-DB01-DEV\MAMMOTH":
+                            if (databaseName.ToUpper() == "MAMMOTH")
+                            {
+                                env = EnvironmentEnum.Test;
+                            }
+                            else if (databaseName.ToUpper() == "MAMMOTH_DEV")
+                            {
+                                env = EnvironmentEnum.Dev;
+                            }
+                            break;
+                        case @"MAMMOTH-DB01-TST01":
+                            env = EnvironmentEnum.Tst1;
+                            break;
+                        case @"MAMMOTH-DB01-QA\MAMMOTH":
+                            env = EnvironmentEnum.QA;
+                            break;
+                        case @"QA-01-MAMMOTH02\MAMMOTH02":
+                            env = EnvironmentEnum.Perf;
+                            break;
+                        case @"MAMMOTH-DB01-PRD\MAMMOTH":
+                            env = EnvironmentEnum.Prd;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case DatabaseCategoryEnum.IRMA:
+                    if (serverName.ToUpper().Contains("IDD"))
+                    {
+                        env = EnvironmentEnum.Dev;
+                    }
+                    else if (serverName.ToUpper().Contains("IDT"))
+                    {
+                        env = EnvironmentEnum.Test;
+                    }
+                    else if (serverName.ToUpper().Contains("TST01"))
+                    {
+                        env = EnvironmentEnum.Tst1;
+                    }
+                    else if (serverName.ToUpper().Contains("IDQ"))
+                    {
+                        env = EnvironmentEnum.QA;
+                    }
+                    else if (serverName.ToUpper().Contains("IDP"))
+                    {
+                        env = EnvironmentEnum.Prd;
+                    }
+                    break;
+                case DatabaseCategoryEnum.Vim:
+                case DatabaseCategoryEnum.Other:
+                case DatabaseCategoryEnum.Unknown:
+                default:
+                    env = EnvironmentEnum.Undefined;
+                    break;
+            }
+
+            return env;
         }
     }
 }

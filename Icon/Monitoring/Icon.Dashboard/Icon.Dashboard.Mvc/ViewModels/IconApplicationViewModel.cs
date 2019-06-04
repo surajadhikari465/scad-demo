@@ -60,6 +60,18 @@ namespace Icon.Dashboard.Mvc.ViewModels
         [DisplayName("Account")]
         public string AccountName { get; set; }
 
+        [DisplayName("Database")]
+        public string DatabaseSummary
+        {
+            get
+            {
+                return DatabaseConfiguration?.Summary;
+            }
+        }
+
+        [DisplayName("Database Configuration")]
+        public AppDatabaseConfigurationViewModel DatabaseConfiguration { get; set; }
+
         public string HostName { get; set; }
 
         [DisplayName("Description")]

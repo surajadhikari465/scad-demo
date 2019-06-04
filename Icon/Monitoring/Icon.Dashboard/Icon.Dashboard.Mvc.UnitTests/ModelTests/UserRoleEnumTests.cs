@@ -17,31 +17,31 @@ namespace Icon.Dashboard.Mvc.UnitTests.ModelUnitTests
     //}
 
     [TestClass]
-    public class UserRoleEnumUnitTests
+    public class UserAuthorizationLevelEnumUnitTests
     {
         [TestMethod]
-        public void DashboardUserRoleEnum_DefaultValue_ShouldBeUnauthorized()
+        public void DashboardUserAuthorizationLevelEnum_DefaultValue_ShouldBeUnauthorized()
         {
             // Arrange
             // Act
-            var userRole = new UserRoleEnum();
+            var userRole = new UserAuthorizationLevelEnum();
             // Assert
-            userRole.ShouldBeEquivalentTo(UserRoleEnum.Unauthorized);
+            Assert.AreEqual(UserAuthorizationLevelEnum.None, userRole);
         }
 
         [TestMethod]
-        public void DashboardUserRoleEnum_IrmaDeveloper_IsSupersetOfIrmaApplications()
+        public void DashboardUserAuthorizationLevelEnum_EditingLevel_IsSupersetOfReadOnly()
         {
             // Arrange
             // Act
-            var devRole = UserRoleEnum.EditingPrivileges;
+            var devRole = UserAuthorizationLevelEnum.EditingPrivileges;
             // Assert
-            ((int)(devRole & UserRoleEnum.ReadOnly)).ShouldBeEquivalentTo(0x01);
-            ((int)(devRole | UserRoleEnum.ReadOnly)).ShouldBeEquivalentTo(0x03);
-            ((int)(devRole ^ UserRoleEnum.ReadOnly)).ShouldBeEquivalentTo(0x02);
-            ((int)(devRole & UserRoleEnum.EditingPrivileges)).ShouldBeEquivalentTo(0x03);
-            ((int)(devRole | UserRoleEnum.EditingPrivileges)).ShouldBeEquivalentTo(0x03);
-            ((int)(devRole ^ UserRoleEnum.EditingPrivileges)).ShouldBeEquivalentTo(0x00);
+            Assert.AreEqual(0x01, (int)(devRole & UserAuthorizationLevelEnum.ReadOnly));
+            Assert.AreEqual(0x03, (int)(devRole | UserAuthorizationLevelEnum.ReadOnly));
+            Assert.AreEqual(0x02, (int)(devRole ^ UserAuthorizationLevelEnum.ReadOnly));
+            Assert.AreEqual(0x03, (int)(devRole & UserAuthorizationLevelEnum.EditingPrivileges));
+            Assert.AreEqual(0x03, (int)(devRole | UserAuthorizationLevelEnum.EditingPrivileges));
+            Assert.AreEqual(0x00, (int)(devRole ^ UserAuthorizationLevelEnum.EditingPrivileges));
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
         public void MvcLogsController_Index_GetUnfiltered_Should_Set_ViewBagTitle()
         {
             //Given
-            const string expectedTitle = "UnitTest DB ICON Dashboard Log Viewer (All Icon Apps)";
+            const string expectedTitle = "Icon UnitTest DB Log Viewer (All Icon Apps)";
             var controller = ConstructController();
 
             //When
@@ -88,7 +88,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ControllerTests
             //Given
             var fakeApp = base.FakeAppB;
             string name = fakeApp.AppName;
-            string expectedTitle = "UnitTest DB " + fakeApp.AppName + " Log Viewer";
+            string expectedTitle = "Icon UnitTest DB \"" + fakeApp.AppName + "\" Log Viewer";
             var controller = ConstructController();
 
             //When

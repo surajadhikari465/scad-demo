@@ -152,6 +152,7 @@
     <Compile Include="FilterTests\GetUserRoleUnitTests.cs" />
     <Compile Include="FilterTests\_DashboardAuthorizationFilterTestBase.cs" />
     <Compile Include="HelperTests\DashboardEnvironmentManagerUnitTests.cs" />
+    <Compile Include="ModelTests\UserRoleEnumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingUnitTests\EsbSwitchRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\ApiJobsRoutingUnitTests.cs" />
@@ -160,9 +161,10 @@
     <Compile Include="RoutingUnitTests\IconLogsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\HomeRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\_MvcRoutingUnitTestBase.cs" />
-    <Compile Include="ServiceTests\DataFileServiceUnitTests.cs" />
+    <Compile Include="ServiceTests\AppConfigAssistantUnitTests.cs" />
     <Compile Include="ServiceTests\RemoteWmiServiceWrapperUnitTests.cs" />
     <Compile Include="ServiceTests\TestData.cs" />
+    <Compile Include="ModelTests\ApplicationDatabaseConfigurationModelUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Icon.Dashboard.CommonDatabaseAccess\Icon.Dashboard.CommonDatabaseAccess.csproj">
@@ -189,6 +191,39 @@
     <Content Include="MvcDashboardUnitTestData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="SampleDbConfig_IconEfAndIrmaEfWithIconLoggingSql16Tst.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_EncryptedDatabaseConnection.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconSqlAndIrmaSqlAndMammothSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconSqlAndIconEfAndMammothSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconEfAndIrmaEfWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconEfWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_VimSqlWithFileLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconEfAndIrmaSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IrmaSqlWithMammothLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_IconSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleDbConfig_MammothSqlWithMammothLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleAppConfig_A.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

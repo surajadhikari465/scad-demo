@@ -1,4 +1,5 @@
-﻿using Icon.Dashboard.Mvc.ViewModels;
+﻿using Icon.Dashboard.Mvc.Models;
+using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.RemoteServicesAccess;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,8 @@ namespace Icon.Dashboard.Mvc.Services
         void RestartServices(IEnumerable<EsbEnvironmentViewModel> esbEnvironments);
         void RestartServices(IEnumerable<IconApplicationViewModel> applications);
         void SaveRemoteServiceAppSettings(IconApplicationViewModel appViewModel);
+        DatabaseDefinition CreateDatabaseDefinitionFromConfigElement(ConnectionStringConfigElement csElement);
+        ApplicationDatabaseConfiguration ReadDatabaseConfiguration(string appConfigPath);
+        EnvironmentEnum DetermineDatabaseEnvironment(DatabaseCategoryEnum category, string serverName, string databaseName);
     }
 }

@@ -1,0 +1,20 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.AppDatabaseViewModel
+
+<tr>
+    <td>
+        @Html.DisplayFor(model => model.Summary)
+    </td>
+    <td class="hidden-xs">
+        @Html.DisplayFor(model => model.ConnectionStringName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.ServerName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.DatabaseName)
+    </td>
+    <td class="hidden-xs">
+        @Html.DisplayFor(model => model.IsEntityFramework)
+    </td>
+</tr>
+

@@ -35,6 +35,9 @@
     <td class="hidden-xs hidden-sm hidden-md breakText">
         @Html.DisplayFor(model => model.AccountName)
     </td>
+    <td class="hidden-xs hidden-sm"> 
+        @Html.DisplayFor(model => model.DatabaseSummary)
+    </td>
     @if (Model.CommandsEnabled)
     {
         <td>
