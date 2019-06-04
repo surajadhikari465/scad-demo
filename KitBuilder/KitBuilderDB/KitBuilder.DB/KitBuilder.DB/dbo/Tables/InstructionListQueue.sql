@@ -9,7 +9,7 @@
 GO
 
 ALTER TABLE [dbo].[InstructionListQueue] ADD
-CONSTRAINT Check_Status CHECK ([Status] in ('U','P','F'))
+CONSTRAINT Check_Status CHECK ([Status] in ('U','PR','F'))
 GO
 
 ALTER TABLE [dbo].[InstructionListQueue] ADD  CONSTRAINT [DF_InstructionListQueue_InsertDate]  DEFAULT (sysdatetime()) FOR [InsertDateUtc]
