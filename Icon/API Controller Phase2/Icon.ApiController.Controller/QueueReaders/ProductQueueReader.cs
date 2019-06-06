@@ -250,8 +250,9 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                                                                     imageUrl =  message.ImageURL, 
                                                                     kitchenDescription = message.KitchenDescription, 
-                                                                    isKitchenItemSpecified = true,
-                                                                    isKitchenItem = message.KitchenItem.HasValue ? message.KitchenItem.Value : false,
+                                                                    // temporarily removing kitchen flags because it blows up R10.   
+                                                                    //isKitchenItemSpecified = true,
+                                                                    //isKitchenItem = message.KitchenItem.HasValue ? message.KitchenItem.Value : false,
                                                                     isHospitalityItemSpecified = true,
                                                                     isHospitalityItem = message.HospitalityItem.HasValue ? message.HospitalityItem.Value : false,
 																	scanCodes = new Contracts.ScanCodeType[]
