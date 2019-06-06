@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { KitTreeState } from 'src/redux/reducers/kitTreeReducer';
 import { Dispatch } from 'redux';
 // import {KitLinkGroupPage} from '../KitLinkGroups/KitLinkGroupsPage'
+import KitStatusIcon from '../Kits/KitStatusIcon'
 
 interface IAssignKitsTreeTableState {
 }
@@ -121,15 +122,20 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                     {
                         LocaleTypeID != venueLocaleTypeId ? <div style={{ width: '30px' }}></div> : <></>
                     }
-                    <div style={{ width: '150px' }}>{localeNameHeaderMap[LocaleTypeID]}</div>
-                    <div style={{ width: '150px' }}>Abbreviation</div>
-                    <div style={{ width: '150px' }}>Assign</div>
+                    <div style={{ width: '120px' }}>{localeNameHeaderMap[LocaleTypeID]}</div>
+                    <div style={{ width: '100px' }}>Abbreviation</div>
+                    <div style={{ width: '80px' }}>Assign</div>
                     {
                         !showView ?
+                        <React.Fragment>
                             <div style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 480px)' } : { width: 'calc(100% - 450px)' }}>Exclude</div>
+                            <div style={{ width: '140px' }}>Status</div>
+                            </React.Fragment>
                             :
                             <React.Fragment>
-                                <div style={{ width: '150px' }}>Exclude</div>
+                               
+                                <div style={{ width: '100px' }}>Exclude</div>
+                                <div style={{ width: '140px' }}>Status</div>
                                 <div style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>View</div>
                             </React.Fragment>
                     }
@@ -150,21 +156,26 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                         </div>
                                         : <></>
                                 }
-                                <div style={{ width: '150px' }}>{item.localeName}</div>
-                                <div style={{ width: '150px' }}>{item.localeAbbreviation}</div>
-                                <div style={{ width: '150px' }}>
+                                <div style={{ width: '120px' }}>{item.localeName}</div>
+                                <div style={{ width: '100px' }}>{item.localeAbbreviation}</div>
+                                <div style={{ width: '80px' }}>
                                     <input type="checkbox" disabled={checkboxesDisabled} style={chkboxStyle} checked={isAssigned} onChange={() => this.props.toggleLocaleAssigned(item.localeId)} />
                                 </div>
+                               
                                 {
                                     !showView ?
+                                    <React.Fragment>
                                         <div style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 480px)' } : { width: 'calc(100% - 450px)' }}>
                                             <input disabled={excludeDisabled} type="checkbox" style={chkboxStyle} checked={isExcluded} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
                                         </div>
+                                         <div style={{ width: '140px'}}><KitStatusIcon status={item.statusId}/></div>
+                                         </React.Fragment>
                                         :
                                         <React.Fragment>
                                             <div style={{ width: '150px' }}>
                                                 <input disabled={excludeDisabled} type="checkbox" style={chkboxStyle} checked={this.props.excludedLocales.includes(item.localeId)} onChange={() => this.props.toggleLocaleExcluded(item.localeId)} />
                                             </div>
+                                            <div style={{ width: '140px' }}><KitStatusIcon status={item.statusId}/></div>
                                             <div className="btnCenter" style={LocaleTypeID != venueLocaleTypeId ? { width: 'calc(100% - 630px)' } : { width: 'calc(100% - 600px)' }}>
                                                 {item.isAssigned && !this.props.isSimplekitType && !item.IsDirty ? <input type="button" style={btnStyle} onClick={() => this.AssignKitProperties(item)} value="Assign Kit Properties" /> : <></>}
                                             </div>

@@ -17,7 +17,7 @@ const KitStatusIcon = (props: IKitStatusIconProps) => {
         case 9: return <>Partially Published</>;
         case 10: return <>Unauthorized</>;
         case 11: return <>Processed</>;
-        case 11: return <>UnProcessed</>;
+        case 12: return <>UnProcessed</>;
         default: return null;
     }
 }
