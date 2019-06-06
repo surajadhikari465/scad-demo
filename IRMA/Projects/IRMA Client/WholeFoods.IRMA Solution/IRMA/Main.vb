@@ -1064,7 +1064,7 @@ me_exit:
         R10ItemRefreshToolStripMenuItem.Enabled = gbItemAdministrator
         IconItemRefreshMenuItem.Enabled = gbItemAdministrator
         SupportRestoreDeleteItemToolStripMenuItem.Enabled = gbSupportUser
-        SupportDeleteItemFromPlumCorpChgQueueTmp.Enabled = gbSupportUser
+        SupportDeleteItemFromPlumCorpChgQueueTmp.Enabled = gbSystemConfigurationAdministrator
 
         '######################
         ' Admin Menu access
