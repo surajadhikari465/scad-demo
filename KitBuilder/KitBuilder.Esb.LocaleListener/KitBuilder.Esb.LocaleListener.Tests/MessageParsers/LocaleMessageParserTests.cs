@@ -4,6 +4,7 @@ using KitBuilder.Esb.LocaleListener.MessageParsers;
 using Icon.Esb.Subscriber;
 using Moq;
 using System.IO;
+using System.Linq;
 
 namespace KitBuilder.Esb.LocaleListener.Tests.MessageParsers
 {
@@ -29,22 +30,28 @@ namespace KitBuilder.Esb.LocaleListener.Tests.MessageParsers
             //When
             var models = messageParser.ParseMessage(mockMessage.Object);
 
+            // venue has a storeid assoicated with it. store does not. store.localeid is used instead. 
+            var venue = models.FirstOrDefault(m => m.StoreID.HasValue);
+            var store = models.FirstOrDefault(m => !m.StoreID.HasValue);
+
             //Then
             Assert.AreEqual(1, models.Count);
-            Assert.AreEqual(2478, models[0].LocaleID);
-			Assert.AreEqual("New Venue", models[0].LocaleName);
-			Assert.AreEqual(5, models[0].LocaleTypeID);
-			Assert.AreEqual(1298, models[0].StoreID);
-			Assert.AreEqual(44, models[0].MetroID);
-			Assert.AreEqual(7, models[0].RegionID);
-			Assert.AreEqual(1, models[0].ChainID);
-			Assert.AreEqual("NE", models[0].RegionCode);
-			Assert.AreEqual(new DateTime(2001, 4, 25), models[0].LocaleOpenDate.Value);
-			Assert.AreEqual(null, models[0].LocaleCloseDate);
-			Assert.AreEqual(null, models[0].StoreAbbreviation);
-			Assert.AreEqual(null, models[0].BusinessUnitID);
-			Assert.AreEqual(null, models[0].CurrencyCode);
-			Assert.AreEqual(true, models[0].Hospitality);
+            Assert.IsNotNull(venue);
+            Assert.IsNull(store);
+            Assert.AreEqual(2364, venue.LocaleID);
+            Assert.AreEqual("Alta_Venue", venue.LocaleName);
+            Assert.AreEqual(5, venue.LocaleTypeID);
+            Assert.AreEqual(14, venue.MetroID);
+            Assert.AreEqual(2, venue.RegionID);
+            Assert.AreEqual(1, venue.ChainID);
+            Assert.AreEqual(999, venue.StoreID);
+            Assert.AreEqual("FL", venue.RegionCode);
+            Assert.AreEqual(new DateTime(2019, 5, 23), venue.LocaleOpenDate.Value);
+            Assert.AreEqual(false, venue.LocaleCloseDate.HasValue);
+            Assert.AreEqual(null, venue.StoreAbbreviation);
+            Assert.AreEqual(null, venue.BusinessUnitID);
+            Assert.AreEqual(null, venue.CurrencyCode);
+            Assert.AreEqual(true, venue.Hospitality);
 
         }
 		[TestMethod]
@@ -55,23 +62,24 @@ namespace KitBuilder.Esb.LocaleListener.Tests.MessageParsers
 
 			//When
 			var models = messageParser.ParseMessage(mockMessage.Object);
+            var store = models.FirstOrDefault(m => !m.StoreID.HasValue);
 
-			//Then
-			Assert.AreEqual(1, models.Count);
-			Assert.AreEqual(10130, models[0].LocaleID);
-			Assert.AreEqual("Boca Raton", models[0].LocaleName);
-			Assert.AreEqual(4, models[0].LocaleTypeID);
-			Assert.AreEqual(null, models[0].StoreID);
-			Assert.AreEqual(14, models[0].MetroID);
-			Assert.AreEqual(2, models[0].RegionID);
-			Assert.AreEqual(1, models[0].ChainID);
-			Assert.AreEqual("FL", models[0].RegionCode);
-			Assert.AreEqual(new DateTime(2001, 4, 25), models[0].LocaleOpenDate.Value);
-			Assert.AreEqual(null, models[0].LocaleCloseDate);
-			Assert.AreEqual("BCA", models[0].StoreAbbreviation);
-			Assert.AreEqual(10130, models[0].BusinessUnitID);
-			Assert.AreEqual("USD", models[0].CurrencyCode);
-			Assert.AreEqual(false, models[0].Hospitality);
+            //Then
+            Assert.AreEqual(1, models.Count);
+            Assert.IsNotNull(store);
+            Assert.AreEqual(999, store.LocaleID);
+            Assert.AreEqual("Altamonte Springs", store.LocaleName);
+            Assert.AreEqual(4, store.LocaleTypeID);
+            Assert.AreEqual(14, store.MetroID);
+            Assert.AreEqual(2, store.RegionID);
+            Assert.AreEqual(1, store.ChainID);
+            Assert.AreEqual("FL", store.RegionCode);
+            Assert.AreEqual(new DateTime(2016, 1, 6), store.LocaleOpenDate.Value);
+            Assert.AreEqual(new DateTime(2019, 5, 6), store.LocaleCloseDate.Value);
+            Assert.AreEqual("APS", store.StoreAbbreviation);
+            Assert.AreEqual(10516, store.BusinessUnitID);
+            Assert.AreEqual("USD", store.CurrencyCode);
+            Assert.AreEqual(false, models[0].Hospitality);
 
 		}
 	}

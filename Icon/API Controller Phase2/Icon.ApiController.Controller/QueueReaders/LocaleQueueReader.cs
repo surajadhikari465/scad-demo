@@ -173,27 +173,27 @@ namespace Icon.ApiController.Controller.QueueReaders
 							var venue = store.DescendantLocales[venueIndex];
 							storeMiniBulk.locales[venueIndex] = new Contracts.LocaleType
 							{
-								Action = localeTypeId == LocaleTypes.Venue ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
+								Action = localeTypeId == LocaleTypes.Venue ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
 								ActionSpecified = true,
-								id = venue.DescendantLocales[venueIndex].LocaleId.ToString(),
-								name = venue.DescendantLocales[venueIndex].LocaleName,
+								id = venue.LocaleId.ToString(),
+								name = venue.LocaleName,
 								type = new Contracts.LocaleTypeType
 								{
 									code = Contracts.LocaleCodeType.VNU,
 									description = Contracts.LocaleDescType.Venue
 								},
-								traits = CreateVenueLocaleTraits(venue.DescendantLocales[venueIndex]),
+								traits = CreateVenueLocaleTraits(venue),
 							};
-							storeMiniBulk.locales[venueIndex].openDateSpecified = (venue.DescendantLocales[venueIndex].LocaleOpenDate != null);
+							storeMiniBulk.locales[venueIndex].openDateSpecified = (venue.LocaleOpenDate != null);
 							if (storeMiniBulk.locales[venueIndex].openDateSpecified)
 							{
-								storeMiniBulk.locales[venueIndex].openDate = venue.DescendantLocales[venueIndex].LocaleOpenDate.Value;
+								storeMiniBulk.locales[venueIndex].openDate = venue.LocaleOpenDate.Value;
 							}
 
-							storeMiniBulk.locales[venueIndex].closeDateSpecified = (venue.DescendantLocales[venueIndex].LocaleCloseDate != null);
+							storeMiniBulk.locales[venueIndex].closeDateSpecified = (venue.LocaleCloseDate != null);
 							if (storeMiniBulk.locales[venueIndex].closeDateSpecified)
 							{
-								storeMiniBulk.locales[venueIndex].closeDate = venue.DescendantLocales[venueIndex].LocaleCloseDate.Value;
+								storeMiniBulk.locales[venueIndex].closeDate = venue.LocaleCloseDate.Value;
 							}
 						}
 					}
@@ -211,7 +211,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 				{
 					regionMiniBulk.locales[metroIndex] = new Contracts.LocaleType
 					{
-						Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.Inherit : Contracts.ActionEnum.AddOrUpdate,
+						Action = localeTypeId == LocaleTypes.Metro ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
 						ActionSpecified = true,
 						id = region.DescendantLocales[metroIndex].LocaleId.ToString(),
 						name = region.DescendantLocales[metroIndex].LocaleName,
@@ -228,8 +228,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 						var storeLocaleLineage = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex];
 						var storeLocaleType = new Contracts.LocaleType
 						{
-							Action = Contracts.ActionEnum.AddOrUpdate,
-							ActionSpecified = true,
+							Action = localeTypeId == LocaleTypes.Store ? Contracts.ActionEnum.AddOrUpdate : Contracts.ActionEnum.Inherit,
+                            ActionSpecified = true,
 							name = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleName,
 							type = new Contracts.LocaleTypeType
 							{
@@ -237,20 +237,18 @@ namespace Icon.ApiController.Controller.QueueReaders
 								description = Contracts.LocaleDescType.Store
 							},
 						};
-						if (localeTypeId == 5)
+					
+
+                        storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
+                        if (localeTypeId == 5)
+                        {
+                            storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
+                        }
+                        storeLocaleType.addresses = new Contracts.AddressType[]
 						{
-							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
-							storeLocaleType.locales = new Contracts.LocaleType[region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].DescendantLocales.Count];
-						}
-						else
-						{
-							storeLocaleType.id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].BusinessUnitId.ToString();
-							storeLocaleType.addresses = new Contracts.AddressType[]
-							{
-								CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
-							};
-							storeLocaleType.traits = CreateStoreLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]);
-						}
+							CreateLocaleAddress(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex])
+						};
+						storeLocaleType.traits = CreateStoreLocaleTraits(region.DescendantLocales[metroIndex].DescendantLocales[storeIndex]);
 						if (storeLocaleLineage.LocaleOpenDate.HasValue)
 						{
 							storeLocaleType.openDate = storeLocaleLineage.LocaleOpenDate.Value;
@@ -261,7 +259,15 @@ namespace Icon.ApiController.Controller.QueueReaders
 							storeLocaleType.closeDate = storeLocaleLineage.LocaleCloseDate.Value;
 							storeLocaleType.closeDateSpecified = true;
 						}
-						regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
+
+                        var storeType = new Contracts.StoreType
+                        {
+                            id = region.DescendantLocales[metroIndex].DescendantLocales[storeIndex].LocaleId.ToString()
+                        };
+
+                        storeLocaleType.store = storeType;
+
+                        regionMiniBulk.locales[metroIndex].locales[storeIndex] = storeLocaleType;
 					}
 				}
 			}

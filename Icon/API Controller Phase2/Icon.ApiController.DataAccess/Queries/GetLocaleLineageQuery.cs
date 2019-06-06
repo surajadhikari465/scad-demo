@@ -5,6 +5,7 @@ using Icon.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 
 namespace Icon.ApiController.DataAccess.Queries
@@ -48,6 +49,7 @@ namespace Icon.ApiController.DataAccess.Queries
                         }
 					case (LocaleTypes.Venue):
 						{
+                           
 							localeLineage = BuildLineageFromVenue(context, parameters.LocaleId);
 							break;
 						}
@@ -209,6 +211,8 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
+        
+
         private LocaleLineageModel BuildLineageFromStore(IconContext context, int localeId)
         {
             var store = context.Locale
@@ -255,62 +259,71 @@ namespace Icon.ApiController.DataAccess.Queries
             return localeLineage;
         }
 
-		private LocaleLineageModel BuildLineageFromVenue(IconContext context, int localeId)
+		private LocaleLineageModel BuildLineageFromVenue(IconContext context, int venueLocaleId)
 		{
 			var venue = context.Locale
 				.Include(l => l.LocaleTrait.Select(lt => lt.Trait))
-				.Single(l => l.localeID == localeId);
+				.Single(l => l.localeID == venueLocaleId);
 
-			var store = venue.Locale2;
-            var metro = store.Locale2;
-			var region = metro.Locale2;
-			var chain = region.Locale2;
+            if (venue.parentLocaleID.GetValueOrDefault(-1) == -1)
+                    throw new InvalidDataException($"Cannot create Venue Message. Parent Locale not found. venueLocaleID: {venue.localeID} parentLocaleId: {(venue.parentLocaleID.HasValue ? venue.parentLocaleID.ToString() : "")}");
+
+            var storeLineage = BuildLineageFromStore(context,venue.parentLocaleID.GetValueOrDefault());
+
+            var venueLineage = BuildVenueLocaleLineageModel(venue);
+
+            if (storeLineage.DescendantLocales[0].DescendantLocales[0].DescendantLocales[0].DescendantLocales == null)
+                storeLineage.DescendantLocales[0].DescendantLocales[0].DescendantLocales[0].DescendantLocales = new List<LocaleLineageModel>();
+            storeLineage.DescendantLocales[0].DescendantLocales[0].DescendantLocales[0].DescendantLocales.Add(venueLineage);
+
+
+            return storeLineage;
             
 
-			var localeLineage = new LocaleLineageModel// chain
-			{
-				LocaleId = chain.localeID,
-				LocaleName = chain.localeName,
-				DescendantLocales = new List<LocaleLineageModel>
-				{
-					new LocaleLineageModel// region
-					{
-						LocaleId = region.localeID,
-						LocaleName = region.localeName,
-						DescendantLocales = new List<LocaleLineageModel>
-						{
-							new LocaleLineageModel// metro
-							{
-								LocaleId = metro.localeID,
-								LocaleName = metro.localeName,
-								DescendantLocales = new List<LocaleLineageModel>
-								{
-									new LocaleLineageModel//store
-									{
-										LocaleId = store.localeID,
-										LocaleName = store.localeName,
-                                        BusinessUnitId =  store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId) ?.traitValue ?? string.Empty,
-                                        DescendantLocales = new List<LocaleLineageModel>
-										{
-											new LocaleLineageModel// venue
-											{
-												LocaleId = store.localeID,
-												LocaleName = store.localeName,
-												DescendantLocales = new List<LocaleLineageModel>
-												{
-													BuildVenueLocaleLineageModel(venue)
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			};
+			//var localeLineage = new LocaleLineageModel// chain
+			//{
+			//	LocaleId = chain.localeID,
+			//	LocaleName = chain.localeName,
+			//	DescendantLocales = new List<LocaleLineageModel>
+			//	{
+			//		new LocaleLineageModel// region
+			//		{
+			//			LocaleId = region.localeID,
+			//			LocaleName = region.localeName,
+			//			DescendantLocales = new List<LocaleLineageModel>
+			//			{
+			//				new LocaleLineageModel// metro
+			//				{
+			//					LocaleId = metro.localeID,
+			//					LocaleName = metro.localeName,
+			//					DescendantLocales = new List<LocaleLineageModel>
+			//					{
+			//						new LocaleLineageModel//store
+			//						{
+			//							LocaleId = store.localeID,
+			//							LocaleName = store.localeName,
+   //                                     BusinessUnitId =  store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId) ?.traitValue ?? string.Empty,
+   //                                     DescendantLocales = new List<LocaleLineageModel>
+			//							{
+			//								new LocaleLineageModel// venue
+			//								{
+			//									LocaleId = store.localeID,
+			//									LocaleName = store.localeName,
+			//									DescendantLocales = new List<LocaleLineageModel>
+			//									{
+			//										BuildVenueLocaleLineageModel(venue)
+			//									}
+			//								}
+			//							}
+			//						}
+			//					}
+			//				}
+			//			}
+			//		}
+			//	}
+			//};
 
-			return localeLineage;
+			//return localeLineage;
 		}
 
 		private List<LocaleLineageModel> BuildDescendantLocales(IconContext context, Locale metro)

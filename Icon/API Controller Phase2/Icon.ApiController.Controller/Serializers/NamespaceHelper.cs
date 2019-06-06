@@ -57,6 +57,7 @@ namespace Icon.ApiController.Controller.Serializers
             namespaces.Add("phs", Constants.XmlNamespaces.EnterpriseAddressMgmtPhysicalAddress);
             namespaces.Add("ett", Constants.XmlNamespaces.EnterpriseTimezoneMgmtTimezone);
             namespaces.Add("cry", Constants.XmlNamespaces.EnterpriseAddressMgmtCountry);
+            namespaces.Add("str", Constants.XmlNamespaces.EnterpriseStoreMgmtStore);
         }
 
         private static void AddHierarchyNamespaces(XmlSerializerNamespaces namespaces)

@@ -73,18 +73,18 @@ namespace KitBuilder.Esb.LocaleListener.MessageParsers
 				{
 					foreach (var store in metro.locales)
 					{
-						if (store.addresses == null)
-						{
-							foreach (var venue in store.locales)
-							{
-								locales.Add(ParseLocale(chain, region, metro, store, venue));
-							}
-						}
-						else
-						{
-							locales.Add(ParseLocale(chain, region, metro, store, null));
-						}
-					}
+                        if (store.locales != null)
+                        {
+                            foreach (var venue in store.locales)
+                            {
+                                locales.Add(ParseLocale(chain, region, metro, store, venue));
+                            }
+                        }
+                        else
+                        {
+                            locales.Add(ParseLocale(chain, region, metro, store, null));
+                        }
+                    }
 				}
 			}
 			return locales;
@@ -93,52 +93,83 @@ namespace KitBuilder.Esb.LocaleListener.MessageParsers
 		private LocaleModel ParseLocale(LocaleType chain, LocaleType region, LocaleType metro, LocaleType store, LocaleType venue)
         {
 			if (venue == null)
-			{
-				var address = store.addresses[0].type.Item as PhysicalAddressType;
-
-				return new LocaleModel()
-				{
-					LocaleID = int.Parse(store.id),
-					LocaleName = store.name,
-					LocaleTypeID = Icon.Framework.LocaleTypes.Store,
-					StoreID = null,
-					MetroID = int.Parse(metro?.id ?? null),
-					RegionID = int.Parse(region?.id ?? null),
-					ChainID = int.Parse(chain?.id ?? null),
-					RegionCode = regionNameToCodeDictionary.ContainsKey(region.name) ? regionNameToCodeDictionary[region.name] : default(string),
-					LocaleOpenDate = store.openDateSpecified ? store.openDate : (DateTime?)null,
-					LocaleCloseDate = store.closeDateSpecified ? store.closeDate : (DateTime?)null,
-					BusinessUnitID = int.Parse(store.id),
-					StoreAbbreviation = GetTraitValue(store, StoreAbbreviationTraitCode),
-					CurrencyCode = GetTraitValue(store, CurrencyCodeTraitCode),
-					Hospitality = String.Compare(GetTraitValue(store, VenueSubTypeTraitCode), "Hospitality", true) == 0
-			};
-			}
+            {
+                return ParseLocaleAsStore(chain, region, metro, store);
+            }
 			else
-			{
-				return new LocaleModel()
-				{
-					LocaleID = int.Parse(venue.id),
-					LocaleName = venue.name,
-					LocaleTypeID = Icon.Framework.LocaleTypes.Venue,
-					StoreID = int.Parse(store?.id ?? null),
-					MetroID = int.Parse(metro?.id ?? null),
-					RegionID = int.Parse(region?.id ?? null),
-					ChainID = int.Parse(chain?.id ?? null),
-					RegionCode = regionNameToCodeDictionary.ContainsKey(region.name) ? regionNameToCodeDictionary[region.name] : default(string),
-					LocaleOpenDate = venue.openDateSpecified ? venue.openDate : (DateTime?)null,
-					LocaleCloseDate = venue.closeDateSpecified ? venue.closeDate : (DateTime?)null,
-					BusinessUnitID = null,
-					StoreAbbreviation = null,
-					CurrencyCode = null,
-					Hospitality = String.Compare(GetTraitValue(venue, VenueSubTypeTraitCode), "Hospitality", true) == 0
-				};
-			}
+            {
+                return ParseLocaleAsVenue(chain, region, metro, store, venue);
+            }
 		}
 
-		private static string GetTraitValue(LocaleType store, string traitCode)
+        private LocaleModel ParseLocaleAsVenue(LocaleType chain, LocaleType region, LocaleType metro, LocaleType store, LocaleType venue)
         {
-			var trait = store.traits.FirstOrDefault(t => String.Compare(t.code,traitCode,true) == 0 ? t.code == traitCode : t.code == null);
+            return new LocaleModel()
+            {
+                LocaleID = int.Parse(venue.id),
+                LocaleName = venue.name,
+                LocaleTypeID = Icon.Framework.LocaleTypes.Venue,
+                StoreID = ParseIconLocaleIdFromStoreLocaleType(store),
+                MetroID = int.Parse(metro?.id ?? null),
+                RegionID = int.Parse(region?.id ?? null),
+                ChainID = int.Parse(chain?.id ?? null),
+                RegionCode = regionNameToCodeDictionary.ContainsKey(region.name)
+                    ? regionNameToCodeDictionary[region.name]
+                    : default(string),
+                LocaleOpenDate = venue.openDateSpecified ? venue.openDate : (DateTime?) null,
+                LocaleCloseDate = venue.closeDateSpecified ? venue.closeDate : (DateTime?) null,
+                BusinessUnitID = null,
+                StoreAbbreviation = null,
+                CurrencyCode = null,
+                Hospitality = string.Compare(GetTraitValue(venue, VenueSubTypeTraitCode), "Hospitality", StringComparison.OrdinalIgnoreCase) == 0
+            };
+        }
+
+        private LocaleModel ParseLocaleAsStore(LocaleType chain, LocaleType region, LocaleType metro, LocaleType store)
+        {
+            var address = store.addresses[0].type.Item as PhysicalAddressType;
+
+            var storeLocaleModel = new LocaleModel()
+            {
+                LocaleID = ParseIconLocaleIdFromStoreLocaleType(store),
+                LocaleName = store.name,
+                LocaleTypeID = Icon.Framework.LocaleTypes.Store,
+                StoreID = null,
+                MetroID = int.Parse(metro?.id ?? null),
+                RegionID = int.Parse(region?.id ?? null),
+                ChainID = int.Parse(chain?.id ?? null),
+                RegionCode = regionNameToCodeDictionary.ContainsKey(region.name)
+                    ? regionNameToCodeDictionary[region.name]
+                    : default(string),
+                LocaleOpenDate = store.openDateSpecified ? store.openDate : (DateTime?) null,
+                LocaleCloseDate = store.closeDateSpecified ? store.closeDate : (DateTime?) null,
+                BusinessUnitID = int.Parse(store.id),
+                StoreAbbreviation = GetTraitValue(store, StoreAbbreviationTraitCode),
+                CurrencyCode = GetTraitValue(store, CurrencyCodeTraitCode),
+                Hospitality = String.Compare(GetTraitValue(store, VenueSubTypeTraitCode), "Hospitality",
+                                  StringComparison.OrdinalIgnoreCase) == 0
+            };
+
+            return storeLocaleModel;
+        }
+
+        private int ParseIconLocaleIdFromStoreLocaleType(LocaleType store)
+        {
+            if (store.store == null)
+                throw new Exception("Unable to find Store Type in the Store Locale Message. Required to parse Icon Locale id");
+
+            var parsedLocaleId = 0;
+            var validLocaleId = int.TryParse(store.store.id, out parsedLocaleId);
+
+            if (!validLocaleId)
+                throw new Exception(
+                    $"Unable to parse icon locale id from Store Type in the Store Locale Message. Found: {store.store.id}");
+            return parsedLocaleId;
+        }
+
+        private static string GetTraitValue(LocaleType store, string traitCode)
+        {
+			var trait = store.traits.FirstOrDefault(t => string.Compare(t.code,traitCode,StringComparison.OrdinalIgnoreCase) == 0 ? t.code == traitCode : t.code == null);
 			return trait != null ? (trait.type.value[0].value != null ? trait.type.value[0].value : null): null;
         }
     }

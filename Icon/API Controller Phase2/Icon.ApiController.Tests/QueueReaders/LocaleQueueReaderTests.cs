@@ -66,6 +66,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private Territory territory;
         private Timezone timezone;
         private string touchPointGroupId;
+        private int storeLocaleId;
 
 		
 
@@ -101,6 +102,8 @@ namespace Icon.ApiController.Tests.QueueReaders
 			venueSubType = "Hospatality";
 			currencyCode = "USD";
             touchPointGroupId = "TPG1";
+            storeLocaleId = 99999;
+            
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
             mockEmailClient = new Mock<IEmailClient>();
@@ -799,6 +802,36 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.IsNotNull(region);
             Assert.IsNotNull(metro);
             Assert.IsNotNull(store);
+        }
+
+
+        [TestMethod]
+        public void GetLocaleMiniBulk_StoreMessage_MiniBulkShouldContainStoreAndMetroAndRegionElementsAndIncludeIconStoreType()
+        {
+            // Given.
+            var fakeMessageQueueLocales = new List<MessageQueueLocale>
+            {
+                new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Store)
+            };
+
+            fakeMessageQueueLocales[0].LocaleId = stores[0].localeID;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+            // Then.
+            var chn = miniBulk.locales[0];
+            var reg = chn.locales[0];
+            var metro = reg.locales[0];
+            var store = metro.locales[0];
+            var storeType = store.store;
+
+            Assert.IsNotNull(chn);
+            Assert.IsNotNull(reg);
+            Assert.IsNotNull(metro);
+            Assert.IsNotNull(store);
+            Assert.IsNotNull(storeType);
+            Assert.IsTrue(int.Parse(storeType.id)>0); // storeType.Id will be icon locale id.
         }
 
         [TestMethod]
