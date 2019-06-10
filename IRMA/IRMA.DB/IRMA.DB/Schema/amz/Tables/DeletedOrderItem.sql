@@ -77,8 +77,8 @@
 	[ResolutionCodeID] [int] NULL,
 	[PaymentTypeID] [int] NULL,
 	[LineItemSuspended] [bit] NULL,
-  [OrderType_ID] [int] NOT NULL,
-  [InsertDate] DateTime default(GetDate())
+	[OrderType_ID] [int] NOT NULL,
+	[InsertDate] DateTime NULL CONSTRAINT DF_AMZ_DeletedOrderItem_InsertDate DEFAULT (GetDate())
 ) ON [PRIMARY]
 GO
 

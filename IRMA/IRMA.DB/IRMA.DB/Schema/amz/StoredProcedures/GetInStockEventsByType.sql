@@ -26,7 +26,6 @@ BEGIN
       FROM ItemHistory A
       JOIN Vendor B ON B.Store_no = A.Store_No
       WHERE Adjustment_ID = 1 AND Cast(DateStamp AS DATE) BETWEEN @dateFrom AND @dateTo
-        AND B.Vendor_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'))
       ORDER BY ItemHistoryID;
   
      RETURN;
@@ -40,8 +39,6 @@ BEGIN
     FROM OrderHeader
     WHERE [Sent] = 1 AND OrderType_ID <> 3
         AND Cast(IsNull(SentDate, OrderDate) AS DATE) BETWEEN @dateFrom AND @dateTo
-        AND ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'));
-  
     RETURN;
   END
   
@@ -55,7 +52,6 @@ BEGIN
       LEFT JOIN infor.OrderExpectedDateChangeQueue B ON B.OrderHeader_ID = A.OrderHeader_ID
       WHERE A.Sent = 1 AND A.OrderType_ID <> 3
         AND Cast(IsNull(IsNull(A.OriginalCloseDate, A.CloseDate), B.InsertDate) AS DATE) BETWEEN @dateFrom AND @dateTo
-        AND A.ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'))
       ORDER BY A.OrderHeader_ID;
   
     RETURN;
@@ -68,8 +64,7 @@ BEGIN
       FROM OrderHeader 
       WHERE [Sent] = 1 AND OrderType_ID = 3
         AND Cast(IsNull(SentDate, OrderDate) AS DATE) BETWEEN @dateFrom AND @dateTo
-        AND ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'));
-  
+
     RETURN;
   END
   
@@ -82,7 +77,6 @@ BEGIN
       JOIN OrderItem B ON B.OrderHeader_ID = A.OrderHeader_ID
       WHERE A.Sent = 1 AND IsNull(B.QuantityReceived, 0) > 0 
         AND Cast(B.DateReceived AS DATE) BETWEEN @dateFrom AND @dateTo
-        AND A.ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'))
       GROUP BY A.OrderHeader_ID, Cast(B.DateReceived AS DATE), A.OrderHeaderDesc
       ORDER BY A.OrderHeader_ID DESC;
   
@@ -122,7 +116,6 @@ BEGIN
     FROM dbo.DeletedOrder A
     WHERE A.Sent = 1 AND A.OrderType_ID <> 3
       AND Cast(A.DeleteDate AS DATE) BETWEEN @dateFrom AND @dateTo
-      AND A.ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'));
   
     RETURN;
   END
@@ -134,7 +127,6 @@ BEGIN
     FROM dbo.DeletedOrder
     WHERE [Sent] = 1 AND OrderType_ID = 3
       AND Cast(DeleteDate AS DATE) BETWEEN @dateFrom AND @dateTo
-      AND ReceiveLocation_ID IN(SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('AmazonInStockEnabledStoreVendorId', 'IRMA CLIENT'), '|'));
   
     RETURN;
   END

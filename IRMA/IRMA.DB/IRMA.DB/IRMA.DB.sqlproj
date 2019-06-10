@@ -3339,6 +3339,7 @@
     <None Include="Scripts\PostDeploy\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItems.sql" />
+    <None Include="Scripts\PostDeploy\PBI22038_MarkInStockAppConfigDeleted.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
