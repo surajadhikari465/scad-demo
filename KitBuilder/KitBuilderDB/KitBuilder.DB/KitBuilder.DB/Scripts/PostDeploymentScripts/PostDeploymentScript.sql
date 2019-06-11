@@ -18,3 +18,4 @@ Post-Deployment Script Template
 :r PopulateMessageTypes.sql  -- 05.07.2019
 :r PopulateLocaleKitAndInstructionTypes.sql -- 05.27.2019
 :r PopulateInstructionMemberPluNumbers.sql -- 05.29.2019
+:r PopulateAppTable.sql -- 07.11.2019

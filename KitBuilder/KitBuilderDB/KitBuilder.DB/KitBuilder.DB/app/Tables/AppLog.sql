@@ -1,4 +1,4 @@
-﻿create table AppLog(
+﻿create table app.AppLog(
 	AppLogID    int identity constraint PK_AppLog primary key clustered,
 	AppID       int not null,
 	Level       nvarchar(100),
@@ -8,10 +8,10 @@
 	InsertDateUtc  datetime2(7) not NULL
 	CONSTRAINT DF_AppLog_InsertDateUtc DEFAULT SYSUTCDATETIME(),
 	LogDateUtc     datetime2(7),
-  Thread      nvarchar(100),
+	Thread      nvarchar(100),
 	Message     nvarchar(max),
-  CallSite    nvarchar(max),
-  Exception   nvarchar(max),
+	CallSite    nvarchar(max),
+	Exception   nvarchar(max),
 	StackTrace  nvarchar(max),
 
   index ix_InsertDate nonclustered([InsertDateUtc]),
