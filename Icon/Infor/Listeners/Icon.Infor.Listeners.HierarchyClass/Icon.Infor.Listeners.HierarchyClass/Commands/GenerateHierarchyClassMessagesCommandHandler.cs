@@ -41,9 +41,11 @@ namespace Icon.Infor.Listeners.HierarchyClass.Commands
 
                 try
                 {
+                    var hierarchyClassTraits = dataAccessModels.ToTraitDataAccessModels().ToTvp("@hierarchyClassTraits", "infor.HierarchyClassTraitType");
+
                     using (var context = contextFactory.CreateContext())
                     {
-                        context.Database.ExecuteSqlCommand("EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses", hierarchyClasses);
+                        context.Database.ExecuteSqlCommand("EXEC infor.HierarchyClassGenerateMessages @hierarchyClasses, @hierarchyClassTraits", hierarchyClasses, hierarchyClassTraits);
                     }
                 }
                 catch (Exception ex)

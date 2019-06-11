@@ -4,6 +4,8 @@ using Icon.Infor.Listeners.HierarchyClass.Commands;
 using Icon.Infor.Listeners.HierarchyClass.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
 {
@@ -17,7 +19,6 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
         public void Initialize()
         {
             commandHandler = new GenerateHierarchyClassMessagesCommandHandler(contextFactory);
-
             command = new GenerateHierarchyClassMessagesCommand();
         }
 
@@ -119,6 +120,82 @@ namespace Icon.Infor.Listeners.HierarchyClass.Tests.Commands
             //Then
             var queuedMessages = GetQueuedMessages(context, id1234);
             AssertMessagesAreEqualToTestModel(testModel, queuedMessages);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassMessages__MultipleTraitsIncludingNationalClassCode_ReturnQueueMessageWithNationalClass()
+        {
+            //Given
+
+            var model = base.CreateInforHierarchyClassModel(
+                HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
+                {
+                    { Traits.Codes.ModifiedDate, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+                    { Traits.Codes.ModifiedUser, "Unit Test" },
+                    { Traits.Codes.NationalClassCode, "Test NCC" }
+                });
+            
+            SetCommandHierarchyClasses(command, model);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var queueMessages = GetQueuedMessages(context, model.HierarchyClassId);
+            AssertMessagesAreEqualToTestModel(model, queueMessages);
+            StringAssert.Equals(queueMessages.Where(x => x.HierarchyClassName == model.HierarchyClassName).First().NationalClassCode, model.HierarchyClassTraits[Traits.Codes.NationalClassCode.ToString()]);
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassMessages__MultipleTraitsIncludingExcludingNationalClassCode_ReturnQueueMessageWithNationalClassEmpty()
+        {
+            //Given
+            var model = base.CreateInforHierarchyClassModel(
+                HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
+                {
+                    { Traits.Codes.ModifiedDate, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+                    { Traits.Codes.ModifiedUser, "Unit Test" },
+                });
+            
+            SetCommandHierarchyClasses(command, model);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var queueMessages = GetQueuedMessages(context, model.HierarchyClassId);
+            AssertMessagesAreEqualToTestModel(model, queueMessages);
+            Assert.IsTrue(String.IsNullOrWhiteSpace(queueMessages.Where(x => x.HierarchyClassName == model.HierarchyClassName).First().NationalClassCode));
+        }
+
+        [TestMethod]
+        public void GenerateHierarchyClassMessages_NationalClassCodeTraitOnly_ReturnQueueMessageWithNationalClass()
+        {
+            //Given
+            var model = base.CreateInforHierarchyClassModel(
+                HierarchyNames.National,
+                HierarchyLevelNames.NationalFamily,
+                ActionEnum.AddOrUpdate,
+                new Dictionary<string, string>
+                {
+                    { Traits.Codes.NationalClassCode, "NCC Single Trait" }
+                });
+            
+            SetCommandHierarchyClasses(command, model);
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var queueMessages = GetQueuedMessages(context, model.HierarchyClassId);
+            AssertMessagesAreEqualToTestModel(model, queueMessages);
+            Assert.AreEqual(queueMessages.Where(x => x.HierarchyClassName == model.HierarchyClassName).First().NationalClassCode, model.HierarchyClassTraits[Traits.Codes.NationalClassCode.ToString()]);
         }
     }
 }

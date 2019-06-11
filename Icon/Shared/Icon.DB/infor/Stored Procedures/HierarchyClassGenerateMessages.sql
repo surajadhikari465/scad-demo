@@ -1,54 +1,59 @@
 ﻿CREATE PROCEDURE [infor].[HierarchyClassGenerateMessages]
-	@hierarchyClasses infor.HierarchyClassType READONLY
+  @hierarchyClasses infor.HierarchyClassType READONLY,
+  @hierarchyClassTraits infor.HierarchyClassTraitType READONLY
 AS
 BEGIN
 	--Generate Hierarchy Class messages to the ESB
-  DECLARE @brandHierarchyId INT       = (select hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
-          @merchHierarchyId INT       = (select hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise'),
-          @financialHierarchyId INT		= (select hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
-          @nationalHierarchyId INT    = (select hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'National'),
-          @readyMessageStatusId INT   = (select MessageStatusId FROM app.MessageStatus WHERE MessageStatusName = 'Ready'),
-          @hierarchyMessageTypeId INT	= (select MessageTypeId FROM app.MessageType WHERE MessageTypeName = 'Hierarchy'),
-          @deleteMessageActionId INT  = (select MessageActionId FROM app.MessageAction WHERE MessageActionName = 'Delete')
+	DECLARE @brandHierarchyId INT = (SELECT HierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Brands'),
+          @merchHierarchyId INT = (SELECT HierarchyID	FROM dbo.Hierarchy WHERE hierarchyName = 'Merchandise'),
+          @financialHierarchyId INT = (SELECT HierarchyID FROM dbo.Hierarchy WHERE hierarchyName = 'Financial'),
+          @nationalHierarchyId INT = (SELECT HierarchyID FROM dbo.Hierarchy	WHERE hierarchyName = 'National'),
+          @readyMessageStatusId INT = (SELECT MessageStatusId	FROM app.MessageStatus WHERE MessageStatusName = 'Ready'),
+          @hierarchyMessageTypeId INT = (SELECT MessageTypeId	FROM app.MessageType WHERE MessageTypeName = 'Hierarchy'),
+          @deleteMessageActionId INT = (SELECT MessageActionId FROM app.MessageAction WHERE MessageActionName = 'Delete'),
+          @nccId INT = (SELECT traitID FROM dbo.Trait	WHERE traitCode = 'NCC');
 
-  declare @nationalClassCode table(HierarchyClassId int, NationalClassCode nvarchar(255));
-  ;with cte as(select B.HierarchyClassId, B.traitValue, row_number()over(partition by A.HierarchyClassId order by A.HierarchyClassId) rowID from @hierarchyClasses A
-             join HierarchyClassTrait B on B.hierarchyClassID = A.HierarchyClassId
-             join HierarchyClass C on C.hierarchyClassID = A.HierarchyClassId
-             where A.hierarchyID = @nationalHierarchyId)
+  --Directed to us by the DBAs: we should dump any table type data into a tempdb table.
+  SELECT *
+  INTO #hierarchyClasses
+  FROM @hierarchyClasses;
 
-  insert into @nationalClassCode(HierarchyClassId, NationalClassCode)
-    select HierarchyClassId, traitValue from cte where rowID = 1;
+  SELECT *
+  INTO #hierarchyClassesTraits
+  FROM @hierarchyClassTraits;
 
-	insert into app.MessageQueueHierarchy(MessageTypeId,
-                                        MessageStatusId,
-                                        MessageActionId,
-                                        HierarchyId,
-                                        HierarchyName,
-                                        HierarchyLevelName,
-                                        ItemsAttached,
-                                        HierarchyClassId,
-                                        HierarchyClassName,
-                                        HierarchyLevel,
-                                        HierarchyParentClassId,
-                                        NationalClassCode)
-	  select @hierarchyMessageTypeId,
-           @readyMessageStatusId,
-           hc.ActionId,
-           hc.HierarchyId,
-           h.hierarchyName,
-           hp.hierarchyLevelName,
-           hp.itemsAttached,
-           case when hc.HierarchyId = @financialHierarchyId then SUBSTRING(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
-						    else hc.HierarchyClassId end HierarchyClassId,
-           hc.HierarchyClassName,
-           hp.hierarchyLevel,
-           hc.ParentHierarchyClassId,
-           D.NationalClassCode
-	  from @hierarchyClasses hc
-		join dbo.Hierarchy h on hc.HierarchyId = h.hierarchyID
-		join dbo.HierarchyPrototype hp on hp.hierarchyID = hc.HierarchyId and hp.hierarchyLevelName = hc.hierarchyLevelName
-    left join @nationalClassCode D on D.hierarchyClassID = hc.HierarchyClassId
-	WHERE h.HierarchyId in (@brandHierarchyId, @merchHierarchyId, @financialHierarchyId, @nationalHierarchyId)
+	INSERT INTO app.MessageQueueHierarchy(
+		MessageTypeId
+		,MessageStatusId
+		,MessageActionId
+		,HierarchyID
+		,HierarchyName
+		,HierarchyLevelName
+		,ItemsAttached
+		,HierarchyClassId
+		,HierarchyClassName
+		,HierarchyLevel
+		,HierarchyParentClassId
+		,NationalClassCode)
+	SELECT @hierarchyMessageTypeId
+		,@readyMessageStatusId
+		,hc.ActionId
+		,hc.HierarchyID
+		,h.hierarchyName
+		,hp.hierarchyLevelName
+		,hp.itemsAttached
+		,CASE WHEN hc.HierarchyID = @financialHierarchyId THEN SUBSTRING(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4) ELSE hc.HierarchyClassId END HierarchyClassId
+		,hc.HierarchyClassName
+		,hp.hierarchyLevel
+		,hc.ParentHierarchyClassId
+		,hct.TraitValue AS NationalClassCode
+	FROM #hierarchyClasses hc
+	JOIN dbo.Hierarchy h ON hc.HierarchyID = h.HierarchyID
+	JOIN dbo.HierarchyPrototype hp ON hp.HierarchyID = hc.HierarchyID AND hp.hierarchyLevelName = hc.hierarchyLevelName
+  LEFT JOIN #hierarchyClassesTraits hct ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @nccId
+	WHERE h.HierarchyID IN(
+			@brandHierarchyId
+			,@merchHierarchyId
+			,@financialHierarchyId
+			,@nationalHierarchyId);
 END
-GO
