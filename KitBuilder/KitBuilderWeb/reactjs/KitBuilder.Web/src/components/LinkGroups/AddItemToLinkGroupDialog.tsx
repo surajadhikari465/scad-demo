@@ -50,6 +50,11 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
     });
   };
 
+  onCancel=()=>{
+    this.setState({queuedItems:[]})
+    this.props.onClose();
+  }
+  
   isAlreadyQueued = (item: Item) =>
     this.state.queuedItems.some(x => x.itemId === item.itemId) ||
     this.props.linkGroupItems.some(x => x.item.itemId === item.itemId);
@@ -76,6 +81,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
   onAddToLinkGroup = () => {
     const { queuedItems } = this.state;
     this.props.handleAddModifiers(queuedItems);
+    this.setState({queuedItems:[],searchResults:[],name:"", plu:""})
   };
 
   handlePressEnterToSearch = (e: React.KeyboardEvent) => {
@@ -193,7 +199,7 @@ class AddItemToLinkGroupDialog extends React.PureComponent<
             className="-striped -highlight"
           />
           <DialogActions>
-            <Button variant="outlined" onClick={this.props.onClose}>
+            <Button variant="outlined" onClick={this.onCancel}>
               {" "}
               Cancel{" "}
             </Button>
