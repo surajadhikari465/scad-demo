@@ -120,7 +120,7 @@ Public Class Form_EditUser
                     CheckBox_AcctEnabled.Checked = _userConfig.AccountEnabled
                     ' disable the ability to change one's own Title if IDF is set to 0
                     ComboBox_Title.Enabled = False
-                    If _userConfig.UserMaintenance OR _userConfig.SecurityAdministrator Then
+                    If gbUserMaintenance Or gbSecurityAdministrator Then
                        If InstanceDataDAO.IsFlagActive("AllowChangeOwnTitle") Then
                           ComboBox_Title.Enabled = True
                        Else
