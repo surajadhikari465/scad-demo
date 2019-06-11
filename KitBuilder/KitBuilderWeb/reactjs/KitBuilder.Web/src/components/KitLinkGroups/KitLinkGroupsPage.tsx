@@ -134,6 +134,12 @@ class KitLinkGroupPage extends React.Component<
     let dataToValidate: any = this.state.kitDetails.kitLinkGroupLocaleList;
     let error: any = [];
 
+    if( dataToValidate.filter(this.filterByExcluded).length==0)
+    {
+      this.props.showAlert("Must have at least one included Link Group", "error");
+      return;
+    }
+  
     if (
       checkDuplicateInObject(
         "displaySequence",
@@ -143,7 +149,6 @@ class KitLinkGroupPage extends React.Component<
       error.push("Display Order must be unique at link group level.");
     }
     let self = this;
-
     dataToValidate.forEach(function(element: any) {
       let validateSumMinToMax: Boolean = true;
       let compareMinMax: Boolean = true;

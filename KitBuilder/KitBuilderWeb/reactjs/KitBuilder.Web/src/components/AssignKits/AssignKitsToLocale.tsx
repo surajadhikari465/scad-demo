@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import StyledPanel from "src/components/PageStyle/StyledPanel";
 import { withStyles } from '@material-ui/core/styles';
 import PageTitle from "../PageTitle";
-
+import FormControl from '@material-ui/core/FormControl';
 
 const styles = (theme: any) => ({
      root: {
@@ -24,8 +24,7 @@ const styles = (theme: any) => ({
           paddingRight: 10 + 'px'
      },
      labelRoot: {
-          fontSize: 18,
-          fontWeight: 600
+          fontSize: 16
      },
      button: {
           width: '100%',
@@ -367,13 +366,19 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                               </Grid>
                               <Grid xs={12} md={1} item></Grid>
                               <Grid xs={12} md={2} item>
+                              <FormControl className={this.props.classes.formControl}>
                                    <TextField
                                         disabled
                                         variant='outlined'
                                         label='Selected Kit'
                                         className='search-textfield'
+                                        InputLabelProps={{ shrink: true,
+                                             FormLabelClasses: {
+                                                 root: this.props.classes.labelRoot
+                                               } }}
                                         value={this.state.kitName}>
                                    </TextField>
+                                   </FormControl>
                               </Grid>
                               <Grid xs={12} md={2} item>
                                    <Button variant="contained" color="primary" className={this.props.classes.button} onClick={() => this.selectKit()} >

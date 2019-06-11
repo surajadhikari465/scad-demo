@@ -27,7 +27,7 @@ export const Header: React.StatelessComponent<{}> = () => {
                             <Link className="nav-link" to="/ViewKit"> View Kit</Link>
                         </li>
                         <li className="nav-item ">
-                            <Link className="nav-link" to="/AssignKits"> Assign Kits</Link>
+                            <Link className="nav-link" to="/AssignKits"> Assign Kit</Link>
                         </li>
                     </ul>
                 </div>
