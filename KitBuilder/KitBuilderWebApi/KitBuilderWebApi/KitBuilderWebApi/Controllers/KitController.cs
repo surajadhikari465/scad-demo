@@ -844,7 +844,7 @@ namespace KitBuilderWebApi.Controllers
                     var kitLocales = kitLocaleRepository.GetAll().Where(k => k.KitId == kitToSave.KitId);
 
                     if (kitToSave.KitType != KitType.Simple && (kitLocales.Where(k => k.StatusId == (int)LocaleStatus.Published
-                            || k.StatusId == (int)LocaleStatus.PublishQueued
+                            || k.StatusId == (int)LocaleStatus.PublishQueued || k.StatusId == (int)LocaleStatus.Modifying
                             || k.StatusId == (int)LocaleStatus.PublishReQueued).Any()) )
                     {
                             foreach (KitLocale kitlocale in kitLocales)

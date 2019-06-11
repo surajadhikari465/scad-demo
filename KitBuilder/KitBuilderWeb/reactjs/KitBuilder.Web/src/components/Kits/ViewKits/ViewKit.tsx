@@ -148,7 +148,10 @@ export class ViewKit extends React.Component<
       {
         regionValue: event.target.value,
         disableSaveButton: true,
-        kitsViewData: {}
+        kitsViewData: {},
+        maximumCalories: "0",
+        price: "",
+        minimumCalories: ""
       },
       this.populateMetros
     );
@@ -159,7 +162,10 @@ export class ViewKit extends React.Component<
       {
         metroValue: event.target.value,
         disableSaveButton: true,
-        kitsViewData: {}
+        kitsViewData: {},
+        maximumCalories: "0",
+        price: "",
+        minimumCalories: ""
       },
       this.populateStores
     );
@@ -169,7 +175,10 @@ export class ViewKit extends React.Component<
     this.setState({
       storeValue: event.target.value,
       kitsViewData: {},
-      disableSaveButton: true
+      disableSaveButton: true,
+      maximumCalories: "0",
+      price: "",
+      minimumCalories: ""
     });
   };
 
