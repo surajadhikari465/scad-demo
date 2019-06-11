@@ -97,16 +97,6 @@ Public Class Form_InstanceDataFlags
         Me.CenterToParent()
 
         Me.ugInstanceDataFlags.DataSource = InstanceDataDAO.GetAllInstanceDataFlags
-        ' Disable in PRD
-        If My.Application.IsProduction Then
-            For Each ugRow As UltraGridRow In Me.ugInstanceDataFlags.Rows
-                If ugRow.Cells("FlagKey").Value = "AllowChangeOwnTitle" Then
-                    ugRow.Activation = Activation.Disabled
-                    Exit For
-                End If
-            Next
-        End If
-
         Me.ugInstanceDataFlags.DisplayLayout.Bands(0).Columns("FlagKey").CellActivation = Activation.NoEdit
 
         Me.ugInstanceDataFlags.DisplayLayout.AutoFitStyle = AutoFitStyle.ResizeAllColumns

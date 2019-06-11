@@ -118,8 +118,17 @@ Public Class Form_EditUser
                     Me.TextBox_UserName.Enabled = False
                     ' Pre-fill for values that have defaults on create
                     CheckBox_AcctEnabled.Checked = _userConfig.AccountEnabled
-                    ' disable the ability to change one's own Title
-                    ComboBox_Title.Enabled = InstanceDataDAO.IsFlagActive("AllowChangeOwnTitle")
+                    ' disable the ability to change one's own Title if IDF is set to 0
+                    ComboBox_Title.Enabled = False
+                    If _userConfig.UserMaintenance OR _userConfig.SecurityAdministrator Then
+                       If InstanceDataDAO.IsFlagActive("AllowChangeOwnTitle") Then
+                          ComboBox_Title.Enabled = True
+                       Else
+                         If Not giUserID.Equals(_userConfig.UserId) Then
+                            ComboBox_Title.Enabled = True
+                         End If
+                       End IF
+                    End If
                     If _userConfig.AccountEnabled = False Then
                         Me.Button_Save.Enabled = False
                         Me.Button_DisableAccount.Enabled = False
@@ -1955,8 +1964,8 @@ Public Class Form_EditUser
 
             Else
 
-                MessageBox.Show(String.Format(ResourcesAdministration.GetString("msg_validation_BadNodeMove"), "all " & _
-                                        Me.TreeView_DataTree.SelectedNode.Text, Me.TreeView_Locations.SelectedNode.Text), _
+                MessageBox.Show(String.Format(ResourcesAdministration.GetString("msg_validation_BadNodeMove"), "all " &
+                                        Me.TreeView_DataTree.SelectedNode.Text, Me.TreeView_Locations.SelectedNode.Text),
                                 Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
 
             End If
