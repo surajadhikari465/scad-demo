@@ -63,7 +63,7 @@ SELECT q.QueueID AS QueueId
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
 	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,COALESCE(soe.ExtraText, sce.ExtraText, iet.ExtraText) AS ScaleExtraText
+	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) THEN COALESCE(soe.ExtraText, sce.ExtraText) ELSE iet.ExtraText END AS ScaleExtraText
 	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
 	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
 	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
@@ -182,7 +182,7 @@ SELECT q.QueueID AS QueueId
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
 	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,COALESCE(soe.ExtraText, sce.ExtraText, iet.ExtraText) AS ScaleExtraText
+	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) THEN COALESCE(soe.ExtraText, sce.ExtraText) ELSE iet.ExtraText END AS ScaleExtraText
 	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
 	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
 	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
