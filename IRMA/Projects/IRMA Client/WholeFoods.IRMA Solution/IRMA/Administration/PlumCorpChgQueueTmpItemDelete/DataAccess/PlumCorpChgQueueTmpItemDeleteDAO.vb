@@ -5,7 +5,7 @@ Imports WholeFoods.Utility.DataAccess
 Public Class PlumCorpChgQueueTmpItemDeleteDAO
   Public Shared Sub ValidateModel(ByVal model As PlumCorpChgDeleteModel)
     Dim factory As New DataFactory(DataFactory.ItemCatalog)
-    model.IsExists = CBool(factory.ExecuteScalar("PlumCorpChgQueueTmpDeletedItemsValidate", Nothing, New SqlParameter("ItemKey", model.ItemKey)))
+    model.IsExists = CBool(factory.ExecuteScalar("PlumCorpChgQueueTmpDeletedItemsValidate", Nothing, New SqlParameter("ScanCode", model.ScanCode)))
   End Sub
 
   Friend Shared Sub DeleteItems(models As List(Of PlumCorpChgDeleteModel))
@@ -15,8 +15,8 @@ Public Class PlumCorpChgQueueTmpItemDeleteDAO
 
     Try
       paramList.Add(New DBParam With {
-                .Name = "ItemKey",
-                .Value = String.Join("|", models.Select(Function(m) m.ItemKey).Distinct().ToArray()),
+                .Name = "ScanCode",
+                .Value = String.Join("|", models.Select(Function(m) m.ScanCode).Distinct().ToArray()),
                 .Type = DBParamType.String})
 
       factory.ExecuteStoredProcedure("PlumCorpChgQueueTmpDeletedItems", paramList)

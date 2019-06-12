@@ -7,8 +7,8 @@ Public Class PlumCorpChgQueueTmpDeleteError
     ErrorsDataGridView.AutoGenerateColumns = False
 
     ErrorsDataGridView.Columns.Add(New DataGridViewTextBoxColumn With {
-                                          .DataPropertyName = "ItemKey",
-                                          .HeaderText = "Item Key",
+                                          .DataPropertyName = "ScanCode",
+                                          .HeaderText = "ScanCode",
                                           .ReadOnly = True,
                                           .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                                           })
@@ -19,6 +19,6 @@ Public Class PlumCorpChgQueueTmpDeleteError
                                           .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                                           })
 
-    ErrorsDataGridView.DataSource = value.ErrorModels.Select(Function(x) New With {x.ItemKey, .error = "Item Key does not Exist"}).ToArray()
+    ErrorsDataGridView.DataSource = value.ErrorModels.Select(Function(x) New With {x.ScanCode, .error = "ScanCode does not Exist"}).ToArray()
   End Sub
 End Class
