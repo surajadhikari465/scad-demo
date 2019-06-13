@@ -82,8 +82,8 @@ CREATE TRIGGER [gpm].[Trigger_Price_NA]
     END
 GO
 
-CREATE INDEX [IX_Price_NA_StartDate] ON [gpm].[Price_NA] ([StartDate])
-	INCLUDE (Region, PriceID, ItemID, BusinessUnitID, EndDate, Price, PercentOff, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, TagExpirationDate, InsertDateUtc, ModifiedDateUtc) WITH (FILLFACTOR = 100)
+CREATE INDEX [IX_Price_NA_StartDate] ON [gpm].[Price_NA] ([StartDate] ASC)
+	WITH (FILLFACTOR = 100)
     ON [FG_NA];
 GO
 

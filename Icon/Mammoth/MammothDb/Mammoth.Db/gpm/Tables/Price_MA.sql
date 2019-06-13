@@ -26,8 +26,8 @@ CREATE CLUSTERED INDEX [CIX_GpmPrice_MA]
     ON [FG_MA];
 GO
 
-CREATE INDEX [IX_Price_MA_StartDate] ON [gpm].[Price_MA] ([StartDate])
-	INCLUDE (Region, PriceID, ItemID, BusinessUnitID, EndDate, Price, PercentOff, PriceType, PriceTypeAttribute, SellableUOM, CurrencyCode, Multiple, TagExpirationDate, InsertDateUtc, ModifiedDateUtc) WITH (FILLFACTOR = 100)
+CREATE INDEX [IX_Price_MA_StartDate] ON [gpm].[Price_MA] ([StartDate] ASC)
+	WITH (FILLFACTOR = 100)
     ON [FG_MA];
 GO
 
