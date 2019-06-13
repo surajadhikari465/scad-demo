@@ -50,6 +50,10 @@ Friend Class frmPricingPrintSigns
 
             chkApplyNoTagLogic.Enabled = (glStore_Limit = 0)
             ugrdSearchResults.DisplayLayout.Override.AllowUpdate = Infragistics.Win.DefaultableBoolean.Default.False 'Prevent data change in the grid
+
+            udteEffectiveDate.MaskInput = gsUG_DateMask.ToLower()
+            udteEffectiveDate.DateTime = DateAndTime.Today
+            udteEffectiveDate.MaxDate = DateAndTime.Today.AddYears(1)
         Catch ex As Exception
             Throw New Exception(String.Format("{0}{1}Please contact your System Administrator.", ex.Message, vbCrLf))
         End Try
@@ -90,6 +94,16 @@ Friend Class frmPricingPrintSigns
         Dim batchName As String = txtBatchName.Text.Trim()
         Dim failedAdHocPrintRequests As List(Of PriceBatchFailedPrintRequestsBO) = New List(Of PriceBatchFailedPrintRequestsBO)
         Dim slawApiErrorResponses As List(Of String) = New List(Of String)
+        Dim effectiveDateString As String = Nothing
+
+        If (Not udteEffectiveDate.IsDateValid) Or (udteEffectiveDate.DateTime < DateAndTime.Today) Or (udteEffectiveDate.DateTime > DateAndTime.Today.AddYears(1)) Then
+            MessageBox.Show("Invalid Effective Date. Must be between today and 1 year in the future.", "System Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            udteEffectiveDate.Focus()
+            Exit Sub
+        End If
+        If udteEffectiveDate.DateTime.Date <> DateTime.Today Then
+            effectiveDateString = udteEffectiveDate.DateTime.ToString(gsUG_DateMask)
+        End If
 
         If (String.IsNullOrEmpty(batchName)) Then
             MessageBox.Show("Please specify the batch name.", "System Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -170,7 +184,7 @@ Friend Class frmPricingPrintSigns
                     Cursor = Cursors.WaitCursor
 
                     Try
-                        pricingPrintSignsBusinessLogic.SendTagReprintPrintBatchRequests(businessUnit, batchName, identifiersToReprint)
+                        pricingPrintSignsBusinessLogic.SendTagReprintPrintBatchRequests(businessUnit, batchName, identifiersToReprint, effectiveDateString)
                         logger.Info(String.Format("Successfully sent ad-hoc print batch request to the SLAW API for store number {0}.", storeNumber))
                     Catch ex As Exception
                         Dim slawJsonResponseText As String = Nothing
@@ -401,5 +415,60 @@ Friend Class frmPricingPrintSigns
     Private Sub lvStore_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles lvStore.ColumnClick
         lvStore.Sorting = If(lvStore.Sorting = SortOrder.Descending, SortOrder.Ascending, SortOrder.Descending)
         lvStore.Sort()
+    End Sub
+
+    ' used to prevent triggering the select change event code when programmatically selecting all
+    Dim checkedChangedEventForSelectAllStoresIsActive As Boolean = False
+
+    Private Sub ChkSelectAllStores_CheckedChanged(sender As Object, e As EventArgs) Handles chkSelectAllStores.CheckedChanged
+        checkedChangedEventForSelectAllStoresIsActive = True
+        Dim checkBoxValue As Boolean = CType(sender, CheckBox).Checked
+        Dim listView As ListView = lvStore
+
+        ' programmatically select each item in the ListView
+        For Each itm As ListViewItem In listView.Items
+            itm.Selected = checkBoxValue
+        Next
+
+        ' focus the ListView - otherwise focus will remain on checkbox and ListView selection will be inactive (grayed-out)
+        listView.Focus()
+        checkedChangedEventForSelectAllStoresIsActive = False
+    End Sub
+
+    Private Sub LvStore_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles lvStore.ItemSelectionChanged
+        If Not checkedChangedEventForSelectAllStoresIsActive Then
+            Dim listView As ListView = CType(sender, ListView)
+            ' if any item is unselected, make sure the SelectAllStores checkbox is unchecked
+            chkSelectAllStores.Checked = (listView.SelectedItems.Count = listView.Items.Count)
+            listView.Focus()
+        End If
+    End Sub
+
+    ' used to prevent triggering the after select change event code when programmatically selecting all
+    Dim checkedChangedEventForSelectAllIdentifiersIsActive As Boolean = False
+
+    Private Sub ChkSelectAllIdentifiers_CheckedChanged(sender As Object, e As EventArgs) Handles chkSelectAllIdentifiers.CheckedChanged
+        checkedChangedEventForSelectAllIdentifiersIsActive = True
+        Dim selectAll As Boolean = CType(sender, CheckBox).Checked
+
+        ' programmatically select all the rows in the grid
+        For Each row As UltraGridRow In ugrdSearchResults.DisplayLayout.Bands(0).GetRowEnumerator(GridRowType.DataRow)
+            row.Selected = selectAll
+        Next row
+
+        ' set the grid active row so that the grid is focused
+        If ugrdSearchResults.Selected.Rows.Count > 0 Then ugrdSearchResults.ActiveRow = ugrdSearchResults.Selected.Rows(0)
+        ugrdSearchResults.Focus()
+        checkedChangedEventForSelectAllIdentifiersIsActive = False
+    End Sub
+
+    Private Sub UgrdSearchResults_AfterSelectChange(sender As Object, e As AfterSelectChangeEventArgs) Handles ugrdSearchResults.AfterSelectChange
+        If Not checkedChangedEventForSelectAllIdentifiersIsActive Then
+            Dim ultraGrid = CType(sender, UltraGrid)
+            ' if any row is unselected, make sure the SelectAllIdentifiers checkbox is unchecked
+            chkSelectAllIdentifiers.Checked = (ultraGrid.Rows.Count = ultraGrid.Selected.Rows.Count)
+            If ugrdSearchResults.Selected.Rows.Count > 0 Then ugrdSearchResults.ActiveRow = ugrdSearchResults.Selected.Rows(0)
+            ultraGrid.Focus()
+        End If
     End Sub
 End Class

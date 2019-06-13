@@ -59,7 +59,7 @@ Public Class PricingPrintSignsBO
         Return validIdentifiers
     End Function
 
-    Public Sub SendTagReprintPrintBatchRequests(businessUnit As Integer, printRequestBatchName As String, identifiers As List(Of String))
+    Public Sub SendTagReprintPrintBatchRequests(businessUnit As Integer, printRequestBatchName As String, identifiers As List(Of String), Optional effectiveDateString As String = Nothing)
         Dim slawPrintBatchModel As SlawPrintBatchModel = New SlawPrintBatchModel()
 
         slawPrintBatchModel.Application = SlawConstants.IrmaApplication
@@ -70,6 +70,7 @@ Public Class PricingPrintSignsBO
         slawPrintBatchModel.HasPriceChange = 0
         slawPrintBatchModel.BatchChangeType = "ITM"
         slawPrintBatchModel.ItemCount = identifiers.Count
+        slawPrintBatchModel.EffectiveDate = effectiveDateString
 
         slawPrintBatchModel.BatchItems = New List(Of SlawPrintBatchItemModel)
 

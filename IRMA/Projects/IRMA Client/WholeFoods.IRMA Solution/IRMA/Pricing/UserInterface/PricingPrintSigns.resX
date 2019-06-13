@@ -309,7 +309,7 @@
     <value>Arial, 8.25pt</value>
   </data>
   <data name="lblBrand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 205</value>
+    <value>1, 202</value>
   </data>
   <data name="lblBrand.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -345,7 +345,7 @@
     <value>Arial, 8.25pt</value>
   </data>
   <data name="lblIdentifier.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 31</value>
+    <value>1, 32</value>
   </data>
   <data name="lblIdentifier.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -381,7 +381,7 @@
     <value>Arial, 8.25pt</value>
   </data>
   <data name="lblDesc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 73</value>
+    <value>1, 74</value>
   </data>
   <data name="lblDesc.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -417,7 +417,7 @@
     <value>Arial, 8.25pt</value>
   </data>
   <data name="lblCategory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 161</value>
+    <value>1, 160</value>
   </data>
   <data name="lblCategory.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 14</value>
@@ -450,7 +450,7 @@
     <value>Arial, 8.25pt</value>
   </data>
   <data name="lblSubTeam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 117</value>
+    <value>1, 116</value>
   </data>
   <data name="lblSubTeam.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 14</value>
@@ -483,7 +483,7 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="cmbBrand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 220</value>
+    <value>3, 218</value>
   </data>
   <data name="cmbBrand.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -549,7 +549,7 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="_txtField_1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 48</value>
+    <value>3, 48</value>
   </data>
   <data name="_txtField_1.MaxLength" type="System.Int32, mscorlib">
     <value>13</value>
@@ -663,10 +663,10 @@
     <value>Arial, 8pt</value>
   </data>
   <data name="ugrdSearchResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 28</value>
   </data>
   <data name="ugrdSearchResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>976, 513</value>
+    <value>976, 485</value>
   </data>
   <data name="ugrdSearchResults.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -719,6 +719,33 @@
   <data name="split.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="chkSelectAllStores.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkSelectAllStores.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 252</value>
+  </data>
+  <data name="chkSelectAllStores.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 18</value>
+  </data>
+  <data name="chkSelectAllStores.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="chkSelectAllStores.Text" xml:space="preserve">
+    <value>Select All Stores</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllStores.Name" xml:space="preserve">
+    <value>chkSelectAllStores</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllStores.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllStores.Parent" xml:space="preserve">
+    <value>split.Panel1</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllStores.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
   <data name="lblStores.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -729,7 +756,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 253</value>
+    <value>1, 278</value>
   </data>
   <data name="lblStores.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -810,10 +837,10 @@
     <value>200</value>
   </data>
   <data name="lvStore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 271</value>
+    <value>3, 295</value>
   </data>
   <data name="lvStore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 313</value>
+    <value>205, 289</value>
   </data>
   <data name="lvStore.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -841,6 +868,84 @@
   </data>
   <data name="&gt;&gt;split.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="lblEffectiveDate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblEffectiveDate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblEffectiveDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>636, 531</value>
+  </data>
+  <data name="lblEffectiveDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 14</value>
+  </data>
+  <data name="lblEffectiveDate.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="lblEffectiveDate.Text" xml:space="preserve">
+    <value>Effective Date:</value>
+  </data>
+  <data name="&gt;&gt;lblEffectiveDate.Name" xml:space="preserve">
+    <value>lblEffectiveDate</value>
+  </data>
+  <data name="&gt;&gt;lblEffectiveDate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEffectiveDate.Parent" xml:space="preserve">
+    <value>split.Panel2</value>
+  </data>
+  <data name="&gt;&gt;lblEffectiveDate.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="udteEffectiveDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>720, 527</value>
+  </data>
+  <data name="udteEffectiveDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 21</value>
+  </data>
+  <data name="udteEffectiveDate.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;udteEffectiveDate.Name" xml:space="preserve">
+    <value>udteEffectiveDate</value>
+  </data>
+  <data name="&gt;&gt;udteEffectiveDate.Type" xml:space="preserve">
+    <value>Infragistics.Win.UltraWinEditors.UltraDateTimeEditor, Infragistics2.Win.UltraWinEditors.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
+  </data>
+  <data name="&gt;&gt;udteEffectiveDate.Parent" xml:space="preserve">
+    <value>split.Panel2</value>
+  </data>
+  <data name="&gt;&gt;udteEffectiveDate.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="chkSelectAllIdentifiers.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkSelectAllIdentifiers.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 4</value>
+  </data>
+  <data name="chkSelectAllIdentifiers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 18</value>
+  </data>
+  <data name="chkSelectAllIdentifiers.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="chkSelectAllIdentifiers.Text" xml:space="preserve">
+    <value>Select All Identifiers</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllIdentifiers.Name" xml:space="preserve">
+    <value>chkSelectAllIdentifiers</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllIdentifiers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllIdentifiers.Parent" xml:space="preserve">
+    <value>split.Panel2</value>
+  </data>
+  <data name="&gt;&gt;chkSelectAllIdentifiers.ZOrder" xml:space="preserve">
+    <value>19</value>
   </data>
   <data name="grpPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
