@@ -259,37 +259,37 @@ Namespace WholeFoods.IRMA.ItemBulkLoad.DataAccess
         End Function
 
 
-        ''' <summary>
-        ''' Read complete list of Item Admin User data and return ArrayList of ItemAdminUserBO objects
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function GetItemAdminUserList() As ArrayList
-            Dim itemAdminUserList As New ArrayList
-            Dim itemAdminUserBO As ItemAdminUserBO
-            Dim factory As New DataFactory(DataFactory.ItemCatalog)
-            Dim results As SqlDataReader = Nothing
+    ''' <summary>
+    ''' Read complete list of Item Admin User data and return ArrayList of ItemAdminUserBO objects
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetItemAdminUserList() As ArrayList
+      Dim itemAdminUserList As New ArrayList
+      Dim factory As New DataFactory(DataFactory.ItemCatalog)
+      Dim results As SqlDataReader = Nothing
+      Dim ItemAdminUserBO = Nothing
 
-            Try
-                ' Execute the stored procedure 
-                results = factory.GetStoredProcedureDataReader("GetItemAdminUsers")
+      Try
+        ' Execute the stored procedure 
+        results = factory.GetStoredProcedureDataReader("GetItemAdminUsers")
 
-                While results.Read
-                    itemAdminUserBO = New ItemAdminUserBO()
-                    itemAdminUserBO.UserID = results.GetInt32(results.GetOrdinal("User_ID"))
-                    itemAdminUserBO.UserName = results.GetString(results.GetOrdinal("FullName"))
-                    itemAdminUserList.Add(itemAdminUserBO)
-                End While
-            Finally
-                If results IsNot Nothing Then
-                    results.Close()
-                End If
-            End Try
+        While results.Read
+          ItemAdminUserBO = New ItemAdminUserBO()
+          ItemAdminUserBO.UserID = CInt(results("User_ID"))
+          ItemAdminUserBO.UserName = If(IsDBNull(results("FullName")), String.Format("Uknown {0}", CInt(results("User_ID")).ToString()), results("FullName"))
+          itemAdminUserList.Add(ItemAdminUserBO)
+        End While
+      Finally
+        If results IsNot Nothing Then
+          results.Close()
+        End If
+      End Try
 
-            Return itemAdminUserList
-        End Function
+      Return itemAdminUserList
+    End Function
 
-        Public Function InsertItemUploadHeader(ByVal header As ItemUploadHeaderBO) As Integer
+    Public Function InsertItemUploadHeader(ByVal header As ItemUploadHeaderBO) As Integer
 
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim reader As New ArrayList

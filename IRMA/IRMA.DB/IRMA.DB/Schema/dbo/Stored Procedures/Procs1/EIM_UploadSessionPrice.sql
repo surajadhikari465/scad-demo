@@ -555,6 +555,9 @@ AS
 
 	EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.0.3 Price Change - [Load Uploaded Data]'
 
+  -- convert the linked item identifier to an item key
+  SET @LinkedItem = (SELECT CAST(Item_Key as varchar(50)) FROM dbo.ItemIdentifier WHERE identifier = @LinkedItem);
+
 	-- Load the stores from the saved selection or use the
 	-- store specified in the upload row being processed
 	-- according to the the @UploadToItemsStore flag value.
@@ -656,9 +659,6 @@ AS
 		-- default to false
 		SELECT @IsAuthorized = IsNull(@IsAuthorized, 0)
 		SELECT @DiscontinueItem = ISNULL(@DiscontinueItem, 0)
-				
-		-- convert the linked item identifier to an item key
-		SELECT @LinkedItem = CAST(Item_Key as varchar(50)) FROM dbo.ItemIdentifier WHERE identifier = @LinkedItem
 
 		-- use the values from the database if there is no corresponding uploaded attribute
 		SET @ToUpload_Multiple = CASE WHEN @HasValue_Multiple = 1 THEN @Multiple ELSE @FromDB_Multiple END
