@@ -174,7 +174,13 @@
     <Content Include="TestMessages\ArchiveMessageTestMessage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestMessages\ProductMessageNoHospitality.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestMessages\ProductMessageWith3Items.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\ProductMessageWithHospitality.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestMessages\ProductMessageWithNullItemSignAttributes.xml">

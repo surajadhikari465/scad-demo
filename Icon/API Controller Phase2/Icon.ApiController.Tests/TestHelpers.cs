@@ -60,7 +60,30 @@ namespace Icon.ApiController.Tests
                 HospitalityItem = true,
                 KitchenItem = true,
                 ImageURL= "TestUrL"
-        };
+
+            };
+        }
+
+        public static MessageQueueProduct GetFakeMessageQueueProductWithHospitalityData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
+        {
+            var msgQProduct = GetFakeMessageQueueProduct(messageStatusId, id, departmentSale, retailSaleFlag);
+            msgQProduct.HospitalityItem = true;
+            msgQProduct.KitchenItem = true;
+            msgQProduct.KitchenDescription = "Test Kitchen Description";
+            msgQProduct.ImageURL = "http://google.com";
+
+            return msgQProduct;
+        }
+
+        public static MessageQueueProduct GetFakeMessageQueueProductWithoutHospitalityData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
+        {
+            var msgQProduct = GetFakeMessageQueueProduct(messageStatusId, id, departmentSale, retailSaleFlag);
+            msgQProduct.HospitalityItem = null;
+            msgQProduct.KitchenItem = null;
+            msgQProduct.KitchenDescription = null;
+            msgQProduct.ImageURL = null;
+
+            return msgQProduct;
         }
         public static MessageQueueProduct GetFakeMessageQueueProductWithHospitalityAndEstoreData(int messageStatusId, int id, string departmentSale, string retailSaleFlag)
         {

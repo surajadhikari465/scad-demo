@@ -279,6 +279,48 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
+        public void BuildMiniBulk_HospitalityDataIsPresentInMQPMessage_ShouldBePresentInMiniBulk()
+        {
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            var item = (Contracts.EnterpriseItemAttributesType)miniBulk.item[0].locale[0].Item;
+            Assert.AreEqual(true,item.isHospitalityItemSpecified);
+            Assert.AreEqual(true,item.isKitchenItemSpecified);
+            Assert.AreEqual(true, item.isHospitalityItem);
+            Assert.AreEqual(true, item.isKitchenItem);
+            Assert.AreEqual("http://google.com", item.imageUrl);
+            Assert.AreEqual("Test Kitchen Description", item.kitchenDescription);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_HospitalityDataNotPresentInMQPMessage_ShouldNotBePresentInMiniBulk()
+        {
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithoutHospitalityData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            var item = (Contracts.EnterpriseItemAttributesType)miniBulk.item[0].locale[0].Item;
+            Assert.AreEqual(false, item.isHospitalityItemSpecified);
+            Assert.AreEqual(false, item.isKitchenItemSpecified);
+            Assert.AreEqual(false, item.isHospitalityItem);
+            Assert.AreEqual(false, item.isKitchenItem);
+            Assert.IsNull(item.imageUrl);
+            Assert.IsNull(item.kitchenDescription);
+        }
+
+        [TestMethod]
         public void BuildMiniBulk_PackageUnitExistsButNotRetailSizeOrUom_NoneShouldBePresentInTheMiniBulk()
         {
             // Given.

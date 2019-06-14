@@ -51,8 +51,52 @@ namespace Icon.Infor.Listeners.Item.Tests.MessageParsers
 			Assert.AreEqual(3, items.Count());
 			AssertItemsAreEqualToXml(items);
 		}
+        [TestMethod]
+        public void ParseMessage_ProductMessageWithNoHospitalityData_ShouldNotAddAnyDefaultValues()
+        {
+            //Given
+            message = File.ReadAllText(@"TestMessages\ProductMessageNoHospitality.xml");
 
-		[TestMethod]
+            mockEsbMessage.SetupGet(m => m.MessageText)
+                .Returns(message);
+
+            //When
+            var items = itemMessageParser.ParseMessage(mockEsbMessage.Object).ToList();
+
+            //Then
+            Assert.IsNull(items[0].HospitalityItem);
+            Assert.IsNull(items[0].KitchenItem);
+            Assert.IsNull(items[0].KitchenDescription);
+            Assert.IsNull(items[0].ImageUrl);
+            Assert.AreEqual(1, items.Count());
+
+        }
+
+        [TestMethod]
+        public void ParseMessage_ProductMessageWithHospitalityData_ShouldPassThroughValues()
+        {
+            //Given
+            message = File.ReadAllText(@"TestMessages\ProductMessageWithHospitality.xml");
+
+            mockEsbMessage.SetupGet(m => m.MessageText)
+                .Returns(message);
+
+            //When
+            var items = itemMessageParser.ParseMessage(mockEsbMessage.Object).ToList();
+
+            //Then
+            Assert.IsTrue(items[0].HospitalityItem.HasValue);
+            Assert.IsTrue(items[0].KitchenItem.HasValue);
+            Assert.IsTrue(items[0].HospitalityItem.Value);
+            Assert.IsTrue(items[0].KitchenItem.Value);
+
+            Assert.AreEqual("Test Description",items[0].KitchenDescription);
+            Assert.AreEqual("Test Url", items[0].ImageUrl);
+            Assert.AreEqual(1, items.Count());
+
+        }
+
+        [TestMethod]
 		public void ParseMessage_ProductMessageWithNullItemSignAttributes_ShouldSet0ForItemSignAttributeValues()
 		{
 			//Given

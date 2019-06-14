@@ -569,7 +569,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             var localeTraits = firstMetro.traits;
             var localeAddress = firstMetro.addresses;
 
-            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
+            Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
             Assert.IsTrue(actionSpecified);
             Assert.AreEqual(localeId, metros[0].localeID.ToString());
             Assert.AreEqual(localeName, metros[0].localeName);
@@ -622,7 +622,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             var postalCode = (localeAddress[0].type.Item as Contracts.PhysicalAddressType).postalCode;
             var timezoneName = (localeAddress[0].type.Item as Contracts.PhysicalAddressType).timezone.name;
 
-            Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
+            Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
             Assert.IsTrue(actionSpecified);
             Assert.AreEqual(localeId, businessUnitId);
             Assert.AreEqual(localeName, stores[0].localeName);
@@ -1101,7 +1101,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var locales = metro.locales;
 
 
-			Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
 			Assert.IsTrue(actionSpecified);
 			Assert.AreEqual(localeId, metros[0].localeID.ToString());
 			Assert.AreEqual(localeName, metros[0].localeName);
@@ -1130,7 +1130,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
 			var action = store.Action;
 			var actionSpecified = store.ActionSpecified;
-			var localeId = store.id;
+			var localeId = store.store.id;
 			var localeName = store.name;
 			var localeType = store.type;
 			var localeTypeCode = localeType.code;
@@ -1140,14 +1140,14 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var locales = store.locales;
 
 
-			Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
+			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
 			Assert.IsTrue(actionSpecified);
 			Assert.AreEqual(localeId, stores[0].localeID.ToString());
 			Assert.AreEqual(localeName, stores[0].localeName);
 			Assert.IsNotNull(localeType);
 			Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
 			Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
-			Assert.IsNull(localeTraits);
+			
 
 
 		}
@@ -1179,7 +1179,7 @@ namespace Icon.ApiController.Tests.QueueReaders
 			var localeTraits = venue.traits;
 			var locales = venue.locales;
 
-			Assert.AreEqual(Contracts.ActionEnum.Inherit.ToString(), action.ToString());
+			Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate.ToString(), action.ToString());
 			Assert.IsTrue(actionSpecified);
 			Assert.AreEqual(localeName, venues[0].localeName);
 			Assert.IsNotNull(localeType);

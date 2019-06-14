@@ -247,14 +247,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 															},
 															Item = new Contracts.EnterpriseItemAttributesType
 															{
-
-                                                                    imageUrl =  message.ImageURL, 
-                                                                    kitchenDescription = message.KitchenDescription, 
-                                                                    // temporarily removing kitchen flags because it blows up R10.   
-                                                                    //isKitchenItemSpecified = true,
-                                                                    //isKitchenItem = message.KitchenItem.HasValue ? message.KitchenItem.Value : false,
-                                                                    isHospitalityItemSpecified = true,
-                                                                    isHospitalityItem = message.HospitalityItem.HasValue ? message.HospitalityItem.Value : false,
+                                                                    isKitchenItemSpecified = false,
+                                                                    isHospitalityItemSpecified = false,
 																	scanCodes = new Contracts.ScanCodeType[]
 																	{
 																			BuildScanCodeType(message)
@@ -281,8 +275,9 @@ namespace Icon.ApiController.Controller.QueueReaders
 													}
 						}
 					};
-
-					miniBulk.item[currentMiniBulkIndex++] = miniBulkEntry;
+                    
+                    AddHospitalityDataToItemMessage(miniBulkEntry, message);
+                    miniBulk.item[currentMiniBulkIndex++] = miniBulkEntry;
 				}
 				catch(Exception ex)
 				{
@@ -296,7 +291,18 @@ namespace Icon.ApiController.Controller.QueueReaders
 			return miniBulk;
 		}
 
-		private Contracts.TraitType[] BuildItemTraits(MessageQueueProduct message)
+        private static void AddHospitalityDataToItemMessage(Contracts.ItemType miniBulkEntry, MessageQueueProduct message)
+        {
+                var item = (Contracts.EnterpriseItemAttributesType) miniBulkEntry.locale[0].Item;
+                item.imageUrl = message.ImageURL;
+                item.kitchenDescription = message.KitchenDescription;
+                item.isKitchenItemSpecified = message.KitchenItem.HasValue;
+                item.isKitchenItem = message.KitchenItem ?? false;
+                item.isHospitalityItemSpecified = message.HospitalityItem.HasValue;
+                item.isHospitalityItem = message.HospitalityItem ?? false;
+        }
+
+        private Contracts.TraitType[] BuildItemTraits(MessageQueueProduct message)
 		{
 			var itemTraits = new List<Contracts.TraitType>
 						{

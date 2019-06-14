@@ -92,6 +92,75 @@ namespace Icon.ApiController.Tests.SerializerTests
         }
 
         [TestMethod]
+        public void Serializer_IfHospitalityDataDoesNotExist_thenXmlElementShouldNotExistInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithoutHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsFalse(xml.Contains("iea:kitchenDescription"));
+            Assert.IsFalse(xml.Contains("iea:imageUrl"));
+            Assert.IsFalse(xml.Contains("iea:isKitchenItem"));
+            Assert.IsFalse(xml.Contains("iea:isHospitalityItem"));
+
+
+        }
+        [TestMethod]
+        public void Serializer_IfHospitalityDataExists_thenXmlElementsShouldExistInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsTrue(xml.Contains("iea:kitchenDescription"));
+            Assert.IsTrue(xml.Contains("iea:imageUrl"));
+            Assert.IsTrue(xml.Contains("iea:isKitchenItem"));
+            Assert.IsTrue(xml.Contains("iea:isHospitalityItem"));
+
+
+        }
+
+        [TestMethod]
         public void Serializer_SerializeItemLocaleXmlToFile_XmlShouldBeSavedToDisk()
         {
             // Given.

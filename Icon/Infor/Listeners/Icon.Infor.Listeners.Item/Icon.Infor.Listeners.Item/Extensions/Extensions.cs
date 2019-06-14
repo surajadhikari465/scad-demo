@@ -23,8 +23,7 @@ namespace Icon.Infor.Listeners.Item.Extensions
         {
             var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
 
-
-            return new ItemModel
+            var itemModel = new ItemModel
             {
                 ItemId = item.id,
                 ItemTypeCode = item.@base.type.code,
@@ -134,9 +133,16 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension),
                 KitchenDescription = enterpriseAttributes.kitchenDescription,
                 ImageUrl = enterpriseAttributes.imageUrl,
-                KitchenItem = enterpriseAttributes.isKitchenItemSpecified ? enterpriseAttributes.isKitchenItem : false,
-                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ? enterpriseAttributes.isHospitalityItem : false
             };
+
+            if (enterpriseAttributes.isKitchenItemSpecified)
+                itemModel.KitchenItem = enterpriseAttributes.isKitchenItem;
+
+            if (enterpriseAttributes.isHospitalityItemSpecified)
+                itemModel.HospitalityItem = enterpriseAttributes.isHospitalityItem;
+
+            return itemModel;
+
         }
 
 
