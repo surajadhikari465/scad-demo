@@ -640,8 +640,18 @@ namespace KitBuilderWebApi.Controllers
             {
                 var paramKitId = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
                 var paramAction = new SqlParameter("action", SqlDbType.NVarChar) { Value = ADDORUPDATEACTION };
-                linkGroupRepository.ExecWithStoreProcedure(publishKitEvents + " @kitId, @Action", paramKitId, paramAction);
+                var paramlocaleListWithNoVenues = new SqlParameter("localeListWithNoVenues", SqlDbType.NVarChar, -1);
+                paramlocaleListWithNoVenues.Direction = ParameterDirection.Output;
 
+                var sql = "exec publishKitEvents @kitId, @Action, @localeListWithNoVenues OUT";
+
+                linkGroupRepository.UnitOfWork.Context.Database.ExecuteSqlCommand(sql, paramKitId, paramAction, paramlocaleListWithNoVenues);
+
+                if(!string.IsNullOrEmpty(paramlocaleListWithNoVenues.Value.ToString()))
+                {
+                    string error = "Locales: " + paramlocaleListWithNoVenues.Value.ToString() + " do not have associated hospitality venues. Please remove kit assignment from these locales.";
+                    return StatusCode(409 , error);
+                }
                 return NoContent();
             }
 

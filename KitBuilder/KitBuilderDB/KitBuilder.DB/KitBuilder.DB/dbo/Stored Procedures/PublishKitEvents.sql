@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[PublishKitEvents] @kitId INT
 	,@Action NVARCHAR(20)
+	,@localeListWithNoVenues NVARCHAR(max) OUTPUT
 AS
 BEGIN
 	CREATE TABLE #IncludedVenues (
@@ -156,6 +157,21 @@ BEGIN
 				AND Exclude = 1
 			)
 
+	SET @localeListWithNoVenues = '';
+
+	SELECT @localeListWithNoVenues = 
+	(SELECT STUFF((Select ',' + locale.LocaleName 
+	FROM KitLocale
+	INNER JOIN locale ON KitLocale.LocaleId = locale.LocaleId
+	WHERE KitId = @kitId
+		AND KitLocaleId NOT IN (
+			SELECT KitLocaleId
+			FROM #IncludedVenues
+			)
+    FOR XML PATH ('')),1,1,'')as Locales)
+
+ IF(@localeListWithNoVenues ='')
+ BEGIN
 	INSERT INTO KitQueue (
 		KitId
 		,StoreId
@@ -186,4 +202,6 @@ BEGIN
 			)
 	WHERE KITid = @kitId
 		AND Exclude = 0
+ END
+ 
 END

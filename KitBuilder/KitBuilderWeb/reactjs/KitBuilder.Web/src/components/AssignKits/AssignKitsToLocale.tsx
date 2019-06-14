@@ -214,6 +214,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           var disablePublish = false;
           var map = {};
 
+          if ( data.length == 0) {
+               this.props.showAlert("There are no venues in the system.Please add venues from Icon.", "error");
+               return;
+          }
+
           for (var i = 0; i < data.length; i++) {
                data[i].childs = [];
                map[data[i].localeId] = data[i];
@@ -303,6 +308,9 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
 
                     if (error.response.status == "412") {
                          this.props.showAlert("Kit properties not set for all assigned locales.", "error");
+                    }
+                    else if (error.response.status == "409") {
+                         this.props.showAlert(error.response.data, "error");
                     }
                     else if (error.response.status == "404") {
                          this.props.showAlert("Kit properties not set for any assigned locales.", "error");

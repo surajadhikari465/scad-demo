@@ -150,9 +150,17 @@ namespace KitBuilderWebApi.Controllers
                 return NotFound();
             }
 
-            
-           var locales=  (from l in dbContext.Locale
-                          join kl in dbContext.KitLocale 
+            var venues = dbContext.Locale.Where(l => l.LocaleTypeId == (int)LocaleType.Venue).ToList();
+
+            var localesWithVenues = dbContext.Locale.Where(l => venues.Any(y => y.MetroId == l.LocaleId)
+                                                            || venues.Any(v => v.StoreId == l.LocaleId)
+                                                            || venues.Any(v => v.RegionId == l.LocaleId)
+                                                            || venues.Any(v => v.ChainId == l.LocaleId)).ToList() ;
+
+            var AllLocalesWithVenues = localesWithVenues.Union(venues).ToList();
+
+            var locales=  (from l in AllLocalesWithVenues
+                           join kl in dbContext.KitLocale 
                           on new { localeId = l.LocaleId, kitId } equals new { localeId = kl.LocaleId, kitId = kl.KitId } into kls
                           from p in kls.DefaultIfEmpty()
                           select new
