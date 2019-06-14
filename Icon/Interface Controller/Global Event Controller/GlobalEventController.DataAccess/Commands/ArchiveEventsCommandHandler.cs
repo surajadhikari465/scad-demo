@@ -3,17 +3,21 @@ using GlobalEventController.Common;
 using GlobalEventController.DataAccess.Infrastructure;
 using Icon.DbContextFactory;
 using Icon.Framework;
+using Icon.Logging;
+using System;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
 {
     public class ArchiveEventsCommandHandler : ICommandHandler<ArchiveEventsCommand>
     {
         private IDbContextFactory<IconContext> contextFactory;
-
-        public ArchiveEventsCommandHandler(IDbContextFactory<IconContext> contextFactory)
+        private ILogger<ArchiveEventsCommandHandler> logger;
+        public ArchiveEventsCommandHandler(IDbContextFactory<IconContext> contextFactory, ILogger<ArchiveEventsCommandHandler> logger)
         {
             this.contextFactory = contextFactory;
+            this.logger = logger;
         }
 
         public void Handle(ArchiveEventsCommand command)
@@ -38,7 +42,32 @@ namespace GlobalEventController.DataAccess.Commands
                     {
                         sqlBulkCopy.WriteToServer(reader);
                     }
+
                 }
+                foreach (var eventQueue in command.Events)
+                {
+                    if (!string.IsNullOrEmpty(eventQueue.ErrorDetails) && !string.IsNullOrEmpty(eventQueue.EventMessage))
+                    {
+                        if (eventQueue.ErrorDetails.Contains("ScanCodeExistsConstraint"))
+                        {
+                            IRMAItemSubscription irmaItemSubscription = context.IRMAItemSubscription
+                                .Where(a => a.identifier.Equals(eventQueue.EventMessage)
+                                                     && a.regioncode == eventQueue.RegionCode
+                                                     && a.deleteDate == null)
+                                .FirstOrDefault();
+                                
+                            if (irmaItemSubscription != null)
+                            {
+                                irmaItemSubscription.deleteDate = DateTime.Now;
+                                logger.Error(String.Format(
+                                    "Error was caught and the subscription was marked as deleted for Errorcode:ScanCodeExistsConstraint.Identifier {0}, RegionCode {1}",
+                                    irmaItemSubscription.identifier, irmaItemSubscription.regioncode));
+                            }
+                        }
+                    }
+                }
+                context.SaveChanges();
+
             }
         }
     }

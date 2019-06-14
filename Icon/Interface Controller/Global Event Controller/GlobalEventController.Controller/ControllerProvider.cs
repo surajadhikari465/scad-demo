@@ -43,7 +43,8 @@ namespace GlobalEventController.Controller
             var iconContextFactory = new IconDbContextFactory();
             var irmaContextFactory = new RegionalIrmaDbContextFactory();
             var dataIssueMessageCollector = new DataIssueMessageCollector(EmailClient.CreateFromConfig());
-            var eventArchiver = new EventArchiver(new ArchiveEventsCommandHandler(iconContextFactory),
+            var eventArchiver = new EventArchiver(new ArchiveEventsCommandHandler(iconContextFactory, 
+                    new NLogLoggerInstance<ArchiveEventsCommandHandler>(StartupOptions.Instance.ToString())),
                 new NLogLoggerInstance<EventArchiver>(StartupOptions.Instance.ToString()));
 
             return new GlobalControllerBase(
