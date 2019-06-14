@@ -615,7 +615,7 @@ WHERE keyid = ?</statement>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/KitBuilder.sharedjdbc</jdbcSharedConfig>
-            <statement>INSERT INTO [dbo].[AppLog]
+            <statement>INSERT INTO [app].[AppLog]
            ([AppID]
            ,[Level]
            ,[Logger]
