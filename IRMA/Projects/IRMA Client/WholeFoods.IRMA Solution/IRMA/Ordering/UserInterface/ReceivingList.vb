@@ -28,400 +28,432 @@ Friend Class frmReceivingList
     Private plStartOrderItem_ID As Integer
     Private m_bDataChanged As Boolean
     Private m_bProcessing As Boolean
-    Private m_bHaveSomeReceived As Boolean
-    Private itemsWithReasonCodes As Boolean
-    Private bHideShipped As Boolean = True
-    Private m_OrderHeaderId As Integer = 0
-    Private m_TransferFromSubTeamNo As Integer = 0
-    Private m_EInvoicingId As Integer = 0
-    Private dtCachedRows As New DataTable
-    Private drCachedRows As DataRow
-    Private m_bAllowReceiveAll As Boolean
-
-    Private OBCode As Integer
-
-    ' A flag to keep track of the update action to prevent an infinite loop
-    Private updateReceivedValue As Boolean = False
-
-    Private Const iALL As Short = 0
-    Private Const iNONE As Short = 1
-    Dim optNames As String
-    Dim bCheckIfNo As Boolean = False
-
-    Private OrderFuncs As OrderingFunctions = New WholeFoods.IRMA.Ordering.BusinessLogic.OrderingFunctions
-
-    ' Define the log4net logger for this class.
-    Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
-
-    Public Property OrderHeaderId() As Integer
-        Get
-            OrderHeaderId = m_OrderHeaderId
-        End Get
-        Set(ByVal value As Integer)
-            m_OrderHeaderId = value
-        End Set
-    End Property
-
-    Public Property TransferFromSubTeamNo() As Integer
-        Get
-            TransferFromSubTeamNo = m_TransferFromSubTeamNo
-        End Get
-        Set(ByVal value As Integer)
-            m_TransferFromSubTeamNo = value
-        End Set
-    End Property
-
-    Public Property EInvoicingId() As Integer
-        Get
-            EInvoicingId = m_EInvoicingId
-        End Get
-        Set(ByVal value As Integer)
-            m_EInvoicingId = value
-        End Set
-    End Property
-
-    Private Sub RefreshPartialShipmentCheckbox()
-
-        Dim isEnabled As Boolean = OrderingDAO.AnyOrderItemReceived(glOrderHeaderID)
-
-        If isEnabled Then
-            partialShippmentCheck.Enabled = True
-        Else
-            partialShippmentCheck.Enabled = False
-            partialShippmentCheck.Checked = False
-        End If
-
-    End Sub
-
-    Private Sub frmReceivingList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-        '20090709 - Dave Stacey - TFS 10387
-        Me.WindowState = FormWindowState.Maximized
-        logger.Debug("frmReceivingList_Load Entry")
-
-        'DN instantiate our Private ReceivingListDAO > RListDAO
-        RListDAO = New ReceivingListDAO
-
-        'Show invoice method in window title.
-        Me.Text += " " & frmOrders.GetInvoiceMethodDisplayText(glOrderHeaderID, frmOrders.IsOrderPayAgreedCost, EInvoicingId)
-        SetActive(cmdReceive, gbDistributor)
-
-        CenterForm(Me)
-
-        cmdSelectAll.Image = imgIcons.Images.Item(iALL)
-        ToolTip1.SetToolTip(cmdSelectAll, "Select All")
-
-        dtInfo = RListDAO.GetOrderReceivingDisplayInfo(glOrderHeaderID)
-        If dtInfo.Rows.Count > 0 Then
-            txtOrderHeader_ID.Text = dtInfo.Rows(0).Item("OrderHeader_ID")
-            txtStoreName.Text = dtInfo.Rows(0).Item("Store_Name")
-            txtTotalOrderCost.Text = Format(CDec(dtInfo.Rows(0).Item("OrderedCost")), "##,###0.00##")
-
-            'MD 1/25/2010: Bug 13770: Effective date was null for Distribution Credit PO's added a check for null there
-            If dtInfo.Rows(0).Item("Expected_Date") IsNot DBNull.Value Then
-                txtExpectedDate.Text = dtInfo.Rows(0).Item("Expected_Date")
-            Else
-                txtExpectedDate.Text = System.DateTime.Today
-            End If
-            txtSubteamName.Text = dtInfo.Rows(0).Item("Subteam_Name")
-            If dtInfo.Rows(0).Item("QtyShippedProvided") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("QtyShippedProvided") = True Then
-                bHideShipped = False
-            End If
-            If dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("OpenPO") = 1 And (gbSuperUser = True Or gbDistributor = True Or gbEInvoicing = True) Then
-                EInvoice_Id = dtInfo.Rows(0).Item("EInvoice_Id")
-                Me.cmdReparseEInvoice.Enabled = True
-            Else
-                EInvoice_Id = -1
-                Me.cmdReparseEInvoice.Enabled = False
-            End If
-
-            'Hide the NOID/NORD grid if EInvoice information is not avilable. 
-            grdNOIDNORD.Visible = (dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value)
-
-            Me.optExceptions.Enabled = grdNOIDNORD.Visible
-        End If
-
-        initGrid(Me.grdRL)
-        initGrid(Me.grdNOIDNORD, True)
-
-
-        Call PopGrid()
-
-        If dtOrderItemsNOIDNORD.Rows.Count > 0 Then
-            Me.cmdNOIDNORDReport.Enabled = True
-        Else
-            Me.cmdNOIDNORDReport.Enabled = False
-        End If
-
-        LoadReceivingDiscrepanyReasonCodes()
-        InitializeCacheDataTable()
-
-        'Check receiving rules to enable or disable Select All/Receive All functionality
-        '   >> Receive All will be disabled for non-credit Purchase orders only 
-        If geOrderType = enumOrderType.Purchase And frmOrders.IsCredit = False And frmOrders.AllowReceiveAll = False Then
-            m_bAllowReceiveAll = False
-        Else
-            m_bAllowReceiveAll = True
-        End If
-
-
-
-        logger.Debug("frmReceivingList_Load Exit")
-
-    End Sub
-
-    Private Sub cmdSelectAll_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll.Click
-
-        logger.Debug("cmdSelectAll_Click Entry")
-        Dim gridRow As UltraGridRow
-
-        If cmdSelectAll.Tag = "Select" Then
-
-            ' Check receiving rules and determine if the user must manually enter a received quantity before selecting the row.
-            '   >> Activate highlighting if Received cell is empty.
-            If m_bAllowReceiveAll = False And optNotReceived.Checked Then
-                For Each gridRow In grdRL.Rows
-                    If (IsDBNull(gridRow.GetCellValue("Received")) Or IsNothing(gridRow.GetCellValue("Received"))) Then
-                        Dim cell As UltraGridCell = gridRow.Cells.Item("Received")
-                        cell.Appearance.BackColor = Color.Crimson
-                    Else
-                        If gridRow.Hidden = False Then
-                            gridRow.Selected = True
-                        End If
-                    End If
-                    If grdRL.Selected.Rows.Count = grdRL.Rows.Count Then
-                        cmdSelectAll.Tag = "Deselect"
-                        cmdSelectAll.Image = imgIcons.Images.Item(iNONE)
-                        ToolTip1.SetToolTip(cmdSelectAll, "Deselect All")
-                    End If
-                Next
-            Else
-                For Each gridRow In grdRL.Rows
-                    If gridRow.Hidden = False Then
-                        gridRow.Selected = True
-                    End If
-                Next
-
-                cmdSelectAll.Tag = "Deselect"
-                cmdSelectAll.Image = imgIcons.Images.Item(iNONE)
-                ToolTip1.SetToolTip(cmdSelectAll, "Deselect All")
-            End If
-
-        Else
-            cmdSelectAll.Tag = "Select"
-            cmdSelectAll.Image = imgIcons.Images.Item(iALL)
-            ToolTip1.SetToolTip(cmdSelectAll, "Select All")
-
-            'Unhighlight all the rows
-            grdRL.Selected.Rows.Clear()
-        End If
-        logger.Debug("cmdSelectAll_Click Exit")
-    End Sub
-
-    Private Sub initGrid(ByVal ug As UltraGrid, Optional ByVal bNOIDNORD As Boolean = False)
-        '-- Set up the grid
-        If bNOIDNORD = False Then
-            ug.DisplayLayout.Bands(0).Columns("OrderLineID").Hidden = True
-            ug.DisplayLayout.Bands(0).Columns("Line").Width = 34
-            ug.DisplayLayout.Bands(0).Columns("Description").Width = 178
-            ug.DisplayLayout.Bands(0).Columns("Identifier").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Ordered").Width = 57
-
-            ug.DisplayLayout.Bands(0).Columns("Unit").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("Received").Width = 63
-            ug.DisplayLayout.Bands(0).Columns("Weight").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("CostedByWeight").Hidden = True
-            ug.DisplayLayout.Bands(0).Columns("CatchweightRequired").Hidden = True
-            ug.DisplayLayout.Bands(0).Columns("isPackageUnit").Hidden = True
-            ug.DisplayLayout.Bands(0).Columns("WeightPerPackage").Hidden = True
-
-            ug.DisplayLayout.Bands(0).Columns("VendorItemID").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Brand").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Cost").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("PkgDesc").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceWeight").Width = 63
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceCost").Width = 63
-
-            ug.DisplayLayout.Bands(0).Columns("Shipped").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("Shipped").Hidden = bHideShipped
-            ug.DisplayLayout.Bands(0).Columns("Ship Weight").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("Ship Weight").Hidden = bHideShipped
-        Else
-            ug.DisplayLayout.Bands(0).Columns("Line").Width = 34
-            ug.DisplayLayout.Bands(0).Columns("Description").Width = 178
-            ug.DisplayLayout.Bands(0).Columns("Identifier").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Ordered").Width = 57
-
-            ug.DisplayLayout.Bands(0).Columns("Unit").Width = 57
-
-            ug.DisplayLayout.Bands(0).Columns("Weight").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("CostedByWeight").Hidden = True
-
-            ug.DisplayLayout.Bands(0).Columns("VendorItemID").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Brand").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("Cost").Width = 57
-
-            ug.DisplayLayout.Bands(0).Columns("PkgDesc").Width = 87
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceWeight").Width = 63
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceQty").Width = 63
-
-            ug.DisplayLayout.Bands(0).Columns("Shipped").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("Shipped").Hidden = bHideShipped
-            ug.DisplayLayout.Bands(0).Columns("Ship Weight").Width = 57
-            ug.DisplayLayout.Bands(0).Columns("Ship Weight").Hidden = bHideShipped
-
-
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceItemException").Width = 10
-            ug.DisplayLayout.Bands(0).Columns("eInvoiceItemException").Hidden = True
-        End If
-    End Sub
-
-    Private Sub LoadReceivingDiscrepanyReasonCodes()
-
-        Dim bo As ReasonCodeMaintenanceBO = New ReasonCodeMaintenanceBO
-        Dim dt As DataTable = bo.getReasonCodeDetailsForType(enumReasonCodeType.RD.ToString)
-
-        uddReasonCode.DataSource = dt
-        uddReasonCode.DisplayMember = "ReasonCode"
-        uddReasonCode.ValueMember = "ReasonCodeDetailID"
-
-        Dim dr As DataRow = dt.NewRow()
-        dr("ReasonCodeDetailID") = -1
-        dr("ReasonCode") = ""
-        dr("ReasonCodeDesc") = ""
-        dr("ReasonCodeExtDesc") = ""
-        dt.Rows.InsertAt(dr, 0)
-
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCode").Header.Caption = "Code"
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDesc").Header.Caption = "Description"
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCode").Width = 50
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDesc").Width = 200
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDetailID").Hidden = True
-        uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeExtDesc").Hidden = True
-
-        Dim dr1 As DataRow
-        OBCode = 0
-        For Each dr1 In dt.Rows
-            If Trim(dr1("ReasonCode")) = "OB" Then
-                OBCode = dr1("ReasonCodeDetailID")
-                Exit For
-            End If
-        Next dr1
-
-    End Sub
-
-    Private Sub InitializeCacheDataTable()
-
-        Dim column As DataColumn
-
-        column = New DataColumn()
-        column.DataType = System.Type.GetType("System.Int32")
-        column.ColumnName = "OrderLineID"
-        dtCachedRows.Columns.Add(column)
-
-        column = New DataColumn()
-        column.DataType = System.Type.GetType("System.Decimal")
-        column.ColumnName = "Received"
-        dtCachedRows.Columns.Add(column)
-
-        column = New DataColumn()
-        column.DataType = System.Type.GetType("System.Decimal")
-        column.ColumnName = "Weight"
-        dtCachedRows.Columns.Add(column)
-
-    End Sub
-
-    Private Sub PopGrid(Optional ByRef bRefreshData As Boolean = True)
-
-        logger.Debug("PopGrid Entry")
-        Dim iLoop As Integer
-        Dim bAddRow As Boolean
-
-        If bRefreshData Then
-            Me.dtOrderItems.Rows.Clear()
-            Me.dtOrderItemsNOIDNORD.Rows.Clear()
-
-            dtOrderItems = RListDAO.GetReceivingList(glOrderHeaderID)
-            dtOrderItemsNOIDNORD = RListDAO.GetReceivingListForNOIDNORD(glOrderHeaderID)
-        End If
-
-        RefreshPartialShipmentCheckbox()
-
-        m_bDataChanged = False
-        m_bHaveSomeReceived = False
-        itemsWithReasonCodes = False
-
-        udsReceivingList.Rows.Clear()
-        udsNOIDNORD.Rows.Clear()
-
-        If Me.dtOrderItems.Rows.Count > 0 Then
-            udsReceivingList.Rows.SetCount(Me.dtOrderItems.Rows.Count)
-        End If
-
-        If Me.dtOrderItemsNOIDNORD.Rows.Count > 0 Then
-            Me.udsNOIDNORD.Rows.SetCount(Me.dtOrderItemsNOIDNORD.Rows.Count)
-        End If
-
-        If bRefreshData Then Erase piInsertOrder
-
-        Dim dr As DataRow
-        For Each dr In dtOrderItems.Rows
-            iLoop = iLoop + 1
-
-            'If the grid's data was refreshed, then it is the original sort order - capture the order row numbers
-            If bRefreshData Then
-                If iLoop = 1 Then plStartOrderItem_ID = dr.Item("OrderItem_ID")
-                ReDim Preserve piInsertOrder(dr.Item("OrderItem_ID") - plStartOrderItem_ID)
-                piInsertOrder(UBound(piInsertOrder)) = iLoop
-            End If
-
-            iLoop = IIf(bRefreshData, iLoop, piInsertOrder(dr.Item("OrderItem_ID") - plStartOrderItem_ID))
-            PopGridRow(dr, iLoop)
-
-            If optAll.Checked Then
-                bAddRow = True
-            ElseIf optNotReceived.Checked Then
-                If dr.Item("QuantityReceived") Is DBNull.Value Then
-                    bAddRow = True
-                End If
-            ElseIf (optReceived.Checked) Then
-                If dr.Item("QuantityReceived") IsNot DBNull.Value Then
-                    If dr.Item("QuantityReceived") >= 0 Then
-                        bAddRow = True
-                    End If
-                End If
-            End If
-            If bAddRow Then
-                If dr.Item("QuantityReceived") IsNot DBNull.Value Then
-                    If dr.Item("QuantityReceived") >= 0 Then
-                        m_bHaveSomeReceived = True
-                        bAddRow = False
-                    End If
-                End If
-
-                If dr.Item("ReceivingDiscrepancyReasonCodeID") IsNot DBNull.Value Then
-                    itemsWithReasonCodes = True
-                End If
-            End If
-
-        Next dr
-
-        'DN reset our loop for the new grid
-        iLoop = 0
-        For Each dr In Me.dtOrderItemsNOIDNORD.Rows
-            iLoop = iLoop + 1
-
-            PopGridRow(dr, iLoop, True)
-        Next dr
-
-        DisplayRows()
-
-        Call SetActive(cmdReceive, IIf(Me.grdRL.Rows.Count > 0 And (gbDistributor), True, False))
-
-        ' Only enable the Delete Receiving button if the user is on the All or Received tabs.
-        Call SetActive(cmdReceiveDelete, If((m_bHaveSomeReceived Or itemsWithReasonCodes) And (optAll.Checked Or optReceived.Checked) And gbDistributor, True, False))
-
-        ' reset
-        cmdSelectAll.Tag = "Select"
+	Private m_bHaveSomeReceived As Boolean
+	Private bAtLeastOneReceived As Boolean
+	Private bTransferOrder As Boolean
+	Private bReturnOrder As Boolean
+	Private itemsWithReasonCodes As Boolean
+	Private bHideShipped As Boolean = True
+	Private m_OrderHeaderId As Integer = 0
+	Private m_TransferFromSubTeamNo As Integer = 0
+	Private m_EInvoicingId As Integer = 0
+	Private dtCachedRows As New DataTable
+	Private drCachedRows As DataRow
+	Private m_bAllowReceiveAll As Boolean
+
+	Private OBCode As Integer
+
+	' A flag to keep track of the update action to prevent an infinite loop
+	Private updateReceivedValue As Boolean = False
+
+	Private Const iALL As Short = 0
+	Private Const iNONE As Short = 1
+	Dim optNames As String
+	Dim bCheckIfNo As Boolean = False
+
+	Private OrderFuncs As OrderingFunctions = New WholeFoods.IRMA.Ordering.BusinessLogic.OrderingFunctions
+
+	' Define the log4net logger for this class.
+	Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
+
+	Public Property OrderHeaderId() As Integer
+		Get
+			OrderHeaderId = m_OrderHeaderId
+		End Get
+		Set(ByVal value As Integer)
+			m_OrderHeaderId = value
+		End Set
+	End Property
+
+	Public Property TransferFromSubTeamNo() As Integer
+		Get
+			TransferFromSubTeamNo = m_TransferFromSubTeamNo
+		End Get
+		Set(ByVal value As Integer)
+			m_TransferFromSubTeamNo = value
+		End Set
+	End Property
+
+	Public Property EInvoicingId() As Integer
+		Get
+			EInvoicingId = m_EInvoicingId
+		End Get
+		Set(ByVal value As Integer)
+			m_EInvoicingId = value
+		End Set
+	End Property
+
+	Private Sub RefreshPartialShipmentCheckbox()
+
+		Dim isEnabled As Boolean = OrderingDAO.AnyOrderItemReceived(glOrderHeaderID)
+
+		If isEnabled And Not chkPastReceipt.Checked Then
+			partialShippmentCheck.Enabled = True
+		Else
+			partialShippmentCheck.Enabled = False
+			partialShippmentCheck.Checked = False
+		End If
+
+	End Sub
+
+	Private Sub frmReceivingList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+		'20090709 - Dave Stacey - TFS 10387
+		Me.WindowState = FormWindowState.Maximized
+		logger.Debug("frmReceivingList_Load Entry")
+
+		'DN instantiate our Private ReceivingListDAO > RListDAO
+		RListDAO = New ReceivingListDAO
+
+		'Show invoice method in window title.
+		Me.Text += " " & frmOrders.GetInvoiceMethodDisplayText(glOrderHeaderID, frmOrders.IsOrderPayAgreedCost, EInvoicingId)
+		SetActive(cmdReceive, gbDistributor)
+
+		CenterForm(Me)
+
+		cmdSelectAll.Image = imgIcons.Images.Item(iALL)
+		ToolTip1.SetToolTip(cmdSelectAll, "Select All")
+
+		bTransferOrder = False
+		bReturnOrder = False
+
+		dtInfo = RListDAO.GetOrderReceivingDisplayInfo(glOrderHeaderID)
+		If dtInfo.Rows.Count > 0 Then
+			txtOrderHeader_ID.Text = dtInfo.Rows(0).Item("OrderHeader_ID")
+			txtStoreName.Text = dtInfo.Rows(0).Item("Store_Name")
+			txtTotalOrderCost.Text = Format(CDec(dtInfo.Rows(0).Item("OrderedCost")), "##,###0.00##")
+
+			'MD 1/25/2010: Bug 13770: Effective date was null for Distribution Credit PO's added a check for null there
+			If dtInfo.Rows(0).Item("Expected_Date") IsNot DBNull.Value Then
+				txtExpectedDate.Text = dtInfo.Rows(0).Item("Expected_Date")
+			Else
+				txtExpectedDate.Text = System.DateTime.Today
+			End If
+			txtSubteamName.Text = dtInfo.Rows(0).Item("Subteam_Name")
+			If dtInfo.Rows(0).Item("QtyShippedProvided") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("QtyShippedProvided") = True Then
+				bHideShipped = False
+			End If
+			If dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("OpenPO") = 1 And (gbSuperUser = True Or gbDistributor = True Or gbEInvoicing = True) Then
+				EInvoice_Id = dtInfo.Rows(0).Item("EInvoice_Id")
+				Me.cmdReparseEInvoice.Enabled = True
+			Else
+				EInvoice_Id = -1
+				Me.cmdReparseEInvoice.Enabled = False
+			End If
+
+			'Hide the NOID/NORD grid if EInvoice information is not avilable. 
+			grdNOIDNORD.Visible = (dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value)
+
+			'If PastReceiptDate is ever entered into the DB, it cannot be changed
+			If dtInfo.Rows(0).Item("PastReceiptDate") IsNot DBNull.Value Then
+				chkPastReceipt.Checked = True
+			End If
+			dtpPastReceiptDate.Value = dtInfo.Rows(0).Item("PastReceiptDate")
+			chkPastReceipt.Enabled = False
+			dtpPastReceiptDate.Enabled = False
+
+			If dtInfo.Rows(0).Item("OrderType_ID") = 3 Then
+				bTransferOrder = True
+			End If
+
+			bReturnOrder = dtInfo.Rows(0).Item("Return_Order")
+			Me.optExceptions.Enabled = grdNOIDNORD.Visible
+		End If
+
+		initGrid(Me.grdRL)
+		initGrid(Me.grdNOIDNORD, True)
+
+
+		Call PopGrid()
+
+		If dtOrderItemsNOIDNORD.Rows.Count > 0 Then
+			Me.cmdNOIDNORDReport.Enabled = True
+		Else
+			Me.cmdNOIDNORDReport.Enabled = False
+		End If
+
+		LoadReceivingDiscrepanyReasonCodes()
+		InitializeCacheDataTable()
+
+		'Check receiving rules to enable or disable Select All/Receive All functionality
+		'   >> Receive All will be disabled for non-credit Purchase orders only 
+		If geOrderType = enumOrderType.Purchase And frmOrders.IsCredit = False And frmOrders.AllowReceiveAll = False Then
+			m_bAllowReceiveAll = False
+		Else
+			m_bAllowReceiveAll = True
+		End If
+
+
+
+		logger.Debug("frmReceivingList_Load Exit")
+
+	End Sub
+
+	Private Sub cmdSelectAll_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll.Click
+
+		logger.Debug("cmdSelectAll_Click Entry")
+		Dim gridRow As UltraGridRow
+
+		If cmdSelectAll.Tag = "Select" Then
+
+			' Check receiving rules and determine if the user must manually enter a received quantity before selecting the row.
+			'   >> Activate highlighting if Received cell is empty.
+			If m_bAllowReceiveAll = False And optNotReceived.Checked Then
+				For Each gridRow In grdRL.Rows
+					If (IsDBNull(gridRow.GetCellValue("Received")) Or IsNothing(gridRow.GetCellValue("Received"))) Then
+						Dim cell As UltraGridCell = gridRow.Cells.Item("Received")
+						cell.Appearance.BackColor = Color.Crimson
+					Else
+						If gridRow.Hidden = False Then
+							gridRow.Selected = True
+						End If
+					End If
+					If grdRL.Selected.Rows.Count = grdRL.Rows.Count Then
+						cmdSelectAll.Tag = "Deselect"
+						cmdSelectAll.Image = imgIcons.Images.Item(iNONE)
+						ToolTip1.SetToolTip(cmdSelectAll, "Deselect All")
+					End If
+				Next
+			Else
+				For Each gridRow In grdRL.Rows
+					If gridRow.Hidden = False Then
+						gridRow.Selected = True
+					End If
+				Next
+
+				cmdSelectAll.Tag = "Deselect"
+				cmdSelectAll.Image = imgIcons.Images.Item(iNONE)
+				ToolTip1.SetToolTip(cmdSelectAll, "Deselect All")
+			End If
+
+		Else
+			cmdSelectAll.Tag = "Select"
+			cmdSelectAll.Image = imgIcons.Images.Item(iALL)
+			ToolTip1.SetToolTip(cmdSelectAll, "Select All")
+
+			'Unhighlight all the rows
+			grdRL.Selected.Rows.Clear()
+		End If
+		logger.Debug("cmdSelectAll_Click Exit")
+	End Sub
+
+	Private Sub initGrid(ByVal ug As UltraGrid, Optional ByVal bNOIDNORD As Boolean = False)
+		'-- Set up the grid
+		If bNOIDNORD = False Then
+			ug.DisplayLayout.Bands(0).Columns("OrderLineID").Hidden = True
+			ug.DisplayLayout.Bands(0).Columns("Line").Width = 34
+			ug.DisplayLayout.Bands(0).Columns("Description").Width = 178
+			ug.DisplayLayout.Bands(0).Columns("Identifier").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Ordered").Width = 57
+
+			ug.DisplayLayout.Bands(0).Columns("Unit").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("Received").Width = 63
+			ug.DisplayLayout.Bands(0).Columns("Weight").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("CostedByWeight").Hidden = True
+			ug.DisplayLayout.Bands(0).Columns("CatchweightRequired").Hidden = True
+			ug.DisplayLayout.Bands(0).Columns("isPackageUnit").Hidden = True
+			ug.DisplayLayout.Bands(0).Columns("WeightPerPackage").Hidden = True
+
+			ug.DisplayLayout.Bands(0).Columns("VendorItemID").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Brand").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Cost").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("PkgDesc").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceWeight").Width = 63
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceCost").Width = 63
+
+			ug.DisplayLayout.Bands(0).Columns("Shipped").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("Shipped").Hidden = bHideShipped
+			ug.DisplayLayout.Bands(0).Columns("Ship Weight").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("Ship Weight").Hidden = bHideShipped
+		Else
+			ug.DisplayLayout.Bands(0).Columns("Line").Width = 34
+			ug.DisplayLayout.Bands(0).Columns("Description").Width = 178
+			ug.DisplayLayout.Bands(0).Columns("Identifier").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Ordered").Width = 57
+
+			ug.DisplayLayout.Bands(0).Columns("Unit").Width = 57
+
+			ug.DisplayLayout.Bands(0).Columns("Weight").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("CostedByWeight").Hidden = True
+
+			ug.DisplayLayout.Bands(0).Columns("VendorItemID").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Brand").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("Cost").Width = 57
+
+			ug.DisplayLayout.Bands(0).Columns("PkgDesc").Width = 87
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceWeight").Width = 63
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceQty").Width = 63
+
+			ug.DisplayLayout.Bands(0).Columns("Shipped").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("Shipped").Hidden = bHideShipped
+			ug.DisplayLayout.Bands(0).Columns("Ship Weight").Width = 57
+			ug.DisplayLayout.Bands(0).Columns("Ship Weight").Hidden = bHideShipped
+
+
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceItemException").Width = 10
+			ug.DisplayLayout.Bands(0).Columns("eInvoiceItemException").Hidden = True
+		End If
+	End Sub
+
+	Private Sub LoadReceivingDiscrepanyReasonCodes()
+
+		Dim bo As ReasonCodeMaintenanceBO = New ReasonCodeMaintenanceBO
+		Dim dt As DataTable = bo.getReasonCodeDetailsForType(enumReasonCodeType.RD.ToString)
+
+		uddReasonCode.DataSource = dt
+		uddReasonCode.DisplayMember = "ReasonCode"
+		uddReasonCode.ValueMember = "ReasonCodeDetailID"
+
+		Dim dr As DataRow = dt.NewRow()
+		dr("ReasonCodeDetailID") = -1
+		dr("ReasonCode") = ""
+		dr("ReasonCodeDesc") = ""
+		dr("ReasonCodeExtDesc") = ""
+		dt.Rows.InsertAt(dr, 0)
+
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCode").Header.Caption = "Code"
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDesc").Header.Caption = "Description"
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCode").Width = 50
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDesc").Width = 200
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeDetailID").Hidden = True
+		uddReasonCode.DisplayLayout.Bands(0).Columns("ReasonCodeExtDesc").Hidden = True
+
+		Dim dr1 As DataRow
+		OBCode = 0
+		For Each dr1 In dt.Rows
+			If Trim(dr1("ReasonCode")) = "OB" Then
+				OBCode = dr1("ReasonCodeDetailID")
+				Exit For
+			End If
+		Next dr1
+
+	End Sub
+
+	Private Sub InitializeCacheDataTable()
+
+		Dim column As DataColumn
+
+		column = New DataColumn()
+		column.DataType = System.Type.GetType("System.Int32")
+		column.ColumnName = "OrderLineID"
+		dtCachedRows.Columns.Add(column)
+
+		column = New DataColumn()
+		column.DataType = System.Type.GetType("System.Decimal")
+		column.ColumnName = "Received"
+		dtCachedRows.Columns.Add(column)
+
+		column = New DataColumn()
+		column.DataType = System.Type.GetType("System.Decimal")
+		column.ColumnName = "Weight"
+		dtCachedRows.Columns.Add(column)
+
+	End Sub
+
+	Private Sub PopGrid(Optional ByRef bRefreshData As Boolean = True)
+
+		logger.Debug("PopGrid Entry")
+		Dim iLoop As Integer
+		Dim bAddRow As Boolean
+
+		If bRefreshData Then
+			Me.dtOrderItems.Rows.Clear()
+			Me.dtOrderItemsNOIDNORD.Rows.Clear()
+
+			dtOrderItems = RListDAO.GetReceivingList(glOrderHeaderID)
+			dtOrderItemsNOIDNORD = RListDAO.GetReceivingListForNOIDNORD(glOrderHeaderID)
+		End If
+
+		RefreshPartialShipmentCheckbox()
+
+		m_bDataChanged = False
+		m_bHaveSomeReceived = False
+		bAtLeastOneReceived = False
+		itemsWithReasonCodes = False
+
+		bAtLeastOneReceived = False
+
+		udsReceivingList.Rows.Clear()
+		udsNOIDNORD.Rows.Clear()
+
+		If Me.dtOrderItems.Rows.Count > 0 Then
+			udsReceivingList.Rows.SetCount(Me.dtOrderItems.Rows.Count)
+		End If
+
+		If Me.dtOrderItemsNOIDNORD.Rows.Count > 0 Then
+			Me.udsNOIDNORD.Rows.SetCount(Me.dtOrderItemsNOIDNORD.Rows.Count)
+		End If
+
+		If bRefreshData Then Erase piInsertOrder
+
+		Dim dr As DataRow
+		For Each dr In dtOrderItems.Rows
+			iLoop = iLoop + 1
+
+			'If the grid's data was refreshed, then it is the original sort order - capture the order row numbers
+			If bRefreshData Then
+				If iLoop = 1 Then plStartOrderItem_ID = dr.Item("OrderItem_ID")
+				ReDim Preserve piInsertOrder(dr.Item("OrderItem_ID") - plStartOrderItem_ID)
+				piInsertOrder(UBound(piInsertOrder)) = iLoop
+			End If
+
+			iLoop = IIf(bRefreshData, iLoop, piInsertOrder(dr.Item("OrderItem_ID") - plStartOrderItem_ID))
+			PopGridRow(dr, iLoop)
+
+			If dr.Item("QuantityReceived") IsNot DBNull.Value Then
+				If dr.Item("QuantityReceived") >= 0 Then
+					bAtLeastOneReceived = True
+				End If
+			End If
+
+			If optAll.Checked Then
+				bAddRow = True
+			ElseIf optNotReceived.Checked Then
+				If dr.Item("QuantityReceived") Is DBNull.Value Then
+					bAddRow = True
+				End If
+			ElseIf (optReceived.Checked) Then
+				If dr.Item("QuantityReceived") IsNot DBNull.Value Then
+					If dr.Item("QuantityReceived") >= 0 Then
+						bAddRow = True
+					End If
+				End If
+			End If
+			If bAddRow Then
+				If dr.Item("QuantityReceived") IsNot DBNull.Value Then
+					If dr.Item("QuantityReceived") >= 0 Then
+						m_bHaveSomeReceived = True
+						bAddRow = False
+					End If
+				End If
+
+				If dr.Item("ReceivingDiscrepancyReasonCodeID") IsNot DBNull.Value Then
+					itemsWithReasonCodes = True
+				End If
+			End If
+
+		Next dr
+
+		'DN reset our loop for the new grid
+		iLoop = 0
+		For Each dr In Me.dtOrderItemsNOIDNORD.Rows
+			iLoop = iLoop + 1
+
+			PopGridRow(dr, iLoop, True)
+		Next dr
+
+		DisplayRows()
+
+		Call SetActive(cmdReceive, IIf(Me.grdRL.Rows.Count > 0 And (gbDistributor), True, False))
+
+		' Only enable the Delete Receiving button if the user is on the All or Received tabs.
+		Call SetActive(cmdReceiveDelete, If((m_bHaveSomeReceived Or itemsWithReasonCodes) And (optAll.Checked Or optReceived.Checked) And gbDistributor, True, False))
+
+		' Only enable Past Receipt Date for non-transfer, non-return orders that haven't got any line item received or marked as particial shipment
+		Call SetActive(chkPastReceipt, (Not bTransferOrder) And (Not bReturnOrder) And (Not bAtLeastOneReceived) And (dtpPastReceiptDate.Value Is Nothing) And (Not partialShippmentCheck.Checked), False)
+		Call SetActive(dtpPastReceiptDate, (Not bTransferOrder) And (Not bReturnOrder) And (Not bAtLeastOneReceived) And (dtpPastReceiptDate.Value Is Nothing) And (Not partialShippmentCheck.Checked), False)
+
+		' reset
+		cmdSelectAll.Tag = "Select"
         cmdSelectAll.Image = imgIcons.Images.Item(iALL)
         ToolTip1.SetToolTip(cmdSelectAll, "Select All")
         Call SetActive(cmdSelectAll, IIf(Me.grdRL.Rows.Count > 0 And (gbDistributor), True, False))
@@ -734,8 +766,8 @@ Friend Class frmReceivingList
                         iReasonCodeId = -1
                     End If
 
-                    'Receive the item
-                    RListDAO.ReceiveOrderItem(grdRL.Selected.Rows(iLoop).Cells("OrderLineID").Value, sReceivedValue, sReceivedWeight, iReasonCodeId)
+					'Receive the item
+					RListDAO.ReceiveOrderItem(grdRL.Selected.Rows(iLoop).Cells("OrderLineID").Value, sReceivedValue, sReceivedWeight, iReasonCodeId)
                     frmOrders.ItemsReceived = True
 
                 End If
@@ -743,13 +775,16 @@ Friend Class frmReceivingList
 
         Next iLoop
 
+		If frmOrders.ItemsReceived And chkPastReceipt.Enabled Then
+			RListDAO.SavePastReceiptDate(frmOrders.OrderHeader_ID, dtpPastReceiptDate.Value)
+		End If
 
-        '##########################################################################################################################
-        '#  bug 6759: The folliwng COMMIT Tran cal must be called BEFORE 3rd Party Freight is calculated.
-        '# otherwise 3rd party freight will hang because OrderItems is locked.
-        '##########################################################################################################################
+		'##########################################################################################################################
+		'#  bug 6759: The folliwng COMMIT Tran cal must be called BEFORE 3rd Party Freight is calculated.
+		'# otherwise 3rd party freight will hang because OrderItems is locked.
+		'##########################################################################################################################
 
-        SQLExecute("COMMIT TRAN", DAO.RecordsetOptionEnum.dbSQLPassThrough)
+		SQLExecute("COMMIT TRAN", DAO.RecordsetOptionEnum.dbSQLPassThrough)
 
         If strMessage <> "" Then
             MsgBox(strMessage, MsgBoxStyle.Exclamation, Me.Text)
@@ -1489,7 +1524,23 @@ Friend Class frmReceivingList
         End If
     End Sub
 
-    Private Sub uddReasonCode_InitializeLayout(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.InitializeLayoutEventArgs) Handles uddReasonCode.InitializeLayout
+	Private Sub uddReasonCode_InitializeLayout(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.InitializeLayoutEventArgs) Handles uddReasonCode.InitializeLayout
 
-    End Sub
+	End Sub
+
+	Private Sub chkPastReceipt_CheckedChanged(sender As Object, e As EventArgs) Handles chkPastReceipt.CheckedChanged
+		If (chkPastReceipt.Checked) Then
+			dtpPastReceiptDate.Enabled = True
+		Else
+			dtpPastReceiptDate.Value = Nothing
+			dtpPastReceiptDate.Enabled = False
+		End If
+	End Sub
+
+	Private Sub dtpPastReceiptDate_Leave(sender As Object, e As EventArgs) Handles dtpPastReceiptDate.Leave
+		If chkPastReceipt.Checked And dtpPastReceiptDate.Value < Date.Today.AddDays(-90) Or dtpPastReceiptDate.Value >= Date.Today Then
+			MessageBox.Show("Past Receipt Date has to be within the last 90 days from today.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1)
+			dtpPastReceiptDate.Focus()
+		End If
+	End Sub
 End Class

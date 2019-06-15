@@ -185,6 +185,36 @@ Namespace WholeFoods.IRMA.Ordering.DataAccess
 
         End Sub
 
-    End Class
+		Public Sub SavePastReceiptDate(ByRef glOrderHeaderID As Integer, ByVal pastReceiptDate As DateTime)
+			logger.Debug("SavePastReceiptDate entry")
+			Dim factory As New DataFactory(DataFactory.ItemCatalog)
+			Dim results As ArrayList = Nothing
+			Dim currentParam As DBParam
+			Dim paramList As New ArrayList
+
+			Try
+				' setup parameters for stored proc
+				currentParam = New DBParam
+				currentParam.Name = "OrderHeader_ID"
+				currentParam.Value = glOrderHeaderID
+				currentParam.Type = DBParamType.Int
+				paramList.Add(currentParam)
+
+				currentParam = New DBParam
+				currentParam.Name = "PastReceiptDate"
+				currentParam.Value = pastReceiptDate
+				currentParam.Type = DBParamType.DateTime
+				paramList.Add(currentParam)
+
+				' Execute the stored procedure 
+				'factory.CommandTimeout = 1200
+				results = factory.ExecuteStoredProcedure("SavePastReceiptDate", paramList)
+
+			Catch ex As Exception
+				Throw ex
+			End Try
+
+		End Sub
+	End Class
 
 End Namespace

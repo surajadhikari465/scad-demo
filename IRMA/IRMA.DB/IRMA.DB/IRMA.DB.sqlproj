@@ -3339,7 +3339,10 @@
     <None Include="Scripts\PostDeploy\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItemsValidate.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PlumCorpChgQueueTmpDeletedItems.sql" />
+    <Build Include="Schema\dbo\Tables\Tables1\OrderHeaderExtended.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\SavePastReceiptDate.sql" />
     <None Include="Scripts\PostDeploy\PBI22038_MarkInStockAppConfigDeleted.sql" />
+    <None Include="Scripts\PostDeploy\PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
