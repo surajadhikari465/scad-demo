@@ -899,25 +899,25 @@
   <data name="&gt;&gt;lblEffectiveDate.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="udteEffectiveDate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 527</value>
+  <data name="dteEffectiveDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>720, 528</value>
   </data>
-  <data name="udteEffectiveDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 21</value>
+  <data name="dteEffectiveDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 20</value>
   </data>
-  <data name="udteEffectiveDate.TabIndex" type="System.Int32, mscorlib">
-    <value>64</value>
+  <data name="dteEffectiveDate.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
   </data>
-  <data name="&gt;&gt;udteEffectiveDate.Name" xml:space="preserve">
-    <value>udteEffectiveDate</value>
+  <data name="&gt;&gt;dteEffectiveDate.Name" xml:space="preserve">
+    <value>dteEffectiveDate</value>
   </data>
-  <data name="&gt;&gt;udteEffectiveDate.Type" xml:space="preserve">
-    <value>Infragistics.Win.UltraWinEditors.UltraDateTimeEditor, Infragistics2.Win.UltraWinEditors.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
+  <data name="&gt;&gt;dteEffectiveDate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;udteEffectiveDate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;dteEffectiveDate.Parent" xml:space="preserve">
     <value>split.Panel2</value>
   </data>
-  <data name="&gt;&gt;udteEffectiveDate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;dteEffectiveDate.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
   <data name="chkSelectAllIdentifiers.AutoSize" type="System.Boolean, mscorlib">

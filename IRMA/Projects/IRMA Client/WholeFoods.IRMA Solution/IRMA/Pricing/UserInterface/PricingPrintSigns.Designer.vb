@@ -90,21 +90,20 @@ Imports Infragistics.Win.UltraWinEditors
         Me.lvStore = New System.Windows.Forms.ListView()
         Me.hdrStore = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.chkSelectAllStores = New System.Windows.Forms.CheckBox()
-        Me.lblEffectiveDate = New System.Windows.Forms.Label()
-        Me.udteEffectiveDate = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
-        Me.chkSelectAllIdentifiers = New System.Windows.Forms.CheckBox()
         Me.grpPrint = New System.Windows.Forms.GroupBox()
         Me.chkApplyNoTagLogic = New System.Windows.Forms.CheckBox()
         Me.txtBatchName = New System.Windows.Forms.TextBox()
         Me.lblInfo = New System.Windows.Forms.Label()
         Me.lbl = New System.Windows.Forms.Label()
+        Me.lblEffectiveDate = New System.Windows.Forms.Label()
+        Me.dteEffectiveDate = New System.Windows.Forms.DateTimePicker()
+        Me.chkSelectAllIdentifiers = New System.Windows.Forms.CheckBox()
         CType(Me.txtField, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ugrdSearchResults, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.split.Panel1.SuspendLayout()
         Me.split.Panel2.SuspendLayout()
         Me.split.SuspendLayout()
-        CType(Me.udteEffectiveDate, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.grpPrint.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -492,7 +491,7 @@ Imports Infragistics.Win.UltraWinEditors
         Me.split.Panel2.Controls.Add(Me.cmdItemEdit)
         Me.split.Panel2.Controls.Add(Me.cmdExit)
         Me.split.Panel2.Controls.Add(Me.lblEffectiveDate)
-        Me.split.Panel2.Controls.Add(Me.udteEffectiveDate)
+        Me.split.Panel2.Controls.Add(Me.dteEffectiveDate)
         Me.split.Panel2.Controls.Add(Me.chkSelectAllIdentifiers)
         '
         'chkSelectAllStores
@@ -537,13 +536,11 @@ Imports Infragistics.Win.UltraWinEditors
         resources.ApplyResources(Me.lblEffectiveDate, "lblEffectiveDate")
         Me.lblEffectiveDate.Name = "lblEffectiveDate"
         '
-        'udteEffectiveDate
+        'dteEffectiveDate
         '
-        resources.ApplyResources(Me.udteEffectiveDate, "udteEffectiveDate")
-        Me.udteEffectiveDate.MaskInput = "mm/dd/yyyy"
-        Me.udteEffectiveDate.MaxDate = New Date(2038, 1, 11, 0, 0, 0, 0)
-        Me.udteEffectiveDate.MinDate = New Date(2019, 1, 1, 0, 0, 0, 0)
-        Me.udteEffectiveDate.Name = "udteEffectiveDate"
+        Me.dteEffectiveDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        resources.ApplyResources(Me.dteEffectiveDate, "dteEffectiveDate")
+        Me.dteEffectiveDate.Name = "dteEffectiveDate"
         '
         'chkSelectAllIdentifiers
         '
@@ -611,7 +608,6 @@ Imports Infragistics.Win.UltraWinEditors
         Me.split.Panel2.PerformLayout()
         CType(Me.split, System.ComponentModel.ISupportInitialize).EndInit()
         Me.split.ResumeLayout(False)
-        CType(Me.udteEffectiveDate, System.ComponentModel.ISupportInitialize).EndInit()
         Me.grpPrint.ResumeLayout(False)
         Me.grpPrint.PerformLayout()
         Me.ResumeLayout(False)
@@ -637,6 +633,6 @@ Imports Infragistics.Win.UltraWinEditors
     Friend WithEvents chkSelectAllStores As CheckBox
     Friend WithEvents chkSelectAllIdentifiers As CheckBox
     Friend WithEvents lblEffectiveDate As Label
-    Friend WithEvents udteEffectiveDate As UltraDateTimeEditor
+    Friend WithEvents dteEffectiveDate As DateTimePicker
 #End Region
 End Class

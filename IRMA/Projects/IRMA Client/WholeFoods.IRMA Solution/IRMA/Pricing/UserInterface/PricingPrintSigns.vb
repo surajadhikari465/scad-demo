@@ -51,9 +51,10 @@ Friend Class frmPricingPrintSigns
             chkApplyNoTagLogic.Enabled = (glStore_Limit = 0)
             ugrdSearchResults.DisplayLayout.Override.AllowUpdate = Infragistics.Win.DefaultableBoolean.Default.False 'Prevent data change in the grid
 
-            udteEffectiveDate.MaskInput = gsUG_DateMask.ToLower()
-            udteEffectiveDate.DateTime = DateAndTime.Today
-            udteEffectiveDate.MaxDate = DateAndTime.Today.AddYears(1)
+            dteEffectiveDate.Value = DateAndTime.Today
+            dteEffectiveDate.MinDate = DateAndTime.Today
+            dteEffectiveDate.MaxDate = DateAndTime.Today.AddYears(1)
+            dteEffectiveDate.CustomFormat = gsUG_DateMask
         Catch ex As Exception
             Throw New Exception(String.Format("{0}{1}Please contact your System Administrator.", ex.Message, vbCrLf))
         End Try
@@ -96,13 +97,13 @@ Friend Class frmPricingPrintSigns
         Dim slawApiErrorResponses As List(Of String) = New List(Of String)
         Dim effectiveDateString As String = Nothing
 
-        If (Not udteEffectiveDate.IsDateValid) Or (udteEffectiveDate.DateTime < DateAndTime.Today) Or (udteEffectiveDate.DateTime > DateAndTime.Today.AddYears(1)) Then
+        If (dteEffectiveDate.Value < DateAndTime.Today) Or (dteEffectiveDate.Value > DateAndTime.Today.AddYears(1)) Then
             MessageBox.Show("Invalid Effective Date. Must be between today and 1 year in the future.", "System Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            udteEffectiveDate.Focus()
+            dteEffectiveDate.Focus()
             Exit Sub
         End If
-        If udteEffectiveDate.DateTime.Date <> DateTime.Today Then
-            effectiveDateString = udteEffectiveDate.DateTime.ToString(gsUG_DateMask)
+        If dteEffectiveDate.Value.Date <> DateTime.Today Then
+            effectiveDateString = dteEffectiveDate.Value.ToString(gsUG_DateMask)
         End If
 
         If (String.IsNullOrEmpty(batchName)) Then
