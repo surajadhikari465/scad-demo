@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/PublishKits.process</processProperty>
         </processArchive>
-        <versionProperty>31</versionProperty>
+        <versionProperty>32</versionProperty>
         <authorProperty>Min</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishKitsService</name>
