@@ -11,8 +11,14 @@ using System.Threading.Tasks;
 namespace KitBuilderWebApi.Services
 {
 	public class GetAuthorizedStatusAndPriceService : IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>
-	{
-		public async Task<IEnumerable<ItemStorePriceModel>> Run(IEnumerable<StoreItem> parameters)
+    {
+        private readonly IApiHelper apiHelper;
+        public GetAuthorizedStatusAndPriceService(IApiHelper apiHelper)
+        {
+            this.apiHelper = apiHelper;
+        }
+
+        public async Task<IEnumerable<ItemStorePriceModel>> Run(IEnumerable<StoreItem> parameters)
 		{
 			PriceCollectionRequestModel pricesRequestModel = new PriceCollectionRequestModel
 			{
@@ -24,13 +30,13 @@ namespace KitBuilderWebApi.Services
 			string pricesRequestJson = JsonConvert.SerializeObject(pricesRequestModel);
 			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
 
-			ApiHelper.InitializeClient();
-			string uri = ApiHelper.BasedUri + "price";
-			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
+            apiHelper.InitializeClient();
+			string uri = apiHelper.BaseUri + "price";
+            apiHelper.ApiClient.BaseAddress = new Uri(uri);
 
 			try
 			{
-				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsync(uri, inputContent))
 				{
 					if (response.IsSuccessStatusCode)
 					{

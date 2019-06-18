@@ -11,18 +11,25 @@ namespace KitBuilderWebApi.Services
 {
 	public class GetNutritionService : IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>
 	{
-		public async Task<IEnumerable<ItemNutritionAttributesDictionary>> Run(ItemNutritionRequestModel parameters)
+        private readonly IApiHelper apiHelper;
+
+        public GetNutritionService(IApiHelper apiHelper)
+        {
+            this.apiHelper = apiHelper;
+        }
+
+        public async Task<IEnumerable<ItemNutritionAttributesDictionary>> Run(ItemNutritionRequestModel parameters)
 		{
 			string pricesRequestJson = JsonConvert.SerializeObject(parameters);
 			HttpContent inputContent = new StringContent(pricesRequestJson, Encoding.UTF8, "application/json");
 
-			ApiHelper.InitializeClient();
-			string uri = ApiHelper.BasedUri + "itemNutrition";
-			ApiHelper.ApiClient.BaseAddress = new Uri(uri);
+            apiHelper.InitializeClient();
+			string uri = apiHelper.BaseUri + "itemNutrition";
+            apiHelper.ApiClient.BaseAddress = new Uri(uri);
 
 			try
 			{
-				using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(uri, inputContent))
+				using (HttpResponseMessage response = await apiHelper.ApiClient.PostAsync(uri, inputContent))
 				{
 					if (response.IsSuccessStatusCode)
 					{

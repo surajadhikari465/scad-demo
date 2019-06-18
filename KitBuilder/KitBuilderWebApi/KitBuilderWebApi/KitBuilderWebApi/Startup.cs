@@ -1,7 +1,6 @@
 ﻿using KitBuilderWebApi.Filters;
 using KitBuilderWebApi.Helper;
 using KitBuilderWebApi.QueryParameters;
-using KitBuilderWebApi.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +27,8 @@ using KitBuilderWebApi.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using KitBuilderWebApi.Models;
+using NLog.Web;
+
 
 namespace KitBuilderWebApi
 {
@@ -44,8 +45,7 @@ namespace KitBuilderWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
-
+            
             services.AddMvc(setupAction =>
             {
                 // Web API configuration and services
@@ -62,15 +62,13 @@ namespace KitBuilderWebApi
             var connectionString = Configuration["connectionStrings:KitBuilderDBConnectionString"];
             services.AddDbContext<KitBuilderContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
 			services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped(it => it.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(it.GetRequiredService<IActionContextAccessor>().ActionContext)
             );
-
+            services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<InstructionListHelper, InstructionListHelper>();
             services.AddScoped<IHelper<ItemsDto, ItemsParameters>, ItemHelper>();
             services.AddScoped<IHelper<LinkGroupDto, LinkGroupParameters>, LinkGroupHelper>();
@@ -79,44 +77,39 @@ namespace KitBuilderWebApi
             services.AddScoped<IHelper<KitDtoWithStatus, KitSearchParameters>, KitWithStatusHelper>();
             services.AddScoped<IHelper<ItemsDto, KitItemParameters>, KitItemHelper>();
             services.AddScoped<IHelper<VenueInfo, VenueParameters>, VenueHelper>();
-
             services.AddScoped<IService<IEnumerable<StoreItem>, Task<IEnumerable<ItemStorePriceModel>>>, GetAuthorizedStatusAndPriceService>();
             services.AddScoped<IService<ItemNutritionRequestModel, Task<IEnumerable<ItemNutritionAttributesDictionary>>>, GetNutritionService>();
             services.AddScoped<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>, CaloricCalculator>();
-		
 
-
-                  services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c =>
             {
-
                 c.SwaggerDoc("v1", new Info { Title = "KitBuilder API", Version = "v1" });
                 c.DescribeAllEnumsAsStrings();
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
+            env.ConfigureNLog("nlog.config");
             app.UseCors(builder =>
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });
-
             GlobalDiagnosticsContext.Set("nLogConnectionString", Configuration.GetConnectionString("KitBuilderDBConnectionString"));
 
             // middleware to log 
             loggerFactory.AddNLog();
-
             // makes debugging easier--it will show error like 400 on browser
             app.UseStatusCodePages();
+    
+    
 
             MappingHelper.InitializeMapper();
 
@@ -139,10 +132,8 @@ namespace KitBuilderWebApi
                                 exceptionHandlerFeature.Error,
                                 exceptionHandlerFeature.Error.Message);
                         }
-
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
-
                     });
                 });
             }
@@ -155,11 +146,9 @@ namespace KitBuilderWebApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KitBuilder V1");
-
             });
             app.UseFileServer();
             app.UseMvc();
         }
-
     }
 }

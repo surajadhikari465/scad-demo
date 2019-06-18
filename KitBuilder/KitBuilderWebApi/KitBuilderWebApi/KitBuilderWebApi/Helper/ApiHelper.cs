@@ -5,19 +5,21 @@ using System.Net.Http.Headers;
 
 namespace KitBuilderWebApi.Helper
 {
-	public static class ApiHelper
-	{
-		public static HttpClient ApiClient { get; set; }
+    public class ApiHelper : IApiHelper
+    {
+        private readonly IConfiguration configuration;
 
-		public static string BasedUri { get; set; }
+        public ApiHelper(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
-		public static void InitializeClient()
+        public  HttpClient ApiClient { get; set; }
+        public string BaseUri { get; set ; }
+
+        public  void InitializeClient()
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("appsettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
-
-			BasedUri = configuration["WebApiBaseAddress:MammothBaseAddress"];
+			BaseUri = configuration["WebApiBaseAddress:MammothBaseAddress"];
 
 			ApiClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true });
 			ApiClient.DefaultRequestHeaders.Accept.Clear();
