@@ -13,9 +13,9 @@ namespace KitBuilderWebApi.Controllers
     public class ConfigController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly ILogger<KitController> logger;
+        private readonly ILogger<ConfigController> logger;
 
-        public ConfigController(IConfiguration configuration, ILogger<KitController> logger)
+        public ConfigController(IConfiguration configuration, ILogger<ConfigController> logger)
         {
             this.configuration = configuration;
             this.logger = logger;

@@ -421,17 +421,6 @@ namespace KitBuilderWebApi.Controllers
 
             BuildQueryToFilterKitData(kitSearchParameters, ref kitsBeforePaging);
 
-            var statuses = kitLocaleRepository.GetAll().Where(kl => kitsBeforePaging.Select(k => k.KitId).Contains(kl.KitId)).Select(kl => kl.Status.StatusId).ToList();
-            if (statuses.Contains(6))
-            {
-                //one or more of the local publishes failed
-            }
-            else if (statuses.Contains(5))
-            {
-                //one or more of the locals has pending changes
-            }
-
-
             var kitsAfterPaging = PagedList<KitDtoWithStatus>.Create(kitsBeforePaging,
                 kitSearchParameters.PageNumber,
                 kitSearchParameters.PageSize
@@ -824,7 +813,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 ValidateKitSaveParameters(kitToSave);
 
-                var item = itemsRepository.GetAll().Where(i => i.ItemId == kitToSave.ItemId).First();
+                var item = itemsRepository.GetAll().FirstOrDefault(i => i.ItemId == kitToSave.ItemId);
 
                 if (item == null)
                 {

@@ -18,7 +18,12 @@ namespace Icon.ApiController.Common
         public string NonReceivingSystemsProduct { get; set; }
         public string NonReceivingSystemsHierarchy { get; set; }
         public bool EnableNationalHierarchy { get; set; }
-        public bool UseSchemaWithKit { get; set; }
+        public bool EnableHospitalityKitchenItem { get; set; }
+        public bool EnableHospitalityHospitalityItem { get; set; }
+        public bool EnableHospitalityKitchenDescription { get; set; }
+        public bool EnableHospitalityImageUrl { get; set; }
+        public bool EnableHospitalityVenues { get; set; }
+      
 
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
         {
@@ -36,7 +41,12 @@ namespace Icon.ApiController.Common
                 NonReceivingSystemsProduct = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsProduct", false),
                 NonReceivingSystemsHierarchy = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsHierarchy", false),
                 EnableNationalHierarchy = AppSettingsAccessor.GetBoolSetting(nameof(EnableNationalHierarchy), false),
-                UseSchemaWithKit = AppSettingsAccessor.GetBoolSetting(nameof(UseSchemaWithKit), false)
+                EnableHospitalityHospitalityItem = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityHospitalityItem), false),
+                EnableHospitalityKitchenItem = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityKitchenItem), false),
+                EnableHospitalityKitchenDescription = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityKitchenDescription), false),
+                EnableHospitalityImageUrl = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityImageUrl), false),
+                EnableHospitalityVenues = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityVenues), false)
+
             };
         }
     }

@@ -276,7 +276,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 						}
 					};
                     
-                    AddHospitalityDataToItemMessage(miniBulkEntry, message);
+                    AddHospitalityDataToItemMessage(miniBulkEntry, message, settings);
                     miniBulk.item[currentMiniBulkIndex++] = miniBulkEntry;
 				}
 				catch(Exception ex)
@@ -291,15 +291,25 @@ namespace Icon.ApiController.Controller.QueueReaders
 			return miniBulk;
 		}
 
-        private static void AddHospitalityDataToItemMessage(Contracts.ItemType miniBulkEntry, MessageQueueProduct message)
+        private static void AddHospitalityDataToItemMessage(Contracts.ItemType miniBulkEntry, MessageQueueProduct message, ApiControllerSettings settings)
         {
                 var item = (Contracts.EnterpriseItemAttributesType) miniBulkEntry.locale[0].Item;
-                item.imageUrl = message.ImageURL;
-                item.kitchenDescription = message.KitchenDescription;
-                item.isKitchenItemSpecified = message.KitchenItem.HasValue;
-                item.isKitchenItem = message.KitchenItem ?? false;
-                item.isHospitalityItemSpecified = message.HospitalityItem.HasValue;
-                item.isHospitalityItem = message.HospitalityItem ?? false;
+                
+                if (settings.EnableHospitalityImageUrl)
+                    item.imageUrl = message.ImageURL;
+                if (settings.EnableHospitalityKitchenDescription)
+                    item.kitchenDescription = message.KitchenDescription;
+                if (settings.EnableHospitalityKitchenItem)
+                {
+                    item.isKitchenItemSpecified = message.KitchenItem.HasValue;
+                    item.isKitchenItem = message.KitchenItem ?? false;
+                }
+
+                if (settings.EnableHospitalityHospitalityItem)
+                {
+                    item.isHospitalityItemSpecified = message.HospitalityItem.HasValue;
+                    item.isHospitalityItem = message.HospitalityItem ?? false;
+                }
         }
 
         private Contracts.TraitType[] BuildItemTraits(MessageQueueProduct message)

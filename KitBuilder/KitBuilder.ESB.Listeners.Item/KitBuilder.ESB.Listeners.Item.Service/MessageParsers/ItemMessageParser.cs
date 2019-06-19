@@ -42,20 +42,20 @@ namespace KitBuilder.ESB.Listeners.Item.Service.MessageParsers
 
                 try
                 {
-                    Parallel.ForEach(items.item,  new ParallelOptions() { MaxDegreeOfParallelism = 2 }, (currentItem) =>
-                       {
-                           var itemModel = currentItem.ToItemModel(messageId, messageParseTime, sequenceId);
-                           if (itemModel != null)
-                           {
 
-                               logger.Info($"Parsed {messageId}");
-                               models.Add(itemModel);
-                           }
-                           else
-                           {
-                               logger.Warn($"Skipped {messageId} Not an enterprise item.");
-                           }
-                       });
+                    if (messageId.StartsWith("Icon_")){
+                        Parallel.ForEach(items.item, new ParallelOptions() {MaxDegreeOfParallelism = 2},
+                            (currentItem) =>
+                            {
+                                var itemModel = currentItem.ToItemModel(messageId, messageParseTime, sequenceId);
+                                if (itemModel != null)
+                                {
+
+                                    logger.Info($"Parsed {messageId}");
+                                    models.Add(itemModel);
+                                }
+                            });
+                    }
 
                     message.Acknowledge();
                 } catch (Exception ex)

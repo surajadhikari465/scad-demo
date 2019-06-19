@@ -36,6 +36,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private IList<InstructionListDto> instructionListsDto;
         private IList<InstructionList> instructionLists;
         private List<InstructionListMember> instructionListMembers;
+        private List<AvailablePluNumber> availablePluNumbers;
 
 
         [TestCleanup]
@@ -89,14 +90,26 @@ namespace KitBuilderWebApi.Tests.Controllers
                 new InstructionList{ InstructionListId = 2, Name = "Instruction List 2", StatusId = 1}
             };
 
+            
+
             instructionListMembers = new List<InstructionListMember>
             {
-                new InstructionListMember {Group="Cooking Temp", InstructionListId = 1, Member = "Rare", Sequence = 0, InstructionListMemberId = 1},
-                new InstructionListMember {Group="Cooking Temp", InstructionListId = 1, Member = "Medium", Sequence = 1, InstructionListMemberId = 2},
-                new InstructionListMember {Group="Cooking Temp", InstructionListId = 1, Member = "Well Done", Sequence = 2, InstructionListMemberId = 3},
-                new InstructionListMember {Group="Seasoning", InstructionListId = 2, Member = "Salt", Sequence = 0, InstructionListMemberId = 4},
-                new InstructionListMember {Group="Seasoning", InstructionListId = 2, Member = "Pepper", Sequence = 1, InstructionListMemberId = 5}
+                new InstructionListMember {PluNumber = 100,Group="Cooking Temp", InstructionListId = 1, Member = "Rare", Sequence = 0, InstructionListMemberId = 1},
+                new InstructionListMember {PluNumber = 101,Group="Cooking Temp", InstructionListId = 1, Member = "Medium", Sequence = 1, InstructionListMemberId = 2},
+                new InstructionListMember {PluNumber = 102,Group="Cooking Temp", InstructionListId = 1, Member = "Well Done", Sequence = 2, InstructionListMemberId = 3},
+                new InstructionListMember {PluNumber = 103,Group="Seasoning", InstructionListId = 2, Member = "Salt", Sequence = 0, InstructionListMemberId = 4},
+                new InstructionListMember {PluNumber = 104,Group="Seasoning", InstructionListId = 2, Member = "Pepper", Sequence = 1, InstructionListMemberId = 5}
             };
+
+            availablePluNumbers = new List<AvailablePluNumber> {
+                new AvailablePluNumber { PluNumber = 100, InUse = false},
+                new AvailablePluNumber { PluNumber = 101, InUse = false},
+                new AvailablePluNumber { PluNumber = 102, InUse = false},
+                new AvailablePluNumber { PluNumber = 103, InUse = false},
+                new AvailablePluNumber { PluNumber = 104, InUse = false},
+                new AvailablePluNumber { PluNumber = 105, InUse = false},
+            };
+
 
             mockInstructionListMemberRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionListMember, bool>>>()))
                 .Returns<Expression<Func<InstructionListMember, bool>>>(s => instructionListMembers.Where(s.Compile()).FirstOrDefault());
@@ -106,6 +119,11 @@ namespace KitBuilderWebApi.Tests.Controllers
 
             mockInstructionListRepository.Setup(il => il.Find(It.IsAny<Expression<Func<InstructionList, bool>>>()))
                 .Returns<Expression<Func<InstructionList, bool>>>(s => instructionLists.Where(s.Compile()).FirstOrDefault());
+
+            mockInstructionListMemberRepository.Setup(m => m.GetAll()).Returns(instructionListMembers.AsQueryable());
+            mockInstructionListRepository.Setup(m => m.GetAll()).Returns(instructionLists.AsQueryable());
+            mockAvailablePluNumberRespository.Setup(m => m.GetAll()).Returns(availablePluNumbers.AsQueryable());
+
 
 
         }
@@ -219,7 +237,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             var instructionListId = 1;
             var InstructionListMemberDto = new List<InstructionListMemberDto>
             {
-                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 }
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0, InstructionListMemberId = 1}
             };
 
             //When
@@ -241,8 +259,8 @@ namespace KitBuilderWebApi.Tests.Controllers
             var instructionListId = 1;
             var InstructionListMemberDto = new List<InstructionListMemberDto>
             {
-                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0 },
-                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember2", Sequence = 1 }
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember", Sequence = 0, InstructionListMemberId = 1},
+                new InstructionListMemberDto { InstructionListId = instructionListId, Group = "NewGroup", Member = "NewMember2", Sequence = 1, InstructionListMemberId =  2}
             };
 
             //When
@@ -312,14 +330,15 @@ namespace KitBuilderWebApi.Tests.Controllers
         public void InstructionListMemberController_DeleteInstructionListMembers_Valid()
         {
             mockInstructionListMemberRepository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
+            mockAvailablePluNumberRespository.SetupGet(s => s.UnitOfWork).Returns(mockUnitWork.Object);
             var instructionListId = 1;
             var instructionListMemberId = new List<int> { 1, 2 };
 
 
             //When
-
+            var test = mockInstructionListMemberRepository.Object.GetAll().ToList();
             var response = instructionListMemberController.DeleteInstructionListMembers(instructionListId, instructionListMemberId);
-
+            
             // Then
             Assert.IsInstanceOfType(response, typeof(NoContentResult), "No Content Expected");
             mockUnitWork.Verify(m => m.Commit(), Times.Once);

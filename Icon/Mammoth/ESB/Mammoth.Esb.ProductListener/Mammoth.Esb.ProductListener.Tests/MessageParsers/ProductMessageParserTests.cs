@@ -20,6 +20,27 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
         }
 
         [TestMethod]
+        public void ParseMessage_1ItemInMessageWithNoHospitalityData_ReturnItemModelWithNoHospitalityData()
+        {            
+            //Given
+            Mock<IEsbMessage> message = new Mock<IEsbMessage>();
+            message.Setup(m => m.MessageText)
+                .Returns(File.ReadAllText("TestMessages/ItemWithNoHospitalityElements.xml"));
+
+            //When
+            var itemModels = parser.ParseMessage(message.Object);
+
+            //Then
+            var item = itemModels[0];
+            var kitItemAttributes = item.KitItemAttributes;
+            Assert.IsNotNull(kitItemAttributes);
+            Assert.IsNull(kitItemAttributes.KitchenDescription);
+            Assert.IsNull(kitItemAttributes.KitchenItem);
+            Assert.IsNull(kitItemAttributes.HospitalityItem);
+            Assert.IsNull(kitItemAttributes.ImageUrl);
+        }
+
+        [TestMethod]
         public void ParseMessage_1ItemInMessageWithAllAttributes_ReturnItemModel()
         {
             //Given
@@ -137,19 +158,12 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             Assert.AreEqual("WIC Test", extAttributes.Wic);
             Assert.AreEqual("Global Pricing Program Test", extAttributes.GlobalPricingProgram);
 
-
-            bool useSchemaWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
-                useSchemaWithKit = false;
-
-            if (useSchemaWithKit)
-            {
-                var kitItemAttributes = item.KitItemAttributes;
-                Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
-                Assert.AreEqual(true, kitItemAttributes.KitchenItem);
-                Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
-                Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
-            }
+            var kitItemAttributes = item.KitItemAttributes;
+            Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
+            Assert.AreEqual(true, kitItemAttributes.KitchenItem);
+            Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
+            Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
+            
         }
 
         [TestMethod]
@@ -211,19 +225,12 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
             var nutritionAttributes = item.NutritionAttributes;
             Assert.IsNull(item.NutritionAttributes);
 
-            bool useSchemaWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
-                useSchemaWithKit = false;
-
-            if (useSchemaWithKit)
-            {
-
-                var kitItemAttributes = item.KitItemAttributes;
-                Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
-                Assert.AreEqual(true, kitItemAttributes.KitchenItem);
-                Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
-                Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
-            }
+            var kitItemAttributes = item.KitItemAttributes;
+            Assert.AreEqual("KitDescription", kitItemAttributes.KitchenDescription);
+            Assert.AreEqual(true, kitItemAttributes.KitchenItem);
+            Assert.AreEqual(false, kitItemAttributes.HospitalityItem);
+            Assert.AreEqual("https://arboretum.orangetheoryfitness.com/", kitItemAttributes.ImageUrl);
+            
         }
     }
 }

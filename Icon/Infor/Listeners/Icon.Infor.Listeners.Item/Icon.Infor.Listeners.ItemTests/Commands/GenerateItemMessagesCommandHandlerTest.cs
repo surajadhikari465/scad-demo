@@ -44,6 +44,82 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
         }
 
         [TestMethod]
+        public void GenerateItemMessages_WhenNoHospitalityData_ThenGenerateItemMessagesWithNoHospitalityData()
+        {
+            //Given
+            var scanCode = "123456789999";
+            Assert.IsFalse(context.ScanCode.Any(sc => sc.scanCode == scanCode), "Scan code already exists. Unable to run test.");
+
+            var item = BuildAndSaveItem(scanCode);
+            var expectedItemId = item.itemID;
+
+            var expectedItem = new ItemModel
+            {
+                ItemId = expectedItemId
+            };
+
+            //When
+            commandHandler.Execute(new GenerateItemMessagesCommand
+            {
+                Items = new List<ItemModel> { expectedItem }
+            });
+
+
+            //Then
+            var messageQueueProducts = this.context.MessageQueueProduct.Where(mqp => mqp.ItemId == item.itemID).ToList();
+            var messageQueueProduct = messageQueueProducts.First();
+            var itemSignAttributes = item.ItemSignAttribute.First();
+
+            Assert.AreEqual(1, messageQueueProducts.Count());
+            Assert.IsFalse(messageQueueProduct.HospitalityItem.HasValue);
+            Assert.IsFalse(messageQueueProduct.KitchenItem.HasValue);
+            Assert.IsNull(messageQueueProduct.HospitalityItem);
+            Assert.IsNull(messageQueueProduct.KitchenItem);
+            Assert.IsNull(messageQueueProduct.KitchenDescription);
+            Assert.IsNull(messageQueueProduct.ImageURL);
+
+        }
+
+        [TestMethod]
+        public void GenerateItemMessages_WhenHospitalityDataExists_ThenGenerateItemMessagesWithHospitalityData()
+        {
+            //Given
+            var scanCode = "123456789999";
+            Assert.IsFalse(context.ScanCode.Any(sc => sc.scanCode == scanCode), "Scan code already exists. Unable to run test.");
+
+            var item = BuildAndSaveItem(scanCode, true);
+
+
+            var expectedItemId = item.itemID;
+
+            var expectedItem = new ItemModel
+            {
+                ItemId = expectedItemId
+            };
+
+            //When
+            commandHandler.Execute(new GenerateItemMessagesCommand
+            {
+                Items = new List<ItemModel> { expectedItem }
+            });
+
+
+            //Then
+            var messageQueueProducts = this.context.MessageQueueProduct.Where(mqp => mqp.ItemId == item.itemID).ToList();
+            var messageQueueProduct = messageQueueProducts.First();
+            var itemSignAttributes = item.ItemSignAttribute.First();
+
+            Assert.AreEqual(1, messageQueueProducts.Count());
+            Assert.IsTrue(messageQueueProduct.HospitalityItem.HasValue);
+            Assert.IsTrue(messageQueueProduct.HospitalityItem.Value);
+            Assert.IsTrue(messageQueueProduct.KitchenItem.HasValue);
+            Assert.IsTrue(messageQueueProduct.KitchenItem.Value);
+            Assert.AreEqual("Description", messageQueueProduct.KitchenDescription);
+            Assert.AreEqual("http://www.google.com", messageQueueProduct.ImageURL);
+
+        }
+
+        [TestMethod]
         public void GenerateItemMessages_WhenInforHasOneItem_ThenGenerateItemMessages()
         {
             //Given
@@ -327,7 +403,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             return subscriptions;
         }
 
-        private Framework.Item BuildAndSaveItem(string scanCode)
+        private Framework.Item BuildAndSaveItem(string scanCode, bool includeHospitalityData = false)
         {
             brand = BuildAndSaveHierarchyClass(Hierarchies.Brands, HierarchyLevels.Brand, "Infor Test Brand");
             merch = BuildAndSaveHierarchyClass(Hierarchies.Merchandise, HierarchyLevels.SubBrick, "Infor Test Merch");
@@ -450,6 +526,14 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
                     }
                 }
             };
+
+            if (includeHospitalityData)
+            {
+                item.ItemTrait.Add(new ItemTrait { traitID = Traits.KitchenDescription, traitValue = "Description", localeID = Locales.WholeFoods });
+                item.ItemTrait.Add(new ItemTrait { traitID = Traits.ImageUrl, traitValue = "http://www.google.com", localeID = Locales.WholeFoods });
+                item.ItemTrait.Add(new ItemTrait { traitID = Traits.KitchenItem, traitValue = "1", localeID = Locales.WholeFoods });
+                item.ItemTrait.Add(new ItemTrait { traitID = Traits.HospitalityItem, traitValue = "1", localeID = Locales.WholeFoods });
+            }
 
             context.Item.Add(item);
             context.SaveChanges();

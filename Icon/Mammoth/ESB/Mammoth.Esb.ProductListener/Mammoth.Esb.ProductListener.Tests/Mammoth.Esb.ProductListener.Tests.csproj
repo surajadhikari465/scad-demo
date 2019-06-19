@@ -216,6 +216,9 @@
     <Content Include="TestMessages\ItemWithAllAttributes.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestMessages\ItemWithNoHospitalityElements.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestMessages\ItemWithNoNutritionAttributes.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

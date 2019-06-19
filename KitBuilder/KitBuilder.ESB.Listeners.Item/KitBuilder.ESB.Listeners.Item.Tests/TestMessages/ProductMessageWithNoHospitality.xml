@@ -1,6 +1,6 @@
-﻿<items xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:kit1="http://schemas.wfm.com/Enterprise/KitMgmt/Kit/V1" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+﻿<items xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
   <item crf:Action="AddOrUpdate">
-    <id>4069492</id>
+    <id>198757</id>
     <base>
       <ibi:type>
         <itp:code>RTL</itp:code>
@@ -17,7 +17,7 @@
       <lcl:enterpriseItemAttributes>
         <iea:scanCodes>
           <sis:scanCode>
-            <sis:code>73197519964</sis:code>
+            <sis:code>9948243625</sis:code>
             <sis:typeId>1</sis:typeId>
             <sis:typeDescription>UPC</sis:typeDescription>
           </sis:scanCode>
@@ -26,33 +26,41 @@
           <crf:hierarchy>
             <ihy:name>Merchandise</ihy:name>
             <ihy:class>
-              <hcl:id>84563</hcl:id>
-              <hcl:name>Gift Baskets:Customer Service Margin (7200)</hcl:name>
-              <hcl:parentId>84422</hcl:parentId>
+              <hcl:id>84305</hcl:id>
+              <hcl:name>Made In House Granola</hcl:name>
+              <hcl:parentId>83213</hcl:parentId>
             </ihy:class>
           </crf:hierarchy>
           <crf:hierarchy>
             <ihy:name>Brands</ihy:name>
             <ihy:class>
-              <hcl:id>56620</hcl:id>
-              <hcl:name>JACOBSONS</hcl:name>
+              <hcl:id>41674</hcl:id>
+              <hcl:name>365</hcl:name>
               <hcl:parentId>0</hcl:parentId>
             </ihy:class>
           </crf:hierarchy>
           <crf:hierarchy>
             <ihy:name>Tax</ihy:name>
             <ihy:class>
-              <hcl:id>0115002</hcl:id>
-              <hcl:name>0115002 GIFT ITEM CONTAINING FOOD - TPP + CANDY AT LEAST 50%; TPP LESS THAN 50%</hcl:name>
+              <hcl:id>0155030</hcl:id>
+              <hcl:name>0155030 PREPACKAGED NON-CARBONATED BEV - FRUIT JUICE 100% JUICE OR CONTAINS MILK OTHER THAN COFFEE - 32 OZ OR MORE</hcl:name>
               <hcl:parentId>0</hcl:parentId>
             </ihy:class>
           </crf:hierarchy>
           <crf:hierarchy>
             <ihy:name>Financial</ihy:name>
             <ihy:class>
-              <hcl:id>7200</hcl:id>
-              <hcl:name>Customer Service Margin (7200)</hcl:name>
+              <hcl:id>4200</hcl:id>
+              <hcl:name>Bakery (4200)</hcl:name>
               <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>National</ihy:name>
+            <ihy:class>
+              <hcl:id>122449</hcl:id>
+              <hcl:name>Drinking Chocolate</hcl:name>
+              <hcl:parentId>121432</hcl:parentId>
             </ihy:class>
           </crf:hierarchy>
         </iea:hierarchies>
@@ -62,7 +70,16 @@
             <tra:type>
               <trt:description>Product Description</trt:description>
               <trt:value>
-                <trv:value>MUG RED WHITE</trv:value>
+                <trv:value>ALMOND MILK UNSWEETENED OG</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CFD</tra:code>
+            <tra:type>
+              <trt:description>Customer Friendly Description</trt:description>
+              <trt:value>
+                <trv:value>Test Customer Friendly Description</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -71,7 +88,7 @@
             <tra:type>
               <trt:description>POS Description</trt:description>
               <trt:value>
-                <trv:value>JCBS MUG RED WHITE</trv:value>
+                <trv:value>365 OG UNSWT ALMD MLK</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -81,6 +98,15 @@
               <trt:description>Food Stamp Eligible</trt:description>
               <trt:value>
                 <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>SCT</tra:code>
+            <tra:type>
+              <trt:description>POS Scale Tare</trt:description>
+              <trt:value>
+                <trv:value>1.1</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -107,7 +133,7 @@
             <tra:type>
               <trt:description>Retail Size</trt:description>
               <trt:value>
-                <trv:value>1</trv:value>
+                <trv:value>32</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -116,10 +142,10 @@
             <tra:type>
               <trt:description>Retail UOM</trt:description>
               <trt:value>
-                <trv:value>EA</trv:value>
+                <trv:value>OZ</trv:value>
                 <trv:uom>
-                  <uom:code>EA</uom:code>
-                  <uom:name>EACH</uom:name>
+                  <uom:code>OZ</uom:code>
+                  <uom:name>OUNCE</uom:name>
                 </trv:uom>
               </trt:value>
             </tra:type>
@@ -179,15 +205,6 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
-            <tra:code>HER</tra:code>
-            <tra:type>
-              <trt:description>Healthy Eating Rating</trt:description>
-              <trt:value>
-                <trv:value />
-              </trt:value>
-            </tra:type>
-          </crf:trait>
-          <crf:trait>
             <tra:code>KSH</tra:code>
             <tra:type>
               <trt:description>Kosher</trt:description>
@@ -219,7 +236,7 @@
             <tra:type>
               <trt:description>Organic</trt:description>
               <trt:value>
-                <trv:value />
+                <trv:value>Quality Assurance International (QAI)</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -332,11 +349,74 @@
             </tra:type>
           </crf:trait>
           <crf:trait>
-            <tra:code>CFD</tra:code>
+            <tra:code>ABV</tra:code>
             <tra:type>
-              <trt:description>Customer Friendly Description</trt:description>
+              <trt:description>Alcohol By Volume</trt:description>
               <trt:value>
-                <trv:value>MUG RED WHITE</trv:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CF</tra:code>
+            <tra:type>
+              <trt:description>Casein Free</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>DW</tra:code>
+            <tra:type>
+              <trt:description>Drained Weight</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>DWU</tra:code>
+            <tra:type>
+              <trt:description>Drained Weight UOM</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>FTC</tra:code>
+            <tra:type>
+              <trt:description>Fair Trade Certified</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>HEM</tra:code>
+            <tra:type>
+              <trt:description>Hemp</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>LLP</tra:code>
+            <tra:type>
+              <trt:description>Local Loan Producer</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>MPN</tra:code>
+            <tra:type>
+              <trt:description>Main Product Name</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -345,107 +425,38 @@
             <tra:type>
               <trt:description>Nutrition Required</trt:description>
               <trt:value>
-                <trv:value />
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>OPC</tra:code>
+            <tra:type>
+              <trt:description>Organic Personal Care</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PLO</tra:code>
+            <tra:type>
+              <trt:description>Paleo</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PFT</tra:code>
+            <tra:type>
+              <trt:description>Product Flavor/Type</trt:description>
+              <trt:value>
+                <trv:value>0</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
         </iea:traits>
-        <iea:selectionGroups>
-          <psg:group crf:Action="AddOrUpdate">
-            <grp:id>Food_Stamp</grp:id>
-            <grp:name>Food_Stamp</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>Prohibit_Discount_Items</grp:id>
-            <grp:name>Prohibit_Discount_Items</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>005_GC_ACTIVATION_VANTIV_BARCODE</grp:id>
-            <grp:name>005_GC_ACTIVATION_VANTIV_BARCODE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>005_GC_ACTIVATION_VANTIV_BARCODE</grp:id>
-            <grp:name>005_GC_ACTIVATION_VANTIV_BARCODE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>010_GC_ACTIVATION_VANTIV_MAGSTRIPE</grp:id>
-            <grp:name>010_GC_ACTIVATION_VANTIV_MAGSTRIPE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>020_GC_ACTIVATION_VALUE_LINK_MAGSTRIPE</grp:id>
-            <grp:name>020_GC_ACTIVATION_VALUE_LINK_MAGSTRIPE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>025_GC_TOPUP_VANTIV_MAGSTRIPE</grp:id>
-            <grp:name>025_GC_TOPUP_VANTIV_MAGSTRIPE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>030_GC_TOPUP_VALUE_LINK_MAGSTRIPE</grp:id>
-            <grp:name>030_GC_TOPUP_VALUE_LINK_MAGSTRIPE</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>035_GC_CASHOUT_All</grp:id>
-            <grp:name>035_GC_CASHOUT_All</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>Bag_Fee</grp:id>
-            <grp:name>Bag_Fee</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>DonationsGroup</grp:id>
-            <grp:name>DonationsGroup</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>DonationsGroup</grp:id>
-            <grp:name>DonationsGroup</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>DonationsGroup</grp:id>
-            <grp:name>DonationsGroup</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>DonationsGroup</grp:id>
-            <grp:name>DonationsGroup</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>Blackhawk Gift Card Closed</grp:id>
-            <grp:name>Blackhawk Gift Card Closed</grp:name>
-            <grp:type>OnlineConsumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>Blackhawk Gift Card Open</grp:id>
-            <grp:name>Blackhawk Gift Card Open</grp:name>
-            <grp:type>OnlineConsumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>SuppressPrice</grp:id>
-            <grp:name>SuppressPrice</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-          <psg:group crf:Action="Delete">
-            <grp:id>BlackhawkFeesGroup</grp:id>
-            <grp:name>BlackhawkFeesGroup</grp:name>
-            <grp:type>Consumable</grp:type>
-          </psg:group>
-        </iea:selectionGroups>
-        <iea:imageUrl>https://arboretum.orangetheoryfitness.com/</iea:imageUrl>
-        <iea:isKitchenItem>1</iea:isKitchenItem>
-        <iea:kitchenDescription>KitDescription</iea:kitchenDescription>
-        <iea:isHospitalityItem>0</iea:isHospitalityItem>
       </lcl:enterpriseItemAttributes>
     </locale>
   </item>

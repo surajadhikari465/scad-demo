@@ -61,16 +61,9 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 // Extended Attributes
                 itemModel.ExtendedAttributes = ParseExtendedAttributes(item, traits);
 
-                bool useSchameWithKit;
-                if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
-                    useSchameWithKit = false;
-
                 // Hospitality Attributes
-                if (useSchameWithKit)
-                {
-                    itemModel.KitItemAttributes = ParseHospitalityElements(enterpriseItemAttributes);
-                }
-
+                itemModel.KitItemAttributes = ParseHospitalityElements(enterpriseItemAttributes);
+   
                 itemModelCollection.Add(itemModel);
             }
 
@@ -83,10 +76,13 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             var hospitalityModel = new KitItemAttributesModel();
             if (itemInformation == null) return hospitalityModel;
 
-            hospitalityModel.KitchenDescription = itemInformation.kitchenDescription;
-            hospitalityModel.HospitalityItem = itemInformation.isHospitalityItemSpecified && itemInformation.isHospitalityItem;
-            hospitalityModel.KitchenItem = itemInformation.isKitchenItemSpecified && itemInformation.isKitchenItem;
             hospitalityModel.ImageUrl = itemInformation.imageUrl;
+            hospitalityModel.KitchenDescription = itemInformation.kitchenDescription;
+            if (itemInformation.isHospitalityItemSpecified)
+                hospitalityModel.HospitalityItem =  itemInformation.isHospitalityItem;
+            if (itemInformation.isKitchenItemSpecified)
+                hospitalityModel.KitchenItem = itemInformation.isKitchenItem;
+       
 
             return hospitalityModel;
 

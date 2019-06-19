@@ -24,17 +24,7 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesSign(data);
             AddOrUpdateItemAttributesNutrition(data);
             AddOrUpdateItemAttributesExtended(data);
-
-            bool useSchameWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
-                useSchameWithKit = false;
-
-            if (useSchameWithKit)
-            {
-                {
-                    AddOrUpdateItemAttributesKit(data);
-                }
-            }
+            AddOrUpdateItemAttributesKit(data);
          
         }   
 

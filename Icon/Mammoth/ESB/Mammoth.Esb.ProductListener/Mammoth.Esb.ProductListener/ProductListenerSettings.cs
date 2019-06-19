@@ -9,16 +9,14 @@ namespace Mammoth.Esb.ProductListener
         public bool EnablePrimeAffinityMessages { get; set; }
         public List<int> ExcludedPSNumbers { get; set; }
         public List<string> EligiblePriceTypes { get; set; }
-        public bool UseSchemaWithKit { get; set; }
-
+  
         public static ProductListenerSettings Load()
         {
             return new ProductListenerSettings
             {
                 EnablePrimeAffinityMessages = AppSettingsAccessor.GetBoolSetting(nameof(EnablePrimeAffinityMessages), false),
                 ExcludedPSNumbers = AppSettingsAccessor.GetStringSetting(nameof(ExcludedPSNumbers)).Split(',').Select(ps => int.Parse(ps)).ToList(),
-                EligiblePriceTypes = AppSettingsAccessor.GetStringSetting(nameof(EligiblePriceTypes)).Split(',').Select(pt => pt.Trim()).ToList(),
-                UseSchemaWithKit = AppSettingsAccessor.GetBoolSetting(nameof(UseSchemaWithKit)),
+                EligiblePriceTypes = AppSettingsAccessor.GetStringSetting(nameof(EligiblePriceTypes)).Split(',').Select(pt => pt.Trim()).ToList()
             };
         }
     }

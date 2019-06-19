@@ -130,6 +130,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
         {
             foreach (int itemId in itemIds)
             {
+
+               
+
                 sqlConnection.Execute(
                  $@" INSERT INTO dbo.Items(
                             [ItemID]

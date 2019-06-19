@@ -12,6 +12,7 @@ using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
@@ -32,7 +33,7 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
             var settings = new ApiControllerSettings();
-            settings.UseSchemaWithKit = true;
+           
 
             var productQueueReader = new ProductQueueReader(
                 mockLoggerQueueReader.Object,
@@ -125,6 +126,266 @@ namespace Icon.ApiController.Tests.SerializerTests
 
 
         }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndKitchenItemIsEnabled_KitchenItemShouldBeIncludedInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityKitchenItem = true;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsTrue(xml.Contains("iea:isKitchenItem"));
+
+        }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndKitchenItemIsDisabled_KitchenItemShouldNotBeInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityKitchenItem = false;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsFalse(xml.Contains("iea:isKitchenItem"));
+        }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndHospitalityItemIsEnabled_HospitalityItemShouldBeIncludedInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityHospitalityItem = true;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsTrue(xml.Contains("iea:isHospitalityItem"));
+
+        }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndHospitalityItemIsDisabled_HospitalityItemShouldNotBeInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityHospitalityItem = false;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsFalse(xml.Contains("iea:isHospitalityItem"));
+        }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndImageUrlItemIsEnabled_ImageUrlShouldBeIncludedInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityImageUrl = true;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsTrue(xml.Contains("iea:imageUrl"));
+
+        }
+
+        [TestMethod]
+        public void Serialzier_IfHospitalityDataExistsAndImageUrlItemIsDisabled_ImageUrlShouldNotBeInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityHospitalityItem = false;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsFalse(xml.Contains("iea:imageUrl"));
+
+        }
+
+
+        [TestMethod]
+        public void Serializer_IfHospitalityDataExistsAndKitchenDescriptionIsEnabled_KitchenDescriptionShouldBeIncludedInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityKitchenDescription = true;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+            Assert.IsTrue(xml.Contains("iea:kitchenDescription"));
+
+        }
+
+
+        [TestMethod]
+        public void Serializer_IfHospitalityDataExistsAndKitchenDescriptionIsDisabled_KitchenDescriptionShouldNotBeInOutput()
+        {
+            var mockLoggerSerializer = new Mock<ILogger<Serializer<Contracts.items>>>();
+            var mockEmailClient = new Mock<IEmailClient>();
+            var mockLoggerQueueReader = new Mock<ILogger<ProductQueueReader>>();
+            var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProduct>, List<MessageQueueProduct>>>();
+            var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProduct>>>();
+            var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
+            var mockUomMapper = new Mock<IUomMapper>();
+            var settings = new ApiControllerSettings();
+
+            var productQueueReader = new ProductQueueReader(
+                mockLoggerQueueReader.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                mockProductSelectionGroupsMapper.Object,
+                mockUomMapper.Object,
+                settings);
+
+            settings.EnableHospitalityKitchenDescription = false;
+
+            var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
+            var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
+            var miniBulk = productQueueReader.BuildMiniBulk(message);
+            var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
+
+
+            Assert.IsFalse(xml.Contains("iea:kitchenDescription"));
+
+        }
+
+
+
         [TestMethod]
         public void Serializer_IfHospitalityDataExists_thenXmlElementsShouldExistInOutput()
         {
@@ -146,10 +407,14 @@ namespace Icon.ApiController.Tests.SerializerTests
                 mockUomMapper.Object,
                 settings);
 
+            settings.EnableHospitalityKitchenItem = true;
+            settings.EnableHospitalityHospitalityItem = true;
+            settings.EnableHospitalityImageUrl = true;
+            settings.EnableHospitalityKitchenDescription = true;
+
             var message = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 123, "0", ItemTypeCodes.RetailSale) };
             var serializer = new Serializer<Contracts.items>(mockLoggerSerializer.Object, mockEmailClient.Object);
             var miniBulk = productQueueReader.BuildMiniBulk(message);
-
             var xml = serializer.Serialize(miniBulk, new Utf8StringWriter());
 
             Assert.IsTrue(xml.Contains("iea:kitchenDescription"));
@@ -261,13 +526,15 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueLocale>, List<MessageQueueLocale>>>();
             var mockGetLocaleLineageQuery = new Mock<IQueryHandler<GetLocaleLineageParameters, LocaleLineageModel>>();
             var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>>>();
+            var settings = new ApiControllerSettings();
 
             var localeQueueReader = new LocaleQueueReader(
                 mockLoggerQueueReader.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetLocaleLineageQuery.Object,
-                mockUpdateMessageQueueStatusCommandHandler.Object);
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
             var message = new List<MessageQueueLocale> { TestHelpers.GetFakeMessageQueueLocale() };
 
             string path = @"locale_store.xml";
@@ -291,13 +558,15 @@ namespace Icon.ApiController.Tests.SerializerTests
             var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueLocale>, List<MessageQueueLocale>>>();
             var mockGetLocaleLineageQuery = new Mock<IQueryHandler<GetLocaleLineageParameters, LocaleLineageModel>>();
             var mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>>>();
+            var settings = new ApiControllerSettings();
 
             var localeQueueReader = new LocaleQueueReader(
                 mockLoggerQueueReader.Object,
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetLocaleLineageQuery.Object,
-                mockUpdateMessageQueueStatusCommandHandler.Object);
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
             var message = new List<MessageQueueLocale> { TestHelpers.GetFakeMessageQueueLocaleRegion() };
 
             string path = @"locale_region.xml";

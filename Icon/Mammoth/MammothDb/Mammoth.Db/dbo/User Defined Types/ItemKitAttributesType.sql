@@ -1,8 +1,8 @@
 ﻿CREATE TYPE [dbo].[ItemKitAttributesType] AS TABLE
 (
 	[ItemID]						INT				NOT NULL,
-	[KitchenItem]					BIT				NOT NULL DEFAULT 0,		
-	[HospitalityItem]				BIT				NOT NULL DEFAULT 0,
+	[KitchenItem]					BIT				NULL,		
+	[HospitalityItem]				BIT				NULL,
 	[ImageUrl]						NVARCHAR(255)	NULL,
 	[KitchenDescription]			NVARCHAR(15)	NULL
 )

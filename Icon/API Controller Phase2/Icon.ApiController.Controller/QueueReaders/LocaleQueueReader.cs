@@ -22,20 +22,22 @@ namespace Icon.ApiController.Controller.QueueReaders
 		private IQueryHandler<GetLocaleLineageParameters, LocaleLineageModel> getLocaleLineageQueryHandler;
 		private ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>> updateMessageQueueStatusCommandHandler;
 		private Dictionary<string, string> timeZoneDictionary;
+        private ApiControllerSettings settings;
 
 		public LocaleQueueReader(
 			ILogger<LocaleQueueReader> logger,
 			IEmailClient emailClient,
 			IQueryHandler<GetMessageQueueParameters<MessageQueueLocale>, List<MessageQueueLocale>> getMessageQueueQuery,
 			IQueryHandler<GetLocaleLineageParameters, LocaleLineageModel> getLocaleLineageQueryHandler,
-			ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>> updateMessageQueueStatusCommandHandler)
+			ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueLocale>> updateMessageQueueStatusCommandHandler,
+            ApiControllerSettings settings)
 		{
 			this.logger = logger;
 			this.emailClient = emailClient;
 			this.getMessageQueueQuery = getMessageQueueQuery;
 			this.getLocaleLineageQueryHandler = getLocaleLineageQueryHandler;
 			this.updateMessageQueueStatusCommandHandler = updateMessageQueueStatusCommandHandler;
-
+            this.settings = settings;
 			timeZoneDictionary = new Dictionary<string, string>();
 
 			foreach (var timeZone in TimeZoneInfo.GetSystemTimeZones())
@@ -52,19 +54,8 @@ namespace Icon.ApiController.Controller.QueueReaders
 				MessageQueueStatusId = MessageStatusTypes.Ready
 			};
 
-            bool useSchameWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchameWithKit))
-                useSchameWithKit = false;
-
-            if (useSchameWithKit)
-            {
-                return getMessageQueueQuery.Search(parameters);
-            }
-            else
-            {
-                return getMessageQueueQuery.Search(parameters).Where(m => m.LocaleTypeId != LocaleTypes.Venue).ToList();
-            }
-		}
+            return getMessageQueueQuery.Search(parameters);
+        }
 
 		public List<MessageQueueLocale> GroupMessagesForMiniBulk(List<MessageQueueLocale> messages)
 		{
@@ -110,7 +101,7 @@ namespace Icon.ApiController.Controller.QueueReaders
 
 				BuildMetroAndStoreElements(localeLineage, miniBulk, message.LocaleTypeId);
 
-				if (message.LocaleTypeId == 5)
+				if (message.LocaleTypeId == LocaleTypes.Venue && settings.EnableHospitalityVenues)
 				{ 
 					BuildVenueElements(localeLineage, miniBulk,message.LocaleTypeId);
 				}

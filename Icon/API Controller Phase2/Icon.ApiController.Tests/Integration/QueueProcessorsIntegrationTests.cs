@@ -610,7 +610,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 mockGetLocaleLineageQuery.Object,
-                new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory));
+                new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(mockUpdateMessageQueueStatusLogger.Object, iconContextFactory),
+                settings);
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(mockSaveToMessageHistoryLogger.Object, iconContextFactory);
             var associateMessageToMessageQueueCommandHandler = new AssociateMessageToQueueCommandHandler<MessageQueueLocale>(mockAssociateMessageToQueueLogger.Object, iconContextFactory);
             var setProcessedDateCommandHandler = new UpdateMessageQueueProcessedDateCommandHandler<MessageQueueLocale>(mockSetProcessedDateLogger.Object, iconContextFactory);

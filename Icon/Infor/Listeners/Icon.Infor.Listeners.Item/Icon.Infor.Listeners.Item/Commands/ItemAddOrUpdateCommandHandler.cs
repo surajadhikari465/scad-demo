@@ -135,9 +135,11 @@ namespace Icon.Infor.Listeners.Item.Commands
                 new ItemTraitModel(i.ItemId, Traits.LineExtension, i.LineExtension, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.KitchenDescription, i.KitchenDescription, Locales.WholeFoods),
                 new ItemTraitModel(i.ItemId, Traits.ImageUrl, i.ImageUrl, Locales.WholeFoods),
-                new ItemTraitModel(i.ItemId, Traits.KitchenItem, i.KitchenItem.HasValue ? i.KitchenItem.Value.BoolToString() : "0",Locales.WholeFoods),
-                new ItemTraitModel(i.ItemId, Traits.HospitalityItem, i.HospitalityItem.HasValue ? i.HospitalityItem.Value.BoolToString() : "0",Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.KitchenItem, i.KitchenItem.HasValue ? i.KitchenItem.Value.BoolToString() : null,Locales.WholeFoods),
+                new ItemTraitModel(i.ItemId, Traits.HospitalityItem, i.HospitalityItem.HasValue ? i.HospitalityItem.Value.BoolToString() : null,Locales.WholeFoods),
             });
+
+            
 
             var itemTraitsTvp = itemTraits.ToTvp("itemTraits", "infor.ItemTraitAddOrUpdateType");
 

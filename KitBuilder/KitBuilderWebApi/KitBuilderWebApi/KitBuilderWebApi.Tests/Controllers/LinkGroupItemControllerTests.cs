@@ -43,6 +43,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockLinkGroupRepository = new Mock<IRepository<LinkGroup>>();
             mockLinkGroupItemRepository = new Mock<IRepository<LinkGroupItem>>();
             mockItemsRepository = new Mock<IRepository<Items>>();
+            mockKitLinkGroupItemRepository = new Mock<IRepository<KitLinkGroupItem>>();
             _mockUnitWork = new Mock<IUnitOfWork>();
 
             string locationUrl = "http://localhost:55873/api/LinkGroups/";

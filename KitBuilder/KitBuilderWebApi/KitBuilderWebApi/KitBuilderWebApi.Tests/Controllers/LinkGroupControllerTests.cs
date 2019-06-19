@@ -225,7 +225,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             var response = linkGroupController.CreateLinkGroup(linkGroupDto);
 
             // Then
-            Assert.IsInstanceOfType(response, typeof(CreatedAtRouteResult), "Create At Expected");
+            Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult), "Create At Expected");
             _mockUnitWork.Verify(m => m.Commit(), Times.Once);
         }
 

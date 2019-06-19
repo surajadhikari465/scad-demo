@@ -42,6 +42,33 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             dbProvider.Connection.Dispose();
         }
 
+       
+
+        [TestMethod]
+        public void AddOrUpdateProducts_UpdateExistingProductWithNoHospitalityData_ShouldRemoveItemAttributeKitRecord()
+        {
+            //Given
+            var itemId = 20000000;
+            InsertSimulatedPreExistingItemIntoDatabase(itemId, true);
+            var itemModel = CreateItemModelForAttributeTest(itemId, false);
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                {
+                    itemModel
+                }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+     
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            Assert.AreEqual(0,((object[])kitAttributes).Length);
+
+        }
+
         [TestMethod]
         public void AddOrUpdateProducts_ProductExist_ShouldUpdateProduct()
         {
@@ -64,15 +91,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
 
-            bool useSchemaWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
-                useSchemaWithKit = false;
-
-            if (useSchemaWithKit)
-            {
-                var kitAttributes = ReadKitAttributesDynamic(itemId);
-                AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
-            }
+           var kitAttributes = ReadKitAttributesDynamic(itemId);
+           AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+           
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -84,7 +105,100 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
 
         }
-        
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExistNullKitchenItem_ShouldAddProductAllowNullsForMissingHospitalityElements()
+        {
+            //Given
+            var itemId = 20000000;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+            itemModel.KitItemAttributes.KitchenItem = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                {
+                    itemModel
+                }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExistNullHospitalityItem_ShouldAddProductAllowNullsForMissingHospitalityElements()
+        {
+            //Given
+            var itemId = 20000000;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+            itemModel.KitItemAttributes.HospitalityItem = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                {
+                    itemModel
+                }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExistNullKitchenDesc_ShouldAddProductAllowNullsForMissingHospitalityElements()
+        {
+            //Given
+            var itemId = 20000000;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+            itemModel.KitItemAttributes.KitchenDescription = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                {
+                    itemModel
+                }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExistNullImageUrl_ShouldAddProductAllowNullsForMissingHospitalityElements()
+        {
+            //Given
+            var itemId = 20000000;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+            itemModel.KitItemAttributes.ImageUrl = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                {
+                    itemModel
+                }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+        }
+
+
         [TestMethod]
         public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProduct()
         {
@@ -105,17 +219,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Then
             var globalAttributes = ReadItemAttributesDynamic(itemId);
             AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
-
-
-            bool useSchemaWithKit;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["UseSchemaWithKit"], out useSchemaWithKit))
-                useSchemaWithKit = false;
-
-            if (useSchemaWithKit)
-            {
-                var kitAttributes = ReadKitAttributesDynamic(itemId);
-                AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
-            }
+            
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
 
             var signAttributes = ReadSignAttributesDynamic(itemId);
             AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
@@ -225,75 +331,12 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 "SELECT * FROM dbo.ItemAttributes_Nutrition WHERE ItemID = @ItemId",
                 new { ItemId = itemId },
                 dbProvider.Transaction)
-                .Single();
+                .FirstOrDefault();
 
-            Assert.IsNull(nutritionAttributes.RecipeName);
-            Assert.IsNull(nutritionAttributes.Allergens);
-            Assert.IsNull(nutritionAttributes.Ingredients);
-            Assert.IsNull(nutritionAttributes.ServingsPerPortion);
-            Assert.IsNull(nutritionAttributes.ServingSizeDesc);
-            Assert.IsNull(nutritionAttributes.ServingPerContainer);
-            Assert.IsNull(nutritionAttributes.HshRating);
-            Assert.IsNull(nutritionAttributes.ServingUnits);
-            Assert.IsNull(nutritionAttributes.SizeWeight);
-            Assert.IsNull(nutritionAttributes.Calories);
-            Assert.IsNull(nutritionAttributes.CaloriesFat);
-            Assert.IsNull(nutritionAttributes.CaloriesSaturatedFat);
-            Assert.IsNull(nutritionAttributes.TotalFatWeight);
-            Assert.IsNull(nutritionAttributes.TotalFatPercentage);
-            Assert.IsNull(nutritionAttributes.SaturatedFatWeight);
-            Assert.IsNull(nutritionAttributes.SaturatedFatPercent);
-            Assert.IsNull(nutritionAttributes.PolyunsaturatedFat);
-            Assert.IsNull(nutritionAttributes.MonounsaturatedFat);
-            Assert.IsNull(nutritionAttributes.CholesterolWeight);
-            Assert.IsNull(nutritionAttributes.CholesterolPercent);
-            Assert.IsNull(nutritionAttributes.SodiumWeight);
-            Assert.IsNull(nutritionAttributes.SodiumPercent);
-            Assert.IsNull(nutritionAttributes.PotassiumWeight);
-            Assert.IsNull(nutritionAttributes.PotassiumPercent);
-            Assert.IsNull(nutritionAttributes.TotalCarbohydrateWeight);
-            Assert.IsNull(nutritionAttributes.TotalCarbohydratePercent);
-            Assert.IsNull(nutritionAttributes.DietaryFiberWeight);
-            Assert.IsNull(nutritionAttributes.DietaryFiberPercent);
-            Assert.IsNull(nutritionAttributes.SolubleFiber);
-            Assert.IsNull(nutritionAttributes.InsolubleFiber);
-            Assert.IsNull(nutritionAttributes.Sugar);
-            Assert.IsNull(nutritionAttributes.SugarAlcohol);
-            Assert.IsNull(nutritionAttributes.OtherCarbohydrates);
-            Assert.IsNull(nutritionAttributes.ProteinWeight);
-            Assert.IsNull(nutritionAttributes.ProteinPercent);
-            Assert.IsNull(nutritionAttributes.VitaminA);
-            Assert.IsNull(nutritionAttributes.Betacarotene);
-            Assert.IsNull(nutritionAttributes.VitaminC);
-            Assert.IsNull(nutritionAttributes.Calcium);
-            Assert.IsNull(nutritionAttributes.Iron);
-            Assert.IsNull(nutritionAttributes.VitaminD);
-            Assert.IsNull(nutritionAttributes.VitaminE);
-            Assert.IsNull(nutritionAttributes.Thiamin);
-            Assert.IsNull(nutritionAttributes.Riboflavin);
-            Assert.IsNull(nutritionAttributes.Niacin);
-            Assert.IsNull(nutritionAttributes.VitaminB6);
-            Assert.IsNull(nutritionAttributes.Folate);
-            Assert.IsNull(nutritionAttributes.VitaminB12);
-            Assert.IsNull(nutritionAttributes.Biotin);
-            Assert.IsNull(nutritionAttributes.PantothenicAcid);
-            Assert.IsNull(nutritionAttributes.Phosphorous);
-            Assert.IsNull(nutritionAttributes.Iodine);
-            Assert.IsNull(nutritionAttributes.Magnesium);
-            Assert.IsNull(nutritionAttributes.Zinc);
-            Assert.IsNull(nutritionAttributes.Copper);
-            Assert.IsNull(nutritionAttributes.TransFat);
-            Assert.IsNull(nutritionAttributes.TransFatWeight);
-            Assert.IsNull(nutritionAttributes.CaloriesFromTransFat);
-            Assert.IsNull(nutritionAttributes.Om6Fatty);
-            Assert.IsNull(nutritionAttributes.Om3Fatty);
-            Assert.IsNull(nutritionAttributes.Starch);
-            Assert.IsNull(nutritionAttributes.Chloride);
-            Assert.IsNull(nutritionAttributes.Chromium);
-            Assert.IsNull(nutritionAttributes.VitaminK);
-            Assert.IsNull(nutritionAttributes.Manganese);
-            Assert.IsNull(nutritionAttributes.Molybdenum);
-            Assert.IsNull(nutritionAttributes.Selenium);
+            // updated to support nutrition delete. -- 06.16.2019
+            Assert.IsNull(nutritionAttributes);
+
+            
 
             var extAttributes = dbProvider.Connection.Query<dynamic>(
                 "SELECT * FROM dbo.ItemAttributes_Ext WHERE ItemID = @ItemId",
@@ -327,7 +370,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //No Error means the test passes
         }
 
-        private ItemModel CreateItemModelForAttributeTest(int itemId)
+        private ItemModel CreateItemModelForAttributeTest(int itemId, bool includeHospitalityData = true)
         {
             return new ItemModel
             {
@@ -462,13 +505,14 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     SmithsonianBirdFriendly = "Test SmithsonianBirdFriendly",
                     Wic = "Test Wic"
                 },
-                KitItemAttributes =  new KitItemAttributesModel
+                KitItemAttributes = includeHospitalityData ?  new KitItemAttributesModel
                 {
+                    ItemID = itemId,
                     HospitalityItem = false, 
                     KitchenItem = true,
                     ImageUrl = "http://wholefoods.com",
                     KitchenDescription = "Description"
-                }
+                } : new KitItemAttributesModel() { ItemID = itemId}
             };
         }
 
@@ -488,7 +532,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 .First();
         }
         
-        private void InsertSimulatedPreExistingItemIntoDatabase(int itemId)
+        private void InsertSimulatedPreExistingItemIntoDatabase(int itemId, bool includeHospitalityData = true)
         {
             #region global attributes
             const int itemTypeID = 1;
@@ -631,11 +675,18 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     @itemId, {itemTypeID}, '{scanCode}', {hierarchyMerchandiseID}, {hierarchyNationalClassID},
                     {brandHCID}, {taxClassHCID}, {pSNumber}, '{desc_Product}', '{desc_POS}',
                     '{packageUnit}', '{retailSize}', '{retailUOM}', {foodStampEligible}, '{desc_CustomerFriendly}'
-                )
+                ) 
 
+                ";
+
+            if (includeHospitalityData)
+                sqlToRun += $@"
                 INSERT INTO dbo.ItemAttributes_Kit(ItemId,KitchenItem,HospitalityItem,Desc_Kitchen,ImageUrl)
                 VALUES (@itemID,0,1, '{kitchenDescription}','{imageURL}')
-
+                    
+                ";
+                
+            sqlToRun += $@"
                 INSERT INTO dbo.ItemAttributes_Sign(
                     ItemID,
                     CheeseMilkType, Agency_GlutenFree, Agency_Kosher, Agency_NonGMO, Agency_Organic, Agency_Vegan,
@@ -719,8 +770,11 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             var kitAttributes = dbProvider.Connection.Query<dynamic>(
                 "select * from dbo.ItemAttributes_Kit WHERE ItemID = @itemId",
                 new {ItemId = itemId},
-                dbProvider.Transaction);
-            return kitAttributes.Single();
+                dbProvider.Transaction).FirstOrDefault();
+
+            if (kitAttributes != null) return kitAttributes;
+            return Enumerable.Empty<dynamic>();
+
         }
 
         private dynamic ReadNutritionAttributesDynamic(int itemId)

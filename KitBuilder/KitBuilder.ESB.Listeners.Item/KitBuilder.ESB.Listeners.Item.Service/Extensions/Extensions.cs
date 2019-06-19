@@ -19,7 +19,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
            decimal? sequenceId)
         {
             var enterpriseAttributes = item.locale.First().Item as EnterpriseItemAttributesType;
-            var storeAttributes = item.locale.First().Item as StoreItemAttributesType;
 
             if (enterpriseAttributes == null) return null;
 
@@ -34,65 +33,13 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
                 FlexibleText = GetTraitValue(enterpriseAttributes, TraitCodes.FlexibleText),
                 KitchenDescription = enterpriseAttributes.kitchenDescription,
                 ImageUrl = enterpriseAttributes.imageUrl,
-                KitchenItem = enterpriseAttributes.isKitchenItemSpecified && enterpriseAttributes.isKitchenItem,
-                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified && enterpriseAttributes.isHospitalityItem,
+                KitchenItem = enterpriseAttributes.isKitchenItemSpecified  ? enterpriseAttributes.isKitchenItem : (bool?) null,
+                HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ?  enterpriseAttributes.isHospitalityItem : (bool?) null
             };
 
             return itemModel;
         }
 
-     
-
-        private static string GetScanCodeTypeCode(string scanCode)
-        {
-            if (IsScalePlu(scanCode))
-            {
-                return ScanCodeTypes.Descriptions.ScalePlu;
-            }
-            else if (scanCode.Length < 7)
-            {
-                return ScanCodeTypes.Descriptions.PosPlu;
-            }
-            else
-            {
-                return ScanCodeTypes.Descriptions.Upc;
-            }
-        }
-
-        private static bool IsScalePlu(string scanCode)
-        {
-            return Regex.IsMatch(scanCode, RegularExpressions.ScalePlu)
-                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu46)
-                || Regex.IsMatch(scanCode, RegularExpressions.IngredientPlu48);
-        }
-
-        private static int GetItemTypeCodeId(string typeCode)
-        {
-            if (ItemTypes.Ids.ContainsKey(typeCode))
-            {
-                return ItemTypes.Ids[typeCode];
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-        private static int GetScanCodeTypeId(string scanCode)
-        {
-            if (scanCode.Length == 11 && scanCode[0] == '2' && scanCode.EndsWith("00000"))
-            {
-                return ScanCodeTypes.ScalePlu;
-            }
-            else if (scanCode.Length < 7)
-            {
-                return ScanCodeTypes.PosPlu;
-            }
-            else
-            {
-                return ScanCodeTypes.Upc;
-            }
-        }
 
         private static string GetTraitValue(EnterpriseItemAttributesType enterpriseAttributes, string traitCode, string defaultValue = "")
         {
@@ -137,28 +84,11 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
             }
         }
 
-        public static int? GetIdFromDescription(this Dictionary<string, int> descriptionToIdDictionary, string description)
-        {
-            if (description == null || !descriptionToIdDictionary.ContainsKey(description))
-            {
-                return null;
-            }
-            else
-            {
-                return descriptionToIdDictionary[description];
-            }
-        }
-
         public static bool ToBool(this string boolString)
         {
             return boolString == "1";
         }
 
-        private static bool ContainsDuplicateHierarchyClass(EnterpriseItemAttributesType enterpriseAttributes, string hierarchyName)
-        {
-            var hierarchyClassCount = enterpriseAttributes.hierarchies.Count(i => i.name == hierarchyName);
-
-            return hierarchyClassCount > 1;
-        }
+       
     }
 }

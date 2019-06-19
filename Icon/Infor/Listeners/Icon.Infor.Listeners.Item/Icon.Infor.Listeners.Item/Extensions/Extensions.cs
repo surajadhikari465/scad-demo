@@ -130,19 +130,27 @@ namespace Icon.Infor.Listeners.Item.Extensions
                 OrganicClaim = GetTraitValue(enterpriseAttributes, TraitCodes.OrganicClaim),
                 Varietal = GetTraitValue(enterpriseAttributes, TraitCodes.Varietal),
                 BeerStyle = GetTraitValue(enterpriseAttributes, TraitCodes.BeerStyle),
-                LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension),
-                KitchenDescription = enterpriseAttributes.kitchenDescription,
-                ImageUrl = enterpriseAttributes.imageUrl,
+                LineExtension = GetTraitValue(enterpriseAttributes, TraitCodes.LineExtension)
+ 
             };
 
+            ParseHospitalityData(itemModel, enterpriseAttributes);
+       
+
+            return itemModel;
+
+        }
+
+        private static void ParseHospitalityData(ItemModel itemModel,EnterpriseItemAttributesType enterpriseAttributes)
+        {
             if (enterpriseAttributes.isKitchenItemSpecified)
                 itemModel.KitchenItem = enterpriseAttributes.isKitchenItem;
 
             if (enterpriseAttributes.isHospitalityItemSpecified)
                 itemModel.HospitalityItem = enterpriseAttributes.isHospitalityItem;
 
-            return itemModel;
-
+            itemModel.KitchenDescription = enterpriseAttributes.kitchenDescription;
+            itemModel.ImageUrl = enterpriseAttributes.imageUrl;
         }
 
 

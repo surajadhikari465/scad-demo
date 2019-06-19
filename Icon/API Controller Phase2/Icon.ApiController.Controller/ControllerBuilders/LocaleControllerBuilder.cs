@@ -44,7 +44,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 new GetLocaleLineageQuery(iconContextFactory),
                 new UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>(
                     new NLogLoggerInstance<UpdateMessageQueueStatusCommandHandler<MessageQueueLocale>>(instance), 
-                    iconContextFactory));
+                    iconContextFactory),
+                settings);
             var saveXmlMessageCommandHandler = new SaveToMessageHistoryCommandHandler(
                 new NLogLoggerInstance<SaveToMessageHistoryCommandHandler>(instance),
                 iconContextFactory);

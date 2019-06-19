@@ -287,16 +287,65 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 fakeMessage
             };
 
+            settings.EnableHospitalityHospitalityItem = true;
+            settings.EnableHospitalityKitchenItem = true;
+            settings.EnableHospitalityImageUrl = true;
+            settings.EnableHospitalityKitchenDescription = true;
+
             // When.
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
 
             var item = (Contracts.EnterpriseItemAttributesType)miniBulk.item[0].locale[0].Item;
+
+
+            Assert.IsTrue(fakeMessage.HospitalityItem.HasValue);
+            Assert.IsTrue(fakeMessage.HospitalityItem.Value);
+            Assert.IsTrue(fakeMessage.KitchenItem.HasValue);
+            Assert.IsTrue(fakeMessage.KitchenItem.Value);
+            Assert.AreEqual("http://google.com", fakeMessage.ImageURL);
+            Assert.AreEqual("Test Kitchen Description", fakeMessage.KitchenDescription);
+
             Assert.AreEqual(true,item.isHospitalityItemSpecified);
             Assert.AreEqual(true,item.isKitchenItemSpecified);
             Assert.AreEqual(true, item.isHospitalityItem);
             Assert.AreEqual(true, item.isKitchenItem);
             Assert.AreEqual("http://google.com", item.imageUrl);
             Assert.AreEqual("Test Kitchen Description", item.kitchenDescription);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_HospitalityDataIsPresentInMQPMessageButConfigIsTurnedOff_HospitalityShouldNotBePresentInMiniBulk()
+        {
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithHospitalityData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale);
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            settings.EnableHospitalityHospitalityItem = false;
+            settings.EnableHospitalityKitchenItem = false;
+            settings.EnableHospitalityImageUrl = false;
+            settings.EnableHospitalityKitchenDescription = false;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            var item = (Contracts.EnterpriseItemAttributesType)miniBulk.item[0].locale[0].Item;
+
+            Assert.IsTrue(fakeMessage.HospitalityItem.HasValue);
+            Assert.IsTrue(fakeMessage.HospitalityItem.Value);
+            Assert.IsTrue(fakeMessage.KitchenItem.HasValue);
+            Assert.IsTrue(fakeMessage.KitchenItem.Value);
+            Assert.AreEqual("http://google.com", fakeMessage.ImageURL);
+            Assert.AreEqual("Test Kitchen Description", fakeMessage.KitchenDescription);
+
+
+            Assert.AreEqual(false, item.isHospitalityItemSpecified);
+            Assert.AreEqual(false, item.isKitchenItemSpecified);
+            Assert.AreEqual(false, item.isHospitalityItem);
+            Assert.AreEqual(false, item.isKitchenItem);
+            Assert.IsNull(item.imageUrl);
+            Assert.IsNull(item.kitchenDescription);
         }
 
         [TestMethod]
@@ -312,6 +361,12 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
 
             var item = (Contracts.EnterpriseItemAttributesType)miniBulk.item[0].locale[0].Item;
+
+            Assert.IsFalse(fakeMessage.HospitalityItem.HasValue);
+            Assert.IsFalse(fakeMessage.KitchenItem.HasValue);
+            Assert.IsNull( fakeMessage.ImageURL);
+            Assert.IsNull(fakeMessage.KitchenDescription);
+
             Assert.AreEqual(false, item.isHospitalityItemSpecified);
             Assert.AreEqual(false, item.isKitchenItemSpecified);
             Assert.AreEqual(false, item.isHospitalityItem);

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
+using Icon.ApiController.Common;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace Icon.ApiController.Tests.QueueReaders
@@ -67,6 +68,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private Timezone timezone;
         private string touchPointGroupId;
         private int storeLocaleId;
+        private ApiControllerSettings settings;
 
 		
 
@@ -103,6 +105,8 @@ namespace Icon.ApiController.Tests.QueueReaders
 			currencyCode = "USD";
             touchPointGroupId = "TPG1";
             storeLocaleId = 99999;
+
+            settings = new ApiControllerSettings();
             
 
             mockLogger = new Mock<ILogger<LocaleQueueReader>>();
@@ -124,7 +128,8 @@ namespace Icon.ApiController.Tests.QueueReaders
                 mockEmailClient.Object,
                 mockGetMessageQueueQuery.Object,
                 getLocaleLineageQuery,
-                mockUpdateMessageQueueStatusCommandHandler.Object);
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
         }
 
         [TestCleanup]
@@ -1152,16 +1157,90 @@ namespace Icon.ApiController.Tests.QueueReaders
 
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void GetLocaleMiniBulk_VenueMessageAndEnableHospitalityVenuesIsFalse_VenueShouldBeNull()
+        {
+            // Given.
+            var fakeMessageQueueLocales = new List<MessageQueueLocale>
+            {
+                new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+            };
+
+            //overriding the queuereader because we need specific settings.
+            settings.EnableHospitalityVenues = false;
+            queueReader = new LocaleQueueReader(
+                mockLogger.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                getLocaleLineageQuery,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
+
+            fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+            // Then.
+            var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
+            var venue = store.locales[0];
+
+            Assert.IsNull(venue);
+        }
+
+        [TestMethod]
+        public void GetLocaleMiniBulk_VenueMessageAndEnableHospitalityVenuesIsTrue_VenueShouldNotBeNull()
+        {
+            // Given.
+            var fakeMessageQueueLocales = new List<MessageQueueLocale>
+            {
+                new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
+            };
+
+            //overriding the queuereader because we need specific settings.
+            settings.EnableHospitalityVenues = true;
+
+            queueReader = new LocaleQueueReader(
+                mockLogger.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                getLocaleLineageQuery,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
+
+            fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
+
+            // Then.
+            var store = miniBulk.locales[0].locales[0].locales[0].locales[0];
+            var venue = store.locales[0];
+
+            Assert.IsNotNull(venue);
+        }
+
+        [TestMethod]
 		public void GetLocaleMiniBulk_VenueMessage_VenueElelmentShouldContainAllRequiredInformation()
 		{
-			// Given.
-			var fakeMessageQueueLocales = new List<MessageQueueLocale>
+            // Given.
+            var fakeMessageQueueLocales = new List<MessageQueueLocale>
 			{
 				new TestLocaleMessageBuilder().WithLocaleTypeId(LocaleTypes.Venue)
 			};
 
-			fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
+            //overriding the queuereader because we need specific settings.
+
+            settings.EnableHospitalityVenues = true;
+            queueReader = new LocaleQueueReader(
+                mockLogger.Object,
+                mockEmailClient.Object,
+                mockGetMessageQueueQuery.Object,
+                getLocaleLineageQuery,
+                mockUpdateMessageQueueStatusCommandHandler.Object,
+                settings);
+
+            fakeMessageQueueLocales[0].LocaleId = venues[0].localeID;
 
 			// When.
 			var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueLocales);
