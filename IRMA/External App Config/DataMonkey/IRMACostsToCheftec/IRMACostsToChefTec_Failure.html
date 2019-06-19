@@ -1,0 +1,71 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>{Reg} - {Environment} - {App} FAILURE</title>
+</head>
+
+<body bgcolor="#ffcc99">
+<p><font face="Verdana" size="2">The job <b>{Reg} - {Environment} - {App}</b>
+    failed.</font><br />
+    <br />
+    <font face="Verdana" size="2">The IRMA cost export from <b>{IRMAserver}\{IRMAinstance}</b> to <b>{CTserver}\{CTinstance}</b> encountered an error 
+on {MM}/{DD}/{YYYY} at {HH}:{MI}.</font>
+</p> 
+    <br />
+<table border="0" width="100%" style="width: 100%">
+	<colgroup>
+		<col width="auto" style="width: auto">
+		<col width="auto" style="width: auto">
+	</colgroup>
+	<tr height="20" style="height:15.0pt">
+		<td width="151" bgcolor="#669900" style="height: 18px; background-color: #cc6633";"><b>
+		<font face="Verdana" size="2">Parameter</font></b></td>
+		<td width="161" bgcolor="#669900" style="height: 18px; background-color: #cc6633";"><b><font face="Verdana" size="2">Value</font></b></td>
+	</tr>	
+	<tr height="20" style="height:15.0pt">
+		<td height="20"><b><font face="Verdana" size="2">SQL Connection Timeout</font></b></td>
+		<td>
+		<pre>{conTimeout}</pre>
+		</td>
+	</tr>
+	<tr height="20" style="height:15.0pt">
+		<td height="20"><b><font face="Verdana" size="2">SQL Command Timeout</font></b></td>
+		<td>
+		<pre>{sqlTimeout}</pre>
+		</td>
+	</tr>
+	<tr height="20" style="height:15.0pt">
+		<td height="20"><b><font face="Verdana" size="2">Log File</font></b></td>
+		<td>
+		<pre>{LogFile}</pre>
+		</td>
+	</tr>
+</table>
+<br />
+<br />
+<table border="0" width="100%" style="font-size: 10pt; font-family: Verdana">
+	<tr>
+		<td bgcolor="#669900" style="background-color: #cc6633"><b><font face="Verdana" size="2">Log File</font></b></td>
+	</tr>
+	<tr>
+		<td><pre>{ENTRY_1_LOG_BUFFER}</pre></td>
+	</tr>
+	<tr>
+		<td><pre>{ENTRY_2_LOG_BUFFER}</pre></td>
+	</tr>
+	<tr>
+		<td><pre>{ENTRY_3_LOG_BUFFER}</pre></td>
+	</tr>
+	<tr>
+		<td><pre>{ENTRY_4_LOG_BUFFER}</pre></td>
+	</tr>
+	<tr>
+		<td><pre>{ENTRY_5_LOG_BUFFER}</pre></td>
+	</tr>
+</table>
+
+</body>
+
+</html>
