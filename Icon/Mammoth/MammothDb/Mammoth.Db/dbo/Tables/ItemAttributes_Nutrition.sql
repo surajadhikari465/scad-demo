@@ -70,6 +70,11 @@
     [TransFatWeight]           DECIMAL (10, 1) NULL,
     [AddedDate]                DATETIME        DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]             DATETIME        NULL,
+    [AddedSugarsWeight]        DECIMAL (10, 1) NULL,
+    [AddedSugarsPercent]       SMALLINT        NULL,
+    [CalciumWeight]            DECIMAL (10, 1) NULL,
+    [IronWeight]               DECIMAL (10, 1) NULL,
+    [VitaminDWeight]           DECIMAL (10, 1) NULL,
     CONSTRAINT [PK_ItemAttributes_Nutrition] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100)
 );
 GO
@@ -79,4 +84,3 @@ GO
 
 GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Nutrition TO MammothRole
 GO
-
