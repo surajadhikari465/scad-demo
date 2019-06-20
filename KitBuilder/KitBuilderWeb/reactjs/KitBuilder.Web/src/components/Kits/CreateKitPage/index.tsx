@@ -191,7 +191,7 @@ class CreateKitPage extends React.PureComponent<
         })
         .catch(e => {
           this.setState({ disabledLinkGroups: [] });
-          if (e.response.status = 404)
+          if (e.response.status === 409)
           {
             this.props.showAlert("Cannot delete link group while in use.", "error");
           }
