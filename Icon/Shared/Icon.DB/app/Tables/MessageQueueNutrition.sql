@@ -70,9 +70,14 @@ CREATE TABLE [app].[MessageQueueNutrition](
 	[Molybdenum] [smallint] NULL,
 	[Selenium] [smallint] NULL,
 	[TransfatWeight] [decimal](10, 1) NULL,
-	[HazardousMaterialFlag] [int] NULL,
+  [HazardousMaterialFlag] [int] NULL,
 	[HazardousMaterialTypeCode] [varchar](4) NULL,
 	[InsertDate] [datetime2](7) NOT NULL,
+  [AddedSugarsWeight] DECIMAL(10, 1) NULL,
+	[AddedSugarsPercent] SMALLINT NULL,
+	[CalciumWeight] DECIMAL(10, 1) NULL,
+	[IronWeight] DECIMAL(10, 1) NULL,
+	[VitaminDWeight] DECIMAL(10, 1) NULL,
  CONSTRAINT [PK_MessageQueueNutrition] PRIMARY KEY CLUSTERED 
 (
 	[MessageQueueNutritionId] ASC

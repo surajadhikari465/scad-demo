@@ -383,6 +383,11 @@
           <Property Name="TransfatWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="HazardousMaterialFlag" Type="int" />
           <Property Name="HazardousMaterialTypeCode" Type="varchar" MaxLength="4" />
+          <Property Name="AddedSugarsWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="AddedSugarsPercent" Type="smallint" />
+          <Property Name="CalciumWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="IronWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="VitaminDWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="MessageQueuePrice">
@@ -1254,6 +1259,11 @@
           <Property Name="Molybdenum" Type="smallint" />
           <Property Name="Selenium" Type="smallint" />
           <Property Name="TransfatWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="AddedSugarsWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="AddedSugarsPercent" Type="smallint" />
+          <Property Name="CalciumWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="IronWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="VitaminDWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
         </EntityType>
@@ -5325,6 +5335,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="TransfatWeight" Type="Decimal" Precision="10" Scale="1" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+          <Property Name="AddedSugarsWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="AddedSugarsPercent" Type="Int16" />
+          <Property Name="CalciumWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="IronWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="VitaminDWeight" Type="Decimal" Precision="10" Scale="1" />
         </EntityType>
         <EntityType Name="MammothEventQueue">
           <Key>
@@ -5930,6 +5945,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="HazardousMaterialTypeCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueNutrition" ToRole="MessageQueueProduct" />
+          <Property Name="AddedSugarsWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="AddedSugarsPercent" Type="Int16" />
+          <Property Name="CalciumWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="IronWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="VitaminDWeight" Type="Decimal" Precision="10" Scale="1" />
         </EntityType>
         <EntityType Name="MessageQueueProduct">
           <Key>
@@ -6947,6 +6967,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemNutrition">
               <MappingFragment StoreEntitySet="ItemNutrition">
+                <ScalarProperty Name="VitaminDWeight" ColumnName="VitaminDWeight" />
+                <ScalarProperty Name="IronWeight" ColumnName="IronWeight" />
+                <ScalarProperty Name="CalciumWeight" ColumnName="CalciumWeight" />
+                <ScalarProperty Name="AddedSugarsPercent" ColumnName="AddedSugarsPercent" />
+                <ScalarProperty Name="AddedSugarsWeight" ColumnName="AddedSugarsWeight" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="TransfatWeight" ColumnName="TransfatWeight" />
@@ -7308,6 +7333,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueNutrition">
               <MappingFragment StoreEntitySet="MessageQueueNutrition">
+                <ScalarProperty Name="VitaminDWeight" ColumnName="VitaminDWeight" />
+                <ScalarProperty Name="IronWeight" ColumnName="IronWeight" />
+                <ScalarProperty Name="CalciumWeight" ColumnName="CalciumWeight" />
+                <ScalarProperty Name="AddedSugarsPercent" ColumnName="AddedSugarsPercent" />
+                <ScalarProperty Name="AddedSugarsWeight" ColumnName="AddedSugarsWeight" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="HazardousMaterialTypeCode" ColumnName="HazardousMaterialTypeCode" />
                 <ScalarProperty Name="HazardousMaterialFlag" ColumnName="HazardousMaterialFlag" />

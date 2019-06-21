@@ -85,5 +85,10 @@ namespace Icon.Framework
         public Nullable<decimal> TransfatWeight { get; set; }
         public System.DateTime InsertDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<decimal> AddedSugarsWeight { get; set; }
+        public Nullable<short> AddedSugarsPercent { get; set; }
+        public Nullable<decimal> CalciumWeight { get; set; }
+        public Nullable<decimal> IronWeight { get; set; }
+        public Nullable<decimal> VitaminDWeight { get; set; }
     }
 }

@@ -87,6 +87,11 @@ namespace Icon.Framework
         public Nullable<int> HazardousMaterialFlag { get; set; }
         public string HazardousMaterialTypeCode { get; set; }
         public System.DateTime InsertDate { get; set; }
+        public Nullable<decimal> AddedSugarsWeight { get; set; }
+        public Nullable<short> AddedSugarsPercent { get; set; }
+        public Nullable<decimal> CalciumWeight { get; set; }
+        public Nullable<decimal> IronWeight { get; set; }
+        public Nullable<decimal> VitaminDWeight { get; set; }
     
         public virtual MessageQueueProduct MessageQueueProduct { get; set; }
     }
