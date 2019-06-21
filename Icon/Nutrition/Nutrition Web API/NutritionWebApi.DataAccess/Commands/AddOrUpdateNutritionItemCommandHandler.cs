@@ -23,7 +23,7 @@ namespace NutritionWebApi.DataAccess.Commands
         /// <returns></returns>
         public string Execute(AddOrUpdateNutritionItemCommand updateNutritionItemCommandData)
         {
-            string storedProcedure = "nutrition.AddOrUpdateNutritionItem";
+            const string storedProcedure = "nutrition.AddOrUpdateNutritionItem";
 
             var itemListData = updateNutritionItemCommandData.NutritionItems.ConvertAll(item => new
             {
@@ -94,7 +94,12 @@ namespace NutritionWebApi.DataAccess.Commands
                 Manganese = item.Manganese,
                 Molybdenum = item.Molybdenum,
                 Selenium = item.Selenium,
-                TransfatWeight = item.TransfatWeight
+                TransfatWeight = item.TransfatWeight,
+                AddedSugarsWeight = item.AddedSugarsWeight,
+                AddedSugarsPercent = item.AddedSugarsPercent,
+                CalciumWeight = item.CalciumWeight,
+                IronWeight = item.IronWeight,
+                VitaminDWeight = item.VitaminDWeight
             });
 
             string result = this.DbConnectionProvider.Connection.Query<string>(

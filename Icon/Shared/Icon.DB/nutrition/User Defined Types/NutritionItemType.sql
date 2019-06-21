@@ -66,5 +66,10 @@
 	[Manganese] [smallint] NULL,
 	[Molybdenum] [smallint] NULL,
 	[Selenium] [smallint] NULL,
-	[TransfatWeight] [decimal](10, 1) NULL
+	[TransfatWeight] [decimal](10, 1) NULL,
+	[AddedSugarsWeight] [decimal](10, 1) NULL,
+	[AddedSugarsPercent] [smallint] NULL,
+	[CalciumWeight] [decimal](10, 1) NULL,
+	[IronWeight] [decimal](10, 1) NULL,
+	[VitaminDWeight] [decimal](10, 1) NULL
 )

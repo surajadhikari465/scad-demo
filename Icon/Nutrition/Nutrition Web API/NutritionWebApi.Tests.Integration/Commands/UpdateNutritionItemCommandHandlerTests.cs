@@ -17,8 +17,10 @@ namespace NutritionWebApi.Tests.Integration.Commands
 		public string RecipeName { get; set; }
 		public int? HshRating { get; set; }
 		public int? VitaminA { get; set; }
+		public decimal? IronWeight { get; set; }
+		public short? AddedSugarsPercent { get; set; }
 	}
-	
+
 	[TestClass]
 	public class UpdateNutritionItemCommandHandlerTests
 	{
@@ -64,37 +66,40 @@ namespace NutritionWebApi.Tests.Integration.Commands
 			Assert.IsNotNull(result);
 		}
 
-		 private List<NutritionItemModel> BuildNutritionItemList(int count)
-     {
-         var itemList = new List<NutritionItemModel>();
-         for (int i = 1; i <= count; i++)
-         {
-             var builder = new Common.Builders.NutritionItemModelBuilder().WithPlu((i).ToString())
-                 .WithRecipeName("Integration Test Recipe " + (i).ToString())
-							.WithServingUnits(1)
-							.WithHshRating(3)
-							.WithVitaminA(5);
-             itemList.Add(builder);
-         }
-         return itemList;
-     }
+		private List<NutritionItemModel> BuildNutritionItemList(int count)
+		{
+			var itemList = new List<NutritionItemModel>();
+			for(int i = 1; i <= count; i++)
+			{
+				var builder = new Common.Builders.NutritionItemModelBuilder().WithPlu((i).ToString())
+					.WithRecipeName("Integration Test Recipe " + (i).ToString())
+							   .WithServingUnits(1)
+							   .WithHshRating(3)
+							   .WithVitaminA(5);
+				itemList.Add(builder);
+			}
+			return itemList;
+		}
 
 		[TestMethod]
 		public void UpdateNutritionItemCommandHandler_SuccessfulExecution_ProductMessageIsGenerated()
 		{
 			// Given.
 			var itemModel = new List<NutritionItemModel>();
+			nutritionItem.Plu = "24253000000";
 			nutritionItem.RecipeName = "Integration test recipe";
 			nutritionItem.ServingUnits = 1;
 			nutritionItem.HshRating = 3;
 			nutritionItem.VitaminA = 5;
+			nutritionItem.IronWeight = 2;
+			nutritionItem.AddedSugarsPercent = 1;
 
 			itemModel.Add(nutritionItem);
 
 			// When
 			var result = commandHandler.Execute(new AddOrUpdateNutritionItemCommand() { NutritionItems = itemModel });
 			var messageID = this.connectionProvider.Connection.ExecuteScalar(sql: $"SELECT MessageQueueId FROM app.MessageQueueProduct WHERE ScanCode = '{nutritionItem.Plu}' AND MessageStatusId = 1;", commandType: CommandType.Text);
-			var actualNutritionMessage = this.connectionProvider.Connection.Query<MessageQueueInfo>(sql: $"SELECT Plu, ServingUnits, RecipeName, HshRating, VitaminA FROM app.MessageQueueNutrition WHERE MessageQueueId = {messageID}" ).FirstOrDefault();
+			var actualNutritionMessage = this.connectionProvider.Connection.Query<MessageQueueInfo>(sql: $"SELECT Plu, ServingUnits, RecipeName, HshRating, VitaminA, IronWeight, AddedSugarsPercent FROM app.MessageQueueNutrition WHERE MessageQueueId = {messageID}").FirstOrDefault();
 
 			// Then.
 			Assert.IsNotNull(result);
@@ -103,6 +108,8 @@ namespace NutritionWebApi.Tests.Integration.Commands
 			Assert.AreEqual(nutritionItem.RecipeName, actualNutritionMessage.RecipeName);
 			Assert.AreEqual(nutritionItem.HshRating, actualNutritionMessage.HshRating);
 			Assert.AreEqual(nutritionItem.VitaminA, actualNutritionMessage.VitaminA);
+			Assert.AreEqual(nutritionItem.IronWeight, actualNutritionMessage.IronWeight);
+			Assert.AreEqual(nutritionItem.AddedSugarsPercent, actualNutritionMessage.AddedSugarsPercent);
 		}
 	}
 }

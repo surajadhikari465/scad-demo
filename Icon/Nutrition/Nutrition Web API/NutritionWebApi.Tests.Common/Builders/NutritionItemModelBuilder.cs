@@ -1,5 +1,4 @@
 ﻿using NutritionWebApi.Common.Models;
-using System;
 
 namespace NutritionWebApi.Tests.Common.Builders
 {
@@ -74,6 +73,11 @@ namespace NutritionWebApi.Tests.Common.Builders
         private int? Molybdenum;
         private int? Selenium;
         private decimal? TransfatWeight;
+        private decimal? AddedSugarsWeight;
+        private short? AddedSugarsPercent;
+        private decimal? CalciumWeight;
+        private decimal? IronWeight;
+        private decimal? VitaminDWeight;
 
         public NutritionItemModelBuilder()
         {
@@ -149,6 +153,11 @@ namespace NutritionWebApi.Tests.Common.Builders
         public NutritionItemModelBuilder WithMolybdenum(int? value) { this.Molybdenum = value; return this; }
         public NutritionItemModelBuilder WithSelenium(int? value) { this.Selenium = value; return this; }
         public NutritionItemModelBuilder WithTransfatWeight(decimal? value) { this.TransfatWeight = value; return this; }
+        public NutritionItemModelBuilder WithAddedSugarsWeight(decimal? value) { this.AddedSugarsWeight = value; return this; }
+        public NutritionItemModelBuilder WithAddedSugarsPercent(short? value) { this.AddedSugarsPercent = value; return this; }
+        public NutritionItemModelBuilder WithCalciumWeight(decimal? value) { this.CalciumWeight = value; return this; }
+        public NutritionItemModelBuilder WithIronWeight(decimal? value) { this.IronWeight = value; return this; }
+        public NutritionItemModelBuilder WithVitaminDWeight(decimal? value) { this.VitaminDWeight = value; return this; }
 
         private NutritionItemModel Build()
         {
@@ -222,7 +231,12 @@ namespace NutritionWebApi.Tests.Common.Builders
                 Manganese = this.Manganese,
                 Molybdenum = this.Molybdenum,
                 Selenium = this.Selenium,
-                TransfatWeight = this.TransfatWeight
+                TransfatWeight = this.TransfatWeight,
+                AddedSugarsWeight = this.AddedSugarsWeight,
+                AddedSugarsPercent = this.AddedSugarsPercent,
+                CalciumWeight = this.CalciumWeight,
+                IronWeight = this.IronWeight,
+                VitaminDWeight = this.VitaminDWeight
             };
 
             return nutritionItemModel;

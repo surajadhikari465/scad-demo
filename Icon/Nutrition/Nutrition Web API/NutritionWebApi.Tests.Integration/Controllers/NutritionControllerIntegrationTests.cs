@@ -66,7 +66,8 @@ namespace NutritionWebApi.Tests.Integration.Controllers
             for (int i = 1; i <= count; i++)
             {
                 NutritionItemModelBuilder builder = new NutritionItemModelBuilder().WithPlu((i).ToString())
-                    .WithRecipeName("Integration Test Recipe " + (i).ToString());
+                    .WithRecipeName("Integration Test Recipe " + (i).ToString())
+                    .WithIronWeight(i);
                 itemList.Add(builder);
             }
             return itemList;

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace NutritionWebApi.Common.Models
 {
@@ -76,5 +73,10 @@ namespace NutritionWebApi.Common.Models
         public int? Molybdenum { get; set; }
         public int? Selenium { get; set; }
         public Decimal? TransfatWeight { get; set; }
+        public decimal? AddedSugarsWeight { get; set; }
+        public short? AddedSugarsPercent { get; set; }
+        public decimal? CalciumWeight { get; set; }
+        public decimal? IronWeight { get; set; }
+        public decimal? VitaminDWeight { get; set; }
     }
 }

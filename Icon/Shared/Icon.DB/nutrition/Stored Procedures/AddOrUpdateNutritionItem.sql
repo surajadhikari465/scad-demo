@@ -21,7 +21,8 @@ declare @validationDateTraitID int;
 						  where s.KeyName = 'SendItemNutritionUpdatesToIRMA');
 	SET @validationDateTraitID = (select traitID from Trait where traitCode = 'VAL')
  
- 
+  SELECT * INTO #nutritionItem
+  FROM @NutritionItem;
 
 
 	UPDATE [nutrition].[ItemNutrition]
@@ -92,12 +93,17 @@ declare @validationDateTraitID int;
 		  ,[Molybdenum] = newni.Molybdenum
 		  ,[Selenium] = newni.Selenium
 		  ,[TransfatWeight] = newni.TransfatWeight
+		  ,[AddedSugarsWeight] = newni.AddedSugarsWeight
+		  ,[AddedSugarsPercent] = newni.AddedSugarsPercent
+		  ,[CalciumWeight] = newni.CalciumWeight
+		  ,[IronWeight] = newni.IronWeight
+		  ,[VitaminDWeight] = newni.VitaminDWeight
 		  ,[ModifiedDate] = SYSDATETIME()
 
 		 output INSERTED.RecipeId, newni.[Plu], 0 into @distinctNutritionIDs
 	
 		FROM [nutrition].[ItemNutrition] oldni
-		INNER JOIN  @NutritionItem newni ON newni.Plu = oldni.Plu
+		INNER JOIN  #nutritionItem newni ON newni.Plu = oldni.Plu
 
 	set @updatedCount  =  @@RowCount
 	IF(@updatedCount > 0)
@@ -172,8 +178,13 @@ declare @validationDateTraitID int;
            ,[Molybdenum]
            ,[Selenium]
            ,[TransfatWeight]
-		   ,[InsertDate]
-		   ,[ModifiedDate]
+           ,[InsertDate]
+           ,[ModifiedDate]
+           ,[AddedSugarsWeight]
+           ,[AddedSugarsPercent]
+           ,[CalciumWeight]
+           ,[IronWeight]
+           ,[VitaminDWeight]
 		)	
 		 output INSERTED.RecipeId, INSERTED.Plu, 1 into @distinctNutritionIDs	
 		SELECT [Plu]
@@ -246,6 +257,11 @@ declare @validationDateTraitID int;
 		  ,[TransfatWeight]
 		  ,SYSDATETIME()
 		  ,null
+		  ,[AddedSugarsWeight]
+		  ,[AddedSugarsPercent]
+		  ,[CalciumWeight]
+		  ,[IronWeight]
+		  ,[VitaminDWeight]
 		 FROM @NutritionItem newItem
 		 
 		 WHERE
