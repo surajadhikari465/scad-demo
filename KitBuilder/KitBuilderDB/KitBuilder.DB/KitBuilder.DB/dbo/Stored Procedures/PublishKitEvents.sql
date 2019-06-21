@@ -160,7 +160,7 @@ BEGIN
 	SET @localeListWithNoVenues = '';
 
 	SELECT @localeListWithNoVenues = 
-	(SELECT STUFF((Select ',' + locale.LocaleName 
+	IsNull((SELECT STUFF((Select ',' + locale.LocaleName 
 	FROM KitLocale
 	INNER JOIN locale ON KitLocale.LocaleId = locale.LocaleId
 	WHERE KitId = @kitId
@@ -168,7 +168,7 @@ BEGIN
 			SELECT KitLocaleId
 			FROM #IncludedVenues
 			)
-    FOR XML PATH ('')),1,1,'')as Locales)
+    FOR XML PATH ('')),1,1,'')as Locales),'')
 
  IF(@localeListWithNoVenues ='')
  BEGIN
