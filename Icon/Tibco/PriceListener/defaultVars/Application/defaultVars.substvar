@@ -28,12 +28,12 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MaxDbRetryCount</name>
-			<value>3</value>
+			<value>5</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
 			<constraint></constraint>
-			<modTime>1510684984368</modTime>
+			<modTime>1561125284029</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MaxRedeliveryCount</name>

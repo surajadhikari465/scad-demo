@@ -29,98 +29,85 @@
     </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1498075441413</pd:targetNamespace>
-    <pd:group name="RepeatOnDbError">
+    <pd:activity name="Generate-DataError">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1020</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($MapZeroRowsImpactedError/pfx9:ExceptionRequest/ExceptionCode)">
+                    <pfx7:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$MapZeroRowsImpactedError/pfx9:ExceptionRequest/ns9:Header/ns9:Message"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
+                        </messageCode>
+                        <data>
+                            <xsl:copy-of select="$MapZeroRowsImpactedError/pfx9:ExceptionRequest"/>
+                        </data>
+                    </pfx7:ActivityInput>
+                </xsl:when>
+                <xsl:when test="exists($Map-Retry-Error/pfx9:ExceptionRequest/ExceptionCode)">
+                    <pfx7:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$Map-Retry-Error/pfx9:ExceptionRequest/ns9:Header/ns9:Message"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/RetryError"/>
+                        </messageCode>
+                        <data>
+                            <xsl:copy-of select="$Map-Retry-Error/pfx9:ExceptionRequest"/>
+                        </data>
+                    </pfx7:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx7:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$Map-Database-Error/pfx9:ExceptionRequest/ns9:Header/ns9:Message"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DataError"/>
+                        </messageCode>
+                        <data>
+                            <xsl:copy-of select="$Map-Database-Error/pfx9:ExceptionRequest"/>
+                        </data>
+                    </pfx7:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>302</pd:x>
-        <pd:y>3</pd:y>
-        <pd:width>528</pd:width>
-        <pd:height>578</pd:height>
+        <pd:x>109</pd:x>
+        <pd:y>0</pd:y>
+        <pd:width>759</pd:width>
+        <pd:height>568</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
         <pd:joinToggle>inherit</pd:joinToggle>
         <config>
-            <pd:groupType>errorLoop</pd:groupType>
+            <pd:groupType>simpleGroup</pd:groupType>
             <pd:serializable>false</pd:serializable>
-            <pd:indexSlot>retryCountIndex</pd:indexSlot>
-            <pd:errorCondition>$retryCountIndex = $_globalVariables/pfx2:GlobalVariables/Application/MaxDbRetryCount</pd:errorCondition>
-            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>UpdatePrice</pd:to>
-            <pd:xpathDescription>Update</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Update")</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>AddPrice</pd:to>
-            <pd:xpathDescription>Add</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Add")</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>DeletePrice</pd:to>
-            <pd:xpathDescription>Delete</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Delete"</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Map Database Error</pd:from>
-            <pd:to>end</pd:to>
+            <pd:to>ValidatePriceData</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>DeletePrice</pd:from>
+            <pd:from>Null-1</pd:from>
             <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>MapZeroRowsImpactedError</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>UpdatePrice</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>AddPrice</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>WaitBeforeRetry (Sleep)</pd:from>
-            <pd:to>Throw-Db-Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Exponential Retry</pd:from>
-            <pd:to>WaitBeforeRetry (Sleep)</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -138,18 +125,6 @@
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-52429</pd:lineColor>
             <pd:conditionType>error</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>Null</pd:from>
-            <pd:to>Exponential Retry</pd:to>
-            <pd:xpathDescription>Retry </pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>exists($_error_AddPrice/ActivityErrors/pfx3:LoginTimedOutException)
-or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)
-or exists($_error_UpdatePrice/ActivityErrors/pfx3:LoginTimedOutException)
-or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Null</pd:from>
@@ -192,11 +167,94 @@ or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpa
             <pd:lineColor>-65383</pd:lineColor>
             <pd:conditionType>error</pd:conditionType>
         </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Map Retry Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($_error_AddPrice/ActivityErrors/pfx3:LoginTimedOutException)
+or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCTimedOutException)
+or exists($_error_UpdatePrice/ActivityErrors/pfx3:LoginTimedOutException)
+or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)
+or exists($_error_AddPrice/ActivityErrors/pfx3:JDBCSQLException)
+or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCSQLException)
+or exists( $_error_DeletePrice/ActivityErrors/pfx3:JDBCSQLException)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ValidatePriceData</pd:from>
+            <pd:to>UpdatePrice</pd:to>
+            <pd:xpathDescription>Update</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Update")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ValidatePriceData</pd:from>
+            <pd:to>AddPrice</pd:to>
+            <pd:xpathDescription>Add</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>($Start/Input/pfx8:MammothPrice/pfx8:Action="Add")</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ValidatePriceData</pd:from>
+            <pd:to>DeletePrice</pd:to>
+            <pd:xpathDescription>Delete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Start/Input/pfx8:MammothPrice/pfx8:Action="Delete"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Database Error</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DeletePrice</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MapZeroRowsImpactedError</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Retry Error</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>UpdatePrice</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AddPrice</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
         <pd:activity name="AddPrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>551</pd:x>
-            <pd:y>73</pd:y>
+            <pd:x>465</pd:x>
+            <pd:y>64</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -390,129 +448,11 @@ or exists($_error_UpdatePrice/ActivityErrors/pfx3:JDBCTimedOutException)</pd:xpa
                 </inputs>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="WaitBeforeRetry (Sleep)">
-            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
-            <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>512</pd:x>
-            <pd:y>496</pd:y>
-            <config/>
-            <pd:inputBindings>
-                <ns0:SleepInputSchema>
-                    <IntervalInMillisec>
-                        <xsl:value-of select="round($Exponential-Retry/javaCodeActivityOutput/result)"/>
-                    </IntervalInMillisec>
-                </ns0:SleepInputSchema>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Throw-Db-Error">
-            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-            <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>639</pd:x>
-            <pd:y>484</pd:y>
-            <config>
-                <faultName>Error</faultName>
-            </config>
-            <pd:inputBindings>
-                <pfx7:ActivityInput>
-                    <message>
-                        <xsl:value-of select="concat(&quot;Database Related Error for: &quot;,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
-                    </message>
-                    <xsl:if test="$_error/ns7:ErrorReport/MsgCode">
-                        <messageCode>
-                            <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
-                        </messageCode>
-                    </xsl:if>
-                    <data>
-                        <pfx9:ExceptionRequest>
-                            <ns9:Header>
-                                <ns9:ApplicationID>
-                                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
-                                </ns9:ApplicationID>
-                                <ns9:Timestamp>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </ns9:Timestamp>
-                            </ns9:Header>
-                            <ExceptionCode>
-                                <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
-                            </ExceptionCode>
-                        </pfx9:ExceptionRequest>
-                    </data>
-                </pfx7:ActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="Exponential Retry">
-            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
-            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
-            <pd:x>370</pd:x>
-            <pd:y>487</pd:y>
-            <config>
-                <fullsource>package Processes.PriceCommand;
-import java.util.*;
-import java.io.*;
-public class PriceCommandExponentialRetry{
-/****** START SET/GET METHOD, DO NOT MODIFY *****/
-	protected double retryCount = 0.0d;
-	protected double result = 0.0d;
-	public double getretryCount() {
-		return retryCount;
-	}
-	public void setretryCount(double val) {
-		retryCount = val;
-	}
-	public double getresult() {
-		return result;
-	}
-	public void setresult(double val) {
-		result = val;
-	}
-/****** END SET/GET METHOD, DO NOT MODIFY *****/
-	public PriceCommandExponentialRetry() {
-	}
-	public void invoke() throws Exception {
-/* Available Variables: DO NOT MODIFY
-	In  : double retryCount
-	Out : double result
-* Available Variables: DO NOT MODIFY *****/
-result=Math.pow(2,retryCount)*100L;
-}
-}
-</fullsource>
-                <fileName>PriceCommandExponentialRetry</fileName>
-                <packageName>Processes.PriceCommand</packageName>
-                <outputData>
-                    <row>
-                        <fieldName>result</fieldName>
-                        <fieldType>double</fieldType>
-                        <fieldRequired>optional</fieldRequired>
-                    </row>
-                </outputData>
-                <inputData>
-                    <row>
-                        <fieldName>retryCount</fieldName>
-                        <fieldType>double</fieldType>
-                        <fieldRequired>optional</fieldRequired>
-                    </row>
-                </inputData>
-                <byteCode>
-                    <class>
-                        <name>PriceCommandExponentialRetry</name>
-                        <byteCode>yv66vgAAADMAKAkACQAdCQAJAB4KAAoAHwZAAAAAAAAAAAoAIAAhBkBZAAAAAAAABwAiBwAjAQAKcmV0cnlDb3VudAEAAUQBAAZyZXN1bHQBAA1nZXRyZXRyeUNvdW50AQADKClEAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHJldHJ5Q291bnQBAAQoRClWAQAJZ2V0cmVzdWx0AQAJc2V0cmVzdWx0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAJAEAClNvdXJjZUZpbGUBACFQcmljZUNvbW1hbmRFeHBvbmVudGlhbFJldHJ5LmphdmEMAAsADAwADQAMDAAWABcHACUMACYAJwEAM1Byb2Nlc3Nlcy9QcmljZUNvbW1hbmQvUHJpY2VDb21tYW5kRXhwb25lbnRpYWxSZXRyeQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAOamF2YS9sYW5nL01hdGgBAANwb3cBAAUoREQpRAAhAAkACgAAAAIABAALAAwAAAAEAA0ADAAAAAYAAQAOAA8AAQAQAAAAHQACAAEAAAAFKrQAAa8AAAABABEAAAAGAAEAAAAJAAEAEgATAAEAEAAAACIAAwADAAAABiontQABsQAAAAEAEQAAAAoAAgAAAAwABQANAAEAFAAPAAEAEAAAAB0AAgABAAAABSq0AAKvAAAAAQARAAAABgABAAAADwABABUAEwABABAAAAAiAAMAAwAAAAYqJ7UAArEAAAABABEAAAAKAAIAAAASAAUAEwABABYAFwABABAAAAAzAAMAAQAAAA8qtwADKg61AAEqDrUAArEAAAABABEAAAASAAQAAAAVAAQABgAJAAcADgAWAAEAGAAXAAIAEAAAAC8ABQABAAAAEyoUAAQqtAABuAAGFAAHa7UAArEAAAABABEAAAAKAAIAAAAcABIAHQAZAAAABAABABoAAQAbAAAAAgAc</byteCode>
-                    </class>
-                </byteCode>
-            </config>
-            <pd:inputBindings>
-                <javaCodeActivityInput>
-                    <retryCount>
-                        <xsl:value-of select="$retryCountIndex"/>
-                    </retryCount>
-                </javaCodeActivityInput>
-            </pd:inputBindings>
-        </pd:activity>
         <pd:activity name="DeletePrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>603</pd:x>
-            <pd:y>289</pd:y>
+            <pd:x>573</pd:x>
+            <pd:y>309</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -595,16 +535,16 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="Null">
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
-            <pd:x>373</pd:x>
-            <pd:y>364</pd:y>
+            <pd:x>343</pd:x>
+            <pd:y>384</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>
         <pd:activity name="Map Database Error">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>561</pd:x>
-            <pd:y>364</pd:y>
+            <pd:x>530</pd:x>
+            <pd:y>384</pd:y>
             <config>
                 <element ref="pfx9:ExceptionRequest"/>
             </config>
@@ -624,14 +564,17 @@ result=Math.pow(2,retryCount)*100L;
                     <ExceptionCode>
                         <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DataError"/>
                     </ExceptionCode>
+                    <StackTrace>
+                        <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                    </StackTrace>
                 </pfx9:ExceptionRequest>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="MapZeroRowsImpactedError">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>724</pd:x>
-            <pd:y>74</pd:y>
+            <pd:x>694</pd:x>
+            <pd:y>94</pd:y>
             <config>
                 <element ref="pfx9:ExceptionRequest"/>
             </config>
@@ -657,8 +600,8 @@ result=Math.pow(2,retryCount)*100L;
         <pd:activity name="UpdatePrice">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>552</pd:x>
-            <pd:y>209</pd:y>
+            <pd:x>491</pd:x>
+            <pd:y>211</pd:y>
             <config>
                 <timeout>10</timeout>
                 <maxRows>100</maxRows>
@@ -852,62 +795,68 @@ result=Math.pow(2,retryCount)*100L;
                 </inputs>
             </pd:inputBindings>
         </pd:activity>
+        <pd:activity name="ValidatePriceData">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>186</pd:x>
+            <pd:y>323</pd:y>
+            <config>
+                <processName>/Processes/ValidatePriceData.process</processName>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Retry Error">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>485</pd:x>
+            <pd:y>492</pd:y>
+            <config>
+                <element ref="pfx9:ExceptionRequest"/>
+            </config>
+            <pd:inputBindings>
+                <pfx9:ExceptionRequest>
+                    <ns9:Header>
+                        <ns9:ApplicationID>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ApplicationID"/>
+                        </ns9:ApplicationID>
+                        <ns9:Timestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns9:Timestamp>
+                        <ns9:Message>
+                            <xsl:value-of select="concat(&quot;Database Error for: &quot;,&quot;Item ID: &quot;,$Start/Input/pfx8:MammothPrice/pfx8:ItemId&#xA;,&quot;. Region: &quot;, $Start/Input/pfx8:MammothPrice/pfx8:Region,&quot;. BusinessUnit:&quot;, $Start/Input/pfx8:MammothPrice/pfx8:BusinessUnit,&#xA;&quot;. Error: &quot;,$_error/ns7:ErrorReport/Msg)"/>
+                        </ns9:Message>
+                    </ns9:Header>
+                    <ExceptionCode>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/RetryError"/>
+                    </ExceptionCode>
+                    <StackTrace>
+                        <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                    </StackTrace>
+                </pfx9:ExceptionRequest>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null-1">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>800</pd:x>
+            <pd:y>312</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
     </pd:group>
-    <pd:activity name="Generate-DataError">
-        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
-        <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>1020</pd:x>
-        <pd:y>197</pd:y>
-        <config>
-            <faultName>Error</faultName>
-        </config>
-        <pd:inputBindings>
-            <xsl:choose>
-                <xsl:when test="exists($MapZeroRowsImpactedError/pfx9:ExceptionRequest/ExceptionCode)">
-                    <pfx7:ActivityInput>
-                        <message>
-                            <xsl:value-of select="$MapZeroRowsImpactedError/pfx9:ExceptionRequest/ns9:Header/ns9:Message"/>
-                        </message>
-                        <messageCode>
-                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/ZeroRowsImpacted"/>
-                        </messageCode>
-                        <data>
-                            <xsl:copy-of select="$MapZeroRowsImpactedError/pfx9:ExceptionRequest"/>
-                        </data>
-                    </pfx7:ActivityInput>
-                </xsl:when>
-                <xsl:otherwise>
-                    <pfx7:ActivityInput>
-                        <message>
-                            <xsl:value-of select="$Map-Database-Error/pfx9:ExceptionRequest/ns9:Header/ns9:Message"/>
-                        </message>
-                        <messageCode>
-                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Application/ErrorCodes/DataError"/>
-                        </messageCode>
-                        <data>
-                            <xsl:copy-of select="$Map-Database-Error/pfx9:ExceptionRequest"/>
-                        </data>
-                    </pfx7:ActivityInput>
-                </xsl:otherwise>
-            </xsl:choose>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="ValidatePriceData">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>186</pd:x>
-        <pd:y>301</pd:y>
-        <config>
-            <processName>/Processes/ValidatePriceData.process</processName>
-        </config>
-        <pd:inputBindings>
-            <Input>
-                <xsl:copy-of select="$Start/Input/pfx8:MammothPrice"/>
-            </Input>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
-        <pd:from>RepeatOnDbError</pd:from>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
         <pd:to>Generate-DataError</pd:to>
         <pd:xpathDescription>Errors Exist</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
@@ -915,27 +864,14 @@ result=Math.pow(2,retryCount)*100L;
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>exists($MapZeroRowsImpactedError/pfx9:ExceptionRequest/ExceptionCode)
 or
-exists($Map-Database-Error/pfx9:ExceptionRequest/ExceptionCode)</pd:xpath>
+exists($Map-Database-Error/pfx9:ExceptionRequest/ExceptionCode)
+or exists ($Map-Retry-Error/pfx9:ExceptionRequest/ExceptionCode)</pd:xpath>
     </pd:transition>
     <pd:transition>
-        <pd:from>RepeatOnDbError</pd:from>
+        <pd:from>Group</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>ValidatePriceData</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>ValidatePriceData</pd:from>
-        <pd:to>RepeatOnDbError</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

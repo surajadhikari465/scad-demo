@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx8="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType">
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/PriceListener/Shared Resources/Schemas/Application/Schema.xsd" xmlns:pfx7="http://schemas.wfm.com/Mammoth/MammothPrices.xsd" xmlns:pfx8="http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd" xmlns:pfx="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pfx2="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx3="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:pfx4="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd" xmlns:ns2="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:ns1="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns4="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:ns3="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ns5="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ns8="http://schemas.wfm.com/Mammoth/Error.xsd" xmlns:ns7="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" xmlns:ns9="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns10="http://www.tibco.com/pe/EngineTypes" xmlns:ns32="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" schemaLocation="/Shared Resources/Schemas/wfm-2.3.0.1800/WholeFoodsMarket/Price/Price.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1"/>
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/mammothDbPrice.xsd"/>
@@ -22,182 +22,387 @@
         </xsd:element>
     </pd:startType>
     <pd:startX>27</pd:startX>
-    <pd:startY>272</pd:startY>
+    <pd:startY>304</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>833</pd:endX>
-    <pd:endY>273</pd:endY>
+    <pd:endX>1033</pd:endX>
+    <pd:endY>282</pd:endY>
     <pd:errorSchemas>
         <Error ref="pfx8:ExceptionRequest"/>
     </pd:errorSchemas>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1495053255704</pd:targetNamespace>
-    <pd:group name="Transaction">
-        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+    <pd:group name="Loop">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>121</pd:x>
-        <pd:y>119</pd:y>
-        <pd:width>649</pd:width>
-        <pd:height>292</pd:height>
-        <pd:collapsedWidth>57</pd:collapsedWidth>
-        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:x>103</pd:x>
+        <pd:y>92</pd:y>
+        <pd:width>792</pd:width>
+        <pd:height>543</pd:height>
+        <pd:collapsedWidth>52</pd:collapsedWidth>
+        <pd:collapsedHeight>69</pd:collapsedHeight>
         <pd:groupVariables/>
-        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
-            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
-            <pd:transactionType>JDBCTransaction</pd:transactionType>
-            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+            <pd:indexSlot>retryCountIndex</pd:indexSlot>
+            <pd:errorCondition>$retryCountIndex = $_globalVariables/ns9:GlobalVariables/Application/MaxDbRetryCount</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
         </config>
         <pd:inputBindings/>
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>IteratePrices</pd:to>
+            <pd:to>Transaction</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
+            <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>start</pd:from>
-            <pd:to>Delete All Prices</pd:to>
-            <pd:xpathDescription>Reset Flag is True</pd:xpathDescription>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>xpath</pd:conditionType>
-            <pd:xpath>$Start/root/ResetFlag = $_globalVariables/ns9:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
-        </pd:transition>
-        <pd:transition>
-            <pd:from>AddUpdateMessageSequence</pd:from>
+            <pd:from>Transaction</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>IteratePrices</pd:from>
-            <pd:to>AddUpdateMessageSequence</pd:to>
+            <pd:from>Catch</pd:from>
+            <pd:to>Exponential Retry</pd:to>
+            <pd:xpathDescription>Retry Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>($Catch/pfx8:ExceptionRequest/ExceptionCode =$_globalVariables/ns9:GlobalVariables/Application/ErrorCodes/RetryError)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Exponential Retry</pd:from>
+            <pd:to>WaitBeforeRetry (Sleep)</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Delete All Prices</pd:from>
-            <pd:to>IteratePrices</pd:to>
+            <pd:from>WaitBeforeRetry (Sleep)</pd:from>
+            <pd:to>Throw-Db-Error</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
-        <pd:group name="IteratePrices">
-            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Throw Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Transaction">
+            <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>362</pd:x>
-            <pd:y>186</pd:y>
-            <pd:width>188</pd:width>
-            <pd:height>160</pd:height>
+            <pd:x>179</pd:x>
+            <pd:y>144</pd:y>
+            <pd:width>649</pd:width>
+            <pd:height>292</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
             <pd:collapsedHeight>70</pd:collapsedHeight>
             <pd:groupVariables/>
             <pd:joinToggle>inherit</pd:joinToggle>
             <config>
-                <pd:groupType>inputLoop</pd:groupType>
+                <pd:groupType>transactionGroup</pd:groupType>
                 <pd:serializable>false</pd:serializable>
-                <pd:over>$Start/root/pfx7:MammothPrices/pfx7:MammothPrice</pd:over>
-                <pd:iterationElementSlot>currentPrice</pd:iterationElementSlot>
-                <pd:indexSlot>priceIndex</pd:indexSlot>
-                <pd:activityOutputName/>
-                <pd:accumulateOutput>false</pd:accumulateOutput>
+                <pd:transactionType>JDBCTransaction</pd:transactionType>
+                <pd:includeCheckpoint>false</pd:includeCheckpoint>
             </config>
             <pd:inputBindings/>
             <pd:expanded>true</pd:expanded>
             <pd:transition>
                 <pd:from>start</pd:from>
-                <pd:to>Call Price Command</pd:to>
-                <pd:xpathDescription/>
+                <pd:to>IteratePrices</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>always</pd:conditionType>
+                <pd:conditionType>otherwise</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>Call Price Command</pd:from>
+                <pd:from>start</pd:from>
+                <pd:to>Delete All Prices</pd:to>
+                <pd:xpathDescription>Reset Flag is True</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Start/root/ResetFlag = $_globalVariables/ns9:GlobalVariables/Application/ResetFlagTrueValue</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>AddUpdateMessageSequence</pd:from>
                 <pd:to>end</pd:to>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
-            <pd:activity name="Call Price Command">
+            <pd:transition>
+                <pd:from>IteratePrices</pd:from>
+                <pd:to>AddUpdateMessageSequence</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Delete All Prices</pd:from>
+                <pd:to>IteratePrices</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:group name="IteratePrices">
+                <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+                <pd:resourceType>ae.process.group</pd:resourceType>
+                <pd:x>418</pd:x>
+                <pd:y>211</pd:y>
+                <pd:width>188</pd:width>
+                <pd:height>160</pd:height>
+                <pd:collapsedWidth>57</pd:collapsedWidth>
+                <pd:collapsedHeight>70</pd:collapsedHeight>
+                <pd:groupVariables/>
+                <pd:joinToggle>inherit</pd:joinToggle>
+                <config>
+                    <pd:groupType>inputLoop</pd:groupType>
+                    <pd:serializable>false</pd:serializable>
+                    <pd:over>$Start/root/pfx7:MammothPrices/pfx7:MammothPrice</pd:over>
+                    <pd:iterationElementSlot>currentPrice</pd:iterationElementSlot>
+                    <pd:indexSlot>priceIndex</pd:indexSlot>
+                    <pd:activityOutputName/>
+                    <pd:accumulateOutput>false</pd:accumulateOutput>
+                </config>
+                <pd:inputBindings/>
+                <pd:expanded>true</pd:expanded>
+                <pd:transition>
+                    <pd:from>start</pd:from>
+                    <pd:to>Call Price Command</pd:to>
+                    <pd:xpathDescription/>
+                    <pd:lineType>Default</pd:lineType>
+                    <pd:lineColor>-16777216</pd:lineColor>
+                    <pd:conditionType>always</pd:conditionType>
+                </pd:transition>
+                <pd:transition>
+                    <pd:from>Call Price Command</pd:from>
+                    <pd:to>end</pd:to>
+                    <pd:lineType>Default</pd:lineType>
+                    <pd:lineColor>-16777216</pd:lineColor>
+                    <pd:conditionType>always</pd:conditionType>
+                </pd:transition>
+                <pd:activity name="Call Price Command">
+                    <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                    <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                    <pd:x>507</pd:x>
+                    <pd:y>293</pd:y>
+                    <config>
+                        <processName>/Processes/PriceCommand.process</processName>
+                    </config>
+                    <pd:inputBindings>
+                        <Input>
+                            <xsl:copy-of select="$currentPrice/pfx7:MammothPrice"/>
+                            <ResetFlag>
+                                <xsl:value-of select="$Start/root/ResetFlag"/>
+                            </ResetFlag>
+                        </Input>
+                    </pd:inputBindings>
+                </pd:activity>
+            </pd:group>
+            <pd:activity name="AddUpdateMessageSequence">
                 <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
                 <pd:resourceType>ae.process.subprocess</pd:resourceType>
-                <pd:x>451</pd:x>
-                <pd:y>268</pd:y>
+                <pd:x>696</pd:x>
+                <pd:y>302</pd:y>
                 <config>
-                    <processName>/Processes/PriceCommand.process</processName>
+                    <processName>/Processes/AddOrUpdateMessageSequenceCommand.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <ItemID>
+                            <xsl:value-of select="$currentPrice/pfx7:MammothPrice/pfx7:ItemId"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$currentPrice/pfx7:MammothPrice/pfx7:BusinessUnit"/>
+                        </BusinessUnitID>
+                        <xsl:if test="$Start/root/MessageId">
+                            <MessageID>
+                                <xsl:value-of select="$Start/root/MessageId"/>
+                            </MessageID>
+                        </xsl:if>
+                        <PatchFamilyID>
+                            <xsl:value-of select="$Start/root/PatchFamilyID"/>
+                        </PatchFamilyID>
+                        <PatchFamilySequenceID>
+                            <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
+                        </PatchFamilySequenceID>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Delete All Prices">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>322</pd:x>
+                <pd:y>360</pd:y>
+                <config>
+                    <processName>/Processes/DeleteAllPricesForStoreAndItem.process</processName>
                 </config>
                 <pd:inputBindings>
                     <Input>
-                        <xsl:copy-of select="$currentPrice/pfx7:MammothPrice"/>
-                        <ResetFlag>
-                            <xsl:value-of select="$Start/root/ResetFlag"/>
-                        </ResetFlag>
+                        <ItemID>
+                            <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:ItemId"/>
+                        </ItemID>
+                        <BusinessUnitID>
+                            <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:BusinessUnit"/>
+                        </BusinessUnitID>
+                        <Region>
+                            <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:Region"/>
+                        </Region>
                     </Input>
                 </pd:inputBindings>
             </pd:activity>
         </pd:group>
-        <pd:activity name="AddUpdateMessageSequence">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>640</pd:x>
-            <pd:y>277</pd:y>
-            <config>
-                <processName>/Processes/AddOrUpdateMessageSequenceCommand.process</processName>
-            </config>
+        <pd:activity name="WaitBeforeRetry (Sleep)">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>484</pd:x>
+            <pd:y>500</pd:y>
+            <config/>
             <pd:inputBindings>
-                <root>
-                    <ItemID>
-                        <xsl:value-of select="$currentPrice/pfx7:MammothPrice/pfx7:ItemId"/>
-                    </ItemID>
-                    <BusinessUnitID>
-                        <xsl:value-of select="$currentPrice/pfx7:MammothPrice/pfx7:BusinessUnit"/>
-                    </BusinessUnitID>
-                    <xsl:if test="$Start/root/MessageId">
-                        <MessageID>
-                            <xsl:value-of select="$Start/root/MessageId"/>
-                        </MessageID>
-                    </xsl:if>
-                    <PatchFamilyID>
-                        <xsl:value-of select="$Start/root/PatchFamilyID"/>
-                    </PatchFamilyID>
-                    <PatchFamilySequenceID>
-                        <xsl:value-of select="$Start/root/PatchFamilySequenceID"/>
-                    </PatchFamilySequenceID>
-                </root>
+                <ns1:SleepInputSchema xmlns:ns1="www.tibco.com/plugin/Sleep">
+                    <IntervalInMillisec>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="round($Exponential-Retry/javaCodeActivityOutput/result)"/>
+                    </IntervalInMillisec>
+                </ns1:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Delete All Prices">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>266</pd:x>
-            <pd:y>335</pd:y>
+        <pd:activity name="Throw-Db-Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>665</pd:x>
+            <pd:y>498</pd:y>
             <config>
-                <processName>/Processes/DeleteAllPricesForStoreAndItem.process</processName>
+                <faultName>Error</faultName>
             </config>
             <pd:inputBindings>
-                <Input>
-                    <ItemID>
-                        <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:ItemId"/>
-                    </ItemID>
-                    <BusinessUnitID>
-                        <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:BusinessUnit"/>
-                    </BusinessUnitID>
-                    <Region>
-                        <xsl:value-of select="$Start/root/pfx7:MammothPrices/pfx7:MammothPrice[1]/pfx7:Region"/>
-                    </Region>
-                </Input>
+                <pfx5:ActivityInput>
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns10:ErrorReport/MsgCode"/>
+                    </messageCode>
+                    <data>
+                        <pfx8:ExceptionRequest>
+                            <ns32:Header>
+                                <ns32:ApplicationID>
+                                    <xsl:value-of select="$_globalVariables/ns9:GlobalVariables/Application/ApplicationID"/>
+                                </ns32:ApplicationID>
+                                <ns32:Timestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns32:Timestamp>
+                            </ns32:Header>
+                            <ExceptionCode>
+                                <xsl:value-of select="$_globalVariables/ns9:GlobalVariables/Application/ErrorCodes/DatabaseError"/>
+                            </ExceptionCode>
+                        </pfx8:ExceptionRequest>
+                    </data>
+                </pfx5:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Exponential Retry">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>322</pd:x>
+            <pd:y>495</pd:y>
+            <config>
+                <fullsource>package Processes.ProcessPriceMessage;
+import java.util.*;
+import java.io.*;
+public class ProcessPriceMessageExponentialRetry{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected double retryCount = 0.0d;
+	protected double result = 0.0d;
+	public double getretryCount() {
+		return retryCount;
+	}
+	public void setretryCount(double val) {
+		retryCount = val;
+	}
+	public double getresult() {
+		return result;
+	}
+	public void setresult(double val) {
+		result = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ProcessPriceMessageExponentialRetry() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : double retryCount
+	Out : double result
+* Available Variables: DO NOT MODIFY *****/
+result=Math.pow(2,retryCount)*1000L;
+}
+}
+</fullsource>
+                <fileName>ProcessPriceMessageExponentialRetry</fileName>
+                <packageName>Processes.ProcessPriceMessage</packageName>
+                <outputData>
+                    <row>
+                        <fieldName>result</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </outputData>
+                <inputData>
+                    <row>
+                        <fieldName>retryCount</fieldName>
+                        <fieldType>double</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </inputData>
+                <byteCode>
+                    <class>
+                        <name>ProcessPriceMessageExponentialRetry</name>
+                        <byteCode>yv66vgAAADQAKAkACQAdCQAJAB4KAAoAHwZAAAAAAAAAAAoAIAAhBkCPQAAAAAAABwAiBwAjAQAKcmV0cnlDb3VudAEAAUQBAAZyZXN1bHQBAA1nZXRyZXRyeUNvdW50AQADKClEAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHJldHJ5Q291bnQBAAQoRClWAQAJZ2V0cmVzdWx0AQAJc2V0cmVzdWx0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAJAEAClNvdXJjZUZpbGUBAChQcm9jZXNzUHJpY2VNZXNzYWdlRXhwb25lbnRpYWxSZXRyeS5qYXZhDAALAAwMAA0ADAwAFgAXBwAlDAAmACcBAEFQcm9jZXNzZXMvUHJvY2Vzc1ByaWNlTWVzc2FnZS9Qcm9jZXNzUHJpY2VNZXNzYWdlRXhwb25lbnRpYWxSZXRyeQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAOamF2YS9sYW5nL01hdGgBAANwb3cBAAUoREQpRAAhAAkACgAAAAIABAALAAwAAAAEAA0ADAAAAAYAAQAOAA8AAQAQAAAAHQACAAEAAAAFKrQAAa8AAAABABEAAAAGAAEAAAAJAAEAEgATAAEAEAAAACIAAwADAAAABiontQABsQAAAAEAEQAAAAoAAgAAAAwABQANAAEAFAAPAAEAEAAAAB0AAgABAAAABSq0AAKvAAAAAQARAAAABgABAAAADwABABUAEwABABAAAAAiAAMAAwAAAAYqJ7UAArEAAAABABEAAAAKAAIAAAASAAUAEwABABYAFwABABAAAAAzAAMAAQAAAA8qtwADKg61AAEqDrUAArEAAAABABEAAAASAAQAAAAVAAQABgAJAAcADgAWAAEAGAAXAAIAEAAAAC8ABQABAAAAEyoUAAQqtAABuAAGFAAHa7UAArEAAAABABEAAAAKAAIAAAAcABIAHQAZAAAABAABABoAAQAbAAAAAgAc</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <retryCount>
+                        <xsl:value-of select="$retryCountIndex"/>
+                    </retryCount>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>173</pd:x>
+            <pd:y>491</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>false</catchAll>
+                <fault>localname=ExceptionRequest namespace=http://www.tibco.com/CommonLE2/namespace/Public/Exception/ExceptionRequest.xsd</fault>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Throw Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>269</pd:x>
+            <pd:y>573</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <pfx5:ActivityInput>
+                    <messageCode>
+                        <xsl:value-of select="$Catch/pfx8:ExceptionRequest/ExceptionCode"/>
+                    </messageCode>
+                </pfx5:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
     <pd:transition>
-        <pd:from>Transaction</pd:from>
+        <pd:from>Loop</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -205,7 +410,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>Transaction</pd:to>
+        <pd:to>Loop</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

@@ -50,6 +50,14 @@
 			<modTime>1511378998470</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>RetryError</name>
+			<value>RetryError</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1561039667921</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ZeroRowsImpacted</name>
 			<value>Zero Rows were Impacted</value>
 			<deploymentSettable>true</deploymentSettable>
