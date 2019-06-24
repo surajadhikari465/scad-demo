@@ -129,7 +129,7 @@ namespace Icon.Framework
         public Nullable<decimal> TrayWidth { get; set; }
         public string Labeling { get; set; }
         public string CountryOfOrigin { get; set; }
-        public Nullable<int> PackageGroup { get; set; }
+        public string PackageGroup { get; set; }
         public string PackageGroupType { get; set; }
         public string PrivateLabel { get; set; }
         public string Appellation { get; set; }

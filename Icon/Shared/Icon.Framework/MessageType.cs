@@ -23,8 +23,8 @@ namespace Icon.Framework
             this.MessageQueueBusinessUnitInProcess = new HashSet<MessageQueueBusinessUnitInProcess>();
             this.APIMessageMonitorLog = new HashSet<APIMessageProcessorLogEntry>();
             this.MessageHistory = new HashSet<MessageHistory>();
-            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
             this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
+            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
         }
     
         public int MessageTypeId { get; set; }
@@ -37,7 +37,7 @@ namespace Icon.Framework
         public virtual ICollection<MessageQueueBusinessUnitInProcess> MessageQueueBusinessUnitInProcess { get; set; }
         public virtual ICollection<APIMessageProcessorLogEntry> APIMessageMonitorLog { get; set; }
         public virtual ICollection<MessageHistory> MessageHistory { get; set; }
-        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
+        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
     }
 }

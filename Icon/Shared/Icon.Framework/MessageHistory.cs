@@ -21,8 +21,8 @@ namespace Icon.Framework
             this.MessageQueuePrice = new HashSet<MessageQueuePrice>();
             this.MessageQueueProductSelectionGroup = new HashSet<MessageQueueProductSelectionGroup>();
             this.MessageResendStatus = new HashSet<MessageResendStatus>();
-            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
             this.MessageQueueLocale = new HashSet<MessageQueueLocale>();
+            this.MessageQueueProduct = new HashSet<MessageQueueProduct>();
         }
     
         public int MessageHistoryId { get; set; }
@@ -41,7 +41,7 @@ namespace Icon.Framework
         public virtual ICollection<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual ICollection<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
         public virtual ICollection<MessageResendStatus> MessageResendStatus { get; set; }
-        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
         public virtual ICollection<MessageQueueLocale> MessageQueueLocale { get; set; }
+        public virtual ICollection<MessageQueueProduct> MessageQueueProduct { get; set; }
     }
 }

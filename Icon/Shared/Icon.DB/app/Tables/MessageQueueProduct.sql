@@ -110,7 +110,7 @@
 	[TrayWidth]  DECIMAL(10,4) NULL, 
 	[Labeling]  NVARCHAR(255) NULL,
 	[CountryOfOrigin]  NVARCHAR(255) NULL,
-	[PackageGroup]  INT NULL,
+	[PackageGroup]  NVARCHAR(255) NULL,
 	[PackageGroupType]  NVARCHAR(255) NULL,
 	[PrivateLabel]  NVARCHAR(255) NULL,
 	[Appellation]  NVARCHAR(255) NULL,
