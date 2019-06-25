@@ -372,10 +372,10 @@ namespace Icon.ApiController.Controller.QueueReaders
 				},
                 new Contracts.TraitType
                 {
-                    code = TraitCodes.TouchPointGroupId,
+                    code = TraitCodes.TouchpointGroupId,
                     type = new Contracts.TraitTypeType
                     {
-                        description = "TouchPoint Group Id",  // hard coding for now. Icon.Framework needs to be built and the nuget package updated.
+                        description = TraitDescriptions.TouchpointGroupId, 
                         value = new Contracts.TraitValueType[]
                         {
                             new Contracts.TraitValueType

@@ -358,7 +358,7 @@ namespace Icon.ApiController.DataAccess.Queries
 				VenueCode = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueCode)?.traitValue ?? string.Empty,
 				VenueOccupant = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.VenueOccupant)?.traitValue ?? string.Empty,
 				VenueSubType = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.LocaleSubtype)?.traitValue ?? string.Empty,
-                TouchPointGroupId = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.TouchPointGroupId)?.traitValue ?? string.Empty,
+                TouchPointGroupId = venue.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.TouchpointGroupId)?.traitValue ?? string.Empty,
 				LocaleOpenDate = venue?.localeOpenDate ?? DateTime.UtcNow,
                 LocaleCloseDate = venue?.localeCloseDate
             };

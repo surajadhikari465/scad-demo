@@ -209,7 +209,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayWidth).traitValue), messageQueueProduct.TrayWidth);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.Labeling).traitValue, messageQueueProduct.Labeling);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.CountryOfOrigin).traitValue, messageQueueProduct.CountryOfOrigin);
-            Assert.AreEqual(int.Parse(traits.First(it => it.traitID == Traits.PackageGroup).traitValue), messageQueueProduct.PackageGroup);
+            Assert.AreEqual(traits.First(it => it.traitID == Traits.PackageGroup).traitValue, messageQueueProduct.PackageGroup);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.PackageGroupType).traitValue, messageQueueProduct.PackageGroupType);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.PrivateLabel).traitValue, messageQueueProduct.PrivateLabel);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.Appellation).traitValue, messageQueueProduct.Appellation);
@@ -350,7 +350,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Commands
             Assert.AreEqual(decimal.Parse(traits.First(it => it.traitID == Traits.TrayWidth).traitValue), messageQueueProduct.TrayWidth);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.Labeling).traitValue, messageQueueProduct.Labeling);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.CountryOfOrigin).traitValue, messageQueueProduct.CountryOfOrigin);
-            Assert.AreEqual(int.Parse(traits.First(it => it.traitID == Traits.PackageGroup).traitValue), messageQueueProduct.PackageGroup);
+            Assert.AreEqual(traits.First(it => it.traitID == Traits.PackageGroup).traitValue, messageQueueProduct.PackageGroup);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.PackageGroupType).traitValue, messageQueueProduct.PackageGroupType);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.PrivateLabel).traitValue, messageQueueProduct.PrivateLabel);
             Assert.AreEqual(traits.First(it => it.traitID == Traits.Appellation).traitValue, messageQueueProduct.Appellation);

@@ -170,7 +170,7 @@ namespace Icon.ApiController.Tests.QueueReaders
                 var touchPointGroupIdTrait = new LocaleTrait
                 {
                     localeID = venue.localeID,
-                    traitID = Traits.TouchPointGroupId,
+                    traitID = Traits.TouchpointGroupId,
                     traitValue = touchPointGroupId
                 };
 
