@@ -163,7 +163,8 @@ BEGIN
 	IsNull((SELECT STUFF((Select ',' + locale.LocaleName 
 	FROM KitLocale
 	INNER JOIN locale ON KitLocale.LocaleId = locale.LocaleId
-	WHERE KitId = @kitId
+	WHERE KitId = @kitId 
+		AND ISNULL(Exclude,0) = 0
 		AND KitLocaleId NOT IN (
 			SELECT KitLocaleId
 			FROM #IncludedVenues
