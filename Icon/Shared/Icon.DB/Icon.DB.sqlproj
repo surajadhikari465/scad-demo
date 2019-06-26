@@ -696,10 +696,11 @@
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery.sql" />
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
     <None Include="Scripts\PopulateData\Archive\AddDeleteNutritionToEventType.sql" />
-    <None Include="Scripts\PopulateData\PopulateTraits.sql" />
-    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates.sql" />
-    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
-    <None Include="Scripts\PopulateData\AddTouchPointGroupIdTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateTraits.sql" />
+    <None Include="Scripts\PopulateData\Archive\AddTouchPointGroupIdTrait.sql" />
+    <None Include="Scripts\PopulateData\Archive\ItemSignAttribute_DeleteDuplicates.sql" />
+    <None Include="Scripts\PopulateData\Archive\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateHospitalityTraits.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -734,7 +735,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\PopulateHospitalityTraits.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

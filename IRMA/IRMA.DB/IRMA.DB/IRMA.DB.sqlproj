@@ -3331,7 +3331,6 @@
     <None Include="Scripts\PostDeploy\Archive\PBI4883_RemoveObsoleteHCDBObjects.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI14520_AddMessageArchiveEventTableToRetentionPolicy.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI18549-AddInStockApplication.sql" />
-    <None Include="Scripts\PreDeploy\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <Build Include="Schema\amz\StoredProcedures\ReQueueMessages.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetInStockEventsByType.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI20832_Add_IDF_for_Include365StoresForInforOrdering.sql" />
@@ -3343,6 +3342,8 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\SavePastReceiptDate.sql" />
     <None Include="Scripts\PostDeploy\PBI22038_MarkInStockAppConfigDeleted.sql" />
     <None Include="Scripts\PostDeploy\PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql" />
+    <None Include="Scripts\PreDeploy\Archive\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3350,7 +3351,6 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
     <None Include="Scripts\Other\RemoveFTPForClosedStores.sql" />
-    <None Include="Scripts\PostDeploy\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
