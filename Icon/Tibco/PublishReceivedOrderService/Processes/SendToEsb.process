@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.0.0.0010/Inventory/OrderReceipt.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v2019.Q3.1.0/Inventory/OrderReceipt.xsd"/>
     <pd:name>Processes/SendToEsb.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>

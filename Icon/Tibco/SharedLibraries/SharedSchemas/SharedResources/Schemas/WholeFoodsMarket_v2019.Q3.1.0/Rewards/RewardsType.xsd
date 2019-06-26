@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RewardMgmt/RewardType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:rrf="http://schemas.wfm.com/Enterprise/RewardMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RewardMgmt/RewardType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.3">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RewardMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="rewardType" type="RewardTypeType"/>
+	<xs:complexType name="RewardTypeType">
+		<xs:sequence>
+			<xs:element name="id" type="rrf:RewardTypeIdType"/>
+			<xs:element name="description" type="rrf:RewardDescType"/>
+			<xs:element name="type" type="RewardTypeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

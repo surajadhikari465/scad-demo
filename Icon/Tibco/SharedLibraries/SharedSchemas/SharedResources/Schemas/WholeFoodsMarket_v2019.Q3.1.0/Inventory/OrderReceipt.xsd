@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2019 sp2 (http://www.altova.com) by Vignesh (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports     -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="../Item/Item.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" schemaLocation="../Party/Party.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" schemaLocation="../Transaction/Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements    -->
+	<!-- ================== -->
+	<xs:element name="orderReceipts">
+		<xs:annotation>
+			<xs:documentation>Inventory Order Receipt Schema</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="orderReceipt" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="receiptNumber" type="ivf:MandatoryStrType"/>
+							<xs:element name="purchaseOrderNumber" type="ivf:MandatoryStrType"/>
+							<xs:element name="locationNumber" type="ivf:MandatoryStrType"/>
+							<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
+							<xs:element name="eventType" type="crf:WfmStrType" minOccurs="0"/>
+							<xs:element name="messageNumber" type="ivf:MandatoryStrType">
+								<xs:annotation>
+									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ASN" type="crf:WfmStrType" minOccurs="0"/>
+							<xs:element name="receiptComments" type="crf:WfmStrType" minOccurs="0"/>
+							<xs:element name="receiptStatus" type="ivf:MandatoryStrType"/>
+							<xs:element name="isPastReceipt" type="crf:WfmStrType" minOccurs="0"/>
+							<xs:element name="pastReceiptDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+							<xs:element name="receiptDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+							<xs:sequence>
+								<xs:element name="receiptDetail" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="receiptDetailNumber" type="ivf:MandatoryStrType"/>
+											<xs:element name="purchaseOrderDetailNumber" type="crf:IdIntType" minOccurs="0"/>
+											<xs:element name="sourceItemKey" type="ivf:MandatoryStrType"/>
+											<xs:element name="SubTeam" type="SubTeamType"/>
+											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="itemVIN" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="defaultScanCode" type="ivf:MandatoryStrType"/>
+											<xs:element name="quantityOrdered" type="ivf:MandatoryStrType"/>
+											<xs:element name="quantityReceived" type="ivf:MandatoryStrType"/>
+											<xs:element name="receiptStatus" type="ivf:MandatoryStrType"/>
+											<xs:element name="preScaleQuantity" type="crf:WfmIntType" minOccurs="0"/>
+											<xs:element name="orderUOM" type="ivf:MandatoryStrType"/>
+											<xs:element name="receiptUoM" type="ivf:MandatoryStrType"/>
+											<xs:element name="cartonNumber" type="crf:WfmIntType" minOccurs="0"/>
+											<xs:element name="conversionRetailUoM" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="packSize1" type="ivf:MandatoryStrType"/>
+											<xs:element name="packSize2" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="receiptItemCost" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="costType" type="crf:TypeType" minOccurs="0"/>
+											<xs:element name="earliestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+											<xs:element name="latestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
+											<xs:element name="toDispositionCode" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="receiptUserInfo" type="ivf:UserType" minOccurs="0"/>
+											<xs:element name="createDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
+											<xs:element name="receiptDateTime" type="ivf:MandatoryStrType"/>
+											<xs:element name="documentNumber" type="crf:WfmIntType" minOccurs="0"/>
+											<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="SubTeamType">
+		<xs:sequence>
+			<xs:element name="subTeamNumber" type="ivf:MandatoryStrType"/>
+			<xs:element name="subTeamName" type="ivf:MandatoryStrType"/>
+			<xs:element name="hostSubTeamNumber" type="ivf:MandatoryStrType"/>
+			<xs:element name="hostSubTeamName" type="crf:NameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
