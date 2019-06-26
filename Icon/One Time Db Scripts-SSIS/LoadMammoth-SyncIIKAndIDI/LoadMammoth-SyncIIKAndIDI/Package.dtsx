@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="37"
-  DTS:VersionGUID="{4E7072B2-A7C0-4932-9E69-183691932A5D}">
+  DTS:VersionBuild="47"
+  DTS:VersionGUID="{015AF31E-5ED2-4E49-97AA-9D3A1B23DF55}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -22,12 +22,12 @@
       DTS:DTSID="{7739D87E-20B3-4321-9C01-BF3A10587FD0}"
       DTS:ObjectName="IrmaConnection">
       <DTS:PropertyExpression
-        DTS:Name="InitialCatalog">@[$Project::IrmaDatabase]</DTS:PropertyExpression>
+        DTS:Name="InitialCatalog">@[$Package::IrmaDatabase]</DTS:PropertyExpression>
       <DTS:PropertyExpression
-        DTS:Name="ServerName">@[$Project::IrmaServer]</DTS:PropertyExpression>
+        DTS:Name="ServerName">@[$Package::IrmaServer]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=idd-ma\mad;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=idd-fl\fld;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -36,15 +36,57 @@
       DTS:DTSID="{38040F27-A36D-4E76-AAF7-5200AB65D2F4}"
       DTS:ObjectName="MammothConnection">
       <DTS:PropertyExpression
-        DTS:Name="InitialCatalog">@[$Project::MammothDatabase]</DTS:PropertyExpression>
+        DTS:Name="InitialCatalog">@[$Package::MammothDatabase]</DTS:PropertyExpression>
       <DTS:PropertyExpression
-        DTS:Name="ServerName">@[$Project::MammothServer]</DTS:PropertyExpression>
+        DTS:Name="ServerName">@[$Package::MammothServer]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=Mammoth_Dev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{8C34E272-10D5-4DE6-B485-4D365F4AC049}"
+      DTS:ObjectName="IrmaDatabase"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">ItemCatalog_Test</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{0504CA66-0F4B-42C9-B78C-C091FA07BF1C}"
+      DTS:ObjectName="IrmaServer"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">idd-fl\fld</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{A4BA2228-1237-4DD9-A8FF-B54EFD08F8B6}"
+      DTS:ObjectName="MammothDatabase"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Mammoth_Dev</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{74098E83-37FD-4322-BA72-CBFB22812A35}"
+      DTS:ObjectName="MammothServer"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">MAMMOTH-DB01-DEV\MAMMOTH</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""

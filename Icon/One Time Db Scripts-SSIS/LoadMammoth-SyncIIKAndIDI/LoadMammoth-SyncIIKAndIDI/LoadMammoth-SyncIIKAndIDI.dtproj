@@ -26,7 +26,7 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">CECEN-3PH2N72</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxyFXp+ww3kGq/51FjLbQBQAAAAACAAAAAAADZgAAwAAAABAAAAA0TLhaGx+DDTkCJMEbiIfdAAAAAASAAACgAAAAEAAAAHyMpTFBuXJql+Mqd+/HHGuIAAAAlx4SBXC7Mg4lhbVJM7wN0lYQWsqcjcx2ISCa3pfmj8AEVkjPZO7UgwF087JHT/TIQVViBlURXVxozYB04GZwtpyVa+Fco4M0+P/zf5XRcuztC2jU3KhT81KZSsDqxIiULzVdEvE5Yu/rET8+sUkuG2GOT0o82q56CBb/3oQ2RtEm0ESAcURFjxQAAACKeaPoXZpUaa9ORTLIPWyG4UMR5A==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxyFXp+ww3kGq/51FjLbQBQAAAAACAAAAAAADZgAAwAAAABAAAADhQV2nuC31BReK9Jj0YZ/fAAAAAASAAACgAAAAEAAAAC/Bn67KEbwllnUpH8EjHWyIAAAArwbVZSiv8vgeXY36ys6GActofQy89pTZeF0+L//MbjHAH0k22iCBZNqrGnbvIytuqj9RUULDElze4Hn70MR/VMoB+WQp5iX/sYpX8y0JK9KYZy0fvXYL7ivPOT7BBfvV/r8yZPkaCWHlm1ygvQ1ydPHmxvKzLBciuIn8RNvOCU1BxHU82Ruz9xQAAABZsl7RB2Fr91bAT4uhS/6COArhow==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
@@ -42,16 +42,72 @@
                 <SSIS:Property SSIS:Name="Name">Package</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">12</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">47</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{B88DBDAD-F3ED-43BD-B950-FD1C6580321E}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{015AF31E-5ED2-4E49-97AA-9D3A1B23DF55}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
                 <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
               </SSIS:Properties>
               <SSIS:Parameters>
+                <SSIS:Parameter SSIS:Name="IrmaDatabase">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{8C34E272-10D5-4DE6-B485-4D365F4AC049}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">ItemCatalog_Test</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="IrmaServer">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{0504CA66-0F4B-42C9-B78C-C091FA07BF1C}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">idd-fl\fld</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="MammothDatabase">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{A4BA2228-1237-4DD9-A8FF-B54EFD08F8B6}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">Mammoth_Dev</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
+                <SSIS:Parameter SSIS:Name="MammothServer">
+                  <SSIS:Properties>
+                    <SSIS:Property SSIS:Name="ID">{74098E83-37FD-4322-BA72-CBFB22812A35}</SSIS:Property>
+                    <SSIS:Property SSIS:Name="CreationName">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="Description">
+                    </SSIS:Property>
+                    <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">MAMMOTH-DB01-DEV\MAMMOTH</SSIS:Property>
+                    <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+                  </SSIS:Properties>
+                </SSIS:Parameter>
                 <SSIS:Parameter SSIS:Name="CM.IrmaConnection.ConnectByProxy">
                   <SSIS:Properties>
                     <SSIS:Property SSIS:Name="ID">
