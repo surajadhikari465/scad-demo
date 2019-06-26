@@ -400,7 +400,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void BuildMiniBulk_BottleDepositOrCrvLinkedItemExists_ShouldReturnMiniBulkWithDepositGroupType()
+        public void BuildMiniBulk_DepositLinkedItemExists_ShouldReturnMiniBulkWithDepositGroupType()
         {
             // Given.
             var fakeMessageQueueItemLocale = new List<MessageQueueItemLocale>
@@ -435,7 +435,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void BuildMiniBulk_BlackhawkLinkedItemExists_ShouldReturnMiniBulkWithWarrantyGroupType()
+        public void BuildMiniBulk_FeeLinkedItemExists_ShouldReturnMiniBulkWithWarrantyGroupType()
         {
             // Given.
             var fakeMessageQueueItemLocale = new List<MessageQueueItemLocale>
@@ -470,7 +470,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void BuildMiniBulk_LinkedItemIsRetailSale_ShouldReturnMiniBulkWithNullItemLinks()
+        public void BuildMiniBulk_LinkedItemIsRetailSale_ShouldReturnMiniBulkWithNullItemLinksAndGroups()
         {
             // Given.
             var messageQueueItemLocaleList = new List<MessageQueueItemLocale>
@@ -487,68 +487,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var miniBulk = queueReader.BuildMiniBulk(messageQueueItemLocaleList);
 
             // Then.
-            var itemLinks = (miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType).links;
+            var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
 
-            Assert.IsNull(itemLinks);
-        }
-
-        [TestMethod]
-        public void BuildMiniBulk_ItemLocaleMessage_ShouldContainPosScaleTareElement()
-        {
-            // Given.
-            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
-
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
-            {
-                fakeMessage
-            };
-
-            // When.
-            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
-
-            // Then.
-            var scaleTare = (miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType).traits.Single(it => it.code == TraitCodes.PosScaleTare).type.value[0].value;
-            Assert.AreEqual((fakeMessage.PosScaleTare * 0.01).ToString(), scaleTare);
-        }
-
-        [TestMethod]
-        public void BuildMiniBulk_IntegerPosScaleTare_PosScaleTareShouldBeConvertedToDecimal()
-        {
-            // Given.
-            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
-
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
-            {
-                fakeMessage
-            };
-
-            // When.
-            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
-
-            // Then.
-            var scaleTare = (miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType).traits.Single(it => it.code == TraitCodes.PosScaleTare).type.value[0].value;
-            Assert.AreEqual((fakeMessage.PosScaleTare * .01).ToString(), scaleTare);
-        }
-
-        [TestMethod]
-        public void BuildMiniBulk_ItemLocaleMessage_LocaleElementShouldContainActionAttribute()
-        {
-            // Given.
-            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
-
-            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
-            {
-                fakeMessage
-            };
-
-            // When.
-            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
-
-            // Then.
-            var localeElement = miniBulk.item[0].locale[0];
-
-            Assert.AreEqual("AddOrUpdate", localeElement.Action.ToString());
-            Assert.IsTrue(localeElement.ActionSpecified);
+            Assert.IsNull(itemAttributes.links);
+            Assert.IsNull(itemAttributes.groups);
         }
 
         [TestMethod]
@@ -630,18 +572,18 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         {
             // Given.
             var linkedItemScanCode = "1112223334445";
-            
+
             var fakeMessageQueueItemLocale = new List<MessageQueueItemLocale>
             {
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1112223334445")
             };
 
             Item linkedItem = new TestItemBuilder().WithScanCode(linkedItemScanCode).WithItemType(ItemTypes.Fee);
-            
+
             linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee);
-            
+
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == linkedItemScanCode))).Returns(linkedItem);
-            
+
             // When.
             var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocale);
 
@@ -690,7 +632,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            
+
             Assert.AreEqual(previousLinkedItem.itemID, itemAttributes.links[0].parentId);
             Assert.AreEqual(1, itemAttributes.links[0].childId);
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
@@ -700,6 +642,104 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
             Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[0].Action);
             Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_PreviousLinkedItemScanCodeExistsAndIsNotAFeeOrDeposit_ShouldAddDeleteGroupForItemMessageWithDepositGroupType()
+        {
+            // Given.
+            var previousLinkedItemScanCode = "12345";
+
+            var fakeMessageQueueItemLocale = new List<MessageQueueItemLocale>
+            {
+                new TestItemLocaleMessageBuilder().WithPreviousLinkedItem("12345")
+            };
+
+            Item previousLinkedItem = new TestItemBuilder().WithItemId(2).WithScanCode(previousLinkedItemScanCode).WithItemType(ItemTypes.RetailSale);
+
+            previousLinkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale);
+
+            mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == previousLinkedItemScanCode))).Returns(previousLinkedItem);
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocale);
+
+            // Then.
+            Assert.AreEqual(fakeMessageQueueItemLocale.Count, miniBulk.item.Length);
+
+            var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
+            int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
+
+            Assert.AreEqual(previousLinkedItem.itemID, itemAttributes.links[0].parentId);
+            Assert.AreEqual(1, itemAttributes.links[0].childId);
+            Assert.AreEqual(1, itemAttributes.links.Length);
+            Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
+            Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
+
+            Assert.AreEqual(1, itemAttributes.groups.group.Length);
+            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Deposit.ToString(), itemAttributes.groups.group[0].description);
+            Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[0].Action);
+            Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_ItemLocaleMessage_ShouldContainPosScaleTareElement()
+        {
+            // Given.
+            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
+
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
+
+            // Then.
+            var scaleTare = (miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType).traits.Single(it => it.code == TraitCodes.PosScaleTare).type.value[0].value;
+            Assert.AreEqual((fakeMessage.PosScaleTare * 0.01).ToString(), scaleTare);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_IntegerPosScaleTare_PosScaleTareShouldBeConvertedToDecimal()
+        {
+            // Given.
+            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
+
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
+
+            // Then.
+            var scaleTare = (miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType).traits.Single(it => it.code == TraitCodes.PosScaleTare).type.value[0].value;
+            Assert.AreEqual((fakeMessage.PosScaleTare * .01).ToString(), scaleTare);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_ItemLocaleMessage_LocaleElementShouldContainActionAttribute()
+        {
+            // Given.
+            var fakeMessage = TestHelpers.GetFakeMessageQueueItemLocale(1, 100, ItemTypeCodes.RetailSale);
+
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueItemLocales);
+
+            // Then.
+            var localeElement = miniBulk.item[0].locale[0];
+
+            Assert.AreEqual("AddOrUpdate", localeElement.Action.ToString());
+            Assert.IsTrue(localeElement.ActionSpecified);
         }
 
         [TestMethod]

@@ -374,18 +374,22 @@ namespace Icon.ApiController.Controller.QueueReaders
 
                 if (sendPreviousItemLinkGroup && !string.IsNullOrWhiteSpace(message.PreviousLinkedItemScanCode) && message.LinkedItemScanCode != message.PreviousLinkedItemScanCode)
                 {
-                    AddLinkedItem(message, message.PreviousLinkedItemScanCode, links, groups, Contracts.ActionEnum.Delete);
+                    AddLinkedItem(message, message.PreviousLinkedItemScanCode, links, groups, Contracts.ActionEnum.Delete, true);
                 }
 
-               (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).links = links.Any() ? links.ToArray() : null;
-
-                (miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType).groups =
-
-                new Contracts.ItemGroupsType { @group = groups.Any() ? groups.ToArray() : null };
+                var storeItemAttributes = miniBulkEntry.locale[0].Item as Contracts.StoreItemAttributesType;
+                storeItemAttributes.links = links.Any() ? links.ToArray() : null;
+                storeItemAttributes.groups = groups.Any() ? new Contracts.ItemGroupsType { @group = groups.ToArray() } : null;
             }
         }
 
-        private void AddLinkedItem(MessageQueueItemLocale message, string linkedItemScanCode, List<Contracts.LinkTypeType> links, List<Contracts.ItemGroupTypeType> groups, Contracts.ActionEnum action)
+        private void AddLinkedItem(
+            MessageQueueItemLocale message,
+            string linkedItemScanCode,
+            List<Contracts.LinkTypeType> links,
+            List<Contracts.ItemGroupTypeType> groups,
+            Contracts.ActionEnum action,
+            bool allowNonDepositOrFeeLinkedScanCodes = false)
         {
             Item linkedItem;
             if (!Cache.scanCodeToItem.TryGetValue(linkedItemScanCode, out linkedItem))
@@ -405,10 +409,19 @@ namespace Icon.ApiController.Controller.QueueReaders
             {
                 groupTypeDescription = Contracts.RetailTransactionItemTypeEnum.Warranty.ToString();
             }
+            else if (allowNonDepositOrFeeLinkedScanCodes)
+            {
+                //Defaulting to Deposit because Contracts enum does not have a direct correlation to all Item Types
+                groupTypeDescription = Contracts.RetailTransactionItemTypeEnum.Deposit.ToString();
+            }
             else
             {
-                logger.Warn(string.Format("Attempted to process linked item {0} for MessageQueueId {1} / ScanCode {2}, but it does not appear to be a bottle deposit, CRV, or Blackhawk item.",
-                    linkedItemScanCode, message.MessageQueueId, message.ScanCode));
+                logger.Warn(
+                    string.Format(
+                        "Attempted to process linked item {0} for MessageQueueId {1} / ScanCode {2}, but it does not appear to be a bottle deposit, CRV, or Blackhawk item.",
+                        linkedItemScanCode,
+                        message.MessageQueueId,
+                        message.ScanCode));
                 return;
             }
 
