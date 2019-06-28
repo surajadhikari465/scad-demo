@@ -87,9 +87,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -164,9 +164,9 @@
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-      <Update enabled="1" version="4.5.1.9">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+      <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.2.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
@@ -276,9 +276,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -372,9 +372,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -440,9 +440,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -564,9 +564,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -660,9 +660,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -740,9 +740,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -828,9 +828,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
@@ -924,9 +924,9 @@
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-      <Update enabled="1" version="4.5.1.9">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+      <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.2.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
@@ -1023,9 +1023,9 @@
     </Application>
     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
       <Description>Pilot DVO Handheld</Description>
-      <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-      <Update enabled="1" version="4.5.1.9">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+      <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.2.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-PRD.CAB</File>
       </Update>
     </Application>
@@ -1058,65 +1058,6 @@
       <Update enabled="1" version="10.4.0.0">
         <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
-      </Update>
-    </Application>
-    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
-      <Description>DVO Handheld</Description>
-      <ExePath version="4.1.0.1">\Program Files\DVO-PRD\DVO.exe</ExePath>
-      <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
-        <File>DVO-PRD.CAB</File>
-      </Update>
-    </Application>-->
-    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
-      <SecurityGroup />
-      <Description>SMORe List-O-Matic</Description>
-      <Service version="1.0.0.0">http://listomatic/listomaticService/Service.svc/basic</Service>
-      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
-      <AppSettings>
-        <add key="MaxItems" value="500" />
-      </AppSettings>
-      <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
-        <File>WholeFoods.Mobile.SMORe.dll</File>
-      </Update>
-    </Application>
-    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
-      <Description>Mobile Audit Reporting System</Description>
-      <Service version="3.13.2.2">http://marsscanauditservices/AuditService.svc/basic</Service>
-      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
-      <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
-        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
-      </Update>
-    </Application>
-     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
-        <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
-           <File>DVO-PRD.CAB</File>
-        </Update>
-     </Application>
-     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
-      <SecurityGroup />
-      <Description>Responsibily Grown Rating App</Description>
-      <Service version="1.5.0.0"></Service>
-      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
-      <AppSettings />
-      <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
-        <File>WFM.Mobile.GROW.dll</File>
-      </Update>
-    </Application>
--->
-    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
-      <Description>Out Of Stock Tool</Description>
-      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
-      <Service version="2.0.0.0">http://oosappprd/WebService/oosbackend.svc</Service>
-      <Update enabled="1" version="2.0.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
-        <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
   </Region>
@@ -1161,9 +1102,9 @@
     </Application>
      <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
         <Description>Pilot DVO Handheld</Description>
-        <ExePath version="4.5.1.9">\Program Files\DVO-PRD\DVO.exe</ExePath>
-        <Update enabled="1" version="4.5.1.9">
-           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.1.9/</Location>
+        <ExePath version="4.5.2.0">\Program Files\DVO-PRD\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.2.0">
+           <Location>http://wfmmobile-prd/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
            <File>DVO-PRD.CAB</File>
         </Update>
      </Application>
