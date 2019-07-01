@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/MammothPriceR10QueueReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>49</versionProperty>
+        <versionProperty>50</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>R10PriceService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\R10PriceService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\R10PriceService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

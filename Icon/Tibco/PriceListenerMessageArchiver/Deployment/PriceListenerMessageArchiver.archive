@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/PriceMessageArchiveQueueReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>28</versionProperty>
+        <versionProperty>29</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PriceListenerMessageArchiver</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\PriceListenerMessageArchiver.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\PriceListenerMessageArchiver.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

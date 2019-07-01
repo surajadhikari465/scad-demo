@@ -102,7 +102,7 @@
         </NameValuePairInteger>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
-            <value>cerd1616.wfm.pvt</value>
+            <value>*.wfm.pvt</value>
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_TRUSTED_CA_STORE</name>
@@ -122,7 +122,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>ConfirmBODSettings/Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://DEV-ESB-EMS-1.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>ConfirmBODSettings/Connections/JMS/ESB/JndiPassword</name>
@@ -230,7 +230,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://DEV-ESB-EMS-1.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
@@ -266,7 +266,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/SB1/Username</name>
@@ -278,7 +278,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1PriceArchive/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/SB1PriceArchive/Username</name>
@@ -294,7 +294,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIContextURL</name>
-            <value>tibjmsnaming://cerd1616.wfm.pvt:7272</value>
+            <value>tibjmsnaming://DEV-ESB-EMS-1.wfm.pvt:7272</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLE/MIG_JNDIPassword</name>
@@ -326,7 +326,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIContextURL</name>
-            <value>ssl://cerd1616.wfm.pvt:7273</value>
+            <value>ssl://DEV-ESB-EMS-1.wfm.pvt:7273</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIPassword</name>
@@ -578,7 +578,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Username</name>
@@ -642,7 +642,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Username</name>

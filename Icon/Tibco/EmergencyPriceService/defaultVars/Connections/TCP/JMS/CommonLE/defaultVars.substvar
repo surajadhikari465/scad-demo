@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIContextURL</name>
-			<value>tibjmsnaming://cerd1616.wfm.pvt:7272</value>
+			<value>tibjmsnaming://DEV-ESB-EMS-1.wfm.pvt:7272</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!q0EGB2OqO3+tbjceYpoEcneSZj7rM9q/F4o77WGxIMA=</value>
+			<value>#!J8I/Q9aWNG/GyzjSo6ieKjDlghbmwB84RDVhw/nGofg=</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!jOzL70TdBZ4WnVI5ilNMqsjt75LVtQJ/mUGUG+434SE=</value>
+			<value>#!oPqKei0M8mLNjfmAclBkoaZYBnur+270aJ5//FWT9UE=</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

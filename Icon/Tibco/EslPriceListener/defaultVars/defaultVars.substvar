@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>BW_GLOBAL_HOSTNAME</name>
-			<value>cerd1668.wfm.pvt</value>
+			<value>*.wfm.pvt</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1548998192761</modTime>
+			<modTime>1561919163500</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>BW_GLOBAL_TRUSTED_CA_STORE</name>

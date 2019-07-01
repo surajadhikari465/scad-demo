@@ -65,8 +65,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             new EsbEnvironmentViewModel
             {
                 Name = "DEV",
-                ServerUrl = "ssl://cerd1616.wfm.pvt:7233",
-                 TargetHostName = "cerd1616.wfm.pvt",
+                ServerUrl = "ssl://DEV-ESB-EMS-1.wfm.pvt:7233",
+                 TargetHostName = "DEV-ESB-EMS-1.wfm.pvt",
                  JmsUsernameIcon = "iconUser",
                  JmsPasswordIcon = "ouVgOD5ld5V6",
                  JndiUsernameIcon = "jndiIconUser",

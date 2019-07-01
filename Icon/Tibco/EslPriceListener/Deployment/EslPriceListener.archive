@@ -13,7 +13,7 @@
             <authorProperty>Ben.Sims</authorProperty>
             <processProperty>/Processes/EslPriceListener.process</processProperty>
         </processArchive>
-        <versionProperty>33</versionProperty>
+        <versionProperty>34</versionProperty>
         <authorProperty>Ben.Sims</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>EslPriceListener</name>
@@ -22,7 +22,7 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\EslPriceListener.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\EslPriceListener.ear</fileLocationProperty>
         <description>Archives active prices sent through the Active Price Topic</description>
     </enterpriseArchive>
 </Repository:repository>

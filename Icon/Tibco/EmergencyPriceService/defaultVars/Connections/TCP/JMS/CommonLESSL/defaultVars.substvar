@@ -11,7 +11,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIContextURL</name>
-			<value>ssl://cerd1616.wfm.pvt:7273</value>
+			<value>ssl://DEV-ESB-EMS-1.wfm.pvt:7273</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
@@ -19,7 +19,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_JNDIPassword</name>
-			<value>#!bz2H99SQ+6//dKgP1NXHmjpVa5S/q6BwcZ7v4w6JblM=</value>
+			<value>#!1Emf4Ep4/pT5pJ9Bb9bxgH3DISw98/G7661h4YJc4M4=</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_Password</name>
-			<value>#!98dUVTDoVGWSBpELQo4kOdZ6LrZ7obxRKeIFZQYbIPw=</value>
+			<value>#!rkOxfimpjumPGjxK68OOZ3aHKJ4QntWn2v54kSXHvN8=</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -51,7 +51,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>MIG_SSLConnectionFactoryPwd</name>
-			<value>#!SmuvEB7g1UGArUk7UWb1bw==</value>
+			<value>#!mhXgmJ8K6XzSwq+pRKbmcg==</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

@@ -13,7 +13,7 @@
             <authorProperty>2096654</authorProperty>
             <processProperty>/Processes/JobSchedulerService.process</processProperty>
         </processArchive>
-        <versionProperty>20</versionProperty>
+        <versionProperty>21</versionProperty>
         <authorProperty>2096654</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>JobSchedulerService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\JobSchedulerService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\JobSchedulerService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

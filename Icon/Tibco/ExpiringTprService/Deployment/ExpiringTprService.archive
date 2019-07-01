@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/MainReceiver.process</processProperty>
         </processArchive>
-        <versionProperty>43</versionProperty>
+        <versionProperty>44</versionProperty>
         <authorProperty>Amit Uppal</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>ExpiringTprService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Dev\SCAD\Icon\Tibco\DeploymentFiles\ExpiringTprService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\ExpiringTprService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

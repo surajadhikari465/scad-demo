@@ -62,7 +62,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
-            <value>cerd1616.wfm.pvt</value>
+            <value>*.wfm.pvt</value>
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_TRUSTED_CA_STORE</name>
@@ -266,7 +266,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>ErrorMessageSettings/Connections/JMS/SB1/Username</name>
@@ -330,7 +330,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1616.wfm.pvt:7233</value>
+            <value>ssl://cerd1668.wfm.pvt:7233</value>
         </NameValuePair>
         <NameValuePair>
             <name>LoggerSettings/Connections/JMS/SB1/Username</name>

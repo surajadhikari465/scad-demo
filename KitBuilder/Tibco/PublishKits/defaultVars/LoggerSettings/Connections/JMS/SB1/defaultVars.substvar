@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!EU2STw3rdUrf4olFs+Xj7jx8zvdo0uvS0YjaPl1yHRQ=</value>
+			<value>#!M6IVWTKEMlMeQE4eaWAE89fYjuCVeyp66wS2nWtzfwg=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -11,11 +11,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Url</name>
-			<value>ssl://cerd1616.wfm.pvt:7233</value>
+			<value>ssl://cerd1668.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1554928479840</modTime>
+			<modTime>1561922403676</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Username</name>

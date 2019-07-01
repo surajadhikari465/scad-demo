@@ -11,15 +11,15 @@
 		</globalVariable>
 		<globalVariable>
 			<name>JndiContextUrl</name>
-			<value>ssl://cerd1617.wfm.pvt:17293</value>
+			<value>ssl://DEV-ESB-EMS-1.wfm.pvt:7233</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1552621021250</modTime>
+			<modTime>1561922720077</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JndiPassword</name>
-			<value>#!MgH8q+A2ihu2NVtUAjyhxra0y3Twsbb3aLL+FxQj3UE=</value>
+			<value>#!G3Wy1vuWc/kcipKUQ4rhoWGroH/52RgrPkv/tso0O+I=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -35,7 +35,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!W8CMXgCVha4a39ZGUJH6h12vrwVPvkJQ</value>
+			<value>#!2QKFjB/SOEjueYdR6gLpztapVN0LPTvp</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
@@ -51,7 +51,7 @@
 		</globalVariable>
 		<globalVariable>
 			<name>SslPassword</name>
-			<value>#!YRceR5qRVMP/jJIglmz4rw==</value>
+			<value>#!uCB5YcQUPRSyODEkStkToA==</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

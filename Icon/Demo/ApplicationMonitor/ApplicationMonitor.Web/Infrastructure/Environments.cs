@@ -22,7 +22,7 @@ namespace ApplicationMonitor.Web.Infrastructure
             };
             public static Dictionary<string, string> Esb = new Dictionary<string, string>
             {
-                { "ssl://cerd1616.wfm.pvt:7233", EsbEnvironments.Dev },
+                { "ssl://DEV-ESB-EMS-1.wfm.pvt:7233", EsbEnvironments.Dev },
                 { "ssl://cerd1636.wfm.pvt:7233", EsbEnvironments.DevDup },
                 { "ssl://cerd1617.wfm.pvt:17293", EsbEnvironments.Test },
                 { "ssl://cerd1637.wfm.pvt:17293", EsbEnvironments.TestDup },

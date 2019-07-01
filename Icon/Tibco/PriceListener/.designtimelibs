@@ -1,6 +1,6 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Fri Jun 21 11:36:36 CDT 2019
+#Sun Jun 30 13:39:22 CDT 2019
 6=SharedArchivePriceMessage.projlib\=
 5=SharedConfirmBODPublisher.projlib\=
 4=SharedErrorPublisher.projlib\=
@@ -8,4 +8,4 @@
 2=SharedJmsConnections.projlib\=
 1=SharedLogPublisher.projlib\=
 0=WfmUtilities_v2.2.projlib\=
-7=SharedSchemas.projlib1\=
+7=SharedSchemas.projlib\=

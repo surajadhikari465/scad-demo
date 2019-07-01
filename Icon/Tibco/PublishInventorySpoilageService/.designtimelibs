@@ -1,7 +1,7 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Fri May 03 10:10:54 CDT 2019
-5=SharedSchemas.3.1.0.0.projlib\=
+#Sun Jun 30 14:08:30 CDT 2019
+5=SharedSchemas_3_1_0_0000.projlib\=
 4=SharedJmsConnections.projlib\=
 3=SharedJdbcConnections.projlib\=
 2=SharedErrorPublisher.projlib\=

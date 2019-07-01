@@ -85,7 +85,7 @@
                   CertificateName="CN=CA-ROOT-I, O=Whole Foods Market" CertificateStoreName="Root" CertificateStoreLocation="LocalMachine"
                   SslPassword="esb" SessionMode="ClientAcknowledge" ReconnectDelay="30000" NumberOfListenerThreads="1">
   </EsbEnvironment>
-  <EsbEnvironment Name="DEV" ServerUrl="ssl://cerd1616.wfm.pvt:7233" TargetHostName="cerd1616.wfm.pvt"
+  <EsbEnvironment Name="DEV" ServerUrl="ssl://DEV-ESB-EMS-1.wfm.pvt:7233" TargetHostName="DEV-ESB-EMS-1.wfm.pvt"
                   JmsUsername="iconUser" JmsPassword="xxxxx" JndiUsername="jndiIconUser" JndiPassword="yyyyyyyy"
                   CertificateName="CN=CA-ROOT-I, O=Whole Foods Market" CertificateStoreName="Root" CertificateStoreLocation="LocalMachine"
                   SslPassword="esb" SessionMode="ClientAcknowledge" ReconnectDelay="30000" NumberOfListenerThreads="1">
