@@ -86,7 +86,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://cerd1617.wfm.pvt:17293</value>
+            <value>ssl://TST-ESB-EMS-1.wfm.pvt:17293,ssl://TST-ESB-EMS-2.wfm.pvt:17293</value>
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiPassword</name>
