@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>TIBCO.EMS</id>
-    <version>1.0.800.9</version>
+    <version>1.0.840.14</version>
     <authors>TIBCO Software Inc.</authors>
     <owners>TIBCO Software Inc.</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
