@@ -3,20 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "LoadMammoth-SyncIIKAndIDI", "LoadMammoth-SyncIIKAndIDI\LoadMammoth-SyncIIKAndIDI.dtproj", "{F23D1C1B-1DA7-40D1-941C-FDB040564379}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "SyncMammoth-AuthIIKAndIDI", "SyncMammoth-AuthIIKAndIDI\SyncMammoth-AuthIIKAndIDI.dtproj", "{CEBBB739-449B-4C1F-938F-169B3C2A54FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Development|Default = Development|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F23D1C1B-1DA7-40D1-941C-FDB040564379}.Development|Default.ActiveCfg = Development
-		{F23D1C1B-1DA7-40D1-941C-FDB040564379}.Development|Default.Build.0 = Development
+		{CEBBB739-449B-4C1F-938F-169B3C2A54FD}.Development|Default.ActiveCfg = Development
+		{CEBBB739-449B-4C1F-938F-169B3C2A54FD}.Development|Default.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A1223177-F37B-4154-BEEC-D4C25424BDC0}
+		SolutionGuid = {976BD591-7460-43E4-AB56-AE1DFCBA7E68}
 	EndGlobalSection
 EndGlobal
