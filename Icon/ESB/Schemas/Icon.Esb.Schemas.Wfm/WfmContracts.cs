@@ -10925,63 +10925,121 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private decimal servingSizeUomCountField;
         
+        private bool servingSizeUomCountFieldSpecified;
+        
         private UomType servingsInRetailSaleUnitCountField;
         
         private decimal caloriesCountField;
         
+        private bool caloriesCountFieldSpecified;
+        
         private decimal caloriesFromFatCountField;
+        
+        private bool caloriesFromFatCountFieldSpecified;
         
         private decimal totalFatGramsAmountField;
         
+        private bool totalFatGramsAmountFieldSpecified;
+        
         private decimal totalFatDailyIntakePercentField;
+        
+        private bool totalFatDailyIntakePercentFieldSpecified;
         
         private decimal saturatedFatGramsAmountField;
         
+        private bool saturatedFatGramsAmountFieldSpecified;
+        
         private decimal saturatedFatPercentField;
+        
+        private bool saturatedFatPercentFieldSpecified;
         
         private decimal cholesterolMilligramsCountField;
         
+        private bool cholesterolMilligramsCountFieldSpecified;
+        
         private decimal cholesterolPercentField;
+        
+        private bool cholesterolPercentFieldSpecified;
         
         private decimal sodiumMilligramsCountField;
         
+        private bool sodiumMilligramsCountFieldSpecified;
+        
         private decimal sodiumPercentField;
+        
+        private bool sodiumPercentFieldSpecified;
         
         private decimal totalCarbohydrateMilligramsCountField;
         
+        private bool totalCarbohydrateMilligramsCountFieldSpecified;
+        
         private decimal totalCarbohydratePercentField;
+        
+        private bool totalCarbohydratePercentFieldSpecified;
         
         private decimal dietaryFiberGramsCountField;
         
+        private bool dietaryFiberGramsCountFieldSpecified;
+        
         private decimal sugarsGramsCountField;
+        
+        private bool sugarsGramsCountFieldSpecified;
         
         private decimal addedSugarsGramsCountField;
         
+        private bool addedSugarsGramsCountFieldSpecified;
+        
         private decimal addedSugarDailyPercentField;
+        
+        private bool addedSugarDailyPercentFieldSpecified;
         
         private decimal proteinGramsCountField;
         
+        private bool proteinGramsCountFieldSpecified;
+        
         private decimal vitaminADailyMinimumPercentField;
+        
+        private bool vitaminADailyMinimumPercentFieldSpecified;
         
         private decimal vitaminBDailyMinimumPercentField;
         
+        private bool vitaminBDailyMinimumPercentFieldSpecified;
+        
         private decimal vitaminCDailyMinimumPercentField;
+        
+        private bool vitaminCDailyMinimumPercentFieldSpecified;
         
         private decimal vitaminDDailyPercentField;
         
+        private bool vitaminDDailyPercentFieldSpecified;
+        
         private decimal vitaminDMicrogramsCountField;
+        
+        private bool vitaminDMicrogramsCountFieldSpecified;
         
         private decimal calciumDailyMinimumPercentField;
         
+        private bool calciumDailyMinimumPercentFieldSpecified;
+        
         private decimal calciumMilligramsCountField;
+        
+        private bool calciumMilligramsCountFieldSpecified;
         
         private decimal ironDailyMinimumPercentField;
         
+        private bool ironDailyMinimumPercentFieldSpecified;
+        
         private decimal ironMilligramsCountField;
+        
+        private bool ironMilligramsCountFieldSpecified;
         
         private decimal potassiumDailyMinimumPercentField;
         
+        private bool potassiumDailyMinimumPercentFieldSpecified;
+        
         private decimal potassiumMilligramsCountField;
+        
+        private bool potassiumMilligramsCountFieldSpecified;
         
         private string nutritionalDescriptionTextField;
         
@@ -10999,35 +11057,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         public StockProductLabelType()
         {
-            this.servingSizeUomCountField = ((decimal)(0m));
-            this.caloriesCountField = ((decimal)(0m));
-            this.caloriesFromFatCountField = ((decimal)(0m));
-            this.totalFatGramsAmountField = ((decimal)(0m));
-            this.totalFatDailyIntakePercentField = ((decimal)(0m));
-            this.saturatedFatGramsAmountField = ((decimal)(0m));
-            this.saturatedFatPercentField = ((decimal)(0m));
-            this.cholesterolMilligramsCountField = ((decimal)(0m));
-            this.cholesterolPercentField = ((decimal)(0m));
-            this.sodiumMilligramsCountField = ((decimal)(0m));
-            this.sodiumPercentField = ((decimal)(0m));
-            this.totalCarbohydrateMilligramsCountField = ((decimal)(0m));
-            this.totalCarbohydratePercentField = ((decimal)(0m));
-            this.dietaryFiberGramsCountField = ((decimal)(0m));
-            this.sugarsGramsCountField = ((decimal)(0m));
-            this.addedSugarsGramsCountField = ((decimal)(0m));
-            this.addedSugarDailyPercentField = ((decimal)(0m));
-            this.proteinGramsCountField = ((decimal)(0m));
-            this.vitaminADailyMinimumPercentField = ((decimal)(0m));
-            this.vitaminBDailyMinimumPercentField = ((decimal)(0m));
-            this.vitaminCDailyMinimumPercentField = ((decimal)(0m));
-            this.vitaminDDailyPercentField = ((decimal)(0m));
-            this.vitaminDMicrogramsCountField = ((decimal)(0m));
-            this.calciumDailyMinimumPercentField = ((decimal)(0m));
-            this.calciumMilligramsCountField = ((decimal)(0m));
-            this.ironDailyMinimumPercentField = ((decimal)(0m));
-            this.ironMilligramsCountField = ((decimal)(0m));
-            this.potassiumDailyMinimumPercentField = ((decimal)(0m));
-            this.potassiumMilligramsCountField = ((decimal)(0m));
             this.isHazardousMaterialField = false;
         }
         
@@ -11059,7 +11088,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
         public decimal servingSizeUomCount
         {
             get
@@ -11069,6 +11097,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.servingSizeUomCountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool servingSizeUomCountSpecified
+        {
+            get
+            {
+                return this.servingSizeUomCountFieldSpecified;
+            }
+            set
+            {
+                this.servingSizeUomCountFieldSpecified = value;
             }
         }
         
@@ -11086,7 +11128,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
         public decimal caloriesCount
         {
             get
@@ -11100,7 +11141,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool caloriesCountSpecified
+        {
+            get
+            {
+                return this.caloriesCountFieldSpecified;
+            }
+            set
+            {
+                this.caloriesCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal caloriesFromFatCount
         {
             get
@@ -11114,7 +11168,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool caloriesFromFatCountSpecified
+        {
+            get
+            {
+                return this.caloriesFromFatCountFieldSpecified;
+            }
+            set
+            {
+                this.caloriesFromFatCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal totalFatGramsAmount
         {
             get
@@ -11128,7 +11195,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalFatGramsAmountSpecified
+        {
+            get
+            {
+                return this.totalFatGramsAmountFieldSpecified;
+            }
+            set
+            {
+                this.totalFatGramsAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal totalFatDailyIntakePercent
         {
             get
@@ -11142,7 +11222,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalFatDailyIntakePercentSpecified
+        {
+            get
+            {
+                return this.totalFatDailyIntakePercentFieldSpecified;
+            }
+            set
+            {
+                this.totalFatDailyIntakePercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal saturatedFatGramsAmount
         {
             get
@@ -11156,7 +11249,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool saturatedFatGramsAmountSpecified
+        {
+            get
+            {
+                return this.saturatedFatGramsAmountFieldSpecified;
+            }
+            set
+            {
+                this.saturatedFatGramsAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal saturatedFatPercent
         {
             get
@@ -11170,7 +11276,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool saturatedFatPercentSpecified
+        {
+            get
+            {
+                return this.saturatedFatPercentFieldSpecified;
+            }
+            set
+            {
+                this.saturatedFatPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal cholesterolMilligramsCount
         {
             get
@@ -11184,7 +11303,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cholesterolMilligramsCountSpecified
+        {
+            get
+            {
+                return this.cholesterolMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.cholesterolMilligramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal cholesterolPercent
         {
             get
@@ -11198,7 +11330,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cholesterolPercentSpecified
+        {
+            get
+            {
+                return this.cholesterolPercentFieldSpecified;
+            }
+            set
+            {
+                this.cholesterolPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal sodiumMilligramsCount
         {
             get
@@ -11212,7 +11357,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sodiumMilligramsCountSpecified
+        {
+            get
+            {
+                return this.sodiumMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.sodiumMilligramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal sodiumPercent
         {
             get
@@ -11226,7 +11384,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sodiumPercentSpecified
+        {
+            get
+            {
+                return this.sodiumPercentFieldSpecified;
+            }
+            set
+            {
+                this.sodiumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal totalCarbohydrateMilligramsCount
         {
             get
@@ -11240,7 +11411,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalCarbohydrateMilligramsCountSpecified
+        {
+            get
+            {
+                return this.totalCarbohydrateMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.totalCarbohydrateMilligramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal totalCarbohydratePercent
         {
             get
@@ -11254,7 +11438,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalCarbohydratePercentSpecified
+        {
+            get
+            {
+                return this.totalCarbohydratePercentFieldSpecified;
+            }
+            set
+            {
+                this.totalCarbohydratePercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal dietaryFiberGramsCount
         {
             get
@@ -11268,7 +11465,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dietaryFiberGramsCountSpecified
+        {
+            get
+            {
+                return this.dietaryFiberGramsCountFieldSpecified;
+            }
+            set
+            {
+                this.dietaryFiberGramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal sugarsGramsCount
         {
             get
@@ -11282,7 +11492,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sugarsGramsCountSpecified
+        {
+            get
+            {
+                return this.sugarsGramsCountFieldSpecified;
+            }
+            set
+            {
+                this.sugarsGramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal addedSugarsGramsCount
         {
             get
@@ -11296,7 +11519,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool addedSugarsGramsCountSpecified
+        {
+            get
+            {
+                return this.addedSugarsGramsCountFieldSpecified;
+            }
+            set
+            {
+                this.addedSugarsGramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal addedSugarDailyPercent
         {
             get
@@ -11310,7 +11546,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool addedSugarDailyPercentSpecified
+        {
+            get
+            {
+                return this.addedSugarDailyPercentFieldSpecified;
+            }
+            set
+            {
+                this.addedSugarDailyPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal proteinGramsCount
         {
             get
@@ -11324,7 +11573,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool proteinGramsCountSpecified
+        {
+            get
+            {
+                return this.proteinGramsCountFieldSpecified;
+            }
+            set
+            {
+                this.proteinGramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal vitaminADailyMinimumPercent
         {
             get
@@ -11338,7 +11600,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool vitaminADailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.vitaminADailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.vitaminADailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal vitaminBDailyMinimumPercent
         {
             get
@@ -11352,7 +11627,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool vitaminBDailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.vitaminBDailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.vitaminBDailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal vitaminCDailyMinimumPercent
         {
             get
@@ -11366,7 +11654,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool vitaminCDailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.vitaminCDailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.vitaminCDailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal vitaminDDailyPercent
         {
             get
@@ -11380,7 +11681,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool vitaminDDailyPercentSpecified
+        {
+            get
+            {
+                return this.vitaminDDailyPercentFieldSpecified;
+            }
+            set
+            {
+                this.vitaminDDailyPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal vitaminDMicrogramsCount
         {
             get
@@ -11394,7 +11708,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool vitaminDMicrogramsCountSpecified
+        {
+            get
+            {
+                return this.vitaminDMicrogramsCountFieldSpecified;
+            }
+            set
+            {
+                this.vitaminDMicrogramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal calciumDailyMinimumPercent
         {
             get
@@ -11408,7 +11735,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calciumDailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.calciumDailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.calciumDailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal calciumMilligramsCount
         {
             get
@@ -11422,7 +11762,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calciumMilligramsCountSpecified
+        {
+            get
+            {
+                return this.calciumMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.calciumMilligramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal ironDailyMinimumPercent
         {
             get
@@ -11436,7 +11789,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ironDailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.ironDailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.ironDailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal ironMilligramsCount
         {
             get
@@ -11450,7 +11816,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ironMilligramsCountSpecified
+        {
+            get
+            {
+                return this.ironMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.ironMilligramsCountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal potassiumDailyMinimumPercent
         {
             get
@@ -11464,7 +11843,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(typeof(decimal), "0")]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool potassiumDailyMinimumPercentSpecified
+        {
+            get
+            {
+                return this.potassiumDailyMinimumPercentFieldSpecified;
+            }
+            set
+            {
+                this.potassiumDailyMinimumPercentFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal potassiumMilligramsCount
         {
             get
@@ -11474,6 +11866,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.potassiumMilligramsCountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool potassiumMilligramsCountSpecified
+        {
+            get
+            {
+                return this.potassiumMilligramsCountFieldSpecified;
+            }
+            set
+            {
+                this.potassiumMilligramsCountFieldSpecified = value;
             }
         }
         

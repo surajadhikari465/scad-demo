@@ -75,7 +75,7 @@
 					<xs:documentation>The unit of measure assigned to the item for serving size counts.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="servingSizeUomCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="servingSizeUomCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The count or number of serving unit of measures in a serving.</xs:documentation>
 				</xs:annotation>
@@ -85,142 +85,142 @@
 					<xs:documentation>Number of servings in a retail sale unit for the item.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="caloriesCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="caloriesCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>A count of the number of calories in the serving unit.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="caloriesFromFatCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="caloriesFromFatCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The number of calories derived from fat for the serving unit of the item</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalFatGramsAmount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="totalFatGramsAmount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Total fat weight in grams for the serving of the item.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalFatDailyIntakePercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="totalFatDailyIntakePercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The input percentage of fat based on the total-fat-grams amount.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="saturatedFatGramsAmount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="saturatedFatGramsAmount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Total saturated fat weight in grams for the serving of the item.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="saturatedFatPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="saturatedFatPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The input percentage of saturated fat based on the total-fat-grams amount.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="cholesterolMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="cholesterolMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of cholesterol found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="cholesterolPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="cholesterolPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percent of daily recommended allowance for cholesterol in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sodiumMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="sodiumMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of sodium found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sodiumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="sodiumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percent of daily recommended allowance for sodium in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalCarbohydrateMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="totalCarbohydrateMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of carbohydrate found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="totalCarbohydratePercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="totalCarbohydratePercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percent of daily recommended allowance for carbohydrate in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="dietaryFiberGramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="dietaryFiberGramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight in grams of the dietary fiber contained in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sugarsGramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="sugarsGramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight in grams of sugars for a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="addedSugarsGramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="addedSugarsGramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight in grams of added sugars for a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="addedSugarDailyPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="addedSugarDailyPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for added Sugar.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="proteinGramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="proteinGramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight of protein, in grams, for a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vitaminADailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="vitaminADailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Vitamin A.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vitaminBDailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="vitaminBDailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Vitamin B.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vitaminCDailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="vitaminCDailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Vitamin C.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vitaminDDailyPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="vitaminDDailyPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Vitamin D.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="vitaminDMicrogramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="vitaminDMicrogramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in micrograms) of viatminD found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="calciumDailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="calciumDailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Calcium.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="calciumMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="calciumMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of calcium found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ironDailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="ironDailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for Iron.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ironMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="ironMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of iron found in a serving.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="potassiumDailyMinimumPercent" type="StockProductLabelPercentType" default="0" minOccurs="0">
+			<xs:element name="potassiumDailyMinimumPercent" type="StockProductLabelPercentType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The percentage of minimum daily requirement for potassium</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="potassiumMilligramsCount" type="StockProductLabelDecimalType" default="0" minOccurs="0">
+			<xs:element name="potassiumMilligramsCount" type="StockProductLabelDecimalType" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The weight (in milligrams) of potassium found in a serving.</xs:documentation>
 				</xs:annotation>
