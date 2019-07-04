@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<!-- edited with XMLSpy v2019 sp2 (http://www.altova.com) by Vignesh (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" xmlns:prt="http://schemas.wfm.com/Enterprise/PartyMgmt/Party/V2" xmlns:itm="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:txf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ivf="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- ================== -->
 	<!-- Schema Imports     -->
@@ -22,7 +22,7 @@
 					<xs:element name="transferOrder" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="transferNumber" type="crf:WfmStrType"/>								
+								<xs:element name="transferNumber" type="crf:WfmStrType"/>
 								<xs:element name="eventType" type="crf:WfmStrType"/>
 								<xs:element name="messageNumber" type="crf:WfmStrType">
 									<xs:annotation>
@@ -44,7 +44,7 @@
 					<xs:element name="transferOrderDelete" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="transferNumber" type="crf:IdIntType"/>								
+								<xs:element name="transferNumber" type="crf:IdIntType"/>
 								<xs:element name="eventType" type="crf:WfmStrType"/>
 								<xs:element name="messageNumber" type="crf:WfmStrType"/>
 								<xs:element name="locationNumber" type="crf:WfmIntType"/>
@@ -89,7 +89,7 @@
 			<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
 			<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
-			<xs:element name="transferQuantities" type="txf:QuantitiesType" minOccurs="0"/>
+			<xs:element name="transferQuantities" type="ivf:QuantitiesType"/>
 			<xs:element name="invStatusChange" type="InvStatusChangeType" minOccurs="0"/>
 			<xs:element name="tsfStatus" type="crf:WfmStrType"/>
 			<xs:element name="expectedArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
@@ -98,14 +98,16 @@
 			<xs:element name="shipmentType" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="documentNumber" type="crf:WfmIntType" minOccurs="0"/>
 			<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="packSize1" type="crf:WfmIntType"/>
+			<xs:element name="packSize2" type="crf:WfmIntType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TransferOrderDeletionDetailType">
 		<xs:sequence>
 			<xs:element name="transferOrderDetailNumber" type="crf:IdIntType" minOccurs="0"/>
-			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
+			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
-			<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
+			<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

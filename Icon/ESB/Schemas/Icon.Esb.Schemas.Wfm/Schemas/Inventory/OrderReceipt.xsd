@@ -34,6 +34,8 @@
 							<xs:element name="ASN" type="crf:WfmStrType" minOccurs="0"/>
 							<xs:element name="receiptComments" type="crf:WfmStrType" minOccurs="0"/>
 							<xs:element name="receiptStatus" type="crf:WfmStrType"/>
+							<xs:element name="isPastReceipt" type="crf:WfmStrType" minOccurs="0"/>
+							<xs:element name="pastRceiptDate" type="crf:WfmDateTimeType" minOccurs="0"/>
 							<xs:sequence>
 								<xs:element name="receiptDetail" maxOccurs="unbounded">
 									<xs:complexType>
@@ -51,6 +53,8 @@
 											<xs:element name="receiptStatus" type="crf:WfmStrType"/>
 											<xs:element name="receiptUoM" type="crf:WfmStrType"/>
 											<xs:element name="cartonNumber" type="crf:WfmIntType" minOccurs="0"/>
+											<xs:element name="packSize1" type="crf:WfmIntType"/>
+											<xs:element name="packSize2" type="crf:WfmIntType" minOccurs="0"/>
 											<xs:element name="conversionRetailUoM" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="receiptItemCost" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="toDispositionCode" type="crf:WfmStrType" minOccurs="0"/>

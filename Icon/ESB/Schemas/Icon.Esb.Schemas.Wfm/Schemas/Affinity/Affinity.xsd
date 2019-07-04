@@ -17,7 +17,7 @@
 			<xs:element name="affinity" type="aot:AffinitiesType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="AffinityType">
+	<xs:complexType name="AffinityType">		
 		<xs:annotation>
 			<xs:documentation>THIS SCHEMA IS STILL YET TO BE DEFINED AND IS A PLACEHOLDER UNTIL REQUIREMENTS DISCOVERED</xs:documentation>
 		</xs:annotation>
