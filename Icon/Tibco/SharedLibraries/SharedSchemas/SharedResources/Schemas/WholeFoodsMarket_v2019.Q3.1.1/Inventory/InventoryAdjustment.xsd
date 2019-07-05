@@ -22,28 +22,27 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="adjustmentNumber" type="crf:IdIntType" minOccurs="0"/>
-							<xs:element name="eventType" type="crf:WfmStrType" minOccurs="0"/>
-							<xs:element name="messageNumber" type="ivf:MandatoryStrType">
+							<xs:element name="eventType" type="crf:WfmStrType"/>
+							<xs:element name="messageNumber" type="crf:WfmStrType">
 								<xs:annotation>
 									<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="locationNumber" type="ivf:MandatoryStrType"/>
-							<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
-							<xs:element name="invAdjustmentSource" type="ivf:MandatoryStrType"/>
+							<xs:element name="locationNumber" type="crf:IdIntType"/>
+							<xs:element name="locationName" type="crf:NameType"/>
+							<xs:element name="invAdjustmentSource" type="crf:WfmStrType"/>
 							<xs:sequence>
 								<xs:element name="inventoryAdjustmentDetail" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
 											<xs:element name="adjustmentDetailNumber" type="crf:IdIntType" minOccurs="0"/>
-											<xs:element name="sourceItemKey" type="ivf:MandatoryStrType"/>
+											<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
 											<xs:element name="SubTeam" type="ivf:SubTeamType"/>
 											<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0"/>
-											<xs:element name="defaultScanCode" type="ivf:MandatoryStrType"/>
-											<xs:element name="reasonCode" type="ivf:MandatoryStrType"/>
-											<xs:element name="adjustmentQuantity" type="ivf:MandatoryStrType"/>
-											<xs:element name="adjustmentUOM" type="ivf:MandatoryStrType"/>
+											<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
+											<xs:element name="reasonCode" type="crf:WfmStrType" minOccurs="1"/>
+											<xs:element name="adjustmentQuantity" type="txf:QuantitiesType" minOccurs="0"/>
 											<xs:element name="disposition" minOccurs="0">
 												<xs:complexType>
 													<xs:sequence>
@@ -53,7 +52,7 @@
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="userInfo" type="ivf:UserType"/>
-											<xs:element name="createDateTime" type="ivf:MandatoryStrType"/>
+											<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
 											<xs:element name="documentNumber" type="crf:WfmStrType" minOccurs="0"/>
 											<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>
 										</xs:sequence>

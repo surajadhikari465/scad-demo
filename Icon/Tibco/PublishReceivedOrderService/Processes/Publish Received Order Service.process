@@ -2,7 +2,7 @@
 <pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.1.0.1000/Inventory/OrderReceipt.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v2019.Q3.1.1/Inventory/OrderReceipt.xsd"/>
     <pd:name>Processes/Publish Received Order Service.process</pd:name>
     <pd:startName>JMS Queue Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -83,9 +83,9 @@
                             </xsl:otherwise>
                         </xsl:choose>
                         <xsl:if test="PastReceiptDate">
-                            <pfx2:pastReceiptDate>
+                            <pfx2:pastRceiptDate>
                                 <xsl:value-of select="PastReceiptDate"/>
-                            </pfx2:pastReceiptDate>
+                            </pfx2:pastRceiptDate>
                         </xsl:if>
                         <xsl:for-each select="$GetEvents/resultSet/Record">
                             <pfx2:receiptDetail>
@@ -99,19 +99,21 @@
                                     <xsl:value-of select="ItemKey"/>
                                 </pfx2:sourceItemKey>
                                 <pfx2:SubTeam>
-                                    <pfx2:subTeamNumber>
+                                    <ns0:subTeamNumber>
                                         <xsl:value-of select="SubTeamNumber"/>
-                                    </pfx2:subTeamNumber>
-                                    <pfx2:subTeamName>
-                                        <xsl:value-of select="SubTeam"/>
-                                    </pfx2:subTeamName>
-                                    <pfx2:hostSubTeamNumber>
+                                    </ns0:subTeamNumber>
+                                    <xsl:if test="SubTeam">
+                                        <ns0:subTeamName>
+                                            <xsl:value-of select="SubTeam"/>
+                                        </ns0:subTeamName>
+                                    </xsl:if>
+                                    <ns0:hostSubTeamNumber>
                                         <xsl:value-of select="HostSubTeamNumber"/>
-                                    </pfx2:hostSubTeamNumber>
+                                    </ns0:hostSubTeamNumber>
                                     <xsl:if test="HostSubTeam">
-                                        <pfx2:hostSubTeamName>
+                                        <ns0:hostSubTeamName>
                                             <xsl:value-of select="HostSubTeam"/>
-                                        </pfx2:hostSubTeamName>
+                                        </ns0:hostSubTeamName>
                                     </xsl:if>
                                 </pfx2:SubTeam>
                                 <pfx2:itemVIN>
@@ -147,15 +149,15 @@
                                 <pfx2:receiptStatus>
                                     <xsl:value-of select="ReceiptStatus"/>
                                 </pfx2:receiptStatus>
-                                <pfx2:orderUOM>
-                                    <xsl:value-of select="OrderUom"/>
-                                </pfx2:orderUOM>
                                 <pfx2:receiptUoM>
                                     <xsl:value-of select="ReceiptUom"/>
                                 </pfx2:receiptUoM>
                                 <pfx2:packSize1>
-                                    <xsl:value-of select="Package_Desc1"/>
+                                    <xsl:value-of select="round(Package_Desc1)"/>
                                 </pfx2:packSize1>
+                                <pfx2:packSize2>
+                                    <xsl:value-of select="round(Package_Desc2)"/>
+                                </pfx2:packSize2>
                                 <pfx2:receiptUserInfo>
                                     <ns0:idNumber>
                                         <xsl:value-of select="RecvLogUser_ID"/>
@@ -164,19 +166,16 @@
                                         <xsl:value-of select="RecvUserName"/>
                                     </ns0:name>
                                 </pfx2:receiptUserInfo>
-                                <pfx2:createDateTime>
-                                    <xsl:value-of select="current-dateTime()"/>
-                                </pfx2:createDateTime>
                                 <xsl:choose>
                                     <xsl:when test="exists(DateReceived)">
-                                        <pfx2:receiptDateTime>
+                                        <pfx2:createDateTime>
                                             <xsl:value-of select="DateReceived"/>
-                                        </pfx2:receiptDateTime>
+                                        </pfx2:createDateTime>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <pfx2:receiptDateTime>
-                                            <xsl:value-of select="&quot; &quot;"/>
-                                        </pfx2:receiptDateTime>
+                                        <pfx2:createDateTime>
+                                            <xsl:value-of select="current-dateTime()"/>
+                                        </pfx2:createDateTime>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </pfx2:receiptDetail>
@@ -242,7 +241,7 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
         <pd:x>360</pd:x>
-        <pd:y>242</pd:y>
+        <pd:y>241</pd:y>
         <config>
             <timeout>120</timeout>
             <commit>false</commit>

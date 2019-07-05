@@ -22,21 +22,21 @@
 					<xs:element name="transferOrder" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="transferNumber" type="ivf:MandatoryStrType"/>
-								<xs:element name="eventType" type="ivf:MandatoryStrType"/>
-								<xs:element name="transferType" type="ivf:MandatoryStrType"/>
-								<xs:element name="messageNumber" type="ivf:MandatoryStrType">
+								<xs:element name="transferNumber" type="crf:WfmStrType"/>
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType">
 									<xs:annotation>
 										<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 									</xs:annotation>
 								</xs:element>
 								<xs:element name="locationChange" type="LocationChangeType"/>
+								<xs:element name="subTeamChange" type="SubTeamChangeType"/>
 								<xs:element name="userInfo" type="ivf:UserType"/>
-								<xs:element name="createDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
+								<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
 								<xs:element name="approveDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
 								<xs:element name="logicalTransfer" type="crf:WfmStrType" minOccurs="0"/>
 								<xs:element name="transferReasonCode" type="crf:WfmStrType" minOccurs="0"/>
-								<xs:element name="approverInfo" type="UserType" minOccurs="0"/>
+								<xs:element name="approverInfo" type="ivf:UserType" minOccurs="0"/>
 								<xs:element name="transferOrderDetail" type="TransferOrderDetailType" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
@@ -44,12 +44,12 @@
 					<xs:element name="transferOrderDelete" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="transferNumber" type="ivf:MandatoryStrType"/>
-								<xs:element name="eventType" type="ivf:MandatoryStrType"/>
-								<xs:element name="messageNumber" type="ivf:MandatoryStrType"/>
-								<xs:element name="locationNumber" type="crf:WfmIntType" minOccurs="0"/>
+								<xs:element name="transferNumber" type="crf:IdIntType"/>
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType"/>
+								<xs:element name="locationNumber" type="crf:WfmIntType"/>
 								<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
-								<xs:element name="cancelUserInfo" type="UserType" minOccurs="0"/>
+								<xs:element name="cancelUserInfo" type="ivf:UserType" minOccurs="0"/>
 								<xs:element name="cancelDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
 								<xs:element name="transferOrderDeletionDetail" type="TransferOrderDeletionDetailType" maxOccurs="unbounded"/>
 							</xs:sequence>
@@ -61,10 +61,18 @@
 	</xs:element>
 	<xs:complexType name="LocationChangeType">
 		<xs:sequence>
-			<xs:element name="fromLocationNumber" type="ivf:MandatoryStrType"/>
-			<xs:element name="fromLocationName" type="crf:NameType" minOccurs="0"/>
-			<xs:element name="toLocationNumber" type="ivf:MandatoryStrType"/>
-			<xs:element name="toLocationName" type="crf:NameType" minOccurs="0"/>
+			<xs:element name="fromLocationNumber" type="crf:WfmStrType"/>
+			<xs:element name="fromLocationName" type="crf:NameType"/>
+			<xs:element name="toLocationNumber" type="crf:WfmStrType"/>
+			<xs:element name="toLocationName" type="crf:NameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubTeamChangeType">
+		<xs:sequence>
+			<xs:element name="fromSubTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="fromSubTeamName" type="crf:NameType"/>
+			<xs:element name="toSubTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="toSubTeamName" type="crf:NameType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="InvStatusChangeType">
@@ -76,23 +84,22 @@
 	<xs:complexType name="TransferOrderDetailType">
 		<xs:sequence>
 			<xs:element name="transferOrderDetailNumber" type="crf:IdIntType" minOccurs="0"/>
-			<xs:element name="sourceItemKey" type="ivf:MandatoryStrType"/>
+			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
 			<xs:element name="SubTeam" type="ivf:SubTeamType"/>
-			<xs:element name="defaultScanCode" type="ivf:MandatoryStrType"/>
+			<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
 			<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
-			<xs:element name="transferQuantity" type="ivf:MandatoryStrType"/>
-			<xs:element name="transferUOM" type="ivf:MandatoryStrType"/>
+			<xs:element name="transferQuantities" type="txf:QuantitiesType" minOccurs="0"/>
 			<xs:element name="invStatusChange" type="InvStatusChangeType" minOccurs="0"/>
-			<xs:element name="transferStatus" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="tsfStatus" type="crf:WfmStrType"/>
 			<xs:element name="expectedArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
 			<xs:element name="carrierSCAC" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="cartonQuantity" type="crf:WfmIntType" minOccurs="0"/>
 			<xs:element name="shipmentType" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="packSize1" type="ivf:MandatoryStrType"/>
-			<xs:element name="packSize2" type="crf:WfmIntType" minOccurs="0"/>
 			<xs:element name="documentNumber" type="crf:WfmIntType" minOccurs="0"/>
 			<xs:element name="documentType" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="packSize1" type="crf:WfmIntType"/>
+			<xs:element name="packSize2" type="crf:WfmIntType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TransferOrderDeletionDetailType">
@@ -101,12 +108,6 @@
 			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
 			<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="UserType">
-		<xs:sequence>
-			<xs:element name="idNumber" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="name" type="crf:NameType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

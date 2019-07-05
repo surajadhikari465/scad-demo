@@ -22,25 +22,25 @@
 					<xs:element name="PurchaseOrder" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="purchaseOrderNumber" type="ivf:MandatoryStrType"/>
+								<xs:element name="purchaseOrderNumber" type="crf:WfmStrType"/>
 								<xs:element name="externalPurchaseOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
 								<xs:element name="externalSource" type="crf:WfmStrType" minOccurs="0"/>
-								<xs:element name="eventType" type="crf:WfmStrType" minOccurs="0"/>
-								<xs:element name="messageNumber" type="ivf:MandatoryStrType">
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType">
 									<xs:annotation>
 										<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="purchaseType" type="ivf:MandatoryStrType"/>
-								<xs:element name="supplierNumber" type="ivf:MandatoryStrType"/>
-								<xs:element name="locationNumber" type="ivf:MandatoryStrType"/>
-								<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
+								<xs:element name="purchaseType" type="crf:WfmStrType"/>
+								<xs:element name="supplierNumber" type="crf:WfmStrType"/>
+								<xs:element name="locationNumber" type="crf:WfmIntType"/>
+								<xs:element name="locationName" type="crf:NameType"/>
 								<xs:element name="prePacked" type="crf:WfmStrType" minOccurs="0"/>
 								<xs:element name="OrderSubTeam" type="OrderSubTeamType"/>
-								<xs:element name="status" type="ivf:MandatoryStrType"/>
+								<xs:element name="status" type="crf:WfmStrType"/>
 								<xs:element name="userInfo" type="ivf:UserType"/>
-								<xs:element name="approverInfo" type="UserType" minOccurs="0"/>
-								<xs:element name="createDateTime" type="ivf:MandatoryStrType"/>
+								<xs:element name="approverInfo" type="ivf:UserType" minOccurs="0"/>
+								<xs:element name="createDateTime" type="crf:WfmDateTimeType"/>
 								<xs:element name="approveDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
 								<xs:element name="closeDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
 								<xs:element name="purchaseOrderTermsCode" type="crf:WfmStrType" minOccurs="0"/>
@@ -50,37 +50,32 @@
 									<xs:element name="PurchaseOrderDetail" maxOccurs="unbounded">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="PurchaseOrderDetailNumber" type="crf:IdIntType" minOccurs="0"/>
-												<xs:element name="sourceItemKey" type="ivf:MandatoryStrType"/>
-												<xs:element name="locationId" type="crf:WfmStrType" minOccurs="0"/>
-												<xs:element name="SubTeam" type="SubTeamType"/>
-												<xs:element name="defaultScanCode" type="ivf:MandatoryStrType"/>
+												<xs:element name="PurchaseOrderDetailNumber" type="crf:IdIntType"/>
+												<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="1"/>
+												<xs:element name="locationId" type="crf:WfmStrType" minOccurs="1"/>
+												<xs:element name="SubTeam" type="ivf:SubTeamType"/>
+												<xs:element name="defaultScanCode" type="crf:WfmStrType"/>
 												<xs:element name="serialNumber" type="crf:WfmStrType" minOccurs="0">
 													<xs:annotation>
 														<xs:documentation>this may just be a mapped locale > scanCode element with "serialNumber" as the description?</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element name="itemVIN" type="crf:WfmStrType" minOccurs="0"/>
 												<xs:element name="batchNumber" type="crf:WfmStrType" minOccurs="0">
 													<xs:annotation>
 														<xs:documentation>this may just be a mapped locale > scanCode element with "batchNumber" as the description?</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element name="quantityOrdered" type="crf:WfmIntType" minOccurs="0"/>
-												<xs:element name="preScaleQty" type="crf:WfmIntType" minOccurs="0"/>
-												<xs:element name="eInvoiceASNQty" type="crf:WfmIntType" minOccurs="0"/>
-												<xs:element name="eInvoiceASNWeight" type="crf:WfmIntType" minOccurs="0"/>
-												<xs:element name="eInvoiceASNUOM" type="crf:WfmStrType" minOccurs="0"/>
-												<xs:element name="orderUOM" type="ivf:MandatoryStrType"/>
-												<xs:element name="packSize1" type="crf:WfmIntType" minOccurs="0"/>
-												<xs:element name="packSize2" type="crf:WfmIntType" minOccurs="0"/>
+												<xs:element name="quantities" type="txf:QuantitiesType" minOccurs="0"/>
+												<xs:element name="eInvoiceASNQuantities" type="txf:QuantitiesType" minOccurs="0"/>
+												<xs:element name="eInvoiceASNWeights" type="txf:QuantitiesType" minOccurs="0"/>
+												<xs:element name="packSize1" type="crf:WfmIntType"/>
+												<xs:element name="packSize2" type="crf:WfmIntType"/>
 												<xs:element name="uomConvRetailUom" type="crf:WfmStrType" minOccurs="0"/>
-												<xs:element name="itemCost" type="crf:WfmStrType" minOccurs="0"/>
+												<xs:element name="itemCost" type="crf:WfmStrType"/>
 												<xs:element name="costType" type="crf:TypeType" minOccurs="0"/>
 												<xs:element name="earliestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
 												<xs:element name="latestArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
 												<xs:element name="expectedArrivalDate" type="crf:WfmDateTimeType" minOccurs="0"/>
-												<xs:element name="cartonCount" type="crf:WfmIntType" minOccurs="0"/>
 												<xs:element name="carrierSCAC" type="crf:WfmStrType" minOccurs="0"/>
 												<xs:element name="shipmentType" type="crf:WfmStrType" minOccurs="0"/>
 												<xs:element name="documentNumber" type="crf:WfmStrType" minOccurs="0"/>
@@ -95,18 +90,18 @@
 					<xs:element name="PurchaseOrderDelete" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="purchaseOrderNumber" type="ivf:MandatoryStrType"/>
+								<xs:element name="purchaseOrderNumber" type="crf:WfmStrType"/>
 								<xs:element name="externalPurchaseOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
 								<xs:element name="externalSource" type="crf:WfmStrType" minOccurs="0"/>
-								<xs:element name="eventType" type="crf:WfmStrType" minOccurs="0"/>
-								<xs:element name="messageNumber" type="ivf:MandatoryStrType">
+								<xs:element name="eventType" type="crf:WfmStrType"/>
+								<xs:element name="messageNumber" type="crf:WfmStrType">
 									<xs:annotation>
 										<xs:documentation>equivalent to TransactionID.  Should be a unique identifier</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="locationNumber" type="crf:WfmIntType" minOccurs="0"/>
+								<xs:element name="locationNumber" type="crf:WfmIntType"/>
 								<xs:element name="locationName" type="crf:NameType" minOccurs="0"/>
-								<xs:element name="cancelUserInfo" type="UserType" minOccurs="0"/>
+								<xs:element name="cancelUserInfo" type="ivf:UserType" minOccurs="0"/>
 								<xs:element name="cancelDateTime" type="crf:WfmDateTimeType" minOccurs="0"/>
 								<xs:element name="purchaseOrderDeletionDetail" type="PurchaseOrderDeletionDetailType" maxOccurs="unbounded"/>
 							</xs:sequence>
@@ -118,10 +113,10 @@
 	</xs:element>
 	<xs:complexType name="OrderSubTeamType">
 		<xs:sequence>
-			<xs:element name="orderSubTeamNumber" type="ivf:MandatoryStrType"/>
-			<xs:element name="orderSubTeamName" type="crf:NameType" minOccurs="0"/>
-			<xs:element name="orderTeamNumber" type="ivf:MandatoryStrType"/>
-			<xs:element name="orderTeamName" type="crf:NameType" minOccurs="0"/>
+			<xs:element name="orderSubTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="orderSubTeamName" type="crf:NameType"/>
+			<xs:element name="orderTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="orderTeamName" type="crf:NameType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PurchaseOrderDeletionDetailType">
@@ -130,20 +125,6 @@
 			<xs:element name="sourceItemKey" type="crf:WfmStrType" minOccurs="0"/>
 			<xs:element name="batchNumber" type="crf:IdIntType" minOccurs="0"/>
 			<xs:element name="defaultScanCode" type="crf:WfmStrType" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="UserType">
-		<xs:sequence>
-			<xs:element name="idNumber" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="name" type="crf:NameType" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="SubTeamType">
-		<xs:sequence>
-			<xs:element name="subTeamNumber" type="crf:WfmStrType" minOccurs="0"/>
-			<xs:element name="subTeamName" type="crf:NameType" minOccurs="0"/>
-			<xs:element name="hostSubTeamNumber" type="ivf:MandatoryStrType"/>
-			<xs:element name="hostSubTeamName" type="crf:NameType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
