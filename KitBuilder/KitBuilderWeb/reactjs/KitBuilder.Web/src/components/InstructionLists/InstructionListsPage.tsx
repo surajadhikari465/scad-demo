@@ -25,6 +25,7 @@ interface IInstructionListsPageState {
      instructionTypes: Array<any>,
      selectedInstructionTypeIdvalue: number,
      currentInstructionTypeValue: string,
+     currentInstructionTypeIdValue: number,
      instructionListDto: Array<any>,
      instructionList: Array<any>,
      dialogOpen: boolean,
@@ -54,6 +55,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                instructionTypes: [],
                selectedInstructionTypeIdvalue: 0,
                currentInstructionTypeValue: "",
+               currentInstructionTypeIdValue: 0,
                instructionListDto: [],
                instructionList: [],
                dialogOpen: false,
@@ -209,7 +211,8 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
           }
           else {
                
-               this.setState({ selectedInstructionTypeIdvalue: result.instructionListId }, () => { this.onSearch() });
+               this.setState({ selectedInstructionTypeIdvalue: result.instructionListId,
+                               currentInstructionTypeIdValue: result.instructionListId }, () => { this.onSearch() });
           }
 
 
@@ -228,10 +231,18 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
 
           this.setState({
                currentInstructionTypeValue: result.name,
+               currentInstructionTypeIdValue: this.state.selectedInstructionTypeIdvalue,
                instructionTypeName: result.instructionTypeName,
                status: result.status,
                isLoaded: true,
           });
+
+          if (result.status.includes('Queued') && this.state.currentInstructionTypeIdValue != this.state.selectedInstructionTypeIdvalue) {
+               this.Refresh(result.name);
+               this.setState({
+                    currentInstructionTypeIdValue: this.state.selectedInstructionTypeIdvalue
+               });
+          }
 
           var urlParam = this.state.selectedInstructionTypeIdvalue;
 
@@ -252,7 +263,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                })
                .catch((error) => {
                     this.props.showAlert(JSON.stringify(error.response.data), "error");
-               });
+               });       
      }
 
      onAddMember = () => {
@@ -289,6 +300,7 @@ class InstructionListsPage extends React.PureComponent<IInstructionListsPageProp
                this.setState({
                     selectedInstructionTypeIdvalue: 0,
                     currentInstructionTypeValue: "",
+                    currentInstructionTypeIdValue: 0,
                     isLoaded: false,
                }, () => this.Refresh(this.state.currentInstructionTypeValue))
           })
