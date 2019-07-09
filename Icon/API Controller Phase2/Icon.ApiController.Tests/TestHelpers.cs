@@ -119,7 +119,12 @@ namespace Icon.ApiController.Tests
                                         ServingSizeDesc = "8 oz",
                                         ServingPerContainer = "5",
                                         Calories = 200,
-                                        CaloriesFat = 100
+                                        CaloriesFat = 100,
+                                        AddedSugarsPercent = 1,
+                                        AddedSugarsWeight = 2,
+                                        CalciumWeight = 3,
+                                        IronWeight = 4,
+                                        VitaminDWeight = 5
                                     }
             );
             return productMessage;

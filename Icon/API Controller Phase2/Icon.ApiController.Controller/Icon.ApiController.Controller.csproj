@@ -94,7 +94,7 @@
       <HintPath>..\packages\Icon.Esb.2019.7.1.3\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2019.5.21.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2019.7.4.2\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.PreGpm.2018.8.28.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
@@ -222,6 +222,7 @@
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Test1.config">
       <DependentUpon>App.config</DependentUpon>

@@ -918,6 +918,11 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             Assert.IsNotNull(groups);
             Assert.AreEqual("5", hshTrait.type.value[0].value);
+            Assert.AreEqual(1, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
+            Assert.AreEqual(2, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
+            Assert.AreEqual(3, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
+            Assert.AreEqual(4, groups.stockItemConsumerProductLabel.ironMilligramsCount);
+            Assert.AreEqual(5, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
         }
 
         [TestMethod]

@@ -1,18 +1,15 @@
 ﻿using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.DataAccess.Commands;
-
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.Framework;
-using Icon.Framework.RenewableContext;
 using Icon.Logging;
 using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
 using Icon.ApiController.Common;
@@ -67,10 +64,7 @@ namespace Icon.ApiController.Tests.QueueReaders
         private Territory territory;
         private Timezone timezone;
         private string touchPointGroupId;
-        private int storeLocaleId;
         private ApiControllerSettings settings;
-
-		
 
 		[TestInitialize]
         public void Initialize()
@@ -104,7 +98,6 @@ namespace Icon.ApiController.Tests.QueueReaders
 			venueSubType = "Hospatality";
 			currencyCode = "USD";
             touchPointGroupId = "TPG1";
-            storeLocaleId = 99999;
 
             settings = new ApiControllerSettings();
             

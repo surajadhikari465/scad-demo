@@ -90,7 +90,7 @@ namespace Icon.Infor.Listeners.Item.Tests.Integration
         public void HandleMessage_ProductMessageFromInforForSingleItem_ArchivesMessage()
         {
             //Given
-            using (var transaction = new TransactionScope())
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted }))
             {
                 var xmlData = File.ReadAllText(xmlFilePath);
                 var mockMessageObj = testData.GetMockEsbMessage(xmlData);
