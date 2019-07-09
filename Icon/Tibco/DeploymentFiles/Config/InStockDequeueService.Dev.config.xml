@@ -62,7 +62,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
-            <value>*.wfm.pvt</value>
+            <value>DEV-ESB-EMS-1.wfm.pvt</value>
         </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_TRUSTED_CA_STORE</name>

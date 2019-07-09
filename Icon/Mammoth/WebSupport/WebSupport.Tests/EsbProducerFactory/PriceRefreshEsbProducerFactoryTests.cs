@@ -28,7 +28,7 @@ namespace WebSupport.Tests.EsbProducerFactory
 
             //Then
             Assert.IsInstanceOfType(producer, typeof(NonJndiEsbProducer));
-            Assert.AreEqual("WFMSB1.Mammoth.Retail.JustInTimeIrma.IrmaPrice.FL.Queue.V1", producer.Settings.QueueName);
+            Assert.AreEqual("WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1", producer.Settings.QueueName);
         }
 
         [TestMethod]

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.PrimeAffinity.Library", "Mammoth.PrimeAffinity.Library\Mammoth.PrimeAffinity.Library.csproj", "{486AFB62-8A61-4CA0-99DD-DC6445BCF9A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.PrimeAffinity.Library.Tests", "Mammoth.PrimeAffinity.Library.Tests\Mammoth.PrimeAffinity.Library.Tests.csproj", "{3EA5F010-4CB8-4C78-91E6-C8E8A43801ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mammoth.PrimeAffinity.Library.Tests", "Mammoth.PrimeAffinity.Library.Tests\Mammoth.PrimeAffinity.Library.Tests.csproj", "{DA1F95CD-C6B8-4B7F-BF10-FB4D168D404F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{486AFB62-8A61-4CA0-99DD-DC6445BCF9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486AFB62-8A61-4CA0-99DD-DC6445BCF9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486AFB62-8A61-4CA0-99DD-DC6445BCF9A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EA5F010-4CB8-4C78-91E6-C8E8A43801ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EA5F010-4CB8-4C78-91E6-C8E8A43801ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EA5F010-4CB8-4C78-91E6-C8E8A43801ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EA5F010-4CB8-4C78-91E6-C8E8A43801ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA1F95CD-C6B8-4B7F-BF10-FB4D168D404F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1F95CD-C6B8-4B7F-BF10-FB4D168D404F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1F95CD-C6B8-4B7F-BF10-FB4D168D404F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1F95CD-C6B8-4B7F-BF10-FB4D168D404F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
