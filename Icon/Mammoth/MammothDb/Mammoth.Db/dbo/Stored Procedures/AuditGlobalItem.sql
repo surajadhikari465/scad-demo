@@ -343,6 +343,11 @@ BEGIN
 			,B.Molybdenum
 			,B.Selenium
 			,B.TransFatWeight
+			,B.AddedSugarsPercent
+			,B.AddedSugarsWeight
+			,B.CalciumWeight
+			,B.IronWeight
+			,B.VitaminDWeight
 		FROM #items A
 		LEFT JOIN dbo.ItemAttributes_Nutrition B ON B.ItemID = A.ItemID;
 
