@@ -617,6 +617,161 @@ function GetHashKey() {
 }
 
 
+##############################################################################################################################
+##############################################################################################################################
+
+function Export-SqlTable {
+[CmdletBinding()]
+Param(
+    [Parameter(Mandatory = $true, HelpMessage = "SQL server name to which you wish to connect.")]
+    [string]$Server,
+
+    [string]$Database,
+
+    [Parameter(Mandatory = $true, HelpMessage = "Name of database table to export; schema prefix required, if database specified.")]
+    [string]$Table,
+    
+    [switch]$CharType,
+    [switch]$TrustedAuth,
+    [string]$Path
+)
+    ##########################
+    # SAVE DATA
+    ##########################
+    if($Database){ $dbMsg = "[$Database] DB " }
+    Write-Host -ForegroundColor Green ("SAVING [$Server] Server " + $dbMsg + "[$Table] DATA...")
+    $filenameSafeSvr = $Server.Replace("\", "-")
+
+    # Build output folder.
+    $outputFolder = ""
+    if($Path){
+        $outputFolder = $Path
+        if(-not $Path.endswith("\")){ $outputFolder += "\" }
+    }
+
+    # Build output filename.
+    $outputFile = $outputFolder + "$filenameSafeSvr.$Table.dat"
+
+    # Only specify database param if a DB name was provided.
+    $dbParam = ""
+    # A space after the "-d" switch was causing an error because it tries to use the literal space in the DB name.
+    if($Database){ $dbParam = "-d$Database" }
+
+    # Build optional BCP command-line switches.
+    $bcpCharType = ""
+    if($CharType){ $bcpCharType = "-c" }
+
+    $bcpTrustedAuth = ""
+    if($TrustedAuth){ $bcpTrustedAuth = "-T" }
+
+    bcp $Table out $outputFile -S $Server $dbParam $bcpCharType $bcpTrustedAuth
+}
+
+
+##############################################################################################################################
+##############################################################################################################################
+
+function Clear-SqlTable {
+[CmdletBinding()]
+Param(
+    [Parameter(Mandatory = $true, HelpMessage = "SQL server name to which you wish to connect and export from.")]
+    [string]$Server,
+
+    [string]$Database,
+
+    [Parameter(Mandatory = $true, HelpMessage = "Name of database table from which all data will be deleted/truncated; prefix required, if database specified.")]
+    [string]$Table,
+    
+    [switch]$UseTruncate
+)
+    ##########################
+    # CLEAR DATA
+    ##########################
+
+    # Only specify database param if a DB name was provided.
+    $dbParam = ""
+    # A space after the "-d" switch was causing an error because it tries to use the literal space in the DB name.
+    if($Database){ $dbParam = "-d$Database" }
+
+    $actionMsg = "DELETING"
+    $dmlSql = "delete from"
+    if($UseTruncate){
+        $actionMsg = "TRUNCATING"
+        $dmlSql = "truncate table"
+    }
+
+    Write-Host -ForegroundColor Yellow "$actionMsg [$Server] DB [$Table] DATA..."
+
+    sqlcmd -S $Server -Q "$dmlSql $Database.$Table"
+}
+
+
+##############################################################################################################################
+##############################################################################################################################
+
+function Import-SqlTable {
+[CmdletBinding()]
+Param(
+    [Parameter(Mandatory = $true, HelpMessage = "SQL server name to which you wish to connect and import into.")]
+    [string]$Server,
+
+    [string]$Database,
+
+    [Parameter(Mandatory = $true, HelpMessage = "Name of database table to import into; schema prefix required, if database specified.")]
+    [string]$Table,
+    
+    [string]$InputFile,
+
+    [switch]$TrustedAuth,
+    [switch]$CharType,
+    [switch]$KeepNulls,
+    [switch]$KeepIdentityValues
+)
+    ##########################
+    # SAVE DATA
+    ##########################
+    Write-Host -ForegroundColor Green "RESTORING [$Server] DB [$Table] DATA..."
+    $filenameSafeSvr = $Server.Replace("\", "-")
+
+    # Input file specified?
+    $bcpInFile = $InputFile
+    if(-not $InputFile){
+        # Build input filename.
+        $bcpInFile = "$filenameSafeSvr.$Table.dat"
+        Write-Verbose "No in-file specified; using ""$bcpInFile""."
+    }
+    if(-not (Test-Path $bcpInFile)){
+        Write-Host -ForegroundColor Magenta "**ERROR** -- Input file [$bcpInFile] does not exist."
+        return
+    }
+    $inFileObj = gci $bcpInFile
+    Write-Verbose ("Input file [" + $inFileObj.FullName + "] size is [" + $inFileObj.Length + "] bytes.")
+    
+
+    # Only specify database param if a DB name was provided.
+    $dbParam = ""
+    # A space after the "-d" switch was causing an error because it tries to use the literal space in the DB name.
+    if($Database){ $dbParam = "-d$Database" }
+
+    # Build optional BCP command-line switches.
+    $bcpTrustedAuth = ""
+    if($TrustedAuth){ $bcpTrustedAuth = "-T" }
+
+    $bcpCharType = ""
+    if($CharType){ $bcpCharType = "-c" }
+
+    $bcpKeepNulls = ""
+    if($KeepNulls){ $bcpKeepNulls = "-k" }
+
+    $bcpKeepIdentityValues = ""
+    if($KeepIdentityValues){ $bcpKeepIdentityValues = "-E" }
+
+    bcp $Table in $bcpInFile -S $Server -d $Database $bcpTrustedAuth $bcpCharType $bcpKeepNulls $bcpKeepIdentityValues
+}
+
+
+
+
 ####################################################################################################################################
 ####################################################################################################################################
 #
