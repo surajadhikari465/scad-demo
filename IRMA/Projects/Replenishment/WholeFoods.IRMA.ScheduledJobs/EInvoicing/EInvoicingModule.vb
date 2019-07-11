@@ -6,6 +6,7 @@ Imports WholeFoods.IRMA.Replenishment
 Imports WholeFoods.IRMA.Replenishment.EInvoicing.DataAccess
 Imports WholeFoods.IRMA.Replenishment.EInvoicing.BusinessLogic
 Imports System.Net.Mail
+Imports WholeFoods.Utility.SMTP
 
 Imports log4net
 
@@ -274,6 +275,7 @@ Module EInvoicingModule
             logInnerException(ex)
             ' If the file exists in the processing folder, it needs to be moved to the error folder.
             moveInvFileToErrors(fileToProcess.FullName)
+            SendMail("Error occurred while processing e-Invoice file", EmailBodyMessage(_filename))
         End Try
 
     End Sub
@@ -588,6 +590,7 @@ Module EInvoicingModule
                         logger.Error("Error loading e-inv :" & invFile.FullName & "; error :" & ex.ToString, ex)
                         logInnerException(ex)
                         moveInvFileToErrors(invFile.FullName)
+                        SendMail("Error occurred while processing e-Invoice file", EmailBodyMessage(invFile.Name))
                         Continue For
                     End If
                 End Try
@@ -599,6 +602,7 @@ Module EInvoicingModule
                 logger.Error("Error parsing XML in e-inv :" & invFile.FullName & "; error :" & ex.ToString, ex)
                 logInnerException(ex)
                 moveInvFileToErrors(invFile.FullName)
+                SendMail("Error occurred while processing e-Invoice file", EmailBodyMessage(invFile.Name))
                 Continue For
             End Try
             ' Archive.
@@ -611,6 +615,7 @@ Module EInvoicingModule
                 logger.ErrorFormat("Error archiving e-inv '{0}', error: ", invFile.FullName, ex.ToString)
                 logInnerException(ex)
                 moveInvFileToErrors(invFile.FullName)
+                SendMail("Error occurred while processing e-Invoice file", EmailBodyMessage(invFile.Name))
                 Continue For
             End Try
         Next
@@ -650,7 +655,7 @@ Module EInvoicingModule
         Return dt
     End Function
 
- 
+
     Private Sub logInnerException(ByVal ex As Exception)
         If Not ex.InnerException Is Nothing Then
             logger.Info("--- Inner Exception ---")
@@ -670,5 +675,24 @@ Module EInvoicingModule
             End Try
         End If
     End Sub
+    Private Sub SendMail(ByVal sSubject As String, ByVal sMessage As String)
+        Dim sSMTPHost As String = ConfigurationServices.AppSettings("SMTPHost")
+        Dim sFromEmailAddress As String = ConfigurationServices.AppSettings("E-Invoicing_FromEmailAddress").ToString()
+        Dim sEnvironMent As String = ConfigurationServices.AppSettings("environment").ToString()
+        Dim sErrorToAddress As String = ConfigurationServices.AppSettings("E-Invoicing_ToEmailAddress").ToString()
+        Dim sErrorCCAddress As String = ConfigurationServices.AppSettings("E-Invoicing_CcEmailAddress").ToString()
+        Dim smtp As New SMTP(sSMTPHost)
+        If sErrorCCAddress Is "" Then
+            smtp.send(sMessage, sErrorToAddress, Nothing, sFromEmailAddress, sSubject)
+        Else
+            smtp.send(sMessage, sErrorToAddress, sErrorCCAddress, sFromEmailAddress, sSubject)
+        End If
+    End Sub
+    Private Function EmailBodyMessage(ByVal fileName As String) As String
+        Dim emailBody As String = "<HTML><table><tr><td>The e-Invoice job for " & ConfigurationServices.AppSettings("Region").ToString() & " failed to process the following file(s), these files have been moved to the "“Errors”" folder:</td></tr></table>" &
+                                "<table><tr><td> " & fileName & " </td></tr></table><br /><br />" &
+                                "<table><tr><td> Please find and re-process the file(s) from their respective directories. </td></tr></table>" &
+                                "<table><tr><td> \\irmaprdfile\ScheduledJobs\EInvoicing\4.8.0\" & ConfigurationServices.AppSettings("Region").ToString() & "\Errors </td></tr></table><br /></HTML>"
+        Return emailBody
+    End Function
 End Module
-

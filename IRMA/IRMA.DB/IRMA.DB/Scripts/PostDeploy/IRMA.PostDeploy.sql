@@ -16,6 +16,7 @@ Post-Deployment Script Template
 :r PBI21205_OrderPurgeScheduleUpdates.sql --2019.06.04
 :r PBI22038_MarkInStockAppConfigDeleted.sql --2019.06.05
 :r PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql --2019.06.10
+:r PBI21615_GenerateEmailWhenEInvoicingXMLFileMovesToERRORFolder.sql --2019.07.10
 
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
