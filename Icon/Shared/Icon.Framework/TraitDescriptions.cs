@@ -196,12 +196,12 @@ namespace Icon.Framework
         public const string Designation = "Designation";
         public const string ParentCompany = "Parent Company";
         public const string DataSource = "Data Source";
-        public const string GmoTransparency = "GMO Transparency";
+        public const string NonGmoTransparency = "Non-GMO Transparency";
         public const string ItemDepth = "Item Depth";
         public const string ItemHeight = "Item Height";
         public const string ItemWidth = "Item Width";
         public const string Cube = "Cube";
-        public const string Weight = "Weight";
+        public const string ItemWeight = "Item Weight";
         public const string TrayDepth = "Tray Depth";
         public const string TrayHeight = "Tray Height";
         public const string TrayWidth = "Tray Width";
@@ -225,5 +225,5 @@ namespace Icon.Framework
         public const string KitchenItem = "Kitchen Item";
         public const string KitchenDescription = "Kitchen Description";
         public const string ImageUrl = "Image Url";
-    }
+	}
 }
