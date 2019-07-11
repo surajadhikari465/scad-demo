@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>InstanceGUID</name>
-			<value>00000065-0000-0000-0000-000000000000</value>
+			<value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1547852127557</modTime>
+			<modTime>1562632486797</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
@@ -23,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1551974206866</modTime>
+			<modTime>1562691370723</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MaxRedeliveryCount</name>

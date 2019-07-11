@@ -42,9 +42,9 @@
                                 <xsd:element name="ApproveDateTime" type="xsd:dateTime" minOccurs="0"/>
                                 <xsd:element name="CloseDateTime" type="xsd:dateTime" minOccurs="0"/>
                                 <xsd:element name="PurchaseOrderComments" type="xsd:string" minOccurs="0"/>
-                                <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int"/>
-                                <xsd:element name="SourceItemKey" type="xsd:int"/>
-                                <xsd:element name="DefaultScanCode" type="xsd:string"/>
+                                <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="SourceItemKey" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="DefaultScanCode" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="HostSubTeam_No" type="xsd:int" minOccurs="0"/>
                                 <xsd:element name="HostSubTeam_Name" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="QuantityOrdered" type="xsd:float" minOccurs="0"/>
@@ -56,6 +56,8 @@
                                 <xsd:element name="ItemCost" type="xsd:float" minOccurs="0"/>
                                 <xsd:element name="EarliestArrivalDate" type="xsd:dateTime" minOccurs="0"/>
                                 <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="EInvoiceQuantity" type="xsd:decimal" minOccurs="0"/>
+                                <xsd:element name="EInvoiceWeight" type="xsd:decimal" minOccurs="0"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -195,7 +197,9 @@
                iui.Unit_Name as RetailUnit,
                oi.UnitCost as ItemCost,
                oi.DateReceived as EarliestArrivalDate,
-               oh.Expected_Date as ExpectedArrivalDate
+               oh.Expected_Date as ExpectedArrivalDate,
+			   oi.eInvoiceQuantity,
+			   oi.eInvoiceWeight
 FROM OrderHeader oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
@@ -327,7 +331,7 @@ AND i.Retail_Sale = 1</statement>
                 <QueryOutputCachedSchemaColumns>QuantityOrdered</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>OrderedUnitCode</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
@@ -359,6 +363,14 @@ AND i.Retail_Sale = 1</statement>
                 <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceQuantity</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceWeight</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
@@ -426,7 +438,9 @@ AND i.Retail_Sale = 1</statement>
 	NULL as RetailUnit,
 	NULL as ItemCost,
 	NULL as EarliestArrivalDate,
-	NULL as ExpectedArrivalDate
+	NULL as ExpectedArrivalDate,
+	NULL as eInvoiceQuantity,
+	NULL as eInvoiceWeight
 FROM OrderHeader oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
@@ -587,6 +601,14 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceQuantity</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceWeight</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -645,9 +667,9 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as ApproveDateTime,
 	NULL as CloseDateTime,
 	NULL as PurchaseOrderComments,
-	oi.OrderItem_ID as PurchaseOrderDetailNumber,
-	oi.Item_Key as SourceItemKey,
-	ii.Identifier as DefaultScanCode,
+	NULL as PurchaseOrderDetailNumber,
+	NULL as SourceItemKey,
+	NULL as DefaultScanCode,
 	NULL as HostSubTeam_No,
 	NULL as HostSubTeam_Name,
 	NULL as QuantityOrdered,
@@ -658,18 +680,16 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as RetailUnit,
 	NULL as ItemCost,
 	NULL as EarliestArrivalDate,
-	NULL as ExpectedArrivalDate
+	NULL as ExpectedArrivalDate,
+	NULL as eInvoiceQuantity,
+	NULL as eInvoiceWeight
 FROM DeletedOrder oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
 JOIN Users uc (NOLOCK) on uc.User_ID = oh.User_ID 
 LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID 
                                              and e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource WHERE Description = 'AMAZON')
-JOIN dbo.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID
-JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-WHERE oh.OrderHeader_ID = ?
- AND i.Retail_Sale = 1</statement>
+WHERE oh.OrderHeader_ID = ?</statement>
                 <wizardData/>
                 <processInSubsets>false</processInSubsets>
                 <Prepared_Param_DataType>
@@ -763,15 +783,15 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaColumns>PurchaseOrderDetailNumber</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
-                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -813,6 +833,14 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceQuantity</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>eInvoiceWeight</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
@@ -865,9 +893,9 @@ WHERE oh.OrderHeader_ID = ?
                                             <xsd:element name="ApproveDateTime" type="xsd:dateTime" minOccurs="0"/>
                                             <xsd:element name="CloseDateTime" type="xsd:dateTime" minOccurs="0"/>
                                             <xsd:element name="PurchaseOrderComments" type="xsd:string" minOccurs="0"/>
-                                            <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int"/>
-                                            <xsd:element name="SourceItemKey" type="xsd:int"/>
-                                            <xsd:element name="DefaultScanCode" type="xsd:string"/>
+                                            <xsd:element name="PurchaseOrderDetailNumber" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="SourceItemKey" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="DefaultScanCode" type="xsd:string" minOccurs="0"/>
                                             <xsd:element name="HostSubTeam_No" type="xsd:int" minOccurs="0"/>
                                             <xsd:element name="HostSubTeam_Name" type="xsd:string" minOccurs="0"/>
                                             <xsd:element name="QuantityOrdered" type="xsd:float" minOccurs="0"/>
@@ -879,6 +907,8 @@ WHERE oh.OrderHeader_ID = ?
                                             <xsd:element name="ItemCost" type="xsd:float" minOccurs="0"/>
                                             <xsd:element name="EarliestArrivalDate" type="xsd:dateTime" minOccurs="0"/>
                                             <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                            <xsd:element name="EInvoiceQuantity" type="xsd:decimal" minOccurs="0"/>
+                                            <xsd:element name="EInvoiceWeight" type="xsd:decimal" minOccurs="0"/>
                                         </xsd:sequence>
                                     </xsd:complexType>
                                 </xsd:element>
@@ -1027,6 +1057,16 @@ WHERE oh.OrderHeader_ID = ?
                                             <xsl:value-of select="ExpectedArrivalDate"/>
                                         </ExpectedArrivalDate>
                                     </xsl:if>
+                                    <xsl:if test="eInvoiceQuantity">
+                                        <EInvoiceQuantity>
+                                            <xsl:value-of select="eInvoiceQuantity"/>
+                                        </EInvoiceQuantity>
+                                    </xsl:if>
+                                    <xsl:if test="eInvoiceWeight">
+                                        <EInvoiceWeight>
+                                            <xsl:value-of select="eInvoiceWeight"/>
+                                        </EInvoiceWeight>
+                                    </xsl:if>
                                 </POData>
                             </xsl:for-each>
                         </PO>
@@ -1119,15 +1159,6 @@ WHERE oh.OrderHeader_ID = ?
                                     <UserName>
                                         <xsl:value-of select="UserName"/>
                                     </UserName>
-                                    <PurchaseOrderDetailNumber>
-                                        <xsl:value-of select="PurchaseOrderDetailNumber"/>
-                                    </PurchaseOrderDetailNumber>
-                                    <SourceItemKey>
-                                        <xsl:value-of select="SourceItemKey"/>
-                                    </SourceItemKey>
-                                    <DefaultScanCode>
-                                        <xsl:value-of select="DefaultScanCode"/>
-                                    </DefaultScanCode>
                                 </POData>
                             </xsl:for-each>
                         </PO>

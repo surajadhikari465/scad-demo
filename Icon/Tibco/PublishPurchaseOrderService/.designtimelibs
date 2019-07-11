@@ -1,9 +1,9 @@
 #Design time libraries
 #Format: #=File Alias=Description
-#Sun Jun 30 13:53:49 CDT 2019
-5=SharedSchemas_3_1_0_0000.projlib\=
-4=SharedJdbcConnections.projlib\=
-3=SharedArchiveInventoryManagementMessage.projlib\=
-2=SharedErrorPublisher.projlib\=
-1=SharedInventoryManagementLogPublisher.projlib\=
-0=SharedJmsConnections.projlib\=
+#Tue Jul 09 14:23:08 CDT 2019
+5=SharedInventoryManagementLogPublisher.projlib\=
+4=SharedErrorPublisher.projlib\=
+3=SharedJmsConnections.projlib\=
+2=SharedJdbcConnections.projlib\=
+1=SharedArchiveInventoryManagementMessage.projlib\=
+0=SharedSchemas_2019.Q3.1.1.projlib\=

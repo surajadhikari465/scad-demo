@@ -2,7 +2,7 @@
 <pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/OrderReceipt.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v2019.Q3.1.1/Inventory/PurchaseOrder.xsd"/>
     <pd:name>Processes/PublishPurchaseOrderService.process</pd:name>
     <pd:startName>Purchase Order Event Reciever</pd:startName>
     <pd:startX>0</pd:startX>
@@ -100,7 +100,7 @@
         <pd:inputBindings>
             <pfx:PurchaseOrders>
                 <xsl:choose>
-                    <xsl:when test="contains($Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode, &quot;DEL&quot;)">
+                    <xsl:when test="contains($Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode, &quot;PO_LINE_DEL&quot;)">
                         <xsl:for-each select="$GetIrmaData/Output/POData[1]">
                             <pfx:PurchaseOrderDelete>
                                 <pfx:purchaseOrderNumber>
@@ -152,6 +152,50 @@
                                             <xsl:value-of select="DefaultScanCode"/>
                                         </pfx:defaultScanCode>
                                     </pfx:purchaseOrderDeletionDetail>
+                                </xsl:for-each>
+                            </pfx:PurchaseOrderDelete>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="contains($Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode, &quot;PO_DEL&quot;)">
+                        <xsl:for-each select="$GetIrmaData/Output/POData[1]">
+                            <pfx:PurchaseOrderDelete>
+                                <pfx:purchaseOrderNumber>
+                                    <xsl:value-of select="OrderHeader_ID"/>
+                                </pfx:purchaseOrderNumber>
+                                <xsl:if test="ExternalOrder_Id">
+                                    <pfx:externalPurchaseOrderNumber>
+                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                    </pfx:externalPurchaseOrderNumber>
+                                </xsl:if>
+                                <xsl:if test="exists(ExternalOrder_Id)">
+                                    <xsl:if test="ExternalSource">
+                                        <pfx:externalSource>
+                                            <xsl:value-of select="ExternalSource"/>
+                                        </pfx:externalSource>
+                                    </xsl:if>
+                                </xsl:if>
+                                <pfx:eventType>
+                                    <xsl:value-of select="$Parse-Event-Message/pfx3:Events/pfx3:EventType[1]/pfx3:EventTypeCode"/>
+                                </pfx:eventType>
+                                <pfx:messageNumber>
+                                    <xsl:value-of select="$Purchase-Order-Event-Reciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                                </pfx:messageNumber>
+                                <pfx:locationNumber>
+                                    <xsl:value-of select="LocationNumber"/>
+                                </pfx:locationNumber>
+                                <pfx:locationName>
+                                    <xsl:value-of select="LocationName"/>
+                                </pfx:locationName>
+                                <pfx:cancelUserInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="if (current()/UserId > 0) then current()/UserId else &quot;&quot;"/>
+                                    </ns0:idNumber>
+                                    <ns0:name>
+                                        <xsl:value-of select="if (current()/UserId > 0) then current()/UserName else &quot;&quot;"/>
+                                    </ns0:name>
+                                </pfx:cancelUserInfo>
+                                <xsl:for-each select=".">
+                                    <pfx:purchaseOrderDeletionDetail/>
                                 </xsl:for-each>
                             </pfx:PurchaseOrderDelete>
                         </xsl:for-each>
@@ -283,6 +327,42 @@
                                                 </ns02:units>
                                             </ns02:quantity>
                                         </pfx:quantities>
+                                        <pfx:eInvoiceASNQuantities>
+                                            <ns02:quantity>
+                                                <xsl:if test="EInvoiceQuantity">
+                                                    <ns02:value>
+                                                        <xsl:value-of select="EInvoiceQuantity"/>
+                                                    </ns02:value>
+                                                </xsl:if>
+                                                <ns02:units>
+                                                    <ns02:uom>
+                                                        <xsl:if test="exists(EInvoiceQuantity)">
+                                                            <ns1:code>
+                                                                <xsl:value-of select="upper-case(OrderedUnitCode)"/>
+                                                            </ns1:code>
+                                                        </xsl:if>
+                                                    </ns02:uom>
+                                                </ns02:units>
+                                            </ns02:quantity>
+                                        </pfx:eInvoiceASNQuantities>
+                                        <pfx:eInvoiceASNWeights>
+                                            <ns02:quantity>
+                                                <xsl:if test="EInvoiceWeight">
+                                                    <ns02:value>
+                                                        <xsl:value-of select="EInvoiceWeight"/>
+                                                    </ns02:value>
+                                                </xsl:if>
+                                                <ns02:units>
+                                                    <ns02:uom>
+                                                        <xsl:if test="exists(EInvoiceWeight)">
+                                                            <ns1:code>
+                                                                <xsl:value-of select="upper-case(OrderedUnitCode)"/>
+                                                            </ns1:code>
+                                                        </xsl:if>
+                                                    </ns02:uom>
+                                                </ns02:units>
+                                            </ns02:quantity>
+                                        </pfx:eInvoiceASNWeights>
                                         <pfx:packSize1>
                                             <xsl:value-of select="PackSize1"/>
                                         </pfx:packSize1>
@@ -367,7 +447,7 @@
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
         <pd:x>80</pd:x>
-        <pd:y>487</pd:y>
+        <pd:y>488</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -387,8 +467,8 @@
     <pd:activity name="LogDataMapperError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>502</pd:x>
-        <pd:y>491</pd:y>
+        <pd:x>503</pd:x>
+        <pd:y>490</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>true</spawn>

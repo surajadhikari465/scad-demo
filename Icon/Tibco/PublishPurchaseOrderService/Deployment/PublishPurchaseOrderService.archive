@@ -13,7 +13,7 @@
             <authorProperty>Min.Zhao</authorProperty>
             <processProperty>/Processes/PublishPurchaseOrderService.process</processProperty>
         </processArchive>
-        <versionProperty>50</versionProperty>
+        <versionProperty>52</versionProperty>
         <authorProperty>Min.Zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishPurchaseOrderService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\PublishPurchaseOrderService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\min.zhao\source\repos\SCAD\Icon\Tibco\DeploymentFiles\PublishPurchaseOrderService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
