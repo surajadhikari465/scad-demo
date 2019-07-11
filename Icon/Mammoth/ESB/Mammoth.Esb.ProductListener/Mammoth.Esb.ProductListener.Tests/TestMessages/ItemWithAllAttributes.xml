@@ -31,6 +31,11 @@
           <icr:calciumDailyMinimumPercent>0</icr:calciumDailyMinimumPercent>
           <icr:ironDailyMinimumPercent>6</icr:ironDailyMinimumPercent>
           <icr:isHazardousMaterial>false</icr:isHazardousMaterial>
+          <icr:addedSugarDailyPercent>1</icr:addedSugarDailyPercent>
+          <icr:addedSugarsGramsCount>2</icr:addedSugarsGramsCount>
+          <icr:calciumMilligramsCount>3</icr:calciumMilligramsCount>
+          <icr:ironMilligramsCount>4</icr:ironMilligramsCount>
+          <icr:vitaminDMicrogramsCount>5</icr:vitaminDMicrogramsCount>
           <icr:hazardousMaterialTypeCode xmlns:p29="http://www.w3.org/2001/XMLSchema-instance" p29:nil="true" />
         </ici:stockItemConsumerProductLabel>
       </ibi:consumerInformation>

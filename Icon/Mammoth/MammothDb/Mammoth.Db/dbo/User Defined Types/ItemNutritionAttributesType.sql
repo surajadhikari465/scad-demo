@@ -67,7 +67,12 @@
     [VitaminK]                 SMALLINT        NULL,
     [Manganese]                SMALLINT        NULL,
     [Molybdenum]               SMALLINT        NULL,
-    [Selenium]                 SMALLINT        NULL
+    [Selenium]                 SMALLINT        NULL,
+    [AddedSugarsWeight]        DECIMAL (10, 1) NULL,
+    [AddedSugarsPercent]       SMALLINT        NULL,
+    [CalciumWeight]            DECIMAL (10, 1) NULL,
+    [IronWeight]               DECIMAL (10, 1) NULL,
+    [VitaminDWeight]           DECIMAL (10, 1) NULL
 )
 GO
 

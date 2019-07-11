@@ -25,7 +25,6 @@ namespace Mammoth.Esb.ProductListener.Commands
             AddOrUpdateItemAttributesNutrition(data);
             AddOrUpdateItemAttributesExtended(data);
             AddOrUpdateItemAttributesKit(data);
-         
         }   
 
         private void AddOrUpdateItems(AddOrUpdateProductsCommand data)
@@ -74,7 +73,7 @@ namespace Mammoth.Esb.ProductListener.Commands
                 }).ToDataTable();
 
 
-            if (itemKitAttributes.Rows.Count == 0) return;            ;
+            if (itemKitAttributes.Rows.Count == 0) return;
 
             string sql = "dbo.AddOrUpdateItemAttributesKit";
             int rowCount = this.db.Connection.Execute(sql, new { kitAttributes = itemKitAttributes }, transaction: this.db.Transaction,commandType: CommandType.StoredProcedure);

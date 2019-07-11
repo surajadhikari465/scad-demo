@@ -233,6 +233,42 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
         }
 
+		[TestMethod]
+		public void AddOrUpdateProducts_ProductExistWithNullKitAttributesAndNullNutritionAttributes_ShouldAddAndUpdateProduct()
+        {
+			//Given
+			const int ITEM_ID = 20000001;
+			var itemModel = CreateItemModelForAttributeTest(ITEM_ID);
+			var commandData = new AddOrUpdateProductsCommand
+			{
+				Items = new List<ItemModel>
+					{
+						itemModel
+					}
+			};
+
+			commandHandler.Execute(commandData);
+
+			itemModel.KitItemAttributes.ImageUrl = null;
+			itemModel.KitItemAttributes.HospitalityItem = null;
+			itemModel.KitItemAttributes.KitchenDescription = null;
+			itemModel.KitItemAttributes.KitchenItem = null;
+			
+			itemModel.NutritionAttributes = new NutritionAttributesModel(){ ItemID = ITEM_ID };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+			Assert.IsNotNull(ReadItemAttributesDynamic(ITEM_ID));
+            
+            var kitAttributes = ReadKitAttributesDynamic(ITEM_ID);
+			Assert.IsTrue(!(kitAttributes as IEnumerable<dynamic>).Any());
+
+            var nutritionAttributes = ReadNutritionAttributesDynamic(ITEM_ID);
+			Assert.IsNull(nutritionAttributes);
+        }
+
         [TestMethod]
         public void AddOrUpdateProducts_ExtendedAttributesAreNull_DeleteExistingExtendedAttributes()
         {
@@ -488,7 +524,12 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     VitaminD = 59,
                     VitaminE = 60,
                     VitaminK = 61,
-                    Zinc = 62
+                    Zinc = 62,
+                    AddedSugarsWeight = 63,
+                    AddedSugarsPercent = 64,
+                    CalciumWeight = 65,
+                    IronWeight = 66,
+                    VitaminDWeight = 67 
                 },
                 ExtendedAttributes = new ExtendedAttributesModel
                 {
@@ -645,6 +686,11 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             const int molybdenum = 0;
             const int selenium = 0;
             const int transFatWeight = 0;
+			const int AddedSugarsWeight = 63;
+            const int AddedSugarsPercent = 64;
+            const int CalciumWeight = 65;
+            const int IronWeight = 66;
+            const int VitaminDWeight = 67;
             #endregion
 
             #region extended attributes
@@ -715,7 +761,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            Biotin, PantothenicAcid, Phosphorous, Iodine, Magnesium, Zinc,
 		            Copper, TransFat, CaloriesFromTransFat, Om6Fatty, Om3Fatty, Starch,
 		            Chloride, Chromium, VitaminK, Manganese, Molybdenum, Selenium,
-		            TransFatWeight)
+		            TransFatWeight,AddedSugarsWeight,AddedSugarsPercent,CalciumWeight,IronWeight,VitaminDWeight)
                 VALUES(
                     @itemID,
                     '{recipeName}', '{allergens}', '{ingredients}', {servingsPerPortion}, '{servingSizeDesc}', '{servingPerContainer}',
@@ -729,7 +775,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            {biotin}, {pantothenicAcid}, {phosphorous}, {iodine}, {magnesium}, {zinc},
 		            {copper}, {transFat}, {caloriesFromTransFat}, {om6Fatty}, {om3Fatty}, {starch},
 		            {chloride}, {chromium}, {vitaminK}, {manganese}, {molybdenum}, {selenium},
-		            {transFatWeight})
+		            {transFatWeight},{AddedSugarsWeight},{AddedSugarsPercent},{CalciumWeight},{IronWeight},{VitaminDWeight})
 
                 INSERT INTO dbo.ItemAttributes_Ext(ItemID, AttributeID, AttributeValue, AddedDate)
                 VALUES  (@itemID, {Attributes.FairTradeCertified}, '{fairTradeCertified}', GETDATE()),
@@ -783,7 +829,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 "SELECT * FROM dbo.ItemAttributes_Nutrition WHERE ItemID = @ItemId",
                 new { ItemId = itemId },
                 dbProvider.Transaction);
-            return nutritionAttributes?.Single();
+            return nutritionAttributes.SingleOrDefault();
         }
 
         private IList<dynamic> ReadExtendedAttributesDynamic(int itemId)
@@ -895,6 +941,11 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             Assert.AreEqual(expectedNutritionAttributes.Manganese, actualItemAttributes_NutritionRow.Manganese);
             Assert.AreEqual(expectedNutritionAttributes.Molybdenum, actualItemAttributes_NutritionRow.Molybdenum);
             Assert.AreEqual(expectedNutritionAttributes.Selenium, actualItemAttributes_NutritionRow.Selenium);
+            Assert.AreEqual(expectedNutritionAttributes.AddedSugarsWeight, actualItemAttributes_NutritionRow.AddedSugarsWeight);
+            Assert.AreEqual(expectedNutritionAttributes.AddedSugarsPercent, actualItemAttributes_NutritionRow.AddedSugarsPercent);
+            Assert.AreEqual(expectedNutritionAttributes.CalciumWeight, actualItemAttributes_NutritionRow.CalciumWeight);
+            Assert.AreEqual(expectedNutritionAttributes.IronWeight, actualItemAttributes_NutritionRow.IronWeight);
+            Assert.AreEqual(expectedNutritionAttributes.VitaminDWeight, actualItemAttributes_NutritionRow.VitaminDWeight);
         }
 
         private void AssertSignAttributesAsExpected(SignAttributesModel expectedSignAttributes,

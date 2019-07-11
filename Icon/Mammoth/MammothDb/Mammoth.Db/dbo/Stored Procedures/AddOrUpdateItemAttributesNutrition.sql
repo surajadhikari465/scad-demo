@@ -21,9 +21,11 @@ BEGIN
 	IF (object_id('tempdb..#insertNutrition') IS NOT NULL)
 		DROP TABLE #insertNutrition;
 
+	SELECT * INTO #nutritionAttributes FROM @nutritionAttributes;
+
 	SELECT DISTINCT ItemID
 	INTO #tmpDelete
-	FROM @nutritionAttributes
+	FROM #nutritionAttributes
 	WHERE IsNull(Allergens, '') = ''
 		AND IsNull(Ingredients, '') = ''
 		AND IsNull(ServingsPerPortion, 0) <= 0
@@ -89,7 +91,12 @@ BEGIN
 		AND IsNull(VitaminK, 0) <= 0
 		AND IsNull(Manganese, 0) <= 0
 		AND IsNull(Molybdenum, 0) <= 0
-		AND IsNull(Selenium, 0) <= 0;
+		AND IsNull(Selenium, 0) <= 0
+		AND IsNull(AddedSugarsWeight, 0) <= 0
+		AND IsNull(AddedSugarsPercent, 0) <= 0
+		AND IsNull(CalciumWeight, 0) <= 0
+		AND IsNull(IronWeight, 0) <= 0
+		AND IsNull(VitaminDWeight, 0) <= 0;
 
 	DELETE A
 	FROM ItemAttributes_Nutrition A
@@ -97,7 +104,7 @@ BEGIN
 
 	SELECT A.*
 	INTO #nutrition
-	FROM @nutritionAttributes A
+	FROM #nutritionAttributes A
 	LEFT JOIN #tmpDelete B ON B.ItemID = A.ItemID
 	WHERE B.ItemID IS NULL;
 
@@ -171,6 +178,11 @@ BEGIN
 		,Molybdenum
 		,Selenium
 		,TransFatWeight
+		,AddedSugarsWeight
+		,AddedSugarsPercent
+		,CalciumWeight
+		,IronWeight
+		,VitaminDWeight
 	INTO #insertNutrition
 	FROM #nutrition n
 	WHERE NOT EXISTS (
@@ -179,7 +191,7 @@ BEGIN
 			WHERE i.ItemID = n.ItemID
 			);
 
-	SET @insertRecordCount = @@ROWCOUNT
+	SET @insertRecordCount = @@ROWCOUNT;
 
 	BEGIN TRY
 		BEGIN TRANSACTION
@@ -253,6 +265,11 @@ BEGIN
 				,n.Molybdenum = t.Molybdenum
 				,n.Selenium = t.Selenium
 				,n.TransFatWeight = t.TransFatWeight
+				,n.AddedSugarsWeight = t.AddedSugarsWeight
+				,n.AddedSugarsPercent = t.AddedSugarsPercent
+				,n.CalciumWeight = t.CalciumWeight
+				,n.IronWeight = t.IronWeight
+				,n.VitaminDWeight = t.VitaminDWeight
 			FROM dbo.ItemAttributes_Nutrition n
 			INNER JOIN #nutrition t ON n.ItemID = t.ItemID
 
@@ -326,6 +343,11 @@ BEGIN
 				,Molybdenum
 				,Selenium
 				,TransFatWeight
+				,AddedSugarsWeight
+				,AddedSugarsPercent
+				,CalciumWeight
+				,IronWeight
+				,VitaminDWeight
 				,AddedDate
 				)
 			SELECT ItemID
@@ -396,6 +418,11 @@ BEGIN
 				,Molybdenum
 				,Selenium
 				,TransFatWeight
+				,AddedSugarsWeight
+				,AddedSugarsPercent
+				,CalciumWeight
+				,IronWeight
+				,VitaminDWeight
 				,@today
 			FROM #insertNutrition
 

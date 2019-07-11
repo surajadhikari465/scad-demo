@@ -70,5 +70,10 @@
         public int? Manganese { get; set; }
         public int? Molybdenum { get; set; }
         public int? Selenium { get; set; }
+        public decimal? AddedSugarsWeight { get; set; }
+        public int? AddedSugarsPercent { get; set; }
+        public decimal? CalciumWeight { get; set; }
+        public decimal? IronWeight { get; set; }
+        public decimal? VitaminDWeight { get; set; }
     }
 }

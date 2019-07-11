@@ -31,10 +31,10 @@ SELECT
 		[KitchenDescription]
 	INTO #deleteItemKitAttributes 
 	FROM @kitAttributes
-	WHERE	KitchenItem is not null and
-			HospitalityItem is not null and
-			KitchenDescription is not null and
-			ImageUrl is not null
+	WHERE	KitchenItem is null and
+			HospitalityItem is null and
+			KitchenDescription is null and
+			ImageUrl is null
 	
 	SET @deleteRecordCount = @@ROWCOUNT;
 

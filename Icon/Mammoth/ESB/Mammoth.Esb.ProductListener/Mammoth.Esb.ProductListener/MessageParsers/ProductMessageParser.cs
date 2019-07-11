@@ -6,7 +6,6 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Esb.ProductListener.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
@@ -128,76 +127,82 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             {
                 var stockItemConsumerProductLabel = item.@base.consumerInformation.stockItemConsumerProductLabel;
 
-                var nutritionAttributes = new NutritionAttributesModel();
-                nutritionAttributes.ItemID = item.id;
-                nutritionAttributes.RecipeName = GetTraitValue(TraitCodes.RecipeName, traits);
-                nutritionAttributes.Allergens = GetTraitValue(TraitCodes.Allergens, traits);
-                nutritionAttributes.Ingredients = GetTraitValue(TraitCodes.Ingredients, traits);
-                nutritionAttributes.ServingsPerPortion = GetFloatTraitValue(TraitCodes.ServingsPerPortion, traits);
-                nutritionAttributes.ServingSizeDesc = GetTraitValue(TraitCodes.ServingSizeDesc, traits);
-                nutritionAttributes.ServingPerContainer = GetTraitValue(TraitCodes.ServingPerContainer, traits);
-                nutritionAttributes.HshRating = GetIntTraitValue(TraitCodes.Hsh, traits);
-                nutritionAttributes.ServingUnits = GetIntTraitValue(TraitCodes.ServingUnits, traits);
-                nutritionAttributes.SizeWeight = GetIntTraitValue(TraitCodes.SizeWeight, traits);
-                nutritionAttributes.Calories = (int)stockItemConsumerProductLabel.caloriesCount;
-                nutritionAttributes.CaloriesFat = (int)stockItemConsumerProductLabel.caloriesFromFatCount;
-                nutritionAttributes.CaloriesSaturatedFat = GetIntTraitValue(TraitCodes.CaloriesSaturatedFat, traits);
-                nutritionAttributes.TotalFatWeight = (int)stockItemConsumerProductLabel.totalFatGramsAmount;
-                nutritionAttributes.TotalFatPercentage = (int)stockItemConsumerProductLabel.totalFatDailyIntakePercent;
-                nutritionAttributes.SaturatedFatWeight = (int)stockItemConsumerProductLabel.saturatedFatGramsAmount;
-                nutritionAttributes.SaturatedFatPercent = (int)stockItemConsumerProductLabel.saturatedFatPercent;
-                nutritionAttributes.PolyunsaturatedFat = GetDecimalTraitValue(TraitCodes.PolyunsaturatedFat, traits);
-                nutritionAttributes.MonounsaturatedFat = GetDecimalTraitValue(TraitCodes.MonounsaturatedFat, traits);
-                nutritionAttributes.CholesterolWeight = (int)stockItemConsumerProductLabel.cholesterolMilligramsCount;
-                nutritionAttributes.CholesterolPercent = (int)stockItemConsumerProductLabel.cholesterolPercent;
-                nutritionAttributes.SodiumWeight = (int)stockItemConsumerProductLabel.sodiumMilligramsCount;
-                nutritionAttributes.SodiumPercent = (int)stockItemConsumerProductLabel.sodiumPercent;
-                nutritionAttributes.PotassiumWeight = GetDecimalTraitValue(TraitCodes.PotassiumWeight, traits);
-                nutritionAttributes.PotassiumPercent = GetIntTraitValue(TraitCodes.PotassiumPercent, traits);
-                nutritionAttributes.TotalCarbohydrateWeight = (int)stockItemConsumerProductLabel.totalCarbohydrateMilligramsCount;
-                nutritionAttributes.TotalCarbohydratePercent = (int)stockItemConsumerProductLabel.totalCarbohydratePercent;
-                nutritionAttributes.DietaryFiberWeight = stockItemConsumerProductLabel.dietaryFiberGramsCount;
-                nutritionAttributes.DietaryFiberPercent = GetIntTraitValue(TraitCodes.DietaryFiberPercent, traits);
-                nutritionAttributes.SolubleFiber = GetDecimalTraitValue(TraitCodes.SolubleFiber, traits);
-                nutritionAttributes.InsolubleFiber = GetDecimalTraitValue(TraitCodes.InsolubleFiber, traits);
-                nutritionAttributes.Sugar = stockItemConsumerProductLabel.sugarsGramsCount;
-                nutritionAttributes.SugarAlcohol = GetDecimalTraitValue(TraitCodes.SugarAlcohol, traits);
-                nutritionAttributes.OtherCarbohydrates = GetDecimalTraitValue(TraitCodes.OtherCarbohydrates, traits);
-                nutritionAttributes.ProteinWeight = (int)stockItemConsumerProductLabel.proteinGramsCount;
-                nutritionAttributes.ProteinPercent = GetIntTraitValue(TraitCodes.ProteinPercent, traits);
-                nutritionAttributes.VitaminA = (int)stockItemConsumerProductLabel.vitaminADailyMinimumPercent;
-                nutritionAttributes.Betacarotene = GetIntTraitValue(TraitCodes.Betacarotene, traits);
-                nutritionAttributes.VitaminC = (int)stockItemConsumerProductLabel.vitaminCDailyMinimumPercent;
-                nutritionAttributes.Calcium = (int)stockItemConsumerProductLabel.calciumDailyMinimumPercent;
-                nutritionAttributes.Iron = (int)stockItemConsumerProductLabel.ironDailyMinimumPercent;
-                nutritionAttributes.VitaminD = GetIntTraitValue(TraitCodes.VitaminD, traits);
-                nutritionAttributes.VitaminE = GetIntTraitValue(TraitCodes.VitaminE, traits);
-                nutritionAttributes.Thiamin = GetIntTraitValue(TraitCodes.Thiamin, traits);
-                nutritionAttributes.Riboflavin = GetIntTraitValue(TraitCodes.Riboflavin, traits);
-                nutritionAttributes.Niacin = GetIntTraitValue(TraitCodes.Niacin, traits);
-                nutritionAttributes.VitaminB6 = GetIntTraitValue(TraitCodes.VitaminB6, traits);
-                nutritionAttributes.VitaminB12 = GetIntTraitValue(TraitCodes.VitaminB12, traits);
-                nutritionAttributes.Folate = GetIntTraitValue(TraitCodes.Folate, traits);
-                nutritionAttributes.Biotin = GetIntTraitValue(TraitCodes.Biotin, traits);
-                nutritionAttributes.PantothenicAcid = GetIntTraitValue(TraitCodes.PantothenicAcid, traits);
-                nutritionAttributes.Phosphorous = GetIntTraitValue(TraitCodes.Phosphorous, traits);
-                nutritionAttributes.Iodine = GetIntTraitValue(TraitCodes.Iodine, traits);
-                nutritionAttributes.Magnesium = GetIntTraitValue(TraitCodes.Magnesium, traits);
-                nutritionAttributes.Zinc = GetIntTraitValue(TraitCodes.Zinc, traits);
-                nutritionAttributes.Copper = GetIntTraitValue(TraitCodes.Copper, traits);
-                nutritionAttributes.TransFat = (decimal?)GetFloatTraitValue(TraitCodes.Transfat, traits);
-                nutritionAttributes.TransFatWeight = (decimal?)GetFloatTraitValue(TraitCodes.TransfatWeight, traits);
-                nutritionAttributes.CaloriesFromTransFat = GetIntTraitValue(TraitCodes.CaloriesFromTransFat, traits);
-                nutritionAttributes.Om3Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om3Fatty, traits);
-                nutritionAttributes.Om6Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om6Fatty, traits);
-                nutritionAttributes.Starch = (decimal?)GetFloatTraitValue(TraitCodes.Starch, traits);
-                nutritionAttributes.Chloride = GetIntTraitValue(TraitCodes.Chloride, traits);
-                nutritionAttributes.Chromium = GetIntTraitValue(TraitCodes.Chromium, traits);
-                nutritionAttributes.VitaminK = GetIntTraitValue(TraitCodes.VitaminK, traits);
-                nutritionAttributes.Manganese = GetIntTraitValue(TraitCodes.Manganese, traits);
-                nutritionAttributes.Molybdenum = GetIntTraitValue(TraitCodes.Molybdenum, traits);
-                nutritionAttributes.Selenium = GetIntTraitValue(TraitCodes.Selenium, traits);
-                return nutritionAttributes;
+				return new NutritionAttributesModel
+				{
+					ItemID = item.id,
+					RecipeName = GetTraitValue(TraitCodes.RecipeName, traits),
+					Allergens = GetTraitValue(TraitCodes.Allergens, traits),
+					Ingredients = GetTraitValue(TraitCodes.Ingredients, traits),
+					ServingsPerPortion = GetFloatTraitValue(TraitCodes.ServingsPerPortion, traits),
+					ServingSizeDesc = GetTraitValue(TraitCodes.ServingSizeDesc, traits),
+					ServingPerContainer = GetTraitValue(TraitCodes.ServingPerContainer, traits),
+					HshRating = GetIntTraitValue(TraitCodes.Hsh, traits),
+					ServingUnits = GetIntTraitValue(TraitCodes.ServingUnits, traits),
+					SizeWeight = GetIntTraitValue(TraitCodes.SizeWeight, traits),
+					Calories = (int)stockItemConsumerProductLabel.caloriesCount,
+					CaloriesFat = (int)stockItemConsumerProductLabel.caloriesFromFatCount,
+					CaloriesSaturatedFat = GetIntTraitValue(TraitCodes.CaloriesSaturatedFat, traits),
+					TotalFatWeight = (int)stockItemConsumerProductLabel.totalFatGramsAmount,
+					TotalFatPercentage = (int)stockItemConsumerProductLabel.totalFatDailyIntakePercent,
+					SaturatedFatWeight = (int)stockItemConsumerProductLabel.saturatedFatGramsAmount,
+					SaturatedFatPercent = (int)stockItemConsumerProductLabel.saturatedFatPercent,
+					PolyunsaturatedFat = GetDecimalTraitValue(TraitCodes.PolyunsaturatedFat, traits),
+					MonounsaturatedFat = GetDecimalTraitValue(TraitCodes.MonounsaturatedFat, traits),
+					CholesterolWeight = (int)stockItemConsumerProductLabel.cholesterolMilligramsCount,
+					CholesterolPercent = (int)stockItemConsumerProductLabel.cholesterolPercent,
+					SodiumWeight = (int)stockItemConsumerProductLabel.sodiumMilligramsCount,
+					SodiumPercent = (int)stockItemConsumerProductLabel.sodiumPercent,
+					PotassiumWeight = GetDecimalTraitValue(TraitCodes.PotassiumWeight, traits),
+					PotassiumPercent = GetIntTraitValue(TraitCodes.PotassiumPercent, traits),
+					TotalCarbohydrateWeight = (int)stockItemConsumerProductLabel.totalCarbohydrateMilligramsCount,
+					TotalCarbohydratePercent = (int)stockItemConsumerProductLabel.totalCarbohydratePercent,
+					DietaryFiberWeight = stockItemConsumerProductLabel.dietaryFiberGramsCount,
+					DietaryFiberPercent = GetIntTraitValue(TraitCodes.DietaryFiberPercent, traits),
+					SolubleFiber = GetDecimalTraitValue(TraitCodes.SolubleFiber, traits),
+					InsolubleFiber = GetDecimalTraitValue(TraitCodes.InsolubleFiber, traits),
+					Sugar = stockItemConsumerProductLabel.sugarsGramsCount,
+					SugarAlcohol = GetDecimalTraitValue(TraitCodes.SugarAlcohol, traits),
+					OtherCarbohydrates = GetDecimalTraitValue(TraitCodes.OtherCarbohydrates, traits),
+					ProteinWeight = (int)stockItemConsumerProductLabel.proteinGramsCount,
+					ProteinPercent = GetIntTraitValue(TraitCodes.ProteinPercent, traits),
+					VitaminA = (int)stockItemConsumerProductLabel.vitaminADailyMinimumPercent,
+					Betacarotene = GetIntTraitValue(TraitCodes.Betacarotene, traits),
+					VitaminC = (int)stockItemConsumerProductLabel.vitaminCDailyMinimumPercent,
+					Calcium = (int)stockItemConsumerProductLabel.calciumDailyMinimumPercent,
+					Iron = (int)stockItemConsumerProductLabel.ironDailyMinimumPercent,
+					VitaminD = GetIntTraitValue(TraitCodes.VitaminD, traits),
+					VitaminE = GetIntTraitValue(TraitCodes.VitaminE, traits),
+					Thiamin = GetIntTraitValue(TraitCodes.Thiamin, traits),
+					Riboflavin = GetIntTraitValue(TraitCodes.Riboflavin, traits),
+					Niacin = GetIntTraitValue(TraitCodes.Niacin, traits),
+					VitaminB6 = GetIntTraitValue(TraitCodes.VitaminB6, traits),
+					VitaminB12 = GetIntTraitValue(TraitCodes.VitaminB12, traits),
+					Folate = GetIntTraitValue(TraitCodes.Folate, traits),
+					Biotin = GetIntTraitValue(TraitCodes.Biotin, traits),
+					PantothenicAcid = GetIntTraitValue(TraitCodes.PantothenicAcid, traits),
+					Phosphorous = GetIntTraitValue(TraitCodes.Phosphorous, traits),
+					Iodine = GetIntTraitValue(TraitCodes.Iodine, traits),
+					Magnesium = GetIntTraitValue(TraitCodes.Magnesium, traits),
+					Zinc = GetIntTraitValue(TraitCodes.Zinc, traits),
+					Copper = GetIntTraitValue(TraitCodes.Copper, traits),
+					TransFat = (decimal?)GetFloatTraitValue(TraitCodes.Transfat, traits),
+					TransFatWeight = (decimal?)GetFloatTraitValue(TraitCodes.TransfatWeight, traits),
+					CaloriesFromTransFat = GetIntTraitValue(TraitCodes.CaloriesFromTransFat, traits),
+					Om3Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om3Fatty, traits),
+					Om6Fatty = (decimal?)GetFloatTraitValue(TraitCodes.Om6Fatty, traits),
+					Starch = (decimal?)GetFloatTraitValue(TraitCodes.Starch, traits),
+					Chloride = GetIntTraitValue(TraitCodes.Chloride, traits),
+					Chromium = GetIntTraitValue(TraitCodes.Chromium, traits),
+					VitaminK = GetIntTraitValue(TraitCodes.VitaminK, traits),
+					Manganese = GetIntTraitValue(TraitCodes.Manganese, traits),
+					Molybdenum = GetIntTraitValue(TraitCodes.Molybdenum, traits),
+					Selenium = GetIntTraitValue(TraitCodes.Selenium, traits),
+					AddedSugarsWeight = stockItemConsumerProductLabel.addedSugarsGramsCount,
+					AddedSugarsPercent = (int)stockItemConsumerProductLabel.addedSugarDailyPercent,
+					CalciumWeight = stockItemConsumerProductLabel.calciumMilligramsCount,
+					IronWeight = stockItemConsumerProductLabel.ironMilligramsCount,
+					VitaminDWeight = stockItemConsumerProductLabel.vitaminDMicrogramsCount
+				};
             }
         }
 
