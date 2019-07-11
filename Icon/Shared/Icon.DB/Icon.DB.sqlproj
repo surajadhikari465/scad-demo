@@ -701,6 +701,7 @@
     <None Include="Scripts\PopulateData\Archive\ItemSignAttribute_DeleteDuplicates.sql" />
     <None Include="Scripts\PopulateData\Archive\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateHospitalityTraits.sql" />
+    <None Include="Scripts\PopulateData\PopulateTraits-PBI22686.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

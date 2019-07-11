@@ -140,6 +140,15 @@ namespace Icon.Framework
         public string Varietal { get; set; }
         public string BeerStyle { get; set; }
         public string LineExtension { get; set; }
+        public Nullable<bool> LocalLoanProducer { get; set; }
+        public Nullable<bool> OrganicPersonalCare { get; set; }
+        public Nullable<bool> Paleo { get; set; }
+        public string ProductFlavorOrType { get; set; }
+        public Nullable<bool> CaseinFree { get; set; }
+        public string DeliverySystem { get; set; }
+        public Nullable<bool> Hemp { get; set; }
+        public Nullable<System.DateTime> ItemInsertDate { get; set; }
+        public Nullable<System.DateTime> ModifedDate { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual ICollection<MessageQueueNutrition> MessageQueueNutrition { get; set; }

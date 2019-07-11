@@ -553,6 +553,15 @@
           <Property Name="Varietal" Type="nvarchar" MaxLength="255" />
           <Property Name="BeerStyle" Type="nvarchar" MaxLength="255" />
           <Property Name="LineExtension" Type="nvarchar" MaxLength="255" />
+          <Property Name="LocalLoanProducer" Type="bit" />
+          <Property Name="OrganicPersonalCare" Type="bit" />
+          <Property Name="Paleo" Type="bit" />
+          <Property Name="ProductFlavorOrType" Type="nvarchar" MaxLength="255" />
+          <Property Name="CaseinFree" Type="bit" />
+          <Property Name="DeliverySystem" Type="nvarchar" MaxLength="255" />
+          <Property Name="Hemp" Type="bit" />
+          <Property Name="ItemInsertDate" Type="datetime2" Precision="7" />
+          <Property Name="ModifedDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="MessageQueueProductSelectionGroup">
           <Key>
@@ -6158,6 +6167,15 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="Varietal" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BeerStyle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LineExtension" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocalLoanProducer" Type="Boolean" />
+          <Property Name="OrganicPersonalCare" Type="Boolean" />
+          <Property Name="Paleo" Type="Boolean" />
+          <Property Name="ProductFlavorOrType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CaseinFree" Type="Boolean" />
+          <Property Name="DeliverySystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Hemp" Type="Boolean" />
+          <Property Name="ItemInsertDate" Type="DateTime" Precision="7" />
+          <Property Name="ModifedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageHistoryId" FromRole="MessageQueueProduct" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageQueueNutrition" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueProduct" ToRole="MessageQueueNutrition" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageStatusId" FromRole="MessageQueueProduct" ToRole="MessageStatus" />
@@ -7459,6 +7477,15 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueProduct">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueProduct">
               <MappingFragment StoreEntitySet="MessageQueueProduct">
+                <ScalarProperty Name="ModifedDate" ColumnName="ModifedDate" />
+                <ScalarProperty Name="ItemInsertDate" ColumnName="ItemInsertDate" />
+                <ScalarProperty Name="Hemp" ColumnName="Hemp" />
+                <ScalarProperty Name="DeliverySystem" ColumnName="DeliverySystem" />
+                <ScalarProperty Name="CaseinFree" ColumnName="CaseinFree" />
+                <ScalarProperty Name="ProductFlavorOrType" ColumnName="ProductFlavorOrType" />
+                <ScalarProperty Name="Paleo" ColumnName="Paleo" />
+                <ScalarProperty Name="OrganicPersonalCare" ColumnName="OrganicPersonalCare" />
+                <ScalarProperty Name="LocalLoanProducer" ColumnName="LocalLoanProducer" />
                 <ScalarProperty Name="LineExtension" ColumnName="LineExtension" />
                 <ScalarProperty Name="BeerStyle" ColumnName="BeerStyle" />
                 <ScalarProperty Name="Varietal" ColumnName="Varietal" />

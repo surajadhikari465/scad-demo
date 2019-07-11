@@ -120,7 +120,16 @@
 	[OrganicClaim]  BIT NULL,
 	[Varietal]  NVARCHAR(255) NULL,
 	[BeerStyle]  NVARCHAR(255) NULL,
-	[LineExtension]  NVARCHAR(255) NULL
+	[LineExtension]  NVARCHAR(255) NULL,
+	[LocalLoanProducer]  BIT NULL,
+	[OrganicPersonalCare]  BIT NULL,
+	[Paleo] BIT NULL,
+	[ProductFlavorOrType] NVARCHAR(255) NULL,
+	[CaseinFree] BIT NULL,
+	[DeliverySystem]  NVARCHAR(255) NULL,
+	[Hemp] BIT NULL,
+	[ItemInsertDate]  DATETIME2 NULL,
+	[ModifedDate] DATETIME2 NULL,
     CONSTRAINT FK_MessageQueueProduct_MessageHistoryId FOREIGN KEY (MessageHistoryId) REFERENCES app.MessageHistory (MessageHistoryId) ON DELETE CASCADE,
     CONSTRAINT FK_MessageQueueProduct_MessageStatusId FOREIGN KEY (MessageStatusId) REFERENCES app.MessageStatus (MessageStatusId),
     CONSTRAINT FK_MessageQueueProduct_MessageTypeId FOREIGN KEY (MessageTypeId) REFERENCES app.MessageType (MessageTypeId)
