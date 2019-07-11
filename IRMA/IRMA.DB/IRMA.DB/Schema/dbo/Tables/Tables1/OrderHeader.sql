@@ -404,6 +404,7 @@ BEGIN
 					AND ((i.Sent = 1 AND d.Sent = 0)
 					OR (i.Sent = 1
 						AND ((i.Expected_Date <> d.Expected_Date)
+                            OR (ISNULL(i.EInvoice_Id,0) <> ISNULL(d.EInvoice_Id,0))
 							OR ((i.RefuseReceivingReasonID <> d.RefuseReceivingReasonID)
 								OR (i.RefuseReceivingReasonID IS NOT NULL AND d.RefuseReceivingReasonID IS NULL))
 							OR ((i.OriginalCloseDate <> d.OriginalCloseDate)
