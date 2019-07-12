@@ -90,8 +90,16 @@ BEGIN
 		@kiTraitId int, 
 		@hiTraitId int, 
 		@kdTraitId int, 
-		@urlTraitId int
-		
+		@urlTraitId int,
+		@llpTraitId int,
+		@opcTraitId int,
+		@ploTraitId int,
+		@pftTraitId int,
+		@cfTraitId int,
+		@dsTraitId int,
+		@hemTraitId int,
+		@insTraitId int,
+		@modTraitId int
 
 	declare @distinctProductMessageIDs table (MessageQueueId int, scancode varchar(13));
 
@@ -169,6 +177,15 @@ BEGIN
 	SET	@hiTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HI')
 	SET	@kdTraitId                  = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'KD')
 	SET	@urlTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'URL')
+	SET	@llpTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LLP')
+	SET	@opcTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OPC')
+	SET	@ploTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PLO')
+	SET	@pftTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PFT')
+	SET	@cfTraitId                 =  (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'CF')
+	SET	@hemTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HEM')
+	SET	@dsTraitId                 =  (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'DS')
+	SET	@insTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'INS')
+	SET	@modTraitId                 = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'MOD')
 
 	insert into 
 		app.MessageQueueProduct
@@ -354,7 +371,16 @@ BEGIN
 					THEN 1 ELSE 0 END													AS OrganicClaim,
 		va.traitValue                                                                   AS Varietal,
 		bes.traitValue                                                                  AS BeerStyle,
-		lex.traitValue                                                                  AS LineExtension
+		lex.traitValue                                                                  AS LineExtension,
+		llp.traitValue                                                                  AS LocalLoanProducer,
+		opc.traitValue                                                                  AS OrganicPersonalCare,
+		plo.traitValue                                                                  AS Paleo,
+		pft.traitValue                                                                  AS ProductFlavorType,
+		cf.traitValue                                                                   AS CaseinFree,
+		hem.traitValue                                                                  AS Hemp,
+		dst.traitValue                                                                  AS DeliverySystem,
+		ins.traitValue                                                                  AS InsertDate,
+		modt.traitValue                                                                 AS ModifiedDate
 
 	from 
 		#itemIDs					ui
@@ -464,6 +490,15 @@ BEGIN
 		LEFT JOIN ItemTrait				hi			ON	hi.traitID					= @hiTraitId AND hi.itemID = i.itemID AND hi.localeID = @localeID
 		LEFT JOIN ItemTrait				kd			ON	kd.traitID					= @kdTraitId AND kd.itemID = i.itemID AND kd.localeID = @localeID
 		LEFT JOIN ItemTrait				url			ON	url.traitID					= @urlTraitId AND url.itemID = i.itemID AND url.localeID = @localeID
+		LEFT JOIN ItemTrait				llp			ON	llp.traitID					= @llpTraitId AND llp.itemID = i.itemID AND llp.localeID = @localeID
+		LEFT JOIN ItemTrait				opc			ON	opc.traitID					= @opcTraitId AND opc.itemID = i.itemID AND opc.localeID = @localeID
+		LEFT JOIN ItemTrait				plo			ON	plo.traitID					= @ploTraitId AND plo.itemID = i.itemID AND plo.localeID = @localeID
+		LEFT JOIN ItemTrait				pft			ON	pft.traitID					= @pftTraitId AND pft.itemID = i.itemID AND pft.localeID = @localeID
+		LEFT JOIN ItemTrait				cf			ON	cf.traitID					= @cfTraitId AND cf.itemID = i.itemID AND cf.localeID = @localeID
+		LEFT JOIN ItemTrait				hem			ON	hem.traitID					= @hemTraitId AND hem.itemID = i.itemID AND hem.localeID = @localeID
+		LEFT JOIN ItemTrait				dst			ON	dst.traitID					= @dsTraitId AND dst.itemID = i.itemID AND dst.localeID = @localeID
+		LEFT JOIN ItemTrait				ins			ON	ins.traitID					= @insTraitId AND ins.itemID = i.itemID AND ins.localeID = @localeID
+		LEFT JOIN ItemTrait				modt	    ON	modt.traitID				= @modTraitId AND modt.itemID = i.itemID AND modt.localeID = @localeID
 	
 	where
 		it.itemTypeID <> @couponItemTypeId
