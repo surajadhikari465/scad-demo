@@ -8,7 +8,7 @@ Connections/JDBC/Mammoth/ConnectionString=jdbc:sqlserver://MAMMOTH-DB01-QA\MAMMO
 Connections/JDBC/Mammoth/Username=Mammoth.tibco.qa
 Connections/JDBC/Mammoth/Password=#!wuEyIMdg8VvyItjGyEI1BMHkUO5WqrENDHy6mYa3f9l2uE9zDPxbuQ==
 
-Connections/JMS/ESB/JndiContextUrl=ssl://cerd1619.wfm.pvt:27293,ssl://cerd1622.wfm.pvt:27293
+Connections/JMS/ESB/JndiContextUrl=ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293
 Connections/JMS/ESB/JndiUsername=jndiMammothUser
 Connections/JMS/ESB/JndiPassword=#!WkzL8+kd/Eos1lw3A22jrOG6txcKfFioE5kN0j0+8qIevjFJughy/w==
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==

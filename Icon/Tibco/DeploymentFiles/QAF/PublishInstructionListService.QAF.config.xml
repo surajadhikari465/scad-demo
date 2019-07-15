@@ -150,7 +150,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://cerd1619.wfm.pvt:27293,ssl://cerd1622.wfm.pvt:27293</value>
+            <value>ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
@@ -234,7 +234,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIContextURL</name>
-            <value>ssl://cerd1619.wfm.pvt:27293,ssl://cerd1622.wfm.pvt:27293</value>
+            <value>ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIPassword</name>
