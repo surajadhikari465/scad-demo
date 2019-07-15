@@ -45,11 +45,16 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<KitLinkGroupItemLocale> kitLinkGroupItemLocaleRepository;
         private IRepository<LocaltypeModel> localeTypeRepository;
         private IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper;
-        private const string deleteKitSpName = "DeleteKitByKitId";
-        private const string publishKitEvents = "PublishKitEvents";
-        private const string ADDORUPDATEACTION = "AddOrUpdate";
-        private const string DELETEACTION = "Delete";
         private IServiceProvider services;
+        private const string DELETE_KIT_SP_NAME = "DeleteKitByKitId";
+        private const string PUBLISH_KIT_EVENTS = "PublishKitEvents";
+        private const string ADD_OR_UPDATE_ACTION = "AddOrUpdate";
+        private const string DELETE_ACTION = "Delete";
+        private const string PRICE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Price record in Mammoth.";
+        private const string CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Calorie record in Mammoth.";
+        private const string AUTHORIZED_BY_STORE_NULL_ERROR = "Error in getting Authorization info for main item from Mammoth.";
+        private const string GENERIC_FETCH_ERROR = "Error in getting data from Mammoth.";
+
         private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
 
         public KitController(IRepository<LinkGroup> linkGroupRepository,
@@ -186,7 +191,7 @@ namespace KitBuilderWebApi.Controllers
                 kitLocaleDtoTask = calorieCalculator.Run(new GetKitLocaleByStoreParameters { KitLocaleId = kitProperties.KitLocaleId, StoreLocaleId = storeId });
             }
             catch (Exception ex)
-            { 
+            {
                 logger.LogError(message: "BuildKitView Error");
                 logger.LogError(message: $"{ex.Message}");
                 if (ex.InnerException != null) logger.LogError(message: $"{ex.InnerException.Message}");
@@ -205,22 +210,23 @@ namespace KitBuilderWebApi.Controllers
 
             var kitLocaleDto = kitLocaleDtoTask.Result;
 
-            if (kitLocaleDto.Exclude == true)
-            {
-                kitView.ErrorMessage = "Kit is excluded for selected store.";
-                return kitView;
-            }
-
-            if (kitLocaleDto.AuthorizedByStore == false)
-            {
-                kitView.ErrorMessage = "Main Kit Item is not authorized for selected Store.";
-                return kitView;
-            }
 
             if ((kitLocaleDto.MaximumCalories != null || kit.KitType == KitType.Simple) && kitLocaleDto.MinimumCalories != null && kitLocaleDto.RegularPrice != null
                 && kitLocaleDto.AuthorizedByStore != null
                 && kitLocaleDto.Exclude != null)
             {
+                if (kitLocaleDto.Exclude == true)
+                {
+                    kitView.ErrorMessage = "Kit is excluded for selected store.";
+                    return kitView;
+                }
+
+                if (kitLocaleDto.AuthorizedByStore == false)
+                {
+                    kitView.ErrorMessage = "Main Kit Item is not authorized for selected Store.";
+                    return kitView;
+                }
+
                 if (kit.KitType == KitType.Simple && kitLocaleDto.MaximumCalories == null)
                 {
                     kitView.MaximumCalories = (int)kitLocaleDto.MinimumCalories;
@@ -294,11 +300,11 @@ namespace KitBuilderWebApi.Controllers
             }
             else
             {
-                kitView.ErrorMessage = " Error in fetching info from Mammoth. Unknown kit type.";
+
+                kitView.ErrorMessage = BuildErrorMessage(kitLocaleDto, kit.KitType);
                 return kitView;
             }
         }
-
 
         // GET api/kits/1/ViewKit/1 GetKitByLocationID
         [HttpGet("{kitId}/GetKitProperties/{localeId}", Name = "GetKitProperties")]
@@ -343,7 +349,8 @@ namespace KitBuilderWebApi.Controllers
                         k.isDisplayMandatory,
                         k.showRecipe,
                         k.Item,
-                        KitLinkGroup = k.KitLinkGroup.Select(x => new {
+                        KitLinkGroup = k.KitLinkGroup.Select(x => new
+                        {
                             x.KitLinkGroupId,
                             x.LinkGroupId,
                             x.KitId,
@@ -385,7 +392,7 @@ namespace KitBuilderWebApi.Controllers
             return Ok(kit);
         }
 
-      
+
         [HttpGet(Name = "GetKits")]
         public IActionResult GetKits(KitSearchParameters kitSearchParameters)
         {
@@ -557,13 +564,13 @@ namespace KitBuilderWebApi.Controllers
                 kitLocale.LastUpdatedDateUtc = DateTime.Now;
 
                 if (kit.KitType == KitType.Simple)
-                    {
-                        kitLocale.StatusId = (int)LocaleStatus.ReadytoPublish;
-                    }
-                    else
-                    {
-                        kitLocale.StatusId = (int)LocaleStatus.Building;
-                    }
+                {
+                    kitLocale.StatusId = (int)LocaleStatus.ReadytoPublish;
+                }
+                else
+                {
+                    kitLocale.StatusId = (int)LocaleStatus.Building;
+                }
             }
 
             var kitLocaleRecordsToUpdate = kitLocaleDbList.Where(t => kitLocaleListPassed.Select(l => l.LocaleId).Contains(t.LocaleId));
@@ -628,7 +635,7 @@ namespace KitBuilderWebApi.Controllers
             try
             {
                 var paramKitId = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
-                var paramAction = new SqlParameter("action", SqlDbType.NVarChar) { Value = ADDORUPDATEACTION };
+                var paramAction = new SqlParameter("action", SqlDbType.NVarChar) { Value = ADD_OR_UPDATE_ACTION };
                 var paramlocaleListWithNoVenues = new SqlParameter("localeListWithNoVenues", SqlDbType.NVarChar, -1);
                 paramlocaleListWithNoVenues.Direction = ParameterDirection.Output;
 
@@ -636,10 +643,10 @@ namespace KitBuilderWebApi.Controllers
 
                 linkGroupRepository.UnitOfWork.Context.Database.ExecuteSqlCommand(sql, paramKitId, paramAction, paramlocaleListWithNoVenues);
 
-                if(!string.IsNullOrEmpty(paramlocaleListWithNoVenues.Value.ToString()))
+                if (!string.IsNullOrEmpty(paramlocaleListWithNoVenues.Value.ToString()))
                 {
                     string error = "Locales: " + paramlocaleListWithNoVenues.Value.ToString() + " do not have associated hospitality venues. Please remove kit assignment from these locales.";
-                    return StatusCode(409 , error);
+                    return StatusCode(409, error);
                 }
                 return NoContent();
             }
@@ -844,15 +851,15 @@ namespace KitBuilderWebApi.Controllers
 
                     if (kitToSave.KitType != KitType.Simple && (kitLocales.Where(k => k.StatusId == (int)LocaleStatus.Published
                             || k.StatusId == (int)LocaleStatus.PublishQueued || k.StatusId == (int)LocaleStatus.Modifying
-                            || k.StatusId == (int)LocaleStatus.PublishReQueued).Any()) )
+                            || k.StatusId == (int)LocaleStatus.PublishReQueued).Any()))
                     {
-                            foreach (KitLocale kitlocale in kitLocales)
-                            {
-                                kitlocale.StatusId = (int)LocaleStatus.Modifying;
-                            }
+                        foreach (KitLocale kitlocale in kitLocales)
+                        {
+                            kitlocale.StatusId = (int)LocaleStatus.Modifying;
+                        }
                     }
 
-                   else if (kitToSave.KitType == KitType.Simple)
+                    else if (kitToSave.KitType == KitType.Simple)
                     {
                         foreach (KitLocale kitlocale in kitLocales)
                         {
@@ -1309,7 +1316,7 @@ namespace KitBuilderWebApi.Controllers
                 try
                 {
                     var param1 = new SqlParameter("kitId", SqlDbType.BigInt) { Value = id };
-                    linkGroupRepository.ExecWithStoreProcedure(deleteKitSpName + " @kitId", param1);
+                    linkGroupRepository.ExecWithStoreProcedure(DELETE_KIT_SP_NAME + " @kitId", param1);
 
                     return NoContent();
                 }
@@ -1431,10 +1438,30 @@ namespace KitBuilderWebApi.Controllers
             return checkKitLocale.Any() || checkLinkGroupLocale.Any();
 
         }
-    
+
+        private string BuildErrorMessage(KitLocaleDto kitLocaleDto, KitType kitType)
+        {
+            if ((kitLocaleDto.MaximumCalories == null && kitType != KitType.Simple) || kitLocaleDto.MinimumCalories == null)
+            {
+                return CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH; 
+            }
+            else if (kitLocaleDto.RegularPrice == null)
+            {
+                return PRICE_RECORD_NOT_FOUND_IN_MAMMOTH;
+            }
+            else if (kitLocaleDto.AuthorizedByStore == null)
+            {
+                return AUTHORIZED_BY_STORE_NULL_ERROR;
+            }
+            else
+            {
+                return GENERIC_FETCH_ERROR;
+            }
+        }
+
         private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
         {
-            var statusArray = kitLocales.Where(s=>s.Exclude == false).Select(kl => kl.StatusId);
+            var statusArray = kitLocales.Where(s => s.Exclude == false).Select(kl => kl.StatusId);
 
             if (statusArray.Count() == 0 || statusArray.Any(status => status == (int)LocaleStatus.Building))
             {
@@ -1460,7 +1487,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 return LocaleStatus.PartiallyPublished;
             }
-                
+
             else if (statusArray.All(status => status == (int)LocaleStatus.Disabled))
             {
                 return LocaleStatus.Disabled;
