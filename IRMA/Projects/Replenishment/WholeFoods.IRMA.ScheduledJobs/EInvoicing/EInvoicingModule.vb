@@ -584,6 +584,7 @@ Module EInvoicingModule
             While retry > 0
                 Try
                     eInv.LoadEInvoicingData(filePath)
+                    Exit While
                 Catch ex As Exception
                     retry = retry - 1
                     If retry = 0 Then
