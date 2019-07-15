@@ -151,7 +151,8 @@ BEGIN
         II.Identifier ,
         ISNULL(IOR.Item_Description, I.Item_Description) AS Item_Description ,
         @Vendor_ID AS Vendor_ID,
-        IsNULL(@Cost,0) AS Vendor_Cost,
+        CASE WHEN  @Cost IS NULL then ISNULL((CONVERT(MONEY,(dbo.fn_GetCurrentNetCost(@Item_Key,@VendStore_No)/dbo.fn_GetCurrentVendorPackage_Desc1(@Item_Key,@VendStore_No)))) ,0)
+	    ELSE @Cost END AS  Vendor_Cost,
         RTRIM(CAST(CAST(ISNULL(ISNULL(@Package_Desc1, IOR.Package_Desc1), I.Package_Desc1) AS INT) AS VARCHAR(14))) + ' / ' + RTRIM(CAST(CAST(ISNULL(ISNULL(@Package_Desc2, IOR.Package_Desc2),I.Package_Desc2) AS INT) AS VARCHAR(14))) + ' ' + RTRIM(PU.Unit_Name) AS VendorPack,
         ISNULL(RU.Weight_Unit, 0) AS Sold_By_Weight ,
         RTRIM(VU.Unit_Name) AS Vendor_Unit_Name ,
