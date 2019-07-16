@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>InstanceGUID</name>
-			<value>000000C9-0000-0000-0000-000000000000</value>
+			<value>3A500027-5CCC-4285-BAD6-C6CCDBA6DC71</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1547785114099</modTime>
+			<modTime>1563295110979</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>InventoryAdjustmentSource</name>
@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>IrmaTransferOrderQueue</name>
-			<value>WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.MA.Queue.V1</value>
+			<value>WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.SO.Queue.V1</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1552072249420</modTime>
+			<modTime>1563293750176</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MaxRedeliveryCount</name>

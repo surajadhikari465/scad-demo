@@ -3,7 +3,7 @@
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/OrderReceipt.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/TransferOrder.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v2019.Q3.1.1/Inventory/TransferOrder.xsd"/>
     <pd:name>Processes/PublishTransferOrderService.process</pd:name>
     <pd:startName>TransferOrderEventReciever</pd:startName>
     <pd:startX>0</pd:startX>
@@ -111,7 +111,43 @@
         <pd:inputBindings>
             <pfx3:transferOrders>
                 <xsl:choose>
-                    <xsl:when test="contains($Parse-Event-Message/pfx4:Events/pfx4:EventType[1]/pfx4:EventTypeCode, &quot;DEL&quot;)">
+                    <xsl:when test="contains($Parse-Event-Message/pfx4:Events/pfx4:EventType[1]/pfx4:EventTypeCode, &quot;TSF_DEL&quot;)">
+                        <xsl:for-each select="$GetIrmaData/Output/POData[1]">
+                            <pfx3:transferOrderDelete>
+                                <pfx3:transferNumber>
+                                    <xsl:value-of select="OrderHeader_ID"/>
+                                </pfx3:transferNumber>
+                                <pfx3:eventType>
+                                    <xsl:value-of select="$Parse-Event-Message/pfx4:Events/pfx4:EventType[1]/pfx4:EventTypeCode"/>
+                                </pfx3:eventType>
+                                <pfx3:messageNumber>
+                                    <xsl:value-of select="$TransferOrderEventReciever/ns12:ActivityOutput/OtherProperties/MessageNumber"/>
+                                </pfx3:messageNumber>
+                                <pfx3:locationNumber>
+                                    <xsl:value-of select="ToLocationNumber"/>
+                                </pfx3:locationNumber>
+                                <xsl:if test="ToLocationName">
+                                    <pfx3:locationName>
+                                        <xsl:value-of select="ToLocationName"/>
+                                    </pfx3:locationName>
+                                </xsl:if>
+                                <pfx3:cancelUserInfo>
+                                    <ns0:idNumber>
+                                        <xsl:value-of select="if (UserId > 0) then UserId else &quot;&quot;"/>
+                                    </ns0:idNumber>
+                                    <xsl:if test="UserName">
+                                        <ns0:name>
+                                            <xsl:value-of select="UserName"/>
+                                        </ns0:name>
+                                    </xsl:if>
+                                </pfx3:cancelUserInfo>
+                                <xsl:for-each select=".">
+                                    <pfx3:transferOrderDeletionDetail/>
+                                </xsl:for-each>
+                            </pfx3:transferOrderDelete>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="contains($Parse-Event-Message/pfx4:Events/pfx4:EventType[1]/pfx4:EventTypeCode, &quot;TSF_LINE_DEL&quot;)">
                         <xsl:for-each select="$GetIrmaData/Output/POData[1]">
                             <pfx3:transferOrderDelete>
                                 <pfx3:transferNumber>
@@ -268,6 +304,12 @@
                                                 <xsl:value-of select="ExpectedArrivalDate"/>
                                             </pfx3:expectedArrivalDate>
                                         </xsl:if>
+                                        <pfx3:packSize1>
+                                            <xsl:value-of select="round(package_desc1)"/>
+                                        </pfx3:packSize1>
+                                        <pfx3:packSize2>
+                                            <xsl:value-of select="round(package_desc2)"/>
+                                        </pfx3:packSize2>
                                     </pfx3:transferOrderDetail>
                                 </xsl:for-each>
                             </pfx3:transferOrder>

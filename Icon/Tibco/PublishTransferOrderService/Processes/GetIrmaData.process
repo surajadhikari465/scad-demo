@@ -109,6 +109,12 @@
                                     <xsl:value-of select="ExpectedArrivalDate"/>
                                 </ExpectedArrivalDate>
                             </xsl:if>
+                            <package_desc1>
+                                <xsl:value-of select="round(package_desc1)"/>
+                            </package_desc1>
+                            <package_desc2>
+                                <xsl:value-of select="round(package_desc2)"/>
+                            </package_desc2>
                         </POData>
                     </xsl:for-each>
                 </xsl:when>
@@ -154,6 +160,9 @@
                                     <xsl:value-of select="ToLocationNumber"/>
                                 </ToLocationNumber>
                             </xsl:if>
+                            <Status>
+                                <xsl:value-of select="&quot;Deleted&quot;"/>
+                            </Status>
                             <UserId>
                                 <xsl:value-of select="UserId"/>
                             </UserId>
@@ -165,15 +174,9 @@
                                     <xsl:value-of select="ApproverId"/>
                                 </ApproverId>
                             </xsl:if>
-                            <TransferOrderDetailNumber>
-                                <xsl:value-of select="TransferOrderDetailNumber"/>
-                            </TransferOrderDetailNumber>
-                            <SourceItemKey>
-                                <xsl:value-of select="SourceItemKey"/>
-                            </SourceItemKey>
-                            <DefaultScanCode>
-                                <xsl:value-of select="DefaultScanCode"/>
-                            </DefaultScanCode>
+                            <CreateDateTime>
+                                <xsl:value-of select="CreateDateTime"/>
+                            </CreateDateTime>
                         </POData>
                     </xsl:for-each>
                 </xsl:otherwise>
@@ -204,15 +207,17 @@
                                 <xsd:element name="ApproverName" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="CreateDateTime" type="xsd:dateTime" minOccurs="0"/>
                                 <xsd:element name="ApproveDateTime" type="xsd:dateTime" minOccurs="0"/>
-                                <xsd:element name="TransferOrderDetailNumber" type="xsd:int"/>
-                                <xsd:element name="SourceItemKey" type="xsd:int"/>
-                                <xsd:element name="DefaultScanCode" type="xsd:string"/>
+                                <xsd:element name="TransferOrderDetailNumber" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="SourceItemKey" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="DefaultScanCode" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="HostSubTeam_No" type="xsd:int" minOccurs="0"/>
                                 <xsd:element name="HostSubTeam_Name" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="QuantityOrdered" type="xsd:float" minOccurs="0"/>
                                 <xsd:element name="OrderedUnit" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="OrderedUnitCode" type="xsd:string" minOccurs="0"/>
                                 <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="package_desc1" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="package_desc2" type="xsd:int" minOccurs="0"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -330,7 +335,9 @@
 	oi.QuantityOrdered,
 	iuo.Unit_Name as OrderedUnit,
 	iuo.Unit_Abbreviation as OrderedUnitCode,
-	oh.Expected_Date as ExpectedArrivalDate
+	oh.Expected_Date as ExpectedArrivalDate,
+	oi.package_desc1,
+	oi.package_desc2
 FROM OrderHeader oh WITH (NOLOCK)
 JOIN Vendor v WITH (NOLOCK) on oh.Vendor_ID = v.Vendor_ID
 JOIN Store fs WITH (NOLOCK) on fs.Store_No = v.Store_no
@@ -457,6 +464,14 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>package_desc1</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>package_desc2</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -509,7 +524,9 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as QuantityOrdered,
 	NULL as OrderedUnit,
 	NULL as OrderedUnitCode,
-	NULL as ExpectedArrivalDate
+	NULL as ExpectedArrivalDate,
+	NULL as package_desc1,
+	NULL as package_desc2
 FROM OrderHeader oh (NOLOCK)
 JOIN Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store ts (NOLOCK) on ts.Store_No = psl.Store_no
@@ -684,26 +701,24 @@ WHERE oh.OrderHeader_ID = ?
 	uc.UserName as UserName,
 	oh.ApprovedBy as ApproverId,
 	NULL as ApproverName,
-	NULL as CreateDateTime,
+	DeleteDate as CreateDateTime,
 	NULL as ApproveDateTime,
-	oi.OrderItem_ID as TransferOrderDetailNumber,
-	oi.Item_Key as SourceItemKey,
-	ii.Identifier as DefaultScanCode,
+	NULL as TransferOrderDetailNumber,
+	NULL as SourceItemKey,
+	NULL as DefaultScanCode,
 	NULL as HostSubTeam_No,
 	NULL as HostSubTeam_Name,
 	NULL as QuantityOrdered,
 	NULL as OrderedUnit,
 	NULL as OrderedUnitCode,
-	NULL as ExpectedArrivalDate
+	NULL as ExpectedArrivalDate,
+	NULL as package_desc1,
+	NULL as package_desc2
 FROM DeletedOrder oh (NOLOCK)
 JOIN Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store ts (NOLOCK) on ts.Store_No = psl.Store_no
 JOIN Users uc (NOLOCK) on uc.User_ID = oh.User_ID 
-JOIN DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID
-JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
-JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
-WHERE oh.OrderHeader_ID = ?
-  AND i.Retail_Sale = 1</statement>
+WHERE oh.OrderHeader_ID = ?</statement>
                 <wizardData/>
                 <processInSubsets>false</processInSubsets>
                 <Prepared_Param_DataType>
@@ -771,9 +786,9 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
-                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
-                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>ApproveDateTime</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -781,15 +796,15 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaColumns>TransferOrderDetailNumber</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>SourceItemKey</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>DefaultScanCode</QueryOutputCachedSchemaColumns>
-                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
@@ -811,6 +826,14 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>ExpectedArrivalDate</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>package_desc1</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>package_desc2</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
