@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedLogPublisherLibraryBuilder">
-        <version>17</version>
+        <version>18</version>
         <author>Ben.Sims</author>
         <fileLocation>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\SharedLibraries\Libraries\SharedLogPublisher.projlib</fileLocation>
         <resources>/SharedResources/Processes/LogPublisher.process</resources>

@@ -10,22 +10,6 @@
 			<modTime>1510246476316</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>LogDirectory</name>
-			<value>/LogErrors/</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1505854474320</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>LogExtension</name>
-			<value>.txt</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1505512030671</modTime>
-		</globalVariable>
-		<globalVariable>
 			<name>retryCount</name>
 			<value>5</value>
 			<deploymentSettable>true</deploymentSettable>

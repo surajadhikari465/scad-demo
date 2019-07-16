@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns03="www.tibco.com/plugin/Sleep" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns03="www.tibco.com/plugin/Sleep" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
     <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd" schemaLocation="/SharedResources/Schemas/Mammoth/AppLog.xsd"/>
     <pd:name>SharedResources/Processes/LogPublisher.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -153,24 +153,25 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
-    <pd:activity name="Write File">
-        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
-        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+    <pd:activity name="Log Failure After Retry">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
         <pd:x>521</pd:x>
         <pd:y>444</pd:y>
         <config>
-            <encoding>text</encoding>
-            <compressFile>None</compressFile>
+            <role>User</role>
         </config>
         <pd:inputBindings>
-            <ns2:WriteActivityInputTextClass>
-                <fileName>
-                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/LoggerSettings/LogDirectory, tib:timestamp(), $_globalVariables/ns:GlobalVariables/LoggerSettings/LogExtension)"/>
-                </fileName>
-                <textContent>
-                    <xsl:value-of select="tib:render-xml($Start/pfx:AppLog, false(), false())"/>
-                </textContent>
-            </ns2:WriteActivityInputTextClass>
+            <ns0:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat('Failure sending log message to SB1 destination &quot;',&#xA;  $_globalVariables/ns:GlobalVariables/LoggerSettings/Destinations/CLELogQueue,&#xA;  '&quot; at &quot;',&#xA;  $_globalVariables/ns:GlobalVariables/LoggerSettings/Connections/JMS/SB1/Url,  &#xA;  '&quot; after ',&#xA;  $_globalVariables/ns:GlobalVariables/LoggerSettings/retryCount,&#xA;  ' retries at ',&#xA;  tib:translate-timezone(tib:add-to-dateTime('1970-01-01T00:00:00.001+00:00',0,0,0,0,0,(tib:timestamp() div 1000)), tib:get-timezone-from-dateTime(current-dateTime())),&#xA;  '.',&#xA;  ' Log Message contents: &quot;',&#xA;  tib:render-xml($Start/pfx:AppLog),&#xA;  '&quot;. Error Message: &quot;',&#xA;  $_error/ns1:ErrorReport/Msg,  &#xA;  '&quot;. Stack Trace: &quot;',&#xA;  $_error/ns1:ErrorReport/StackTrace,&#xA;  '&quot;')"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns0:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Render XML">
@@ -204,13 +205,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Repeat On Error</pd:from>
-        <pd:to>Write File</pd:to>
+        <pd:to>Log Failure After Retry</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-65536</pd:lineColor>
         <pd:conditionType>error</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Write File</pd:from>
+        <pd:from>Log Failure After Retry</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

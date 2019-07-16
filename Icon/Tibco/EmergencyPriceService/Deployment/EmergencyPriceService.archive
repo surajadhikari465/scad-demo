@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/ActivePricesProcess.process</processProperty>
         </processArchive>
-        <versionProperty>33</versionProperty>
+        <versionProperty>34</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>EmergencyPriceService</name>
