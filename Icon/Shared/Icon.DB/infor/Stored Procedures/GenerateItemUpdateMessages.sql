@@ -377,8 +377,8 @@ BEGIN
 		plo.traitValue                                                                  AS Paleo,
 		pft.traitValue                                                                  AS ProductFlavorType,
 		cf.traitValue                                                                   AS CaseinFree,
-		hem.traitValue                                                                  AS Hemp,
 		dst.traitValue                                                                  AS DeliverySystem,
+		hem.traitValue                                                                  AS Hemp,
 		ins.traitValue                                                                  AS InsertDate,
 		modt.traitValue                                                                 AS ModifiedDate
 
