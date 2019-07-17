@@ -918,11 +918,19 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             Assert.IsNotNull(groups);
             Assert.AreEqual("5", hshTrait.type.value[0].value);
-            Assert.AreEqual(1, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
-            Assert.AreEqual(2, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
-            Assert.AreEqual(3, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
-            Assert.AreEqual(4, groups.stockItemConsumerProductLabel.ironMilligramsCount);
-            Assert.AreEqual(5, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
+
+            // these new elements should be 0 and not specified until DDS deploys their schema to TEST. 
+            // afterwards these tests need to be updated with real values.
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.calciumMilligramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.ironMilligramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.ironMilligramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified);
         }
 
         [TestMethod]

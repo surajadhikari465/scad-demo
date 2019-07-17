@@ -542,16 +542,16 @@ namespace Icon.ApiController.Controller.QueueReaders
                         nutritionalDescriptionText = null,
                         isHazardousMaterial = message.HazardousMaterialFlag == null ? false : (message.HazardousMaterialFlag.Value == 1 ? true : false),
                         hazardousMaterialTypeCode = null,
-                        addedSugarsGramsCount = message.AddedSugarsWeight.ToDecimal(),
-                        addedSugarsGramsCountSpecified = true,
-                        addedSugarDailyPercent = message.AddedSugarsPercent.ToDecimal(),
-                        addedSugarDailyPercentSpecified = true,
-                        calciumMilligramsCount = message.CalciumWeight.ToDecimal(),
-                        calciumMilligramsCountSpecified = true,
-                        ironMilligramsCount = message.IronWeight.ToDecimal(),
-                        ironMilligramsCountSpecified = true,
-                        vitaminDMicrogramsCount = message.VitaminDWeight.ToDecimal(),
-                        vitaminDMicrogramsCountSpecified = true
+                        //addedSugarsGramsCount = message.AddedSugarsWeight.ToDecimal(),
+                        //addedSugarsGramsCountSpecified = true,
+                        //addedSugarDailyPercent = message.AddedSugarsPercent.ToDecimal(),
+                        //addedSugarDailyPercentSpecified = true,
+                        //calciumMilligramsCount = message.CalciumWeight.ToDecimal(),
+                        //calciumMilligramsCountSpecified = true,
+                        //ironMilligramsCount = message.IronWeight.ToDecimal(),
+                        //ironMilligramsCountSpecified = true,
+                        //vitaminDMicrogramsCount = message.VitaminDWeight.ToDecimal(),
+                        //vitaminDMicrogramsCountSpecified = true
                     }
                 };
         }
