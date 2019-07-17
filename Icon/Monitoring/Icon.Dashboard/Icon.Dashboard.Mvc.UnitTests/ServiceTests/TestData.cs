@@ -101,8 +101,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             new EsbEnvironmentViewModel
             {
                 Name = "TEST",
-                ServerUrl = "ssl://cerd1617.wfm.pvt:7233",
-                TargetHostName = "cerd1617.wfm.pvt",
+                ServerUrl = "ssl://TST-ESB-EMS-1.wfm.pvt:17293,ssl://TST-ESB-EMS-2.wfm.pvt:17293",
+                TargetHostName = "TST-ESB-EMS-1.wfm.pvt",
                 JmsUsernameIcon = "iconUser",
                 JmsPasswordIcon = "Pjetuc9M7Kmi",
                 JndiUsernameIcon = "jndiIconUser",
@@ -138,7 +138,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             {
                 Name = "QA-FUNC",
                 ServerUrl = "ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2..wfm.pvt:27293 ",
-                TargetHostName = "QA-ESB-EMS-1..wfm.pvt, QA-ESB-EMS-2..wfm.pvt",
+                TargetHostName = "QA-ESB-EMS-1.wfm.pvt",
                 JmsUsernameIcon = "iconUser",
                 JmsPasswordIcon = "3E0y369%iz",
                 JndiUsernameIcon = "iconUser",
