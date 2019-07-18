@@ -311,7 +311,7 @@ WHERE KitLocaleId = ?
                                         <xsl:for-each select="$Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale[exclude=&quot;false&quot;]">
                                             <ns92:group>
                                                 <ns92:id>
-                                                    <xsl:value-of select="concat(&quot;KBG_&quot;,kitLinkGroupLocaleId )"/>
+                                                    <xsl:value-of select="concat(&quot;KBG_&quot;,kitLinkGroupLocaleId,&quot;_&quot;,$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreBusinessUnitId )"/>
                                                 </ns92:id>
                                                 <xsl:if test="kitLinkGroup/linkGroup/groupDescription">
                                                     <ns92:description>
