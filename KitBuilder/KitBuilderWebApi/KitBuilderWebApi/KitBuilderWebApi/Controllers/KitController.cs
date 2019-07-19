@@ -53,7 +53,7 @@ namespace KitBuilderWebApi.Controllers
         private const string PRICE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Price record in Mammoth.";
         private const string CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Calorie record in Mammoth.";
         private const string AUTHORIZED_BY_STORE_NULL_ERROR = "Error in getting Authorization info for main item from Mammoth.";
-        private const string GENERIC_FETCH_ERROR = "Error in getting data from Mammoth.";
+        private const string GENERIC_FETCH_ERROR = "Error in fetching data from Mammoth. Please validate that the kit main item is authorized for selected locale and has valid price and caloric information.";
         private const string MAIN_ITEM_NOT_AUTHORIZED = "Main kit item is not authorized for selected store.";
 
         private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
@@ -296,7 +296,7 @@ namespace KitBuilderWebApi.Controllers
             else
             {
 
-                kitView.ErrorMessage = BuildErrorMessage(kitLocaleDto, kit.KitType);
+                kitView.ErrorMessage = GENERIC_FETCH_ERROR;
                 return kitView;
             }
         }
@@ -1434,29 +1434,30 @@ namespace KitBuilderWebApi.Controllers
 
         }
 
-        private string BuildErrorMessage(KitLocaleDto kitLocaleDto, KitType kitType)
-        {
-            if (kitLocaleDto.AuthorizedByStore == null)
-            {
-                return AUTHORIZED_BY_STORE_NULL_ERROR;
-            }
-            else if (kitLocaleDto.AuthorizedByStore == false)
-            {
-                return MAIN_ITEM_NOT_AUTHORIZED;
-            }
-            else if (kitLocaleDto.RegularPrice == null)
-            {
-                return PRICE_RECORD_NOT_FOUND_IN_MAMMOTH;
-            }
-            else if ((kitLocaleDto.MaximumCalories == null && kitType != KitType.Simple) || kitLocaleDto.MinimumCalories == null)
-            {
-                return CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH; 
-            }
-            else
-            {
-                return GENERIC_FETCH_ERROR;
-            }
-        }
+        // we will need this method later on, so keeping it for now
+        //private string BuildErrorMessage(KitLocaleDto kitLocaleDto, KitType kitType)
+        //{
+        //    if (kitLocaleDto.AuthorizedByStore == null)
+        //    {
+        //        return AUTHORIZED_BY_STORE_NULL_ERROR;
+        //    }
+        //    else if (kitLocaleDto.AuthorizedByStore == false)
+        //    {
+        //        return MAIN_ITEM_NOT_AUTHORIZED;
+        //    }
+        //    else if (kitLocaleDto.RegularPrice == null)
+        //    {
+        //        return PRICE_RECORD_NOT_FOUND_IN_MAMMOTH;
+        //    }
+        //    else if ((kitLocaleDto.MaximumCalories == null && kitType != KitType.Simple) || kitLocaleDto.MinimumCalories == null)
+        //    {
+        //        return CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH; 
+        //    }
+        //    else
+        //    {
+        //        return GENERIC_FETCH_ERROR;
+        //    }
+        //}
 
         private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
         {
