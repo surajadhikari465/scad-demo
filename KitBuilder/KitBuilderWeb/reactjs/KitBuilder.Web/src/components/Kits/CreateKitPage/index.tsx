@@ -146,8 +146,13 @@ class CreateKitPage extends React.PureComponent<
       errors.description = "Must provide a kit description.";
       errorSet = true;
     }
+    
+    const { disabledLinkGroups } = this.state;
+    var includedLinkGroups =  LinkGroups.filter(
+      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+    );
 
-    LinkGroups.forEach((lg: LinkGroup) => {
+    includedLinkGroups.forEach((lg: LinkGroup) => {
       if (
         !selectedLinkGroupItems
           .map((lgi: LinkGroupItem) => lgi.linkGroupId)
