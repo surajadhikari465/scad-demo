@@ -173,8 +173,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             new EsbEnvironmentViewModel
             {
                 Name = "QA-PERF",
-                ServerUrl = "ssl://cerd1630.wfm.pvt:27293, ssl://cerd1631.wfm.pvt:27293 ",
-                TargetHostName = "cerd1630.wfm.pvt,cerd1631.wfm.pvt",
+                ServerUrl = "ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293",
+                TargetHostName = "PERF-ESB-EMS-1.wfm.pvt",
                 JmsUsernameIcon = "iconUser",
                 JmsPasswordIcon = "3E0y369%iz",
                 JndiUsernameIcon = "iconUser",
