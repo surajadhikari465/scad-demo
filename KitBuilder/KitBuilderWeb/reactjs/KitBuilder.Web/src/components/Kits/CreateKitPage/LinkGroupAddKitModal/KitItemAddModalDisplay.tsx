@@ -28,7 +28,7 @@ interface IDisplayProps {
 class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
   isAlreadyQueued = (linkGroup : LinkGroup) => 
     this.props.queuedLinkGroups.some(
-      x => x.linkGroupId === linkGroup.linkGroupId
+     x => x.linkGroupId === linkGroup.linkGroupId
     );
 
   handleSelect = (linkGroup: LinkGroup) => {
@@ -63,6 +63,16 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
               accessor: "groupName"
             },
             {
+              Header: () => (
+                <div style={{ textAlign: "center" }}> Link Group Description</div>
+              ),
+              Cell: row => (
+                <div style={{ textAlign: "center" }}>{row.value}</div>
+              ),
+
+              accessor: "groupDescription"
+            },
+            {
               Header: "Select",
               accessor: "select",
               Cell: row => (
@@ -75,7 +85,7 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
                       <Add/>
                     </Button>
                   </Grid>
-                </Grid>
+               </Grid>
               )
             }
           ]}
@@ -99,6 +109,15 @@ class KitItemAddModalDisplay extends React.PureComponent<IDisplayProps, {}> {
                 <div style={{ textAlign: "center" }}>{row.value}</div>
               ),
               accessor: "groupName"
+            },
+            {
+              Header: () => (
+                <div style={{ textAlign: "center" }}> Selected Link Groups Description</div>
+              ),
+              Cell: row => (
+                <div style={{ textAlign: "center" }}>{row.value}</div>
+              ),
+              accessor: "groupDescription"
             },
             {
               Header: "Remove",
