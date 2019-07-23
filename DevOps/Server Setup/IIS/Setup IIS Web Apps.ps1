@@ -91,7 +91,7 @@ $virtualDirDefinitionList = Get-Content "$scriptFolder\IIS Virtual Directory Def
 $virtualDirDefs = $virtualDirDefinitionList.Split("`n")
 
 $webServersText = Get-Content "$scriptFolder\Web Server List.Dev"
-$webServers = @("IRMADevWeb02")#$webServersText.Split("`n")
+$webServers = @("IRMATest1Web06")#$webServersText.Split("`n")
 
 #######################################################################################
 

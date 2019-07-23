@@ -1,7 +1,3 @@
-Nutrition	v4.0	WFM\NutriconServiceDev	wAb1TI*M81	n/a
-Mammoth	v4.0	WFM\MammothDev	Wh0lef00ds#1d3v	n/a
-Icon	v4.0	WFM\IconWebDev	8q32mLd8	n/a
-SPO Reports	v4.0	WFM\SPOReportsDev	eA0Eywkd%bk6k1	n/a
 IRMA Client	v4.0	ApplicationPoolIdentity	n/a	n/a
 WFM Mobile	v4.0	ApplicationPoolIdentity	n/a	n/a
 WFM Mobile Config	v4.0	ApplicationPoolIdentity	n/a	n/a
@@ -11,4 +7,14 @@ MW	v4.0	ApplicationPoolIdentity	n/a	n/a
 RM	v4.0	ApplicationPoolIdentity	n/a	n/a
 SO	v4.0	ApplicationPoolIdentity	n/a	n/a
 UK	v4.0	ApplicationPoolIdentity	n/a	n/a
-XX	v4.0	ApplicationPoolIdentity	n/a	n/a
+MA	v4.0	ApplicationPoolIdentity	n/a	n/a
+NA	v4.0	ApplicationPoolIdentity	n/a	n/a
+NC	v4.0	ApplicationPoolIdentity	n/a	n/a
+NE	v4.0	ApplicationPoolIdentity	n/a	n/a
+PN	v4.0	ApplicationPoolIdentity	n/a	n/a
+SP	v4.0	ApplicationPoolIdentity	n/a	n/a
+SW	v4.0	ApplicationPoolIdentity	n/a	n/a
+Icon	v4.0	WFM\IconWebTest	fz4VVLE9	n/a
+Mammoth	v4.0	WFM\MammothTest	Wh0lef00ds#2t3st	n/a
+Nutrition	v4.0	WFM\NutriconServiceTest	7M6n*YE00d	n/a
+SPO Reports	v4.0	WFM\SPOReportsDev	eA0Eywkd%bk6k1	n/a

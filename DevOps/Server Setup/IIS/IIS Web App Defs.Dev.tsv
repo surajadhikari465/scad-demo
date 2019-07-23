@@ -1,15 +1,21 @@
-Mammoth	Mammoth_Dev	Mammoth	E:\WebApps\MammothService\
-Mammoth Web Support	MammothWebSupportDev	Mammoth	E:\WebApps\MammothWebSupport\
-Icon	IconWebDev	Icon	E:\WebApps\Icon\
-Nutrition	IconNutritionAPIDev	Nutrition	E:\WebApps\Nutrition\
-IRMA Client	IRMAClientDev	IRMA Client	E:\WebApps\IRMAClient\
-WFM Mobile	WFMMblSvcDev	WFM Mobile	E:\WebApps\WFMMobile\Service\
-WFM Mobile Config	WFMMblDev	WFM Mobile Config	E:\Webapps\WFMMobile\Config\
-POET	POETWebDev	POET	E:\WebApps\POET\
-SPO Reports	SPOReportsDev	SPO Reports	E:\Webapps\SuspendedPOReports\
-FL	IRMAWebFLDev	FL	E:\Regions\FL\
-MW	IRMAWebMWDev	MW	E:\Regions\MW\
-RM	IRMAWebRMDev	RM	E:\Regions\RM\
-SO	IRMAWebSODev	SO	E:\Regions\SO\
-UK	IRMAWebUKDev	UK	E:\Regions\UK\
-XX	IRMAWebXXDev	RM	E:\Regions\RM\
+Icon	IconWebTest1	Icon	E:\WebApps\Icon\
+IRMA Client	IRMAClientTest1	IRMA Client	E:\WebApps\IRMAClient\
+Mammoth	Mammoth_Test1	Mammoth	E:\WebApps\MammothService\
+Mammoth Web Support	MammothWebSupportTest1	Mammoth	E:\WebApps\MammothWebSupport\
+Nutrition	IconNutritionAPITest1	Nutrition	E:\WebApps\Nutrition\
+POET	POETWebTest1	POET	E:\WebApps\POET\
+SPO Reports	SPOReportsTest1	SPO Reports	E:\Webapps\SuspendedPOReports\
+WFM Mobile	WFMMblSvcTest1	WFM Mobile	E:\WebApps\WFMMobile\Service\
+WFM Mobile Config	WFMMblTest1	WFM Mobile Config	E:\Webapps\WFMMobile\Config\
+FL	IRMAWebFLTest1	FL	E:\Regions\FL\
+MA	IRMAWebMATest1	MA	E:\Regions\MA\
+MW	IRMAWebMWTest1	MW	E:\Regions\MW\
+NA	IRMAWebNATest1	NA	E:\Regions\NA\
+NC	IRMAWebNCTest1	NC	E:\Regions\NC\
+NE	IRMAWebNETest1	NE	E:\Regions\NE\
+PN	IRMAWebPNTest1	PN	E:\Regions\PN\
+RM	IRMAWebRMTest1	RM	E:\Regions\RM\
+SO	IRMAWebSOTest1	SO	E:\Regions\SO\
+SP	IRMAWebSPTest1	SP	E:\Regions\SP\
+SW	IRMAWebSWTest1	SW	E:\Regions\SW\
+UK	IRMAWebUKTest1	UK	E:\Regions\UK\
