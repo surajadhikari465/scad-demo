@@ -153,6 +153,7 @@ class KitLinkGroupPage extends React.Component<
       let validateSumMinToMax: Boolean = true;
       let compareMinMax: Boolean = true;
       let isMaxLgNumber: Boolean = true;
+      let isNumOfFreeToppingsNumber: Boolean = true;
       let validateSumDefaultToMax: Boolean = true;
       let validateSumMaxModifierToMin: Boolean = true;
       let LinkGroupExcluded: Boolean = element.excluded;
@@ -212,26 +213,34 @@ class KitLinkGroupPage extends React.Component<
         ) {
           kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Display order for link group must be greater than 0."});
         }
-
+        
         if (
+          String(element.properties.NumOfFreeToppings).trim() !== '' 
+        ) {        
+          if (
           !isNumber(String(element.properties.NumOfFreeToppings)) ||
           (isMaxLgNumber &&
             !checkValueLessThanOrEqualToMaxValue(
               element.properties.NumOfFreeToppings,
               element.properties.Maximum
             ))
-        ) {
+          ) {
           kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must not be more than maximum."});
-        }
+          }
 
-        if (
-          !isNumber(String(element.properties.NumOfFreeToppings)) ||
-          !checkValueMoreThanOrEqualToMinValue(
-            element.properties.NumOfFreeToppings,
-            0
-          )
-        ) {
+          if (
+            !isNumber(String(element.properties.NumOfFreeToppings)) ||
+            !checkValueMoreThanOrEqualToMinValue(
+              element.properties.NumOfFreeToppings,
+              0
+            )
+          ) {
           kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must be greater or equal to 0."});
+          }
+        }
+        else
+        {
+          isNumOfFreeToppingsNumber = false;
         }
 
         let sumOfMinimum: number = 0;
@@ -304,27 +313,36 @@ class KitLinkGroupPage extends React.Component<
             ) {
               kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Display order must be greater than 0."});
             }
-            if (
-              !isNumber(String(innerElement.properties.NumOfFreePortions)) ||
-              (isMaxNumber &&
-                !checkValueLessThanOrEqualToMaxValue(
+           
+            if (innerElement.properties.NumOfFreePortions !== undefined &&
+              String(innerElement.properties.NumOfFreePortions).trim() !== '' 
+            ) {    
+              if (
+                !isNumber(String(innerElement.properties.NumOfFreePortions)) ||
+                (isMaxNumber &&
+                  !checkValueLessThanOrEqualToMaxValue(
+                    innerElement.properties.NumOfFreePortions,
+                    innerElement.properties.Maximum
+                  ))
+              ) {
+                kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Free portions cannot be greater than Maximum."});
+              }
+
+              if (
+                !isNumber(String(innerElement.properties.NumOfFreePortions)) ||
+                !checkValueMoreThanOrEqualToMinValue(
                   innerElement.properties.NumOfFreePortions,
-                  innerElement.properties.Maximum
-                ))
-            ) {
-              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Free portions cannot be greater than Maximum."});
+                  0
+                ) ||
+                !checkValueMoreThanOrEqualToMinValue(
+                  innerElement.properties.NumOfFreePortions,
+                  innerElement.properties.DefaultPortions
+                )
+              ) {
+                kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Free portions must be greater or equal to 0 and default portion."});
+              }
             }
-
-            if (
-              !isNumber(String(innerElement.properties.NumOfFreePortions)) ||
-              !checkValueMoreThanOrEqualToMinValue(
-                innerElement.properties.NumOfFreePortions,
-                0
-              )
-            ) {
-              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Free portions must be greater or equal to 0."});
-            }
-
+            
             if (
               !isNumber(String(innerElement.properties.DefaultPortions)) ||
               (isMaxNumber &&
@@ -387,6 +405,12 @@ class KitLinkGroupPage extends React.Component<
         ) {
           kitLinkGroups.push({ kitLinkGroupId: element.kitLinkGroupId, message: "Total default portions of modifiers cannot be more than maximum for the link group."});
         }
+        if (
+          isNumOfFreeToppingsNumber &&
+          sumOfDefaults > element.properties.NumOfFreeToppings 
+        ) {
+          kitLinkGroups.push({ kitLinkGroupId: element.kitLinkGroupId, message: "Total default portions of modifiers cannot be more than free portions for the link group."});
+        }
       }
     });
     this.setState({ errors: { ...this.state.errors, kitLinkGroups, kitLinkGroupItems } });
@@ -420,7 +444,7 @@ class KitLinkGroupPage extends React.Component<
             let newLinkGroupProperties = {
               Minimum: "0",
               Maximum: "0",
-              NumOfFreeToppings: "0"
+              NumOfFreeToppings: ""
             };
             linkGroup.properties = newLinkGroupProperties;
             linkGroup.excluded = false;
@@ -436,7 +460,7 @@ class KitLinkGroupPage extends React.Component<
               let newLinkGroupItemProps = {
                 Minimum: "0",
                 Maximum: "0",
-                NumOfFreePortions: "0",
+                NumOfFreePortions: "",
                 DefaultPortions: "0",
                 MandatoryItem: "false"
               };

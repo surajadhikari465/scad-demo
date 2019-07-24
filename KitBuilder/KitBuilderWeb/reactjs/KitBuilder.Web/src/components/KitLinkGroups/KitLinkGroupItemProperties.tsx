@@ -54,12 +54,22 @@ export class KitLinkGroupItemProperties extends React.Component<
   handleLinkGroupItemNumOfFreePortions = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    let numberOfFreePortions = parseInt(event.target.value);
+    if (
+      event.target.value.trim() !== ""
+    ) {
+      let numberOfFreePortions = parseInt(event.target.value);
 
-    if (numberOfFreePortions <= 10 && numberOfFreePortions >= 0) {
+      if (numberOfFreePortions <= 10 && numberOfFreePortions >= 0) {
+        this.props.onUpdateItem({
+          properties: { NumOfFreePortions: numberOfFreePortions }
+        });
+      }
+    }
+    else
+    {
       this.props.onUpdateItem({
-        properties: { NumOfFreePortions: numberOfFreePortions }
-      });
+        properties: { NumOfFreePortions: "" }
+      })
     }
   };
 

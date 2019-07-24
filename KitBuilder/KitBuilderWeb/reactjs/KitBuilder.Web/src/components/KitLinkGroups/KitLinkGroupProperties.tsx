@@ -78,16 +78,26 @@ class KitLinkGroupProperties extends React.Component<
   }
 
   handleLinkGroupNumOfFreeToppings = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let numberOfFreeToppings = parseInt(event.target.value);
     if (
-      numberOfFreeToppings >= 0 &&
-      numberOfFreeToppings <= 10
+      event.target.value.trim() !== ""
     ) {
-      this.handleUpdateProperties({
-        properties: { NumOfFreeToppings: numberOfFreeToppings }
-      });
+        let numberOfFreeToppings = parseInt(event.target.value);
+        if (
+          numberOfFreeToppings >= 0 &&
+          numberOfFreeToppings <= 10
+        ) {
+          this.handleUpdateProperties({
+            properties: { NumOfFreeToppings: numberOfFreeToppings }
+          });
+      }
     }
-  }
+    else 
+    {
+      this.handleUpdateProperties({
+        properties: { NumOfFreeToppings: "" }
+      })
+    }
+}
 
   toggleLinkGroupExclude = () => {
     this.handleUpdateProperties({
