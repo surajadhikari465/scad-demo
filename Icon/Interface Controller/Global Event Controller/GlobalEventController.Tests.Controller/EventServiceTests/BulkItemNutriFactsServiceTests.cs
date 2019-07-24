@@ -27,11 +27,12 @@ namespace GlobalEventController.Tests.Controller.EventServiceTests
             this.mockLastChangeHandler = new Mock<ICommandHandler<BulkAddUpdateLastChangeCommand>>();
             bulkGetValidatedItemsWithTax = new Mock<IQueryHandler<BulkGetItemsWithTaxClassQuery, List<ValidatedItemModel>>>();
             this.mockBulkUpdateNutriFactsHandler = new Mock<ICommandHandler<BulkUpdateNutriFactsCommand>>();
-
+			this.mockBulkDeleteNutriFactsHandler = new Mock<ICommandHandler<BulkDeleteNutriFactsCommand>>();
+			
             this.bulkService = new BulkItemNutriFactsService(
                 this.mockBulkUpdateNutriFactsHandler.Object,
                 this.mockLastChangeHandler.Object,
-								this.mockBulkDeleteNutriFactsHandler.Object,
+				this.mockBulkDeleteNutriFactsHandler.Object,
                 this.bulkGetValidatedItemsWithTax.Object);
         }
 

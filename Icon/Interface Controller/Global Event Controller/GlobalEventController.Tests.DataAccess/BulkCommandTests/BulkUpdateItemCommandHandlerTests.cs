@@ -739,7 +739,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
         }
 
         [TestMethod]
-        public void BulkUpdateItem_IrmaRetailUomAndRetailUnitArePoundAndIconRetailUomIsNotPound_ShouldUpdateRetailUnitIdToEach()
+        public void BulkUpdateItem_IrmaRetailUomAndRetailUnitArePoundAndIconRetailUomIsNotPound_ShouldUpdatepackageUnitIdToEach()
         {
             // Given
             ItemUnit poundUnit = CreateItemUnit("POUND", "LB");
@@ -754,7 +754,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             ItemIdentifier itemIdentifier = new TestItemIdentifierBuilder()
                 .WithDefault_Identifier(1)
-                .WithIdentifier("757575758484")
+                .WithIdentifier("757575758485")
                 .WithItem_Key(item.Item_Key);
             this.context.ItemIdentifier.Add(itemIdentifier);
             this.context.SaveChanges();
@@ -765,7 +765,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             ValidatedItemModel validatedItem = new TestValidatedItemModelBuilder()
                 .WithRetailUom(eachUnit.Unit_Abbreviation)
-                .WithScanCode("757575758484")
+                .WithScanCode("757575758485")
                 .WithDeptNo(42)
                 .WithBrandId(777);
             this.validatedItems.Add(validatedItem);
@@ -779,11 +779,11 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             // Then
             this.context.Entry<Item>(item).Reload();
-            Assert.AreEqual(expectedItemUnitId, item.Retail_Unit_ID);
+            Assert.AreEqual(expectedItemUnitId, item.Package_Unit_ID);
         }
 
         [TestMethod]
-        public void BulkUpdateItem_IrmaRetailUomAndRetailUnitIsNotPoundAndIconRetailUomIsPound_ShouldUpdateRetailUnitIdToPound()
+        public void BulkUpdateItem_IrmaRetailUomAndRetailUnitIsNotPoundAndIconRetailUomIsPound_ShouldUpdatePackageUnitIdToPound()
         {
             // Given
             ItemUnit poundUnit = CreateItemUnit("POUND", "LB");
@@ -823,7 +823,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 
             // Then
             this.context.Entry<Item>(item).Reload();
-            Assert.AreEqual(expectedItemUnitId, item.Retail_Unit_ID);
+            Assert.AreEqual(expectedItemUnitId, item.Package_Unit_ID);
         }
 
 

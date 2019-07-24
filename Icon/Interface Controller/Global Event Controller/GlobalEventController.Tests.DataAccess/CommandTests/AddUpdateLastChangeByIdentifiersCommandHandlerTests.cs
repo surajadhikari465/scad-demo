@@ -103,7 +103,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             if (this.itemIdentifierList.Count == 0)
             {
                 IEnumerable<string> identifiers = this.lastChangeList.Select(lc => lc.Identifier);
-                this.itemIdentifierList = this.context.ItemIdentifier.Where(ii => identifiers.Contains(ii.Identifier)).Take(maxNumberOfChanges).ToList();
+                this.itemIdentifierList = this.context.ItemIdentifier.Where(ii => identifiers.Contains(ii.Identifier)).GroupBy(x => x.Identifier).Select(x => x.FirstOrDefault()).Take(maxNumberOfChanges).ToList();
             }
 
             this.command.Identifiers = this.itemIdentifierList;

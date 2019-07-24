@@ -75,7 +75,6 @@ namespace GlobalEventController.Tests.DataAccess.QueryTests
                 Assert.AreEqual(expectedIrmaItems[i].RetailSize, actualItems[i].RetailSize, "RetailSize does not match expected.");
                 Assert.AreEqual(expectedIrmaItems[i].RetailUomAbbreviation, actualItems[i].RetailUomAbbreviation, "RetailUomAbbreviation does not match expected.");
                 Assert.AreEqual(expectedIrmaItems[i].RetailUnitAbbreviation, actualItems[i].RetailUnitAbbreviation, "RetailUnitAbbreviation does not match expected.");
-                Assert.AreEqual(expectedIrmaItems[i].RetailUomIsWeightedUnit, actualItems[i].RetailUomIsWeightedUnit, "RetailUomIsWeightedUnit does not match expected.");
                 Assert.AreEqual(expectedIrmaItems[i].IsDefaultIdentifier, actualItems[i].IsDefaultIdentifier, "IsDefaultIdentifier does not match expected.");
             }
         }
