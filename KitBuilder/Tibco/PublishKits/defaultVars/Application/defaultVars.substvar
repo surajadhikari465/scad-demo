@@ -51,11 +51,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>KitBuilderURI</name>
-			<value>http://kitbuilder-app-test.a01.wfmcld.com/api/</value>
+			<value>http://localhost:55873/api/</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1558732788274</modTime>
+			<modTime>1563996425576</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>MessageType</name>

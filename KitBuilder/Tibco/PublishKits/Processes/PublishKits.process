@@ -2,7 +2,7 @@
 <pd:ProcessDefinition xmlns:pfx6="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" xmlns:pfx="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" xmlns:pfx2="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.wfm.com/KitBuilder/Events.xsd" xmlns:pfx4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx5="http://schemas.wfm.com/KitBuilder/KitEvents.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:ns2="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns82="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns102="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns6="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:ns5="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:ns8="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:ns7="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:ns72="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns:ns13="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns12="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns9="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:ns11="http://schemas.wfm.com/Enterprise/LocaleMgmt/CommonRefTypes/V1" xmlns:ns10="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:ns14="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:ns92="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemGroupType/V1" xmlns:ns83="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/InventoryAdjustment/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/InventoryAdjustment.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/PurchaseOrder/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Inventory/PurchaseOrder.xsd"/>
-    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket_v3.1.0.0000/Item/Item.xsd"/>
+    <xsd:import namespace="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1" schemaLocation="/SharedResources/Schemas/WholeFoodsMarket/Item/Item.xsd"/>
     <pd:name>Processes/PublishKits.process</pd:name>
     <pd:startName>Timer</pd:startName>
     <pd:startX>0</pd:startX>
@@ -338,11 +338,20 @@ WHERE KitLocaleId = ?
                                                         <xsl:value-of select="maximum"/>
                                                     </ns92:maximum>
                                                 </xsl:if>
-                                                <xsl:if test="numOfFreeToppings">
-                                                    <ns92:numFreePortions>
-                                                        <xsl:value-of select="numOfFreeToppings"/>
-                                                    </ns92:numFreePortions>
-                                                </xsl:if>
+                                                <xsl:choose>
+                                                    <xsl:when test="numOfFreeToppings = &quot;&quot;">
+                                                        <ns92:numFreePortions>
+                                                            <xsl:value-of select="-1"/>
+                                                        </ns92:numFreePortions>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:if test="numOfFreeToppings">
+                                                            <ns92:numFreePortions>
+                                                                <xsl:value-of select="numOfFreeToppings"/>
+                                                            </ns92:numFreePortions>
+                                                        </xsl:if>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
                                                 <xsl:if test="../kit/isDisplayMandatory">
                                                     <ns92:mandatoryToShow>
                                                         <xsl:value-of select="../kit/isDisplayMandatory"/>
@@ -380,11 +389,20 @@ WHERE KitLocaleId = ?
                                                                         <xsl:value-of select="defaultPortions"/>
                                                                     </ns92:defaultPortions>
                                                                 </xsl:if>
-                                                                <xsl:if test="numOfFreePortions">
-                                                                    <ns92:numFreePortions>
-                                                                        <xsl:value-of select="numOfFreePortions"/>
-                                                                    </ns92:numFreePortions>
-                                                                </xsl:if>
+                                                                <xsl:choose>
+                                                                    <xsl:when test="numOfFreePortions = &quot;&quot;">
+                                                                        <ns92:numFreePortions>
+                                                                            <xsl:value-of select="-1"/>
+                                                                        </ns92:numFreePortions>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <xsl:if test="numOfFreePortions">
+                                                                            <ns92:numFreePortions>
+                                                                                <xsl:value-of select="numOfFreePortions"/>
+                                                                            </ns92:numFreePortions>
+                                                                        </xsl:if>
+                                                                    </xsl:otherwise>
+                                                                </xsl:choose>
                                                                 <ns92:extraPrice>
                                                                     <xsl:if test="regularPrice">
                                                                         <ns14:amount>

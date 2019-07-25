@@ -243,7 +243,8 @@ namespace KitBuilderWebApi.Services
 					int kitLinkGroupMaxPortion = kitLinkGroupProperties.Maximum;
 					kitLinkGroupDto.Maximum = kitLinkGroupProperties.Maximum;
 					kitLinkGroupDto.Minimum = kitLinkGroupProperties.Minimum;
-					kitLinkGroupDto.NumOfFreeToppings = kitLinkGroupProperties.NumOfFreeToppings;
+					string numOfFreeToppings = kitLinkGroupProperties.NumOfFreeToppings;
+					kitLinkGroupDto.NumOfFreeToppings = string.IsNullOrEmpty(numOfFreeToppings) ? (int?)null : int.Parse(numOfFreeToppings);
 					int arrayIndex = 0;
 					int modifierCounter = kitLinkGroupDto.KitLinkGroupItemLocales.Where(i => i.Exclude == false && i.AuthorizedByStore == true).Count();
 					int[,] modifierMax = new int[modifierCounter, 2];
@@ -256,7 +257,10 @@ namespace KitBuilderWebApi.Services
 						int kitLinkGroupItemDefault = kitLinkGroupItemProperties.DefaultPortions;
 						kitLinkGroupItemLocaleDto.Maximum = kitLinkGroupItemProperties.Maximum;
 						kitLinkGroupItemLocaleDto.Minimum = kitLinkGroupItemProperties.Minimum;
-						kitLinkGroupItemLocaleDto.NumOfFreePortions = kitLinkGroupItemProperties.NumOfFreePortions;
+						string numOfFreePortions = kitLinkGroupItemProperties.NumOfFreePortions;
+						kitLinkGroupItemLocaleDto.NumOfFreePortions = string.IsNullOrEmpty(numOfFreePortions) ? 0 : int.Parse(numOfFreePortions);
+						//After the DataAccess update to make NumOfFreePortions nullable is done, will change the above line to the line below.
+						//kitLinkGroupItemLocaleDto.NumOfFreePortions = string.IsNullOrEmpty(numOfFreePortions) ? (int?)null : int.Parse(numOfFreePortions);
 						kitLinkGroupItemLocaleDto.DefaultPortions = kitLinkGroupItemProperties.DefaultPortions;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 

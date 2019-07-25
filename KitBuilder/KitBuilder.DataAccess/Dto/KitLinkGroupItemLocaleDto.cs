@@ -15,7 +15,7 @@ namespace KitBuilder.DataAccess.Dto
 		public string Properties { get; set; }
 		public int Minimum { get; set; }
 		public int Maximum { get; set; }
-		public int NumOfFreePortions { get; set; }
+		public int? NumOfFreePortions { get; set; }
 		public int DefaultPortions { get; set; }
 		[Required]
 		public int DisplaySequence { get; set; }

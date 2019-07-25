@@ -43,7 +43,7 @@
 			<xs:element name="properties" type="xs:string" minOccurs="0"/>
 			<xs:element name="minimum" type="xs:short" minOccurs="0"/>
 			<xs:element name="maximum" type="xs:short" minOccurs="0"/>
-			<xs:element name="numOfFreeToppings" type="xs:short" minOccurs="0"/>
+			<xs:element name="numOfFreeToppings" type="xs:string" minOccurs="0"/>
 			<xs:element name="displaySequence" type="xs:short" minOccurs="0"/>
 			<xs:element name="minimumCalories" type="xs:string" minOccurs="0"/>
 			<xs:element name="maximumCalories" type="xs:string" minOccurs="0"/>
@@ -75,7 +75,7 @@
 			<xs:element name="properties" type="xs:string" minOccurs="0"/>
 			<xs:element name="minimum" type="xs:int" minOccurs="0"/>
 			<xs:element name="maximum" type="xs:int" minOccurs="0"/>
-			<xs:element name="numOfFreePortions" type="xs:short" minOccurs="0"/>
+			<xs:element name="numOfFreePortions" type="xs:string" minOccurs="0"/>
 			<xs:element name="defaultPortions" type="xs:short" minOccurs="0"/>
 			<xs:element name="displaySequence" type="xs:short" minOccurs="0"/>
 			<xs:element name="exclude" type="xs:boolean" minOccurs="0"/>
