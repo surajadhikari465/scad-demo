@@ -258,9 +258,7 @@ namespace KitBuilderWebApi.Services
 						kitLinkGroupItemLocaleDto.Maximum = kitLinkGroupItemProperties.Maximum;
 						kitLinkGroupItemLocaleDto.Minimum = kitLinkGroupItemProperties.Minimum;
 						string numOfFreePortions = kitLinkGroupItemProperties.NumOfFreePortions;
-						kitLinkGroupItemLocaleDto.NumOfFreePortions = string.IsNullOrEmpty(numOfFreePortions) ? 0 : int.Parse(numOfFreePortions);
-						//After the DataAccess update to make NumOfFreePortions nullable is done, will change the above line to the line below.
-						//kitLinkGroupItemLocaleDto.NumOfFreePortions = string.IsNullOrEmpty(numOfFreePortions) ? (int?)null : int.Parse(numOfFreePortions);
+						kitLinkGroupItemLocaleDto.NumOfFreePortions = string.IsNullOrEmpty(numOfFreePortions) ? (int?)null : int.Parse(numOfFreePortions);
 						kitLinkGroupItemLocaleDto.DefaultPortions = kitLinkGroupItemProperties.DefaultPortions;
 						int kitLinkGroupItemCalories = kitLinkGroupItemLocaleDto.Calories ?? 0;
 
