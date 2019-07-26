@@ -23,7 +23,8 @@ namespace Icon.ApiController.Common
         public bool EnableHospitalityKitchenDescription { get; set; }
         public bool EnableHospitalityImageUrl { get; set; }
         public bool EnableHospitalityVenues { get; set; }
-      
+        public bool EnableNutritionNewValues { get; set; }
+
 
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
         {
@@ -45,7 +46,8 @@ namespace Icon.ApiController.Common
                 EnableHospitalityKitchenItem = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityKitchenItem), false),
                 EnableHospitalityKitchenDescription = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityKitchenDescription), false),
                 EnableHospitalityImageUrl = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityImageUrl), false),
-                EnableHospitalityVenues = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityVenues), false)
+                EnableHospitalityVenues = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityVenues), false),
+                EnableNutritionNewValues = AppSettingsAccessor.GetBoolSetting(nameof(EnableNutritionNewValues), false)
 
             };
         }

@@ -896,11 +896,100 @@ namespace Icon.ApiController.Tests.QueueReaderTests
         }
 
         [TestMethod]
-        public void BuildMiniBulk_NonRetailWithNutritionMiniBulk_MiniBulkShouldContainConsumerInformation()
+        public void BuildMiniBulk_NonRetailNutritionDisabledMiniBulk_MiniBulkShouldContainConsumerInformation_ZerosAndSpecifiedFalseForNutrition()
+        {
+            mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
+            // nutrition disabled, source system passing nutrition values..
+            settings.EnableNutritionNewValues = false; 
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.NonRetail);
+           
+            fakeMessage.ProhibitDiscount = false;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            var groups = (miniBulk.item[0].@base.consumerInformation as Contracts.ConsumerInformationType);
+            Assert.IsNotNull(groups);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.calciumMilligramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.ironMilligramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.ironMilligramsCountSpecified);
+            Assert.AreEqual(0, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
+            Assert.IsFalse(groups.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_NonRetailNutritionEnabledMiniBulk_MiniBulkShouldContainConsumerInformation_ValuesAndSpecifiedTrueForNutrition()
+        {
+            mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
+            // nutrition disabled, source system passing nutrition values..
+            settings.EnableNutritionNewValues = true;
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.NonRetail);
+
+            fakeMessage.ProhibitDiscount = false;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            var groups = (miniBulk.item[0].@base.consumerInformation as Contracts.ConsumerInformationType);
+            Assert.IsNotNull(groups);
+            Assert.AreEqual(1, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified);
+            Assert.AreEqual(2, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified);
+            Assert.AreEqual(3, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.calciumMilligramsCountSpecified);
+            Assert.AreEqual(4, groups.stockItemConsumerProductLabel.ironMilligramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.ironMilligramsCountSpecified);
+            Assert.AreEqual(5, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_NonRetailWithNULLNewNutritionMiniBulk_MiniBulkShouldContainConsumerInformation()
         {
             // Given.
             mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
+            settings.EnableNutritionNewValues = true; // nutrition enabled, source system passing nulls.
             var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.NonRetail);
+            fakeMessage.MessageQueueNutrition.Clear();
+            fakeMessage.MessageQueueNutrition.Add(
+                new MessageQueueNutrition()
+                {
+                    RecipeName = "Test recipe Name",
+                    Calcium = 20,
+                    Allergens = "Test Allergens",
+                    Biotin = 15,
+                    HshRating = 5,
+                    ServingSizeDesc = "8 oz",
+                    ServingPerContainer = "5",
+                    Calories = 200,
+                    CaloriesFat = 100,
+                    AddedSugarsPercent = null,
+                    AddedSugarsWeight = null,
+                    CalciumWeight = null,
+                    IronWeight = null,
+                    VitaminDWeight = null
+                }
+            );
+            
+            
             fakeMessage.ProhibitDiscount = false;
 
             var fakeMessageQueueProducts = new List<MessageQueueProduct>
@@ -919,8 +1008,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsNotNull(groups);
             Assert.AreEqual("5", hshTrait.type.value[0].value);
 
-            // these new elements should be 0 and not specified until DDS deploys their schema to TEST. 
-            // afterwards these tests need to be updated with real values.
+
             Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
             Assert.IsFalse(groups.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified);
             Assert.AreEqual(0, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
@@ -931,6 +1019,46 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsFalse(groups.stockItemConsumerProductLabel.ironMilligramsCountSpecified);
             Assert.AreEqual(0, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
             Assert.IsFalse(groups.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified);
+        }
+
+        [TestMethod]
+        public void BuildMiniBulk_NonRetailWithNutritionMiniBulk_MiniBulkShouldContainConsumerInformation()
+        {
+            // Given.
+            mockUomMapper.Setup(m => m.GetEsbUomCode(It.IsAny<string>())).Returns(Contracts.WfmUomCodeEnumType.EA);
+            settings.EnableNutritionNewValues = true;
+            var fakeMessage = TestHelpers.GetFakeMessageQueueProductWithNutritionalData(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.NonRetail);
+            fakeMessage.ProhibitDiscount = false;
+
+            var fakeMessageQueueProducts = new List<MessageQueueProduct>
+            {
+                fakeMessage
+            };
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(fakeMessageQueueProducts);
+
+            // Then.
+            var groups = (miniBulk.item[0].@base.consumerInformation as Contracts.ConsumerInformationType);
+            var hshTrait = (miniBulk.item[0].locale[0].Item as Contracts.EnterpriseItemAttributesType).traits.Single(t => t.code == TraitCodes.Hsh);
+            var servingSizeUom = groups.stockItemConsumerProductLabel.servingSizeUom;
+
+            Assert.IsNotNull(groups);
+            Assert.AreEqual("5", hshTrait.type.value[0].value);
+            
+
+            // these new elements should be 0 and not specified until DDS deploys their schema to TEST. 
+            // afterwards these tests need to be updated with real values.
+            Assert.AreEqual(1, groups.stockItemConsumerProductLabel.addedSugarDailyPercent);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified);
+            Assert.AreEqual(2, groups.stockItemConsumerProductLabel.addedSugarsGramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified);
+            Assert.AreEqual(3, groups.stockItemConsumerProductLabel.calciumMilligramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.calciumMilligramsCountSpecified);
+            Assert.AreEqual(4, groups.stockItemConsumerProductLabel.ironMilligramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.ironMilligramsCountSpecified);
+            Assert.AreEqual(5, groups.stockItemConsumerProductLabel.vitaminDMicrogramsCount);
+            Assert.IsTrue(groups.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified);
         }
 
         [TestMethod]

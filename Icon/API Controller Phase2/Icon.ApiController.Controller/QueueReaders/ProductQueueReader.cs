@@ -478,8 +478,11 @@ namespace Icon.ApiController.Controller.QueueReaders
                 return null;
             }
 
+
+            var isNutritionRemoved = IsNutritionRemoved(message);
+
             //As per Bobbie: ConsumerInformation Nutrition should always have Action.
-            return IsNutritionRemoved(message)
+            var consumerInfo = isNutritionRemoved
                 ? new Contracts.ConsumerInformationType
                 {
                     stockItemConsumerProductLabel = new Contracts.StockProductLabelType
@@ -487,8 +490,7 @@ namespace Icon.ApiController.Controller.QueueReaders
                         Action = Contracts.ActionEnum.Delete,
                         ActionSpecified = true
                     }
-                }
-                : new Contracts.ConsumerInformationType
+                } : new Contracts.ConsumerInformationType
                 {
                     stockItemConsumerProductLabel = new Contracts.StockProductLabelType
                     {
@@ -541,19 +543,34 @@ namespace Icon.ApiController.Controller.QueueReaders
                         ironDailyMinimumPercentSpecified = true,
                         nutritionalDescriptionText = null,
                         isHazardousMaterial = message.HazardousMaterialFlag == null ? false : (message.HazardousMaterialFlag.Value == 1 ? true : false),
-                        hazardousMaterialTypeCode = null,
-                        //addedSugarsGramsCount = message.AddedSugarsWeight.ToDecimal(),
-                        //addedSugarsGramsCountSpecified = true,
-                        //addedSugarDailyPercent = message.AddedSugarsPercent.ToDecimal(),
-                        //addedSugarDailyPercentSpecified = true,
-                        //calciumMilligramsCount = message.CalciumWeight.ToDecimal(),
-                        //calciumMilligramsCountSpecified = true,
-                        //ironMilligramsCount = message.IronWeight.ToDecimal(),
-                        //ironMilligramsCountSpecified = true,
-                        //vitaminDMicrogramsCount = message.VitaminDWeight.ToDecimal(),
-                        //vitaminDMicrogramsCountSpecified = true
+                        hazardousMaterialTypeCode = null
                     }
+
+
                 };
+
+            //todo: remove the EnableNutritionNewValues config flag when ESB environments are all in sync and these new nutrition values can be used in all environments.
+            if (settings.EnableNutritionNewValues && !isNutritionRemoved)
+            {
+
+                consumerInfo.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified = message.AddedSugarsPercent.HasValue;
+                consumerInfo.stockItemConsumerProductLabel.addedSugarDailyPercent = message.AddedSugarsPercent.ToDecimal();
+
+                consumerInfo.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified = message.AddedSugarsWeight.HasValue;
+                consumerInfo.stockItemConsumerProductLabel.addedSugarsGramsCount = message.AddedSugarsWeight.ToDecimal();
+
+                consumerInfo.stockItemConsumerProductLabel.calciumMilligramsCountSpecified = message.CalciumWeight.HasValue;
+                consumerInfo.stockItemConsumerProductLabel.calciumMilligramsCount = message.CalciumWeight.ToDecimal();
+
+                consumerInfo.stockItemConsumerProductLabel.ironMilligramsCountSpecified = message.IronWeight.HasValue;
+                consumerInfo.stockItemConsumerProductLabel.ironMilligramsCount = message.IronWeight.ToDecimal();
+
+                consumerInfo.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified = message.VitaminDWeight.HasValue;
+                consumerInfo.stockItemConsumerProductLabel.vitaminDMicrogramsCount = message.VitaminDWeight.ToDecimal();
+
+            }
+            
+            return consumerInfo;
         }
 
         private List<Contracts.TraitType> BuildSignAttributes(MessageQueueProduct message)
