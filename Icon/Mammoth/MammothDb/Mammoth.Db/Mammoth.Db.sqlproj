@@ -820,6 +820,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AppLogArchiveRetentionPolicy.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddMammothAuditApp.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\Deduplicate_ItemAttributesLocale_Tables.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\Truncate_IRMA_Price_Tables_14897.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -833,7 +834,6 @@
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
     <None Include="Scripts\Projects\GPM\R10PriceAudit_Pre765.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
-    <None Include="Scripts\PostDeploymentScripts\Truncate_IRMA_Price_Tables_14897.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

@@ -172,7 +172,8 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_SW___TargetEnv__.properties`n"
         } elseif (
             # ** HoneyCrisp Apps!
-                $app -like "PublishInventorySpoilageService" `
+                $app -like "InStockDequeueService" `
+            -or $app -like "PublishInventorySpoilageService" `
             -or $app -like "PublishPurchaseOrderService" `
             -or $app -like "PublishReceivedOrderService" `
             -or $app -like "PublishTransferOrderService" `
@@ -181,7 +182,15 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             # Generate only regions specified for HoneyCrisp TIBCO.
             $hcTibcoRegionsList = ($relValuesInHash.HcTibcoRegions).Split(",")
             foreach($region in $hcTibcoRegionsList){
-                $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_" + $region + "___TargetEnv__.properties`n"
+                # Special instances needed for in-stock apps:
+                if($app -like "InStockDequeueService"){
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_Inventory_" + $region + "___TargetEnv__.properties`n"
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_PurchaseOrders_" + $region + "___TargetEnv__.properties`n"
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_ReceiptOrders_" + $region + "___TargetEnv__.properties`n"
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_TransferOrders_" + $region + "___TargetEnv__.properties`n"
+                } else {
+                    $propsListTxt += "http://irmaqaapp1/tibco/__TargetEnv__/" + $app + "_" + $region + "___TargetEnv__.properties`n"
+                }
             }
         }
         else {
@@ -202,7 +211,8 @@ if(-not $tibcoAppsUpdated.tolower().Contains("none")){
             $propFilesHtmWithoutHC = ""
             $propsList = $propsHtm.Split("`n")
             foreach($propLine in $propsList){
-                if($propLine.contains("PublishInventorySpoilageService") `
+                if($propLine.contains("InStockDequeueService") `
+                   -or $propLine.contains("PublishInventorySpoilageService") `
                    -or $propLine.contains("PublishPurchaseOrderService") `
                    -or $propLine.contains("PublishReceivedOrderService") `
                    -or $propLine.contains("PublishTransferOrderService") `
