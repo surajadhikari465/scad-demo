@@ -155,8 +155,8 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             new EsbEnvironmentViewModel
             {
                 Name = "QA-DUP",
-                ServerUrl = "ssl://cerd1639.wfm.pvt:27293, ssl://cerd1640.wfm.pvt:27293 ",
-                TargetHostName = "cerd1639.wfm.pvt,cerd1640.wfm.pvt",
+                ServerUrl = "ssl://DUP-ESB-EMS-1.wfm.pvt:27293,ssl://DUP-ESB-EMS-2.wfm.pvt:27293",
+                TargetHostName = "DUP-ESB-EMS-1.wfm.pvt",
                 JmsUsernameIcon = "iconUser",
                 JmsPasswordIcon = "3E0y369%iz",
                 JndiUsernameIcon = "iconUser",
