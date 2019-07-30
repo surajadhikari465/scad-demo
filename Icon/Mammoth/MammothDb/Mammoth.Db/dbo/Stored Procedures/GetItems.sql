@@ -98,11 +98,16 @@ BEGIN
 		,nutrition.Ingredients
 		,hc_tax.HierarchyClassID TaxClassId
 		,hc_tax.HierarchyClassName TaxClassDesc,
-		i.HierarchyNationalClassID
+		i.HierarchyNationalClassID, 
+		k.Desc_Kitchen AS KitchenDescription, 
+		k.HospitalityItem, 
+		k.KitchenItem, 
+		k.ImageUrl
 	FROM #GetItemItemIds iid
 	INNER JOIN dbo.Items i ON i.ItemID = iid.ItemId
 	INNER JOIN dbo.HierarchyClass hc_brand ON i.BrandHCID = hc_brand.HierarchyClassID
 	INNER JOIN dbo.Financial_SubTeam st ON i.PSNumber = st.PSNumber
+	LEFT JOIN ItemAttributes_Kit k ON i.ItemID = k.ItemId
 	LEFT JOIN dbo.Hierarchy_NationalClass hnc ON i.HierarchyNationalClassID = hnc.HierarchyNationalClassID
 	LEFT JOIN dbo.HierarchyClass hc_fam ON hnc.FamilyHCID = hc_fam.HierarchyClassID
 		AND hc_fam.HIERARCHYID = @NationalHierarchyId

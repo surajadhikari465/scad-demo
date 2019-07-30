@@ -24,6 +24,10 @@
         public string TaxClassDesc { get; set; }
         public string Allergens { get; set; }
         public string Ingredients { get; set; }
+        public bool? HospitalityItem { get; set; }
+        public bool? KitchenItem { get; set; }
+        public string KitchenDescription { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }
