@@ -385,6 +385,9 @@
     <None Include="Web.QA.Config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.QA1.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Test.Config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -426,6 +429,9 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
