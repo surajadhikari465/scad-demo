@@ -1,4 +1,6 @@
-﻿DECLARE @scriptKey VARCHAR(128) = 'AddNewAnUpdateExistingSubteams_10570';
+﻿SET NOCOUNT ON;
+
+DECLARE @scriptKey VARCHAR(128) = 'AddNewAnUpdateExistingSubteams_10570';
 
 IF (NOT EXISTS (SELECT *FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN
@@ -41,6 +43,28 @@ BEGIN
 		hierarchyClassId INT
 		,traitValue VARCHAR(255)
 		);
+
+	DECLARE @financialHierarchyClassLevel INT = (
+		SELECT hierarchyLevel
+		FROM HierarchyPrototype
+		WHERE HIERARCHYID = @hierarchyId
+		);
+	DECLARE @HierarchyMessageTypeId INT = (
+			SELECT MessageTypeId
+			FROM app.MessageType
+			WHERE MessageTypeName = 'Hierarchy'
+			);
+	DECLARE @ReadyStatusId INT = (
+			SELECT MessageStatusId
+			FROM app.MessageStatus
+			WHERE MessageStatusName = 'Ready'
+			);
+	DECLARE @ActionId INT = (
+			SELECT MessageActionId
+			FROM app.MessageAction
+			WHERE MessageActionName = 'AddOrUpdate'
+			);
+
 
 	INSERT INTO @subteamIDs
 	SELECT hierarchyClassID
@@ -100,6 +124,52 @@ BEGIN
 	WHERE hierarchyLevel = 1
 		AND [HierarchyId] = @hierarchyId
 		AND hierarchyClassName = 'Bulk (1400)';
+
+	INSERT INTO @subteamIDs
+	SELECT hierarchyClassID, traitValue
+	FROM HierarchyClassTrait
+	WHERE traitValue = '1400';
+
+	INSERT INTO app.MessageQueueHierarchy (
+		MessageTypeId
+		,MessageStatusId
+		,MessageHistoryId
+		,MessageActionId
+		,InsertDate
+		,[HierarchyId]
+		,HierarchyName
+		,HierarchyLevelName
+		,ItemsAttached
+		,HierarchyClassId
+		,HierarchyClassName
+		,HierarchyLevel
+		,HierarchyParentClassId
+		,InProcessBy
+		,ProcessedDate
+		,NationalClassCode)
+	SELECT @HierarchyMessageTypeId
+		,@ReadyStatusId
+		,NULL
+		,@ActionId
+		,GetDate()
+		,h.hierarchyID
+		,h.hierarchyName
+		,hp.hierarchyLevelName
+		,hp.itemsAttached
+		,substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
+		,hc.hierarchyClassName
+		,hc.hierarchyLevel
+		,hc.hierarchyParentClassID
+		,NULL
+		,NULL
+		,NULL
+	FROM Hierarchy h
+	JOIN HierarchyClass hc ON h.hierarchyID = hc.hierarchyID
+	JOIN HierarchyPrototype hp ON hc.hierarchyID = hp.hierarchyID
+		AND hc.hierarchyLevel = hp.hierarchyLevel
+	WHERE h.hierarchyID = @hierarchyId
+		AND hc.hierarchyLevel = @financialHierarchyClassLevel
+		AND hc.hierarchyClassID IN(SELECT hierarchyClassId from @subteamIDs);
 
 	IF (OBJECT_ID('tempdb..#Subteams') IS NOT NULL)
 		DROP TABLE #Subteams;
@@ -424,27 +494,6 @@ BEGIN
 					,@NamTraitValue
 					);
 
-				DECLARE @financialHierarchyClassLevel INT = (
-						SELECT hierarchyLevel
-						FROM HierarchyPrototype
-						WHERE HIERARCHYID = @hierarchyId
-						);
-				DECLARE @HierarchyMessageTypeId INT = (
-						SELECT MessageTypeId
-						FROM app.MessageType
-						WHERE MessageTypeName = 'Hierarchy'
-						);
-				DECLARE @ReadyStatusId INT = (
-						SELECT MessageStatusId
-						FROM app.MessageStatus
-						WHERE MessageStatusName = 'Ready'
-						);
-				DECLARE @ActionId INT = (
-						SELECT MessageActionId
-						FROM app.MessageAction
-						WHERE MessageActionName = 'AddOrUpdate'
-						);
-
 				INSERT INTO app.MessageQueueHierarchy (
 					MessageTypeId
 					,MessageStatusId
@@ -476,7 +525,7 @@ BEGIN
 					,hc.hierarchyClassName
 					,hc.hierarchyLevel
 					,hc.hierarchyParentClassID
-					,100 --NULL
+					,NULL
 					,NULL
 					,NULL
 				FROM Hierarchy h
@@ -541,4 +590,6 @@ ELSE
 BEGIN
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @scriptKey;
 END
+
+SET NOCOUNT OFF;
 GO
