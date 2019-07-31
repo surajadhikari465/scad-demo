@@ -38,6 +38,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
     <OutputPath>bin\Dev1\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
+    <OutputPath>bin\QA1\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mammoth.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.2018.3.23.1\lib\net46\Mammoth.Common.dll</HintPath>
