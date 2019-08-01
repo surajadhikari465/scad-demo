@@ -16,7 +16,7 @@ interface IAssignKitsTreeTableProps {
     kitId: number;
     isSimplekitType:boolean;
     kitTree: KitTreeState;
-    toggleLocale(kitId: number, localeId: number): void;
+    toggleLocale(kitId: number, localeId: number, data:[]): void;
     assignedLocales: number[];
     excludedLocales: number[];
     toggleLocaleAssigned(localeId: number): void;
@@ -152,7 +152,7 @@ export class AssignKitsTreeTable extends React.Component<IAssignKitsTreeTablePro
                                 {
                                     LocaleTypeID != venueLocaleTypeId ?
                                         <div style={{ width: '30px' }}>
-                                            <div className="collapse-btn" onClick={() => this.props.toggleLocale(this.props.kitId, item.localeId)}>{this.localeIsOpen(this.props.kitId, item.localeId) ? ' - ' : ' + '}</div>
+                                            <div className="collapse-btn" onClick={() => this.props.toggleLocale(this.props.kitId, item.localeId, data)}>{this.localeIsOpen(this.props.kitId, item.localeId) ? ' - ' : ' + '}</div>
                                         </div>
                                         : <></>
                                 }
@@ -213,7 +213,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    toggleLocale: (kitId: number, localeId: number) => dispatch({ type: "TOGGLE_LOCALE", payload: {kitId, localeId}}),
+    toggleLocale: (kitId: number, localeId: number, data:[]) => dispatch({ type: "TOGGLE_LOCALE", payload: {kitId, localeId,data}}),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignKitsTreeTable);
