@@ -226,6 +226,7 @@ namespace Icon.Framework
         public const int KitchenItem = 217;
         public const int KitchenDescription = 218;
         public const int ImageUrl = 219;
+        public const int SodiumWarningRequired = 220;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -442,7 +443,8 @@ namespace Icon.Framework
 				{ "HI", 216 },
 				{ "KI", 217 },
 				{ "KD", 218 },
-				{ "URL", 219 }
+				{ "URL", 219 },
+				{ "SWR", 220 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -662,6 +664,7 @@ namespace Icon.Framework
 			public const string KitchenItem = "Kitchen Item";
 			public const string KitchenDescription = "Kitchen Description";
 			public const string ImageUrl = "Image Url";
+			public const string SodiumWarningRequired = "Sodium Warning Required";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -878,7 +881,8 @@ namespace Icon.Framework
 				{ 216, "Hospitality Item" },
 				{ 217, "Kitchen Item" },
 				{ 218, "Kitchen Description" },
-				{ 219, "Image Url" }
+				{ 219, "Image Url" },
+				{ 220, "Sodium Warning Required" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1099,6 +1103,7 @@ namespace Icon.Framework
 			public const string KitchenItem = "KI";
 			public const string KitchenDescription = "KD";
 			public const string ImageUrl = "URL";
+			public const string SodiumWarningRequired = "SWR";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1315,7 +1320,8 @@ namespace Icon.Framework
 				{ 216, "HI" },
 				{ 217, "KI" },
 				{ 218, "KD" },
-				{ 219, "URL" }
+				{ 219, "URL" },
+				{ 220, "SWR" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

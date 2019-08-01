@@ -737,6 +737,7 @@
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
     <None Include="Scripts\PopulateData\Release\AddNewAndUpdateExistingSubteams_10570.sql" />
+    <None Include="Scripts\PopulateData\Release\PopulateTrait_SWR.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

@@ -12,6 +12,7 @@ Please add a date-added comment to the end of your line, to help with tracking, 
 EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01 PBI 12345
 */
+:r .\Scripts\PopulateData\Release\PopulateTrait_SWR.sql --2019.08.01 PBI 22962
 
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql
