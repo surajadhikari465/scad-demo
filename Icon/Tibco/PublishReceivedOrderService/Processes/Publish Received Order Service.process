@@ -73,12 +73,12 @@
                         <xsl:choose>
                             <xsl:when test="exists(PastReceiptDate)">
                                 <pfx2:isPastReceipt>
-                                    <xsl:value-of select="&quot;true&quot;"/>
+                                    <xsl:value-of select="&quot;Y&quot;"/>
                                 </pfx2:isPastReceipt>
                             </xsl:when>
                             <xsl:otherwise>
                                 <pfx2:isPastReceipt>
-                                    <xsl:value-of select="&quot;false&quot;"/>
+                                    <xsl:value-of select="&quot;N&quot;"/>
                                 </pfx2:isPastReceipt>
                             </xsl:otherwise>
                         </xsl:choose>
