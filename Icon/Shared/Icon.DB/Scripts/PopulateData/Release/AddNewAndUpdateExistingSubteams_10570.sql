@@ -125,10 +125,16 @@ BEGIN
 		AND [HierarchyId] = @hierarchyId
 		AND hierarchyClassName = 'Bulk (1400)';
 
+  UPDATE HierarchyClass
+	SET hierarchyClassName = 'Baking, Meals and Essentials (1000)'
+	WHERE hierarchyLevel = 1
+		AND [HierarchyId] = @hierarchyId
+		AND hierarchyClassName = 'Grocery (1000)';
+
 	INSERT INTO @subteamIDs
 	SELECT hierarchyClassID, traitValue
 	FROM HierarchyClassTrait
-	WHERE traitValue = '1400';
+	WHERE traitValue IN('1000', '1400');
 
 	INSERT INTO app.MessageQueueHierarchy (
 		MessageTypeId
@@ -182,23 +188,6 @@ BEGIN
 		,NumTraitValue NVARCHAR(255)
 		,NamTraitValue NVARCHAR(255)
 		,FinTraitValue NVARCHAR(255)
-		);
-
-	INSERT INTO #Subteams (
-		HierarchyClassId
-		,HierarchyClassName
-		,PdnTraitValue
-		,NumTraitValue
-		,NamTraitValue
-		,FinTraitValue
-		)
-	VALUES (
-		1500012
-		,'Baking, Meals and Essentials (1450)'
-		,'295'
-		,'100'
-		,'Grocery'
-		,'1450'
 		);
 
 	INSERT INTO #Subteams (
@@ -333,7 +322,7 @@ BEGIN
 		,'Allegro Coffee Bar (6270)'
 		,'290'
 		,'260'
-		,'Third Party - Gross'
+		,'Third Party Vendors'
 		,'6270'
 		);
 
@@ -350,7 +339,7 @@ BEGIN
 		,'Amazon Initiative TBD 1 (5380)'
 		,'291'
 		,'550'
-		,'Amazon'
+		,'Amazon Initiatives'
 		,'5380'
 		);
 
@@ -367,7 +356,7 @@ BEGIN
 		,'Amazon Initiative TBD 2 (5390)'
 		,'292'
 		,'550'
-		,'Amazon'
+		,'Amazon Initiatives'
 		,'5390'
 		);
 
@@ -384,7 +373,7 @@ BEGIN
 		,'Amazon Initiative TBD 3 (5410)'
 		,'293'
 		,'550'
-		,'Amazon'
+		,'Amazon Initiatives'
 		,'5410'
 		);
 
