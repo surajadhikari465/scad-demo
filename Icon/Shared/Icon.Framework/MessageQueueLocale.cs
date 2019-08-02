@@ -50,6 +50,7 @@ namespace Icon.Framework
         public string TouchPointGroupId { get; set; }
         public Nullable<int> InProcessBy { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
+        public Nullable<bool> SodiumWarningRequired { get; set; }
     
         public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
