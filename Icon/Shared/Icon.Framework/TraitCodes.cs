@@ -225,5 +225,6 @@ namespace Icon.Framework
         public const string KitchenItem = "KI";
         public const string KitchenDescription = "KD";
         public const string ImageUrl = "URL";
+        public const string SodiumWarningRequired = "SWR";
 	}
 }
