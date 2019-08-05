@@ -405,7 +405,7 @@ BEGIN
 		IF NOT EXISTS (
 				SELECT 1
 				FROM dbo.HierarchyClass
-				WHERE hierarchyClassName = @HierarchyClassName
+				WHERE hierarchyClassName = @HierarchyClassName AND hierarchyID = @hierarchyId
 				)
 		BEGIN
 			BEGIN TRANSACTION;
