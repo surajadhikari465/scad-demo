@@ -27,5 +27,6 @@ namespace Icon.Web.DataAccess.Commands
 		public string LiquorLicense { get; set; }
 		public string PrimeMerchantID { get; set; }
 		public string PrimeMerchantIDEncrypted { get; set; }
+		public bool SodiumWarningRequired { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Framework;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using System.Text;
 using Icon.ApiController.Controller.ControllerConstants;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Icon.ApiController.Controller.QueueProcessors

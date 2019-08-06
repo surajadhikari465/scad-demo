@@ -31,5 +31,6 @@ namespace Icon.ApiController.Common
         public DateTime? LocaleCloseDate { get; set; }
         public LocaleLineageModel AncestorLocale { get; set; }
         public List<LocaleLineageModel> DescendantLocales { get; set; }
+		public bool? SodiumWarningRequired { get; set; }
     }
 }

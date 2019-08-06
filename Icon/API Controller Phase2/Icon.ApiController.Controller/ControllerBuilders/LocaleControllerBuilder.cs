@@ -5,7 +5,6 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.Producer;

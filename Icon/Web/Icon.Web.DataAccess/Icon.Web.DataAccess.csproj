@@ -82,7 +82,7 @@
       <HintPath>..\packages\Icon.Common.2019.6.25.1\lib\net46\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2017.2.8.1\lib\net45\Icon.DbContextFactory.dll</HintPath>
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.15.1\lib\net46\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2019.7.1.3\lib\net46\Icon.Esb.dll</HintPath>
@@ -104,7 +104,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.5.26.1\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.8.2.2\lib\net46\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>

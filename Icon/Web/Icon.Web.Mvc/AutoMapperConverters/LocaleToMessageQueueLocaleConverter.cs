@@ -31,6 +31,9 @@ namespace Icon.Web.Mvc.AutoMapperConverters
             LocaleTrait phoneNumberTrait = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.PhoneNumber);
             destination.PhoneNumber = phoneNumberTrait == null ? null : phoneNumberTrait.traitValue;
 
+			LocaleTrait sodiumWarning = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.SodiumWarningRequired);
+            destination.SodiumWarningRequired = sodiumWarning == null ? (bool?)null : sodiumWarning.traitValue == "1";
+
 			LocaleAddress localeAddress = source.LocaleAddress.FirstOrDefault();
             if (localeAddress != null)
             {

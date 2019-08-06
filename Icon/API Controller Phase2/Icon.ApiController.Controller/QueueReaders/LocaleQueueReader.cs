@@ -7,7 +7,6 @@ using Icon.Framework;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -436,8 +435,22 @@ namespace Icon.ApiController.Controller.QueueReaders
 							}
 						}
 					}
+				},
+				new Contracts.TraitType
+				{
+					code = TraitCodes.SodiumWarningRequired,
+					type = new Contracts.TraitTypeType
+					{
+						description = TraitDescriptions.SodiumWarningRequired,
+						value = new Contracts.TraitValueType[]
+						{
+							new Contracts.TraitValueType
+							{
+								value = localeLineage.SodiumWarningRequired.GetValueOrDefault()	? "1" : String.Empty,
+							}
+						}
+					}
 				}
-
 			};
 		}
 

@@ -109,6 +109,12 @@
       </div>
     </div>
     <div class="row">
+      @Html.LabelFor(model => model.SodiumWarningRequired, new { @class = "col-md-2 form-label" })
+      <div>
+        @Html.CheckBoxFor(model => model.SodiumWarningRequired, new { @class = "col-md-2 form-input" })
+      </div>
+    </div>
+    <div class="row">
       @Html.LabelFor(model => model.LocalZone, new { @class = "col-md-2 form-label" })
       <div>
         @Html.TextBoxFor(model => model.LocalZone, new { @class = "col-md-6 form-input" })

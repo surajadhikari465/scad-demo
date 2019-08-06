@@ -46,6 +46,7 @@ namespace Icon.Web.DataAccess.Commands
             AddOrUpdateOrRemoveTraitValue(TraitCodes.StorePosType, existingLocale, data.StorePosType);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.ModifiedUser, existingLocale, data.UserName);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.Ident, existingLocale, data.Ident ? "1" : "0");
+            AddOrUpdateOrRemoveTraitValue(TraitCodes.SodiumWarningRequired, existingLocale, data.SodiumWarningRequired ? "1" : null);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.LiquorLicensing, existingLocale, data.LiquorLicense);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.LocalZone, existingLocale, data.LocalZone);
             AddOrUpdateOrRemoveTraitValue(TraitCodes.PrimenowMerchantId, existingLocale, data.PrimeMerchantID);

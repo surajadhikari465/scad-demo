@@ -1,10 +1,7 @@
 ﻿using Icon.Framework;
 using Icon.Web.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Models
 {
@@ -40,9 +37,9 @@ namespace Icon.Web.Tests.Unit.Models
             const string expectedCurrencyCode = "GBP";
             testLocale = TestHelpers.GetFakeLocaleWithAddress();
             testLocale.LocaleTrait = TestHelpers.MakeLocaleTraitsForLocale();
-            testLocale.LocaleTrait.Add(
-                new LocaleTrait { traitID = Traits.CurrencyCode, traitValue = expectedCurrencyCode });
-
+            testLocale.LocaleTrait.Add(new LocaleTrait { Trait = new Trait { traitID = Traits.CurrencyCode, traitCode = TraitCodes.CurrencyCode },  traitID = Traits.CurrencyCode, traitValue = expectedCurrencyCode });
+			
+			testLocale.LocaleTrait = testLocale.LocaleTrait.Where(x => x.Trait != null).ToList();
             //When
             var localeGridRowViewModel = new LocaleGridRowViewModel(testLocale);
             var actualCurrencyCode = localeGridRowViewModel.CurrencyCode;

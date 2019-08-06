@@ -373,6 +373,7 @@ namespace Icon.ApiController.DataAccess.Queries
 				CurrencyCode = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.CurrencyCode)?.traitValue ?? string.Empty,
 				StoreAbbreviation = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.StoreAbbreviation)?.traitValue?? string.Empty,
                 BusinessUnitId = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId)?.traitValue??string.Empty,
+				SodiumWarningRequired = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.SodiumWarningRequired)?.traitValue == "1",
                 PhoneNumber = store.LocaleTrait.SingleOrDefault(lt => lt.Trait.traitCode == TraitCodes.PhoneNumber)?.traitValue?? string.Empty,
 				AddressId = store.LocaleAddress.SingleOrDefault(la => la.localeID == store.localeID)?.addressID ?? 0,
 				AddressUsageCode = store.LocaleAddress.Single(la => la.localeID == store.localeID).AddressUsage?.addressUsageCode ?? string.Empty,

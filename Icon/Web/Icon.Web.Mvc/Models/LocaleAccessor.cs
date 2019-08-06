@@ -215,5 +215,11 @@ namespace Icon.Web.Mvc.Models
             var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.LocalZone);
             return trait == null ? String.Empty : trait.traitValue;
         }
+
+		public static bool GetSodiumWarning(Locale locale)
+        {
+            var trait = locale.LocaleTrait.SingleOrDefault(x => x.traitID == Traits.SodiumWarningRequired);
+            return trait == null ? false : trait.traitValue == "1";
+        }
     }
 }
