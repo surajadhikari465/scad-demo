@@ -22,7 +22,6 @@ const styles = (theme: any) => ({
 function KitResults(props: any) {
   return (
     <React.Fragment>
-
       <ReactTable
         data={props.kitsViewData}
         noDataText = "No Link Groups"
@@ -53,7 +52,7 @@ function KitResults(props: any) {
                 {
 
                 row.value.split('\r').map((line1: string) => 
-                line1.includes('Unauthorized') ?
+                (line1.includes('Unauthorized') || line1.includes('[ Calories')) ?
                     <div style={{ color: 'red' }}>
                       {
                         line1.replace('Unauthorized','').split('\n').map((line: string) => 
@@ -111,14 +110,16 @@ function KitResults(props: any) {
               }
             }} value={props.price}></TextField>
         </Grid>
+
         <Grid item xs={12} md={3}>
-          <TextField disabled className='search-textfield'
-            margin="dense" variant="outlined" label='Minimum Calories' InputLabelProps={{
+          <TextField disabled className={ props.newSearchStated == true && (props.minimumCaloriesValue.length == 0 || props.minimumCaloriesValue <= 0) ? 'error' : 'search-textfield' } 
+            margin="dense" variant="outlined" label='Minimum Calories'  InputLabelProps={{
               shrink: true, FormLabelClasses: {
                 root: props.classes.labelRoot
               }
             }} value={props.minimumCaloriesValue}></TextField>
         </Grid>
+
         <Grid item xs={12} md={3}>
           <TextField className='search-textfield' margin="dense" variant="outlined" label='Maximum Calories' InputLabelProps={{
             shrink: true,

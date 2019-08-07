@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+.error input
+{
+    border: 3px solid #eb516d;
+}
+
 .full-width {
     width: 100%;
 }

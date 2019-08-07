@@ -50,11 +50,11 @@ namespace KitBuilderWebApi.Controllers
         private const string PUBLISH_KIT_EVENTS = "PublishKitEvents";
         private const string ADD_OR_UPDATE_ACTION = "AddOrUpdate";
         private const string DELETE_ACTION = "Delete";
-        private const string PRICE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Price record in Mammoth.";
-        private const string CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH = "Main item has no Calorie record in Mammoth.";
-        private const string AUTHORIZED_BY_STORE_NULL_ERROR = "Error in getting Authorization info for main item from Mammoth.";
-        private const string GENERIC_FETCH_ERROR = "Error in fetching data from Mammoth. Please validate that the kit main item is authorized for selected locale and has valid price and caloric information.";
-        private const string MAIN_ITEM_NOT_AUTHORIZED = "Main kit item is not authorized for selected store.";
+        private const string MAIN_ITEM_NO_CALORIE = "Main item has no Nutrition record in Mammoth.";
+		private const string MAIN_ITEM_NOT_AUTHORIZED = "Main item either is not authorized or has no price record for the selected store in Mammoth.";
+		private const string MODIFIER_NO_CALORIE = "One or more modifiers have no Nutrition record in Mammoth.";
+		private const string MODIFIER_NOT_AUTHORIZED = "One or more modifiers either are not authorized or have no price records for the selected store in Mammoth.";
+        
 
         private IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator;
 
@@ -155,7 +155,7 @@ namespace KitBuilderWebApi.Controllers
 
             if (localeIdWithKitLocaleRecord == null || kit == null)
             {
-                kitView.ErrorMessage = "Kit does not exist for selected store.";
+                kitView.ErrorMessage = "Error: Kit does not exist for selected store.";
                 return Ok(kitView);
             }
 
@@ -163,7 +163,7 @@ namespace KitBuilderWebApi.Controllers
 
             if (kitProperties == null)
             {
-                kitView.ErrorMessage = "Please make sure Kit is set up correctly for this store.";
+                kitView.ErrorMessage = "Error: Please make sure Kit is set up correctly for this store.";
                 return Ok(kitView);
             }
 
@@ -171,7 +171,7 @@ namespace KitBuilderWebApi.Controllers
 
             if (kitView == null)
             {
-                kitView.ErrorMessage = "Please make sure Kit is set up correctly for this store.";
+                kitView.ErrorMessage = "Error: Please make sure Kit is set up correctly for this store.";
                 return Ok(kitView);
             }
             else
@@ -218,7 +218,7 @@ namespace KitBuilderWebApi.Controllers
             {
                 if (kitLocaleDto.Exclude == true)
                 {
-                    kitView.ErrorMessage = "Kit is excluded for selected store.";
+                    kitView.ErrorMessage = "Error: Kit is excluded for selected store.";
                     return kitView;
                 }
       
@@ -291,13 +291,15 @@ namespace KitBuilderWebApi.Controllers
                     kitView.LinkGroups.Add(linkGroupView);
                 }
 
-                return kitView;
+				kitView.ErrorMessage = BuildErrorMessage(kitLocaleDto, kit.KitType);
+
+				return kitView;
             }
             else
             {
 
-                kitView.ErrorMessage = GENERIC_FETCH_ERROR;
-                return kitView;
+                kitView.ErrorMessage = BuildErrorMessage(kitLocaleDto, kit.KitType);
+				return kitView;
             }
         }
 
@@ -1434,32 +1436,52 @@ namespace KitBuilderWebApi.Controllers
 
         }
 
-        // we will need this method later on, so keeping it for now
-        //private string BuildErrorMessage(KitLocaleDto kitLocaleDto, KitType kitType)
-        //{
-        //    if (kitLocaleDto.AuthorizedByStore == null)
-        //    {
-        //        return AUTHORIZED_BY_STORE_NULL_ERROR;
-        //    }
-        //    else if (kitLocaleDto.AuthorizedByStore == false)
-        //    {
-        //        return MAIN_ITEM_NOT_AUTHORIZED;
-        //    }
-        //    else if (kitLocaleDto.RegularPrice == null)
-        //    {
-        //        return PRICE_RECORD_NOT_FOUND_IN_MAMMOTH;
-        //    }
-        //    else if ((kitLocaleDto.MaximumCalories == null && kitType != KitType.Simple) || kitLocaleDto.MinimumCalories == null)
-        //    {
-        //        return CALORIE_RECORD_NOT_FOUND_IN_MAMMOTH; 
-        //    }
-        //    else
-        //    {
-        //        return GENERIC_FETCH_ERROR;
-        //    }
-        //}
+		// we will need this method later on, so keeping it for now
+		private string BuildErrorMessage(KitLocaleDto kitLocaleDto, KitType kitType)
+		{
+			StringBuilder errorMessages = new StringBuilder();
 
-        private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
+			if (kitLocaleDto.AuthorizedByStore == false)
+			{
+				errorMessages.Append(MAIN_ITEM_NOT_AUTHORIZED);
+				errorMessages.Append("\n");
+			}
+
+			if (kitLocaleDto.MinimumCalories == null)
+			{
+				errorMessages.Append(MAIN_ITEM_NO_CALORIE);
+				errorMessages.Append("\n");
+			}
+
+			if (kitType != KitType.Simple)
+			{
+				int unauthorizedCounter = kitLocaleDto.KitLinkGroupLocale
+					.Where(i => i.Exclude == false)
+					.Select(i => i.KitLinkGroupItemLocales
+						.Where(l => l.AuthorizedByStore == false && l.Exclude == false))
+					.Count();
+				if (unauthorizedCounter > 0)
+				{
+					errorMessages.Append(MODIFIER_NOT_AUTHORIZED);
+					errorMessages.Append("\n");
+				}
+
+				int noCaloriesCounter = kitLocaleDto.KitLinkGroupLocale
+						.Where(i => i.Exclude == false)
+						.Select(i => i.KitLinkGroupItemLocales
+							.Where(l => l.Calories == null && l.Exclude == false))
+						.Count();
+				if (noCaloriesCounter > 0)
+				{
+					errorMessages.Append(MODIFIER_NO_CALORIE);
+					errorMessages.Append("\n");
+				}
+			}
+
+			return errorMessages.ToString();
+		}
+
+		private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
         {
             var statusArray = kitLocales.Where(s => s.Exclude == false).Select(kl => kl.StatusId);
 

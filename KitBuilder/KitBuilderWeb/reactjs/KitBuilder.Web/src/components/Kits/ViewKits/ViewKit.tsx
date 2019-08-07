@@ -54,6 +54,7 @@ interface IViewKitPageState {
   minimumCalories: string;
   disableViewKitButton: boolean;
   disableSaveButton: boolean;
+  searchStartIndicator: boolean;
 }
 
 interface IViewKitPageProps {
@@ -83,7 +84,8 @@ export class ViewKit extends React.Component<
       price: "0",
       minimumCalories: "0",
       disableSaveButton: true,
-      disableViewKitButton: false
+      disableViewKitButton: false,
+      searchStartIndicator: false
     };
 
     this.onkitSelected = this.onkitSelected.bind(this);
@@ -128,7 +130,8 @@ export class ViewKit extends React.Component<
       open: false,
       maximumCalories: "0",
       price: "",
-      minimumCalories: ""
+      minimumCalories: "",
+      searchStartIndicator: false
     });
   }
 
@@ -151,7 +154,8 @@ export class ViewKit extends React.Component<
         kitsViewData: {},
         maximumCalories: "0",
         price: "",
-        minimumCalories: ""
+        minimumCalories: "",
+        searchStartIndicator: false
       },
       this.populateMetros
     );
@@ -165,7 +169,8 @@ export class ViewKit extends React.Component<
         kitsViewData: {},
         maximumCalories: "0",
         price: "",
-        minimumCalories: ""
+        minimumCalories: "",
+        searchStartIndicator: false
       },
       this.populateStores
     );
@@ -178,7 +183,8 @@ export class ViewKit extends React.Component<
       disableSaveButton: true,
       maximumCalories: "0",
       price: "",
-      minimumCalories: ""
+      minimumCalories: "",
+      searchStartIndicator: false 
     });
   };
 
@@ -280,11 +286,21 @@ export class ViewKit extends React.Component<
             showDisplay: true,
             kitsViewData: {}
           });
-        } else if (data.errorMessage) {
+        } else if (data.errorMessage && data.errorMessage.substring(0,5) == "Error" ) {
           this.props.showAlert(data.errorMessage, "error");
           this.setState({
             showDisplay: true,
-            kitsViewData: {}
+            kitsViewData: {}   
+          });
+        } else if (data.errorMessage && data.errorMessage.substring(0,5) != "Error" ) {
+          this.props.showAlert(data.errorMessage, "error");
+          this.setState({
+            showDisplay: true,
+            kitsViewData: data,
+            maximumCalories: data.maximumCalories,
+            disableSaveButton: false,
+            price: data.kitPrice,
+            minimumCalories: data.minimumCalories
           });
         } else {
           this.setState({
@@ -296,7 +312,10 @@ export class ViewKit extends React.Component<
             minimumCalories: data.minimumCalories
           });
         }
-        this.setState({ disableViewKitButton: false });
+        this.setState({ 
+          disableViewKitButton: false,
+          searchStartIndicator: true
+        });
       })
       .catch(error => {
         this.props.showAlert(error.response.data, "error");
@@ -308,6 +327,7 @@ export class ViewKit extends React.Component<
 
   render() {
     const { kitsViewData } = this.state;
+
     return (
       <>
         <StyledPanel
@@ -341,6 +361,7 @@ export class ViewKit extends React.Component<
               onSaveChanges={this.onSaveChanges}
               price={this.state.price}
               disableSaveButton={this.state.disableSaveButton}
+              newSearchStated={this.state.searchStartIndicator ? true : false}
             />
           )}
         </StyledPanel>
