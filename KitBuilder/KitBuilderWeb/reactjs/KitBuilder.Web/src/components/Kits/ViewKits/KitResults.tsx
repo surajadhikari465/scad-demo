@@ -50,9 +50,8 @@ function KitResults(props: any) {
             Cell: row => (
               <div style={{ textAlign: "left" }}>
                 {
-
                 row.value.split('\r').map((line1: string) => 
-                (line1.includes('Unauthorized') || line1.includes('[ Calories')) ?
+                (!line1.includes("^") && (line1.includes('Unauthorized') || line1.includes('[ Calories'))) ?
                     <div style={{ color: 'red' }}>
                       {
                         line1.replace('Unauthorized','').split('\n').map((line: string) => 
