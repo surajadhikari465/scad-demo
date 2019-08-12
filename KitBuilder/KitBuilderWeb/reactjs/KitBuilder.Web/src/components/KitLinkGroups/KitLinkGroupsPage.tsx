@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { Grid, Button, Paper } from "@material-ui/core";
+import { Grid, Button, Paper, FormHelperText } from "@material-ui/core";
 import KitLinkGroupProperties from "./KitLinkGroupProperties";
 import { KbApiMethod } from "../helpers/kbapi";
 import "./style.css";
@@ -21,6 +21,7 @@ interface IKitLinkGroupPageState {
   kitDetails: any;
   disableSaveButton: boolean;
   errors: {
+    generalErrors: any,
     kitLinkGroups: { kitLinkGroupId: number , message: string }[],
     kitLinkGroupItems: { kitLinkGroupItemId: number, message: string }[],
   }
@@ -54,6 +55,7 @@ class KitLinkGroupPage extends React.Component<
       kitDetails: {},
       disableSaveButton: false,
       errors: {
+        generalErrors: "",
         kitLinkGroups: [],
         kitLinkGroupItems: [],
       },
@@ -124,7 +126,7 @@ class KitLinkGroupPage extends React.Component<
 
     this.props.showAlert(messageWithAddedNote, "error");
   }
-  filterByExcluded = (item: any) => !item.excluded;
+  filterByExcluded = (item: any) => !item.excluded; 
 
   validateDataBeforeSaving() {
 
@@ -132,7 +134,7 @@ class KitLinkGroupPage extends React.Component<
     const kitLinkGroupItems:  { kitLinkGroupItemId: number , message: string }[] = [];
 
     let dataToValidate: any = this.state.kitDetails.kitLinkGroupLocaleList;
-    let error: any = [];
+    let generalErrors: any = [];
 
     if( dataToValidate.filter(this.filterByExcluded).length==0)
     {
@@ -142,11 +144,11 @@ class KitLinkGroupPage extends React.Component<
   
     if (
       checkDuplicateInObject(
-        "displaySequence",
+        "displaySequence", 
         dataToValidate.filter(this.filterByExcluded)
       )
     ) {
-      error.push("Display Order must be unique at link group level.");
+      generalErrors.push("Display Order must be unique at link group level.");
     }
     let self = this;
     dataToValidate.forEach(function(element: any) {
@@ -413,8 +415,8 @@ class KitLinkGroupPage extends React.Component<
         }
       }
     });
-    this.setState({ errors: { ...this.state.errors, kitLinkGroups, kitLinkGroupItems } });
-    if (kitLinkGroups.length > 0 || kitLinkGroupItems.length > 0) {
+    this.setState({ errors: { ...this.state.errors, generalErrors, kitLinkGroups, kitLinkGroupItems } });
+    if (kitLinkGroups.length > 0 || kitLinkGroupItems.length > 0 || generalErrors.length > 0) {
       this.props.showAlert("There were input validation errors, please correct and try again.", "error")
       return false;
     }
@@ -558,6 +560,9 @@ class KitLinkGroupPage extends React.Component<
               </PageTitle>
             </Grid>
           </Grid>
+          <Grid container justify="center">
+                <FormHelperText error={true}>{ this.state.errors.generalErrors }</FormHelperText>      
+           </Grid>
                 <Grid container spacing={16} justify="center">
                   {this.state.kitDetails.kitLinkGroupLocaleList.map(
                     (kitLG: any) => (
