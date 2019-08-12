@@ -3,7 +3,6 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MoreLinq;
-using System.Configuration;
 using System.Data;
 using System.Linq;
 
@@ -96,9 +95,9 @@ namespace Mammoth.Esb.ProductListener.Commands
 
             if (nutritionAttributes.Any())
             {
-                string sql = @"dbo.AddOrUpdateItemAttributesNutrition";
-                int rowCount = this.db.Connection.Execute(sql,
-                    new { nutritionAttributes = nutritionAttributes.ToDataTable() },
+                int rowCount = this.db.Connection.Execute(
+					sql: "dbo.AddOrUpdateItemAttributesNutrition",
+                    param: new { nutritionAttributes = nutritionAttributes.ToDataTable() },
                     transaction: this.db.Transaction,
                     commandType: CommandType.StoredProcedure);
             }

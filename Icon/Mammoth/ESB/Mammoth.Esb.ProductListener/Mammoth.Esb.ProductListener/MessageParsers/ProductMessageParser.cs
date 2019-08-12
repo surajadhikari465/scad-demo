@@ -125,7 +125,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             }
             else
             {
-                var stockItemConsumerProductLabel = item.@base.consumerInformation.stockItemConsumerProductLabel;
+                var consumerProductLabel = item.@base.consumerInformation.stockItemConsumerProductLabel;
 
 				return new NutritionAttributesModel
 				{
@@ -139,37 +139,18 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
 					HshRating = GetIntTraitValue(TraitCodes.Hsh, traits),
 					ServingUnits = GetIntTraitValue(TraitCodes.ServingUnits, traits),
 					SizeWeight = GetIntTraitValue(TraitCodes.SizeWeight, traits),
-					Calories = (int)stockItemConsumerProductLabel.caloriesCount,
-					CaloriesFat = (int)stockItemConsumerProductLabel.caloriesFromFatCount,
 					CaloriesSaturatedFat = GetIntTraitValue(TraitCodes.CaloriesSaturatedFat, traits),
-					TotalFatWeight = (int)stockItemConsumerProductLabel.totalFatGramsAmount,
-					TotalFatPercentage = (int)stockItemConsumerProductLabel.totalFatDailyIntakePercent,
-					SaturatedFatWeight = (int)stockItemConsumerProductLabel.saturatedFatGramsAmount,
-					SaturatedFatPercent = (int)stockItemConsumerProductLabel.saturatedFatPercent,
 					PolyunsaturatedFat = GetDecimalTraitValue(TraitCodes.PolyunsaturatedFat, traits),
 					MonounsaturatedFat = GetDecimalTraitValue(TraitCodes.MonounsaturatedFat, traits),
-					CholesterolWeight = (int)stockItemConsumerProductLabel.cholesterolMilligramsCount,
-					CholesterolPercent = (int)stockItemConsumerProductLabel.cholesterolPercent,
-					SodiumWeight = (int)stockItemConsumerProductLabel.sodiumMilligramsCount,
-					SodiumPercent = (int)stockItemConsumerProductLabel.sodiumPercent,
 					PotassiumWeight = GetDecimalTraitValue(TraitCodes.PotassiumWeight, traits),
 					PotassiumPercent = GetIntTraitValue(TraitCodes.PotassiumPercent, traits),
-					TotalCarbohydrateWeight = (int)stockItemConsumerProductLabel.totalCarbohydrateMilligramsCount,
-					TotalCarbohydratePercent = (int)stockItemConsumerProductLabel.totalCarbohydratePercent,
-					DietaryFiberWeight = stockItemConsumerProductLabel.dietaryFiberGramsCount,
 					DietaryFiberPercent = GetIntTraitValue(TraitCodes.DietaryFiberPercent, traits),
 					SolubleFiber = GetDecimalTraitValue(TraitCodes.SolubleFiber, traits),
 					InsolubleFiber = GetDecimalTraitValue(TraitCodes.InsolubleFiber, traits),
-					Sugar = stockItemConsumerProductLabel.sugarsGramsCount,
 					SugarAlcohol = GetDecimalTraitValue(TraitCodes.SugarAlcohol, traits),
 					OtherCarbohydrates = GetDecimalTraitValue(TraitCodes.OtherCarbohydrates, traits),
-					ProteinWeight = (int)stockItemConsumerProductLabel.proteinGramsCount,
 					ProteinPercent = GetIntTraitValue(TraitCodes.ProteinPercent, traits),
-					VitaminA = (int)stockItemConsumerProductLabel.vitaminADailyMinimumPercent,
 					Betacarotene = GetIntTraitValue(TraitCodes.Betacarotene, traits),
-					VitaminC = (int)stockItemConsumerProductLabel.vitaminCDailyMinimumPercent,
-					Calcium = (int)stockItemConsumerProductLabel.calciumDailyMinimumPercent,
-					Iron = (int)stockItemConsumerProductLabel.ironDailyMinimumPercent,
 					VitaminD = GetIntTraitValue(TraitCodes.VitaminD, traits),
 					VitaminE = GetIntTraitValue(TraitCodes.VitaminE, traits),
 					Thiamin = GetIntTraitValue(TraitCodes.Thiamin, traits),
@@ -197,11 +178,30 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
 					Manganese = GetIntTraitValue(TraitCodes.Manganese, traits),
 					Molybdenum = GetIntTraitValue(TraitCodes.Molybdenum, traits),
 					Selenium = GetIntTraitValue(TraitCodes.Selenium, traits),
-					AddedSugarsWeight = stockItemConsumerProductLabel.addedSugarsGramsCount,
-					AddedSugarsPercent = (int)stockItemConsumerProductLabel.addedSugarDailyPercent,
-					CalciumWeight = stockItemConsumerProductLabel.calciumMilligramsCount,
-					IronWeight = stockItemConsumerProductLabel.ironMilligramsCount,
-					VitaminDWeight = stockItemConsumerProductLabel.vitaminDMicrogramsCount
+					Calories = consumerProductLabel.caloriesCountSpecified ? (int)consumerProductLabel.caloriesCount : (int?)null,
+					CaloriesFat = consumerProductLabel.caloriesFromFatCountSpecified ? (int)consumerProductLabel.caloriesFromFatCount : (int?)null,
+					TotalFatWeight = consumerProductLabel.totalFatGramsAmountSpecified ? (int)consumerProductLabel.totalFatGramsAmount : (int?)null,
+					TotalFatPercentage = consumerProductLabel.totalFatDailyIntakePercentSpecified ? (int)consumerProductLabel.totalFatDailyIntakePercent : (int?)null,
+					SaturatedFatWeight = consumerProductLabel.saturatedFatGramsAmountSpecified ? (int)consumerProductLabel.saturatedFatGramsAmount : (int?)null,
+					SaturatedFatPercent = consumerProductLabel.saturatedFatPercentSpecified ? (int)consumerProductLabel.saturatedFatPercent : (int?)null,
+					CholesterolWeight = consumerProductLabel.cholesterolMilligramsCountSpecified ? (int)consumerProductLabel.cholesterolMilligramsCount : (int?)null,
+					CholesterolPercent = consumerProductLabel.cholesterolPercentSpecified ? (int)consumerProductLabel.cholesterolPercent : (int?)null,
+					SodiumWeight = consumerProductLabel.sodiumMilligramsCountSpecified ? (int)consumerProductLabel.sodiumMilligramsCount : (int?)null,
+					SodiumPercent = consumerProductLabel.sodiumPercentSpecified ? (int)consumerProductLabel.sodiumPercent : (int?)null,
+					TotalCarbohydrateWeight = consumerProductLabel.totalCarbohydrateMilligramsCountSpecified ? (int)consumerProductLabel.totalCarbohydrateMilligramsCount : (int?)null,
+					TotalCarbohydratePercent = consumerProductLabel.totalFatDailyIntakePercentSpecified ? (int)consumerProductLabel.totalCarbohydratePercent : (int?)null,
+					DietaryFiberWeight = consumerProductLabel.dietaryFiberGramsCountSpecified ? consumerProductLabel.dietaryFiberGramsCount : (decimal?)null,
+					Sugar = consumerProductLabel.sugarsGramsCountSpecified ? consumerProductLabel.sugarsGramsCount : (decimal?)null,
+					ProteinWeight = consumerProductLabel.proteinGramsCountSpecified ? (int)consumerProductLabel.proteinGramsCount : (int?)null,
+					VitaminA = consumerProductLabel.vitaminADailyMinimumPercentSpecified ? (int)consumerProductLabel.vitaminADailyMinimumPercent : (int?)null,
+					VitaminC = consumerProductLabel.vitaminCDailyMinimumPercentSpecified ? (int)consumerProductLabel.vitaminCDailyMinimumPercent : (int?)null,
+					Calcium = consumerProductLabel.calciumDailyMinimumPercentSpecified ? (int)consumerProductLabel.calciumDailyMinimumPercent : (int?)null,
+					Iron = consumerProductLabel.ironDailyMinimumPercentSpecified ? (int)consumerProductLabel.ironDailyMinimumPercent : (int?)null,
+					AddedSugarsWeight = consumerProductLabel.addedSugarsGramsCountSpecified ? consumerProductLabel.addedSugarsGramsCount : (decimal?)null,
+					AddedSugarsPercent = consumerProductLabel.addedSugarDailyPercentSpecified ? (int)consumerProductLabel.addedSugarDailyPercent : (int?)null,
+					CalciumWeight = consumerProductLabel.calciumMilligramsCountSpecified ? consumerProductLabel.calciumMilligramsCount : (decimal?)null,
+					IronWeight = consumerProductLabel.ironMilligramsCountSpecified ? consumerProductLabel.ironMilligramsCount : (decimal?)null,
+					VitaminDWeight = consumerProductLabel.vitaminDMicrogramsCountSpecified ? consumerProductLabel.vitaminDMicrogramsCount : (decimal?)null
 				};
             }
         }

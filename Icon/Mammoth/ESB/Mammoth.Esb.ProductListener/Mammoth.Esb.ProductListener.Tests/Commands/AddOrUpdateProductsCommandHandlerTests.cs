@@ -234,6 +234,86 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
         }
 
 		[TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProductWith5NutritionElementSetToNull()
+        {
+            //Given
+            var itemId = 20000001;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+			itemModel.NutritionAttributes.AddedSugarsPercent = null;
+			itemModel.NutritionAttributes.AddedSugarsWeight = null;
+			itemModel.NutritionAttributes.CalciumWeight = null;
+			itemModel.NutritionAttributes.IronWeight = null;
+			itemModel.NutritionAttributes.VitaminDWeight = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            var globalAttributes = ReadItemAttributesDynamic(itemId);
+            AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
+            
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+
+            var signAttributes = ReadSignAttributesDynamic(itemId);
+            AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
+
+            var nutritionAttributes = ReadNutritionAttributesDynamic(itemId);
+            AssertNutritionAttributesAsExpected(itemModel.NutritionAttributes, nutritionAttributes);
+
+            var extAttributes = ReadExtendedAttributesDynamic(itemId);
+            AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
+        }
+
+		[TestMethod]
+        public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProductWith5NutritionElementSetToZero()
+        {
+            //Given
+            var itemId = 20000002;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+			itemModel.NutritionAttributes.AddedSugarsPercent = 0;
+			itemModel.NutritionAttributes.AddedSugarsWeight = 0;
+			itemModel.NutritionAttributes.CalciumWeight = 0;
+			itemModel.NutritionAttributes.IronWeight = 0;
+			itemModel.NutritionAttributes.VitaminDWeight = 0;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            var globalAttributes = ReadItemAttributesDynamic(itemId);
+            AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
+            
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+
+            var signAttributes = ReadSignAttributesDynamic(itemId);
+            AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
+
+            var nutritionAttributes = ReadNutritionAttributesDynamic(itemId);
+            AssertNutritionAttributesAsExpected(itemModel.NutritionAttributes, nutritionAttributes);
+
+            var extAttributes = ReadExtendedAttributesDynamic(itemId);
+            AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
+        }
+
+		[TestMethod]
 		public void AddOrUpdateProducts_ProductExistWithNullKitAttributesAndNullNutritionAttributes_ShouldAddAndUpdateProduct()
         {
 			//Given
