@@ -71,7 +71,7 @@ namespace WebSupport.Services
                 {
                     if (int.TryParse(store, out businessUnit))
                     {
-                        foreach (var scanCode in viewModel.ScanCodesList)
+                        foreach (var scanCode in codes)
                         {
                             var checkPointMessage = checkPointMessages.FirstOrDefault(m =>
                                 m.BusinessUnitID == businessUnit &&
