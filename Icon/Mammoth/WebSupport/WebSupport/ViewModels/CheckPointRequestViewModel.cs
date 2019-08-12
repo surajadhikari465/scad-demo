@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
-using WebSupport.DataAccess;
 using WebSupport.Helpers;
 using WebSupport.Models;
 
@@ -32,7 +31,7 @@ namespace WebSupport.ViewModels
         public string[] Stores { get; set; }
 
         [Required]
-        [Display(Name = "Scan Codes(s) (one per line)")]
+        [Display(Name = "Scan Codes(s) or Item ID(s) (one per line)")]
         [DataType(DataType.MultilineText)]
         [RegularExpression(ValidationConstants.RegExForValidScanCode, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCode)]
         public string ScanCodes { get; set; }
@@ -41,25 +40,15 @@ namespace WebSupport.ViewModels
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(ScanCodes))
-                {
-                    return new List<string>();
-                }
-                else
-                {
-                    return ScanCodes.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                }
+                return String.IsNullOrWhiteSpace(ScanCodes)
+					? new List<string>()
+					: ScanCodes.Replace(" ", String.Empty).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
             }
             set
             {
-                if (value == null || value.Count < 1)
-                {
-                    ScanCodes = string.Empty;
-                }
-                else
-                {
-                    ScanCodes = string.Join(Environment.NewLine, value);
-                }
+                ScanCodes = (value == null || value.Count < 1)
+					? String.Empty
+					: String.Join(Environment.NewLine, value);
             }
         }
 
@@ -67,18 +56,9 @@ namespace WebSupport.ViewModels
         {
             get
             {
-                int eachBusinessUnit = 0;
-                var businessUnitIDs = new List<int>(Stores.Length);
-                foreach ( var store in Stores)
-                {
-                    if (int.TryParse(store, out eachBusinessUnit))
-                    {
-                        businessUnitIDs.Add(eachBusinessUnit);
-                    }
-                }
-
-                return businessUnitIDs;
-            }
+				int id = 0;
+				return Stores == null ? new List<int>() : Stores.Where(x => int.TryParse(x, out id)).Select(x => id).ToList();
+			}
    
         }
 
@@ -97,5 +77,6 @@ namespace WebSupport.ViewModels
 
         public List<string> Errors { get; set; }
         public bool? Success { get; set; }
+        public bool IsItemId { get; set; }
     }
 }

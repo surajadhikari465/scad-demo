@@ -31,6 +31,7 @@ namespace WebSupport.Tests.Models
         private Mock<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>> mockGetPriceResetPricesQuery;
         private Mock<ICommandHandler<SaveSentMessageCommand>> mockSaveSentMessageCommandHandler;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
 
         [TestInitialize]
         public void Initialize()
@@ -41,13 +42,15 @@ namespace WebSupport.Tests.Models
             mockGetPriceResetPricesQuery = new Mock<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>();
             mockSaveSentMessageCommandHandler = new Mock<ICommandHandler<SaveSentMessageCommand>>();
             mockProducer = new Mock<IEsbProducer>();
+            mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
 
             webSupportPriceMessageService = new WebSupportPriceMessageService(
                 mockEsbConnectionFactory.Object,
                 settings,
                 mockPriceResetMessageBuilder.Object,
                 mockGetPriceResetPricesQuery.Object,
-                mockSaveSentMessageCommandHandler.Object);
+                mockSaveSentMessageCommandHandler.Object,
+                mockSearchScanCodes.Object);
             request = new PriceResetRequestViewModel
             {
                 RegionIndex = 1,

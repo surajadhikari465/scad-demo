@@ -21,6 +21,7 @@ namespace WebSupport.Services
         private IMessageBuilder<PriceResetMessageBuilderModel> priceResetMessageBuilder;
         private IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery;
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
+        private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
 
         public EsbConnectionSettings Settings { get; set; }
 
@@ -29,13 +30,15 @@ namespace WebSupport.Services
             EsbConnectionSettings settings,
             IMessageBuilder<PriceResetMessageBuilderModel> priceResetMessageBuilder,
             IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery,
-            ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler)
+            ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
+            IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes)
         {
             this.esbConnectionFactory = esbConnectionFactory;
             this.Settings = settings;
             this.priceResetMessageBuilder = priceResetMessageBuilder;
             this.getPriceResetPricesQuery = getPriceResetPricesQuery;
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
+            this.searchScanCodes = searchScanCodes;
         }
 
         public EsbServiceResponse Send(PriceResetRequestViewModel request)
@@ -48,10 +51,14 @@ namespace WebSupport.Services
                     .Where((s, i) => request.DownstreamSystems.Contains(i))
                     .ToList();
                 var chosenStores = request.Stores.ToList();
-                var chosenScanCodes = request.Items
-                    .Split()
-                    .Where(s => !String.IsNullOrWhiteSpace(s))
-                    .ToList();
+
+                var codes = request.Items.Replace(" ", String.Empty)
+                                   .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Distinct().ToList();
+
+                var chosenScanCodes = !request.IsItemId
+                    ? codes
+                    : searchScanCodes.Search(new GetMammothItemIdsToScanCodesParameters { ItemIds = codes });
 
                 var priceResetPrices = getPriceResetPricesQuery.Search(new GetPriceResetPricesParameters
                 {

@@ -22,6 +22,7 @@ namespace WebSupport.Tests.Controllers
         private Mock<ILogger> mockLogger;
         private Mock<IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>>> mockQueryForStores;
         private Mock<IRefreshPriceService> mockRefreshPriceService;
+        private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
 
         [TestInitialize]
         public void Initialize()
@@ -29,11 +30,13 @@ namespace WebSupport.Tests.Controllers
             mockLogger = new Mock<ILogger>();
             mockQueryForStores = new Mock<IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>>>();
             mockRefreshPriceService = new Mock<IRefreshPriceService>();
+            mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
 
             controller = new PriceRefreshController(
                 mockLogger.Object,
                 mockQueryForStores.Object,
-                mockRefreshPriceService.Object);
+                mockRefreshPriceService.Object,
+                mockSearchScanCodes.Object);
         }
 
         [TestMethod]

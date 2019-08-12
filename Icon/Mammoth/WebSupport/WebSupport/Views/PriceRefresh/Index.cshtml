@@ -54,12 +54,16 @@
             </div>
             <div class="col-sm-4">
                 @{
-                    int itemBoxSize = 20;
-                    if (Model.Items != null && Model.Items.Count() > 20)
-                    {
-                        itemBoxSize = (Model.Items.Count() <= 40) ? Model.Items.Count() : 40;
-                    }
+                     int itemBoxSize = 20;
+                     if (Model.Items != null && Model.Items.Count() > 20)
+                     {
+                         itemBoxSize = (Model.Items.Count() <= 40) ? Model.Items.Count() : 40;
+                     }
                 }
+
+                <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsItemId, "false") Scan Codes </label></div>
+                <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsItemId, "true") Item IDs </label></div>
+
                 @Html.TextAreaFor(model => Model.Items, itemBoxSize, 20, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Items, "", new { @class = "text-danger" })
             </div>

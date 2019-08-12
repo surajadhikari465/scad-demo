@@ -24,6 +24,7 @@ namespace WebSupport.Services
         private IMessageBuilder<CheckPointRequestBuilderModel> checkPointRequestMessageBuilder;
         private IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>> GetCheckPointMessageQuery;
         private ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler;
+		private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
 
         public WebSupportCheckPointRequestMessageService(
             ILogger logger,
@@ -31,7 +32,8 @@ namespace WebSupport.Services
             EsbConnectionSettings settings,
             IMessageBuilder<CheckPointRequestBuilderModel> checkPointRequestMessageBuilder,
             IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>> GetCheckPointMessageQuery,
-            ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler)
+            ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler,
+			IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes)
         {
             this.logger = logger;
             this.esbConnectionFactory = esbConnectionFactory;
@@ -39,6 +41,7 @@ namespace WebSupport.Services
             this.checkPointRequestMessageBuilder = checkPointRequestMessageBuilder;
             this.GetCheckPointMessageQuery = GetCheckPointMessageQuery;
             this.archiveCheckpointMessageCommandHandler = archiveCheckpointMessageCommandHandler;
+			this.searchScanCodes = searchScanCodes;
         }
 
         public EsbConnectionSettings Settings { get; set; }
@@ -48,13 +51,18 @@ namespace WebSupport.Services
             var esbResponses = new List<EsbServiceResponse>(viewModel.Stores.Length * viewModel.ScanCodesList.Count);
             int businessUnit = 0;
             var esbResponse = new EsbServiceResponse();
+            var region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
+
+            var codes = !viewModel.IsItemId
+                ? viewModel.ScanCodesList
+                : searchScanCodes.Search(new GetMammothItemIdsToScanCodesParameters { ItemIds = viewModel.ScanCodesList });
 
             var checkPointMessages = GetCheckPointMessageQuery.Search(
                 new GetCheckPointMessageParameters
                 {
                     Region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex),
                     BusinessUnitIds = viewModel.StoresAsIntList,
-                    ScanCodes = viewModel.ScanCodesList
+                    ScanCodes = codes
                 });
 
             if (checkPointMessages != null)

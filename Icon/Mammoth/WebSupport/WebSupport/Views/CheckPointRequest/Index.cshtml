@@ -51,6 +51,8 @@
             <div class="col-sm-offset-0 col-sm-2">
                 @Html.LabelFor(m => m.ScanCodes, new { @class = "control-label" })
             </div>
+            <div class="radio-inline" style="margin-left:15px"><label>@Html.RadioButtonFor(m => m.IsItemId, "false") Scan Codes </label></div>
+            <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsItemId, "true") Item IDs </label></div>
             <div class="col-sm-4" style="margin-top:10px">
                 @Html.TextAreaFor(expression: model => Model.ScanCodes,
                         rows: TextAreaHelper.GetRowsByListCount(scanCodeCount),

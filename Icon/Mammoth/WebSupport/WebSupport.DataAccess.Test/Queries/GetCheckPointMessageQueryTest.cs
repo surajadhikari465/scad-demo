@@ -119,7 +119,7 @@ namespace WebSupport.DataAccess.Test.Queries
             var result = getCheckPointMessageQuery.Search(parameters);
 
             //Then      
-            int expectedCount = 2;
+            int expectedCount = 4;
             Assert.AreEqual(expectedCount, result.Count(), $"Only {expectedCount} message sequence records were inserted for the test, so only {expectedCount} checkpoint messages should have been returned.");
             var chkPtMsg_A = result.FirstOrDefault(r=>r.BusinessUnitID==businessUnitId_A && r.ScanCode==scanCode_A);
             Assert.IsNotNull(chkPtMsg_A);

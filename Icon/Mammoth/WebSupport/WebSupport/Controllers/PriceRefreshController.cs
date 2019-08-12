@@ -18,15 +18,18 @@ namespace WebSupport.Controllers
         private ILogger logger;
         private IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> queryForStores;
         private IRefreshPriceService refreshPriceService;
+        private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
 
         public PriceRefreshController(
             ILogger logger,
             IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>> queryForStores,
-            IRefreshPriceService refreshPriceService)
+            IRefreshPriceService refreshPriceService,
+            IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes)
         {
             this.logger = logger;
             this.queryForStores = queryForStores;
             this.refreshPriceService = refreshPriceService;
+            this.searchScanCodes = searchScanCodes;
         }
 
         [HttpGet]
@@ -56,11 +59,10 @@ namespace WebSupport.Controllers
                     .Where((s, i) => viewModel.DownstreamSystems.Contains(i))
                     .ToList();
                 List<string> stores = viewModel.Stores.ToList();
-                List<string> scanCodes = viewModel
-                    .Items
-                    .Split()
-                    .Where(s => !String.IsNullOrWhiteSpace(s))
-                    .ToList();
+
+                var scanCodes = !viewModel.IsItemId 
+                    ? viewModel.Codes
+                    : searchScanCodes.Search(new GetMammothItemIdsToScanCodesParameters { ItemIds = viewModel.Codes });
 
                 var response = refreshPriceService.RefreshPrices(
                     region,

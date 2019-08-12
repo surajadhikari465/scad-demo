@@ -32,6 +32,7 @@ namespace WebSupport.Tests.Services
         private Mock<IMessageBuilder<CheckPointRequestBuilderModel>> mockRequestMessageBuilder;
         private Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>> mockGetCheckpointMessageQuery;
         private Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>> mockArchiveCheckpointMessageQuery;
+        private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
 
         [TestInitialize]
         public void Initialize()
@@ -43,6 +44,7 @@ namespace WebSupport.Tests.Services
             mockRequestMessageBuilder = new Mock<IMessageBuilder<CheckPointRequestBuilderModel>>();
             mockGetCheckpointMessageQuery = new Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>();
             mockArchiveCheckpointMessageQuery = new Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>();
+            mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
 
             mockEsbConnectionFactory.Setup(f => f.CreateProducer(fakeEsbSettings))
                 .Returns(mockEsbProducer.Object);
@@ -53,8 +55,8 @@ namespace WebSupport.Tests.Services
                 fakeEsbSettings,
                 mockRequestMessageBuilder.Object,
                 mockGetCheckpointMessageQuery.Object,
-                mockArchiveCheckpointMessageQuery.Object
-                );
+                mockArchiveCheckpointMessageQuery.Object,
+	            mockSearchScanCodes.Object);
         }
 
         [TestMethod]

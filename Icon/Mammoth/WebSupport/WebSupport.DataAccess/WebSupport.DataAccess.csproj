@@ -172,6 +172,7 @@
     <Compile Include="Queries\GetGpmPricesQuery.cs" />
     <Compile Include="Queries\GetGpmStatusParameters.cs" />
     <Compile Include="Queries\GetGpmStatusQuery.cs" />
+    <Compile Include="Queries\GetItemIdsToScanCodesParameters.cs" />
     <Compile Include="Queries\GetItemPsgDataForGpmRegionParameters.cs" />
     <Compile Include="Queries\GetItemPsgDataParameters.cs" />
     <Compile Include="Queries\GetItemPsgDataForGpmRegionQuery.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Queries\GetJobScheduleQuery.cs" />
     <Compile Include="Queries\GetJobSchedulesParameters.cs" />
     <Compile Include="Queries\GetJobSchedulesQuery.cs" />
+    <Compile Include="Queries\GetMammothItemIdsToScanCodesParameters.cs" />
     <Compile Include="Queries\GetPriceResetPricesParameters.cs" />
     <Compile Include="Queries\GetPriceResetPricesQuery.cs" />
     <Compile Include="Queries\GetScanCodeExistsParameters.cs" />
@@ -188,6 +190,8 @@
     <Compile Include="Queries\GetStoresForRegionQuery.cs" />
     <Compile Include="Queries\IsRegionOnGpmParameters.cs" />
     <Compile Include="Queries\IsRegionOnGpmQuery.cs" />
+    <Compile Include="Queries\GetItemIdsToScanCodesQuery.cs" />
+    <Compile Include="Queries\GetMammothItemIdsToScanCodesQuery.cs" />
     <Compile Include="TransferObjects\GpmPriceTransferObject.cs" />
     <Compile Include="TransferObjects\PriceTransferObject.cs" />
     <Compile Include="TransferObjects\StoreTransferObject.cs" />

@@ -100,7 +100,8 @@ namespace WebSupport.App_Start
                 EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
-                container.GetInstance<ICommandHandler<SaveSentMessageCommand>>());
+                container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
+                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>());
         }
 
         private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
@@ -111,7 +112,8 @@ namespace WebSupport.App_Start
                 EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsCheckPointRequestConnection"),
                 container.GetInstance<IMessageBuilder<CheckPointRequestBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>(),
-                container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>()
+                container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>(),
+                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>()
                 );
         }
 

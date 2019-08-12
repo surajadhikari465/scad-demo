@@ -11,30 +11,30 @@
         @using (Html.BeginForm("CreateEvents", "EventCreator", null, FormMethod.Post, new { @class = "begin-form col-md-12" }))
         {
             <fieldset>
-
                 <div class="row">
                     @Html.Label("Region", new { @class = "form-label col-md-4" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedRegion,
-                            Model.AvailableRegions,
-                            null, new { @class = "form-label col-md-8" })
+                        @Html.DropDownListFor(model => model.SelectedRegion, Model.AvailableRegions, null, new { @class = "form-label col-md-8" })
                     </div>
                 </div>
 
                 <div class="row">
                     @Html.Label("Event Type", new { @class = "form-label col-md-4" })
                     <div>
-                        @Html.DropDownListFor(model => model.SelectedEventType,
-                            Model.AvailableEventTypes,
-                            null, new { @class = "form-label col-md-8" })
+                       @Html.DropDownListFor(model => model.SelectedEventType, Model.AvailableEventTypes, null, new { @class = "form-label col-md-8" })
                     </div>
                 </div>
 
-                <div class="row">
-                    @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", 3000), new { @class = "form-label col-md-4" })
-                    <div>
+               <div class="row">
+                   @Html.Label("Scan Code(s) or Item ID(s) (one per line)", new { id = "lblID", @class = "form-label col-md-4" })
+                   <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsItemId, "false") Scan Codes </label></div>
+                   <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsItemId, "true") Item IDs </label></div>
+               </div>
+
+               <div class="row">
+                    <div class="form-input col- col-lg-offset-4">
                         @Html.TextAreaFor(model => Model.ScanCodesText, 20, 20, new { @class = "form-input col-md-8" })
-                        @Html.ValidationMessageFor(model => Model.ScanCodesText, null, new { @class = "col-md-4 form-property-val" })
+                        @Html.ValidationMessageFor(model => Model.ScanCodesText, null, new { @class = "col-md-8 form-property-val" })
                     </div>
                 </div>
             </fieldset>
@@ -58,4 +58,3 @@
     </div>
 
 </div>
-

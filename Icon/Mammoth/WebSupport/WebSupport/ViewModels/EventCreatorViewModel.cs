@@ -5,7 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
-
     using WebSupport.Models;
 
     public class EventCreatorViewModel
@@ -33,15 +32,19 @@
             }
         }
 
+        public bool IsItemId { get; set; }
         public string SelectedEventType { get; set; }
 
-        public IEnumerable<string> GetScanCodes()
+        public List<string> Codes
         {
-            var parsedScanCodes = this.ScanCodesText.Split(
-                new string[] { Environment.NewLine },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            return parsedScanCodes.Select(s => s.Trim()).Distinct();
+			get
+			{
+				return String.IsNullOrWhiteSpace(ScanCodesText)
+					? new List<string>()
+					: ScanCodesText.Replace(" ", String.Empty)
+						.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                        .Distinct().ToList();
+			}
         }
     }
 }

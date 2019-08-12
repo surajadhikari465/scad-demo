@@ -106,52 +106,6 @@ namespace WebSupport.Tests.Controllers
         }
 
         [TestMethod]
-        public void RequeueEventsController_Index_Submit_ZeroRecordsShouldBeSubmit()
-        {
-            //Given
-            int id = 0;
-            var view = GetViewModel();
-
-            //Act
-            SqlTransaction trans;
-            var sql = @"INSERT into dbo.ItemHistory(Store_No, Item_Key, DateStamp, CreatedBy, SubTeam_No, Adjustment_ID) VALUES(809,33516,'2000-01-01',160,905,1);
-                        SELECT SCOPE_IDENTITY()";
-
-            using(var con = new SqlConnection(ConfigurationManager.ConnectionStrings[$"IRMA_{view.Region}"].ConnectionString))
-            {
-                con.Open();
-                trans = con.BeginTransaction();
-
-                try
-                {
-                    using(var cmd = new SqlCommand(sql, con, trans))
-                    {
-                        int.TryParse(cmd.ExecuteScalar().ToString(), out id);
-                    }
-                }
-                catch{}
-                finally
-                {
-                    trans.Rollback();
-                }
-
-                var context = new Mock<ControllerContext>();
-                var value = new NameValueCollection
-                {
-                    ["cbIsSelected"] = id.ToString(),
-                    ["ActionSubmit"] = String.Empty
-                };
-
-                context.Setup(x => x.HttpContext.Request.Form).Returns(value);
-                this.controller.ControllerContext = context.Object;
-                controller.Index(view);
-            }
-
-            //Assert
-            Assert.AreEqual(this.controller.ViewData["FYI"], $"Event code {view.EventType}: 0 events have been submitted.");
-        }
-
-        [TestMethod]
         public void RequeueEventsController_Index_Submit_OneRecordsShouldBeSubmit()
         {
             //Given
