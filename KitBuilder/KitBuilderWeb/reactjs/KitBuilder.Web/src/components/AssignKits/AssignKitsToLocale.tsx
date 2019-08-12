@@ -223,9 +223,8 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                data[i].childs = [];
                map[data[i].localeId] = data[i];
 
-
                if ((data[i].isAssigned && data[i].statusId != 3)) {
-                    if (data[i].statusId != 5) {
+                    if (data[i].statusId != 5 && data[i].statusId != 7 && data[i].statusId != 9) {
                          disablePublish = true;
                          this.setState({ isReadyToPublish: false })
                     }
@@ -252,17 +251,10 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                map[data[i].parentLocaleId].childs.push(data[i]);
           }
 
-          var allPublished = data.filter(function (el: any) {
-               return el.statusId != 5 && (el.isAssigned || el.isExcluded)
-          });
-
-          if (allPublished.length == 0 && isAssignedToOneLocation) {
-               this.setState({ isReadyToPublish: false })
-          }
-          else if (!disablePublish && isAssignedToOneLocation) {
+          if (!disablePublish && isAssignedToOneLocation) {
                this.setState({ isReadyToPublish: true })
           }
-          else if (!isAssignedToOneLocation) {
+          else {
                this.setState({ isReadyToPublish: false })
           }
 
