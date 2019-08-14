@@ -256,95 +256,85 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
             logger.Debug("AddResultsToOutputFile exit")
         End Sub
 
-        ''' <summary>
-        ''' Sets the temporary filename for the local EDI file that is generated during processing.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Function GenerateTempFilename(ByVal region As String, ByVal sType As String) As String
-            logger.Debug("GenerateTempFilename entry: region=" + region)
-            Dim filepath As String
-            Dim tempFilename As New StringBuilder
+		''' <summary>
+		''' Sets the temporary filename for the local EDI file that is generated during processing.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Function GenerateTempFilename(ByVal region As String, ByVal sType As String) As String
+			logger.Debug("GenerateTempFilename entry: region=" + region)
+			' create sub directory in temp location specified in app.config
+			Dim filePath As String = Path.Combine(ConfigurationServices.AppSettings("PSFileDir"), region)
 
-            ' create sub directory in temp location specified in app.config
-            filepath = Path.Combine(ConfigurationServices.AppSettings("PSFileDir"), region)
+			Try  ' check for existence of directory before adding the new file
+				If Not Directory.Exists(filePath) Then
+					Directory.CreateDirectory(filePath)
+				End If
+			Catch ex As Exception
+				Throw New Exception($"PeopleSoftUpload.GenerateTempFilename(): Failed to create directory {filePath}", ex.InnerException)
+			End Try
 
-            ' check for existence of directory before adding the new file
-            If Not Directory.Exists(filepath) Then
-                Directory.CreateDirectory(filepath)
-            End If
+			Dim prefix$ = If(sType = "GL", "PSGLFilePrefix", "PSFilePrefix")
+			Dim ext$ = If(sType = "GL", "txt", "EDI")
 
-            If sType = "GL" Then
-                ' set the filename as root dir\PSGL_[region]_YYYYMMDD.txt
-                tempFilename.Append(ConfigurationServices.AppSettings("PSGLFilePrefix"))
-                tempFilename.Append("_")
-                tempFilename.Append(region)
-                tempFilename.Append("_")
-                tempFilename.Append(Format(Today, "yyyyMMdd"))
-                tempFilename.Append(".txt")
-            Else
-                ' set the filename as root dir\[PSFilePrefix]_[region]_YYYYMMDD.EDI
-                tempFilename.Append(ConfigurationServices.AppSettings("PSFilePrefix"))
-                tempFilename.Append("_")
-                tempFilename.Append(region)
-                tempFilename.Append("_")
-                tempFilename.Append(Format(Today, "yyyyMMdd"))
-                tempFilename.Append(".EDI")
-            End If
+			logger.Debug("GenerateTempFilename exit")
+			'File name: Prefix_Region_Date.Ext
+			Return Path.Combine(filePath, String.Format("{0}_{1}_{2}.{3}",
+					ConfigurationServices.AppSettings(prefix),
+					region,
+					Format(Today, "yyyyMMdd"),
+					ext))
+		End Function
 
-            logger.Debug("GenerateTempFilename exit")
-            Return Path.Combine(filepath, tempFilename.ToString)
-        End Function
+		''' <summary>
+		''' Open the EDI output file for processing.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Function OpenOutputFile(ByVal region As String, ByVal sType As String) As Boolean
+			logger.Debug("OpenOutputFile enter: region=" + region)
+			Dim success As Boolean = True
 
-        ''' <summary>
-        ''' Open the EDI output file for processing.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Function OpenOutputFile(ByVal region As String, ByVal sType As String) As Boolean
-            logger.Debug("OpenOutputFile enter: region=" + region)
-            Dim success As Boolean = True
+			' Open the file for processing if it is not already open.
+			' If file exits then data will be appended.
+			Dim filename As String = Nothing
+			Try
+				filename = GenerateTempFilename(region, sType)
+				logger.Info("Opening the EDI file for processing: " + filename)
+				If Not ((_outFileText IsNot Nothing) AndAlso (_outFileText.BaseStream.CanWrite)) Then
+					_outFileText = New StreamWriter(filename, True, _fileEncoding)
+				End If
+			Catch ex As Exception
+				success = False
+				' Log the exception and send out an email error notification.
+				logger.Error("PeopleSoftUploadJob failed when trying to open the output file for processing.", ex)
+				Dim args(1) As String
+				args(0) = filename
+				ErrorHandler.ProcessError(ErrorType.PeopleSoftUpload_FileError, args, SeverityLevel.Fatal, ex)
 
-            ' Open the file for processing if it is not already open.
-            ' If file exits then data will be appended.
-            Dim filename As String = Nothing
-            Try
-                filename = GenerateTempFilename(region, sType)
-                logger.Info("Opening the EDI file for processing: " + filename)
-                If Not ((_outFileText IsNot Nothing) AndAlso (_outFileText.BaseStream.CanWrite)) Then
-                    _outFileText = New StreamWriter(filename, True, _fileEncoding)
-                End If
-            Catch ex As Exception
-                success = False
-                ' Log the exception and send out an email error notification.
-                logger.Error("PeopleSoftUploadJob failed when trying to open the output file for processing.", ex)
-                Dim args(1) As String
-                args(0) = filename
-                ErrorHandler.ProcessError(ErrorType.PeopleSoftUpload_FileError, args, SeverityLevel.Fatal, ex)
+				' Set the job status flag in case this job is being executed from the UI to notify the user of the
+				' error that was encoutered, but handled.
+				jobSuccess = False
+				Dim msg As New StringBuilder
+				msg.Append("PeopleSoftUploadJob failed when trying to open the output file for processing.")
+				msg.Append(Environment.NewLine)
+				msg.Append(ex.Message)
+				msg.Append(Environment.NewLine)
+				msg.Append(ex.StackTrace)
+				_jobExecutionMessage = msg.ToString()
+			End Try
+			logger.Debug("OpenOutputFile exit: success=" + success.ToString())
+			Return success
+		End Function
 
-                ' Set the job status flag in case this job is being executed from the UI to notify the user of the
-                ' error that was encoutered, but handled.
-                jobSuccess = False
-                Dim msg As New StringBuilder
-                msg.Append("PeopleSoftUploadJob failed when trying to open the output file for processing.")
-                msg.Append(Environment.NewLine)
-                msg.Append(ex.Message)
-                msg.Append(Environment.NewLine)
-                msg.Append(ex.StackTrace)
-                _jobExecutionMessage = msg.ToString()
-            End Try
-            logger.Debug("OpenOutputFile exit: success=" + success.ToString())
-            Return success
-        End Function
-
-        ''' <summary>
-        ''' Build the first line that is included in the PeopleSoft output file for a record.
-        ''' </summary>
-        ''' <param name="currentPSRecord"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function BuildPeopleSoftHeaderRow(ByRef currentPSRecord As PeopleSoftUploadBO) As String
-            logger.Debug("BuildPeopleSoftHeaderRow entry: currentPSRecord.OrderHeaderID=" + currentPSRecord.OrderHeaderID.ToString() + ", currentPSRecord.VCHR_HDR_ROW_ID=" + currentPSRecord.VCHR_HDR_ROW_ID)
-            Dim currentLine As New StringBuilder()
-            currentLine.Append(currentPSRecord.VCHR_HDR_ROW_ID)     ' required
+		''' <summary>
+		''' Build the first line that is included in the PeopleSoft output file for a record.
+		''' </summary>
+		''' <param name="currentPSRecord"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function BuildPeopleSoftHeaderRow(ByRef currentPSRecord As PeopleSoftUploadBO) As String
+			logger.Debug("BuildPeopleSoftHeaderRow entry: currentPSRecord.OrderHeaderID=" + currentPSRecord.OrderHeaderID.ToString() + ", currentPSRecord.VCHR_HDR_ROW_ID=" + currentPSRecord.VCHR_HDR_ROW_ID)
+			Dim currentLine As New StringBuilder()
+			currentLine.Append(currentPSRecord.VCHR_HDR_ROW_ID)     ' required
             currentLine.Append("|")
             currentLine.Append(currentPSRecord.BUSINESS_UNIT_ID)     ' required
             currentLine.Append("|")
