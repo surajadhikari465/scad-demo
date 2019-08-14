@@ -140,11 +140,9 @@
                                 </pfx:cancelUserInfo>
                                 <xsl:for-each select="$GetIrmaData/Output/POData">
                                     <pfx:purchaseOrderDeletionDetail>
-                                        <xsl:if test="OrderHeader_ID">
-                                            <pfx:PurchaseOrderDetailNumber>
-                                                <xsl:value-of select="OrderHeader_ID"/>
-                                            </pfx:PurchaseOrderDetailNumber>
-                                        </xsl:if>
+                                        <pfx:PurchaseOrderDetailNumber>
+                                            <xsl:value-of select="PurchaseOrderDetailNumber"/>
+                                        </pfx:PurchaseOrderDetailNumber>
                                         <pfx:sourceItemKey>
                                             <xsl:value-of select="SourceItemKey"/>
                                         </pfx:sourceItemKey>
