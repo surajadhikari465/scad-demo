@@ -424,7 +424,7 @@ WHERE KitLocaleId = ?
                                             <ns13:list>
                                                 <xsl:if test="instructionListId">
                                                     <ns13:id>
-                                                        <xsl:value-of select="concat(&quot;CI_&quot;, instructionListId)"/>
+                                                        <xsl:value-of select="concat(&quot;CLI_&quot;, instructionListId)"/>
                                                     </ns13:id>
                                                 </xsl:if>
                                                 <ns13:type>

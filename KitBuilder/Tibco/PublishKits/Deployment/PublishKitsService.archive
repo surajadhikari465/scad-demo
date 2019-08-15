@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/PublishKits.process</processProperty>
         </processArchive>
-        <versionProperty>38</versionProperty>
+        <versionProperty>39</versionProperty>
         <authorProperty>Min</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishKitsService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\min.zhao\source\repos\SCAD\Icon\Tibco\DeploymentFiles\PublishKitsService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\AzureIcon\Icon\Tibco\DeploymentFiles\PublishKitsService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
