@@ -16,11 +16,12 @@ BEGIN
 				'KBI_' + CAST(PluNumber as varchar(20)) as Id,
 		         [Group]+ '_'+ CAST(Sequence as varchar(20))  as Sequence,
 				 Member as Description,
-				 CASE WHEN Isdeleted = '1' THEN  'Delete' else 'AddOrUpdate' END as ActionCode
+				 'Replace' as ActionCode
 		  from 
 			InstructionList
 			inner join InstructionListMember on InstructionList.InstructionListId = InstructionListMember.InstructionListId
 			WHERE InstructionList.InstructionListId = @InstructionListId
+			  AND ISNULL(IsDeleted, 0 ) = 0
 		    ORDER BY [Group],Sequence
 	END
 
