@@ -26,7 +26,7 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">CECEN-H8KBHM2</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA+MMCVTsA+EOF+xUrOoOWhwAAAAACAAAAAAADZgAAwAAAABAAAADjC7ca96dYnA1+f7kFTK0FAAAAAASAAACgAAAAEAAAADoDYqtscIcoRKgzgaMHpDSIAAAAE73aiUIkfawBw3W7scgsDY2q7srbECRse1zi3zF4LIh/e+0J+f8xm0AE4SVtPZw+3cXYxl6Se171x+V6r/tcLm/Lhjs63wmHoBI89ADKyLdos6/XxlzsZ7whXWBcizBf7nEd66PbAlpO85FJnm33g4iVzXAUbiMhUsniBrGrXX6tqOOuig4vAhQAAADwvbQsb3geJL3Biiy7Hlm3qkBBug==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAVDrGkqI+gUai+7vxBTsPEgAAAAACAAAAAAADZgAAwAAAABAAAACY+TgNG5m0dnICl0I3SfaIAAAAAASAAACgAAAAEAAAABlLpqiLIJok4gc/chjkewCIAAAAujq7vkKqOXoDEfAtPiV6R3Yh0m1vNdwuLR6BCcA2ZUhBQD4enuChXiaiw6qDpUktbkQOcBHHla0tqWPThaD8GRptNgDYMpUoaHydxjvRU65AD6ApDk9zBDQw0SjYz6yam3caJN20tJhPOkIdPGwRwzokM8aHxzyxdlsKQcFIJqF2RcuqphVoZBQAAABOhVtxZxVCSQpjh5xOUC67CCbzxg==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
@@ -1921,10 +1921,10 @@
                 <SSIS:Property SSIS:Name="Name">ItemVendorLaneExtract-FromIrma</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">218</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">225</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{21D0DBA0-9571-4826-A68F-966030F8561A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{24BFE9DA-49CC-4D07-8E32-3FEF6D1BE722}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1983,7 +1983,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">CN=CA-ROOT-I, O=Whole Foods Market</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">E=uday.bhaskar@wholefoods.com, CN=Uday Bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L="Austin ", S=TX, C=US</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -2067,7 +2067,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">ssl://cerd1617.wfm.pvt:17293</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">ssl://TST-ESB-EMS-1.wfm.pvt:17293,ssl://TST-ESB-EMS-2.wfm.pvt:17293</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -2095,7 +2095,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">1</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">cerd1617.wfm.pvt</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">TST-ESB-EMS-1.wfm.pvt</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
