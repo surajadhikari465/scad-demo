@@ -555,8 +555,12 @@ AS
 
 	EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '5.0.3 Price Change - [Load Uploaded Data]'
 
-  -- convert the linked item identifier to an item key
-  SET @LinkedItem = (SELECT CAST(Item_Key as varchar(50)) FROM dbo.ItemIdentifier WHERE identifier = @LinkedItem);
+	-- convert the linked item identifier to an item key
+	SET @LinkedItem = (SELECT TOP 1 CAST(Item_Key as varchar(50))
+	                   FROM dbo.ItemIdentifier
+	                   WHERE identifier = @LinkedItem
+	                     AND Deleted_Identifier <> 1
+	                     AND Remove_Identifier <> 1);
 
 	-- Load the stores from the saved selection or use the
 	-- store specified in the upload row being processed
