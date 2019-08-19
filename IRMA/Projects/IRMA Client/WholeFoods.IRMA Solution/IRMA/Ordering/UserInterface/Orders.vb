@@ -363,12 +363,10 @@ Friend Class frmOrders
         logger.Debug("AddStatusInfo Entry")
 
         If Len(lblStatus.Text) > 0 Then
-            If InStr(1, lblStatus.Text, sIn, CompareMethod.Text) = 0 Then
-                If VB.Right(lblStatus.Text, 1) = "]" Then
-                    lblStatus.Text = Mid(lblStatus.Text, 1, Len(lblStatus.Text) - 1) & ", " & sIn & "]"
-                Else
-                    lblStatus.Text = lblStatus.Text & ", " & sIn
-                End If
+            If VB.Right(lblStatus.Text, 1) = "]" Then
+                lblStatus.Text = Mid(lblStatus.Text, 1, Len(lblStatus.Text) - 1) & ", " & sIn & "]"
+            Else
+                lblStatus.Text = lblStatus.Text & ", " & sIn
             End If
         Else
             lblStatus.Text = sIn
@@ -585,7 +583,7 @@ Friend Class frmOrders
             frmOrdersItem.Close()
             frmOrdersItem.Dispose()
 
-            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), _
+            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
                               CDec(txtField(iOrderHeader3rdPartyFreight).Text))
 
             RefreshOrderDetails(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), True)
@@ -1302,7 +1300,7 @@ me_exit:
 
                         Try
                             SendMailBO.EmailPO(m_lOrderHeader_ID)
-                            MessageBox.Show("Your PO was sent successfully." & vbCrLf & vbCrLf & _
+                            MessageBox.Show("Your PO was sent successfully." & vbCrLf & vbCrLf &
                                             "If the delivery of the PO fails, you will receive a notification in your email inbox.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         Catch ex As Exception
                             ' To avoid null-ref exception, we need to check InnerException.
@@ -1311,10 +1309,10 @@ me_exit:
                                 innerExcMsg = ex.InnerException.ToString
                             End If
 
-                            MessageBox.Show("An error ocurred transmitting your PO: " & _
-                                            vbCrLf & vbCrLf & _
-                                            ex.Message & vbCrLf & _
-                                            innerExcMsg, _
+                            MessageBox.Show("An error ocurred transmitting your PO: " &
+                                            vbCrLf & vbCrLf &
+                                            ex.Message & vbCrLf &
+                                            innerExcMsg,
                                             Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Try
                     ElseIf bElectronic Then
@@ -1341,7 +1339,7 @@ me_exit:
 
         logger.Debug("cmdSendOrder_Click Exit")
     End Sub
-    
+
     Private Sub AutoCloseIntraStoreTransfer()
         logger.Debug("AutoCloseIntraStoreTransfer Entry")
 
@@ -1474,20 +1472,20 @@ me_exit:
                 OriginalOrderHeader_ID = IIf(TextValue(txtField(iOrderHeaderOrgPO).Text) = "NULL", Nothing, TextValue(txtField(iOrderHeaderOrgPO).Text))
                 ReasonCode_ID = IIf(IsNothing(ucCostAdjReasonCode.Value), "NULL", ucCostAdjReasonCode.Value)
 
-                OrderingDAO.UpdateOrderInfo(m_lOrderHeader_ID, _
-                                            Temperature, _
-                                            QuantityDiscount, _
-                                            Me.dtpExpectedDate.Value, _
-                                            ComboValue(cmbField(iOrderHeaderDiscountType)), _
-                                            ReasonCode_ID, _
-                                            ComboValue(cmbField(iOrderHeaderPurchaseLocation_ID)), _
-                                            ComboValue(cmbField(iOrderHeaderReceiveLocation_ID)), _
-                                            IIf(bFax = True, 1, 0), _
-                                            IIf(bEmail = True, 1, 0), _
-                                            IIf(bElectronic = True, 1, 0), _
-                                            chkField(iOrderHeaderReturn_Order).CheckState, _
-                                            OriginalOrderHeader_ID, _
-                                            giUserID, _
+                OrderingDAO.UpdateOrderInfo(m_lOrderHeader_ID,
+                                            Temperature,
+                                            QuantityDiscount,
+                                            Me.dtpExpectedDate.Value,
+                                            ComboValue(cmbField(iOrderHeaderDiscountType)),
+                                            ReasonCode_ID,
+                                            ComboValue(cmbField(iOrderHeaderPurchaseLocation_ID)),
+                                            ComboValue(cmbField(iOrderHeaderReceiveLocation_ID)),
+                                            IIf(bFax = True, 1, 0),
+                                            IIf(bEmail = True, 1, 0),
+                                            IIf(bElectronic = True, 1, 0),
+                                            chkField(iOrderHeaderReturn_Order).CheckState,
+                                            OriginalOrderHeader_ID,
+                                            giUserID,
                                             IIf(CheckBox_DropShip.Checked, 1, 0))
 
             Catch ex As Exception
@@ -1736,57 +1734,57 @@ me_exit:
         logger.Debug("<= ucCostAdjReasonCode_RowSelected")
     End Sub
 
-  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
-    CType(eventSender, TextBox).SelectAll()
-  End Sub
+    Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+        CType(eventSender, TextBox).SelectAll()
+    End Sub
 
-  Private Sub txtField_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtField.Leave
-    logger.Debug("=> txtField_Leave")
+    Private Sub txtField_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtField.Leave
+        logger.Debug("=> txtField_Leave")
 
-    If m_DiscountAmtChanged And m_OrderDiscountType <> 0 Then
-      txtField(iOrderHeaderQuantityDiscount).Text = txtField(iOrderHeaderQuantityDiscount).Text.Trim()
-      If txtField(iOrderHeaderQuantityDiscount).Text.Length <> 0 Then
-        m_OrderDiscountAmt = CDec(txtField(iOrderHeaderQuantityDiscount).Text)
-      End If
-      SaveData()
-      UpdateOrderItemsCost()
+        If m_DiscountAmtChanged And m_OrderDiscountType <> 0 Then
+            txtField(iOrderHeaderQuantityDiscount).Text = txtField(iOrderHeaderQuantityDiscount).Text.Trim()
+            If txtField(iOrderHeaderQuantityDiscount).Text.Length <> 0 Then
+                m_OrderDiscountAmt = CDec(txtField(iOrderHeaderQuantityDiscount).Text)
+            End If
+            SaveData()
+            UpdateOrderItemsCost()
 
-      DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
-                              CDec(txtField(iOrderHeader3rdPartyFreight).Text))
+            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
+                                    CDec(txtField(iOrderHeader3rdPartyFreight).Text))
 
-      RefreshOrderDetails(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), True)
-      m_DiscountAmtChanged = False
-    End If
-
-    logger.Debug("<= txtField_Leave ")
-  End Sub
-
-  Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
-    logger.Debug("txtField_KeyPress Entry")
-
-    Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-    Dim Index As Short = txtField.GetIndex(eventSender)
-
-    If Not txtField(Index).ReadOnly Then
-      KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
-
-      If Index = iOrderHeaderInvoiceNumber Then
-        If KeyAscii >= ASCII_LOWERCASE_A And KeyAscii <= ASCII_LOWERCASE_Z Then
-          KeyAscii = KeyAscii - ASCII_LOWERCASE_A + ASCII_UPPERCASE_A
+            RefreshOrderDetails(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), True)
+            m_DiscountAmtChanged = False
         End If
-      End If
-    End If
 
-    eventArgs.KeyChar = Chr(KeyAscii)
+        logger.Debug("<= txtField_Leave ")
+    End Sub
 
-    If KeyAscii = ASCII_NULL Then
-      eventArgs.Handled = True
-    End If
+    Private Sub txtField_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtField.KeyPress
+        logger.Debug("txtField_KeyPress Entry")
 
-    logger.Debug("txtField_KeyPress Exit")
-  End Sub
+        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
+        Dim Index As Short = txtField.GetIndex(eventSender)
 
-  Private Sub RefreshOrderDetails(ByRef lOrderNumber As Integer, ByRef bUpdateGrid As Boolean)
+        If Not txtField(Index).ReadOnly Then
+            KeyAscii = ValidateKeyPressEvent(KeyAscii, txtField(Index).Tag, txtField(Index), 0, 0, 0)
+
+            If Index = iOrderHeaderInvoiceNumber Then
+                If KeyAscii >= ASCII_LOWERCASE_A And KeyAscii <= ASCII_LOWERCASE_Z Then
+                    KeyAscii = KeyAscii - ASCII_LOWERCASE_A + ASCII_UPPERCASE_A
+                End If
+            End If
+        End If
+
+        eventArgs.KeyChar = Chr(KeyAscii)
+
+        If KeyAscii = ASCII_NULL Then
+            eventArgs.Handled = True
+        End If
+
+        logger.Debug("txtField_KeyPress Exit")
+    End Sub
+
+    Private Sub RefreshOrderDetails(ByRef lOrderNumber As Integer, ByRef bUpdateGrid As Boolean)
         logger.Debug("RefreshOrderDetails Entry")
 
         Dim rsTemp As DAO.Recordset = Nothing
@@ -2646,7 +2644,7 @@ me_exit:
                     ' restore old value
                     txtField(iOrderHeader3rdPartyFreight).Text = m_3rdParty.ToString
                     ' Run update to the line items
-                    DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), _
+                    DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
                           CDec(txtField(iOrderHeader3rdPartyFreight).Text))
                 End If
             End If
@@ -2756,18 +2754,18 @@ me_exit:
             ReceivedItemFreight = CalculateCost(iOrderItemReceivedItemFreight)
 
             lIgnoreErrNum(0) = 50002
-            sSQL = "EXEC UpdateOrderItemCostData " & OrderItemID & ", " & _
-                         LandingCost & ", " & _
-                         Markupcost & ", " & _
-                         LineItemCost & ", " & _
-                         LineItemHandling & ", " & _
-                         LineItemFreight & ", " & _
-                         ReceivedItemCost & ", -" & _
-                         ReceivedItemHandling & ", -" & _
-                         ReceivedItemFreight & ", " & _
-                         Freight3rdParty & ", " & _
+            sSQL = "EXEC UpdateOrderItemCostData " & OrderItemID & ", " &
+                         LandingCost & ", " &
+                         Markupcost & ", " &
+                         LineItemCost & ", " &
+                         LineItemHandling & ", " &
+                         LineItemFreight & ", " &
+                         ReceivedItemCost & ", -" &
+                         ReceivedItemHandling & ", -" &
+                         ReceivedItemFreight & ", " &
+                         Freight3rdParty & ", " &
                          LineItemFreight3rdParty
-            SQLExecute3(sSQL, DAO.RecordsetOptionEnum.dbSQLPassThrough, _
+            SQLExecute3(sSQL, DAO.RecordsetOptionEnum.dbSQLPassThrough,
                          lIgnoreErrNum)
 
             If Err.Number <> 0 Then
@@ -2891,35 +2889,35 @@ me_exit:
                         Case 2 : cCost = cCost - (cCost * (ItemQuantityDiscount / 100))
                     End Select
 
-                    cCost = CostConversion(cCost, _
-                                          CostUnit, _
-                                          QuantityUnit, _
-                                          Package_Desc1, _
-                                          Package_Desc2, _
-                                          Package_Unit_ID, _
-                                          Total_Weight, _
+                    cCost = CostConversion(cCost,
+                                          CostUnit,
+                                          QuantityUnit,
+                                          Package_Desc1,
+                                          Package_Desc2,
+                                          Package_Unit_ID,
+                                          Total_Weight,
                                           (QuantityReceived * (100 + MarkupPercent) / 100))
 
                 Case iOrderItemLineItemFreight, iOrderItemReceivedItemFreight
 
-                    cCost = CostConversion(ItemFreight, _
-                                           FreightUnit, _
-                                           QuantityUnit, _
-                                           Package_Desc1, _
-                                           Package_Desc2, _
-                                           Package_Unit_ID, _
-                                           Total_Weight, _
+                    cCost = CostConversion(ItemFreight,
+                                           FreightUnit,
+                                           QuantityUnit,
+                                           Package_Desc1,
+                                           Package_Desc2,
+                                           Package_Unit_ID,
+                                           Total_Weight,
                                            (QuantityReceived * (100 + MarkupPercent) / 100))
 
                 Case iOrderItemLineItemHandling, iOrderItemReceivedItemHandling
 
-                    cCost = CostConversion(ItemHandling, _
-                                           HandlingUnit, _
-                                           QuantityUnit, _
-                                           Package_Desc1, _
-                                           Package_Desc2, _
-                                           Package_Unit_ID, _
-                                           Total_Weight, _
+                    cCost = CostConversion(ItemHandling,
+                                           HandlingUnit,
+                                           QuantityUnit,
+                                           Package_Desc1,
+                                           Package_Desc2,
+                                           Package_Unit_ID,
+                                           Total_Weight,
                                            QuantityReceived)
             End Select
 
@@ -2979,40 +2977,40 @@ me_exit:
                 cu = GetItemUnit(CostUnit)
                 fu = GetItemUnit(FreightUnit)
 
-                cCost = CostConversion(cCost, _
-                                        CostUnit, _
-                                        QuantityUnit, _
-                                        Package_Desc1, _
-                                        Package_Desc2, _
-                                        Package_Unit_ID, _
-                                        Total_Weight, _
+                cCost = CostConversion(cCost,
+                                        CostUnit,
+                                        QuantityUnit,
+                                        Package_Desc1,
+                                        Package_Desc2,
+                                        Package_Unit_ID,
+                                        Total_Weight,
                                         QuantityReceived)
 
-                pcUnitCost = CostConversion(cCost, _
-                                            QuantityUnit, _
-                                            IIf(cu.IsPackageUnit, giUnit, CostUnit), _
-                                            Package_Desc1, _
-                                            Package_Desc2, _
-                                            Package_Unit_ID, _
-                                            Total_Weight, _
+                pcUnitCost = CostConversion(cCost,
+                                            QuantityUnit,
+                                            IIf(cu.IsPackageUnit, giUnit, CostUnit),
+                                            Package_Desc1,
+                                            Package_Desc2,
+                                            Package_Unit_ID,
+                                            Total_Weight,
                                             QuantityReceived)
 
-                cCost = cCost + CostConversion(ItemFreight, _
-                                               FreightUnit, _
-                                               QuantityUnit, _
-                                               Package_Desc1, _
-                                               Package_Desc2, _
-                                               Package_Unit_ID, _
-                                               Total_Weight, _
+                cCost = cCost + CostConversion(ItemFreight,
+                                               FreightUnit,
+                                               QuantityUnit,
+                                               Package_Desc1,
+                                               Package_Desc2,
+                                               Package_Unit_ID,
+                                               Total_Weight,
                                                QuantityReceived)
 
-                pcUnitExtCost = CostConversion(cCost, _
-                                               QuantityUnit, _
-                                               IIf(fu.IsPackageUnit, giUnit, FreightUnit), _
-                                               Package_Desc1, _
-                                               Package_Desc2, _
-                                               Package_Unit_ID, _
-                                               Total_Weight, _
+                pcUnitExtCost = CostConversion(cCost,
+                                               QuantityUnit,
+                                               IIf(fu.IsPackageUnit, giUnit, FreightUnit),
+                                               Package_Desc1,
+                                               Package_Desc2,
+                                               Package_Unit_ID,
+                                               Total_Weight,
                                                QuantityReceived)
 
                 If iCostField >= iOrderItemMarkupCost Then
@@ -3021,22 +3019,22 @@ me_exit:
                     cCost = cCost * (100 + MarkupPercent) / 100
                 End If
 
-                cCost = cCost + CostConversion(ItemHandling, _
-                                               HandlingUnit, _
-                                               FloatingUnitValue, _
-                                               Package_Desc1, _
-                                               Package_Desc2, _
-                                               Package_Unit_ID, _
-                                               Total_Weight, _
+                cCost = cCost + CostConversion(ItemHandling,
+                                               HandlingUnit,
+                                               FloatingUnitValue,
+                                               Package_Desc1,
+                                               Package_Desc2,
+                                               Package_Unit_ID,
+                                               Total_Weight,
                                                QuantityReceived)
             Else
-                cCost = CostConversion(AdjustedCost, _
-                                       QuantityUnit, _
-                                       FloatingUnitValue, _
-                                       Package_Desc1, _
-                                       Package_Desc2, _
-                                       Package_Unit_ID, _
-                                       Total_Weight, _
+                cCost = CostConversion(AdjustedCost,
+                                       QuantityUnit,
+                                       FloatingUnitValue,
+                                       Package_Desc1,
+                                       Package_Desc2,
+                                       Package_Unit_ID,
+                                       Total_Weight,
                                        QuantityReceived)
             End If
         End If
@@ -3064,9 +3062,9 @@ me_exit:
                         activeCell.CancelUpdate()
                     End Try
                     If validCost Then
-                        SQLExecute(String.Format("EXEC UpdateOrderItemAdjustedCost {0}, {1}", _
-                                CInt(activeCell.Row.GetCellValue(ugrdItems.DisplayLayout.Bands(0).Columns("OrderItem_ID"))), _
-                                costValue), _
+                        SQLExecute(String.Format("EXEC UpdateOrderItemAdjustedCost {0}, {1}",
+                                CInt(activeCell.Row.GetCellValue(ugrdItems.DisplayLayout.Bands(0).Columns("OrderItem_ID"))),
+                                costValue),
                             DAO.RecordsetOptionEnum.dbSQLPassThrough)
                         UpdateOrderItemsCost()
                     End If
@@ -3081,7 +3079,7 @@ me_exit:
 
         If Validate3rdPartyFreight() Then
 
-            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text), _
+            DistributeFreight(CInt(txtField(iOrderHeaderOrderHeader_ID).Text),
                               CDec(txtField(iOrderHeader3rdPartyFreight).Text))
 
 
@@ -3403,7 +3401,7 @@ me_exit:
 
             If IsDBNull(.Fields("CostUnit").Value) Then
                 logger.Warn("AddNewItem - Unable to add the selected item to the order because it does not have a Cost Unit ID assigned: iItem_Key=" + iItem_Key.ToString + ", OrderHeader_ID=" + iOrderHeader_ID.ToString)
-                MsgBox("BAD DATA: This item has no Cost Unit ID assigned to it. This must be assigned in order to add it to the order." & _
+                MsgBox("BAD DATA: This item has no Cost Unit ID assigned to it. This must be assigned in order to add it to the order." &
                         vbCrLf & vbCrLf & "Please close the empty Line Item Information screen that follows.", MsgBoxStyle.Critical)
                 rsOrderItem.Close()
                 logger.Debug("AddNewItem Exit")
@@ -3455,36 +3453,36 @@ me_exit:
             lIgnoreErrNum(0) = 50002
 
             On Error Resume Next
-            SQLExecute3("EXEC InsertOrderItemCredit " & _
-                         iOrderHeader_ID & ", " & _
-                         iItem_Key & ", " & _
-                         .Fields("Units_Per_Pallet").Value & ", " & _
-                         iQuantityUnit & ", " & _
-                         sQuantityOrdered & ", " & _
-                         sDiscountCost & ", " & _
-                         iCost_Unit & ", " & _
-                         0 & ", " & _
-                         .Fields("HandlingUnit").Value & ", " & _
-                         sFreight & ", " & _
-                         iFreight_Unit & ", " & _
-                         .Fields("AdjustedCost").Value & ", " & _
-                         .Fields("QuantityDiscount").Value & ", " & _
-                         .Fields("DiscountType").Value & ", " & _
-                         sLandedCost & ", " & _
-                         sLineItemCost & ", " & _
-                         sLineItemFreight & ", " & _
-                         0 & ", " & sUnitCost & ", " & _
-                         sUnitExtCost & ", " & _
-                         .Fields("Package_Desc1").Value & ", " & _
-                         .Fields("Package_Desc2").Value & ", " & _
-                         .Fields("Package_Unit_ID").Value & ", " & _
-                         .Fields("MarkupPercent").Value & ", " & _
-                         sMarkupCost & ", " & _
-                         .Fields("Retail_Unit_ID").Value & ", " & _
-                         IIf(sCreditReason_ID = "NONE", "NULL", sCreditReason_ID) & ", " & _
-                         giUserID & ", " & _
-                         decVendorDiscountAmt & ", " & IIf(IsDBNull(.Fields("HandlingCharge").Value), 0, .Fields("HandlingCharge").Value), _
-                         DAO.RecordsetOptionEnum.dbSQLPassThrough, _
+            SQLExecute3("EXEC InsertOrderItemCredit " &
+                         iOrderHeader_ID & ", " &
+                         iItem_Key & ", " &
+                         .Fields("Units_Per_Pallet").Value & ", " &
+                         iQuantityUnit & ", " &
+                         sQuantityOrdered & ", " &
+                         sDiscountCost & ", " &
+                         iCost_Unit & ", " &
+                         0 & ", " &
+                         .Fields("HandlingUnit").Value & ", " &
+                         sFreight & ", " &
+                         iFreight_Unit & ", " &
+                         .Fields("AdjustedCost").Value & ", " &
+                         .Fields("QuantityDiscount").Value & ", " &
+                         .Fields("DiscountType").Value & ", " &
+                         sLandedCost & ", " &
+                         sLineItemCost & ", " &
+                         sLineItemFreight & ", " &
+                         0 & ", " & sUnitCost & ", " &
+                         sUnitExtCost & ", " &
+                         .Fields("Package_Desc1").Value & ", " &
+                         .Fields("Package_Desc2").Value & ", " &
+                         .Fields("Package_Unit_ID").Value & ", " &
+                         .Fields("MarkupPercent").Value & ", " &
+                         sMarkupCost & ", " &
+                         .Fields("Retail_Unit_ID").Value & ", " &
+                         IIf(sCreditReason_ID = "NONE", "NULL", sCreditReason_ID) & ", " &
+                         giUserID & ", " &
+                         decVendorDiscountAmt & ", " & IIf(IsDBNull(.Fields("HandlingCharge").Value), 0, .Fields("HandlingCharge").Value),
+                         DAO.RecordsetOptionEnum.dbSQLPassThrough,
                          lIgnoreErrNum)
 
             If Err.Number <> 0 Then
@@ -3670,20 +3668,20 @@ me_exit:
         'TFS 9157 AB added  System.Security.SecurityElement.Escape to fix possible error in XML
         'Same changes needs to be done in service library.
         ' Create XML order header information - clean the notes field
-        sXML = "<order>" & _
-                  "<irma_po>" & Me.OrderHeader_ID & "</irma_po>" & _
-                  "<error_email>" & Escape(rsHeaderInfo.Fields("Email").Value.ToString()) & "</error_email>" & _
-                  "<success_email>" & Escape(rsHeaderInfo.Fields("Email").Value.ToString()) & "</success_email>" & _
-                  "<ps_number>" & rsHeaderInfo.Fields("PS_Vendor_ID").Value & "</ps_number>" & _
-                  "<req_receive_date>" & rsHeaderInfo.Fields("Expected_Date").Value & "</req_receive_date>" & _
-                  "<po_notes>" & Escape(rsHeaderInfo.Fields("OrderHeaderDesc").Value.ToString()) & "</po_notes>" & _
-                  "<business_unit>" & rsHeaderInfo.Fields("BusinessUnit_ID").Value & "</business_unit>" & _
-                  "<sub_team>" & rsHeaderInfo.Fields("SubTeam_No").Value & "</sub_team>" & _
-                  "<pos_dept>" & rsHeaderInfo.Fields("POS_Dept").Value & "</pos_dept>" & _
-                  "<external_system>" & Escape(rsHeaderInfo.Fields("description").Value.ToString()) & "</external_system>" & _
-                  "<external_order_id>" & rsHeaderInfo.Fields("OrderExternalSourceOrderId").Value & "</external_order_id>" & _
-                  "<iscredit>" & rsHeaderInfo.Fields("isCredit").Value & "</iscredit>" & _
-                  "<invoice_number>" & If(IsDBNull(rsHeaderInfo.Fields("InvoiceNumber")), String.Empty, rsHeaderInfo.Fields("InvoiceNumber").Value) & "</invoice_number>" & _
+        sXML = "<order>" &
+                  "<irma_po>" & Me.OrderHeader_ID & "</irma_po>" &
+                  "<error_email>" & Escape(rsHeaderInfo.Fields("Email").Value.ToString()) & "</error_email>" &
+                  "<success_email>" & Escape(rsHeaderInfo.Fields("Email").Value.ToString()) & "</success_email>" &
+                  "<ps_number>" & rsHeaderInfo.Fields("PS_Vendor_ID").Value & "</ps_number>" &
+                  "<req_receive_date>" & rsHeaderInfo.Fields("Expected_Date").Value & "</req_receive_date>" &
+                  "<po_notes>" & Escape(rsHeaderInfo.Fields("OrderHeaderDesc").Value.ToString()) & "</po_notes>" &
+                  "<business_unit>" & rsHeaderInfo.Fields("BusinessUnit_ID").Value & "</business_unit>" &
+                  "<sub_team>" & rsHeaderInfo.Fields("SubTeam_No").Value & "</sub_team>" &
+                  "<pos_dept>" & rsHeaderInfo.Fields("POS_Dept").Value & "</pos_dept>" &
+                  "<external_system>" & Escape(rsHeaderInfo.Fields("description").Value.ToString()) & "</external_system>" &
+                  "<external_order_id>" & rsHeaderInfo.Fields("OrderExternalSourceOrderId").Value & "</external_order_id>" &
+                  "<iscredit>" & rsHeaderInfo.Fields("isCredit").Value & "</iscredit>" &
+                  "<invoice_number>" & If(IsDBNull(rsHeaderInfo.Fields("InvoiceNumber")), String.Empty, rsHeaderInfo.Fields("InvoiceNumber").Value) & "</invoice_number>" &
                   "<items>"
 
         ' -- RE:  7/21  DropShip functionality not implemented yet.
@@ -3691,20 +3689,20 @@ me_exit:
 
         ' Loop through the items on the order and create the XML item records - clean the description and brand fields
         While Not rsItemInfo.EOF
-            sItemInfo = sItemInfo & "<item upc='" & rsItemInfo.Fields("UPC").Value & "' " & _
-                           "vid='" & rsItemInfo.Fields("VID").Value & "' " & _
-                           "case_pack='" & CInt(rsItemInfo.Fields("Case_Pack").Value) & "' " & _
-                           "qty='" & CInt(rsItemInfo.Fields("Qty").Value) & "' " & _
-                           "unit_cost='" & rsItemInfo.Fields("Unit_Cost").Value & "' " & _
-                           "pack_size='" & rsItemInfo.Fields("Pack_Size").Value & "' " & _
-                           "item_uom='" & Trim(rsItemInfo.Fields("Item_UOM").Value) & "' " & _
-                           "description='" & Escape(textCleaner.Replace(Trim(rsItemInfo.Fields("Description").Value.ToString()), "")) & "' " & _
-                           "pos_dept='" & rsItemInfo.Fields("POS_Dept").Value & "' " & _
-                           "brand='" & textCleaner.Replace(Trim(rsItemInfo.Fields("Brand").Value), "") & "' " & _
-                           "case_uom='" & Trim(rsItemInfo.Fields("Case_UOM").Value) & "' " & _
-                           "item_uom_iscase='" & Trim(rsItemInfo.Fields("UOM_IsCase").Value) & "' " & _
-                           "credit_reason_id='" & rsItemInfo.Fields("CreditReason_Id").Value & "' " & _
-                           "credit_lot_no='" & rsItemInfo.Fields("Lot_No").Value & "' " & _
+            sItemInfo = sItemInfo & "<item upc='" & rsItemInfo.Fields("UPC").Value & "' " &
+                           "vid='" & rsItemInfo.Fields("VID").Value & "' " &
+                           "case_pack='" & CInt(rsItemInfo.Fields("Case_Pack").Value) & "' " &
+                           "qty='" & CInt(rsItemInfo.Fields("Qty").Value) & "' " &
+                           "unit_cost='" & rsItemInfo.Fields("Unit_Cost").Value & "' " &
+                           "pack_size='" & rsItemInfo.Fields("Pack_Size").Value & "' " &
+                           "item_uom='" & Trim(rsItemInfo.Fields("Item_UOM").Value) & "' " &
+                           "description='" & Escape(textCleaner.Replace(Trim(rsItemInfo.Fields("Description").Value.ToString()), "")) & "' " &
+                           "pos_dept='" & rsItemInfo.Fields("POS_Dept").Value & "' " &
+                           "brand='" & textCleaner.Replace(Trim(rsItemInfo.Fields("Brand").Value), "") & "' " &
+                           "case_uom='" & Trim(rsItemInfo.Fields("Case_UOM").Value) & "' " &
+                           "item_uom_iscase='" & Trim(rsItemInfo.Fields("UOM_IsCase").Value) & "' " &
+                           "credit_reason_id='" & rsItemInfo.Fields("CreditReason_Id").Value & "' " &
+                           "credit_lot_no='" & rsItemInfo.Fields("Lot_No").Value & "' " &
                            "credit_expire_date='' credit_notes=''/>" ' credit_expire_date and credit_notes left blank. for future use?
 
             rsItemInfo.MoveNext()
