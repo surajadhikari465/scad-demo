@@ -388,7 +388,7 @@ where JobScheduleId  = ?</statement>
             <pd:x>703</pd:x>
             <pd:y>66</pd:y>
             <config>
-                <timeout>120</timeout>
+                <timeout>%%Application/JdbcQueryTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
                 <maxRows>10000000</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
@@ -396,7 +396,7 @@ where JobScheduleId  = ?</statement>
                 <statement>SELECT 
 	PriceID, 
 	CAST(p.Region AS NVARCHAR(2)) AS Region, 
-	CAST(GpmID AS NVARCHAR(255)) AS GpmID, 
+	CAST(GpmID AS NVARCHAR(70)) AS GpmID, 
 	p.ItemID, 
 	p.BusinessUnitID, 
 	StartDate, 
@@ -421,7 +421,7 @@ INNER JOIN ItemTypes it on Items.ItemTypeID = it.itemTypeID
 INNER JOIN Locale lc on p.BusinessUnitID = lc.BusinessUnitID
 WHERE p.Region = ?
 	AND it.itemTypeCode NOT IN ( 'CPN', 'NRT')
-	AND CAST(StartDate as date) = CAST(GETDATE() AS date)
+	AND StartDate = CAST(GETDATE() AS date)
 	AND NOT EXISTS
 	(
 		SELECT 1 

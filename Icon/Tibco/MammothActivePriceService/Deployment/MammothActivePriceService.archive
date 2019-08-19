@@ -13,7 +13,7 @@
             <authorProperty>Blake Jones</authorProperty>
             <processProperty>/Processes/ActivePricesProcess.process</processProperty>
         </processArchive>
-        <versionProperty>37</versionProperty>
+        <versionProperty>40</versionProperty>
         <authorProperty>Blake Jones</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>MammothActivePriceService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\MammothActivePriceService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\AzureDevOps\Source\Repos\SCAD\Icon\Tibco\DeploymentFiles\MammothActivePriceService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

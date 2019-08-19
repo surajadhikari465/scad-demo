@@ -25,5 +25,13 @@
 			<type>Integer</type>
 			<modTime>1522696518937</modTime>
 		</globalVariable>
+		<globalVariable>
+			<name>JdbcQueryTimeoutInSeconds</name>
+			<value>120</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1565990765251</modTime>
+		</globalVariable>
 	</globalVariables>
 </repository>
