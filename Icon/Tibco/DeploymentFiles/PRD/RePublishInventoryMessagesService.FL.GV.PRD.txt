@@ -4,11 +4,13 @@
 BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
-Application/InstanceId=407
+Application/InstanceId=507
+Application/RegionCode=FL
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
 
-Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-pn\pnp;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-fl\flp;DatabaseName=ItemCatalog;
 Connections/JDBC/IRMA/Username=TibcoDataWriter
-Connections/JDBC/IRMA/Password=#!4TPn3GeCXe9ES4KZdtyTE7q+4TT1b1Ntg/qU3w0dbo3hkVEmDB5SLg==
+Connections/JDBC/IRMA/Password=#!L6mHOAd417NTSLO/qrv5Lk9Kps62o2AGyI9aWESP1K+8gI5NC07sbg==
 
 Connections/JMS/ESB/JndiContextUrl=ssl://PROD-ESB-EMS-1.wfm.pvt:37293,ssl://PROD-ESB-EMS-2.wfm.pvt:37293,ssl://PROD-ESB-EMS-3.wfm.pvt:37293,ssl://PROD-ESB-EMS-4.wfm.pvt:37293
 Connections/JMS/ESB/JndiUsername=jndiIconUser
@@ -18,21 +20,21 @@ Connections/JMS/ESB/Username=iconUser
 Connections/JMS/ESB/Password=#!evC18AnhZ6pJxwXD1h/zDqlNi8ultwuqu+VpCf1dToU=
 
 // ----------------------------------------------------------------------------------
-// Machine #1 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// Machine #1 --- Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-1,machine=cerp1643
+_TAG,Machine,Process Archive,Process Archive-1,machine=cerp1643
 
 // ----------------------------------------------------------------------------------
-// Machine #2 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// Machine #2 --- Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-2,machine=cerp1644
+_TAG,Machine,Process Archive,Process Archive-2,machine=cerp1644
 
 // ----------------------------------------------------------------------------------
-// Machine #3 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// Machine #3 --- Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-3,machine=odrp1634
+_TAG,Machine,Process Archive,Process Archive-3,machine=odrp1634
 
 // ----------------------------------------------------------------------------------
-// Machine #4 --- Published Inventory Spoilage Service Process Archive.par --- Service Instance settings --- Service level
+// Machine #4 --- Process Archive.par --- Service Instance settings --- Service level
 // ----------------------------------------------------------------------------------
-_TAG,Machine,Published Inventory Spoilage Service Process Archive,Published Inventory Spoilage Service Process Archive-4,machine=odrp1635
+_TAG,Machine,Process Archive,Process Archive-4,machine=odrp1635
