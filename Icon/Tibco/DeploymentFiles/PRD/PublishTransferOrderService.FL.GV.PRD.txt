@@ -4,7 +4,6 @@
 BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
-Application/InstanceId=207
 Application/IrmaTransferOrderQueue=WFMSB1.Irma.SupplyChain.InventoryMgmt.TransferOrder.FL.Queue.V1
 Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
 
