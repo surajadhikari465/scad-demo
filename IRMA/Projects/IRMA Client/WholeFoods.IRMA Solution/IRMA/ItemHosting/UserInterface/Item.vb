@@ -2293,6 +2293,7 @@ me_err:
 
     Private Sub ButtonNutrifacts_Click(sender As Object, e As EventArgs) Handles ButtonNutrifacts.Click
         Using itemNutritionForm As New ItemNutrition(Identifier)
+            itemNutritionForm.DefaultJurisdictionId = _itemData.StoreJurisdictionID
             itemNutritionForm.ShowDialog()
         End Using
     End Sub

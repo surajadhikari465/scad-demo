@@ -651,7 +651,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             Return isSuccess
         End Function
 
-        Public Shared Function InsertOrUpdateItemNutrifact(ByVal itemKey As Integer, ByVal nutrifactId As Integer) As Boolean
+        Public Shared Function InsertOrUpdateItemNutrifact(ByVal itemKey As Integer, ByVal nutrifactId As Integer, Optional ByVal jurisdictionId As Integer = 0) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -669,10 +669,24 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
-            factory.ExecuteStoredProcedure("InsertOrUpdateItemNutrifact", paramList)
+            If jurisdictionId <= 0 Then
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemNutrifact", paramList)
+            Else
+                ' add param
+                currentParam = New DBParam
+                currentParam.Name = "Jurisdiction"
+                currentParam.Value = jurisdictionId
+                currentParam.Type = DBParamType.Int
+                paramList.Add(currentParam)
+
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemNutrifactOverride", paramList)
+            End If
+
         End Function
 
-        Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String) As Boolean
+        Public Shared Function InsertOrUpdateItemExtraText(ByVal itemKey As Integer, ByVal extraTextId As Integer, ByVal scaleLabelTypeId As Integer, ByVal extraText As String, Optional ByVal jurisdictionId As Integer = 0) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList(New DBParam() {
               New DBParam("ExtraTextId", DBParamType.Int, extraTextId),
@@ -681,11 +695,21 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
               New DBParam("Scale_LabelType_ID", DBParamType.Int, scaleLabelTypeId),
               New DBParam("ExtraText", DBParamType.String, extraText)})
 
-            factory.ExecuteStoredProcedure("InsertOrUpdateItemExtraText", paramList)
+            If jurisdictionId <= 0 Then
+                ' Execute the stored procedure 
+                factory.GetStoredProcedureDataReader("InsertOrUpdateItemExtraText", paramList)
+            Else
+                ' add param
+                paramList.Add(New DBParam("Jurisdiction", DBParamType.Int, jurisdictionId))
+
+                ' Execute the stored procedure 
+                factory.GetStoredProcedureDataReader("InsertOrUpdateItemExtraTextOverride", paramList)
+            End If
+
             Return True
         End Function
 
-        Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String) As Boolean
+        Public Shared Function InsertOrUpdateItemIngredient(ByVal itemKey As Integer, ByVal scaleIngredientId As Integer, ByVal ingredients As String, Optional ByVal jurisdictionId As Integer = 0) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -715,9 +739,22 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Type = DBParamType.String
             paramList.Add(currentParam)
 
-            factory.ExecuteStoredProcedure("InsertOrUpdateItemIngredient", paramList)
+            If jurisdictionId <= 0 Then
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemIngredient", paramList)
+            Else
+                ' add param
+                currentParam = New DBParam
+                currentParam.Name = "Jurisdiction"
+                currentParam.Value = jurisdictionId
+                currentParam.Type = DBParamType.Int
+                paramList.Add(currentParam)
+
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemIngredientOverride", paramList)
+            End If
         End Function
-        Public Shared Function InsertOrUpdateItemAllergen(ByVal itemKey As Integer, ByVal scaleAllergenId As Integer, ByVal allergens As String) As Boolean
+        Public Shared Function InsertOrUpdateItemAllergen(ByVal itemKey As Integer, ByVal scaleAllergenId As Integer, ByVal allergens As String, Optional ByVal jurisdictionId As Integer = 0) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -747,10 +784,23 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Type = DBParamType.String
             paramList.Add(currentParam)
 
-            factory.ExecuteStoredProcedure("InsertOrUpdateItemAllergen", paramList)
+            If jurisdictionId <= 0 Then
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemAllergen", paramList)
+            Else
+                ' add param
+                currentParam = New DBParam
+                currentParam.Name = "Jurisdiction"
+                currentParam.Value = jurisdictionId
+                currentParam.Type = DBParamType.Int
+                paramList.Add(currentParam)
+
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("InsertOrUpdateItemAllergenOverride", paramList)
+            End If
         End Function
 
-        Public Shared Function DeleteItemNutrifact(ByVal itemKey As Integer) As Boolean
+        Public Shared Function DeleteItemNutrifact(ByVal itemKey As Integer, Optional ByVal jurisdictionId As Integer = 0) As Boolean
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -762,7 +812,21 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             currentParam.Type = DBParamType.Int
             paramList.Add(currentParam)
 
-            factory.ExecuteStoredProcedure("DeleteItemNutrifact", paramList)
+            If jurisdictionId <= 0 Then
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("DeleteItemNutrifact", paramList)
+            Else
+                ' add param
+                currentParam = New DBParam
+                currentParam.Name = "Jurisdiction"
+                currentParam.Value = jurisdictionId
+                currentParam.Type = DBParamType.Int
+                paramList.Add(currentParam)
+
+                ' Execute the stored procedure 
+                results = factory.GetStoredProcedureDataReader("DeleteItemNutrifactOverride", paramList)
+            End If
+
         End Function
 
         Public Shared Function DeleteItemExtraText(ByVal itemKey As Integer) As Boolean

@@ -19,9 +19,10 @@ BEGIN
 	ELSE
 		BEGIN
 			SELECT
-				inu.NutriFactsID AS Nutrifact_ID
+				ISNULL(ino.NutriFactsID, inu.NutriFactsID) AS Nutrifact_ID
 			FROM
 				ItemNutrition inu
+                LEFT JOIN ItemNutritionOverride ino on ino.ItemKey = inu.ItemKey AND ino.StoreJurisdictionID = @Jurisdiction
 			WHERE
 				inu.ItemKey = @Item_Key
 		END

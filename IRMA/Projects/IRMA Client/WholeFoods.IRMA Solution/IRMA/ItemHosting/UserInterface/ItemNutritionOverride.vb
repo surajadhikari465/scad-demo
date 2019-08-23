@@ -3,9 +3,9 @@ Imports WholeFoods.IRMA.ItemHosting.DataAccess
 Imports WholeFoods.IRMA.ItemHosting.BusinessLogic
 Imports WholeFoods.IRMA.Common.DataAccess
 
-Public Class ItemNutrition
+Public Class ItemNutritionOverride
 
-    Private identifier As String
+    Private _identifier As String
     Private currentNutrifactId As Integer
     Private formIsReadOnly As Boolean
     Private _isDirty As Boolean
@@ -13,6 +13,7 @@ Public Class ItemNutrition
     Private _ingredientsBO As ItemIngredientBO
     Private _allergensBO As ItemAllergenBO
     Private _defaultJurisdictionId As Integer
+    Private IsInitializing As Boolean
 
     Public Property ExtraTextBO() As ItemExtraTextBO
         Get
@@ -31,6 +32,7 @@ Public Class ItemNutrition
             _ingredientsBO = value
         End Set
     End Property
+
     Public Property AllergensBO() As ItemAllergenBO
         Get
             Return _allergensBO
@@ -39,12 +41,22 @@ Public Class ItemNutrition
             _allergensBO = value
         End Set
     End Property
+
     Public Property DefaultJurisdictionId() As Integer
         Get
             Return _defaultJurisdictionId
         End Get
         Set(ByVal value As Integer)
             _defaultJurisdictionId = value
+        End Set
+    End Property
+
+    Public Property Identifier() As String
+        Get
+            Return _identifier
+        End Get
+        Set(ByVal value As String)
+            _identifier = value
         End Set
     End Property
 
@@ -58,22 +70,28 @@ Public Class ItemNutrition
     End Property
 
     Public Sub New(ByVal identifier As String)
+        IsInitializing = True
         InitializeComponent()
+        IsInitializing = False
 
-        Me.identifier = identifier
+        Me.Identifier = identifier
     End Sub
 
     Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
         Me.Close()
     End Sub
 
-    Private Sub ItemNutrition_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Me.Text = Trim(Me.Text) & " - " & identifier
+    Private Sub ItemNutritionOverride_Load(sender As Object, e As EventArgs) Handles Me.Load
+        IsInitializing = True
+        Me.Text = Trim(Me.Text) & " - " & Me.Identifier
 
-        'only enable Alternate Jurisdiction button if alt jurisdictionas are active
-        SetActive(cmdJurisdiction, InstanceDataDAO.IsFlagActive("UseStoreJurisdictions"))
+        Dim storeJurisdiction As New StoreJurisdictionDAO
+        ComboBox_AltJurisdiction.DisplayMember = "StoreJurisdictionDesc"
+        ComboBox_AltJurisdiction.ValueMember = "StoreJurisdictionID"
+        ComboBox_AltJurisdiction.DataSource = storeJurisdiction.GetJurisdictionList(Me.DefaultJurisdictionId)
 
-        Me.LoadExtraText()
+        Me.LoadExtraTextOverride(ComboBox_AltJurisdiction.SelectedValue)
+        IsInitializing = False
     End Sub
 
     Private Sub ButtonNutrifactAddOrEdit_Click(sender As Object, e As EventArgs) Handles ButtonNutrifactAddOrEdit.Click
@@ -103,22 +121,18 @@ Public Class ItemNutrition
         End If
     End Sub
 
-    Private Sub ButtonNutrifactRemove_Click(sender As Object, e As EventArgs) Handles ButtonNutrifactRemove.Click
-        ComboBoxNutrifacts.SelectedIndex = -1
-    End Sub
-
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
         Dim saveSuccess As Boolean = False
 
         Select Case Me.ItemNutritionTabs.SelectedTab.Text
             Case "Extra Text"
-                saveSuccess = Me.SaveExtraText()
+                saveSuccess = Me.SaveExtraTextOverride(ComboBox_AltJurisdiction.SelectedValue)
             Case "NutriFacts"
-                saveSuccess = Me.SaveNutrifacts()
+                saveSuccess = Me.SaveNutrifacts(ComboBox_AltJurisdiction.SelectedValue)
             Case "Ingredients"
-                saveSuccess = Me.SaveIngredients()
+                saveSuccess = Me.SaveIngredients(ComboBox_AltJurisdiction.SelectedValue)
             Case "Allergens"
-                saveSuccess = Me.SaveAllergens()
+                saveSuccess = Me.SaveAllergens(ComboBox_AltJurisdiction.SelectedValue)
         End Select
 
         If (saveSuccess) Then
@@ -127,7 +141,7 @@ Public Class ItemNutrition
         End If
     End Sub
 
-    Private Function SaveExtraText() As Boolean
+    Private Function SaveExtraTextOverride(overrideJurisdictionId As Integer) As Boolean
         ' validate before saving
         Dim statusList As ArrayList = ScaleNutrifactDAO.ValidatexExtraText(txtExtraText.Text.Trim())
         Dim statusEnum As IEnumerator = statusList.GetEnumerator
@@ -143,21 +157,21 @@ Public Class ItemNutrition
         End While
 
         ' save
-        ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text.Trim())
+        ScaleNutrifactDAO.InsertOrUpdateItemExtraText(glItemID, ExtraTextBO.ExtraTextID, ExtraTextLabelTypeCbx.SelectedValue, txtExtraText.Text.Trim(), overrideJurisdictionId)
         Return True
 
     End Function
 
-    Private Function SaveNutrifacts() As Boolean
+    Private Function SaveNutrifacts(overrideJurisdictionId As Integer) As Boolean
         If ComboBoxNutrifacts.SelectedIndex = -1 Then
-            ScaleNutrifactDAO.DeleteItemNutrifact(glItemID)
+            ScaleNutrifactDAO.DeleteItemNutrifact(glItemID, overrideJurisdictionId)
         Else
-            ScaleNutrifactDAO.InsertOrUpdateItemNutrifact(glItemID, ComboBoxNutrifacts.SelectedValue)
+            ScaleNutrifactDAO.InsertOrUpdateItemNutrifact(glItemID, ComboBoxNutrifacts.SelectedValue, overrideJurisdictionId)
         End If
         Return True
     End Function
 
-    Private Function SaveIngredients() As Boolean
+    Private Function SaveIngredients(overrideJurisdictionId As Integer) As Boolean
         ' validate before saving
         Dim statusList As ArrayList = ScaleNutrifactDAO.ValidateIngredientsText(IngredientsTxt.Text)
         Dim statusEnum As IEnumerator = statusList.GetEnumerator
@@ -172,11 +186,11 @@ Public Class ItemNutrition
             End Select
         End While
 
-        ScaleNutrifactDAO.InsertOrUpdateItemIngredient(glItemID, IngredientsBO.ScaleIngredientID, IngredientsTxt.Text)
+        ScaleNutrifactDAO.InsertOrUpdateItemIngredient(glItemID, IngredientsBO.ScaleIngredientID, IngredientsTxt.Text, overrideJurisdictionId)
         Return True
     End Function
 
-    Private Function SaveAllergens() As Boolean
+    Private Function SaveAllergens(overrideJurisdictionId As Integer) As Boolean
         ' validate before saving
         Dim statusList As ArrayList = ScaleNutrifactDAO.ValidatexExtraText(AllergensTxt.Text)
         Dim statusEnum As IEnumerator = statusList.GetEnumerator
@@ -191,15 +205,9 @@ Public Class ItemNutrition
             End Select
         End While
 
-        ScaleNutrifactDAO.InsertOrUpdateItemAllergen(glItemID, AllergensBO.ScaleAllergenID, AllergensTxt.Text)
+        ScaleNutrifactDAO.InsertOrUpdateItemAllergen(glItemID, AllergensBO.ScaleAllergenID, AllergensTxt.Text, overrideJurisdictionId)
         Return True
     End Function
-
-    Private Sub ComboBoxNutrifacts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxNutrifacts.SelectedIndexChanged
-        If Not formIsReadOnly Then
-            ButtonSave.Enabled = True
-        End If
-    End Sub
 
     Private Sub LockForm()
         Dim SelectedTab As String = Me.ItemNutritionTabs.SelectedTab.Text
@@ -209,7 +217,6 @@ Public Class ItemNutrition
                 Me.ButtonSave.Enabled = False
                 Me.ButtonNutrifactRemove.Enabled = False
                 Me.ButtonNutrifactAddOrEdit.Text = "View"
-
                 If ComboBoxNutrifacts.SelectedIndex = -1 Then
                     Me.ButtonNutrifactAddOrEdit.Enabled = False
                 End If
@@ -224,21 +231,20 @@ Public Class ItemNutrition
         End Select
     End Sub
 
-    Private Sub ItemNutritionTabs_Selected(sender As Object, e As TabControlEventArgs) Handles ItemNutritionTabs.Selected
-        Dim SelectedTab As String = e.TabPage.Text
-        Select Case SelectedTab
+    Private Sub LoadDataBasedOnActiveTab(selectedTabText As String)
+        Select Case selectedTabText
             Case "Extra Text"
-                Me.LoadExtraText()
+                Me.LoadExtraTextOverride(ComboBox_AltJurisdiction.SelectedValue)
             Case "NutriFacts"
-                Me.LoadNutriFacts()
+                Me.LoadNutriFactsOverride(ComboBox_AltJurisdiction.SelectedValue)
             Case "Ingredients"
-                Me.LoadIngredients()
+                Me.LoadIngredientsOverride(ComboBox_AltJurisdiction.SelectedValue)
             Case "Allergens"
-                Me.LoadAllergens()
+                Me.LoadAllergensOverride(ComboBox_AltJurisdiction.SelectedValue)
         End Select
     End Sub
 
-    Private Sub LoadExtraText()
+    Private Sub LoadExtraTextOverride(overrideJurisdictionId As Integer)
         Me.ExtraTextLabelTypeCbx.DataSource = ScaleLabelTypeDAO.GetComboList()
 
         If Me.ExtraTextLabelTypeCbx.Items.Count > 0 Then
@@ -247,20 +253,20 @@ Public Class ItemNutrition
             Me.ExtraTextLabelTypeCbx.SelectedIndex = -1
         End If
 
-        Me.ExtraTextBO = ScaleExtraTextDAO.GetExtraTextForNonScaleItemByItem(glItemID)
+        Me.ExtraTextBO = ScaleExtraTextDAO.GetExtraTextForNonScaleItemByItem(glItemID, overrideJurisdictionId)
         Me.txtExtraText.Text = Me.ExtraTextBO.ExtraText
         Me.ExtraTextLabelTypeCbx.SelectedValue = Me.ExtraTextBO.Scale_LabelType_ID
     End Sub
 
-    Private Sub LoadNutriFacts()
-        LabelIdentifierValue.Text = identifier
+    Private Sub LoadNutriFactsOverride(overrideJurisdictionId As Integer)
+        LabelIdentifierValue.Text = Me.Identifier
 
         Dim nutrifacts As ScaleNutrifactBO() = ScaleNutrifactDAO.GetNutrifactComboList().ToArray(GetType(ScaleNutrifactBO))
         ComboBoxNutrifacts.DataSource = nutrifacts
         ComboBoxNutrifacts.DisplayMember = "Description"
         ComboBoxNutrifacts.ValueMember = "ID"
 
-        Dim currentNutrifactId As Integer = ScaleNutrifactDAO.GetNutriFactByItem(glItemID, 1, False)
+        Dim currentNutrifactId As Integer = ScaleNutrifactDAO.GetNutriFactByItem(glItemID, overrideJurisdictionId, False)
 
         If currentNutrifactId > 0 Then
             Dim nutrifactDescription As String = nutrifacts.Single(Function(n) n.ID = currentNutrifactId).Description
@@ -278,7 +284,7 @@ Public Class ItemNutrition
         End If
     End Sub
 
-    Private Sub LoadIngredients()
+    Private Sub LoadIngredientsOverride(overrideJurisdictionId As Integer)
         Me.IngredientsLabelTypeCbx.DataSource = ScaleLabelTypeDAO.GetComboList()
 
         If Me.IngredientsLabelTypeCbx.Items.Count > 0 Then
@@ -287,7 +293,7 @@ Public Class ItemNutrition
             Me.IngredientsLabelTypeCbx.SelectedIndex = -1
         End If
 
-        Me.IngredientsBO = ScaleExtraTextDAO.GetIngredientForNonScaleItemByItem(glItemID)
+        Me.IngredientsBO = ScaleExtraTextDAO.GetIngredientForNonScaleItemByItem(glItemID, overrideJurisdictionId)
         Me.IngredientsTxt.Text = Me.IngredientsBO.Ingredients
 
         formIsReadOnly = InstanceDataDAO.IsFlagActive("EnableAllergenAndIngredientIntegration")
@@ -298,7 +304,7 @@ Public Class ItemNutrition
 
     End Sub
 
-    Private Sub LoadAllergens()
+    Private Sub LoadAllergensOverride(overrideJurisdictionId As Integer)
         Me.AllergensLabelTypeCbx.DataSource = ScaleLabelTypeDAO.GetComboList()
 
         If Me.AllergensLabelTypeCbx.Items.Count > 0 Then
@@ -307,7 +313,7 @@ Public Class ItemNutrition
             Me.AllergensLabelTypeCbx.SelectedIndex = -1
         End If
 
-        Me.AllergensBO = ScaleExtraTextDAO.GetAllergenForNonScaleItemByItem(glItemID)
+        Me.AllergensBO = ScaleExtraTextDAO.GetAllergenForNonScaleItemByItem(glItemID, overrideJurisdictionId)
         Me.AllergensTxt.Text = Me.AllergensBO.Allergens
 
         formIsReadOnly = InstanceDataDAO.IsFlagActive("EnableAllergenAndIngredientIntegration")
@@ -318,19 +324,32 @@ Public Class ItemNutrition
 
     End Sub
 
+    Private Sub ComboBox_AltJurisdiction_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_AltJurisdiction.SelectedIndexChanged
+        If Not IsInitializing Then
+            Dim selectedTabText = ItemNutritionTabs.SelectedTab.Text
+            Me.LoadDataBasedOnActiveTab(selectedTabText)
+        End If
+    End Sub
+
+    Private Sub ItemNutritionTabs_Selected(sender As Object, e As TabControlEventArgs) Handles ItemNutritionTabs.Selected
+        Dim selectedTab As String = e.TabPage.Text
+        Me.LoadDataBasedOnActiveTab(selectedTab)
+    End Sub
+
+    Private Sub ComboBoxNutrifacts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxNutrifacts.SelectedIndexChanged
+        If Not formIsReadOnly Then
+            ButtonSave.Enabled = True
+        End If
+    End Sub
+
+    Private Sub ButtonNutrifactRemove_Click(sender As Object, e As EventArgs) Handles ButtonNutrifactRemove.Click
+        ComboBoxNutrifacts.SelectedIndex = -1
+    End Sub
+
     Private Sub ExtraTextLabelTypeCbx_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ExtraTextLabelTypeCbx.SelectionChangeCommitted
         Me.IsDirty = True
         Me.UpdateSaveButtonStatus()
     End Sub
-
-    Private Sub UpdateSaveButtonStatus()
-        If Me.IsDirty Then
-            Me.ButtonSave.Enabled = True
-        Else
-            Me.ButtonSave.Enabled = False
-        End If
-    End Sub
-
     Private Sub txtExtraText_TextChanged(sender As Object, e As EventArgs) Handles txtExtraText.TextChanged
         Me.IsDirty = True
         Me.UpdateSaveButtonStatus()
@@ -339,7 +358,6 @@ Public Class ItemNutrition
         Me.IsDirty = True
         Me.UpdateSaveButtonStatus()
     End Sub
-
     Private Sub IngredientsTxt_TextChanged(sender As Object, e As EventArgs) Handles IngredientsTxt.TextChanged
         Me.IsDirty = True
         Me.UpdateSaveButtonStatus()
@@ -352,24 +370,21 @@ Public Class ItemNutrition
         Me.IsDirty = True
         Me.UpdateSaveButtonStatus()
     End Sub
-
     Private Sub ButtonExtraTextLabelTypeRemove_Click(sender As Object, e As EventArgs) Handles ButtonExtraTextLabelTypeRemove.Click
         Me.ExtraTextLabelTypeCbx.SelectedIndex = -1
+    End Sub
+
+    Private Sub UpdateSaveButtonStatus()
+        If Me.IsDirty Then
+            Me.ButtonSave.Enabled = True
+        Else
+            Me.ButtonSave.Enabled = False
+        End If
     End Sub
 
     Private Sub NotifyOfInvalidCharacters(ByRef sFieldCaption As String, ByRef ctlControl As System.Windows.Forms.Control, ByRef sInvalidCharacters As String)
         Dim validationErrorMsg As String = String.Format(ResourcesIRMA.GetString("InvalidCharacters"), sFieldCaption, sInvalidCharacters)
         MsgBox(validationErrorMsg, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, Me.Text)
         ctlControl.Focus()
-    End Sub
-
-    Private Sub CmdJurisdiction_Click(sender As Object, e As EventArgs) Handles cmdJurisdiction.Click
-        Using itemNutritionOverrideForm As New ItemNutritionOverride(identifier)
-            ' Set the default item properties in ItemOverride.  These allow the user to populate the ItemOverride attributes with the 
-            ' item and POS information that already exists in Item.
-            itemNutritionOverrideForm.Identifier = Me.identifier
-            itemNutritionOverrideForm.DefaultJurisdictionId = Me.DefaultJurisdictionId
-            itemNutritionOverrideForm.ShowDialog()
-        End Using
     End Sub
 End Class

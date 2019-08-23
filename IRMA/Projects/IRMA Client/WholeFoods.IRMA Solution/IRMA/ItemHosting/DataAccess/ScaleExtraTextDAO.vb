@@ -139,7 +139,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
         End Function
 
-        Public Shared Function GetExtraTextForNonScaleItemByItem(ByVal item_Key As Integer) As ItemExtraTextBO
+        Public Shared Function GetExtraTextForNonScaleItemByItem(ByVal item_Key As Integer, Optional jurisdictionId As Integer = 0) As ItemExtraTextBO
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim results As SqlDataReader = Nothing
             Dim paramList As New ArrayList
@@ -154,8 +154,20 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 currentParam.Type = DBParamType.Int
                 paramList.Add(currentParam)
 
-                ' Execute the stored procedure 
-                results = factory.GetStoredProcedureDataReader("Item_GetExtraTextByItem", paramList)
+                If jurisdictionId <= 0 Then
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetExtraTextByItem", paramList)
+                Else
+                    ' add param
+                    currentParam = New DBParam
+                    currentParam.Name = "Jurisdiction"
+                    currentParam.Value = jurisdictionId
+                    currentParam.Type = DBParamType.Int
+                    paramList.Add(currentParam)
+
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetExtraTextOverrideByItem", paramList)
+                End If
 
                 While results.Read
                     If (Not results.IsDBNull(results.GetOrdinal("Item_ExtraText_ID"))) Then
@@ -178,7 +190,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 
         End Function
 
-        Public Shared Function GetIngredientForNonScaleItemByItem(ByVal item_Key As Integer) As ItemIngredientBO
+        Public Shared Function GetIngredientForNonScaleItemByItem(ByVal item_Key As Integer, Optional ByVal jurisdictionId As Integer = 0) As ItemIngredientBO
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim results As SqlDataReader = Nothing
             Dim paramList As New ArrayList
@@ -193,8 +205,20 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 currentParam.Type = DBParamType.Int
                 paramList.Add(currentParam)
 
-                ' Execute the stored procedure 
-                results = factory.GetStoredProcedureDataReader("Item_GetIngredientsByItem", paramList)
+                If jurisdictionId <= 0 Then
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetIngredientsByItem", paramList)
+                Else
+                    ' add param
+                    currentParam = New DBParam
+                    currentParam.Name = "Jurisdiction"
+                    currentParam.Value = jurisdictionId
+                    currentParam.Type = DBParamType.Int
+                    paramList.Add(currentParam)
+
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetIngredientsOverrideByItem", paramList)
+                End If
 
                 While results.Read
                     If (Not results.IsDBNull(results.GetOrdinal("Scale_Ingredient_ID"))) Then
@@ -215,7 +239,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
             Return ingredientBO
 
         End Function
-        Public Shared Function GetAllergenForNonScaleItemByItem(ByVal item_Key As Integer) As ItemAllergenBO
+        Public Shared Function GetAllergenForNonScaleItemByItem(ByVal item_Key As Integer, Optional ByVal jurisdictionId As Integer = 0) As ItemAllergenBO
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim results As SqlDataReader = Nothing
             Dim paramList As New ArrayList
@@ -230,8 +254,20 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 currentParam.Type = DBParamType.Int
                 paramList.Add(currentParam)
 
-                ' Execute the stored procedure 
-                results = factory.GetStoredProcedureDataReader("Item_GetAllergensByItem", paramList)
+                If jurisdictionId <= 0 Then
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetAllergensByItem", paramList)
+                Else
+                    ' add param
+                    currentParam = New DBParam
+                    currentParam.Name = "Jurisdiction"
+                    currentParam.Value = jurisdictionId
+                    currentParam.Type = DBParamType.Int
+                    paramList.Add(currentParam)
+
+                    ' Execute the stored procedure 
+                    results = factory.GetStoredProcedureDataReader("Item_GetAllergensOverrideByItem", paramList)
+                End If
 
                 While results.Read
                     If (Not results.IsDBNull(results.GetOrdinal("Scale_Allergen_ID"))) Then
