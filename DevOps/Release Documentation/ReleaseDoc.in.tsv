@@ -1,11 +1,11 @@
-ChangeTicketNum	Change ticket number	CHG0039245
+ChangeTicketNum	Change ticket number	CHG0039922
 ReleaseOwner	Change owner	Tom Lux
-SprintsIncluded	Sprint numbers covered	147 - 148 (June 19 - July 17)
+SprintsIncluded	Sprint numbers covered	149 - 150 (July 17 - August 14)
 TargetEnv	Target environment	QA
 TargetEnvShort		QA
-DeployDate	Deploy date	Tuesday, July 23, 2019
+DeployDate	Deploy date	Tuesday, August 20, 2019
 ReleaseYear		2019
-ReleaseSeqNum		08
+ReleaseSeqNum		09
 ReleaseId		__ReleaseYear__.__ReleaseSeqNum__
 IrmaClientUpdated		y
 IrmaDbUpdated		y
@@ -21,14 +21,14 @@ IrmaDbScriptLink		Open Folder <a href="file://odwp6516/Release/__ReleaseId__/">H
 IconDbScriptLink	Icon DB script	N/A -- Auto deploy via VSTS
 MammothDbScriptLink		N/A -- Auto deploy via VSTS
 MammothDbTarget		Mammoth-DB01-QA\Mammoth.Mammoth, QA-01-Mammoth02\Mammoth02.Mammoth
-IconReleaseBranchName	Icon release branch name	RELEASE_2019_08
-IconBuildNum	Icon release build number	2019072*
+IconReleaseBranchName	Icon release branch name	RELEASE_2019_09
+IconBuildNum	Icon release build number	20190818*
 IconBuildId	Icon release build ID	.
 IrmaReleaseBranchName	IRMA release branch name	n/a
 IrmaBuildNum	IRMA release build number	n/a
 IrmaBuildId	IRMA release build ID	.
-IrmaVer	IRMA version number	11.4
-IrmaLongVer		11.4.0
+IrmaVer	IRMA version number	11.5
+IrmaLongVer		11.5.0
 IconVer	Icon version number	__ReleaseYear__.__ReleaseSeqNum__
 MammothVer	Mammoth version number	__ReleaseYear__.__ReleaseSeqNum__
 TibcoVer	TIBCO version number	__ReleaseYear__.__ReleaseSeqNum__
@@ -42,18 +42,18 @@ IrmaServersAffected	This should be dynamic	IRMAQAApp[1-4]
 IconServersAffected	This should be dynamic	VM-Icon-QA[1-4]
 MammothServersAffected	This should be dynamic	Mammoth-App01-QA
 TibcoServersAffected	This should be dynamic	QA: CERD1673, CERD1674 | QA-Perf: CERD1662, CERD1663, CERD1664, CERD1665
-TibcoAppsUpdated		MammothPriceListener,PrimeAffinityListener,R10PriceService,PublishInstructionListService,PublishKitsService,InStockDequeueService,PublishInventorySpoilageService,PublishPurchaseOrderService,PublishReceivedOrderService,PublishTransferOrderService,RePublishInventoryMessagesService
+TibcoAppsUpdated		EmergencyPriceService,ErrorMessagesMonitor,JobSchedulerService,MammothActivePriceService
 HcTibcoRegions	List of regions for which tibco deploy links should be generated for HoneyCrisp apps	FL,PN,SO,SW
 HcGenerateQafLinks	Flag 0 or 1 to indicate if QAF links should be generated for HoneyCrisp tibco apps	0
 IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
-IrmaSuitePreviousVersion		11.3.0
+IrmaSuitePreviousVersion		11.4.0
 MammothManualDeploy		**NONE**
 IrmaReleaseLauncherVersionRef		.
-AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	Deploy update for E-Invoicing legacy app
+AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	**NONE**
 AdditionalIrmaDeployImplementerRef		IRM
 AdditionalIrmaComponentList		.
 SpecialIrmaReleaseDetails		<hr>
-AzureReleaseList		<hr>Icon DB<br>Mammoth DB<br>Icon API Controller<br>(ESB Perf DNS) eWIC APL Listener<br>(ESB Perf DNS) eWIC Error Response Listener<br>(ESB Perf DNS) R10 Listener<br>Icon Dashboard<br>(ESB Perf DNS) Icon Item Movement Listener<br>Icon Nutrition Web API<br>(ESB Perf DNS) Icon Web<br>(ESB Perf DNS) Infor Hierarchy Class Listener<br>Infor Item Listener<br>(ESB Perf DNS) Infor New Item Service<br>(ESB Perf DNS) Mammoth API Controller<br>Mammoth Audit Service<br>(ESB Perf DNS) Mammoth Hierarchy Listener<br>(ESB Perf DNS) Mammoth Locale Listener<br>Mammoth Product Listener<br>(ESB Perf DNS) Mammoth PrimeAffinity Controller<br>Mammoth Web Support<br>(ESB Perf DNS) Mammoth Web API
+AzureReleaseList		<hr>IRMA Client<br>Icon DB<br>Mammoth DB<br>Icon API Controller<br>Icon Global Event Controller<br>Icon Web<br>Icon Dashboard<br>Mammoth Product Listener<br>Mammoth Web API<br>Mammoth Web Support
 IrmaPostDbUpdateTask		None, continue
 DbBeforeRelScripts	Full section for DB updates before the core/base release scripts run by DBA.	**NONE**
 DbAfterRelScripts	Full section for DB updates after the core/base release scripts run by DBA.	**NONE**

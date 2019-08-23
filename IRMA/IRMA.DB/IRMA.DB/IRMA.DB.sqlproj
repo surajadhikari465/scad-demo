@@ -3341,11 +3341,11 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\SavePastReceiptDate.sql" />
     <None Include="Scripts\PreDeploy\Archive\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
-    <None Include="Scripts\PostDeploy\PBI21615_GenerateEmailWhenEInvoicingXMLFileMovesToERRORFolder.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22038_MarkInStockAppConfigDeleted.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql" />
     <None Include="Scripts\PostDeploy\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI21615_GenerateEmailWhenEInvoicingXMLFileMovesToERRORFolder.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
