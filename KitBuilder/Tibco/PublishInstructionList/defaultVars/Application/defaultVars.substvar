@@ -18,6 +18,14 @@
 			<modTime>1541714180859</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>CookingInstructions</name>
+			<value>CookingInstructions</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1566565388836</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>DbCommandTimeoutInSeconds</name>
 			<value>30</value>
 			<deploymentSettable>true</deploymentSettable>

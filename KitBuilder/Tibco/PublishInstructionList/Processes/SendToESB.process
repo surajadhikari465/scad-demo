@@ -178,6 +178,13 @@
         <pd:inputBindings>
             <pfx2:lists>
                 <pfx2:list>
+                    <xsl:choose>
+                        <xsl:when test="$Start/InstructionData/InstructionMembers[1]/InstructionCode = $_globalVariables/pfx:GlobalVariables/Application/CookingInstructions">
+                            <xsl:attribute name="ns2:Action">
+                                <xsl:value-of select="$Start/InstructionData/InstructionMembers[1]/ActionCode"/>
+                            </xsl:attribute>
+                        </xsl:when>
+                    </xsl:choose>
                     <xsl:if test="$Start/InstructionData/InstructionMembers[1]/InstructionId">
                         <pfx2:id>
                             <xsl:value-of select="$Start/InstructionData/InstructionMembers[1]/InstructionId"/>

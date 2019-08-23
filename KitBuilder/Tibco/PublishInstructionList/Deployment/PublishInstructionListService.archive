@@ -13,7 +13,7 @@
             <authorProperty>min.zhao</authorProperty>
             <processProperty>/Processes/PublishInstructionList.process</processProperty>
         </processArchive>
-        <versionProperty>30</versionProperty>
+        <versionProperty>31</versionProperty>
         <authorProperty>Amit</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishInstructionListService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\ed.mcnab\src\wfm\SCAD\Icon\Tibco\DeploymentFiles\PublishInstructionListService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\AzureIcon\Icon\Tibco\DeploymentFiles\PublishInstructionListService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
