@@ -1,0 +1,39 @@
+// ----------------------------------------------------------------------------------
+// Global Variables --- EAR level
+// ----------------------------------------------------------------------------------
+BW_GLOBAL_HOSTNAME=*.wfm.pvt
+BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
+
+Application/RegionCode=RM
+Application/InstanceGUID=3A500027-5CCC-4285-BAD6-C6CCDBA6DC71
+
+Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-rm\rmp;DatabaseName=ItemCatalog;
+Connections/JDBC/IRMA/Username=TibcoDataWriter
+Connections/JDBC/IRMA/Password=#!b3EuEXTsqEzl6ESJkG6JPdkty7B0j1HwwBDpsgPcnywbB4+SAlJrig==
+
+Connections/JMS/ESB/JndiContextUrl=ssl://PROD-ESB-EMS-1.wfm.pvt:37293,ssl://PROD-ESB-EMS-2.wfm.pvt:37293,ssl://PROD-ESB-EMS-3.wfm.pvt:37293,ssl://PROD-ESB-EMS-4.wfm.pvt:37293
+Connections/JMS/ESB/JndiUsername=jndiIconUser
+Connections/JMS/ESB/JndiPassword=#!ye6tH0jZLjYg7GpYoZu8kxszO7fG0PfaGqQcI9id/oA=
+Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
+Connections/JMS/ESB/Username=iconUser
+Connections/JMS/ESB/Password=#!evC18AnhZ6pJxwXD1h/zDqlNi8ultwuqu+VpCf1dToU=
+
+// ----------------------------------------------------------------------------------
+// Machine #1 --- Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Process Archive,Process Archive-1,machine=cerp1643
+
+// ----------------------------------------------------------------------------------
+// Machine #2 --- Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Process Archive,Process Archive-2,machine=cerp1644
+
+// ----------------------------------------------------------------------------------
+// Machine #3 --- Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Process Archive,Process Archive-3,machine=odrp1634
+
+// ----------------------------------------------------------------------------------
+// Machine #4 --- Process Archive.par --- Service Instance settings --- Service level
+// ----------------------------------------------------------------------------------
+_TAG,Machine,Process Archive,Process Archive-4,machine=odrp1635
