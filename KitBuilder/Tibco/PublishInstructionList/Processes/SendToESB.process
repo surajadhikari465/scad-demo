@@ -233,7 +233,7 @@
         <config>
             <renderAsText>text</renderAsText>
             <validateInput>true</validateInput>
-            <textEncoding>UTF-8</textEncoding>
+            <textEncoding>UTF-16</textEncoding>
             <term ref="pfx2:lists"/>
         </config>
         <pd:inputBindings>
@@ -303,7 +303,7 @@
                         <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/Application/MessageTypeId"/>
                     </MessageTypeId>
                     <Message>
-                        <xsl:value-of select="tib:render-xml($Start/InstructionData, true(), true())"/>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
                     </Message>
                     <MessageHeader>
                         <xsl:value-of select="$Render-Message-Headers-JSON/ns13:ActivityOutputClass/jsonString"/>
