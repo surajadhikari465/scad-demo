@@ -130,10 +130,10 @@ Friend Class frmOrderItemQueueView
             cmbTransferToSubteam.Items.Clear()
         End If
 
-        'Load the purchasing store's subteam list from the StoreSubteam table
-        Call LoadVendStoreSubteam(cmbTransferToSubteam, lPurchasingID)
+		'Load the purchasing store's subteam list from the StoreSubteam table
+		Call LoadSubTeamByType(enumSubTeamType.StoreByVendorID, cmbTransferToSubteam, Nothing, lPurchasingID, -1, chkSubteam.Checked)
 
-        Call SetCombo(cmbTransferToSubteam, GetSetting("IRMA", "OrderItemQueue", "TransferToSubTeam"))
+		Call SetCombo(cmbTransferToSubteam, GetSetting("IRMA", "OrderItemQueue", "TransferToSubTeam"))
 
         logger.Debug("cmbPurchasing_SelectedIndexChanged Exit")
     End Sub

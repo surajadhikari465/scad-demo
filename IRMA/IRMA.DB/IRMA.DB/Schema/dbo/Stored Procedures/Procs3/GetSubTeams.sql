@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE dbo.GetSubTeams
+﻿CREATE PROCEDURE dbo.GetSubTeams
 AS 
 BEGIN
     SET NOCOUNT ON
@@ -16,7 +15,9 @@ BEGIN
 								END,
 		SubTeamType_ID,
 		FixedSpoilage		=	ISNULL(FixedSpoilage, 0),
-		Dept_No
+		Dept_No,
+		IsDisabled,
+		AlignedSubTeam
     FROM 
 		SubTeam (NOLOCK)
     ORDER BY 

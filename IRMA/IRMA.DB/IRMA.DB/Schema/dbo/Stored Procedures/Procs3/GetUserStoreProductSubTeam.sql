@@ -6,7 +6,7 @@ AS
 SELECT 
 	Users.UserName,Users.telxon_store_limit,Store.Store_No,
 	SubTeam.SubTeam_No 
-	,SubTeam.SubTeam_Name 
+	,SubTeam.SubTeam_Name
 	,SubTeam_Unrestricted = 
 		CASE 
 			WHEN ((SubTeam.SubTeamType_ID = 2) 		-- Manufacturing
@@ -15,6 +15,8 @@ SELECT
 				 ) THEN 1 -- Unrestricted
 			ELSE 0 -- Restricted to retail subteam
 		END
+	,SubTeam.IsDisabled
+	,AlignedSubTeam
 FROM 
 	Store
 INNER JOIN 
@@ -27,7 +29,6 @@ WHERE
 	Store.Store_No = @Store_No
 	AND Users.[User_ID] = @User_ID
 	AND (SubTeam.SubTeamType_ID <= 4) -- Retail, Manufacturing, RetailManufacturing, Expense
-
 ORDER BY 
 	SubTeam_Name
 GO

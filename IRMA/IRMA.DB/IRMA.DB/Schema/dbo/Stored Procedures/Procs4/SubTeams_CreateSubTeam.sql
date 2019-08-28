@@ -22,10 +22,11 @@
             @InventoryCountByCase bit,
             @EXEDistributed bit,
             @SubTeamType_Id int,
-			@Distribution bit,
-			@FixedSpoilage int,
-			@Beverage bit,
-			@AlignedSubTeam bit
+            @Distribution bit,
+            @FixedSpoilage int,
+            @Beverage bit,
+            @AlignedSubTeam bit,
+            @IsDisabled bit = 0
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -57,9 +58,10 @@ BEGIN
             InventoryCountByCase,
             EXEDistributed, 
             SubTeamType_Id,
-			FixedSpoilage,
-			Beverage,
-			AlignedSubTeam
+            FixedSpoilage,
+            Beverage,
+            AlignedSubTeam,
+            IsDisabled
 	) 
 	VALUES
 	(
@@ -85,9 +87,10 @@ BEGIN
             @InventoryCountByCase,
             @EXEDistributed,
             @SubTeamType_Id,
-			@FixedSpoilage,
-			@Beverage,
-			@AlignedSubTeam
+            @FixedSpoilage,
+            @Beverage,
+            @AlignedSubTeam,
+            @IsDisabled
 	)
 
 	IF @Distribution = 1

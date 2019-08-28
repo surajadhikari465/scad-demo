@@ -12,13 +12,9 @@ Friend Class frmLocationEdit
     Private mlSubTeamID As Integer 'Used for setting the default Sub-Team.
     Private mbIsManufacturing As Boolean 'Indicates that the sub-team for this location is a manufacturing sub-team.
     Private mbUserUpdates As Boolean 'Indicates that the user can update (save) the form.
+	Private IsInitializing As Boolean
 
-    Private mlSubTeamList() As Boolean
-
-    Private IsInitializing As Boolean
-
-
-    Private Sub frmLocationEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+	Private Sub frmLocationEdit_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 
         'Test... UPGRADE_WARNING: Arrays in structure rsLocation may need to be initialized before they can be used. Click for more: 'ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword="814DF224-76BD-4BB4-BFFB-EA359CB9FC48"'
         Dim rsLocation As DAO.Recordset = Nothing
@@ -140,19 +136,18 @@ Friend Class frmLocationEdit
 
     End Sub
 
-    Private Sub LoadSubTeams()
+	Private Sub LoadSubTeams()
+		'-- Limit sub-teams user-assigned and only those related to the selected location.
+		If cboStore.SelectedIndex > -1 Then
+			'Load the user's sub-teams restricted to the selected store.
+			Call LoadSubTeamByType(enumSubTeamType.StoreUser, cboSubTeam, Nothing, VB6.GetItemData(cboStore, cboStore.SelectedIndex), 0)
+		Else
+			cboSubTeam.DataSource = Nothing
+			cboSubTeam.Items.Clear()
+		End If
+	End Sub
 
-        '-- Limit sub-teams user-assigned and only those related to the selected location.
-        If cboStore.SelectedIndex > -1 Then
-            'Load the user's sub-teams restricted to the selected store.
-            Call LoadSubTeamByType(Global_Renamed.enumSubTeamType.StoreUser, cboSubTeam, mlSubTeamList, VB6.GetItemData(cboStore, cboStore.SelectedIndex), 0)
-        Else
-            cboSubTeam.Items.Clear()
-        End If
-
-    End Sub
-
-    Private Sub cboStore_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboStore.KeyPress
+	Private Sub cboStore_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cboStore.KeyPress
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
 
         If KeyAscii = 8 Then
@@ -241,22 +236,15 @@ Friend Class frmLocationEdit
 
     End Function
 
-    Private Function GetSubTeamRestrictedFlag() As Boolean
+	Private Function GetSubTeamRestrictedFlag() As Boolean
+		Dim subTeams As List(Of SubTeamBO) = CType(cboSubTeam.Tag, List(Of SubTeamBO))
+		If subTeams Is Nothing Then Return False
 
-        On Error GoTo ErrExit
+		Dim subTeam As SubTeamBO = subTeams.FirstOrDefault(Function(x) x.SubTeamNo = cboSubTeam.SelectedValue)
+		Return If(subTeam Is Nothing, False, subTeam.IsUnrestricted)
+	End Function
 
-        'Test... UPGRADE_WARNING: Couldn't resolve default property of object mvSubTeamList(). Click for more: 'ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        GetSubTeamRestrictedFlag = IIf(mlSubTeamList(cboSubTeam.SelectedIndex) = 0, False, True) '1 indicates Un-Restricted.
-        Exit Function
-
-ErrExit:
-
-        'If anything fails better safe to send back restricted.
-        GetSubTeamRestrictedFlag = True
-
-    End Function
-
-    Private Function ValidateData(Optional ByRef bMsg As Boolean = True) As Boolean
+	Private Function ValidateData(Optional ByRef bMsg As Boolean = True) As Boolean
         ValidateData = True
         If cboStore.SelectedIndex = -1 Or Trim(txtLocName.Text) = "" Or cboSubTeam.SelectedIndex = -1 Then
             ValidateData = False

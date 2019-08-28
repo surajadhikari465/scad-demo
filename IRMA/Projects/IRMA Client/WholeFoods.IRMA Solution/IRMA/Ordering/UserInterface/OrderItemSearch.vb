@@ -487,8 +487,8 @@ Friend Class frmOrderItemSearch
         End If
 
         If geOrderType = enumOrderType.Transfer Then
-            Call LoadSubTeamByType(eSubTeamType, cmbSubTeam, lLimitStore_No, lOrderHeader_SubTeamNo)
-        Else
+			Call LoadSubTeamByType(eSubTeamType, cmbSubTeam, lLimitStore_No, lOrderHeader_SubTeamNo)
+		Else
             Call LoadSubTeamByType(enumSubTeamType.All, cmbSubTeam, lLimitStore_No, lOrderHeader_SubTeamNo)
         End If
 
@@ -957,4 +957,7 @@ ExitSub:
         ToolTip1.SetToolTip(ugrdSearchResults, Nothing)
     End Sub
 
+	Private Sub chkSubTeam_Click(sender As Object, e As EventArgs) Handles chkSubTeam.Click
+		RefreshSubteamCombo(cmbSubTeam, chkSubTeam.Checked)
+	End Sub
 End Class

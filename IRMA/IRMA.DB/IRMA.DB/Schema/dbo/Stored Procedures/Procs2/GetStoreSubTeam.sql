@@ -4,7 +4,7 @@ AS
 BEGIN
     SET NOCOUNT ON
 
-    SELECT 
+	SELECT 
 		  SubTeam_Name 
 		, StoreSubTeam.SubTeam_No 
 		, SubTeam_Unrestricted = 
@@ -16,7 +16,9 @@ BEGIN
 				ELSE 0 -- Restricted to retail subteam
 			END
 		, IsExpense = CASE WHEN SubTeamType_ID = 4 THEN 1 ELSE 0 END
-        , SubTeam_Abbreviation
+		, SubTeam_Abbreviation
+		,AlignedSubTeam
+		, IsDisabled
     FROM Store WITH (NOLOCK)
     INNER JOIN StoreSubTeam WITH (NOLOCK) 
 		ON StoreSubTeam.Store_No = Store.Store_No 

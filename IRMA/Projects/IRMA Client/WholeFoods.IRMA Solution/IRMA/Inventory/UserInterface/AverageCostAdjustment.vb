@@ -1,5 +1,6 @@
 Imports log4net
 Imports WholeFoods.Utility
+Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Public Class frmAvgCostAdjustment
 
@@ -225,8 +226,8 @@ Public Class frmAvgCostAdjustment
             End If
         End Try
 
-        LoadAllSubTeams(Me.cmbSubTeam)
-        LoadZone(Me.cmbZones)
+		Me.cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+		LoadZone(Me.cmbZones)
         LoadStates(Me.cmbState)
 
         Me.cmbSubTeam.SelectedIndex = -1
@@ -261,26 +262,26 @@ Public Class frmAvgCostAdjustment
         Me.ValidateStoreSelection()
 
         If bValidSelection Then
-            If Not cmbSubTeam.SelectedIndex = -1 Then
+			If Not cmbSubTeam.SelectedIndex = -1 Then
 
-                '-- Set glItemid to none found
-                frmItemSearch.InitForm()
-                frmItemSearch.ShowDialog()
+				'-- Set glItemid to none found
+				frmItemSearch.InitForm()
+				frmItemSearch.ShowDialog()
 
-                If glItemID <> 0 Then
-                    '-- if its not zero, then something was found
-                    Me.LoadItem()
-                    ' set the form title to show the item selected
-                    Me.Text = "Inventory Costing - " & Trim(Me.txtItemDesc.Text)
-                    'load avg cost history or current avg cost based on selections
-                    LoadHistory()
+				If glItemID <> 0 Then
+					'-- if its not zero, then something was found
+					Me.LoadItem()
+					' set the form title to show the item selected
+					Me.Text = "Inventory Costing - " & Trim(Me.txtItemDesc.Text)
+					'load avg cost history or current avg cost based on selections
+					LoadHistory()
 
-                End If
+				End If
 
-                frmItemSearch.Close()
-                frmItemSearch.Dispose()
-            Else
-                MessageBox.Show("Please provide a Subteam Selection!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+				frmItemSearch.Close()
+				frmItemSearch.Dispose()
+			Else
+				MessageBox.Show("Please provide a Subteam Selection!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
         Else
             MessageBox.Show(sValidationMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -495,22 +496,22 @@ Public Class frmAvgCostAdjustment
             Zone = VB6.GetItemData(cmbZones, cmbZones.SelectedIndex)
         End If
 
-        ' load the current adjustment history information
-        Dim _avgCostItem As New AvgCostAdjBO.AvgCostAdjItem(glItemID, _
-                                                            Me.cmbStoreSelection.SelectedValue, _
-                                                            Me.optSelectWFM.Checked, _
-                                                            Me.optSelectHFM.Checked, _
-                                                            Me.optSelectALLStores.Checked, _
-                                                            Zone, _
-                                                            Me.cmbState.SelectedItem, _
-                                                            VB6.GetItemData(cmbSubTeam, cmbSubTeam.SelectedIndex), _
-                                                            Me.chkCurrentCost.Checked, _
-                                                            dtpStartDate.Value, _
-                                                            dtpEndDate.Value
-                                                            )
+		' load the current adjustment history information
+		Dim _avgCostItem As New AvgCostAdjBO.AvgCostAdjItem(glItemID,
+															Me.cmbStoreSelection.SelectedValue,
+															Me.optSelectWFM.Checked,
+															Me.optSelectHFM.Checked,
+															Me.optSelectALLStores.Checked,
+															Zone,
+															Me.cmbState.SelectedItem,
+															cmbSubTeam.SelectedItem.SubTeamNo,
+															Me.chkCurrentCost.Checked,
+															dtpStartDate.Value,
+															dtpEndDate.Value
+															)
 
-        ' set the form data
-        CurrentItem = _avgCostItem
+		' set the form data
+		CurrentItem = _avgCostItem
 
         ' bind the grid to the history
         Me.gridHistory.DataSource = AvgCostAdjBO.GetAvgCostForStores(CurrentItem)

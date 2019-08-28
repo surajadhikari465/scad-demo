@@ -306,14 +306,14 @@ Public Class Form_EditUser
         ' populate common titles datatable
         Me._titles = TitleDAO.GetTitles()
 
-        ' populate subteams
-        Me.ComboBox_SubTeams.DataSource = SubTeamDAO.GetSubteams()
-        Me.ComboBox_SubTeams.DisplayMember = "Subteam_Description"
-        Me.ComboBox_SubTeams.ValueMember = "SubTeam_No"
-        Me.ComboBox_SubTeams.SelectedIndex = -1
+		' populate subteams
+		Me.ComboBox_SubTeams.DisplayMember = "SubteamDescription"
+		Me.ComboBox_SubTeams.ValueMember = "SubTeamNo"
+		Me.ComboBox_SubTeams.DataSource = SubTeamDAO.GetSubteams()
+		Me.ComboBox_SubTeams.SelectedItem = Nothing
 
-        ' populate facilities tree nodes
-        Try
+		' populate facilities tree nodes
+		Try
             dt = New DataTable
             dt = LocationDAO.GetLocations()
             For Each dr In dt.Rows

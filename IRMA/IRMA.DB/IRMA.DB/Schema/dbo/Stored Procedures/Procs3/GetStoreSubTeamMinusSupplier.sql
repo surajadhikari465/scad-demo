@@ -4,7 +4,7 @@ AS
 
 SELECT 
 		  StoreSubTeam.SubTeam_No 
-		, SubTeam.SubTeam_Name 
+		, SubTeam.SubTeam_Name
 		, SubTeam_Unrestricted = 
 			CASE 
 				WHEN ((SubTeam.SubTeamType_ID = 2) 		-- Manufacturing
@@ -13,6 +13,8 @@ SELECT
 					 ) THEN 1 -- Unrestricted
 				ELSE 0 -- Restricted to retail subteam
 			END
+		, SubTeam.IsDisabled
+		, AlignedSubTeam
 FROM 
 	Vendor
 INNER JOIN

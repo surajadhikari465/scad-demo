@@ -1895,20 +1895,26 @@
   <metadata name="optField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>265, 17</value>
   </metadata>
+  <data name="ComboBox_SubTeam.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="ComboBox_SubTeam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 19</value>
+    <value>11, 18</value>
+  </data>
+  <data name="ComboBox_SubTeam.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>25, 0</value>
   </data>
   <data name="ComboBox_SubTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 22</value>
+    <value>331, 24</value>
   </data>
   <data name="ComboBox_SubTeam.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;ComboBox_SubTeam.Name" xml:space="preserve">
     <value>ComboBox_SubTeam</value>
   </data>
   <data name="&gt;&gt;ComboBox_SubTeam.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>SubteamComboBox, IRMA, Version=11.5.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ComboBox_SubTeam.Parent" xml:space="preserve">
     <value>GroupBox_SubTeam</value>

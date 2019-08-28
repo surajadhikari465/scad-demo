@@ -1,5 +1,4 @@
-﻿Imports System.Linq
-Imports WholeFoods.IRMA.ItemHosting.DataAccess
+﻿Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Public Class NoTagLogicConfiguration
 
@@ -17,80 +16,75 @@ Public Class NoTagLogicConfiguration
     End Sub
 
     Private Sub NoTagLogicConfiguration_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Try
-            RetrieveCurrentConfiguration()
-            PopulateSubteamCombobox()
-        Catch ex As Exception
-            MessageBox.Show(String.Format("An error occurred while retrieving the current no-tag configuration: {0}.", ex.Message), Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+		Try
+			RetrieveCurrentConfiguration()
+			PopulateSubteamCombobox()
+		Catch ex As Exception
+			MessageBox.Show(String.Format("An error occurred while retrieving the current no-tag configuration: {0}.", ex.Message), Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Me.Close()
         End Try
 
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub PopulateSubteamCombobox()
-        Dim alignedSubteams As Dictionary(Of Integer, String) = SubTeamDAO.GetAlignedSubteams()
+	Private Sub PopulateSubteamCombobox()
+		cmbSubTeam.ValueMember = "SubTeamNo"
+		cmbSubTeam.DisplayMember = "SubTeamName"
+		cmbSubTeam.DataSource = SubTeamDAO.GetAlignedSubteams()
+	End Sub
 
-        ComboBoxSubteams.ValueMember = "SubteamNumber"
-        ComboBoxSubteams.DisplayMember = "SubteamName"
-        ComboBoxSubteams.DataSource = alignedSubteams.Select(Function(s) New With {.SubteamNumber = s.Key, .SubteamName = s.Value}).OrderBy(Function(s) s.SubteamName).ToList()
-    End Sub
+	Private Sub RetrieveCurrentConfiguration()
+		SetMovementRuleDefaultThresholdValues()
+		GetSubteamOverrides()
+	End Sub
 
-    Private Sub RetrieveCurrentConfiguration()
-        SetMovementRuleDefaultThresholdValues()
-        GetSubteamOverrides()
-    End Sub
+	Private Sub SetMovementRuleDefaultThresholdValues()
+		defaultRuleConfigurations = dataAccess.GetRuleDefaultThresholds()
 
-    Private Sub SetMovementRuleDefaultThresholdValues()
-        defaultRuleConfigurations = dataAccess.GetRuleDefaultThresholds()
+		If defaultRuleConfigurations.Count > 0 Then
+			Dim movementConfig As Integer = defaultRuleConfigurations("MovementHistoryRule")
+			Dim orderingConfig As Integer = defaultRuleConfigurations("OrderingHistoryRule")
+			Dim receivingConfig As Integer = defaultRuleConfigurations("ReceivingHistoryRule")
 
-        If defaultRuleConfigurations.Count > 0 Then
-            Dim movementConfig As Integer = defaultRuleConfigurations("MovementHistoryRule")
-            Dim orderingConfig As Integer = defaultRuleConfigurations("OrderingHistoryRule")
-            Dim receivingConfig As Integer = defaultRuleConfigurations("ReceivingHistoryRule")
+			NumericUpDownMovementHistory.Value = movementConfig
+			NumericUpDownOrderingHistory.Value = orderingConfig
+			NumericUpDownReceivingHistory.Value = receivingConfig
+		End If
+	End Sub
 
-            NumericUpDownMovementHistory.Value = movementConfig
-            NumericUpDownOrderingHistory.Value = orderingConfig
-            NumericUpDownReceivingHistory.Value = receivingConfig
-        End If
-    End Sub
+	Private Sub GetSubteamOverrides()
+		subteamOverrides = dataAccess.GetSubteamOverrides()
+	End Sub
 
-    Private Sub GetSubteamOverrides()
-        subteamOverrides = dataAccess.GetSubteamOverrides()
-    End Sub
+	Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
+		Try
+			dataAccess.UpdateNoTagRuleThresholds(defaultRuleConfigurations)
+			dataAccess.UpdateNoTagSubteamOverrides(subteamOverrides)
 
-    Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
-        Try
-            dataAccess.UpdateNoTagRuleThresholds(defaultRuleConfigurations)
-            dataAccess.UpdateNoTagSubteamOverrides(subteamOverrides)
+			MessageBox.Show("Configuration values have been saved successfully.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+			Me.DialogResult = DialogResult.OK
+		Catch ex As Exception
+			MessageBox.Show(String.Format("An error occurred while updating the no-tag configuration: {0}.", ex.Message), Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+			Me.Close()
+		End Try
+	End Sub
 
-            MessageBox.Show("Configuration values have been saved successfully.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Me.DialogResult = DialogResult.OK
-        Catch ex As Exception
-            MessageBox.Show(String.Format("An error occurred while updating the no-tag configuration: {0}.", ex.Message), Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Me.Close()
-        End Try
-    End Sub
+	Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
+		Me.DialogResult = DialogResult.Cancel
+	End Sub
 
-    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
-        Me.DialogResult = DialogResult.Cancel
-    End Sub
+	Private Sub ComboBoxSubteams_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSubTeam.SelectedIndexChanged
+		If subteamOverrides.ContainsKey(cmbSubTeam.SelectedItem.SubTeamNo) Then
+			NumericUpDownSubteamOverride.Value = subteamOverrides(cmbSubTeam.SelectedItem.SubTeamNo)
+		Else
+			subteamOverrides.Add(cmbSubTeam.SelectedItem.SubTeamNo, 0)
+			NumericUpDownSubteamOverride.Value = 0
+		End If
+	End Sub
 
-    Private Sub ComboBoxSubteams_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxSubteams.SelectedIndexChanged
-        Dim selectedSubteamNumber As Integer = ComboBoxSubteams.SelectedValue
-        If subteamOverrides.ContainsKey(selectedSubteamNumber) Then
-            Dim currentOverride As Integer = subteamOverrides(selectedSubteamNumber)
-            NumericUpDownSubteamOverride.Value = currentOverride
-        Else
-            subteamOverrides.Add(selectedSubteamNumber, 0)
-            NumericUpDownSubteamOverride.Value = 0
-        End If
-    End Sub
-
-    Private Sub NumericUpDownSubteamOverride_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownSubteamOverride.ValueChanged
-        Dim selectedSubteamNumber As Integer = ComboBoxSubteams.SelectedValue
-        subteamOverrides(selectedSubteamNumber) = NumericUpDownSubteamOverride.Value
-    End Sub
+	Private Sub NumericUpDownSubteamOverride_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownSubteamOverride.ValueChanged
+		subteamOverrides(cmbSubTeam.SelectedItem.SubTeamNo) = NumericUpDownSubteamOverride.Value
+	End Sub
 
     Private Sub NumericUpDownMovementHistory_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownMovementHistory.ValueChanged
         defaultRuleConfigurations("MovementHistoryRule") = NumericUpDownMovementHistory.Value

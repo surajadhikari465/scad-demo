@@ -77,8 +77,8 @@ Friend Class frmReceivingLog
 
         'Bug 12369: FL 3.5.9 PRD - Daily receiving Log Subteam option is grayed out
         If cmbStore.Text.Trim <> "" Then
-            LoadStoreSubteam(cmbSubTeam, VB6.GetItemData(cmbStore, cmbStore.SelectedIndex))
-            SetActive(cmbSubTeam, True)
+			LoadSubTeamByType(enumSubTeamType.Store, cmbSubTeam, Nothing, VB6.GetItemData(cmbStore, cmbStore.SelectedIndex), -1, True)
+			SetActive(cmbSubTeam, True)
         Else
             cmbSubTeam.Items.Clear()
             SetActive(cmbSubTeam, False)

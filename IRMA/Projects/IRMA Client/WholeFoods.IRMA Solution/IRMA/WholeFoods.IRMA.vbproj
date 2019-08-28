@@ -779,6 +779,12 @@
     <Compile Include="Common\UserInterface\MultipleValueInput.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\SubteamComboBox.designer.vb">
+      <DependentUpon>SubteamComboBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SubteamComboBox.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DataArchiving\BusinessLogic\DataArchiveBO.vb" />
     <Compile Include="DataArchiving\DataAccess\ChangeTypeDAO.vb" />
     <Compile Include="DataArchiving\DataAccess\DataArchiveDAO.vb" />
@@ -1327,7 +1333,6 @@
     <Compile Include="EPromotions\BusinessLogic\PromotionalOfferStoreBO.vb" />
     <Compile Include="EPromotions\DataAccess\ItemGroupDAO.vb" />
     <Compile Include="EPromotions\DataAccess\RewardTypeDAO.vb" />
-    <Compile Include="EPromotions\DataAccess\SubTeamDAO.vb" />
     <Compile Include="EPromotions\UserInterface\Form_ManageGroups.Designer.vb">
       <DependentUpon>Form_ManageGroups.vb</DependentUpon>
     </Compile>
@@ -3764,6 +3769,9 @@
     <EmbeddedResource Include="Common\UserInterface\MultipleValueInput.resx">
       <DependentUpon>MultipleValueInput.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SubteamComboBox.resx">
+      <DependentUpon>SubteamComboBox.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataArchiving\UserInterface\Form_EditDataArchive.resx">
       <DependentUpon>Form_EditDataArchive.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -5201,6 +5209,7 @@
     </Content>
     <None Include="Resources\ac0001-32.gif" />
     <None Include="Resources\DisplayXML.xslt" />
+    <None Include="Resources\clear.png" />
     <Content Include="Resources\error.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -5209,6 +5218,8 @@
     <Content Include="Resources\greenyc.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\imgOff.png" />
+    <None Include="Resources\imgOn.png" />
     <Content Include="Resources\Inventory.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

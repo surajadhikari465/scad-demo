@@ -25,7 +25,7 @@ AS
 BEGIN
 	SELECT 
 		StoreSubTeam.SubTeam_No,
-		SubTeam.SubTeam_Name, 
+		SubTeam.SubTeam_Name,
 		SubTeam_Unrestricted = 
 				CASE 
 					WHEN ((SubTeam.SubTeamType_ID = 2) 		-- Manufacturing
@@ -33,7 +33,9 @@ BEGIN
 							OR (SubTeam.SubTeamType_ID = 4)	-- Expense
 						 ) THEN 1 -- Unrestricted
 					ELSE 0 -- Restricted to retail subteam
-				END
+				END,
+		SubTeam.IsDisabled,
+		AlignedSubTeam
 		FROM 
 			Vendor					WITH (NOLOCK)
 			INNER JOIN Store		WITH (NOLOCK)	ON	Vendor.Store_No			= Store.Store_No 

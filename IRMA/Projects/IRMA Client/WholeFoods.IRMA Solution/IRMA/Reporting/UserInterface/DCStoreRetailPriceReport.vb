@@ -64,9 +64,8 @@ Friend Class frmDCStoreRetailPriceReport
         Dim strVendorID As String
 
         If cmbVendor.SelectedIndex > -1 Then
-
-            LoadVendStoreSubteam(cmbSubTeam, VB6.GetItemData(cmbVendor, cmbVendor.SelectedIndex))
-            SetActive(cmbSubTeam, True)
+			LoadSubTeamByType(enumSubTeamType.StoreByVendorID, cmbSubTeam, Nothing, VB6.GetItemData(cmbVendor, cmbVendor.SelectedIndex), -1, True)
+			SetActive(cmbSubTeam, True)
 
             '-- Fill out the store list
             strVendorID = CStr(VB6.GetItemData(cmbVendor, cmbVendor.SelectedIndex))

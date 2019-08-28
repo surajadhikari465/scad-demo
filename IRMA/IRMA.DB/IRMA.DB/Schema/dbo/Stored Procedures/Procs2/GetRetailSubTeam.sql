@@ -5,13 +5,15 @@ BEGIN
     
 SELECT DISTINCT
 		  RTRIM(SubTeam_Name) As SubTeam_Name 
-		, StoreSubTeam.SubTeam_No 
+		, StoreSubTeam.SubTeam_No
 		, SubTeam_Unrestricted = 
 		CASE 
 			WHEN ((SubTeam.SubTeamType_ID = 3) 		-- RetailManufacturing
 				 ) THEN 1 -- Unrestricted
 			ELSE 0 -- Restricted to retail subteam
 		END
+		, SubTeam.IsDisabled
+		, AlignedSubTeam
     FROM 
 		Store WITH (NOLOCK)
     INNER JOIN 
@@ -24,8 +26,7 @@ SELECT DISTINCT
 		SubTeam.SubTeamType_ID = 1 
 		OR SubTeam.SubTeamType_ID = 3
 		OR SubTeam.SubTeamType_ID= 7
-    ORDER BY 
-		RTRIM(SubTeam_Name)
+    ORDER BY  SubTeam_Name
     
     SET NOCOUNT OFF
 END

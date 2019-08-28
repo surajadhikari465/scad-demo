@@ -16,7 +16,7 @@ BEGIN
 		BEGIN
 		    SELECT DISTINCT 
 				  SubTeam.SubTeam_No
-				, SubTeam_Name 
+				, SubTeam_Name
 				, SubTeam_Unrestricted = 
 					CASE 
 						WHEN ((SubTeam.SubTeamType_ID = 2) 		-- Manufacturing
@@ -24,6 +24,8 @@ BEGIN
 							 ) THEN 1 -- Unrestricted
 						ELSE 0 -- Restricted to retail subteam
 					END
+				, IsDisabled
+				, AlignedSubTeam
 		    FROM SubTeam WITH (NOLOCK)
 		    INNER JOIN ZoneSubTeam WITH (NOLOCK)
 				ON ZoneSubTeam.SubTeam_No = SubTeam.SubTeam_No 
@@ -34,8 +36,10 @@ BEGIN
 		BEGIN
 		    SELECT DISTINCT 
 				  SubTeam.SubTeam_No
-				, SubTeam_Name 
+				, SubTeam_Name
 				, SubTeam_Unrestricted = 0
+				, IsDisabled
+				, AlignedSubTeam
 		    FROM SubTeam WITH (NOLOCK)
 		    INNER JOIN ZoneSubTeam WITH (NOLOCK)
 				ON ZoneSubTeam.SubTeam_No = SubTeam.SubTeam_No 

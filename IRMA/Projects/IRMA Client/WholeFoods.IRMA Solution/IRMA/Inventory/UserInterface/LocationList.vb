@@ -1,13 +1,12 @@
 Option Strict Off
 Option Explicit On
+
 Friend Class frmLocationList
     Inherits System.Windows.Forms.Form
 
     Private mdt As DataTable
-    Private mvSubTeamList() As Boolean
+	Private IsInitializing As Boolean
 
-    Private IsInitializing As Boolean
-	
 	Private Sub cmdAddLoc_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdAddLoc.Click
 		
         Call frmLocationEdit.Load_Form()
@@ -135,19 +134,17 @@ Friend Class frmLocationList
         End If
 		
 	End Sub
-	
+
 	Private Sub LoadSubTeams()
-		
 		'-- Limit sub-teams user-assigned and only those related to the selected location.
 		If cboStore.SelectedIndex > -1 Then
 			'Load the user's sub-teams restricted to the selected store.
-            Call LoadSubTeamByType(Global_Renamed.enumSubTeamType.StoreUser, cboSubTeam, mvSubTeamList, VB6.GetItemData(cboStore, cboStore.SelectedIndex), 0)
+			LoadSubTeamByType(enumSubTeamType.StoreUser, cboSubTeam, Nothing, VB6.GetItemData(cboStore, cboStore.SelectedIndex), 0)
 		Else
 			cboSubTeam.Items.Clear()
 		End If
-		
 	End Sub
-	
+
 	Private Sub RefreshGrid()
         'Dim rsList As dao.Recordset = Nothing
         Dim sStoreID As String
@@ -256,14 +253,8 @@ Friend Class frmLocationList
         Call LoadSubTeams()
 
     End Sub
-	
-	Private Sub frmLocationList_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 
-		ReDim mvSubTeamList(0)
-		
-	End Sub
-	
-    Private Sub gridLoc_DblClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
+	Private Sub gridLoc_DblClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs)
 
         If cmdEditLoc.Enabled Then
             cmdEditLoc.PerformClick()

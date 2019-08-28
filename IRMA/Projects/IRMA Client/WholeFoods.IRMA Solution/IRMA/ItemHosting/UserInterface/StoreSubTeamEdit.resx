@@ -120,9 +120,6 @@
   <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Note: The Peoplesoft Sub Team No and Team No values are used for integration with Peoplesoft for invoice and credit uploads.  Please confirm that the new values match the values configured in Peoplesoft itself to avoid errors.</value>
   </data>

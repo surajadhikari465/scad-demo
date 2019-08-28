@@ -1,5 +1,8 @@
 Option Strict Off
 Option Explicit On
+
+Imports System.Linq
+
 Friend Class frmInventoryAdjustment
 	Inherits System.Windows.Forms.Form
 	
@@ -59,10 +62,10 @@ Friend Class frmInventoryAdjustment
             End If
         End Try
 
-        LoadAllSubTeams(cmbSubTeam)
-        cmbSubTeam.SelectedIndex = -1
+		cmbSubTeam.DataSource = WholeFoods.IRMA.ItemHosting.DataAccess.SubTeamDAO.GetSubteams()
+		cmbSubTeam.SelectedIndex = -1
 
-        LoadShrinkSubtypesComboBox(cmbShrinkSubtype)
+		LoadShrinkSubtypesComboBox(cmbShrinkSubtype)
 
         If glStore_Limit > 0 Then
             SetActive(cmbStore, False)
@@ -80,8 +83,8 @@ Friend Class frmInventoryAdjustment
 
             '-- Set glItemid to none found
             frmItemSearch.InitForm()
-            frmItemSearch.LimitSubTeam_No = VB6.GetItemData(cmbSubTeam, cmbSubTeam.SelectedIndex)
-            frmItemSearch.ShowDialog()
+			frmItemSearch.LimitSubTeam_No = cmbSubTeam.SelectedItem.SubTeamNo
+			frmItemSearch.ShowDialog()
             If glItemID <> 0 Then
                 '-- if its not zero, then something was found
                 LoadItemInformation()
@@ -112,10 +115,12 @@ Friend Class frmInventoryAdjustment
                 gRSRecordset = SQLOpenRecordSet(sSQL, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
             End If
 
-            glItemID = gRSRecordset.Fields("Item_Key").Value
-            SetCombo(cmbSubTeam, gRSRecordset.Fields("SubTeam_No").Value)
+			glItemID = gRSRecordset.Fields("Item_Key").Value
+			Dim subTeamNo As Integer = 0
+			Integer.TryParse(gRSRecordset.Fields("SubTeam_No").Value, subTeamNo)
+			cmbSubTeam.SelectedItem = cmbSubTeam.DataSource.FirstOrDefault(Function(x) x.SubTeamNo = subTeamNo)
 
-            Me.txtItemDesc.Text = gRSRecordset.Fields("Item_Description").Value
+			Me.txtItemDesc.Text = gRSRecordset.Fields("Item_Description").Value
             Me.txtIdentifier.Text = gRSRecordset.Fields("Identifier").Value
             Me._costedByWeight = gRSRecordset.Fields("CostedByWeight").Value
             Me._catchWeight = gRSRecordset.Fields("CatchWeightRequired").Value
@@ -189,14 +194,12 @@ Friend Class frmInventoryAdjustment
     End Sub
 
     Private Sub cmdAdd_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdAdd.Click
-        Dim sSubTeam_No As String
+		If ((optReset.Checked = True) And (SystemDateTime(True) = GetEndOfPeriodDate())) Then
+			MsgBox("Today is End of Period - Reset by closing the Master Cycle Count.", MsgBoxStyle.Critical, "Reset not allowed...")
+			Exit Sub
+		End If
 
-        If ((optReset.Checked = True) And (SystemDateTime(True) = GetEndOfPeriodDate())) Then
-            MsgBox("Today is End of Period - Reset by closing the Master Cycle Count.", MsgBoxStyle.Critical, "Reset not allowed...")
-            Exit Sub
-        End If
-
-        If glItemID = -1 Then
+		If glItemID = -1 Then
             MsgBox("Select an item.", MsgBoxStyle.Critical, Me.Text)
             Exit Sub
         End If
@@ -222,10 +225,10 @@ Friend Class frmInventoryAdjustment
             End If
         End If
 
-        sSubTeam_No = ComboValue(cmbSubTeam)
+		Dim sSubTeam_No As String = If(cmbSubTeam.SelectedItem Is Nothing, "NULL", cmbSubTeam.SelectedItem.SubTeamNo.ToString())
 
-        '-- Make sure its what they want to do
-        If MsgBox("Really adjust this quantity?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Notice") = MsgBoxResult.No Then Exit Sub
+		'-- Make sure its what they want to do
+		If MsgBox("Really adjust this quantity?", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Notice") = MsgBoxResult.No Then Exit Sub
 
         Dim _quantity As Decimal = 0
         Dim _weight As Decimal = 0
@@ -260,9 +263,9 @@ Friend Class frmInventoryAdjustment
 
         Dim shrinkSubtypeId As Integer = cmbShrinkSubtype.SelectedValue
 
-        Dim _sql As String = "EXEC InsertItemHistory3 " & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & ", " & glItemID & ", '" & VB6.Format(SystemDateTime, "MM/DD/YYYY HH:MM:SS") & "','" & _quantity & "','" & _weight & "'," & VB6.GetItemData(cmbReason, cmbReason.SelectedIndex) & "," & giUserID & ", " & sSubTeam_No & "," & Me._selectedPackSize & "," & shrinkSubtypeId.ToString
+		Dim _sql As String = "EXEC InsertItemHistory3 " & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & ", " & glItemID & ", '" & VB6.Format(SystemDateTime, "MM/DD/YYYY HH:MM:SS") & "','" & _quantity & "','" & _weight & "'," & VB6.GetItemData(cmbReason, cmbReason.SelectedIndex) & "," & giUserID & ", " & sSubTeam_No & "," & Me._selectedPackSize & "," & shrinkSubtypeId.ToString
 
-        SQLExecute(_sql, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+		SQLExecute(_sql, DAO.RecordsetOptionEnum.dbSQLPassThrough)
 
         Me._reloading = True
 
@@ -323,12 +326,12 @@ Friend Class frmInventoryAdjustment
 
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 
-            ' get the store/item/pack details
-            rsOnHandSummary = SQLOpenRecordSet("EXEC dbo.GetStoreOnHand " & glItemID & "," & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & "," & VB6.GetItemData(cmbSubTeam, cmbSubTeam.SelectedIndex), DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+			' get the store/item/pack details
+			rsOnHandSummary = SQLOpenRecordSet("EXEC dbo.GetStoreOnHand " & glItemID & "," & VB6.GetItemData(cmbStore, cmbStore.SelectedIndex) & "," & If(cmbSubTeam.SelectedItem Is Nothing, 0, cmbSubTeam.SelectedItem.SubTeamNo).ToString(), DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
 
-            ' loop through and setup the store/item quantities
+			' loop through and setup the store/item quantities
 
-            If Not rsOnHandSummary.EOF Then
+			If Not rsOnHandSummary.EOF Then
 
                 row = mdtOnHandSummary.NewRow
 

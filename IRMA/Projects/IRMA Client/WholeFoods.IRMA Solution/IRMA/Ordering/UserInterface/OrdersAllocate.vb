@@ -2,13 +2,9 @@ Option Strict Off
 Option Explicit On
 
 Imports log4net
-Imports System.Data
 Imports WholeFoods.IRMA.Ordering.BusinessLogic
 Imports WholeFoods.IRMA.Ordering.BusinessLogic.FairShareAllocationBO
-Imports WholeFoods.IRMA.Ordering.DataAccess
 Imports WholeFoods.Utility.DataAccess
-Imports WholeFoods.Utility
-Imports System.Data.SqlClient
 
 Friend Class frmOrdersAllocate
     Inherits System.Windows.Forms.Form
@@ -19,10 +15,9 @@ Friend Class frmOrdersAllocate
     Private mlSubTeamIndex As Integer
     Private miPreOrderIndex As Short
     Private miBOHIndex As Short
-    Private m_abSubTeam_From_UnRestricted() As Boolean
 
-    ' Define the log4net logger for this class.
-    Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
+	' Define the log4net logger for this class.
+	Private Shared logger As ILog = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType)
 
     Private mdtAlloc As DataTable       ' tmpOrdersAllocateOrderItems
     Private mdtItem As DataTable        ' tmpOrdersAllocateItems
@@ -258,12 +253,11 @@ Friend Class frmOrdersAllocate
             bCancel = False
         Else
             ClearDisplay()
+			mlStoreIndex = cmbStore.SelectedIndex
 
-            mlStoreIndex = cmbStore.SelectedIndex
-
-            ' load cmbSubTeam combo box
-            LoadSupplierSubteam(cmbSubTeam, VB6.GetItemData(cmbStore, cmbStore.SelectedIndex), m_abSubTeam_From_UnRestricted)
-            If cmbSubTeam.Items.Count = 1 Then
+			' load cmbSubTeam combo box
+			LoadSubTeamByType(enumSubTeamType.Supplier, cmbSubTeam, Nothing, VB6.GetItemData(cmbStore, cmbStore.SelectedIndex), isIncludeAllTeams:=chkSubteam.Checked)
+			If cmbSubTeam.Items.Count = 1 Then
                 cmbSubTeam.SelectedIndex = 0
             Else
                 cmbSubTeam.SelectedIndex = -1
@@ -1310,4 +1304,8 @@ Friend Class frmOrdersAllocate
 
         Cursor = Cursors.Default
     End Sub
+
+	Private Sub chkSubteam_Click(sender As Object, e As EventArgs) Handles chkSubteam.Click
+		RefreshSubteamCombo(cmbSubTeam, chkSubteam.Checked)
+	End Sub
 End Class

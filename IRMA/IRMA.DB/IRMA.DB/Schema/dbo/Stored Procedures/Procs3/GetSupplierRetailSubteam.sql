@@ -14,6 +14,8 @@ BEGIN
 				THEN 1 -- Unrestricted
 				ELSE 0 -- Restricted to retail subteam
 			END
+		, IsDisabled
+		,AlignedSubTeam
 	FROM 
 		ItemVendor WITH (NOLOCK) 
 	INNER JOIN Item WITH (NOLOCK) 

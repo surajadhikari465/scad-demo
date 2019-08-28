@@ -4,28 +4,26 @@ Option Explicit On
 Imports System.Web
 
 Friend Class frmItemList
-    Inherits System.Windows.Forms.Form
+	Inherits System.Windows.Forms.Form
 
-	
 	Private Sub cmbSubTeam_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress
 		Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-		
+
 		If KeyAscii = 8 Then cmbSubTeam.SelectedIndex = -1
-		
+
 		eventArgs.KeyChar = Chr(KeyAscii)
 		If KeyAscii = 0 Then
 			eventArgs.Handled = True
 		End If
 	End Sub
-	
 	Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
-		
+
 		'-- Unload search form
 		Me.Close()
-		
+
 	End Sub
-	
-    Private Sub RunReport(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdReport.Click
+
+	Private Sub RunReport(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdReport.Click
         Dim sReportURL As New System.Text.StringBuilder
 
         ' Store validation
@@ -46,8 +44,8 @@ Friend Class frmItemList
         sReportURL.Append("&StoreNo=" & CStr(VB6.GetItemData(cmbStore, cmbStore.SelectedIndex)))
 
         If cmbSubTeam.SelectedIndex > -1 Then
-            sReportURL.Append("&SubTeamNo=" & CStr(VB6.GetItemData(cmbSubTeam, cmbSubTeam.SelectedIndex)))
-        End If
+			sReportURL.Append("&SubTeamNo=" & cmbSubTeam.SelectedItem.SubTeamNo.ToString())
+		End If
 
         If Len(Trim(txtVendorName.Text)) <> 0 Then
             sReportURL.Append("&Vendor=" & HttpUtility.UrlEncode(Trim(txtVendorName.Text)))
@@ -82,29 +80,29 @@ Friend Class frmItemList
 
     End Sub
 
-    Private Sub frmItemList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+	Private Sub frmItemList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 
-        '-- Center the form and the buttons on the form
-        CenterForm(Me)
+		'-- Center the form and the buttons on the form
+		CenterForm(Me)
 
-        LoadAllSubTeams(cmbSubTeam)
-        'Also include the distribution centers in the store list TFS 6627
-        LoadStore(cmbStore)
+		cmbSubTeam.DataSource = WholeFoods.IRMA.ItemHosting.DataAccess.SubTeamDAO.GetSubteams
+		'Also include the distribution centers in the store list TFS 6627
+		LoadStore(cmbStore)
 
-        If glStore_Limit > 0 Then
-            SetActive(cmbStore, False)
-            SetCombo(cmbStore, glStore_Limit)
-        Else
-            cmbStore.SelectedIndex = -1
-        End If
+		If glStore_Limit > 0 Then
+			SetActive(cmbStore, False)
+			SetCombo(cmbStore, glStore_Limit)
+		Else
+			cmbStore.SelectedIndex = -1
+		End If
 
-        Call SetActive(txtVendorName, False)
-        'hide the "Print Only" checkbox; unable to print directly in SQL Server Reporting Services
-        chkPrintOnly.Visible = False
+		Call SetActive(txtVendorName, False)
+		'hide the "Print Only" checkbox; unable to print directly in SQL Server Reporting Services
+		chkPrintOnly.Visible = False
 
-    End Sub
+	End Sub
 
-  Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
+	Private Sub txtField_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtField.Enter
     CType(eventSender, TextBox).SelectAll()
   End Sub
 

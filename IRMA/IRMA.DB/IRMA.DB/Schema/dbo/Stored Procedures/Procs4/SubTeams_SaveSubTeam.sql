@@ -1,6 +1,5 @@
 ﻿CREATE PROCEDURE dbo.SubTeams_SaveSubTeam
 	-- Add the parameters for the stored procedure here
-	           
             @SubTeam_No int,
             @Team_No int,
             @SubTeam_Name varchar(100),
@@ -23,11 +22,11 @@
             @InventoryCountByCase bit,
             @EXEDistributed bit,
             @SubTeamType_Id int,
-			@Distribution bit,
-			@FixedSpoilage bit,
-			@Beverage bit,
-			@AlignedSubTeam bit
-	
+            @Distribution bit,
+            @FixedSpoilage bit,
+            @Beverage bit,
+            @AlignedSubTeam bit,
+            @IsDisabled bit = 0
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -36,8 +35,8 @@ BEGIN
 
     -- Insert statements for procedure here
 	UPDATE SubTeam
-	SET	Team_No = @Team_No,
-		SubTeam_Name = @SubTeam_Name ,
+	SET Team_No = @Team_No,
+        SubTeam_Name = @SubTeam_Name ,
         SubTeam_Abbreviation = @SubTeam_Abbreviation,
         Dept_No =@Dept_No ,
         SubDept_No =@SubDept_No ,
@@ -56,10 +55,11 @@ BEGIN
         Retail =@Retail,
         InventoryCountByCase = @InventoryCountByCase,
         EXEDistributed =@EXEDistributed,
- 		FixedSpoilage =@FixedSpoilage,
-  		Beverage =@Beverage,
+        FixedSpoilage =@FixedSpoilage,
+        Beverage =@Beverage,
         SubTeamType_Id =@SubTeamType_Id,
-		AlignedSubTeam = @AlignedSubTeam
+        AlignedSubTeam = @AlignedSubTeam,
+        IsDisabled = @IsDisabled
 	WHERE SubTeam_No = @SubTeam_No
 	
 	IF @Distribution = 1

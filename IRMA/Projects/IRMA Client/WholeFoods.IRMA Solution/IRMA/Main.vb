@@ -1808,11 +1808,10 @@ me_exit:
     End Sub
 
     Private Sub mnuAvgCostAdjust_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuInventory_InventoryCosting_AverageCostAdjustment.Click
-        logger.Debug("mnuAvgCostAdjust_Click entry")
-        frmAvgCostAdjustment.ShowDialog()
-        frmAvgCostAdjustment.Dispose()
-        logger.Debug("mnuAvgCostAdjust_Click exit")
-    End Sub
+		Using frm As New frmAvgCostAdjustment()
+			frm.ShowDialog()
+		End Using
+	End Sub
 
     Private Sub mnuAvgCostHistoryVariance_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuReports_ReceivingDistribution_AverageCost_AverageCostHistoryVariance.Click
         logger.Debug("mnuAvgCostHistoryVariance_Click entry")
