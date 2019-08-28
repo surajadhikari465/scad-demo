@@ -56,9 +56,9 @@ Friend Class frmPricingBatchItemSearch
             '' include ALL in price type dropdown except when GPM flag is 1 and store exceptions are there.
             InitializeComboBoxes((Not _globalPriceManagementBO.IsGlobalPriceManagementEnabled) Or (_globalPriceManagementBO.AreAllStoresGpm))
 
-            If cmbSubTeam.Items.Count > 0 Then cmbSubTeam.SelectedIndex = 0 'Sub-Team is required
+			If cmbSubTeam.DataSource IsNot Nothing AndAlso cmbSubTeam.DataSource.Any() Then cmbSubTeam.SelectedIndex = 0 'Sub-Team is required
 
-            SetActive(cmbZones, False)
+			SetActive(cmbZones, False)
             SetActive(cmbState, False)
             SetActive(ucmbStoreList, False)
 
@@ -108,8 +108,8 @@ Friend Class frmPricingBatchItemSearch
     Private Sub InitializeComboBoxes(ByVal includeALL As Boolean)
         logger.Debug("InitializeComboBoxes Enter")
 
-        frmPricingBatch.PopulateSubTeamDropDown(Me.cmbSubTeam)
-        LoadPriceTypeCombo(includeALL)
+		cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+		LoadPriceTypeCombo(includeALL)
         frmPricingBatch.PopulateRetailStoreDropDown((Me.ucmbStoreList))
         frmPricingBatch.PopulateRetailStoreZoneDropDown(Me.cmbZones)
         frmPricingBatch.PopulateRetailStoreStateDropDown(Me.cmbState)
@@ -274,9 +274,12 @@ Friend Class frmPricingBatchItemSearch
             optSelection(i).Enabled = False
         Next
 
-        SetCombo((Me.cmbSubTeam), lSubTeam_No)
-        SetActive(cmbSubTeam, False)
-        _lblLabel_5.Enabled = False
+		If (cmbSubTeam.DataSource IsNot Nothing) Then
+			cmbSubTeam.SelectedItem = cmbSubTeam.DataSource.FirstOrDefault(Function(x) x.SubTeamNo = lSubTeam_No)
+		End If
+
+		cmbSubTeam.Enabled = False
+		_lblLabel_5.Enabled = False
 
         For i = 0 To optType.UBound
             optType(i).Enabled = False
@@ -918,9 +921,9 @@ Friend Class frmPricingBatchItemSearch
         miPriceChgTypeID = CType(cmbPriceType.SelectedItem, PriceChgTypeBO).PriceChgTypeID
         sPriceChgTypeID = miPriceChgTypeID.ToString()
 
-        sSubTeam_No = IIf(ComboValue(cmbSubTeam) = "NULL", 0, ComboValue(cmbSubTeam))
+		sSubTeam_No = IIf(cmbSubTeam.SelectedItem Is Nothing, 0, cmbSubTeam.SelectedItem.SubTeamNo).ToString()
 
-        sStartDate = CDate(dtpStartDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
+		sStartDate = CDate(dtpStartDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
         mdStartDate = dtpStartDate.Value
 
         If Len(txtIdentifier.Text) > 0 Then
@@ -966,18 +969,18 @@ Friend Class frmPricingBatchItemSearch
         Return _globalPriceManagementBO.IsGlobalPriceManagementEnabled AndAlso Not _globalPriceManagementBO.AreAllStoresGpm AndAlso _optType_3.Checked
     End Function
 
-    Private Sub cmbSubTeam_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress
-        logger.Debug("cmbSubTeam_KeyPress Enter")
-        Dim KeyAscii As Short = Asc(e.KeyChar)
+	Private Sub cmbSubTeam_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress
+		logger.Debug("cmbSubTeam_KeyPress Enter")
+		Dim KeyAscii As Short = Asc(e.KeyChar)
 
-        e.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            e.Handled = True
-        End If
-        logger.Debug("cmbSubTeam_KeyPress Exit")
-    End Sub
+		e.KeyChar = Chr(KeyAscii)
+		If KeyAscii = 0 Then
+			e.Handled = True
+		End If
+		logger.Debug("cmbSubTeam_KeyPress Exit")
+	End Sub
 
-    Private Sub cmbZones_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cmbZones.KeyPress
+	Private Sub cmbZones_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cmbZones.KeyPress
         logger.Debug("cmbZones_KeyPress Enter")
         Dim KeyAscii As Short = Asc(e.KeyChar)
 

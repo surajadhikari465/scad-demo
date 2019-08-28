@@ -126,12 +126,12 @@
   </data>
   <data name="cmdExit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAN5JREFUWEftkAkO
-        wjAMBPP0/KxPC7FVA3adw7ksIVYaldKSGREMS4sxL8UYpwkp+QSgGLiuswFMTJwIUMUnAqpiYkdAl5hY
-        GWASE9aA/Db+qBigSWqMBADuAVrEdAAcKq8t3AMA94Ar4xZA8iUBcJi8SkBKwD3JZQDe5+dMpgHvWFaS
-        fwfAZxi+LoUSPNKwkhx4/wP3c3xdCiV4pGEgz5eHHIUU8DmYyzSsAffaAb38A0YDJB4BbD8TQF/0wDYU
-        0DjTNFPACqFcV8AOMa0asFNMUwNOiGks4KRYbEIcwguMkVSBf8LqdAAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA3klEQVRYR+2QCQ7CMAwE8/T8rE8LsVUD
+        dp3DuSwhVhqV0pIZEQxLizEvxRinCSn5BKAYuK6zAUxMnAhQxScCqmJiR0CXmFgZYBIT1oD8Nv6oGKBJ
+        aowEAO4BWsR0ABwqry3cAwD3gCvjFkDyJQFwmLxKQErAPcllAN7n50ymAe9YVpJ/B8BnGL4uhRI80rCS
+        HHj/A/dzfF0KJXikYSDPl4cchRTwOZjLNKwB99oBvfwDRgMkHgFsPxNAX/TANhTQONM0U8AKoVxXwA4x
+        rRqwU0xTA06IaSzgpFhsQhzCC4yRVIF/wup0AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="cmdExit.Location" type="System.Drawing.Point, System.Drawing">
@@ -171,13 +171,13 @@
   </data>
   <data name="cmdReport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAARVJREFUWEftkgsO
-        gzAMQzk6R+NmDJe4MyEtnwISEk+yRtPYCWjdx8fH2xgbdAnjMAzjEdAP32xvY+z73mL3A99sb8ciZ7AM
-        ar6uSE8zq7fXBUpfxu5PkcMpD2q1r6B3FYWkPw7EEP+GrAP8Rj2sMUtF/6QVUZNF/kGNA6M++FmjmAtK
-        C4TDr5AfHi2Qm+6SDvcLpMu70eHhAtHWV+rRBabkJGSz9ugCkILzowsgk2Lt0QUgBefScJCbIJxbxBwv
-        NxzK5AXwjCZv4rlUA6h5v0rv+WvPy6IaqFqNwyFk1MQe9ts5kYLOIEH5mcupfI+dM4uLo1J/NBzyM9JU
-        ITRtyYJ2qTacrEx7peFbmvrLRIYjspg30XU/TYNghWRyvB0AAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABFUlEQVRYR+2SCw6DMAxDOTpH42YMl7gz
+        IS2fAhIST7JG09gJaN3Hx8fbGBt0CeMwDOMR0A/fbG9j7PveYvcD32xvxyJnsAxqvq5ITzOrt9cFSl/G
+        7k+RwykParWvoHcVhaQ/DsQQ/4asA/xGPawxS0X/pBVRk0X+QY0Doz74WaOYC0oLhMOvkB8eLZCb7pIO
+        9wuky7vR4eEC0dZX6tEFpuQkZLP26AKQgvOjCyCTYu3RBSAF59JwkJsgnFvEHC83HMrkBfCMJm/iuVQD
+        qHm/Su/5a8/LohqoWo3DIWTUxB722zmRgs4gQfmZy6l8j50zi4ujUn80HPIz0lQhNG3JgnapNpysTHul
+        4Vua+stEhiOymDfRdT9Ng2CFZHK8HQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="cmdReport.Location" type="System.Drawing.Point, System.Drawing">
@@ -366,6 +366,33 @@
   <data name="&gt;&gt;fraReport.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="cmbSubTeam.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cmbSubTeam.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 120</value>
+  </data>
+  <data name="cmbSubTeam.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>29, 0</value>
+  </data>
+  <data name="cmbSubTeam.Size" type="System.Drawing.Size, System.Drawing">
+    <value>258, 25</value>
+  </data>
+  <data name="cmbSubTeam.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Name" xml:space="preserve">
+    <value>cmbSubTeam</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Type" xml:space="preserve">
+    <value>SubteamComboBox, IRMA, Version=11.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Parent" xml:space="preserve">
+    <value>fraSelection</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="dtpEndDate.Location" type="System.Drawing.Point, System.Drawing">
     <value>188, 172</value>
   </data>
@@ -385,7 +412,7 @@
     <value>fraSelection</value>
   </data>
   <data name="&gt;&gt;dtpEndDate.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="dtpStartDate.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 172</value>
@@ -406,33 +433,6 @@
     <value>fraSelection</value>
   </data>
   <data name="&gt;&gt;dtpStartDate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="cmbSubTeam.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 8.25pt, style=Bold</value>
-  </data>
-  <data name="cmbSubTeam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 120</value>
-  </data>
-  <data name="cmbSubTeam.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="cmbSubTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 22</value>
-  </data>
-  <data name="cmbSubTeam.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="&gt;&gt;cmbSubTeam.Name" xml:space="preserve">
-    <value>cmbSubTeam</value>
-  </data>
-  <data name="&gt;&gt;cmbSubTeam.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbSubTeam.Parent" xml:space="preserve">
-    <value>fraSelection</value>
-  </data>
-  <data name="&gt;&gt;cmbSubTeam.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="cmbStatus.Font" type="System.Drawing.Font, System.Drawing">

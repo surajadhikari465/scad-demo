@@ -519,7 +519,7 @@ Partial Class SubTeamEdit
 		Me.chkDisable.RightToLeft = System.Windows.Forms.RightToLeft.Yes
 		Me.chkDisable.Size = New System.Drawing.Size(152, 17)
 		Me.chkDisable.TabIndex = 47
-		Me.chkDisable.Text = "Hide / Disable Subtteam"
+		Me.chkDisable.Text = "Hide / Disable Sub Team"
 		Me.chkDisable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.chkDisable.UseVisualStyleBackColor = True
 		'
@@ -583,7 +583,7 @@ Partial Class SubTeamEdit
 		Me.ShowIcon = False
 		Me.ShowInTaskbar = False
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-		Me.Text = "SubTeamEdit"
+		Me.Text = "Sub Team Edit"
 		Me.ResumeLayout(False)
 		Me.PerformLayout()
 

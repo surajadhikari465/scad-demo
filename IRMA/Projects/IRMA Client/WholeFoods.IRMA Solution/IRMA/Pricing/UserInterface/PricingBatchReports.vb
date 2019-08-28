@@ -31,22 +31,7 @@ Friend Class frmPricingBatchReports
         logger.Debug("cmbStatus_KeyPress Exit")
     End Sub
 
-    Private Sub cmbSubTeam_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress
-        logger.Debug("cmbSubTeam_KeyPress Enter")
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-
-        If KeyAscii = 8 Then
-            cmbSubTeam.SelectedIndex = -1
-        End If
-
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-        logger.Debug("cmbSubTeam_KeyPress Exit")
-    End Sub
-
-    Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+	Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
 
         Me.Close()
 
@@ -121,115 +106,115 @@ Friend Class frmPricingBatchReports
             sPriceChgTypeID = "0"
         End If
 
-        sSubTeam_No = ComboValue(cmbSubTeam)
+		sSubTeam_No = If(cmbSubTeam.SelectedItem Is Nothing, 0, cmbSubTeam.SelectedItem.SubTeamNo).ToString()
 
-        If IsValidDate(dtpStartDate.Value) Then
-            sStartDate = CDate(dtpStartDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
-        Else
-            logger.Info(String.Format(ResourcesIRMA.GetString("Required"), "Start Date"))
-            MsgBox(String.Format(ResourcesIRMA.GetString("Required"), "Start Date"), MsgBoxStyle.Critical, Me.Text)
-            dtpStartDate.Focus()
-            Exit Sub
-        End If
+		If IsValidDate(dtpStartDate.Value) Then
+			sStartDate = CDate(dtpStartDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
+		Else
+			logger.Info(String.Format(ResourcesIRMA.GetString("Required"), "Start Date"))
+			MsgBox(String.Format(ResourcesIRMA.GetString("Required"), "Start Date"), MsgBoxStyle.Critical, Me.Text)
+			dtpStartDate.Focus()
+			Exit Sub
+		End If
 
-        If IsValidDate(dtpEndDate.Value) Then
-            sEndDate = CDate(dtpEndDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
-        ElseIf (dtpEndDate.Enabled = True) Then
-            logger.Info(String.Format(ResourcesIRMA.GetString("Required"), "End Date"))
-            MsgBox(String.Format(ResourcesIRMA.GetString("Required"), "End Date"), MsgBoxStyle.Critical, Me.Text)
-            dtpEndDate.Focus()
-            Exit Sub
-        End If
+		If IsValidDate(dtpEndDate.Value) Then
+			sEndDate = CDate(dtpEndDate.Value).ToString(ResourcesIRMA.GetString("DateStringFormat"))
+		ElseIf (dtpEndDate.Enabled = True) Then
+			logger.Info(String.Format(ResourcesIRMA.GetString("Required"), "End Date"))
+			MsgBox(String.Format(ResourcesIRMA.GetString("Required"), "End Date"), MsgBoxStyle.Critical, Me.Text)
+			dtpEndDate.Focus()
+			Exit Sub
+		End If
 
-        If Convert.ToDateTime(sEndDate) < Convert.ToDateTime(sStartDate) Then
-            MsgBox(ResourcesIRMA.GetString("EndDateGreaterEqual"), MsgBoxStyle.Critical, Me.Text)
-            dtpStartDate.Focus()
-            Exit Sub
-        End If
+		If Convert.ToDateTime(sEndDate) < Convert.ToDateTime(sStartDate) Then
+			MsgBox(ResourcesIRMA.GetString("EndDateGreaterEqual"), MsgBoxStyle.Critical, Me.Text)
+			dtpStartDate.Focus()
+			Exit Sub
+		End If
 
-        sPriceBatchStatusID = ComboValue(cmbStatus)
+		sPriceBatchStatusID = ComboValue(cmbStatus)
 
-        Select Case True
-            Case optReport(0).Checked
-                sReportURL = "BatchPricingItemSummary&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate)
-            Case optReport(1).Checked
-                sReportURL = "BatchPricingItemDetail&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&ItemChgTypeID=" & sItemChgTypeID & "&PriceChgTypeID=" & sPriceChgTypeID
-            Case optReport(2).Checked
-                sReportURL = "BatchPricingBatchSummary&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&PriceBatchStatusID" & IIf(sPriceBatchStatusID = "NULL", ":isnull=true", "=" & sPriceBatchStatusID)
-            Case optReport(3).Checked
-                sReportURL = "BatchDetailReport&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&Subteam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&BatchStatusID" & IIf(sPriceBatchStatusID = "NULL", ":isnull=true", "=" & sPriceBatchStatusID)
-        End Select
+		Select Case True
+			Case optReport(0).Checked
+				sReportURL = "BatchPricingItemSummary&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate)
+			Case optReport(1).Checked
+				sReportURL = "BatchPricingItemDetail&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&ItemChgTypeID=" & sItemChgTypeID & "&PriceChgTypeID=" & sPriceChgTypeID
+			Case optReport(2).Checked
+				sReportURL = "BatchPricingBatchSummary&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&SubTeam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&PriceBatchStatusID" & IIf(sPriceBatchStatusID = "NULL", ":isnull=true", "=" & sPriceBatchStatusID)
+			Case optReport(3).Checked
+				sReportURL = "BatchDetailReport&rs:Command=Render&rc:Parameters=false&StoreList=" & sStores & "&StoreListSeparator=|" & "&Subteam_No" & IIf(sSubTeam_No = "NULL", ":isnull=true", "=" & sSubTeam_No) & "&StartDate" & IIf(sStartDate = "NULL", ":isnull=true", "=" & sStartDate) & "&EndDate" & IIf(sEndDate = "NULL", ":isnull=true", "=" & sEndDate) & "&BatchStatusID" & IIf(sPriceBatchStatusID = "NULL", ":isnull=true", "=" & sPriceBatchStatusID)
+		End Select
 
-        logger.Info("ReportingServicesReport " + sReportURL)
-        Call ReportingServicesReport(sReportURL)
+		logger.Info("ReportingServicesReport " + sReportURL)
+		Call ReportingServicesReport(sReportURL)
 
-        logger.Debug("cmdReport_Click Exit")
-    End Sub
+		logger.Debug("cmdReport_Click Exit")
+	End Sub
 
-    Private Sub frmPricingBatchReports_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-        logger.Debug("frmPricingBatchReports_Load Enter")
-        CenterForm(Me)
+	Private Sub frmPricingBatchReports_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+		logger.Debug("frmPricingBatchReports_Load Enter")
+		CenterForm(Me)
 
-        If (Not frmPricingBatch.Visible) Then
+		If (Not frmPricingBatch.Visible) Then
 
-            logger.Debug("EXEC GetRetailStores")
+			logger.Debug("EXEC GetRetailStores")
 
-            Dim factory As New DataFactory(DataFactory.ItemCatalog)
-            Dim results As DataTable = Nothing
+			Dim factory As New DataFactory(DataFactory.ItemCatalog)
+			Dim results As DataTable = Nothing
 
-            Try
+			Try
 
-                results = factory.GetStoredProcedureDataTable("GetRetailStores")
-                ucmbStoreList.DataSource = results
+				results = factory.GetStoredProcedureDataTable("GetRetailStores")
+				ucmbStoreList.DataSource = results
 
-                ucmbStoreList.DisplayMember = "StoreAbbr"
-                ucmbStoreList.ValueMember = "Store_No"
+				ucmbStoreList.DisplayMember = "StoreAbbr"
+				ucmbStoreList.ValueMember = "Store_No"
 
-                SetStoreListCombo(ucmbStoreList)
+				SetStoreListCombo(ucmbStoreList)
 
-            Catch e As DataFactoryException
-                'send message about exception
-                ErrorHandler.ProcessError(WholeFoods.Utility.ErrorType.DataFactoryException, SeverityLevel.Warning, e)
-            End Try
+			Catch e As DataFactoryException
+				'send message about exception
+				ErrorHandler.ProcessError(WholeFoods.Utility.ErrorType.DataFactoryException, SeverityLevel.Warning, e)
+			End Try
 
-            logger.Debug("EXEC GetRetailStores Done")
+			logger.Debug("EXEC GetRetailStores Done")
 
-            If results.Rows.Count > 0 Then
-                Dim distinctZoneTable As DataTable = results.DefaultView.ToTable(True, "Zone_ID", "Zone_Name")
-                cmbZones.DataSource = distinctZoneTable
-                cmbZones.ValueMember = "Zone_ID"
-                cmbZones.DisplayMember = "Zone_Name"
-                cmbZones.SelectedIndex = -1
+			If results.Rows.Count > 0 Then
+				Dim distinctZoneTable As DataTable = results.DefaultView.ToTable(True, "Zone_ID", "Zone_Name")
+				cmbZones.DataSource = distinctZoneTable
+				cmbZones.ValueMember = "Zone_ID"
+				cmbZones.DisplayMember = "Zone_Name"
+				cmbZones.SelectedIndex = -1
 
-                Dim distinctStateTable As DataTable = results.DefaultView.ToTable(True, "State")
-                cmbState.DataSource = distinctStateTable
-                cmbState.ValueMember = "State"
-                cmbState.DisplayMember = "State"
-                cmbState.SelectedIndex = -1
-            End If
+				Dim distinctStateTable As DataTable = results.DefaultView.ToTable(True, "State")
+				cmbState.DataSource = distinctStateTable
+				cmbState.ValueMember = "State"
+				cmbState.DisplayMember = "State"
+				cmbState.SelectedIndex = -1
+			End If
 
-            LoadSubTeam(cmbSubTeam)
-            Try
-                logger.Debug("EXEC GetPriceBatchStatusList Start")
-                gRSRecordset = SQLOpenRecordSet("EXEC GetPriceBatchStatusList ", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-                logger.Debug("EXEC GetPriceBatchStatusList End")
-                Do While Not gRSRecordset.EOF
-                    cmbStatus.Items.Add(New VB6.ListBoxItem(gRSRecordset.Fields("PriceBatchStatusDesc").Value, gRSRecordset.Fields("PriceBatchStatusID").Value))
-                    gRSRecordset.MoveNext()
-                Loop
-            Finally
-                If gRSRecordset IsNot Nothing Then
-                    gRSRecordset.Close()
-                    gRSRecordset = Nothing
-                End If
-            End Try
+			cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+			Try
+				logger.Debug("EXEC GetPriceBatchStatusList Start")
+				gRSRecordset = SQLOpenRecordSet("EXEC GetPriceBatchStatusList ", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
+				logger.Debug("EXEC GetPriceBatchStatusList End")
+				Do While Not gRSRecordset.EOF
+					cmbStatus.Items.Add(New VB6.ListBoxItem(gRSRecordset.Fields("PriceBatchStatusDesc").Value, gRSRecordset.Fields("PriceBatchStatusID").Value))
+					gRSRecordset.MoveNext()
+				Loop
+			Finally
+				If gRSRecordset IsNot Nothing Then
+					gRSRecordset.Close()
+					gRSRecordset = Nothing
+				End If
+			End Try
 
-            If glStore_Limit > 0 Then SetCombo(ucmbStoreList, glStore_Limit)
+			If glStore_Limit > 0 Then SetCombo(ucmbStoreList, glStore_Limit)
 
-            LoadPriceTypeCombo()
-        Else
-            frmPricingBatch.PopulateSubTeamDropDown((Me.cmbSubTeam))
-            frmPricingBatch.PopulateRetailStoreDropDown((Me.ucmbStoreList))
+			LoadPriceTypeCombo()
+		Else
+			cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+			frmPricingBatch.PopulateRetailStoreDropDown((Me.ucmbStoreList))
             frmPricingBatch.PopulateRetailStoreZoneDropDown((Me.cmbZones))
             frmPricingBatch.PopulateRetailStoreStateDropDown((Me.cmbState))
             frmPricingBatch.PopulateBatchStatusDropDown((Me.cmbStatus))

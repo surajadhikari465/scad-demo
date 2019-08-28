@@ -137,9 +137,9 @@ Friend Class frmPricingBatch
         End If
 
         LoadPriceTypeCombo()
-        LoadSubTeam(cmbSubTeam)
+		cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
 
-        Try
+		Try
             logger.Debug("EXEC GetPriceBatchStatusList")
 
             gRSRecordset = SQLOpenRecordSet("EXEC GetPriceBatchStatusList ", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
@@ -489,32 +489,17 @@ ExitSub:
         Return display
     End Function
 
-    Public Function GetSubTeamName(ByRef lSubTeam_No As Long) As String
-        Dim iLoop As Integer
-        Dim sSubTeam As String
-        sSubTeam = String.Empty
-        logger.Debug("GetSubTeamName Enter")
-        For iLoop = 0 To cmbSubTeam.Items.Count - 1
-            If VB6.GetItemData(cmbSubTeam, iLoop) = lSubTeam_No Then
-                sSubTeam = VB6.GetItemString(cmbSubTeam, iLoop)
-                Exit For
-            End If
-        Next iLoop
-        GetSubTeamName = sSubTeam
-        logger.Debug("IsDisplayButton Exit")
-    End Function
+	Public Sub PopulateBatchStatusDropDown(ByRef cmb As System.Windows.Forms.ComboBox)
+		Dim iLoop As Short
+		logger.Debug("PopulateBatchStatusDropDown Enter")
+		cmb.Items.Clear()
+		For iLoop = 0 To cmbStatus.Items.Count - 1
+			cmb.Items.Add(New VB6.ListBoxItem(VB6.GetItemString(cmbStatus, iLoop), VB6.GetItemData(cmbStatus, iLoop)))
+		Next iLoop
+		logger.Debug("PopulateBatchStatusDropDown Exit")
+	End Sub
 
-    Public Sub PopulateBatchStatusDropDown(ByRef cmb As System.Windows.Forms.ComboBox)
-        Dim iLoop As Short
-        logger.Debug("PopulateBatchStatusDropDown Enter")
-        cmb.Items.Clear()
-        For iLoop = 0 To cmbStatus.Items.Count - 1
-            cmb.Items.Add(New VB6.ListBoxItem(VB6.GetItemString(cmbStatus, iLoop), VB6.GetItemData(cmbStatus, iLoop)))
-        Next iLoop
-        logger.Debug("PopulateBatchStatusDropDown Exit")
-    End Sub
-
-    Private Sub cmbStatus_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cmbStatus.KeyPress
+	Private Sub cmbStatus_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cmbStatus.KeyPress
         Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
         logger.Debug("cmbStatus_KeyPress Enter")
         If KeyAscii = 8 Then
@@ -527,24 +512,11 @@ ExitSub:
         logger.Debug("cmbStatus_KeyPress Exit")
     End Sub
 
-    Private Sub cmbSubTeam_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles cmbSubTeam.KeyPress
-        logger.Debug("cmbSubTeam_KeyPress Enter")
-        Dim KeyAscii As Short = Asc(eventArgs.KeyChar)
-        If KeyAscii = 8 Then
-            cmbSubTeam.SelectedIndex = -1
-        End If
-        eventArgs.KeyChar = Chr(KeyAscii)
-        If KeyAscii = 0 Then
-            eventArgs.Handled = True
-        End If
-        logger.Debug("cmbSubTeam_KeyPress Exit")
-    End Sub
+	Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
+		Me.Close()
+	End Sub
 
-    Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
-        Me.Close()
-    End Sub
-
-    Private Sub cmdMaintain_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdMaintain.Click
+	Private Sub cmdMaintain_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdMaintain.Click
         logger.Debug("cmdMaintain_Click Enter")
 
         Dim Index As Short = cmdMaintain.GetIndex(eventSender)
@@ -1243,9 +1215,9 @@ ExitSub:
 
         msPriceBatchStatusID = ComboValue(cmbStatus)
 
-        msSubTeam_No = ComboValue(cmbSubTeam)
+		msSubTeam_No = If(cmbSubTeam.SelectedItem Is Nothing, "0", cmbSubTeam.SelectedItem.SubTeamNo.ToString())
 
-        If dtpStartDate.IsDateValid Then
+		If dtpStartDate.IsDateValid Then
             msFromStartDate = dtpStartDate.Value
         End If
 
@@ -1361,11 +1333,7 @@ ExitSub:
         ReplicateCombo(Me.cmbState, cmb)
     End Sub
 
-    Public Sub PopulateSubTeamDropDown(ByRef cmb As System.Windows.Forms.ComboBox)
-        ReplicateCombo(Me.cmbSubTeam, cmb)
-    End Sub
-
-    Private Function GetStoreListString(ByRef lZone_ID As Integer, ByRef msState As String, ByRef bMega_Stores As Boolean, ByRef bWFM_Stores As Boolean, ByRef bAllStores As Boolean) As String
+	Private Function GetStoreListString(ByRef lZone_ID As Integer, ByRef msState As String, ByRef bMega_Stores As Boolean, ByRef bWFM_Stores As Boolean, ByRef bAllStores As Boolean) As String
         GetStoreListString = GetStoreListString(dtStores, lZone_ID, msState, bMega_Stores, bWFM_Stores, bAllStores)
     End Function
 
