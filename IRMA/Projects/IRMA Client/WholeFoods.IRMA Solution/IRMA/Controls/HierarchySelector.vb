@@ -161,9 +161,9 @@ Public Class HierarchySelector
 
             _isInitializing = True
 
-            LoadSubTeamByType(enumSubTeamType.All, cmbSubTeam)
+			LoadSubTeamByType(enumSubTeamType.All, cmbSubTeam, Nothing, -1, -1, chkSubTeam.Checked)
 
-            _isInitializing = False
+			_isInitializing = False
 
             _isInitialized = True
 
@@ -172,9 +172,8 @@ Public Class HierarchySelector
     End Sub
 
     Public Sub ClearSelection()
-
-        cmbSubTeam.SelectedIndex = -1
-    End Sub
+		cmbSubTeam.SelectedIndex = -1
+	End Sub
 
     Public Sub ResetToPreviousIds()
         cmbSubTeam.SelectedIndex = _previousSubTeamId
@@ -197,13 +196,13 @@ Public Class HierarchySelector
         Dim theWidthDelta As Integer = 32
 
         If wasVisible AndAlso Not isActive Then
-            Me.cmbSubTeam.Width = Me.cmbSubTeam.Width + theWidthDelta
-            Me.cmbCategory.Width = Me.cmbCategory.Width + theWidthDelta
-            Me.cmbLevel3.Width = Me.cmbLevel3.Width + theWidthDelta
+			Me.pnlSubTeam.Width = Me.pnlSubTeam.Width + theWidthDelta
+			Me.cmbCategory.Width = Me.cmbCategory.Width + theWidthDelta
+			Me.cmbLevel3.Width = Me.cmbLevel3.Width + theWidthDelta
             Me.cmbLevel4.Width = Me.cmbLevel4.Width + theWidthDelta
         ElseIf Not wasVisible And isActive Then
-            Me.cmbSubTeam.Width = Me.cmbSubTeam.Width - theWidthDelta
-            Me.cmbCategory.Width = Me.cmbCategory.Width - theWidthDelta
+			Me.pnlSubTeam.Width = Me.pnlSubTeam.Width - theWidthDelta
+			Me.cmbCategory.Width = Me.cmbCategory.Width - theWidthDelta
             Me.cmbLevel3.Width = Me.cmbLevel3.Width - theWidthDelta
             Me.cmbLevel4.Width = Me.cmbLevel4.Width - theWidthDelta
         End If
@@ -215,10 +214,10 @@ Public Class HierarchySelector
         ' only allow item admins and super users to add hierarchy nodes
         isActive = isActive AndAlso (gbItemAdministrator OrElse gbSuperUser)
 
-        Me.cmbSubTeam.Visible = isActive
-        Me.cmbCategory.Visible = isActive
+		Me.pnlSubTeam.Visible = isActive
+		Me.cmbCategory.Visible = isActive
  
-        Me.cmbSubTeam.Enabled = isActive
+        Me.pnlSubTeam.Enabled = isActive
         Me.cmbCategory.Enabled = isActive
 
         SetFourLevelHierarchyComboboxesActive(isActive)
@@ -228,8 +227,8 @@ Public Class HierarchySelector
 
     Public Sub SetHierarchLevelComboboxesVisible(ByVal isVisible As Boolean)
 
-        Me.cmbSubTeam.Visible = isVisible
-        Me.cmbCategory.Visible = isVisible
+		Me.pnlSubTeam.Visible = isVisible
+		Me.cmbCategory.Visible = isVisible
         If _usesFourLevelHierarchy Then
             Me.cmdAddLevel3.Visible = isVisible
             Me.cmdAddLevel4.Visible = isVisible
@@ -487,6 +486,9 @@ Public Class HierarchySelector
 
     End Sub
 
+	Private Sub chkSubTeam_Click(sender As Object, e As EventArgs) Handles chkSubTeam.Click
+		RefreshSubteamCombo(cmbSubTeam, Nothing, chkSubTeam.Checked)
+	End Sub
 #End Region
 
 End Class
