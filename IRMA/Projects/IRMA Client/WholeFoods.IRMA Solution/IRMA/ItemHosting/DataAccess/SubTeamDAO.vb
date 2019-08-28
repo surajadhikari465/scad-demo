@@ -15,34 +15,7 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 		End Function
 
 		Public Shared Function GetSubteams() As List(Of SubTeamBO)
-			Try
-				Dim table As DataTable = New DataFactory(DataFactory.ItemCatalog).GetStoredProcedureDataTable("SubTeams_GetAllSubteams")
-				Dim names As Dictionary(Of String, Integer) = table.Columns.Cast(Of DataColumn) _
-					.ToDictionary(Function(x) x.ColumnName, Function(x) x.Ordinal, StringComparer.InvariantCultureIgnoreCase)
-
-				'Create annonymous type to hold PropertyInfo, PropertyType and Index in DataRow to avoid repeated Type creation when initilizing property in the loop.
-				Dim pi = GetType(SubTeamBO).GetProperties().Where(Function(x) names.ContainsKey(x.Name)) _
-				.Select(Function(x) New With
-					{
-						.PropertyInf = x,   'PropertyInfo
-						.Index = names(x.Name), 'Index: DataRow(Index) to extract data from
-						.PropertyType = If(Nullable.GetUnderlyingType(x.PropertyType), x.PropertyType) 'Property type to correctly Convert data
-					}) _
-				.ToArray()
-
-				Return table.Rows.Cast(Of DataRow) _
-					.Select(Function(x)
-								Dim subTeam As New SubTeamBO()
-								For Each p As Object In pi
-									If Not IsDBNull(x(p.Index)) Then
-										p.PropertyInf.SetValue(subTeam, Convert.ChangeType(x(p.Index), p.PropertyType), Nothing)
-									End If
-								Next
-								Return subTeam
-							End Function).OrderBy(Function(x) x.SubTeamName).ToList()
-			Catch ex As Exception
-				Throw ex
-			End Try
+			Return GetSubTeamsBOs("SubTeams_GetAllSubteams", Nothing)
 		End Function
 
 		Public Sub SaveSubTeam(ByVal SubTeam As SubTeamBO, ByVal IsNew As Boolean)
@@ -151,6 +124,38 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
 					.ToList()
 			Catch ex As Exception
 				Throw New Exception($"SubTeamDAO.GetAlignedSubteams: {ex.Message}", ex.InnerException)
+			End Try
+		End Function
+
+		'TODO: switch all calls to get SubTeams here. Ref: Global.LoadSubTeamByType(); Global.LoadAllSubTeams()
+		Shared Function GetSubTeamsBOs(ByVal spName As String, ByVal dbParams As DBParamList) As List(Of SubTeamBO)
+			Try
+				Dim table As DataTable = New DataFactory(DataFactory.ItemCatalog).GetStoredProcedureDataTable(spName, If(dbParams Is Nothing, New DBParamList(), dbParams))
+				Dim names As Dictionary(Of String, Integer) = table.Columns.Cast(Of DataColumn) _
+					.ToDictionary(Function(x) x.ColumnName, Function(x) x.Ordinal, StringComparer.InvariantCultureIgnoreCase)
+
+				'Create annonymous type to hold PropertyInfo, PropertyType and Index in DataRow to avoid repeated Type creation when initilizing property in the loop.
+				Dim pi = GetType(SubTeamBO).GetProperties().Where(Function(x) names.ContainsKey(x.Name)) _
+				.Select(Function(x) New With
+					{
+						.PropertyInf = x,   'PropertyInfo
+						.Index = names(x.Name), 'Index: DataRow(Index) to extract data from
+						.PropertyType = If(Nullable.GetUnderlyingType(x.PropertyType), x.PropertyType) 'Property type to correctly Convert data
+					}) _
+				.ToArray()
+
+				Return table.Rows.Cast(Of DataRow) _
+					.Select(Function(x)
+								Dim subTeam As New SubTeamBO()
+								For Each p As Object In pi
+									If Not IsDBNull(x(p.Index)) Then
+										p.PropertyInf.SetValue(subTeam, Convert.ChangeType(x(p.Index), p.PropertyType), Nothing)
+									End If
+								Next
+								Return subTeam
+							End Function).OrderBy(Function(x) x.SubTeamName).ToList()
+			Catch ex As Exception
+				Throw New Exception($"SubTeam.DAO.GetSubteams(): {ex.Message}", ex.InnerException)
 			End Try
 		End Function
 	End Class

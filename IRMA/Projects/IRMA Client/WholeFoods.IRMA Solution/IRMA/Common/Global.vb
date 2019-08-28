@@ -1016,37 +1016,10 @@ Module Global_Renamed
 
 	End Sub
 
+	'TODO: Switch to use SubTeamDAO and populate combo with actual SubTeamBO objects
 	Public Sub LoadAllSubTeams(ByRef cmbComboBox As System.Windows.Forms.ComboBox)
 
 		Call LoadCombo(cmbComboBox, "GetAllSubTeams", "SubTeam_Name", "SubTeam_No")
-
-	End Sub
-
-	' Procedure to fetch all related subteams corresponding to the selected Team from the dropdownbox.
-	'  THIS SHOULD PROBABLY BE REPLACED WITH "LoadCombo" type stuff.  
-	Public Sub LoadAllTeamSubTeams(ByRef cmbComboBox As System.Windows.Forms.ComboBox, ByVal intTeamNo As Int32)
-
-		logger.Debug("LoadAllTeamSubTeams Entry")
-
-		Dim NewIndex As Integer
-
-		Try
-			gRSRecordset = SQLOpenRecordSet("SELECT ST.SubTeam_No, ST.SubTeam_Name FROM SubTeam ST (NOLOCK) WHERE ST.Team_No = ISNULL(" & intTeamNo & ", ST.Team_No)", DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-
-			Do While Not gRSRecordset.EOF
-				NewIndex = cmbComboBox.Items.Add(gRSRecordset.Fields("SubTeam_Name").Value)
-				VB6.SetItemData(cmbComboBox, NewIndex, gRSRecordset.Fields("SubTeam_No").Value)
-				gRSRecordset.MoveNext()
-			Loop
-
-		Finally
-			If gRSRecordset IsNot Nothing Then
-				gRSRecordset.Close()
-				gRSRecordset = Nothing
-			End If
-		End Try
-
-		logger.Debug("LoadAllTeamSubTeams Exit")
 
 	End Sub
 
