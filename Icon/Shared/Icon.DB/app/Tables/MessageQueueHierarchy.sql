@@ -16,6 +16,10 @@
     [InProcessBy]            INT            NULL,
     [ProcessedDate]          DATETIME2 (7)  NULL,
     NationalClassCode        NVARCHAR(255)  NULL,
+	[BrandAbbreviation]		 NVARCHAR(255)  NULL,
+	[ZipCode]				 NVARCHAR(255)  NULL,
+	[Designation]			 NVARCHAR(255)  NULL,
+	[Locality]				 NVARCHAR(255)  NULL,
 
     CONSTRAINT [PK_MessageQueueHierarchy] PRIMARY KEY CLUSTERED ([MessageQueueId] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_MessageQueueHierarchy_MessageActionId] FOREIGN KEY ([MessageActionId]) REFERENCES [app].[MessageAction] ([MessageActionId]),

@@ -16,16 +16,16 @@ namespace Icon.Framework
     {
         public MessageAction()
         {
-            this.MessageQueueHierarchy = new HashSet<MessageQueueHierarchy>();
             this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
             this.MessageQueueProductSelectionGroup = new HashSet<MessageQueueProductSelectionGroup>();
+            this.MessageQueueHierarchy = new HashSet<MessageQueueHierarchy>();
         }
     
         public int MessageActionId { get; set; }
         public string MessageActionName { get; set; }
     
-        public virtual ICollection<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
         public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual ICollection<MessageQueueProductSelectionGroup> MessageQueueProductSelectionGroup { get; set; }
+        public virtual ICollection<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
     }
 }
