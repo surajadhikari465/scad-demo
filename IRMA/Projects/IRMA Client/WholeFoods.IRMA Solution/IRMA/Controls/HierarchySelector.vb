@@ -487,7 +487,15 @@ Public Class HierarchySelector
     End Sub
 
 	Private Sub chkSubTeam_Click(sender As Object, e As EventArgs) Handles chkSubTeam.Click
+		Dim categoryIndex = cmbCategory.SelectedIndex
 		RefreshSubteamCombo(cmbSubTeam, Nothing, chkSubTeam.Checked)
+
+		Try
+			If (cmbSubTeam.SelectedIndex > -1) Then cmbCategory.SelectedIndex = categoryIndex
+        Catch ex As Exception
+			cmbCategory.SelectedIndex = -1
+		End Try
+
 	End Sub
 #End Region
 

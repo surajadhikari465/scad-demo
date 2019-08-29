@@ -299,8 +299,9 @@ Friend Class frmOrderItemSearch
                     ' lock it down, cause user will never find items under any other distSubteam
                     ' in this scenario
                     bEnableDistSubTeam = False
-                    'Clear the subteam combo and load with this one that matches this dist subteam
-                    cmbSubTeam.Items.Clear()
+					'Clear the subteam combo and load with this one that matches this dist subteam
+					cmbSubTeam.DataSource = Nothing
+					cmbSubTeam.Items.Clear()
                     Call SetRetailSubTeam(VB6.GetItemData(cmbDistSubTeam, cmbDistSubTeam.SelectedIndex), (cmbSubTeam))
                 End If
             End If
@@ -958,6 +959,6 @@ ExitSub:
     End Sub
 
 	Private Sub chkSubTeam_Click(sender As Object, e As EventArgs) Handles chkSubTeam.Click
-		RefreshSubteamCombo(cmbSubTeam, chkSubTeam.Checked)
+		RefreshSubteamCombo(cmbSubTeam, Nothing, chkSubTeam.Checked)
 	End Sub
 End Class

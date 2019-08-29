@@ -5286,17 +5286,13 @@ me_err:
 		Return returnVal
 	End Function
 
-	Public Sub RefreshSubteamCombo(ByVal cmbSubteam As ComboBox, ByVal isIncludeAllTeams As Boolean)
-		Dim subTeams As List(Of SubTeamBO) = CType(cmbSubteam.Tag, List(Of SubTeamBO)) ' To avoid multiple DB calls LoadSubTeamByType() sets full data source in Tag when combo box is populated.
-		If subTeams Is Nothing Then Exit Sub
-
-		cmbSubteam.DataSource = If(isIncludeAllTeams, subTeams, subTeams.Where(Function(x) x.AlignedSubTeam OrElse Not x.IsDisabled).ToList())
-	End Sub
-
 	Public Sub RefreshSubteamCombo(ByVal cmbSubteam As ComboBox, ByRef unRestricted() As Boolean, ByVal isIncludeAllTeams As Boolean)
 		Dim index As Integer
 		Dim subTeams As List(Of SubTeamBO) = CType(cmbSubteam.Tag, List(Of SubTeamBO)) ' To avoid multiple DB calls LoadSubTeamByType() sets full data source in Tag when combo box is populated.
 
+		Dim selectedIndex = -1
+		Dim subTeamName As String = cmbSubteam.Text
+		cmbSubteam.DataSource = Nothing
 		cmbSubteam.Items.Clear()
 		If subTeams Is Nothing Then Exit Sub
 
@@ -5310,6 +5306,13 @@ me_err:
 			index = cmbSubteam.Items.Add(item.SubTeamName)
 			VB6.SetItemData(cmbSubteam, index, item.SubTeamNo)
 			unRestricted(index) = item.AlignedSubTeam
+			If (selectedIndex = -1 AndAlso String.Compare(subTeamName, item.SubTeamName, True) = 0) Then selectedIndex = index
 		Next
+
+		Try
+			cmbSubteam.SelectedIndex = selectedIndex
+		Catch ex As Exception
+			cmbSubteam.SelectedIndex = -1
+		End Try
 	End Sub
 End Module

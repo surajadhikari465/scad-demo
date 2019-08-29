@@ -238,12 +238,13 @@ Friend Class frmOrdersAllocate
 
         If Me.IsInitializing = True Then Exit Sub
 
-        If cmbStore.SelectedIndex = -1 Then
-            cmbSubTeam.Items.Clear()
-            Exit Sub
-        End If
+		If cmbStore.SelectedIndex = -1 Then
+			cmbSubTeam.DataSource = Nothing
+			cmbSubTeam.Items.Clear()
+			Exit Sub
+		End If
 
-        Static bCancel As Boolean
+		Static bCancel As Boolean
 
         If bCancel Then Exit Sub
 
@@ -1306,6 +1307,6 @@ Friend Class frmOrdersAllocate
     End Sub
 
 	Private Sub chkSubteam_Click(sender As Object, e As EventArgs) Handles chkSubteam.Click
-		RefreshSubteamCombo(cmbSubTeam, chkSubteam.Checked)
+		RefreshSubteamCombo(cmbSubTeam, Nothing, chkSubteam.Checked)
 	End Sub
 End Class

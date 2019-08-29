@@ -2282,13 +2282,13 @@ me_err:
     Private Sub SetFieldsStates(ByVal SubTeamNo As Integer, ByVal RetailSale As Boolean, ByVal IsIngredientItem As Boolean, ByVal IsValidated As Boolean)
         If InstanceDataDAO.IsFlagActive("UKIPS", glStoreID) Then
             If ((RetailSale Or (IsIngredientItem And IsValidated)) And SubTeamDAO.IsSubTeamAligned(SubTeamNo)) Then
-                Me.HierarchySelector1.cmbSubTeam.Enabled = False
-            Else
-                Me.HierarchySelector1.cmbSubTeam.Enabled = True
-            End If
+				Me.HierarchySelector1.pnlSubTeam.Enabled = False
+			Else
+				Me.HierarchySelector1.pnlSubTeam.Enabled = True
+			End If
         Else
-            Me.HierarchySelector1.cmbSubTeam.Enabled = True
-        End If
+			Me.HierarchySelector1.pnlSubTeam.Enabled = True
+		End If
     End Sub
 
     Private Sub ButtonNutrifacts_Click(sender As Object, e As EventArgs) Handles ButtonNutrifacts.Click
