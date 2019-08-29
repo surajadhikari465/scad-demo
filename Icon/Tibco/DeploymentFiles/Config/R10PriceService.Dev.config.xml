@@ -604,6 +604,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -618,6 +624,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -632,6 +644,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -646,6 +664,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>

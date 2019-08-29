@@ -372,6 +372,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
@@ -387,6 +393,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
@@ -402,6 +414,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
@@ -417,6 +435,12 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>512</initHeapSize>
+							<maxHeapSize>1024</maxHeapSize>
+						</java>
+					</setting>
                     <ftWeight>200</ftWeight>
                     <shutdown>
                         <checkpoint>false</checkpoint>
