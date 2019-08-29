@@ -480,6 +480,10 @@
             <name>HawkEnabled</name>
             <value>true</value>
         </NameValuePair>
+		<NameValuePair>
+			<name>JdbcQueryTimeoutInSeconds</name>
+			<value>240</value>
+		</NameValuePair>
         <NameValuePair>
             <name>JmsProviderUrl</name>
             <value>tcp://localhost:7222</value>
