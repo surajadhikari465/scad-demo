@@ -32,7 +32,7 @@
             <name>Application/MessageType</name>
             <value>text</value>
         </NameValuePair>
-		 <NameValuePair>
+		<NameValuePair>
             <name>Application/MessageTypeId</name>
             <value>4</value>
         </NameValuePair>
@@ -78,11 +78,11 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JDBC/KitBuilder/ConnectionString</name>
-            <value>jdbc:sqlserver://rds-kitbuilder-qa-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder</value>
+            <value>jdbc:sqlserver://rds-kitbuilder-prd-1-0.cmzcz5v0yilm.us-east-1.rds.amazonaws.com;Database=KitBuilder</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JDBC/KitBuilder/Password</name>
-            <value>#!UXSvYbo7JMi6tVg7S0MF5xa4kV5MM54blCFXL8kZgLD9ItEEhO72xQ==</value>
+            <value>#!sRtwOAjrDRe0ZTHy891ejJRk13MH+/jcLiZ+OmI0Fb2b74OcC+hc4+A+GKVgdRuH</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JDBC/KitBuilder/SqlDBDriver</name>
@@ -150,11 +150,11 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293</value>
+            <value>ssl://PROD-ESB-EMS-1.wfm.pvt:37293,ssl://PROD-ESB-EMS-2.wfm.pvt:37293,ssl://PROD-ESB-EMS-3.wfm.pvt:37293,ssl://PROD-ESB-EMS-4.wfm.pvt:37293</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/JndiPassword</name>
-            <value>#!mRJthqZeluruTMGsgTj+RCWaL0Iw99Yq+wr1FUPFubnTgB1apiJJOQ==</value>
+            <value>#!ypv4teYG4zAr4xSgJQhBJsg6n1TcBBcnhxVflx0LhZ9McxbL7M2KPQ==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiUsername</name>
@@ -162,7 +162,7 @@
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/JMS/ESB/Password</name>
-            <value>#!L5CmWxrLnhNJW2Fh170f8LGoLIOfbAAmt4pLQkwfWC1+xGA/dV44Ww==</value>
+            <value>#!hTx8n2Lu04nDcyAYAeG1Aea9XHiqivwxIUZXtEfIda7bcWej5cQfGQ==</value>
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/ESB/QueueConnectionFactory</name>
@@ -186,7 +186,7 @@
         </NameValuePairPassword>
         <NameValuePair>
             <name>Connections/JMS/SB1/Url</name>
-            <value>ssl://cerd1671.wfm.pvt:27233,ssl://cerd1672.wfm.pvt:27233</value>
+            <value>ssl://odrp1631.wfm.pvt:37233,ssl://odrp1632.wfm.pvt:37233,ssl://cerp1640.wfm.pvt:37233,ssl://cerp1641.wfm.pvt:37233</value>
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/SB1/Username</name>
@@ -234,7 +234,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIContextURL</name>
-            <value>ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293</value>
+            <value>ssl://PROD-ESB-EMS-1.wfm.pvt:37293,ssl://PROD-ESB-EMS-2.wfm.pvt:37293,ssl://PROD-ESB-EMS-3.wfm.pvt:37293,ssl://PROD-ESB-EMS-4.wfm.pvt:37293</value>
         </NameValuePair>
         <NameValuePairPassword>
             <name>Connections/TCP/JMS/CommonLESSL/MIG_JNDIPassword</name>
@@ -652,7 +652,7 @@
             <enabled>true</enabled>
             <bindings>
                 <binding name="Process Archive-1">
-                    <machine>cerd1673</machine>
+                    <machine>cerp1643</machine>
                     <product>
                         <type>bwengine</type>
                         <version></version>
@@ -660,13 +660,19 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>256</initHeapSize>
+							<maxHeapSize>512</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
                     </shutdown>
                 </binding>
                 <binding name="Process Archive-2">
-                    <machine>cerd1674</machine>
+                    <machine>cerp1644</machine>
                     <product>
                         <type>bwengine</type>
                         <version></version>
@@ -674,6 +680,52 @@
                     </product>
                     <description></description>
                     <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>256</initHeapSize>
+							<maxHeapSize>512</maxHeapSize>
+						</java>
+					</setting>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+				<binding name="Process Archive-3">
+                    <machine>odrp1634</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>256</initHeapSize>
+							<maxHeapSize>512</maxHeapSize>
+						</java>
+					</setting>
+                    <shutdown>
+                        <checkpoint>false</checkpoint>
+                        <timeout>0</timeout>
+                    </shutdown>
+                </binding>
+				<binding name="Process Archive-4">
+                    <machine>odrp1635</machine>
+                    <product>
+                        <type>bwengine</type>
+                        <version></version>
+                        <location></location>
+                    </product>
+                    <description></description>
+                    <contact></contact>
+					<setting>
+						<java>
+							<initHeapSize>256</initHeapSize>
+							<maxHeapSize>512</maxHeapSize>
+						</java>
+					</setting>
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>

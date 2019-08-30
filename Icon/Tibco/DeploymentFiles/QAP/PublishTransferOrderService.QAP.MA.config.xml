@@ -86,7 +86,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiContextUrl</name>
-            <value>ssl://cerd1630.wfm.pvt:27293,ssl://cerd1631.wfm.pvt:2729</value>
+            <value>ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293</value>
         </NameValuePair>
         <NameValuePair>
             <name>Connections/JMS/ESB/JndiPassword</name>
@@ -317,7 +317,7 @@
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
 						</java>
-					</setting>
+					</setting>	
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>
@@ -337,7 +337,7 @@
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
 						</java>
-					</setting>
+					</setting>	
                     <shutdown>
                         <checkpoint>false</checkpoint>
                         <timeout>0</timeout>

@@ -296,6 +296,10 @@
             <name>Connections/TCP/JMS/TopicConnectionFactory</name>
             <value></value>
         </NameValuePair>
+		<NameValuePair>
+			<name>CookingInstructions</name>
+			<value>CookingInstructions</value>
+		</NameValuePair>
         <NameValuePair>
             <name>Destinations/ArchiveJustInTimePriceQueue</name>
             <value>WFMSB1.Mammoth.Retail.JustInTimeArchive.MammothPrice.Queue.V1</value>
