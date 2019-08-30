@@ -63,7 +63,9 @@ SELECT q.QueueID AS QueueId
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
 	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) THEN COALESCE(soe.ExtraText, sce.ExtraText) ELSE iet.ExtraText END AS ScaleExtraText
+	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) 
+        THEN COALESCE(soe.ExtraText, sce.ExtraText) 
+        ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
 	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
 	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
 	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
@@ -136,6 +138,9 @@ LEFT JOIN ItemIdentifier lsc ON p.LinkedItem = lsc.Item_Key
 	AND lsc.Default_Identifier = 1
 LEFT JOIN ItemNutrition nut ON nut.ItemKey = ii.Item_Key
 LEFT JOIN Item_ExtraText iet ON iet.Item_ExtraText_ID = nut.Item_ExtraText_ID
+LEFT JOIN ItemNutritionOverride nuto ON nuto.ItemKey = ii.Item_Key
+    AND s.StoreJurisdictionID = nuto.StoreJurisdictionID
+LEFT JOIN Item_ExtraText ieto ON ieto.Item_ExtraText_ID = nuto.Item_ExtraText_ID
 LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = i.Item_Key
 	AND iuo.Store_No = s.Store_No
 LEFT JOIN ItemUnit uiu ON iuo.Retail_Unit_ID = uiu.Unit_ID
@@ -182,7 +187,9 @@ SELECT q.QueueID AS QueueId
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
 	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) THEN COALESCE(soe.ExtraText, sce.ExtraText) ELSE iet.ExtraText END AS ScaleExtraText
+	,CASE WHEN (IsNull(i.Retail_Sale, 0) = 1 AND IsNull(ii.Scale_Identifier, 0) = 1) 
+        THEN COALESCE(soe.ExtraText, sce.ExtraText) 
+        ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
 	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
 	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
 	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
@@ -255,6 +262,9 @@ LEFT JOIN ItemIdentifier lsc ON p.LinkedItem = lsc.Item_Key
 	AND lsc.Default_Identifier = 1
 LEFT JOIN ItemNutrition nut ON nut.ItemKey = ii.Item_Key
 LEFT JOIN Item_ExtraText iet ON iet.Item_ExtraText_ID = nut.Item_ExtraText_ID
+LEFT JOIN ItemNutritionOverride nuto ON nuto.ItemKey = ii.Item_Key
+    AND s.StoreJurisdictionID = nuto.StoreJurisdictionID
+LEFT JOIN Item_ExtraText ieto ON ieto.Item_ExtraText_ID = nuto.Item_ExtraText_ID
 LEFT JOIN ItemUomOverride iuo ON iuo.Item_Key = i.Item_Key
 	AND iuo.Store_No = s.Store_No
 LEFT JOIN ItemUnit uiu ON iuo.Retail_Unit_ID = uiu.Unit_ID

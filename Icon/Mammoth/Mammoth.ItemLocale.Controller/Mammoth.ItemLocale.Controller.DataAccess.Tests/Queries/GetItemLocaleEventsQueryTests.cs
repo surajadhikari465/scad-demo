@@ -119,13 +119,15 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedTagUom = 23;
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
             var expectedDefaultScanCode = false;
+            bool? expectedScaleItem = false;
 
             // Insert New Item
             var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
                 expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
 
             // Insert New Item Identifier
-            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode);
+            InsertNewItemIdentifier(itemKey, expectedIdentifier, expectedNumberOfDigitsSentToScale, expectedDefaultScanCode,
+                false, false, expectedScaleItem.Value);
 
             // Insert New Store
             InsertNewStore(storeNo, expectedBusinessUnitId, 1, true);
@@ -161,21 +163,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.Item_ExtraText_ID, itemExtraTextId)
                     .ToObject(),
                 x => x.ItemNutritionId));
-
-            // Insert Scale Extra Text
-            //var scaleExtraTextId = this.dbProvider.Insert(new IrmaQueryParams<Scale_ExtraText, int>(
-            //    IrmaTestObjectFactory.Build<Scale_ExtraText>()
-            //        .With(x => x.ExtraText, expectedScaleExtraText)
-            //        .With(x => x.Description, "Dummy")
-            //        .ToObject(),
-            //    x => x.Scale_ExtraText_ID));
-
-            // Insert Item Scale
-            //this.dbProvider.Insert(new IrmaQueryParams<ItemScale, int>(
-            //    IrmaTestObjectFactory.Build<ItemScale>()
-            //        .With(x => x.Item_Key, itemKey)
-            //        .ToObject(),
-            //    x => x.ItemScale_ID));
 
             var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier, IrmaEventTypes.ItemLocaleAddOrUpdate);
 
@@ -213,6 +200,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             Assert.AreEqual(expectedTagUom.ToString(), actual.TagUom, "The expected TagUom did not match the actual.");
             Assert.AreEqual(Convert.ToDouble(expectedMsrp), actual.Msrp, "The expected Msrp did not match the actual.");
             Assert.AreEqual(expectedDefaultScanCode, actual.DefaultScanCode, "The expected DefaultScanCode did not match the actual.");
+            Assert.AreEqual(expectedScaleItem, actual.ScaleItem, "The expected ScaleItem did not match the actual.");
             Assert.IsTrue(string.IsNullOrEmpty(actual.ErrorMessage));
         }
 
@@ -269,7 +257,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             bool? expectedSendtoCFS = null;
             string expectedWrappedTareWeight = "9999";
             string expectedUnwrappedTareWeight = "9998";
-            bool? expectedScaleItem = null;
+            bool? expectedScaleItem = true;
             string expectedUseBy = "Test";
             int? expectedShelfLife = null;
 
@@ -705,8 +693,8 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     .With(x => x.Item_Key, itemKey)
                     .With(x => x.Scale_ExtraText_ID, scaleExtraTextId)
                     .ToObject(),
-                x => x.ItemScale_ID));
-;
+                x => x.ItemScale_ID));           
+            
             var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
 
             // When
@@ -965,7 +953,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             // Insert another Price for ItemKey2
             InsertNewPrice(expectedCaseDiscount, expectedElectronicShelfTag, expectedLocalItem, expectedRestrictedHours, expectedTmDiscount,
                 expectedMsrp + 2, storeNo, itemKey2, expectedAgeRestrictionId, expectedLinkedItemKey);
-            
+
             // Insert New Validated Scan Codes
             InsertNewValidatedScanCode(expectedIdentifier);
             InsertNewValidatedScanCode(expectedIdentifier + "2");
@@ -1172,7 +1160,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             // Insert New Validated Scan Code, Item-Vendor
             InsertNewValidatedScanCode(expectedIdentifier);
             InsertItemVendor(itemKey, vendorId);
-            
+
             expectedStoreNumbers.ForEach(s =>
             {
                 // Insert StoreItemVendor
@@ -1324,7 +1312,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         }
 
         [TestMethod]
-       public void GetItemLocaleEvents_AddUpdateAndItemDeleteEventsExistWithValidStoreNoAndNullStoreNo_ReturnsOneRowForEachStoreAssociatedToTheItem()
+        public void GetItemLocaleEvents_AddUpdateAndItemDeleteEventsExistWithValidStoreNoAndNullStoreNo_ReturnsOneRowForEachStoreAssociatedToTheItem()
         {
             // Given
             var storeNo = 834792;
@@ -1459,7 +1447,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 
             var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, null, expectedIdentifier, expectedEventTypeid);
             var expectedQueueId2 = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", expectedEventTypeid);
-            var expectedDeleteQueueId = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", IrmaEventTypes.ItemDelete);  
+            var expectedDeleteQueueId = InsertToItemLocaleChangeQueue(itemKey2, storeNo, expectedIdentifier + "2", IrmaEventTypes.ItemDelete);
 
             // When
             var actualRowSet = query.Search(parameters).OrderBy(q => q.ScanCode).ThenBy(r => r.EventTypeId).ThenBy(r => r.BusinessUnitId).ToList();
@@ -2184,7 +2172,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var expectedTagUom = 23;
             var expectedEventTypeid = IrmaEventTypes.ItemLocaleAddOrUpdate;
             var expectedDefaultScanCode = true;
-                        
+
             // Insert New Item 
             var itemKey = InsertNewItem(subTeamNo, expectedSignDescription, expectedProductCode,
                 expectedOrigin.Origin_ID, expectedLabelType.LabelType_ID, expectedRetailUnit.Unit_ID);
@@ -2220,7 +2208,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             InsertItemSignAttributes(itemKey, expectedChicagoBaby, expectedColorAdd, expectedLocality, expectedSignRomanceLong,
                 expectedSignRomanceShort, expectedTagUom, expectedExclusive);
 
-            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);          
+            var expectedQueueId = InsertToItemLocaleChangeQueue(itemKey, storeNo, expectedIdentifier);
 
             //When
             var actual = query.Search(parameters).First();
@@ -2827,7 +2815,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     null,
                     CommandType.StoredProcedure);
         }
-        
+
         private int InsertNewItem(int subTeamNo, string signDescription, string productCode,
             int originID, int labelTypeID, int retailUnitID, bool removeItem = false, bool deletedItem = false)
         {
@@ -2897,9 +2885,10 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 
             return storeItemVendorId;
         }
-        
+
         private void InsertNewItemIdentifier(int itemKey, string Identifier, int? numberOfDigitsSentToScale,
-            bool defaultScanCode = true, bool removeIdentifier = false, bool deletedIdentifier = false)
+            bool defaultScanCode = true, bool removeIdentifier = false, bool deletedIdentifier = false,
+            bool isScaleIdentifier = true)
         {
             // Insert New Item Identifier
             this.dbProvider.Insert(
@@ -2908,6 +2897,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                         .With(x => x.Item_Key, itemKey)
                         .With(x => x.Identifier, Identifier)
                         .With(x => x.NumPluDigitsSentToScale, numberOfDigitsSentToScale)
+                        .With(x => x.Scale_Identifier, isScaleIdentifier)
                         .With(x => x.Default_Identifier, defaultScanCode ? (byte)1 : (byte)0)
                         .With(x => x.Remove_Identifier, removeIdentifier ? (byte)1 : (byte)0)
                         .With(x => x.Deleted_Identifier, deletedIdentifier ? (byte)1 : (byte)0)

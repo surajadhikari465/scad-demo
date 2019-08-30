@@ -153,11 +153,15 @@
     <Compile Include="IrmaTestDbProviderFactory.cs" />
     <Compile Include="IrmaTestObjectFactory.cs" />
     <Compile Include="ItemExtraText.cs" />
+    <Compile Include="Queries\ItemLocaleEventQueryTestParameters.cs" />
     <Compile Include="ItemOrigin.cs" />
     <Compile Include="ItemVendor.cs" />
     <Compile Include="LabelType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\DbDataCollectionForItemLocaleEventTesting.cs" />
     <Compile Include="Queries\GetItemLocaleEventsQueryTests.cs" />
+    <Compile Include="Queries\GetItemLocaleEventsQueryTests_New.cs" />
+    <Compile Include="Queries\DbDataManagerForForItemLocaleEventTesting.cs" />
     <Compile Include="Scale_Eat.cs" />
     <Compile Include="Scale_Tare.cs" />
     <Compile Include="Scale_ExtraText.cs" />
