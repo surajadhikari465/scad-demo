@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<DTSConfiguration>
+  <DTSConfigurationHeading>
+    <DTSConfigurationFileInfo GeneratedBy="WFM\Min.Zhao" GeneratedFromPackageName="ItemVendorLaneExtract-FromIrma" GeneratedFromPackageID="{0CC774FB-4092-443D-B594-0FF733D1D774}" GeneratedDate="8/29/2019 12:05:49 PM"/>
+  </DTSConfigurationHeading>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::CompressFileExecutable].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E:\inetpub\ftproot\AMZExtract\ZipFiles.bat</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::DatabaseName].Properties[Value]" ValueType="String">
+    <ConfiguredValue>ItemCatalog</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::DatabaseServer].Properties[Value]" ValueType="String">
+    <ConfiguredValue>idq-so\soq</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::DeleteFileExecutable].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E:\inetpub\ftproot\AMZExtract\DeleteFiles.bat</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::DeleteOldArchivedFileExecutable].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E:\inetpub\ftproot\AMZExtract\DeleteOldArchiveFiles.bat</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::Environment].Properties[Value]" ValueType="String">
+    <ConfiguredValue>QA</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::FileArchivePath].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E:\AMZExtractData\QA\Archive</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::FileArchiveRetention].Properties[Value]" ValueType="String">
+    <ConfiguredValue>3</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::FileRootPath].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E:\AMZExtractData\QA\IRMA\ItemVendorLane</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::RegionCode].Properties[Value]" ValueType="String">
+    <ConfiguredValue>SO</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbCertificateName].Properties[Value]" ValueType="String">
+    <ConfiguredValue>E=uday.bhaskar@wholefoods.com, CN=uday.bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=Austin, S=TX, C=US</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbJmsPassword].Properties[Value]" ValueType="String">
+    <ConfiguredValue>3E0y369%iz</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbJmsUsername].Properties[Value]" ValueType="String">
+    <ConfiguredValue>iconUser</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbMessageType].Properties[Value]" ValueType="String">
+    <ConfiguredValue>ByteMessage</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbSecurityCredentials].Properties[Value]" ValueType="String">
+    <ConfiguredValue>jndiI8conUserdUp</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbSecurityPrincipal].Properties[Value]" ValueType="String">
+    <ConfiguredValue>jndiIconUser</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbServerUrl].Properties[Value]" ValueType="String">
+    <ConfiguredValue>ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbSslPassword].Properties[Value]" ValueType="String">
+    <ConfiguredValue>esb</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbTargetHostName].Properties[Value]" ValueType="String">
+    <ConfiguredValue>PERF-ESB-EMS-1.wfm.pvt</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::esbTopicName].Properties[Value]" ValueType="String">
+    <ConfiguredValue>WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Topic.V2</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package\Send Files To ESB Queue.Variables[User::ExtractSource].Properties[Value]" ValueType="String">
+    <ConfiguredValue>IRMA</ConfiguredValue>
+  </Configuration>
+</DTSConfiguration>
