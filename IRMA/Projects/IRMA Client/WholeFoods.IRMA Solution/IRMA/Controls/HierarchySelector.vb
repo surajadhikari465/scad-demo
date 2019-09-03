@@ -148,11 +148,28 @@ Public Class HierarchySelector
         End Get
     End Property
 
+	Public Property SubteamCheckBoxVisible As Boolean
+		Get
+			Return chkSubTeam.Visible
+		End Get
+		Set(value As Boolean)
+			chkSubTeam.Visible = value
+		End Set
+	End Property
+
+	Public Property ShowAllSubteams As Boolean
+		Get
+			Return chkSubTeam.Checked
+		End Get
+		Set(value As Boolean)
+			chkSubTeam.Checked = value
+		End Set
+	End Property
 #End Region
 
 #Region "Public Methods"
 
-    Public Sub Initialize()
+	Public Sub Initialize()
 
         If Not _isInitialized Then
             _usesFourLevelHierarchy = InstanceDataDAO.IsFlagActive("FourLevelHierarchy")

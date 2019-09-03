@@ -74,8 +74,8 @@ Public Class SetHierarchyPositionForm
 
         ' No subteam updates are allowed if the item is associated to an aligned subteam (unless it's not retail sale).
         If enforceSubteamLocking And itemHasAlignedSubteam And IsRetailSale Then
-            HierarchySelectorForItem.cmbSubTeam.Enabled = False
-        End If
+			HierarchySelectorForItem.pnlSubTeam.Enabled = False
+		End If
     End Sub
 
     Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click

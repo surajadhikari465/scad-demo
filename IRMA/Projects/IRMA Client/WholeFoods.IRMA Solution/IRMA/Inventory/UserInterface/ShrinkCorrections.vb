@@ -1,13 +1,11 @@
 Option Strict Off
 Option Explicit On
 
-Imports WholeFoods.Utility
-Imports WholeFoods.Utility.DataAccess
 Imports WholeFoods.IRMA.Common.DataAccess
 Imports Infragistics.Win.UltraWinGrid
 Imports log4net
-Imports System.Windows.Forms
 Imports System.Linq
+Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Friend Class frmShrinkCorrections
 
@@ -50,9 +48,9 @@ Friend Class frmShrinkCorrections
 
         ' Load Store and SubTeam combo boxes
         LoadStores(cmbStore)
-        LoadSubTeam(cmbSubTeam)
-        ' Set the Store combobox to the Store Limit for the user if there is one.
-        If glStore_Limit > 0 Then
+		cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+		' Set the Store combobox to the Store Limit for the user if there is one.
+		If glStore_Limit > 0 Then
             SetCombo(cmbStore, glStore_Limit)
             SetActive(cmbStore, False)
         End If
@@ -141,15 +139,14 @@ Friend Class frmShrinkCorrections
                 StoreNo = VB6.GetItemData(cmbStore, cmbStore.SelectedIndex)
             End If
 
-            If Me.cmbSubTeam.SelectedIndex = -1 Then
-                MsgBox("SubTeam selection is required", MsgBoxStyle.Critical, Me.Text)
-                Me.cmbSubTeam.Focus()
-                Exit Sub
-            Else
-                SubTeamNo = VB6.GetItemData(cmbSubTeam, cmbSubTeam.SelectedIndex)
-            End If
+			If Me.cmbSubTeam.SelectedIndex = -1 Then
+				MsgBox("SubTeam selection is required", MsgBoxStyle.Critical, Me.Text)
+				Me.cmbSubTeam.Focus()
+				Exit Sub
+			End If
+			SubTeamNo = cmbSubTeam.SelectedItem.SubTeamNo
 
-            If Me.mskStartDate.Text.Length = 0 Then
+			If Me.mskStartDate.Text.Length = 0 Then
                 MsgBox("Start Date is required", MsgBoxStyle.Critical, Me.Text)
                 Me.mskStartDate.Focus()
                 Exit Sub
@@ -722,36 +719,29 @@ Friend Class frmShrinkCorrections
 
     End Function
 
-    Private Sub gridShrink_AfterSelectChange(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.AfterSelectChangeEventArgs) Handles gridShrink.AfterSelectChange
+	Private Sub gridShrink_AfterSelectChange(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.AfterSelectChangeEventArgs) Handles gridShrink.AfterSelectChange
 
-        If (e.Type.Name <> "UltraGridRow") Then Exit Sub
+		If (e.Type.Name <> "UltraGridRow") Then Exit Sub
 
-        If gridShrink.Selected.Rows.Count < 1 Then
-            Exit Sub
-        End If
+		If gridShrink.Selected.Rows.Count < 1 Then
+			Exit Sub
+		End If
 
-        If gridShrink.Selected.Rows(0).Band.Index = 1 Then Exit Sub
+		If gridShrink.Selected.Rows(0).Band.Index = 1 Then Exit Sub
 
-        If gridShrink.Selected.Rows(0).Cells("AllowEdit").Value = False Then
-            cmdDelete.Enabled = False
-        Else
-            cmdDelete.Enabled = True
-        End If
+		If gridShrink.Selected.Rows(0).Cells("AllowEdit").Value = False Then
+			cmdDelete.Enabled = False
+		Else
+			cmdDelete.Enabled = True
+		End If
 
-    End Sub
-    Public Function IsValidSubTeam(ByRef lSubTeam_No As Long) As Boolean
-        Dim i As Integer
+	End Sub
 
-        For i = 0 To cmbSubTeam.Items.Count - 1
-            If VB6.GetItemData(cmbSubTeam, i) = lSubTeam_No Then
-                Return True
-            End If
-        Next i
+	Public Function IsValidSubTeam(ByVal lSubTeam_No As Long) As Boolean
+		Return If(cmbSubTeam.Items Is Nothing, False, cmbSubTeam.Items.Cast(Of SubTeamBO).Any(Function(x) x.SubTeamNo = lSubTeam_No))
+	End Function
 
-        Return False
-    End Function
-
-    Private Sub gridShrink_BeforeCellUpdate(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.BeforeCellUpdateEventArgs) Handles gridShrink.BeforeCellUpdate
+	Private Sub gridShrink_BeforeCellUpdate(ByVal sender As System.Object, ByVal e As Infragistics.Win.UltraWinGrid.BeforeCellUpdateEventArgs) Handles gridShrink.BeforeCellUpdate
 
         If e.Cell.Band.Index = 1 Then Exit Sub
 
@@ -807,8 +797,8 @@ Friend Class frmShrinkCorrections
         Dim fileDlg As New SaveFileDialog
         Dim typeText As String = Me.cmbShrinkType.SelectedItem.ToString.Trim()
         Dim storeText As String = Me.cmbStore.SelectedItem.ToString.Trim()
-        Dim subTeamText As String = Me.cmbSubTeam.SelectedItem.ToString.Trim()
-        Dim startDate As String = Me.mskStartDate.Text.Replace("/", "_")
+		Dim subTeamText As String = If(cmbSubTeam.SelectedItem Is Nothing, String.Empty, cmbSubTeam.SelectedItem.SubTeamName)
+		Dim startDate As String = Me.mskStartDate.Text.Replace("/", "_")
         Dim endDate As String = Me.mskEndDate.Text.Replace("/", "_")
 
         exportFile = storeText + "_" + subTeamText + "_" + typeText + "_" + startDate + "_to_" + endDate + ".xls"

@@ -112,16 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CloseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="CloseButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
@@ -134,7 +134,7 @@
   <data name="CloseButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 21</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CloseButton.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
@@ -145,7 +145,7 @@
     <value>CloseButton</value>
   </data>
   <data name="&gt;&gt;CloseButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CloseButton.Parent" xml:space="preserve">
     <value>$this</value>
@@ -153,11 +153,68 @@
   <data name="&gt;&gt;CloseButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="btnSelectFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>315, 24</value>
+  </data>
+  <data name="btnSelectFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 23</value>
+  </data>
+  <data name="btnSelectFile.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnSelectFile.Text" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="&gt;&gt;btnSelectFile.Name" xml:space="preserve">
+    <value>btnSelectFile</value>
+  </data>
+  <data name="&gt;&gt;btnSelectFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSelectFile.Parent" xml:space="preserve">
+    <value>FileGroupBox</value>
+  </data>
+  <data name="&gt;&gt;btnSelectFile.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="txtFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 26</value>
+  </data>
+  <data name="txtFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 20</value>
+  </data>
+  <data name="txtFile.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;txtFile.Name" xml:space="preserve">
+    <value>txtFile</value>
+  </data>
+  <data name="&gt;&gt;txtFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtFile.Parent" xml:space="preserve">
+    <value>FileGroupBox</value>
+  </data>
+  <data name="&gt;&gt;txtFile.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="FileGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 19</value>
+  </data>
+  <data name="FileGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 53</value>
+  </data>
+  <data name="FileGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="FileGroupBox.Text" xml:space="preserve">
+    <value>File Selection</value>
+  </data>
   <data name="&gt;&gt;FileGroupBox.Name" xml:space="preserve">
     <value>FileGroupBox</value>
   </data>
   <data name="&gt;&gt;FileGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;FileGroupBox.Parent" xml:space="preserve">
     <value>LoadGroupBox</value>
@@ -165,11 +222,29 @@
   <data name="&gt;&gt;FileGroupBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="ImportButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ImportButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ImportButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>424, 51</value>
+  </data>
+  <data name="ImportButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 21</value>
+  </data>
+  <data name="ImportButton.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="ImportButton.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
   <data name="&gt;&gt;ImportButton.Name" xml:space="preserve">
     <value>ImportButton</value>
   </data>
   <data name="&gt;&gt;ImportButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ImportButton.Parent" xml:space="preserve">
     <value>LoadGroupBox</value>
@@ -196,7 +271,7 @@
     <value>LoadGroupBox</value>
   </data>
   <data name="&gt;&gt;LoadGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;LoadGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -204,128 +279,32 @@
   <data name="&gt;&gt;LoadGroupBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;btnSelectFile.Name" xml:space="preserve">
-    <value>btnSelectFile</value>
+  <data name="cmbSubTeam.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;btnSelectFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="cmbSubTeam.Location" type="System.Drawing.Point, System.Drawing">
+    <value>62, 49</value>
   </data>
-  <data name="&gt;&gt;btnSelectFile.Parent" xml:space="preserve">
-    <value>FileGroupBox</value>
+  <data name="cmbSubTeam.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>25, 0</value>
   </data>
-  <data name="&gt;&gt;btnSelectFile.ZOrder" xml:space="preserve">
+  <data name="cmbSubTeam.Size" type="System.Drawing.Size, System.Drawing">
+    <value>256, 21</value>
+  </data>
+  <data name="cmbSubTeam.TabIndex" type="System.Int32, mscorlib">
+    <value>107</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Name" xml:space="preserve">
+    <value>cmbSubTeam</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Type" xml:space="preserve">
+    <value>SubteamComboBox, IRMA, Version=11.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.Parent" xml:space="preserve">
+    <value>CreateGroupBox</value>
+  </data>
+  <data name="&gt;&gt;cmbSubTeam.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Name" xml:space="preserve">
-    <value>txtFile</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Parent" xml:space="preserve">
-    <value>FileGroupBox</value>
-  </data>
-  <data name="&gt;&gt;txtFile.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="FileGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 19</value>
-  </data>
-  <data name="FileGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>393, 53</value>
-  </data>
-  <data name="FileGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="FileGroupBox.Text" xml:space="preserve">
-    <value>File Selection</value>
-  </data>
-  <data name="&gt;&gt;FileGroupBox.Name" xml:space="preserve">
-    <value>FileGroupBox</value>
-  </data>
-  <data name="&gt;&gt;FileGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;FileGroupBox.Parent" xml:space="preserve">
-    <value>LoadGroupBox</value>
-  </data>
-  <data name="&gt;&gt;FileGroupBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btnSelectFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>315, 24</value>
-  </data>
-  <data name="btnSelectFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 23</value>
-  </data>
-  <data name="btnSelectFile.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="btnSelectFile.Text" xml:space="preserve">
-    <value>Select File</value>
-  </data>
-  <data name="&gt;&gt;btnSelectFile.Name" xml:space="preserve">
-    <value>btnSelectFile</value>
-  </data>
-  <data name="&gt;&gt;btnSelectFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSelectFile.Parent" xml:space="preserve">
-    <value>FileGroupBox</value>
-  </data>
-  <data name="&gt;&gt;btnSelectFile.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="txtFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 26</value>
-  </data>
-  <data name="txtFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 20</value>
-  </data>
-  <data name="txtFile.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Name" xml:space="preserve">
-    <value>txtFile</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtFile.Parent" xml:space="preserve">
-    <value>FileGroupBox</value>
-  </data>
-  <data name="&gt;&gt;txtFile.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ImportButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ImportButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ImportButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 51</value>
-  </data>
-  <data name="ImportButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 21</value>
-  </data>
-  <data name="ImportButton.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="ImportButton.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="&gt;&gt;ImportButton.Name" xml:space="preserve">
-    <value>ImportButton</value>
-  </data>
-  <data name="&gt;&gt;ImportButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ImportButton.Parent" xml:space="preserve">
-    <value>LoadGroupBox</value>
-  </data>
-  <data name="&gt;&gt;ImportButton.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="NonRegularRadioButton.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -334,7 +313,7 @@
     <value>NoControl</value>
   </data>
   <data name="NonRegularRadioButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 50</value>
+    <value>321, 50</value>
   </data>
   <data name="NonRegularRadioButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 17</value>
@@ -349,19 +328,19 @@
     <value>NonRegularRadioButton</value>
   </data>
   <data name="&gt;&gt;NonRegularRadioButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;NonRegularRadioButton.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
   </data>
   <data name="&gt;&gt;NonRegularRadioButton.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="RegularRadioButton.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="RegularRadioButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 22</value>
+    <value>321, 22</value>
   </data>
   <data name="RegularRadioButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 17</value>
@@ -376,19 +355,19 @@
     <value>RegularRadioButton</value>
   </data>
   <data name="&gt;&gt;RegularRadioButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;RegularRadioButton.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
   </data>
   <data name="&gt;&gt;RegularRadioButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="SetListBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 76</value>
+    <value>62, 76</value>
   </data>
   <data name="SetListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 147</value>
+    <value>185, 147</value>
   </data>
   <data name="SetListBox.TabIndex" type="System.Int32, mscorlib">
     <value>104</value>
@@ -397,13 +376,13 @@
     <value>SetListBox</value>
   </data>
   <data name="&gt;&gt;SetListBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SetListBox.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
   </data>
   <data name="&gt;&gt;SetListBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -412,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>39, 80</value>
+    <value>24, 80</value>
   </data>
   <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
@@ -427,33 +406,12 @@
     <value>Label3</value>
   </data>
   <data name="&gt;&gt;Label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
   </data>
   <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="SubteamComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 49</value>
-  </data>
-  <data name="SubteamComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 21</value>
-  </data>
-  <data name="SubteamComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>101</value>
-  </data>
-  <data name="&gt;&gt;SubteamComboBox.Name" xml:space="preserve">
-    <value>SubteamComboBox</value>
-  </data>
-  <data name="&gt;&gt;SubteamComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;SubteamComboBox.Parent" xml:space="preserve">
-    <value>CreateGroupBox</value>
-  </data>
-  <data name="&gt;&gt;SubteamComboBox.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
@@ -463,7 +421,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 52</value>
+    <value>4, 52</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 13</value>
@@ -478,7 +436,7 @@
     <value>Label2</value>
   </data>
   <data name="&gt;&gt;Label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -487,10 +445,10 @@
     <value>5</value>
   </data>
   <data name="StoreComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 22</value>
+    <value>62, 22</value>
   </data>
   <data name="StoreComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 21</value>
+    <value>183, 21</value>
   </data>
   <data name="StoreComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>99</value>
@@ -499,7 +457,7 @@
     <value>StoreComboBox</value>
   </data>
   <data name="&gt;&gt;StoreComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StoreComboBox.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -514,7 +472,7 @@
     <value>NoControl</value>
   </data>
   <data name="DateLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 74</value>
+    <value>337, 74</value>
   </data>
   <data name="DateLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 13</value>
@@ -529,7 +487,7 @@
     <value>DateLabel</value>
   </data>
   <data name="&gt;&gt;DateLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DateLabel.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -544,7 +502,7 @@
     <value>Arial, 8.25pt, style=Bold</value>
   </data>
   <data name="dtpStartDate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 90</value>
+    <value>340, 90</value>
   </data>
   <data name="dtpStartDate.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 21</value>
@@ -556,7 +514,7 @@
     <value>dtpStartDate</value>
   </data>
   <data name="&gt;&gt;dtpStartDate.Type" xml:space="preserve">
-    <value>Infragistics.Win.UltraWinEditors.UltraDateTimeEditor, Infragistics2.Win.UltraWinEditors.v9.1, Version=9.1.20091.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
+    <value>Infragistics.Win.UltraWinEditors.UltraDateTimeEditor, Infragistics2.Win.UltraWinEditors.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb</value>
   </data>
   <data name="&gt;&gt;dtpStartDate.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -571,7 +529,7 @@
     <value>NoControl</value>
   </data>
   <data name="StoreLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>40, 25</value>
+    <value>25, 25</value>
   </data>
   <data name="StoreLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 13</value>
@@ -586,7 +544,7 @@
     <value>StoreLabel</value>
   </data>
   <data name="&gt;&gt;StoreLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;StoreLabel.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -613,7 +571,7 @@
     <value>CreateButton</value>
   </data>
   <data name="&gt;&gt;CreateButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CreateButton.Parent" xml:space="preserve">
     <value>CreateGroupBox</value>
@@ -640,7 +598,7 @@
     <value>CreateGroupBox</value>
   </data>
   <data name="&gt;&gt;CreateGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CreateGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -648,10 +606,10 @@
   <data name="&gt;&gt;CreateGroupBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="selectFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="selectFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -670,12 +628,12 @@
     <value>selectFileDialog</value>
   </data>
   <data name="&gt;&gt;selectFileDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Form_PlanogramImport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

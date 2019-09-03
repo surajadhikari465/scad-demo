@@ -3,13 +3,11 @@ Imports WholeFoods.IRMA.Administration.Common.BusinessLogic
 Imports WholeFoods.IRMA.Administration.Common.DataAccess
 Imports WholeFoods.Utility
 Imports WholeFoods.Utility.DataAccess
-Imports System.Collections.Generic
-Imports System.Collections.ObjectModel
 Imports WholeFoods.IRMA.ItemHosting.DataAccess
 Imports WholeFoods.IRMA.Replenishment.Common.DataAccess
-Imports System.Net.Mail
 Imports log4net
 Imports System.DirectoryServices
+Imports System.Linq
 
 Public Class Form_EditUser
 
@@ -2282,95 +2280,81 @@ Public Class Form_EditUser
 
 #Region " UsersSubTeam tab events"
 
-    ''' <summary>
-    ''' Adds a single User/SubTeam entry.
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub Button_AddSubTeam_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_AddSubTeam.Click
-        logger.Debug("Button_AddSubTeam_Click Enter")
-        Dim _selectedSubTeam As Integer
+	''' <summary>
+	''' Adds a single User/SubTeam entry.
+	''' </summary>
+	''' <param name="sender"></param>
+	''' <param name="e"></param>
+	''' <remarks></remarks>
+	Private Sub Button_AddSubTeam_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_AddSubTeam.Click
+		logger.Debug("Button_AddSubTeam_Click Enter")
 
-        Try
+		Try
+			If Me.CheckBox_AddAllSubTeams.Checked Then
+				Cursor = Cursors.WaitCursor
 
-            If Me.CheckBox_AddAllSubTeams.Checked Then
-                Cursor = Cursors.WaitCursor
+				For Each subTeam As SubTeamBO In ComboBox_SubTeams.Items.Cast(Of SubTeamBO)
+					If subTeam.SubTeamNo > 0 AndAlso Not TreeView_SubTeams.Nodes.ContainsKey(subTeam.SubTeamNo) Then
+						Dim _node As New TreeNode
+						_node.Name = subTeam.SubTeamNo
+						_node.Text = subTeam.SubTeamName
+						_node.Checked = Me.CheckBox_IsCoordinator.Checked.ToString
 
-                For x As Integer = 0 To Me.ComboBox_SubTeams.Items.Count - 1
-                    Me.ComboBox_SubTeams.SelectedIndex = x
-                    _selectedSubTeam = CInt(Me.ComboBox_SubTeams.SelectedValue)
+						Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, subTeam.SubTeamNo, Me.CheckBox_IsCoordinator.Checked)
 
-                    If Not _selectedSubTeam = -1 And Not Me.TreeView_SubTeams.Nodes.ContainsKey(_selectedSubTeam) Then
-                        Dim _node As New TreeNode
+						If UsersSubTeamBO.Add(_entry) Then
+							Me.TreeView_SubTeams.Nodes.Add(_node)
+						End If
+					End If
+				Next
 
-                        _node.Name = _selectedSubTeam
-                        _node.Text = Me.ComboBox_SubTeams.Text
-                        _node.Checked = Me.CheckBox_IsCoordinator.Checked.ToString
+				Me.CheckBox_AddAllSubTeams.Checked = False
+				Cursor = Cursors.Arrow
+			Else
+				If (ComboBox_SubTeams.SelectedItem IsNot Nothing AndAlso ComboBox_SubTeams.SelectedItem.SubTeamNo > 0) AndAlso Not Me.TreeView_SubTeams.Nodes.ContainsKey(ComboBox_SubTeams.SelectedItem.SubTeamNo) Then
+					Dim _node As New TreeNode
+					_node.Name = ComboBox_SubTeams.SelectedItem.SubTeamNo
+					_node.Text = ComboBox_SubTeams.SelectedItem.SubTeamName
+					_node.Checked = Me.CheckBox_IsCoordinator.Checked.ToString
 
-                        Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, _selectedSubTeam, Me.CheckBox_IsCoordinator.Checked)
+					Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, ComboBox_SubTeams.SelectedItem.SubTeamNo, Me.CheckBox_IsCoordinator.Checked)
 
-                        If UsersSubTeamBO.Add(_entry) Then
-                            Me.TreeView_SubTeams.Nodes.Add(_node)
-                        End If
-                    End If
-                Next
+					If UsersSubTeamBO.Add(_entry) Then
+						Me.TreeView_SubTeams.Nodes.Add(_node)
+					End If
+				End If
+			End If
+		Catch ex As Exception
+			logger.Error("Exception: ", ex)
+			'display a message to the user
+			DisplayErrorMessage(ex.Message)
+			'send message about exception
+			Dim args(0) As String
+			args(0) = "Form_EditUser form: Button_AddSubTeam_Click sub"
+			ErrorHandler.ProcessError(ErrorType.Administration_UserStoreTeamTitle, args, SeverityLevel.Warning, ex)
+			' Close the child window
+			Me.Close()
 
-                Me.CheckBox_AddAllSubTeams.Checked = False
-                Cursor = Cursors.Arrow
-            Else
-                _selectedSubTeam = CInt(Me.ComboBox_SubTeams.SelectedValue)
+		Finally
 
-                If Not _selectedSubTeam = -1 And Not Me.TreeView_SubTeams.Nodes.ContainsKey(_selectedSubTeam) Then
-                    Dim _node As New TreeNode
+			Me.Cursor = Cursors.Default
 
-                    _node.Name = _selectedSubTeam
-                    _node.Text = Me.ComboBox_SubTeams.Text
-                    _node.Checked = Me.CheckBox_IsCoordinator.Checked.ToString
+		End Try
 
-                    Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, _selectedSubTeam, Me.CheckBox_IsCoordinator.Checked)
+		logger.Debug("Button_AddSubTeam_Click Exit")
+	End Sub
 
-                    If UsersSubTeamBO.Add(_entry) Then
-                        Me.TreeView_SubTeams.Nodes.Add(_node)
-                    End If
-                End If
-            End If
-
-        Catch ex As Exception
-
-            logger.Error("Exception: ", ex)
-            'display a message to the user
-            DisplayErrorMessage(ex.Message)
-            'send message about exception
-            Dim args(0) As String
-            args(0) = "Form_EditUser form: Button_AddSubTeam_Click sub"
-            ErrorHandler.ProcessError(ErrorType.Administration_UserStoreTeamTitle, args, SeverityLevel.Warning, ex)
-            ' Close the child window
-            Me.Close()
-
-        Finally
-
-            Me.Cursor = Cursors.Default
-
-        End Try
-
-        logger.Debug("Button_AddSubTeam_Click Exit")
-
-    End Sub
-
-    ''' <summary>
-    ''' Removes a single User/SubTeam entry
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub Button_RemoveSubTeam_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_RemoveSubTeam.Click
+	''' <summary>
+	''' Removes a single User/SubTeam entry
+	''' </summary>
+	''' <param name="sender"></param>
+	''' <param name="e"></param>
+	''' <remarks></remarks>
+	Private Sub Button_RemoveSubTeam_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_RemoveSubTeam.Click
         logger.Debug("Button_RemoveSubTeam_Click Enter")
+		Dim currentNode As TreeNode
 
-        Dim eNodeEnum As IEnumerator
-        Dim currentNode As TreeNode
-
-        Try
+		Try
             If Me.CheckBox_RemoveAllSubTeams.Checked Then
                 Do While Me.TreeView_SubTeams.Nodes.Count > 0
                     Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, Me.TreeView_SubTeams.Nodes(0).Name, Me.TreeView_SubTeams.Nodes(0).Checked)
@@ -2382,17 +2366,17 @@ Public Class Form_EditUser
 
                 Me.CheckBox_RemoveAllSubTeams.Checked = False
             Else
-                eNodeEnum = Me.TreeView_SubTeams.Nodes.GetEnumerator
-                While eNodeEnum.MoveNext
-                    currentNode = CType(eNodeEnum.Current, TreeNode)
-                    If currentNode.Checked Then
-                        Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, currentNode.Name, currentNode.Checked)
-                        If UsersSubTeamBO.Remove(_entry) Then
-                            currentNode.Remove()
-                        End If
-                    End If
-                End While
-            End If
+				For i As Integer = TreeView_SubTeams.Nodes.Count - 1 To 0 Step -1
+					If TreeView_SubTeams.Nodes(i).Checked Then
+						currentNode = TreeView_SubTeams.Nodes(i)
+						Dim _entry As New UsersSubTeamBO(Me._userConfig.UserId, currentNode.Name, currentNode.Checked)
+						If UsersSubTeamBO.Remove(_entry) Then
+							TreeView_SubTeams.Nodes.Remove(currentNode)
+						End If
+					End If
+				Next
+
+			End If
             Me.Button_RemoveSubTeam.Enabled = False
         Catch ex As Exception
             logger.Error("Exception: ", ex)

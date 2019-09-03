@@ -56,16 +56,15 @@ Partial Class HierarchySelector
 		'
 		'cmbSubTeam
 		'
-		Me.cmbSubTeam.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-			Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
 		Me.cmbSubTeam.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
 		Me.cmbSubTeam.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+		Me.cmbSubTeam.Dock = System.Windows.Forms.DockStyle.Fill
 		Me.cmbSubTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
 		Me.cmbSubTeam.Font = New System.Drawing.Font("Arial", 8.25!)
 		Me.cmbSubTeam.FormattingEnabled = True
 		Me.cmbSubTeam.Location = New System.Drawing.Point(0, 0)
 		Me.cmbSubTeam.Name = "cmbSubTeam"
-		Me.cmbSubTeam.Size = New System.Drawing.Size(269, 22)
+		Me.cmbSubTeam.Size = New System.Drawing.Size(271, 22)
 		Me.cmbSubTeam.Sorted = True
 		Me.cmbSubTeam.TabIndex = 0
 		'
@@ -242,12 +241,13 @@ Partial Class HierarchySelector
 		'
 		'chkSubTeam
 		'
-		Me.chkSubTeam.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
 		Me.chkSubTeam.AutoSize = True
+		Me.chkSubTeam.Dock = System.Windows.Forms.DockStyle.Right
 		Me.chkSubTeam.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.chkSubTeam.Location = New System.Drawing.Point(273, 3)
+		Me.chkSubTeam.Location = New System.Drawing.Point(271, 0)
 		Me.chkSubTeam.Name = "chkSubTeam"
-		Me.chkSubTeam.Size = New System.Drawing.Size(69, 18)
+		Me.chkSubTeam.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+		Me.chkSubTeam.Size = New System.Drawing.Size(74, 22)
 		Me.chkSubTeam.TabIndex = 47
 		Me.chkSubTeam.Text = "Show All"
 		Me.chkSubTeam.UseVisualStyleBackColor = True

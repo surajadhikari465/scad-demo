@@ -9,8 +9,6 @@ Imports System.Data.SqlClient
 Imports WholeFoods.Utility.DataAccess
 Imports WholeFoods.IRMA.Common.DataAccess
 Imports System.Linq
-Imports System.Collections.Generic
-Imports WholeFoods.IRMA.ItemHosting.DataAccess
 
 Module Global_Renamed
 	' Define the log4net logger for this class.
@@ -1021,10 +1019,6 @@ Module Global_Renamed
 
 		Call LoadCombo(cmbComboBox, "GetAllSubTeams", "SubTeam_Name", "SubTeam_No")
 
-	End Sub
-
-	Public Sub LoadSubTeam(ByRef cmbComboBox As System.Windows.Forms.ComboBox)
-		Call LoadCombo(cmbComboBox, "GetSubTeams", "SubTeam_Name", "SubTeam_No")
 	End Sub
 
 	Public Sub LoadEXEDistSubTeam(ByRef cmbComboBox As System.Windows.Forms.ComboBox)
