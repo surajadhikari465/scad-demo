@@ -54,6 +54,7 @@ interface IViewKitPageState {
   minimumCalories: string;
   disableViewKitButton: boolean;
   disableSaveButton: boolean;
+  authorizedByStore: boolean;
   searchStartIndicator: boolean;
 }
 
@@ -85,6 +86,7 @@ export class ViewKit extends React.Component<
       minimumCalories: "0",
       disableSaveButton: true,
       disableViewKitButton: false,
+      authorizedByStore: false,
       searchStartIndicator: false
     };
 
@@ -131,6 +133,7 @@ export class ViewKit extends React.Component<
       maximumCalories: "0",
       price: "",
       minimumCalories: "",
+      authorizedByStore: false,
       searchStartIndicator: false
     });
   }
@@ -155,6 +158,7 @@ export class ViewKit extends React.Component<
         maximumCalories: "0",
         price: "",
         minimumCalories: "",
+        authorizedByStore: false,
         searchStartIndicator: false
       },
       this.populateMetros
@@ -170,6 +174,7 @@ export class ViewKit extends React.Component<
         maximumCalories: "0",
         price: "",
         minimumCalories: "",
+        authorizedByStore: false,
         searchStartIndicator: false
       },
       this.populateStores
@@ -184,6 +189,7 @@ export class ViewKit extends React.Component<
       maximumCalories: "0",
       price: "",
       minimumCalories: "",
+      authorizedByStore: false,
       searchStartIndicator: false 
     });
   };
@@ -293,14 +299,21 @@ export class ViewKit extends React.Component<
             kitsViewData: {}   
           });
         } else if (data.errorMessage && data.errorMessage.substring(0,5) != "Error" ) {
-          this.props.showAlert(data.errorMessage, "error");
+          this.props.showAlert(function() {
+              return (
+                <ul>
+                  {data.errorMessage.split("\n").map(function(listvalue : any){
+                    return <li>{listvalue}</li>;
+                  })}
+                </ul>)}, "error");
           this.setState({
             showDisplay: true,
             kitsViewData: data,
             maximumCalories: data.maximumCalories,
             disableSaveButton: false,
             price: data.kitPrice,
-            minimumCalories: data.minimumCalories
+            minimumCalories: data.minimumCalories,
+            authorizedByStore: data.authorizedByStore
           });
         } else {
           this.setState({
@@ -309,7 +322,8 @@ export class ViewKit extends React.Component<
             maximumCalories: data.maximumCalories,
             disableSaveButton: false,
             price: data.kitPrice,
-            minimumCalories: data.minimumCalories
+            minimumCalories: data.minimumCalories,
+            authorizedByStore: data.authorizedByStore
           });
         }
         this.setState({ 
@@ -361,6 +375,7 @@ export class ViewKit extends React.Component<
               onSaveChanges={this.onSaveChanges}
               price={this.state.price}
               disableSaveButton={this.state.disableSaveButton}
+              authorizedByStore={this.state.authorizedByStore}
               newSearchStated={this.state.searchStartIndicator ? true : false}
             />
           )}

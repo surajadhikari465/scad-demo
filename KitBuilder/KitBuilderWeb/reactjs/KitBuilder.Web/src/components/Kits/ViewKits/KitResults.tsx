@@ -111,7 +111,7 @@ function KitResults(props: any) {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <TextField disabled className={ props.newSearchStated == true && (props.minimumCaloriesValue.length == 0 || props.minimumCaloriesValue <= 0) ? 'error' : 'search-textfield' } 
+          <TextField disabled className={ props.newSearchStated == true && (props.authorizedByStore && (props.minimumCaloriesValue.length == 0 || props.minimumCaloriesValue <= 0)) ? 'error' : 'search-textfield' } 
             margin="dense" variant="outlined" label='Minimum Calories'  InputLabelProps={{
               shrink: true, FormLabelClasses: {
                 root: props.classes.labelRoot

@@ -1408,8 +1408,8 @@ namespace KitBuilderWebApi.Controllers
 			linkgroupProperties.Append(",");
 			linkgroupProperties.Append("\n");
 
-			linkgroupProperties.Append("Number Of FreeToppings = ");
-			linkgroupProperties.Append(data.NumOfFreeToppings);
+			linkgroupProperties.Append("Free Toppings = ");
+			linkgroupProperties.Append(String.IsNullOrEmpty(data.NumOfFreeToppings.ToString()) ? "Undefined" : data.NumOfFreeToppings);
 
 			return linkgroupProperties;
 
@@ -1478,7 +1478,7 @@ namespace KitBuilderWebApi.Controllers
 				}
 			}
 
-			return errorMessages.ToString();
+			return errorMessages.ToString().TrimEnd('\n');
 		}
 
 		private LocaleStatus GetKitStatusFromLocales(KitLocale[] kitLocales)
