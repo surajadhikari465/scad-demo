@@ -91,7 +91,7 @@ namespace Icon.Web.Mvc.Controllers
                 ParentCompany = string.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                 ZipCode = string.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Replace(" ", String.Empty),
                 Locality = string.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                WriteAccess = Enums.WriteAccess.Full | Enums.WriteAccess.Traits
+                WriteAccess = GetWriteAccess()
             };
 
             try

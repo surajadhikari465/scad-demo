@@ -62,6 +62,7 @@ namespace Icon.Web.Mvc.App_Start
             Mapper.CreateMap<AddLocaleManager, AddAddressCommand>();
             Mapper.CreateMap<UpdateVenueManager, UpdateVenueCommand>();
             Mapper.CreateMap<AddVenueManager, AddVenueCommand>();
+            Mapper.CreateMap<BrandManager, AddBrandMessageCommand>();
         }
     }
 

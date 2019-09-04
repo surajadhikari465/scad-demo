@@ -34,7 +34,11 @@ namespace Icon.Web.DataAccess.Commands
             message.HierarchyParentClassId = data.Brand.hierarchyParentClassID;
             message.InProcessBy = null;
             message.ProcessedDate = null;
-
+            message.BrandAbbreviation = data.BrandAbbreviation;
+            message.ZipCode = data.ZipCode;
+            message.Designation = data.Designation;
+            message.Locality = data.Locality;
+            
             context.MessageQueueHierarchy.Add(message);
             context.SaveChanges();
         }

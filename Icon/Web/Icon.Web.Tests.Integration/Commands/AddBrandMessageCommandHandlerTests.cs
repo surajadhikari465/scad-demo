@@ -3,18 +3,23 @@ using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Data.Entity;
 using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddBrandMessageCommandHandlerTests
     {
         private AddBrandMessageCommandHandler commandHandler;
         private IconContext context;
         private DbContextTransaction transaction;
         private HierarchyClass testBrand;
+        private string testBrandAbbreviation;
+        private string testDesignation;
+        private string testZipCode;
+        private string testLocality;
 
         [TestInitialize]
         public void Initialize()
@@ -23,12 +28,17 @@ namespace Icon.Web.Tests.Integration.Commands
             commandHandler = new AddBrandMessageCommandHandler(context);
 
             transaction = context.Database.BeginTransaction();
-
             testBrand = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.Brands)
                 .WithHierarchyLevel(HierarchyLevels.Parent)
                 .WithHierarchyParentClassId(null);
+
+            testBrandAbbreviation = "TestBa";
+            testDesignation = "TestDesignation"; ;
+            testZipCode = "78745";
+            testLocality = "TestLocality";
             context.HierarchyClass.Add(testBrand);
+
             context.SaveChanges();
         }
 
@@ -47,7 +57,11 @@ namespace Icon.Web.Tests.Integration.Commands
             var command = new AddBrandMessageCommand
             {
                 Brand = testBrand,
-                Action = MessageActionTypes.AddOrUpdate
+                Action = MessageActionTypes.AddOrUpdate,
+                BrandAbbreviation = testBrandAbbreviation,
+                Designation = testDesignation,
+                ZipCode = testZipCode,
+                Locality = testLocality
             };
 
             // When.
@@ -71,6 +85,10 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(MessageActionTypes.AddOrUpdate, actualMessage.MessageActionId);
             Assert.IsNull(actualMessage.InProcessBy);
             Assert.IsNull(actualMessage.ProcessedDate);
+            Assert.AreEqual(testBrandAbbreviation, actualMessage.BrandAbbreviation);
+            Assert.AreEqual(testDesignation, actualMessage.Designation);
+            Assert.AreEqual(testZipCode, actualMessage.ZipCode);
+            Assert.AreEqual(testLocality, actualMessage.Locality);
         }
 
         [TestMethod]
@@ -80,7 +98,11 @@ namespace Icon.Web.Tests.Integration.Commands
             var command = new AddBrandMessageCommand
             {
                 Brand = testBrand,
-                Action = MessageActionTypes.Delete
+                Action = MessageActionTypes.Delete,
+                BrandAbbreviation = testBrandAbbreviation,
+                Designation = testDesignation,
+                ZipCode = testZipCode,
+                Locality = testLocality
             };
 
             // When.
@@ -104,6 +126,10 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(MessageActionTypes.Delete, actualMessage.MessageActionId);
             Assert.IsNull(actualMessage.InProcessBy);
             Assert.IsNull(actualMessage.ProcessedDate);
+            Assert.AreEqual(testBrandAbbreviation, actualMessage.BrandAbbreviation);
+            Assert.AreEqual(testDesignation, actualMessage.Designation);
+            Assert.AreEqual(testZipCode, actualMessage.ZipCode);
+            Assert.AreEqual(testLocality, actualMessage.Locality);
         }
     }
 }

@@ -39,7 +39,10 @@ namespace Icon.Web.DataAccess.Managers
                 {
                     Validate(data);
                     updateBrandCommandHandler.Execute(command);
-                    addBrandMessageCommandHandler.Execute(new AddBrandMessageCommand() { Brand = data.Brand, Action = MessageActionTypes.AddOrUpdate });
+                    AddBrandMessageCommand addBrandMessageCommand = Mapper.Map<AddBrandMessageCommand>(data);
+                    addBrandMessageCommand.Action = MessageActionTypes.AddOrUpdate;
+
+                    addBrandMessageCommandHandler.Execute(addBrandMessageCommand);
                 }
 
                 if (data.WriteAccess == Enums.WriteAccess.Full || data.WriteAccess == Enums.WriteAccess.Traits)
@@ -59,19 +62,19 @@ namespace Icon.Web.DataAccess.Managers
 
         void Validate(BrandManager data)
         {
-            using(var context = new IconContext())
+            using (var context = new IconContext())
             {
                 data.Brand.hierarchyClassName = String.IsNullOrWhiteSpace(data.Brand.hierarchyClassName) ? null : data.Brand.hierarchyClassName.Trim();
                 data.BrandAbbreviation = string.IsNullOrWhiteSpace(data.BrandAbbreviation) ? null : data.BrandAbbreviation.Trim();
 
-                if(data.Brand.hierarchyClassName == null)
+                if (data.Brand.hierarchyClassName == null)
                 {
                     throw new Exception("The brand name is missing.");
                 }
 
                 bool isTrimmed = (data.Brand.hierarchyClassName.Length >= Constants.IrmaBrandNameMaxLength);
 
-                if(context.HierarchyClass.Any(x => x.hierarchyID == Hierarchies.Brands && x.hierarchyClassID != data.Brand.hierarchyClassID && String.Compare(x.hierarchyClassName, data.Brand.hierarchyClassName, true) == 0))
+                if (context.HierarchyClass.Any(x => x.hierarchyID == Hierarchies.Brands && x.hierarchyClassID != data.Brand.hierarchyClassID && String.Compare(x.hierarchyClassName, data.Brand.hierarchyClassName, true) == 0))
                 {
                     throw new DuplicateValueException($"The brand <{data.Brand.hierarchyClassName}> already exists.");
                 }
@@ -85,12 +88,12 @@ namespace Icon.Web.DataAccess.Managers
                         throw new DuplicateValueException($"Brand name trimmed to {Constants.IrmaBrandNameMaxLength.ToString()} characters <{irmaBrandName}> already exists. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength.ToString()} characters are unique.");
                     }
                 }
-                
-                if(data.BrandAbbreviation != null)
+
+                if (data.BrandAbbreviation != null)
                 {
-                    if(context.HierarchyClassTrait.Any(x => x.hierarchyClassID != data.Brand.hierarchyClassID
-                        && x.Trait.traitCode == TraitCodes.BrandAbbreviation
-                        && String.Compare(x.traitValue, data.BrandAbbreviation, true) == 0))
+                    if (context.HierarchyClassTrait.Any(x => x.hierarchyClassID != data.Brand.hierarchyClassID
+                         && x.Trait.traitCode == TraitCodes.BrandAbbreviation
+                         && String.Compare(x.traitValue, data.BrandAbbreviation, true) == 0))
                     {
                         throw new DuplicateValueException(String.Format("The brand abbreviation {0} already exists.", data.BrandAbbreviation));
                     }
