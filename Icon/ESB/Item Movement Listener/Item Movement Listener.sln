@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icon.Esb.ItemMovement.WindowsService", "Icon.Esb.ItemMovementListener.WindowsService\Icon.Esb.ItemMovement.WindowsService.csproj", "{F7C21DCD-F91B-4478-A73E-0909C426B253}"
 EndProject
@@ -19,6 +19,7 @@ Global
 		Perf|Any CPU = Perf|Any CPU
 		Prod|Any CPU = Prod|Any CPU
 		QA|Any CPU = QA|Any CPU
+		QA1|Any CPU = QA1|Any CPU
 		Release|Any CPU = Release|Any CPU
 		SingleImage|Any CPU = SingleImage|Any CPU
 		Test|Any CPU = Test|Any CPU
@@ -41,6 +42,8 @@ Global
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Prod|Any CPU.Build.0 = Debug|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA|Any CPU.Build.0 = QA|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{F7C21DCD-F91B-4478-A73E-0909C426B253}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F7C21DCD-F91B-4478-A73E-0909C426B253}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,6 +68,8 @@ Global
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Prod|Any CPU.Build.0 = Debug|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA|Any CPU.Build.0 = QA|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{7291D488-07D1-49A7-BBEA-0AFB94597535}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7291D488-07D1-49A7-BBEA-0AFB94597535}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,6 +94,8 @@ Global
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Prod|Any CPU.Build.0 = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.QA|Any CPU.Build.0 = Release|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{B6439E9A-6139-4189-9198-63AF6555E701}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6439E9A-6139-4189-9198-63AF6555E701}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU

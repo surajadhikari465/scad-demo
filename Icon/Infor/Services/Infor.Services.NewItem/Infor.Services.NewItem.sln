@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infor.Services.NewItem", "Infor.Services.NewItem\Infor.Services.NewItem.csproj", "{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}"
 EndProject
@@ -13,6 +13,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Perf|Any CPU = Perf|Any CPU
 		QA|Any CPU = QA|Any CPU
+		QA1|Any CPU = QA1|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
@@ -25,6 +26,8 @@ Global
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.QA|Any CPU.Build.0 = Release|Any CPU
+		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20F40F1D-D8E4-4043-9F09-F19C083D1AEC}.Test|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,6 +40,8 @@ Global
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.QA|Any CPU.ActiveCfg = Release|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.QA|Any CPU.Build.0 = Release|Any CPU
+		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCEB1423-2A64-46EA-BA9C-48F309C021D6}.Test|Any CPU.ActiveCfg = Release|Any CPU

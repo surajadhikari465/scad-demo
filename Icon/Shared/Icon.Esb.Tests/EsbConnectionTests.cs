@@ -175,6 +175,35 @@ namespace Icon.Esb.Tests
             Assert.AreEqual(expectedSubjectAlternativeNames, GetCertSubjectAlternativeNames(cert));
         }
 
+        [Ignore]
+        [TestMethod]
+        public void FindEsbCertificateInLocalMachineStore_TestDup_CertificateCanBeFound()
+        {
+            //Given
+            var expectedSubject = @"E=suchetha.aleti@wholefoods.com, CN=cerd1617.wfm.pvt, OU=InfraESBAdmins@wholefoods.com, O=""Whole Foods Market "", L=Austin, S=TX, C=US";
+            var expectedSimpleName = "cerd1617.wfm.pvt";
+            var expectedSerialNumber = "380000DDF80B9DAC3DD2E8225F00000000DDF8";
+            var expectedThumbprint = "29142FE82C0E2EB00A58B4593F534534FD018E2F";
+            var expectedSubjectAlternativeNames = @"DNS Name=cerd1617.wfm.pvt";
+
+            StoreName storeName = StoreName.Root;
+            StoreLocation storeLocation = StoreLocation.LocalMachine;
+
+            //When
+            var store = new X509Store(storeName, storeLocation);
+            store.Open(OpenFlags.ReadOnly);
+            var cert = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, expectedSubject, true)[0];
+            store.Close();
+
+            //Then
+            Assert.IsNotNull(cert);
+            Assert.AreEqual(expectedSubject, cert.Subject);
+            Assert.AreEqual(expectedSimpleName, cert.GetNameInfo(X509NameType.SimpleName, false));
+            Assert.AreEqual(expectedSerialNumber, cert.SerialNumber);
+            Assert.AreEqual(expectedThumbprint, cert.Thumbprint);
+            Assert.AreEqual(expectedSubjectAlternativeNames, GetCertSubjectAlternativeNames(cert));
+        }
+
         private string GetCertSubjectAlternativeNames(X509Certificate2 cert)
         {
             var sanNames = string.Empty;
