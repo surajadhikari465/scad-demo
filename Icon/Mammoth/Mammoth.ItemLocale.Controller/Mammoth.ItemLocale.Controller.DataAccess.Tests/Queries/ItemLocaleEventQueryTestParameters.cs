@@ -49,6 +49,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests
             }
         }
         public bool IsDefaultScanCode { get; set; }
+        public bool IsRetailItem { get; set; }
         public bool IsRemovedItem { get; set; }
         public bool IsDeletedItem { get; set; }
         public bool IsRemovedIdentifier { get; set; }

@@ -213,7 +213,8 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 label.LabelType_ID,
                 retailUnit.Unit_ID,
                 testParameters.IsRemovedItem,
-                testParameters.IsDeletedItem);
+                testParameters.IsDeletedItem,
+                testParameters.IsRetailItem);
             // Insert New Item Identifier
             var identifierId = InsertNewItemIdentifier(
                 insertedItemKey,
@@ -271,57 +272,22 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 
             if (testParameters.IsScaleItem)
             {
-                int? scaleExtraTextId = null;
-                if (!string.IsNullOrWhiteSpace(testParameters.ScaleExtraText))
-                {
-                    // Insert Scale ExtraText
-                    scaleExtraTextId = InsertScaleExtraText(testParameters.ScaleExtraText);
-                }
-                if (!string.IsNullOrWhiteSpace(testParameters.ScaleExtraTextOverride))
-                {
-                    // Insert Scale ExtraText Override
-                    var scaleExtraTextOverrideId = InsertScaleExtraText(testParameters.ScaleExtraTextOverride);
-                    // Insert ItemScale
-                    InsertItemScaleOverride(
-                        altJurisdictionId.Value,
-                        insertedItemKey,
-                        scaleExtraTextOverrideId);
-                }
-
-                // Insert Scale_Tare and Scale_EatBy
-                var wrappedScaleTareId = InsertWrappedTareWeight(testParameters.ScaleParams.WrappedTareWeight);
-                var unwrappedScaleTareId = InsertUnwrappedTareWeight(testParameters.ScaleParams.UnwrappedTareWeight);
-                var scaleEatById = InsertScaleEatBy(testParameters.ScaleParams.EatByText);
-
-                // Insert ItemScale
-                var itemScaleId = InsertItemScale(
-                    insertedItemKey,
-                    scaleExtraTextId,
-                    testParameters.ScaleParams.ForceTare,
-                    testParameters.ScaleParams.ShelfLifeLength,
-                    wrappedScaleTareId,
-                    unwrappedScaleTareId,
-                    scaleEatById);
+                // Insert Item-Scale and Extra Text (if any)
+                InsertScaleItemAttributes
+                    (insertedItemKey,
+                    testParameters.ScaleParams,
+                    testParameters.ScaleExtraText,
+                    altJurisdictionId,
+                    testParameters.ScaleExtraTextOverride);
             }
             else  // non-scale item
             {
-                if (!string.IsNullOrWhiteSpace(testParameters.ScaleExtraText))
-                {
-                    // Insert Item ExtraText
-                    var itemExtraTextId = InsertItemExtraText(testParameters.ScaleExtraText);
-                    // Insert Nutrition (for item ExtraText)
-                    InsertItemNutrition(insertedItemKey, itemExtraTextId);
-                }
-                if (!string.IsNullOrWhiteSpace(testParameters.ScaleExtraTextOverride))
-                {
-                    // Insert Item ExtraText Override
-                    var itemExtraTextId = InsertItemExtraText(testParameters.ScaleExtraTextOverride);
-                    // Insert Nutrition Override (for item ExtraText)
-                    InsertItemNutritionOverride(
-                       altJurisdictionId.Value,
-                       insertedItemKey,
-                       itemExtraTextId);
-                }
+                // Insert Item Extra Text (if any)
+                InsertItemExtraText(
+                    insertedItemKey,
+                    testParameters.ScaleExtraText,
+                    altJurisdictionId,
+                    testParameters.ScaleExtraTextOverride);
             }
 
             // Insert CustomerFacingScale
@@ -453,6 +419,71 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 vendorFreightUnitId,
                 vendorParams.VendorCaseSize,
                 storeItemVendorId);
+        }
+
+        public void InsertScaleItemAttributes(
+            int itemKey,
+            ItemLocaleEventQueryTestParameters_Scale scaleParams,
+            string scaleExtraText = null,
+            int? altJurisdictionId = null,
+            string scaleExtraTextOverride = null)
+        {
+            int? scaleExtraTextId = null;
+            if (!string.IsNullOrWhiteSpace(scaleExtraText))
+            {
+                // Insert Scale ExtraText
+                scaleExtraTextId = InsertScaleExtraText(scaleExtraText);
+            }
+            if (!string.IsNullOrWhiteSpace(scaleExtraTextOverride))
+            {
+                // Insert Scale ExtraText Override
+                var scaleExtraTextOverrideId = InsertScaleExtraText(scaleExtraTextOverride);
+                // Insert ItemScale
+                InsertItemScaleOverride(
+                    altJurisdictionId.Value,
+                    itemKey,
+                    scaleExtraTextOverrideId);
+            }
+
+            // Insert Scale_Tare and Scale_EatBy
+            var wrappedScaleTareId = InsertWrappedTareWeight(scaleParams.WrappedTareWeight);
+            var unwrappedScaleTareId = InsertUnwrappedTareWeight(scaleParams.UnwrappedTareWeight);
+            var scaleEatById = InsertScaleEatBy(scaleParams.EatByText);
+
+            // Insert ItemScale
+            var itemScaleId = InsertItemScale(
+                itemKey,
+                scaleExtraTextId,
+                scaleParams.ForceTare,
+                scaleParams.ShelfLifeLength,
+                wrappedScaleTareId,
+                unwrappedScaleTareId,
+                scaleEatById);
+        }
+
+        public void InsertItemExtraText(
+            int itemKey,
+            string itemExtraText = null,
+            int? altJurisdictionId = null,
+            string itemExtraTextOverride = null)
+        {
+            if (!string.IsNullOrWhiteSpace(itemExtraText))
+            {
+                // Insert Item ExtraText
+                var itemExtraTextId = InsertItemExtraText(itemExtraText);
+                // Insert Nutrition (for item ExtraText)
+                InsertItemNutrition(itemKey, itemExtraTextId);
+            }
+            if (!string.IsNullOrWhiteSpace(itemExtraTextOverride))
+            {
+                // Insert Item ExtraText Override
+                var itemExtraTextId = InsertItemExtraText(itemExtraTextOverride);
+                // Insert Nutrition Override (for item ExtraText)
+                InsertItemNutritionOverride(
+                   altJurisdictionId.Value,
+                   itemKey,
+                   itemExtraTextId);
+            }
         }
 
         public int InsertNewItem(int subTeamNo, string signDescription, string productCode,

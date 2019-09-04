@@ -68,12 +68,13 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             dbProvider.Transaction.Rollback();
             dbProvider.Transaction.Dispose();
             dbProvider.Connection.Dispose();
-        }
+        }  
 
         public ItemLocaleEventQueryTestParameters BuildTestParameters(
             DbDataCollectionForItemLocaleEventTesting existingDbData,
             string identifier,
             bool isScaleItem,
+            bool isRetailItem = true,
             bool useAltJurisdiction = false,
             ItemLocaleEventQueryTestParameters_Price priceParamters = null,
             ItemLocaleEventQueryTestParameters_Scale scaleParameters = null,
@@ -101,6 +102,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 expectedStoreData,
                 identifier,
                 isScaleItem,
+                isRetailItem,
                 useAltJurisdiction,
                 priceParamters,
                 scaleParameters,
@@ -112,6 +114,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             ItemLocaleEventQueryTestParameters_Store storeParams,
             string identifier,
             bool isScaleItem,
+            bool isRetailItem = true,
             bool useAltJurisdiction = false,
             ItemLocaleEventQueryTestParameters_Price priceParamters = null,
             ItemLocaleEventQueryTestParameters_Scale scaleParameters = null,
@@ -159,6 +162,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 SignDescription = signDescription,
                 ProductCode = productCode,
                 IsDefaultScanCode = isDefaultScanCode,
+                IsRetailItem = isRetailItem,
                 IsScaleIdentifier = isScaleItem,
                 NumPluDigitsSentToScale = numPluDigitsSentToScale,
                 IsCfsItem = isCfsItem,
@@ -357,6 +361,45 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             AssertQueryResultsMatchExpected_All(testParameters, actual);
         }
 
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_NonScaleNonRetailItem_WithItemExtraText_ShouldReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            var expectedScaleExtraText = "Test Item Nutrition Extra Text";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: false,
+                isRetailItem: false);
+            // add the "scale" extra text we are interested in for this test
+            testParameters.ScaleExtraText = expectedScaleExtraText;
+
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(expectedScaleExtraText, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
+            AssertQueryResultsMatchExpected_All(testParameters, actual);
+        }
+
         [TestMethod]
         public void GetItemLocaleEvents_AddUpdate_NonScaleItem_WithItemExtraTextOverride_ShouldReturnExtraText()
         {
@@ -372,11 +415,53 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: true);
             // add the "scale" extra text override we are interested in for this test
             testParameters.ScaleExtraText = expectedExtraText;
             testParameters.ScaleExtraTextOverride = expectedExtraTextOverride;
 
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(testParameters.RetailUnitName, actual.RetailUnit, UnequalMsg(nameof(actual.RetailUnit)));
+            Assert.AreEqual(expectedExtraTextOverride, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
+            AssertQueryResultsMatchExpected_All(testParameters, actual);
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_NonScaleNonRetailItem_WithItemExtraTextOverride_ShouldReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            var expectedExtraText = "Test Item Nutrition Extra Text";
+            var expectedExtraTextOverride = "OVERRIDE Test Item Nutrition Extra Text";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: false,
+                isRetailItem: false,
+                useAltJurisdiction: true);
+            // add the "scale" extra text override we are interested in for this test
+            testParameters.ScaleExtraText = expectedExtraText;
+            testParameters.ScaleExtraTextOverride = expectedExtraTextOverride;
             // insert item-locale data to match the test parameters
             var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
             // put a message on the queue 
@@ -412,6 +497,190 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
+                useAltJurisdiction: false);
+            // add the scale extra text we are interested in for this test
+            testParameters.ScaleExtraText = expectedScaleExtraText;
+
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(expectedScaleExtraText, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
+            AssertQueryResultsMatchExpected_All(testParameters, actual);
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_ScaleItem_WithItemExtraText_ShouldNotReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: true,
+                isRetailItem: true,
+                useAltJurisdiction: false);
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // also insert some item extra text data for the item, even though it should not be returned
+            testDataManager.InsertItemExtraText(insertedItemKey, "Test Item Extra Text");
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.ScaleExtraText, ExpectedNullMsg(nameof(actual.ScaleExtraText), actual.ScaleExtraText));
+        }
+
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_ScaleNonRetailItem_WithItemExtraText_ShouldNotReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: true,
+                isRetailItem: false,
+                useAltJurisdiction: false);
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // also insert some item extra text data for the item, even though it should not be returned
+            testDataManager.InsertItemExtraText(insertedItemKey, "Test Item Extra Text");
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.ScaleExtraText, ExpectedNullMsg(nameof(actual.ScaleExtraText), actual.ScaleExtraText));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_NonScaleItem_WithScaleExtraText_ShouldNotReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: false);
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // also insert some scale data and extra text, even though it should not be returned
+            var vanillaScaleParams = BuildScaleParameters();
+            testDataManager.InsertScaleItemAttributes(insertedItemKey, vanillaScaleParams, "Scale Extra Text");
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.ScaleExtraText, ExpectedNullMsg(nameof(actual.ScaleExtraText), actual.ScaleExtraText));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_NonScaleNonRetailItem_WithScaleExtraText_ShouldNotReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: false,
+                isRetailItem: false);
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // also insert some scale data and extra text, even though it should not be returned
+            var vanillaScaleParams = BuildScaleParameters();
+            testDataManager.InsertScaleItemAttributes(insertedItemKey, vanillaScaleParams, "Scale Extra Text");
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.IsNull(actual.ScaleExtraText, ExpectedNullMsg(nameof(actual.ScaleExtraText), actual.ScaleExtraText));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_ScaleNonRetailItem_WithScaleExtraText_ShouldReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedIdentifier = "22222242";
+            var expectedScaleExtraText = "Test Scale Extra Text";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // gather some typical "vanilla" item-locale values to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: true,
+                isRetailItem: false,
                 useAltJurisdiction: false);
             // add the scale extra text we are interested in for this test
             testParameters.ScaleExtraText = expectedScaleExtraText;
@@ -452,6 +721,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: true);
             // add the scale extra text we are interested in for this test
             testParameters.ScaleExtraText = expectedScaleExtraText;
@@ -469,6 +739,47 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             // update expected data with inserted ids
             testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
             
+            //When
+            var actual = query.Search(parameters).First();
+
+            //Then
+            Assert.AreEqual(expectedScaleExtraTextOverride, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
+        }
+
+        [TestMethod]
+        public void GetItemLocaleEvents_AddUpdate_ScaleNonRetailItem_WithScaleExtraTextOverride_ShouldReturnExtraText()
+        {
+            // Given 
+            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
+            var expectedScaleExtraText = "Test Scale Extra Text";
+            var expectedScaleExtraTextOverride = "OVERRIDE Scale Extra Text";
+            // load some data from the db to assist with testing
+            var testSupportData = testDataManager.LoadExistingDataForTest();
+            // set parameters
+            var expectedIdentifier = "22222242";
+            // gather some item-locale values including the specified overrides to use as test parameters
+            var testParameters = BuildTestParameters(
+                existingDbData: testSupportData,
+                identifier: expectedIdentifier,
+                isScaleItem: true,
+                isRetailItem: false,
+                useAltJurisdiction: true);
+            // add the scale extra text we are interested in for this test
+            testParameters.ScaleExtraText = expectedScaleExtraText;
+            testParameters.ScaleExtraTextOverride = expectedScaleExtraTextOverride;
+
+            // insert item-locale data to match the test parameters
+            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
+            // put a message on the queue 
+            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
+                insertedItemKey,
+                testParameters.StoreParams.Store_No,
+                expectedIdentifier,
+                this.parameters.Instance,
+                expectedEventType);
+            // update expected data with inserted ids
+            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
+
             //When
             var actual = query.Search(parameters).First();
 
@@ -506,6 +817,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: false,
                 priceParamters: priceParams);
 
@@ -558,6 +870,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: false,
                 priceParamters: priceParams);
 
@@ -593,6 +906,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
 
             // insert item-locale data to match the test parameters
@@ -627,6 +941,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
 
             // insert item-locale data to match the test parameters
@@ -672,6 +987,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false,
                 priceParamters: null, // use default test price info
                 scaleParameters: scaleParams);
@@ -719,6 +1035,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false,
                 priceParamters: null, // use default test price info
                 scaleParameters: scaleParams);
@@ -781,6 +1098,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false,
                 priceParamters: priceParams,
                 scaleParameters: scaleParams);
@@ -896,6 +1214,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -935,6 +1254,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: true);
             testParameters.RetailUnitStoreOverride = expectedStoreRetailUnitOverride;
 
@@ -987,6 +1307,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -1045,6 +1366,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: false,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -1086,6 +1408,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: true);
             testParameters.RetailUnitStoreOverride = expectedStoreRetailUnitOverride;
 
@@ -1128,6 +1451,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -1182,6 +1506,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -1237,6 +1562,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: true,
                 priceParamters: null, // use default test price values
                 scaleParameters: null,
@@ -1288,6 +1614,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 storeParams: expectedStore,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
             testParameters.ScaleExtraText = expectedScaleExtraText;
             testParameters.ExpectAuthorizedItem = false;
@@ -1337,6 +1664,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
             testParameters.ScaleExtraText = expectedScaleExtraText;
             testParameters.ExpectAuthorizedItem = false;
@@ -1390,6 +1718,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
             testParameters.ScaleExtraText = expectedScaleExtraText;
 
@@ -1439,6 +1768,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 existingDbData: testSupportData,
                 identifier: expectedIdentifier1,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
             var storeForSecondItem = expectedStores.OrderByDescending(s => s.BusinessUnit_ID).First();
             var storeParamsForSecondItem = new ItemLocaleEventQueryTestParameters_Store(region, storeForSecondItem);
@@ -1446,6 +1776,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 storeParams: storeParamsForSecondItem,
                 identifier: expectedIdentifier2,
                 isScaleItem: true,
+                isRetailItem: true,
                 useAltJurisdiction: false);
             testParameters2.SignDescription = testParameters1.SignDescription + "2";
             testParameters2.ProductCode = testParameters1.ProductCode + "2";
