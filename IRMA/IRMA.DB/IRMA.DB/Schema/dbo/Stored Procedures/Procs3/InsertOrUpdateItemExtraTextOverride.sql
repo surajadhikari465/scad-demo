@@ -53,7 +53,7 @@ BEGIN
 			INSERT (ItemKey, Item_ExtraText_ID, StoreJurisdictionID) VALUES (@ItemKey, @New_ID, @Jurisdiction);
 
 		-- Queue event for mammoth to refresh its data.
-		EXEC [mammoth].[InsertItemLocaleChangeQueue] @ItemKey, NULL, 'ItemLocaleAddOrUpdate', NULL, NULL
+		EXEC [mammoth].[InsertItemLocaleChangeQueue] @ItemKey, NULL, 'ItemLocaleAddOrUpdate', NULL, @Jurisdiction
 
 	END TRY
 
