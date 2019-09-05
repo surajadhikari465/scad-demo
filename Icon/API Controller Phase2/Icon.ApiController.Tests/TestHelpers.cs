@@ -577,6 +577,10 @@ namespace Icon.ApiController.Tests
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.Hierarchy,
                 NationalClassCode = String.Empty,
+                BrandAbbreviation = String.Empty,
+                ZipCode = String.Empty,
+                Designation = String.Empty,
+                Locality = String.Empty
             };
         }
 

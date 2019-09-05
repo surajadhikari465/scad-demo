@@ -4,6 +4,7 @@ using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,6 +23,10 @@ namespace Icon.ApiController.Tests.QueueReaders
         private Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueHierarchy>, List<MessageQueueHierarchy>>> mockGetMessageQueueQuery;
         private Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueHierarchy>>> mockUpdateMessageQueueStatusCommandHandler;
         private Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueHierarchy>>> mockMarkEntriesAsInProcessCommandHandler;
+        private string testDesignation;
+        private string testZipCode;
+        private string testLocality;
+        private string testBrandAbbreviation;
 
         [TestInitialize]
         public void Initialize()
@@ -31,6 +36,11 @@ namespace Icon.ApiController.Tests.QueueReaders
             mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueHierarchy>, List<MessageQueueHierarchy>>>();
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueHierarchy>>>();
             mockMarkEntriesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueHierarchy>>>();
+
+            testBrandAbbreviation = "ABBR";
+            testDesignation = "TestDesignation"; ;
+            testZipCode = "78745";
+            testLocality = "TestLocality";
 
             queueReader = new HierarchyQueueReader(
                 mockLogger.Object,
@@ -186,6 +196,50 @@ namespace Icon.ApiController.Tests.QueueReaders
 
             // Then.
             Assert.AreEqual(3, miniBulk.@class.Length);
+        }
+
+        [TestMethod]
+        public void GetHierarchyMiniBulk_BrandMessageWithOneTrait_ShouldReturnMiniBulkWithOneTrait()
+        {
+            // Given.
+            var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(2, "Brands", true);
+            fakeMessageQueueHierarchies.BrandAbbreviation = testBrandAbbreviation;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk( new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
+
+            // Then.
+            Assert.AreEqual(1, miniBulk.@class[0].traits.Length);
+        }
+
+        [TestMethod]
+        public void GetHierarchyMiniBulk_BrandMessageWithTraits_ShouldReturnMiniBulkWithTraits()
+        {
+            // Given.
+            var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(2, "Brands", true);
+            fakeMessageQueueHierarchies.BrandAbbreviation = testBrandAbbreviation;
+            fakeMessageQueueHierarchies.Designation = testDesignation;
+            fakeMessageQueueHierarchies.ZipCode = testZipCode;
+            fakeMessageQueueHierarchies.Locality = testLocality;
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
+
+            // Then.
+            Assert.AreEqual(4, miniBulk.@class[0].traits.Length);
+        }
+
+        [TestMethod]
+        public void GetHierarchyMiniBulk_BrandMessageWithNoTraitsSet_ShouldReturnMiniBulkWithNoTraits()
+        {
+            // Given.
+            var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(2, "Brands", true);
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
+
+            // Then.
+            Assert.AreEqual(0, miniBulk.@class[0].traits.Length);
         }
     }
 }
