@@ -430,7 +430,7 @@ WHERE p.Region = ?
 			AND a.PriceID = p.PriceID
 	)
 	ORDER BY BusinessUnitID, p.ItemID, PriceType
-	</statement>
+	OPTION(RECOMPILE)</statement>
                 <wizardData/>
                 <processInSubsets>true</processInSubsets>
                 <Prepared_Param_DataType>
