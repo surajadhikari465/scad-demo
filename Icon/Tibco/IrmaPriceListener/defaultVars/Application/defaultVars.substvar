@@ -25,5 +25,21 @@
 			<type>String</type>
 			<modTime>1524855650307</modTime>
 		</globalVariable>
+		<globalVariable>
+			<name>SqlCommandMaximumRows</name>
+			<value>10000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1567547019730</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SqlCommandTimeoutInSeconds</name>
+			<value>30</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1567618959385</modTime>
+		</globalVariable>
 	</globalVariables>
 </repository>

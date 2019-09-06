@@ -87,7 +87,7 @@
             <pd:x>714</pd:x>
             <pd:y>165</pd:y>
             <config>
-                <timeout>10</timeout>
+                <timeout>30</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
@@ -265,7 +265,7 @@
             <pd:x>653</pd:x>
             <pd:y>392</pd:y>
             <config>
-                <timeout>10</timeout>
+                <timeout>30</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>true</emptyStrAsNil>
                 <statement>INSERT INTO [infor].[StagingMammothPrice]
@@ -475,7 +475,7 @@
     <pd:group name="Irma Price Update Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>844</pd:x>
+        <pd:x>850</pd:x>
         <pd:y>90</pd:y>
         <pd:width>217</pd:width>
         <pd:height>174</pd:height>
@@ -509,17 +509,20 @@
         <pd:activity name="Update IRMA Price">
             <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-            <pd:x>939</pd:x>
+            <pd:x>943</pd:x>
             <pd:y>166</pd:y>
             <config>
-                <timeout>10</timeout>
-                <maxRows>100</maxRows>
+                <timeout>%%Application/SqlCommandTimeoutInSeconds%%</timeout>
+                <maxRows>%%Application/SqlCommandMaximumRows%%</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <schema>infor</schema>
                 <catalog/>
                 <ProcedureName>BatchUpdatePriceFromGPM</ProcedureName>
                 <useSchema>true</useSchema>
+                <oraObjects/>
+                <oraTables/>
+                <ConfigurationError>Error converting data type nvarchar to uniqueidentifier.</ConfigurationError>
                 <parameterTypes>
                     <parameter>
                         <colName>@RETURN_VALUE</colName>
@@ -533,12 +536,6 @@
                         <dataType>1</dataType>
                         <typeName>uniqueidentifier</typeName>
                     </parameter>
-                    <parameter>
-                        <colName>@fullUpdate</colName>
-                        <colType>2</colType>
-                        <dataType>-7</dataType>
-                        <typeName>bit</typeName>
-                    </parameter>
                 </parameterTypes>
             </config>
             <pd:inputBindings>
@@ -547,9 +544,6 @@
                         <transactionId>
                             <xsl:value-of select="$transactionId/UID"/>
                         </transactionId>
-                        <fullUpdate>
-                            <xsl:value-of select="0"/>
-                        </fullUpdate>
                     </inputSet>
                 </inputs>
             </pd:inputBindings>
@@ -558,8 +552,8 @@
     <pd:activity name="Delete All Staging Price Records (All Failed)">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>989</pd:x>
-        <pd:y>621</pd:y>
+        <pd:x>840</pd:x>
+        <pd:y>624</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -595,7 +589,7 @@ WHERE TransactionId = ?</statement>
     <pd:group name="Delete All Staging (All Good) Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>1081</pd:x>
+        <pd:x>1095</pd:x>
         <pd:y>92</pd:y>
         <pd:width>207</pd:width>
         <pd:height>170</pd:height>
@@ -629,10 +623,10 @@ WHERE TransactionId = ?</statement>
         <pd:activity name="Delete All Staging Price Records (All Good)">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>1175</pd:x>
+            <pd:x>1188</pd:x>
             <pd:y>171</pd:y>
             <config>
-                <timeout>10</timeout>
+                <timeout>30</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
@@ -804,161 +798,6 @@ WHERE TransactionId = ?</statement>
                 <pfx13:Message>
                     <xsl:value-of select="concat(&quot;Recieved message &quot;, $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID)"/>
                 </pfx13:Message>
-            </pfx13:AppLog>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Publish Data Error Message">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1183</pd:x>
-        <pd:y>385</pd:y>
-        <config>
-            <processName>/SharedResources/Processes/PublishErrorMessage.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <pfx12:ErrorMessage>
-                <pfx12:Application>
-                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
-                </pfx12:Application>
-                <pfx12:MessageID>
-                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID"/>
-                </pfx12:MessageID>
-                <pfx12:MessageProperties>
-                    <xsl:for-each select="$IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/node()">
-                        <pfx12:NameValuePair>
-                            <xsl:attribute name="value">
-                                <xsl:value-of select="current()"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="local-name(current())"/>
-                            </xsl:attribute>
-                        </pfx12:NameValuePair>
-                    </xsl:for-each>
-                </pfx12:MessageProperties>
-                <pfx12:Message>
-                    <xsl:value-of select="$IrmaPriceMessageReceiver/ns:ActivityOutput/Body"/>
-                </pfx12:Message>
-                <pfx12:ErrorCode>
-                    <xsl:value-of select="&quot;Data Issue&quot;"/>
-                </pfx12:ErrorCode>
-                <pfx12:ErrorDetails>
-                    <xsl:value-of select="tib:concat-sequence($Data-Issue-Query/resultSet/Record/ErrorReason)"/>
-                </pfx12:ErrorDetails>
-                <pfx12:ErrorSeverity>
-                    <xsl:value-of select="&quot;Error&quot;"/>
-                </pfx12:ErrorSeverity>
-            </pfx12:ErrorMessage>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Data Issue Query">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>879</pd:x>
-        <pd:y>372</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>1000</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <statement>SELECT 
-   CASE 
-		WHEN vsc.inforitemId IS NULL
-			THEN + 'The item ' + CAST(mp.ItemId as VARCHAR) + ' does not exist or is deleted or is not marked as validated in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-		WHEN s.BusinessUnit_ID IS NULL
-			THEN 'The store ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' dose not exist in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-		WHEN iu.Unit_Abbreviation IS NULL
-			THEN  'The unit ' + mp.SellableUOM + ' dose not exist in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-		WHEN ii.Default_Identifier = 0
-			THEN  'The item ' + ii.Identifier + ' is not a default identifier in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-		WHEN (s2.BusinessUnit_ID IS NULL)
-			THEN 'The business unit ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' is not marked as a store in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-		WHEN p.Item_Key is NULL AND ip.Item_Key IS NOT NULL
-		    THEN 'The item ' + CAST(mp.ItemId as VARCHAR) + ' for the business unit ' + CAST(mp.BusinessUnit_ID as VARCHAR) +  ' does not have a Price record in IRMA ** BusinessUnit_ID: ' + CAST(mp.BusinessUnit_ID as VARCHAR) + ' | ItemId: ' + CAST(mp.ItemId as VARCHAR) + ' | PriceType: ' + CAST(mp.PriceType as VARCHAR) + ' | StartDate: ' + CAST(CAST(mp.StartDate as DATE) as VARCHAR) + '**;   '
-	END AS ErrorReason
-FROM infor.StagingMammothPrice mp  
-LEFT JOIN dbo.ValidatedScanCode vsc ON mp.ItemId = vsc.inforitemId
-LEFT JOIN dbo.ItemIdentifier ii ON vsc.scanCode = ii.identifier 
-								AND ii.Deleted_Identifier = 0
-								AND ii.Remove_Identifier = 0
-LEFT JOIN dbo.Item i ON i.Item_Key = ii.Item_Key
-					 AND i.Deleted_Item = 0
-                     AND i.Remove_Item = 0
-LEFT JOIN dbo.Store s ON mp.BusinessUnit_ID = s.BusinessUnit_ID
-LEFT JOIN dbo.Store s2 ON mp.BusinessUnit_ID = s2.BusinessUnit_ID 
-                      AND (s2.WFM_Store = 1 OR s2.Mega_Store = 1)
-LEFT JOIN dbo.ItemUnit iu ON mp.SellableUOM = iu.Unit_Abbreviation
-LEFT JOIN infor.StagingIrmaPrice ip ON  ip.TransactionId = mp.TransactionId
-									AND ip.Item_Key = ii.Item_Key
-									AND ip.Store_No = s2.Store_No
-LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
-					 AND ip.Store_No = p.Store_No					
- WHERE mp.TransactionId = ?
-  AND (vsc.inforitemId IS NULL
-   OR s.BusinessUnit_ID IS NULL
-   OR iu.Unit_Abbreviation IS NULL
-   OR ip.TransactionId IS NULL)</statement>
-            <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>TransactionId</parameterName>
-                    <dataType>LONGNVARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-            <wizardData/>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>ErrorReason</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput>
-                <TransactionId>
-                    <xsl:value-of select="$transactionId/UID"/>
-                </TransactionId>
-            </jdbcQueryActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Call Logger">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1020</pd:x>
-        <pd:y>375</pd:y>
-        <config>
-            <processName>/SharedResources/Processes/LogPublisher.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <pfx13:AppLog>
-                <pfx13:AppId>
-                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Application/ApplicationID"/>
-                </pfx13:AppId>
-                <pfx13:Level>
-                    <xsl:value-of select="&quot;Warning&quot;"/>
-                </pfx13:Level>
-                <pfx13:Logger>
-                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
-                </pfx13:Logger>
-                <pfx13:UserName>
-                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProjectName"/>
-                </pfx13:UserName>
-                <pfx13:MachineName>
-                    <xsl:value-of select="BW:getHostName()"/>
-                </pfx13:MachineName>
-                <pfx13:LogDate>
-                    <xsl:value-of select="current-dateTime()"/>
-                </pfx13:LogDate>
-                <pfx13:Thread>
-                    <xsl:value-of select="$_processContext/pfx4:ProcessContext/ProcessId"/>
-                </pfx13:Thread>
-                <pfx13:Message>
-                    <xsl:value-of select="concat(&quot;Data issue encountered on message &quot;, $IrmaPriceMessageReceiver/ns:ActivityOutput/OtherProperties/TransactionID, &quot;. Error details: &quot;, tib:concat-sequence($Data-Issue-Query/resultSet/Record/ErrorReason))"/>
-                </pfx13:Message>
-                <pfx13:CallSite>
-                    <xsl:value-of select="BW:getCurrentActivityName($_processContext/pfx4:ProcessContext/ProcessId)"/>
-                </pfx13:CallSite>
             </pfx13:AppLog>
         </pd:inputBindings>
     </pd:activity>
@@ -1181,7 +1020,7 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:activity name="Archive Price Message On Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1170</pd:x>
+        <pd:x>1178</pd:x>
         <pd:y>619</pd:y>
         <config>
             <processName>/SharedResources/Processes/Archive Price Message.process</processName>
@@ -1276,6 +1115,16 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
             </pfx10:MammothPrices>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="ConfirmMessageOnError">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>1009</pd:x>
+        <pd:y>612</pd:y>
+        <config>
+            <ConfirmEvent>IrmaPriceMessageReceiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
         <pd:from>Group</pd:from>
         <pd:to>Load One By One Group</pd:to>
@@ -1300,11 +1149,10 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>Irma Price Update Group</pd:from>
         <pd:to>Delete All Staging (All Good) Group</pd:to>
-        <pd:xpathDescription>Full Price Update</pd:xpathDescription>
+        <pd:xpathDescription/>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Update-IRMA-Price/resultSet/outputSet/fullUpdate = "true"</pd:xpath>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Delete All Staging (All Good) Group</pd:from>
@@ -1330,36 +1178,6 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>Publish Error Message</pd:from>
         <pd:to>Delete All Staging Price Records (All Failed)</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Publish Data Error Message</pd:from>
-        <pd:to>Delete All Staging (All Good) Group</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Irma Price Update Group</pd:from>
-        <pd:to>Data Issue Query</pd:to>
-        <pd:xpathDescription>Partial Price Update</pd:xpathDescription>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$Update-IRMA-Price/resultSet/outputSet/fullUpdate = "false"</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Data Issue Query</pd:from>
-        <pd:to>Call Logger</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Call Logger</pd:from>
-        <pd:to>Publish Data Error Message</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -1440,7 +1258,7 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     </pd:transition>
     <pd:transition>
         <pd:from>Delete All Staging Price Records (All Failed)</pd:from>
-        <pd:to>Archive Price Message On Error</pd:to>
+        <pd:to>ConfirmMessageOnError</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -1455,6 +1273,13 @@ LEFT JOIN dbo.Price p ON ip.Item_key = p.Item_Key
     <pd:transition>
         <pd:from>HandleAddAndUpdateSameItem</pd:from>
         <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConfirmMessageOnError</pd:from>
+        <pd:to>Archive Price Message On Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

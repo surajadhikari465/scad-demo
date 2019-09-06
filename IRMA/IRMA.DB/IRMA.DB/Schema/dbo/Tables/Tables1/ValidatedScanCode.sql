@@ -12,6 +12,14 @@
 
 GO
 
+CREATE NONCLUSTERED INDEX [idx_ValidatedScanCode_InforItemId] ON [dbo].[ValidatedScanCode] 
+(
+	[InforItemId] ASC
+)
+INCLUDE ([ScanCode])
+
+GO
+
 CREATE TRIGGER [dbo].[ValidatedScanCodeInsert]
 	ON [dbo].[ValidatedScanCode]
 	AFTER INSERT
