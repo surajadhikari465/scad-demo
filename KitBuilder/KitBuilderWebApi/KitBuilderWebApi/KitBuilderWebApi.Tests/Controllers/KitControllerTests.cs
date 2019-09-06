@@ -1,5 +1,6 @@
 ﻿using KitBuilder.DataAccess.DatabaseModels;
 using KitBuilder.DataAccess.Dto;
+using KitBuilder.DataAccess.Enums;
 using KitBuilder.DataAccess.Repository;
 using KitBuilder.DataAccess.UnitOfWork;
 using KitBuilderWebApi.Controllers;
@@ -123,9 +124,9 @@ namespace KitBuilderWebApi.Tests.Controllers
         {
             kits = new List<Kit>()
             {
-                new Kit() {KitId=1,Description = "Kit 1", ItemId = 1},
-                new Kit() {KitId=2, Description = "Kit 2", ItemId = 2},
-                new Kit() {KitId=3,Description = "Kit 3", ItemId = 3}
+                new Kit() {KitId=1,Description = "Kit 1", ItemId = 1, KitType = KitType.Customizable},
+                new Kit() {KitId=2, Description = "Kit 2", ItemId = 2, KitType = KitType.Customizable},
+                new Kit() {KitId=3,Description = "Kit 3", ItemId = 3, KitType = KitType.Simple}
             };
 
             items = new List<Items>
@@ -304,7 +305,19 @@ namespace KitBuilderWebApi.Tests.Controllers
             Assert.IsInstanceOfType(response, typeof(NotFoundResult), "Not Found Expected");
         }
 
-        [TestMethod]
+		[TestMethod]
+		public void KitsController_GetKitViewOfCustomizableKitsKitLinkGroupLocaleDoesNotExist_ReturnsKitSetupError()
+		{
+			int kitId = 2;
+			int localeId = 3;
+
+			var response = kitController.GetKitView(kitId, localeId);
+
+			Assert.IsInstanceOfType(response, typeof(OkObjectResult), "Ok Result Expected");
+			Assert.IsTrue(((KitView)(((OkObjectResult)response).Value)).ErrorMessage.Equals("Error: Please make sure Kit is set up correctly for this store."), "Setup error shows");
+		}
+
+		[TestMethod]
         public void KitsController_GetKitByLocaleIdKitDoesNotExist_ReturnsNotFound()
         {
             int kitId = 999;

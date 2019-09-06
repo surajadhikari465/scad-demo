@@ -161,7 +161,8 @@ namespace KitBuilderWebApi.Controllers
 
 			var kitProperties = BuildKitPropertiesByLocaleId(kitId, (int)localeIdWithKitLocaleRecord, storeId);
 
-			if (kitProperties == null)
+			//A kit has to be assigned to a locale, and for a customizable kit, a locale property has to be set before it can be viewed by a store
+			if (kitProperties == null || kit.KitType == KitType.Customizable && kitProperties.KitLinkGroupLocaleList.Where(klg => klg.KitLinkGroupLocaleId > 0).Count() == 0)
 			{
 				kitView.ErrorMessage = "Error: Please make sure Kit is set up correctly for this store.";
 				return Ok(kitView);
@@ -1445,39 +1446,41 @@ namespace KitBuilderWebApi.Controllers
 				errorMessages.Append(MAIN_ITEM_NOT_AUTHORIZED);
 				errorMessages.Append("\n");
 			}
-
-			if (kitLocaleDto.MinimumCalories == null)
+			//If the main item is not authorized, the CaloricCalculator will not check the nutrition info for main item and modifiers.
+			else
 			{
-				errorMessages.Append(MAIN_ITEM_NO_CALORIE);
-				errorMessages.Append("\n");
-			}
-
-			if (kitType != KitType.Simple)
-			{
-				int unauthorizedCounter = (from kitLinkGroupLocale in kitLocaleDto.KitLinkGroupLocale
-				 where !(bool)kitLinkGroupLocale.Exclude
-				 from kitLinkGroupItemLocales in kitLinkGroupLocale.KitLinkGroupItemLocales
-				 where !(bool)kitLinkGroupItemLocales.Exclude && !(bool)kitLinkGroupItemLocales.AuthorizedByStore
-				 select kitLinkGroupItemLocales).Count();
-
-				if (unauthorizedCounter > 0)
+				if (kitLocaleDto.MinimumCalories == null)
 				{
-					errorMessages.Append(MODIFIER_NOT_AUTHORIZED);
+					errorMessages.Append(MAIN_ITEM_NO_CALORIE);
 					errorMessages.Append("\n");
 				}
 
-				int noCaloriesCounter = (from kitLinkGroupLocale in kitLocaleDto.KitLinkGroupLocale
-										   where !(bool)kitLinkGroupLocale.Exclude
-										   from kitLinkGroupItemLocales in kitLinkGroupLocale.KitLinkGroupItemLocales
-										   where !(bool)kitLinkGroupItemLocales.Exclude && kitLinkGroupItemLocales.Calories == null
-										 select kitLinkGroupItemLocales).Count();
-				if (noCaloriesCounter > 0)
+				if (kitType != KitType.Simple)
 				{
-					errorMessages.Append(MODIFIER_NO_CALORIE);
-					errorMessages.Append("\n");
+					int unauthorizedCounter = (from kitLinkGroupLocale in kitLocaleDto.KitLinkGroupLocale
+											   where !(bool)kitLinkGroupLocale.Exclude
+											   from kitLinkGroupItemLocales in kitLinkGroupLocale.KitLinkGroupItemLocales
+											   where !(bool)kitLinkGroupItemLocales.Exclude && !(bool)kitLinkGroupItemLocales.AuthorizedByStore
+											   select kitLinkGroupItemLocales).Count();
+
+					if (unauthorizedCounter > 0)
+					{
+						errorMessages.Append(MODIFIER_NOT_AUTHORIZED);
+						errorMessages.Append("\n");
+					}
+
+					int noCaloriesCounter = (from kitLinkGroupLocale in kitLocaleDto.KitLinkGroupLocale
+											 where !(bool)kitLinkGroupLocale.Exclude
+											 from kitLinkGroupItemLocales in kitLinkGroupLocale.KitLinkGroupItemLocales
+											 where !(bool)kitLinkGroupItemLocales.Exclude && kitLinkGroupItemLocales.Calories == null
+											 select kitLinkGroupItemLocales).Count();
+					if (noCaloriesCounter > 0)
+					{
+						errorMessages.Append(MODIFIER_NO_CALORIE);
+						errorMessages.Append("\n");
+					}
 				}
 			}
-
 			return errorMessages.ToString().TrimEnd('\n');
 		}
 
