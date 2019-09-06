@@ -1,9 +1,9 @@
-ChangeTicketNum	Change ticket number	CHG0039922
-ReleaseOwner	Change owner	Tom Lux
+ChangeTicketNum	Change ticket number	CHG0040169
+ReleaseOwner	Change owner	Arturo Rivas
 SprintsIncluded	Sprint numbers covered	149 - 150 (July 17 - August 14)
-TargetEnv	Target environment	QA
-TargetEnvShort		QA
-DeployDate	Deploy date	Tuesday, August 20, 2019
+TargetEnv	Target environment	Production
+TargetEnvShort		PRD
+DeployDate	Deploy date	Thursday, September 5, 2019
 ReleaseYear		2019
 ReleaseSeqNum		09
 ReleaseId		__ReleaseYear__.__ReleaseSeqNum__
@@ -17,43 +17,43 @@ MammothDbUpdated		y
 TibcoUpdated		y
 FullSvrList	Servers receiving updates	.
 ReleaseNotesURL	Link to release notes	.
-IrmaDbScriptLink		Open Folder <a href="file://odwp6516/Release/__ReleaseId__/">HERE</a>, FileName: <span style='background:#A8D08D;mso-shading-themecolor:accent6;mso-shading-themetint:153'>IRMA __ReleaseId__ Updates.sql</span>
-IconDbScriptLink	Icon DB script	N/A -- Auto deploy via VSTS
-MammothDbScriptLink		N/A -- Auto deploy via VSTS
-MammothDbTarget		Mammoth-DB01-QA\Mammoth.Mammoth, QA-01-Mammoth02\Mammoth02.Mammoth
+MammothDbTarget		Mammoth-DB01-Prd\Mammoth
 IconReleaseBranchName	Icon release branch name	RELEASE_2019_09
 IconBuildNum	Icon release build number	20190818*
-IconBuildId	Icon release build ID	.
-IrmaReleaseBranchName	IRMA release branch name	n/a
+IconBuildId	Icon release build ID	
+IrmaReleaseBranchName	IRMA release branch name	.
 IrmaBuildNum	IRMA release build number	n/a
-IrmaBuildId	IRMA release build ID	.
+IrmaBuildId	IRMA release build ID	
 IrmaVer	IRMA version number	11.5
 IrmaLongVer		11.5.0
 IconVer	Icon version number	__ReleaseYear__.__ReleaseSeqNum__
 MammothVer	Mammoth version number	__ReleaseYear__.__ReleaseSeqNum__
 TibcoVer	TIBCO version number	__ReleaseYear__.__ReleaseSeqNum__
 FullDbList	List of DBs receiving updates?	.
+IrmaDbScriptLink		Open Folder <a href="file://odwp6516/Release/__ReleaseId__/">HERE</a>, FileName: <span style='background:#A8D08D;mso-shading-themecolor:accent6;mso-shading-themetint:153'>IRMA __ReleaseId__ Updates.sql</span>
+IconDbScriptLink	Icon DB script	Open Folder <a href="file://odwp6516/Release/__ReleaseId__/">HERE</a>, FileName: <span style='background:#A8D08D;mso-shading-themecolor:accent6;mso-shading-themetint:153'>Icon __ReleaseId__ Updates.sql</span>
+MammothDbScriptLink		Open Folder <a href="file://odwp6516/Release/__ReleaseId__/">HERE</a>, FileName: <span style='background:#A8D08D;mso-shading-themecolor:accent6;mso-shading-themetint:153'>Mammoth __ReleaseId__ Updates.sql</span>
 IrmaDbUpdateRegionList		FL, MA, MW, NA, NC, NE, PN, RM, SO, SP, SW, UK
-IrmaDbServer		IDQ-xx\xxQ
-IconDbServer		IDQ-Icon\SqlShared3Q
-MammothDbServer		Mammoth-DB01-QA\Mammoth
+IrmaDbServer		IDP-xx\xxP
+IconDbServer		IDP-Icon\Shared3P
+MammothDbServer		Mammoth-DB01-Prd\Mammoth
 AppSuitesBeingDeployed	This should be dynamic	IRMA, Icon, Mammoth, TIBCO
-IrmaServersAffected	This should be dynamic	IRMAQAApp[1-4]
-IconServersAffected	This should be dynamic	VM-Icon-QA[1-4]
-MammothServersAffected	This should be dynamic	Mammoth-App01-QA
-TibcoServersAffected	This should be dynamic	QA: CERD1673, CERD1674 | QA-Perf: CERD1662, CERD1663, CERD1664, CERD1665
-TibcoAppsUpdated		EmergencyPriceService,ErrorMessagesMonitor,JobSchedulerService,MammothActivePriceService
+IrmaServersAffected	This should be dynamic	IRMAPrdApp[1-8]
+IconServersAffected	This should be dynamic	VM-Icon-Prd[1-6]
+MammothServersAffected	This should be dynamic	Mammoth-App01-Prd, IRMAPrdApp[9-10]
+TibcoServersAffected	This should be dynamic	Prod: cerp1643, cerp1644, odrp1634, odrp1635
+TibcoAppsUpdated		EmergencyPriceService,ErrorMessagesMonitor,JobSchedulerService
 HcTibcoRegions	List of regions for which tibco deploy links should be generated for HoneyCrisp apps	FL,PN,SO,SW
 HcGenerateQafLinks	Flag 0 or 1 to indicate if QAF links should be generated for HoneyCrisp tibco apps	0
 IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
 IrmaSuitePreviousVersion		11.4.0
-MammothManualDeploy		**NONE**
+MammothManualDeploy		*NONE*
 IrmaReleaseLauncherVersionRef		.
-AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	**NONE**
 AdditionalIrmaDeployImplementerRef		IRM
-AdditionalIrmaComponentList		.
+AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	**NONE**
+AdditionalIrmaComponentList		IRM
 SpecialIrmaReleaseDetails		<hr>
-AzureReleaseList		<hr>IRMA Client<br>Icon DB<br>Mammoth DB<br>Icon API Controller<br>Icon Global Event Controller<br>Icon Web<br>Icon Dashboard<br>Mammoth Product Listener<br>Mammoth Web API<br>Mammoth Web Support
+AzureReleaseList		<hr>IRMA Client<br>Icon API Controller<br>Icon Global Event Controller<br>Icon Web<br>Mammoth Audit Service<br>Mammoth Product Listener<br>Mammoth Web API<br>Mammoth Web Support
 IrmaPostDbUpdateTask		None, continue
 DbBeforeRelScripts	Full section for DB updates before the core/base release scripts run by DBA.	**NONE**
 DbAfterRelScripts	Full section for DB updates after the core/base release scripts run by DBA.	**NONE**
