@@ -63,10 +63,10 @@ BEGIN
 	JOIN dbo.Hierarchy h ON hc.HierarchyID = h.HierarchyID
 	JOIN dbo.HierarchyPrototype hp ON hp.HierarchyID = hc.HierarchyID AND hp.hierarchyLevelName = hc.hierarchyLevelName
     LEFT JOIN #hierarchyClassesTraits hct ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @nccId
-    LEFT JOIN #hierarchyClassesTraits ba ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @brandAbbreviationId
-    LEFT JOIN #hierarchyClassesTraits zc ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @zipCodeId
-    LEFT JOIN #hierarchyClassesTraits ds ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @designationId
-    LEFT JOIN #hierarchyClassesTraits lo ON hct.hierarchyClassID = hc.HierarchyClassId AND hct.traitID = @localityId
+    LEFT JOIN dbo.HierarchyClassTrait ba ON ba.hierarchyClassID = hc.HierarchyClassId AND ba.traitID = @brandAbbreviationId
+    LEFT JOIN dbo.HierarchyClassTrait zc ON zc.hierarchyClassID = hc.HierarchyClassId AND zc.traitID = @zipCodeId
+    LEFT JOIN dbo.HierarchyClassTrait ds ON ds.hierarchyClassID = hc.HierarchyClassId AND ds.traitID = @designationId
+    LEFT JOIN dbo.HierarchyClassTrait lo ON lo.hierarchyClassID = hc.HierarchyClassId AND lo.traitID = @localityId
 	WHERE h.HierarchyID IN(
 			@brandHierarchyId
 			,@merchHierarchyId
