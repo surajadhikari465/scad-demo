@@ -15,16 +15,16 @@ xmlns="http://www.w3.org/TR/REC-html40">
  <o:DocumentProperties>
   <o:Author>Tom Lux (CE REM)</o:Author>
   <o:LastAuthor>Tom Lux (CE REM)</o:LastAuthor>
-  <o:Revision>116</o:Revision>
-  <o:TotalTime>5478</o:TotalTime>
+  <o:Revision>117</o:Revision>
+  <o:TotalTime>5481</o:TotalTime>
   <o:Created>2018-10-11T01:19:00Z</o:Created>
-  <o:LastSaved>2019-08-07T16:57:00Z</o:LastSaved>
+  <o:LastSaved>2019-09-06T15:56:00Z</o:LastSaved>
   <o:Pages>6</o:Pages>
-  <o:Words>1437</o:Words>
-  <o:Characters>8196</o:Characters>
-  <o:Lines>68</o:Lines>
-  <o:Paragraphs>19</o:Paragraphs>
-  <o:CharactersWithSpaces>9614</o:CharactersWithSpaces>
+  <o:Words>1512</o:Words>
+  <o:Characters>8625</o:Characters>
+  <o:Lines>71</o:Lines>
+  <o:Paragraphs>20</o:Paragraphs>
+  <o:CharactersWithSpaces>10117</o:CharactersWithSpaces>
   <o:Version>16.00</o:Version>
  </o:DocumentProperties>
  <o:OfficeDocumentSettings>
@@ -37,7 +37,6 @@ href="IRMA%20Apps%20Release%20Template_files/colorschememapping.xml">
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
   <w:View>Print</w:View>
-  <w:Zoom>150</w:Zoom>
   <w:DontDisplayPageBoundaries/>
   <w:TrackMoves>false</w:TrackMoves>
   <w:TrackFormatting/>
@@ -3087,12 +3086,20 @@ style='mso-list:Ignore'>a.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp
 auto;text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>b.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>(IRMA Support) Hold DVO HDM jobs.</p>
+</span></span></span><![endif]>(SCM Support) Disable all regional “DVO IRMA
+PO_HST_Update Extract {Region} - {Env}” jobs on VCMAPP{Env} Windows server.<o:p></o:p></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>c.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>(SCM Support) If IRMA DBs are still down at
+9:20PM, disable regional “DVO IRMA Extract {Region} - {Env}” and run manually.</p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
+style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
+style='mso-list:Ignore'>d.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Do not approve IRMA Client release until
 downtime begins there is no pre-deployment phase; it blocks users from
 accessing the IRMA Client and immediately begins deployment.</p>
@@ -3100,7 +3107,7 @@ accessing the IRMA Client and immediately begins deployment.</p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>d.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+style='mso-list:Ignore'>e.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Make sure Release BA has coordinated with
 implementers and interfacing teams to ensure they have stopped their
 downtime-sensitive jobs/process and/or are ready for the release downtime:</p>
@@ -3143,7 +3150,7 @@ style='mso-list:Ignore'><span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&
 <p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>e.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+style='mso-list:Ignore'>f.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Start interface-manager release</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:1.5in;mso-add-space:
@@ -3158,7 +3165,7 @@ manual intervention after stop-apps phase.</p>
 <p class=MsoListParagraphCxSpLast style='margin-left:1.0in;mso-add-space:auto;
 text-indent:-.25in;mso-list:l6 level2 lfo6'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>f.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+style='mso-list:Ignore'>g.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Wait for appropriate releases (any approved or
 started above) to complete or reach manual point.</p>
 
@@ -3246,7 +3253,8 @@ text-indent:-.25in;mso-list:l4 level1 lfo8'><![if !supportLists]><span
 class=MsoHyperlink><span style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:
 minor-latin;color:windowtext;text-decoration:none;text-underline:none'><span
 style='mso-list:Ignore'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span></span><![endif]>Set user-access level for all DBs:
+</span></span></span></span><![endif]>Confirm with Release Manager, then, at/after
+start of downtime window, set user-access level for all above target DBs:
 restricted_user with rollback immediate<span class=MsoHyperlink><span
 style='color:windowtext;text-decoration:none;text-underline:none'><o:p></o:p></span></span></p>
 
@@ -3293,8 +3301,8 @@ normal'><span style='color:#70AD47;mso-themecolor:accent6'><o:p></o:p></span></b
 text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>(DBA) Restrict ItemCatalog (IRMA) DB (with
-rollback immediate)</p>
+</span></span></span><![endif]>(DBA) If not already done, Restrict ItemCatalog
+(IRMA) DB (with rollback immediate)</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
@@ -3345,7 +3353,8 @@ href="file://odwp6516/Release/Logs/">Release Logs Folder</a></p>
 auto;text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>(All) Post-DB-Update Tasks: __IrmaPostDbUpdateTask__</p>
+</span></span></span><![endif]>(All) Post-DB-Update Tasks:
+__IrmaPostDbUpdateTask__</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
@@ -3365,8 +3374,8 @@ count</p>
 auto;text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>(IRM) Check IRMA DB update log (confirm run for
-all regions, correct target server/env, no errors, etc.)</p>
+</span></span></span><![endif]>(IRM) Check IRMA DB update log (confirm run for all
+regions, correct target server/env, no errors, etc.)</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l8 level1 lfo10'><![if !supportLists]><span
@@ -3830,13 +3839,23 @@ jobs</p>
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>(SCM Support) Enable all regional “DVO IRMA
+PO_HST_Update Extract {Region} - {Env}” jobs on VCMAPP{Env} Windows server
+(they should run automatically).<span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><u>Note: ***Do not enable TS region
+jobs.***</u></b></p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
+style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
+style='mso-list:Ignore'>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Have DBA run tasks to mark DBs open for
 business (disable offline-for-maint mode)</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+style='mso-list:Ignore'>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Release/resume all Tidal jobs</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:1.25in;mso-add-space:
@@ -3848,33 +3867,33 @@ style='mso-list:Ignore'>a.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+style='mso-list:Ignore'>10.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Restart Icon2VimQueueManagement Windows
 Service (vm-icon-prd1 only)</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>10.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+style='mso-list:Ignore'>11.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Check interface logs (Icon and Mammoth)</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>11.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+style='mso-list:Ignore'>12.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Check error emails</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>12.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+style='mso-list:Ignore'>13.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]>(IRM) Check and rerun failed Tidal jobs, if
 needed</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:.75in;mso-add-space:
 auto;text-indent:-.25in;mso-list:l9 level1 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
-style='mso-list:Ignore'>13.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+style='mso-list:Ignore'>14.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]>(SCAD) Coordinate with these dependent teams to
 ensure jobs/interfaces are restarted/enabled:</p>
 
@@ -3900,7 +3919,7 @@ style='mso-list:Ignore'>c.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp
 auto;text-indent:-.25in;mso-list:l9 level2 lfo20'><![if !supportLists]><span
 style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span
 style='mso-list:Ignore'>d.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>IRMA Support, DVO</p>
+</span></span></span><![endif]>SCM Support</p>
 
 <p class=MsoListParagraphCxSpLast style='margin-left:1.25in;mso-add-space:auto;
 text-indent:-.25in;mso-list:l9 level2 lfo20'><![if !supportLists]><span
