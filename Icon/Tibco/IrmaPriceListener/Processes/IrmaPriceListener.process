@@ -87,7 +87,7 @@
             <pd:x>714</pd:x>
             <pd:y>165</pd:y>
             <config>
-                <timeout>30</timeout>
+                <timeout>%%Application/SqlCommandTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
@@ -265,7 +265,7 @@
             <pd:x>653</pd:x>
             <pd:y>392</pd:y>
             <config>
-                <timeout>30</timeout>
+                <timeout>%%Application/SqlCommandTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>true</emptyStrAsNil>
                 <statement>INSERT INTO [infor].[StagingMammothPrice]
@@ -399,24 +399,26 @@
             <pd:x>717</pd:x>
             <pd:y>500</pd:y>
             <config>
-                <element ref="pfx14:MammothPriceWithErrorInfo"/>
+                <element ref="pfx14:MammothPricesWithErrorInfo"/>
             </config>
             <pd:inputBindings>
-                <pfx14:MammothPriceWithErrorInfo>
-                    <pfx14:MammothPrice>
-                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/ancestor-or-self::*/namespace::node()"/>
-                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/@*"/>
-                        <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/node()"/>
-                    </pfx14:MammothPrice>
-                    <xsl:if test="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode">
-                        <pfx14:ErrorCode>
-                            <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode"/>
-                        </pfx14:ErrorCode>
-                    </xsl:if>
-                    <pfx14:ErrorDetails>
-                        <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msg"/>
-                    </pfx14:ErrorDetails>
-                </pfx14:MammothPriceWithErrorInfo>
+                <pfx14:MammothPricesWithErrorInfo>
+                    <pfx14:MammothPriceWithErrorType>
+                        <pfx14:MammothPrice>
+                            <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/@*"/>
+                            <xsl:copy-of select="$SinglePriceLoad/pfx10:MammothPrice/node()"/>
+                        </pfx14:MammothPrice>
+                        <xsl:if test="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode">
+                            <pfx14:ErrorCode>
+                                <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msgCode"/>
+                            </pfx14:ErrorCode>
+                        </xsl:if>
+                        <pfx14:ErrorDetails>
+                            <xsl:value-of select="$Catch-Single-Load-Exception/ns7:JDBCSQLException/msg"/>
+                        </pfx14:ErrorDetails>
+                    </pfx14:MammothPriceWithErrorType>
+                </pfx14:MammothPricesWithErrorInfo>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -555,7 +557,7 @@
         <pd:x>840</pd:x>
         <pd:y>624</pd:y>
         <config>
-            <timeout>10</timeout>
+            <timeout>%%Application/SqlCommandTimeoutInSeconds%%</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
             <statement>DELETE infor.StagingMammothPrice
@@ -626,7 +628,7 @@ WHERE TransactionId = ?</statement>
             <pd:x>1188</pd:x>
             <pd:y>171</pd:y>
             <config>
-                <timeout>30</timeout>
+                <timeout>%%Application/SqlCommandTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
@@ -1006,11 +1008,7 @@ WHERE TransactionId = ?</statement>
                 <xsl:choose>
                     <xsl:when test="exists( $MammothPricesWithError)">
                         <pfx14:MammothPricesWithErrorInfo>
-                            <pfx14:MammothPriceWithErrorType>
-                                <xsl:copy-of select="$MammothPricesWithError/AccumulatedOutput/pfx14:MammothPriceWithErrorInfo/ancestor-or-self::*/namespace::node()"/>
-                                <xsl:copy-of select="$MammothPricesWithError/AccumulatedOutput/pfx14:MammothPriceWithErrorInfo/@*"/>
-                                <xsl:copy-of select="$MammothPricesWithError/AccumulatedOutput/pfx14:MammothPriceWithErrorInfo/node()"/>
-                            </pfx14:MammothPriceWithErrorType>
+                            <xsl:copy-of select="$MammothPricesWithError/AccumulatedOutput/pfx14:MammothPricesWithErrorInfo/pfx14:MammothPriceWithErrorType"/>
                         </pfx14:MammothPricesWithErrorInfo>
                     </xsl:when>
                 </xsl:choose>
