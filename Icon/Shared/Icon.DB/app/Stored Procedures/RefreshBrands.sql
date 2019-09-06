@@ -1,57 +1,140 @@
-﻿CREATE PROCEDURE [app].[RefreshBrands]
-	@ids app.IntList readonly
+﻿CREATE PROCEDURE [app].[RefreshBrands] @ids app.IntList readonly
 AS
 BEGIN
-	DECLARE @taskName nvarchar(20) = 'RefreshBrands',
-			@brandsHierarchyId int = (select hierarchyID from Hierarchy where hierarchyName = 'Brands'),
-			@brandEventTypeId int = (select EventId from EventType where EventName = 'Brand Name Update')
+	DECLARE @taskName NVARCHAR(20) = 'RefreshBrands'
+		,@brandsHierarchyId INT = (
+			SELECT HIERARCHYID
+			FROM Hierarchy
+			WHERE hierarchyName = 'Brands'
+			)
+		,@brandEventTypeId INT = (
+			SELECT EventId
+			FROM EventType
+			WHERE EventName = 'Brand Name Update'
+			)
 
-	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding ESB messages for Brands...';
+	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding ESB messages for Brands...';
 
-	DECLARE @hierarchyMessageTypeId int = (select MessageTypeId from app.MessageType where MessageTypeName = 'Hierarchy'), 
-			@readyStatusId int = (select MessageStatusId from app.MessageStatus where MessageStatusName = 'Ready'), 
-			@messageActionId int = (select MessageActionId from app.MessageAction where MessageActionName = 'AddOrUpdate'),
-			@brandsHierarchyLevelName nvarchar(16) = (select hierarchyLevelName from HierarchyPrototype where hierarchyID = @brandsHierarchyId),
-			@brandsItemsAttached bit = (select itemsAttached from HierarchyPrototype where hierarchyID = @brandsHierarchyId),
-			@brandsHierarchyLevel int = (select hierarchyLevel from HierarchyPrototype where hierarchyID = @brandsHierarchyId),
-			@brandsParentClassId int = null
-			
-	INSERT INTO app.MessageQueueHierarchy(MessageTypeId,
-                                        MessageStatusId,
-                                        MessageActionId,
-                                        HierarchyId,
-                                        HierarchyName,
-                                        HierarchyLevelName,
-                                        ItemsAttached,
-                                        HierarchyClassId,
-                                        HierarchyClassName,
-                                        HierarchyLevel,
-                                        HierarchyParentClassId)
-	SELECT	@hierarchyMessageTypeId,
-			    @readyStatusId,
-			    @messageActionId,
-			    @brandsHierarchyId,
-			    'Brands',
-			    @brandsHierarchyLevelName,
-			    @brandsItemsAttached,
-			    hc.HierarchyClassId,
-			    hc.HierarchyClassName,
-			    @brandsHierarchyLevel,
-			    @brandsParentClassId
+	DECLARE @hierarchyMessageTypeId INT = (
+			SELECT MessageTypeId
+			FROM app.MessageType
+			WHERE MessageTypeName = 'Hierarchy'
+			)
+		,@readyStatusId INT = (
+			SELECT MessageStatusId
+			FROM app.MessageStatus
+			WHERE MessageStatusName = 'Ready'
+			)
+		,@messageActionId INT = (
+			SELECT MessageActionId
+			FROM app.MessageAction
+			WHERE MessageActionName = 'AddOrUpdate'
+			)
+		,@brandsHierarchyLevelName NVARCHAR(16) = (
+			SELECT hierarchyLevelName
+			FROM HierarchyPrototype
+			WHERE HIERARCHYID = @brandsHierarchyId
+			)
+		,@brandsItemsAttached BIT = (
+			SELECT itemsAttached
+			FROM HierarchyPrototype
+			WHERE HIERARCHYID = @brandsHierarchyId
+			)
+		,@brandsHierarchyLevel INT = (
+			SELECT hierarchyLevel
+			FROM HierarchyPrototype
+			WHERE HIERARCHYID = @brandsHierarchyId
+			)
+		,@brandsParentClassId INT = NULL
+		,@nccId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'NCC'
+			)
+		,@brandAbbreviationId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'BA'
+			)
+		,@zipCodeId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'ZIP'
+			)
+		,@designationId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'GRD'
+			)
+		,@localityId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'LCL'
+			);
+
+	INSERT INTO app.MessageQueueHierarchy (
+		MessageTypeId
+		,MessageStatusId
+		,MessageActionId
+		,HIERARCHYID
+		,HierarchyName
+		,HierarchyLevelName
+		,ItemsAttached
+		,HierarchyClassId
+		,HierarchyClassName
+		,HierarchyLevel
+		,HierarchyParentClassId
+		,NationalClassCode
+		,BrandAbbreviation
+		,ZipCode
+		,Designation
+		,Locality
+		)
+	SELECT @hierarchyMessageTypeId
+		,@readyStatusId
+		,@messageActionId
+		,@brandsHierarchyId
+		,'Brands'
+		,@brandsHierarchyLevelName
+		,@brandsItemsAttached
+		,hc.HierarchyClassId
+		,hc.HierarchyClassName
+		,@brandsHierarchyLevel
+		,@brandsParentClassId
+		,hct.TraitValue AS NationalClassCode
+		,ba.TraitValue AS BrandAbbreviation
+		,zc.TraitValue AS ZipCode
+		,ds.TraitValue AS Designation
+		,lo.TraitValue AS Locality
 	FROM @ids ids
-	JOIN HierarchyClass hc on ids.I = hc.hierarchyClassID
-	WHERE hc.hierarchyID = @brandsHierarchyId
+	INNER JOIN HierarchyClass hc ON ids.I = hc.hierarchyClassID
+	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = hc.HierarchyClassId
+		AND hct.traitID = @nccId
+	LEFT JOIN dbo.HierarchyClassTrait ba ON ba.hierarchyClassID = hc.HierarchyClassId
+		AND ba.traitID = @brandAbbreviationId
+	LEFT JOIN dbo.HierarchyClassTrait zc ON zc.hierarchyClassID = hc.HierarchyClassId
+		AND zc.traitID = @zipCodeId
+	LEFT JOIN dbo.HierarchyClassTrait ds ON ds.hierarchyClassID = hc.HierarchyClassId
+		AND ds.traitID = @designationId
+	LEFT JOIN dbo.HierarchyClassTrait lo ON lo.hierarchyClassID = hc.HierarchyClassId
+		AND lo.traitID = @localityId
+	WHERE hc.HIERARCHYID = @brandsHierarchyId
 
-	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding global events for Brands...';
+	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding global events for Brands...';
 
-	INSERT INTO app.EventQueue(EventId, EventMessage, EventReferenceId, RegionCode)
-	SELECT @brandEventTypeId,
-		hc.hierarchyClassName,
-		hc.hierarchyClassId,
-		r.RegionCode
+	INSERT INTO app.EventQueue (
+		EventId
+		,EventMessage
+		,EventReferenceId
+		,RegionCode
+		)
+	SELECT @brandEventTypeId
+		,hc.hierarchyClassName
+		,hc.hierarchyClassId
+		,r.RegionCode
 	FROM @ids ids
-	JOIN HierarchyClass hc on ids.I = hc.hierarchyClassID
+	INNER JOIN HierarchyClass hc ON ids.I = hc.hierarchyClassID
 	CROSS APPLY Regions r
 
-	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Successfully refreshed Brands...';
+	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Successfully refreshed Brands...';
 END
