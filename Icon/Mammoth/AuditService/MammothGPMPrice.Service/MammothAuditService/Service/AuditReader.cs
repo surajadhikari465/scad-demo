@@ -50,7 +50,7 @@ namespace Audit
 			try
 			{
 				this.connection = new SqlConnection(this.spec.ConnectionString);
-				using(var sqlCommand = new SqlCommand($"{this.auditInfo.Query} @action = 'Get', @groupID = {groupID}", this.connection) { CommandTimeout = this.spec.CommandTimeOut })
+				using(var sqlCommand = new SqlCommand($"{this.auditInfo.Query} @action = 'Get', @groupID = {groupID}, @groupSize = {this.spec.Config.GroupSize}", this.connection) { CommandTimeout = this.spec.CommandTimeOut })
 				{
 					this.connection.Open();
 					this.DataReader = sqlCommand.ExecuteReader();

@@ -821,6 +821,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AddMammothAuditApp.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\Deduplicate_ItemAttributesLocale_Tables.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Truncate_IRMA_Price_Tables_14897.sql" />
+    <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

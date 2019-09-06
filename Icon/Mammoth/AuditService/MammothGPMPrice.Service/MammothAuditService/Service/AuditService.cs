@@ -3,30 +3,25 @@ using System.IO;
 using System.Linq;
 using System.Data;
 using System.Collections;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Timers;
 using System.Configuration;
 using Mammoth.Logging;
-using Dapper;
+using System.Threading.Tasks;
 
 namespace Audit
 {
 	public class AuditService
 	{
-		string dirPath;
-		int timeOutSec = 900;
-		int timeInterval;
-		DataTable statusTable;
-		Timer auditTimer = null;
-		TimeSpan scheduleTimeStart;
-		TimeSpan scheduleTimeEnd;
-		Hashtable hsVariables;
-
+		readonly string dirPath;
+		readonly int timeOutSec = 900;
+		readonly int timeInterval;
+		readonly Timer auditTimer = null;
+		readonly TimeSpan scheduleTimeStart;
+		readonly TimeSpan scheduleTimeEnd;
+		readonly Hashtable hsVariables;
 		readonly string sqlConnection;
 		readonly ILogger Logger = new NLogLogger(typeof(AuditService));
-
-		string StatusPath { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AuditService\\Status"); } }
-		string StatusFilePath { get { return Path.Combine(StatusPath, "AuditStatus.xml"); } }
 
 		public AuditService()
 		{
@@ -42,7 +37,7 @@ namespace Audit
 			this.scheduleTimeStart = !TimeSpan.TryParse(ConfigurationManager.AppSettings["ScheduledTimeStart"], out timeStamp) ? new TimeSpan(5, 0, 0) : timeStamp;
 			this.scheduleTimeEnd = !TimeSpan.TryParse(ConfigurationManager.AppSettings["ScheduledTimeEnd"], out timeStamp) ? 	new TimeSpan(8, 0, 0) : timeStamp;
 
-		  if(!int.TryParse(ConfigurationManager.AppSettings["CommandTimeout"], out this.timeOutSec))
+			if(!int.TryParse(ConfigurationManager.AppSettings["CommandTimeout"], out this.timeOutSec))
 			{
 				this.timeOutSec = 9000;
 			}
@@ -72,86 +67,72 @@ namespace Audit
 			this.auditTimer.Elapsed -= Run;
 		}
 
+		void DeleteTempDirectory()
+		{
+			try
+			{
+				if(!String.IsNullOrEmpty(this.dirPath) && Directory.Exists(this.dirPath))
+				{
+					Directory.Delete(this.dirPath, true);
+				}
+			}
+			catch { this.Logger.Info($"Failed to delete directory {this.dirPath}"); }
+		}
+
 		private void Run(object sender, ElapsedEventArgs e)
 		{
 			this.auditTimer.Stop();
 
 			try
 			{
-				this.Logger.Info("AuditService: Executing Run()");
-				if(DateTime.Now.Hour < this.scheduleTimeStart.Hours || DateTime.Now.Hour > this.scheduleTimeEnd.Hours) return;
+				this.Logger.Info($"Executing Run()");
+				if(DateTime.Now.TimeOfDay < this.scheduleTimeStart || DateTime.Now.TimeOfDay > this.scheduleTimeEnd) return;
 
-				Region[] Regions;
+				var hsRegions = new HashSet<string>(ConfigurationManager.AppSettings["Regions"].Split(',')
+					.Select(x => x.Trim())
+					.Where(x => !String.IsNullOrEmpty(x))
+					, StringComparer.InvariantCultureIgnoreCase);
+
 				var audits = AuditConfigSection.Config.SettingsList.Where(x => x.IsActive).ToArray();
 				var uploads = UploadConfigSection.Config.SettingsList.ToArray();
 
 				if(audits.Length == 0 || uploads.Length == 0)
 				{
-					this.Logger.Info("AuditService: No active audits found or upload profiles not specified");
+					this.Logger.Info($"No active audits found or upload profiles not specified");
 					return;
 				}
 
-				this.Logger.Info($"AuditService: Active profiles: {audits.Length.ToString()} found");
-				try { if(Directory.Exists(this.dirPath)) { Directory.Delete(this.dirPath, true); } }
-				catch { }
-
+				this.Logger.Info($"Active profiles: {audits.Length.ToString()} found.");
+				DeleteTempDirectory();
 				if(!Directory.Exists(this.dirPath)) { Directory.CreateDirectory(this.dirPath); }
 
-				using(var conn = new SqlConnection(this.sqlConnection))
-				{
-					Regions = conn.Query<Region>("SELECT regionID ID, Region Code, RegionName Name FROM Regions;").ToArray();
-				}
+				var specs = audits.Select(x => new SpecInfo(configItem: x,
+															profileItem: uploads.FirstOrDefault(p => String.Compare(p.ProfileName, x.ProfileName, true) == 0),
+															sourceRegions: hsRegions,
+															tempDirPath: this.dirPath,
+															sqlConnection: this.sqlConnection,
+															commandTimeout: this.timeOutSec)).ToArray();
 
-				GetStatus();
-				foreach(var item in audits.Select(x => new SpecInfo(configItem: x,
-																														profileItem: uploads.FirstOrDefault(p => String.Compare(p.ProfileName, x.ProfileName, true) == 0),
-																														sourceRegions: Regions,
-																														tempDirPath: this.dirPath,
-																														sqlConnection: this.sqlConnection,
-																														commandTimeout: this.timeOutSec)).Where(x => x.IsValid).Select(x => new AuditController(x, this.statusTable, this.hsVariables)))
+				foreach(var spec in specs.Where(x => x.IsValid))
 				{
-					item.Execute();
+					try
+					{
+						var controller = new AuditController(spec, this.hsVariables);
+						controller.Execute();
+					}
+					catch(Exception ex)
+					{
+						this.Logger.Error($"Exception: {spec.Config.Name}", ex);
+					}
 				}
 			}
-			catch(Exception ex) { this.Logger.Error("AuditService Exception", ex); }
+			catch(Exception ex) { this.Logger.Error("Exception: Run():", ex); }
 			finally
 			{
-				SaveStatus();
+				DeleteTempDirectory();
 				this.auditTimer.Interval = this.timeInterval;
 				this.auditTimer.Start();
 			}
-		}
-
-		void GetStatus()
-		{
-			this.statusTable = new DataTable();
-
-			try { this.statusTable.ReadXml(StatusFilePath); }
-			catch { this.statusTable = null; }
-			finally
-			{
-				if(this.statusTable == null || this.statusTable.Rows.Count == 0)
-				{
-					this.statusTable = new DataTable() { TableName = "AuditStatus" };
-					this.statusTable.Columns.AddRange(new DataColumn[] { new DataColumn("Name", typeof(string)),
-																															 new DataColumn("Region", typeof(string)),
-																															 new DataColumn("LastDT", typeof(DateTime)) });
-				}
-
-				this.statusTable.AcceptChanges();
-			}
-		}
-
-		public void SaveStatus()
-		{
-			try
-			{
-				if(this.statusTable == null || this.statusTable.GetChanges() == null) return;
-
-				if(!Directory.Exists(StatusPath)) Directory.CreateDirectory(StatusPath);
-				this.statusTable.WriteXml(StatusFilePath, XmlWriteMode.WriteSchema);
-			}
-			catch { }
 		}
 	}
 }

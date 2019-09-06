@@ -53,13 +53,6 @@ namespace Audit
         set { base["delimiter"] = value; }
     }
 
-    [ConfigurationProperty("intervalMinutes", IsRequired = true)]
-    public int Interval
-    {
-        get { return (int)base["intervalMinutes"]; }
-        set { base["intervalMinutes"] = value; }
-    }
-
     [ConfigurationProperty("profileName", IsRequired = true)]
     public string ProfileName
     {
@@ -67,7 +60,7 @@ namespace Audit
         set { base["profileName"] = value; }
     }
 
-		[ConfigurationProperty("groupSize", IsRequired = true)]
+    [ConfigurationProperty("groupSize", IsRequired = true)]
     public int GroupSize
     {
         get { return (int)base["groupSize"]; }

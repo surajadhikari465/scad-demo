@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Configuration;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Audit.Test
@@ -57,7 +58,7 @@ namespace Audit.Test
             var dirPath = ConfigurationManager.AppSettings["TempDir"];
             if (string.IsNullOrWhiteSpace(dirPath)) { dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AuditService"); }
 
-            var Regions = new Region[] { new Region { Code = "FL" } };
+            var Regions = new HashSet<string>(){"FL" };
             var audit = audits.Where(x => x.IsActive).FirstOrDefault();
             if (audit is null) throw new Exception("Audit item is not found");
 

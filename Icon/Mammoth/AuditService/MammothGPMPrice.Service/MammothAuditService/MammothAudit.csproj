@@ -107,7 +107,6 @@
     <Compile Include="Support\AuditConfigItem.cs" />
     <Compile Include="Support\AuditConfigSection.cs" />
     <Compile Include="Support\AuditOutputInfo.cs" />
-    <Compile Include="Support\Region.cs" />
     <Compile Include="Support\UploadConfigConfigItems.cs" />
     <Compile Include="Support\UploadConfigItem.cs" />
     <Compile Include="Support\UploadConfigSection.cs" />
