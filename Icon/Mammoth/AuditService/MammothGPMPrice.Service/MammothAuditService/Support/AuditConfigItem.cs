@@ -66,5 +66,12 @@ namespace Audit
         get { return (int)base["groupSize"]; }
         set { base["groupSize"] = value; }
     }
+
+	[ConfigurationProperty("dbConnectionName", IsKey = true, IsRequired = true)]
+    public string DBConnectionName
+    {
+        get { return (string)base["dbConnectionName"]; }
+        set { base["dbConnectionName"] = value; }
+    }
   }
 }

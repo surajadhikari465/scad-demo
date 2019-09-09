@@ -55,7 +55,7 @@ namespace Audit.Test
         {
             //Given
             var sqlConnection = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
-            var dirPath = ConfigurationManager.AppSettings["TempDir"];
+			var dirPath = ConfigurationManager.AppSettings["TempDir"];
             if (string.IsNullOrWhiteSpace(dirPath)) { dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AuditService"); }
 
             var Regions = new HashSet<string>(){"FL" };
@@ -72,7 +72,7 @@ namespace Audit.Test
                                                               profileItem: uploads.First(),
                                                               sourceRegions: Regions,
                                                               tempDirPath: dirPath,
-                                                              sqlConnection: ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
+                                                              sqlConnections: new Dictionary<string, string>{{ "Mammoth", sqlConnection }}));
             //When
             controller.Execute();
 

@@ -80,7 +80,6 @@ namespace Audit
 				{
 					this.logger.Info($"Processing {this.spec.Config.Name}: ({item.Region}). Output file: {item.FileName}");
 					int groupId = -1;
-					int rowCount = 0;
 					int rowActual = 0;
 					bool isComplete, hasData;
 					Exception errException = null;
@@ -96,14 +95,12 @@ namespace Audit
 					}
 					DeleteFile(item.FileName);
 
-					using(var conn = new SqlConnection(this.spec.ConnectionString))
-					using(var sqlCommand = new SqlCommand($"{item.Query} @action = 'Initilize', @groupSize = {this.spec.Config.GroupSize}", conn) { CommandTimeout = this.spec.CommandTimeOut })
+					var key = this.spec.Config.DBConnectionName?.Replace("{Region}", item.Region);
+					if(this.spec.ConnectionStrings == null || !this.spec.ConnectionStrings.ContainsKey(key))
 					{
-						conn.Open();
-						rowCount = (int)sqlCommand.ExecuteScalar();
+						this.logger.Warn($"Missing connection: {this.spec.Config.DBConnectionName}");
+						continue;
 					}
-
-					if(rowCount == 0) continue; //No data available
 
 					Task taskGet = new Task(() =>
 						{
@@ -120,7 +117,7 @@ namespace Audit
 									}
 
 									var reader = new AuditReader(this.spec, item, ++groupId);
-									reader.Execute();
+									reader.Execute(this.spec.ConnectionStrings[key]);
 
 									switch(reader.CurrentStatus)
 									{
@@ -283,8 +280,8 @@ namespace Audit
 				if(outputInfo == null || !File.Exists(outputInfo.ZipFile)) return;
 
 				var client = new AmazonS3Client(awsAccessKeyId: this.hsVariables.ContainsKey(this.spec.Profile.AccessKey) ? this.hsVariables[this.spec.Profile.AccessKey].ToString() : this.spec.Profile.AccessKey,
-																				awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
-																				clientConfig: new AmazonS3Config() { ServiceURL = this.spec.Profile.BucketRegion });
+												awsSecretAccessKey: this.hsVariables.ContainsKey(this.spec.Profile.SecretKey) ? this.hsVariables[this.spec.Profile.SecretKey].ToString() : this.spec.Profile.SecretKey,
+												clientConfig: new AmazonS3Config() { ServiceURL = this.spec.Profile.BucketRegion });
 
 				var request = new PutObjectRequest
 				{

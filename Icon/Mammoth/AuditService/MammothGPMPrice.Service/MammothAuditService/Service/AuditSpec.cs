@@ -10,16 +10,16 @@ namespace Audit
         public UploadConfigItem Profile { get; private set; }
         public HashSet<string> Regions { get; private set; }
         public string DirPath { get; private set; }
-        public string ConnectionString { get; private set; }
+        public Dictionary<string, string> ConnectionStrings { get; private set; }
         public int CommandTimeOut { get; private set; }
 
-        public SpecInfo(AuditConfigItem configItem, UploadConfigItem profileItem, HashSet<string> sourceRegions, string tempDirPath, string sqlConnection, int commandTimeout = 600)
+        public SpecInfo(AuditConfigItem configItem, UploadConfigItem profileItem, HashSet<string> sourceRegions, string tempDirPath, Dictionary<string, string> sqlConnections, int commandTimeout = 600)
         {
             this.Config = configItem;
             this.Profile = profileItem;
             this.Regions = sourceRegions ?? new HashSet<string>();
             this.DirPath = tempDirPath;
-            this.ConnectionString = sqlConnection;
+            this.ConnectionStrings = sqlConnections;
             this.CommandTimeOut = commandTimeout;
 
             var hsExcluded = string.IsNullOrEmpty(this.Config.ExcludeRegions)
@@ -34,10 +34,9 @@ namespace Audit
             {
                 return this.Config != null &&
                              this.Profile != null &&
-                             this.Regions != null &&
-                             this.Regions.Count > 0 &&
+                             (this.Regions != null && this.Regions.Count > 0) &&
                              !String.IsNullOrWhiteSpace(this.DirPath) &&
-                             !String.IsNullOrWhiteSpace(this.ConnectionString);
+                             (this.ConnectionStrings != null && this.ConnectionStrings.Count > 0);
             }
         }
     }

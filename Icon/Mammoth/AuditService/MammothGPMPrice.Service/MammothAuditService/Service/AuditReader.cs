@@ -43,13 +43,13 @@ namespace Audit
 
 		public void Dispose() { Close(); }
 
-		public void Execute()
+		public void Execute(string connectionString)
 		{
 			this.CurrentStatus = Status.Executing;
 
 			try
 			{
-				this.connection = new SqlConnection(this.spec.ConnectionString);
+				this.connection = new SqlConnection(connectionString);
 				using(var sqlCommand = new SqlCommand($"{this.auditInfo.Query} @action = 'Get', @groupID = {groupID}, @groupSize = {this.spec.Config.GroupSize}", this.connection) { CommandTimeout = this.spec.CommandTimeOut })
 				{
 					this.connection.Open();

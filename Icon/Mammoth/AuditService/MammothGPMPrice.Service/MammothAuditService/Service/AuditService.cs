@@ -20,18 +20,25 @@ namespace Audit
 		readonly TimeSpan scheduleTimeStart;
 		readonly TimeSpan scheduleTimeEnd;
 		readonly Hashtable hsVariables;
-		readonly string sqlConnection;
 		readonly ILogger Logger = new NLogLogger(typeof(AuditService));
+		readonly Dictionary<string, string> connections;
+		readonly bool isMultithreaded = false;
 
 		public AuditService()
 		{
 			TimeSpan timeStamp;
 			this.hsVariables = Utility.GetVariables();
-			this.sqlConnection = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
-			foreach(var value in this.hsVariables.Cast<DictionaryEntry>().Where(x => this.sqlConnection.IndexOf(x.Key.ToString()) >= 0)) //Verify/Replace variables in connection string, if any 
+			this.connections = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+			foreach(ConnectionStringSettings item in ConfigurationManager.ConnectionStrings)
 			{
-				this.sqlConnection = this.sqlConnection.Replace(value.Key.ToString(), value.Value.ToString());
+				var cs = item.ConnectionString;
+				foreach(var value in this.hsVariables.Cast<DictionaryEntry>().Where(x => cs.IndexOf(x.Key.ToString()) >= 0)) //Verify/Replace variables in connection string, if any 
+				{
+					cs = cs.Replace(value.Key.ToString(), value.Value.ToString());
+				}
+
+				this.connections.Add(item.Name, cs);
 			}
 
 			this.scheduleTimeStart = !TimeSpan.TryParse(ConfigurationManager.AppSettings["ScheduledTimeStart"], out timeStamp) ? new TimeSpan(5, 0, 0) : timeStamp;
@@ -51,6 +58,7 @@ namespace Audit
 			this.Logger = new NLogLogger(typeof(AuditService));
 			if(!int.TryParse(ConfigurationManager.AppSettings["RunIntervalInMilliseconds"], out this.timeInterval)) timeInterval = 3600000;
 			this.auditTimer = new Timer() { Interval = 30000 }; //Initial interval
+			if(!bool.TryParse(ConfigurationManager.AppSettings["UseMultithreaded"], out this.isMultithreaded)) isMultithreaded = false;
 		}
 
 		public void Start()
@@ -95,7 +103,7 @@ namespace Audit
 
 				var audits = AuditConfigSection.Config.SettingsList.Where(x => x.IsActive).ToArray();
 				var uploads = UploadConfigSection.Config.SettingsList.ToArray();
-
+				
 				if(audits.Length == 0 || uploads.Length == 0)
 				{
 					this.Logger.Info($"No active audits found or upload profiles not specified");
@@ -110,19 +118,37 @@ namespace Audit
 															profileItem: uploads.FirstOrDefault(p => String.Compare(p.ProfileName, x.ProfileName, true) == 0),
 															sourceRegions: hsRegions,
 															tempDirPath: this.dirPath,
-															sqlConnection: this.sqlConnection,
+															sqlConnections: this.connections,
 															commandTimeout: this.timeOutSec)).ToArray();
 
-				foreach(var spec in specs.Where(x => x.IsValid))
+				if(this.isMultithreaded)
 				{
-					try
+					Parallel.ForEach(specs.Where(x => x.IsValid), spec =>
 					{
-						var controller = new AuditController(spec, this.hsVariables);
-						controller.Execute();
-					}
-					catch(Exception ex)
+						try
+						{
+							var controller = new AuditController(spec, this.hsVariables);
+							controller.Execute();
+						}
+						catch(Exception ex)
+						{
+							this.Logger.Error($"Exception: {spec.Config.Name}", ex);
+						}
+					});
+				}
+				else
+				{ 
+					foreach(var spec in specs.Where(x => x.IsValid))
 					{
-						this.Logger.Error($"Exception: {spec.Config.Name}", ex);
+						try
+						{
+							var controller = new AuditController(spec, this.hsVariables);
+							controller.Execute();
+						}
+						catch(Exception ex)
+						{
+							this.Logger.Error($"Exception: {spec.Config.Name}", ex);
+						}
 					}
 				}
 			}

@@ -3357,6 +3357,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteItemNutrifactOverride.sql" />
     <None Include="Scripts\PostDeploy\PBI23902_AddItemNutritionOverrideTable.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SubTeams_GetAllSubteams_1.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
