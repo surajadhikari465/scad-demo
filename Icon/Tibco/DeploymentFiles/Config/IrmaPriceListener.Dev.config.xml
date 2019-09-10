@@ -16,6 +16,14 @@
             <name>Application/PriceIrmaQueue</name>
             <value>WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.FL.Queue.V1</value>
         </NameValuePair>
+		<NameValuePair>
+            <name>Application/SqlCommandMaximumRows</name>
+            <value>10000</value>
+        </NameValuePair>
+		<NameValuePair>
+            <name>Application/SqlCommandTimeoutInSeconds</name>
+            <value>60</value>
+        </NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
             <value>DEV-ESB-EMS-1.wfm.pvt</value>
@@ -560,7 +568,8 @@
                     </product>
                     <description></description>
                     <contact></contact>
-					<setting>
+					<setting>						
+							<threadCount>8</threadCount>						
 						<java>
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
@@ -580,7 +589,8 @@
                     </product>
                     <description></description>
                     <contact></contact>
-					<setting>
+					<setting>			
+							<threadCount>8</threadCount>						
 						<java>
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
@@ -600,7 +610,8 @@
                     </product>
                     <description></description>
                     <contact></contact>
-					<setting>
+					<setting>						
+							<threadCount>8</threadCount>
 						<java>
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
@@ -621,6 +632,7 @@
                     <description></description>
                     <contact></contact>
 					<setting>
+							<threadCount>8</threadCount>
 						<java>
 							<initHeapSize>512</initHeapSize>
 							<maxHeapSize>1024</maxHeapSize>
@@ -639,7 +651,7 @@
                 </NameValuePair>
                 <NameValuePair>
                     <name>EnableMemorySavingMode</name>
-                    <value>false</value>
+                    <value>true</value>
                 </NameValuePair>
                 <NameValuePair>
                     <name>bw.engine.enableJobRecovery</name>
@@ -708,9 +720,9 @@
                 <bwprocess name="Processes/IrmaPriceListener.process">
                     <starter>IrmaPriceMessageReceiver</starter>
                     <enabled>true</enabled>
-                    <maxJob>0</maxJob>
+                    <maxJob>5</maxJob>
                     <activation>true</activation>
-                    <flowLimit>0</flowLimit>
+                    <flowLimit>10</flowLimit>
                 </bwprocess>
             </bwprocesses>
             <checkpoints selected="Local File">

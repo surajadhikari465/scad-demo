@@ -5,6 +5,7 @@ BW_GLOBAL_HOSTNAME=*.wfm.pvt
 BW_GLOBAL_TRUSTED_CA_STORE=file:////opt/tibco/certificates/clients
 
 Application/PriceIrmaQueue=WFMSB1.Mammoth.Retail.JustInTimeIrma.MammothPrice.PN.Queue.V1
+Application/SqlCommandTimeoutInSeconds=60
 
 Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idp-pn\pnp;DatabaseName=ItemCatalog;
 Connections/JDBC/IRMA/Username=TibcoDataWriter

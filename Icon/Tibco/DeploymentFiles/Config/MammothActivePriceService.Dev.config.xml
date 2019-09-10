@@ -16,6 +16,10 @@
             <name>Application/EMSPriceBatchsize</name>
             <value>100</value>
         </NameValuePairInteger>
+		<NameValuePair>
+			<name>Application/JdbcQueryTimeoutInSeconds</name>
+			<value>240</value>
+		</NameValuePair>
         <NameValuePair>
             <name>BW_GLOBAL_HOSTNAME</name>
             <value>DEV-ESB-EMS-1.wfm.pvt</value>
@@ -481,10 +485,6 @@
             <value>true</value>
         </NameValuePair>
 		<NameValuePair>
-			<name>JdbcQueryTimeoutInSeconds</name>
-			<value>240</value>
-		</NameValuePair>
-        <NameValuePair>
             <name>JmsProviderUrl</name>
             <value>tcp://localhost:7222</value>
         </NameValuePair>
