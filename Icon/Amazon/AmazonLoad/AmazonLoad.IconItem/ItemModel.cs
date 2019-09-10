@@ -1,7 +1,10 @@
-﻿namespace AmazonLoad.IconItem
+﻿using System;
+
+namespace AmazonLoad.IconItem
 {
     public class ItemModel
     {
+        public DateTime InsertDate { get; set; }
         public int ItemId { get; set; }
         public int LocaleId { get; set; }
         public string ItemTypeCode { get; set; }
@@ -39,28 +42,28 @@
         public int FinancialLevel { get; set; }
         public int? FinancialParentId { get; set; }
         public string AnimalWelfareRating { get; set; }
-        public string Biodynamic { get; set; }
+        public bool? Biodynamic { get; set; }
         public string CheeseMilkType { get; set; }
-        public string CheeseRaw { get; set; }
+        public bool? CheeseRaw { get; set; }
         public string EcoScaleRating { get; set; }
         public string GlutenFreeAgency { get; set; }
         public string HealthyEatingRating { get; set; }
         public string KosherAgency { get; set; }
-        public string Msc { get; set; }
+        public bool? Msc { get; set; }
         public string NonGmoAgency { get; set; }
         public string OrganicAgency { get; set; }
-        public string PremiumBodyCare { get; set; }
+        public bool? PremiumBodyCare { get; set; }
         public string SeafoodFreshOrFrozen { get; set; }
         public string SeafoodCatchType { get; set; }
         public string VeganAgency { get; set; }
-        public string Vegetarian { get; set; }
-        public string WholeTrade { get; set; }
-        public string GrassFed { get; set; }
-        public string PastureRaised { get; set; }
-        public string FreeRange { get; set; }
-        public string DryAged { get; set; }
-        public string AirChilled { get; set; }
-        public string MadeInHouse { get; set; }
+        public bool? Vegetarian { get; set; }
+        public bool? WholeTrade { get; set; }
+        public bool? GrassFed { get; set; }
+        public bool? PastureRaised { get; set; }
+        public bool? FreeRange { get; set; }
+        public bool? DryAged { get; set; }
+        public bool? AirChilled { get; set; }
+        public bool? MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
@@ -159,5 +162,84 @@
         public bool? TSFEligible { get; set; }
         public bool? WFMEligilble { get; set; }
         public bool? Other3PEligible { get; set; }
+        public bool? HospitalityItem { get; set; }
+
+        public bool? KitchenItem { get; set; }
+
+        public string KitchenDescription { get; set; }
+
+        public string ImageURL { get; set; }
+
+        public string DataSource { get; set; }
+
+        public string NonGMOTransparency { get; set; }
+
+        public Decimal? ItemDepth { get; set; }
+
+        public Decimal? ItemHeight { get; set; }
+
+        public Decimal? ItemWidth { get; set; }
+
+        public Decimal? Cube { get; set; }
+
+        public Decimal? ItemWeight { get; set; }
+
+        public Decimal? TrayDepth { get; set; }
+
+        public Decimal? TrayHeight { get; set; }
+
+        public Decimal? TrayWidth { get; set; }
+
+        public string Labeling { get; set; }
+
+        public string CountryOfOrigin { get; set; }
+
+        public string PackageGroup { get; set; }
+
+        public string PackageGroupType { get; set; }
+
+        public string PrivateLabel { get; set; }
+
+        public string Appellation { get; set; }
+
+        public bool? FairTradeClaim { get; set; }
+
+        public bool? GlutenFreeClaim { get; set; }
+
+        public bool? NonGMOClaim { get; set; }
+
+        public bool? OrganicClaim { get; set; }
+
+        public string Varietal { get; set; }
+
+        public string BeerStyle { get; set; }
+
+        public string LineExtension { get; set; }
+
+        public bool? LocalLoanProducer { get; set; }
+
+        public bool? OrganicPersonalCare { get; set; }
+
+        public bool? Paleo { get; set; }
+
+        public string ProductFlavorOrType { get; set; }
+
+        public bool? CaseinFree { get; set; }
+
+        public string DeliverySystem { get; set; }
+
+        public bool? Hemp { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        public Decimal? AddedSugarsWeight { get; set; }
+
+        public short? AddedSugarsPercent { get; set; }
+
+        public Decimal? CalciumWeight { get; set; }
+
+        public Decimal? IronWeight { get; set; }
+
+        public Decimal? VitaminDWeight { get; set; }
     }
 }

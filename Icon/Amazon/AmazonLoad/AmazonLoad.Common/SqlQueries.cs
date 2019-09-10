@@ -95,7 +95,9 @@
 		                    @eseTraitId int,
 		                    @tseTraitId int,
 		                    @wfeTraitId int,
-		                    @oteTraitId int
+		                    @oteTraitId int, 
+                            @modTraitId int,
+                            @insTraitId int
 
 	                    SET @localeID					= (SELECT l.localeID FROM Locale l WHERE l.localeName = 'Whole Foods')
 	                    SET @productDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PRD')
@@ -144,6 +146,8 @@
 	                    SET @tseTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TSE')
 	                    SET @wfeTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'WFE')
 	                    SET @oteTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OTE')
+                        SET @modTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'MOD')
+                        SET @insTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'INS')
 
 	                    SELECT {top query}
 		                    i.itemID							as ItemId,
@@ -187,7 +191,7 @@
 		                    finhc.hierarchyLevel				as FinancialLevel,
 		                    finhc.hierarchyParentClassID		as FinancialParentId,
 		                    aw.Description						AS [AnimalWelfareRating],
-		                    ia.[Biodynamic]						AS [Biodynamic],
+		                    ia.[Biodynamic]                     AS [Biodynamic],
 		                    cm.Description						AS [CheeseMilkType],
 		                    ia.[CheeseRaw]						AS [CheeseRaw],
 		                    es.Description						AS [EcoScaleRating],
@@ -218,6 +222,8 @@
 		                    slf.traitValue						AS ShelfLife,
 		                    ftc.traitValue						AS FairTradeCertified,		
 		                    mog.traitValue						AS MadeWithOrganicGrapes,
+                            case when mod.traitValue is not null then convert(datetime2, mod.traitValue, 121) else null end AS ModifiedDate,
+                            case when ins.traitValue is not null then convert(datetime2, ins.traitValue, 121) else null end AS InsertDate,
 		                    CASE WHEN prb.traitValue = '1'    THEN 1  
 			                     WHEN prb.traitValue = 'True' THEN 1  
 			                     WHEN prb.traitValue = 'Yes'  THEN 1 
@@ -226,7 +232,7 @@
 			                     WHEN rfa.traitValue = 'True' THEN 1  
 			                     WHEN rfa.traitValue = 'Yes'  THEN 1 
 			                     ELSE 0 END						AS RainforestAlliance,
-		                    rfd.traitValue						AS Refigerated,
+		                    rfd.traitValue						AS Refrigerated,
 		                    CASE WHEN smf.traitValue = '1'    THEN 1  
 			                     WHEN smf.traitValue = 'True' THEN 1  
 			                     WHEN smf.traitValue = 'Yes'  THEN 1 
@@ -428,6 +434,8 @@
 		                    LEFT JOIN ItemTrait				tse			ON	tse.traitID					= @tseTraitId AND tse.itemID = i.itemID AND tse.localeID = @localeID
 		                    LEFT JOIN ItemTrait				wfe			ON	wfe.traitID					= @wfeTraitId AND wfe.itemID = i.itemID AND wfe.localeID = @localeID
 		                    LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
+                            LEFT JOIN ItemTrait				mod			ON	mod.traitID					= @modTraitId AND mod.itemID = i.itemID AND mod.localeID = @localeID
+                            LEFT JOIN ItemTrait				ins			ON	ins.traitID					= @insTraitId AND ins.itemID = i.itemID AND ins.localeID = @localeID
                             LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu	
 	                    WHERE
 		                    it.itemTypeID <> @couponItemTypeId

@@ -453,7 +453,6 @@ namespace Icon.ApiController.Controller.QueueReaders
                                 BuildTrait(TraitCodes.ServingsPerPortion, TraitDescriptions.ServingsPerPortion, message.ServingsPerPortion),
                                 BuildTrait(TraitCodes.ServingUnits, TraitDescriptions.ServingUnits, message.ServingUnits),
                                 BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),
-                                BuildTrait(TraitCodes.SizeWeight, TraitDescriptions.SizeWeight, message.SizeWeight),
                         };
 
             //As per Bobbie: Action is required when Nutrition info is deleted and all TraitValueType.value should be empty string.

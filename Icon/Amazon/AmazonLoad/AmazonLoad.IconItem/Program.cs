@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using Icon.Esb.Producer;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.IconItem
@@ -27,6 +28,7 @@ namespace AmazonLoad.IconItem
 
         static void Main(string[] args)
         {
+            IEsbProducer producer= null;
             var startTime = DateTime.Now;
             Console.WriteLine($"[{startTime}] beginning...");
 
@@ -72,10 +74,13 @@ namespace AmazonLoad.IconItem
                 }
                 var models = sqlConnection.Query<ItemModel>(formattedSql, buffered: false, commandTimeout: 60);
 
-                var producer = new EsbConnectionFactory
-                {
-                    Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
-                }.CreateProducer();
+             
+               
+                if (sendToEsb)
+                    producer = new EsbConnectionFactory
+                    {
+                        Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
+                    }.CreateProducer();
 
                 int numberOfRecordsSent = 0;
                 int numberOfMessagesSent = 0;
@@ -285,7 +290,6 @@ namespace AmazonLoad.IconItem
                 BuildTrait(TraitCodes.ShelfLife, TraitDescriptions.ShelfLife, item.ShelfLife),
                 BuildTrait(TraitCodes.SelfCheckoutItemTareGroup, TraitDescriptions.SelfCheckoutItemTareGroup, item.SelfCheckoutItemTareGroup),
                 BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, item.Hidden),
-                BuildTrait(TraitCodes.HiddenItem, TraitDescriptions.HiddenItem, item.Hidden),
                 BuildTrait(TraitCodes.Line, TraitDescriptions.Line, item.Line),
                 BuildTrait(TraitCodes.Sku, TraitDescriptions.Sku, item.SKU),
                 BuildTrait(TraitCodes.PriceLine, TraitDescriptions.PriceLine, item.PriceLine),
@@ -296,6 +300,38 @@ namespace AmazonLoad.IconItem
                 BuildTraitBlankIfNull(TraitCodes.Tsf365Eligible, "365 Eligible", item.TSFEligible),
                 BuildTraitBlankIfNull(TraitCodes.WfmEligilble, TraitDescriptions.WfmEligilble, item.WFMEligilble),
                 BuildTraitBlankIfNull(TraitCodes.Other3pEligible, TraitDescriptions.Other3pEligible, item.Other3PEligible),
+                BuildTrait(TraitCodes.Appellation, TraitDescriptions.Appellation, item.Appellation),
+                BuildTrait(TraitCodes.BeerStyle, TraitDescriptions.BeerStyle, item.BeerStyle),
+                BuildTrait(TraitCodes.CountryOfOrigin, TraitDescriptions.CountryOfOrigin, item.CountryOfOrigin),
+                BuildTrait(TraitCodes.Labeling, TraitDescriptions.Labeling, item.Labeling),
+                BuildTraitBlankIfNull(TraitCodes.LocalLoanProducer, TraitDescriptions.LocalLoanProducer, item.LocalLoanProducer),
+                BuildTraitBlankIfNull(TraitCodes.OrganicPersonalCare, TraitDescriptions.OrganicPersonalCare, item.OrganicPersonalCare),
+                BuildTraitBlankIfNull(TraitCodes.Paleo, TraitDescriptions.Paleo, item.Paleo),
+                BuildTrait(TraitCodes.PrivateLabel, TraitDescriptions.PrivateLabel, item.PrivateLabel),
+                BuildTrait(TraitCodes.ProductFlavorType, TraitDescriptions.ProductFlavorType, item.ProductFlavorOrType),
+                BuildTrait(TraitCodes.Varietal, TraitDescriptions.Varietal, item.Varietal),
+                BuildTraitBlankIfNull(TraitCodes.CaseinFree, TraitDescriptions.CaseinFree, item.CaseinFree),
+                BuildTrait(TraitCodes.DeliverySystem, TraitDescriptions.DeliverySystem, item.DeliverySystem),
+                BuildTraitBlankIfNull(TraitCodes.Hemp, TraitDescriptions.Hemp, item.Hemp),
+                BuildTrait(TraitCodes.InsertDate, TraitDescriptions.InsertDate, item.InsertDate),
+                BuildTraitBlankIfNull(TraitCodes.GlutenFreeClaim, TraitDescriptions.GlutenFreeClaim, item.GlutenFreeClaim),
+                BuildTrait(TraitCodes.ItemDepth, TraitDescriptions.ItemDepth, item.ItemDepth),
+                BuildTrait(TraitCodes.ItemHeight, TraitDescriptions.ItemHeight, item.ItemHeight),
+                BuildTrait(TraitCodes.ItemWidth, TraitDescriptions.ItemWidth, item.ItemWidth),
+                BuildTraitBlankIfNull(TraitCodes.NonGmoClaim, TraitDescriptions.NonGmoClaim, item.NonGMOClaim),
+                BuildTraitBlankIfNull(TraitCodes.OrganicClaim, TraitDescriptions.OrganicClaim, item.OrganicClaim),
+                BuildTrait(TraitCodes.PackageGroup, TraitDescriptions.PackageGroup, item.PackageGroup),
+                BuildTrait(TraitCodes.PackageGroupType, TraitDescriptions.PackageGroupType, item.PackageGroupType),
+                BuildTrait(TraitCodes.TrayDepth, TraitDescriptions.TrayDepth, item.TrayDepth),
+                BuildTrait(TraitCodes.TrayHeight, TraitDescriptions.TrayHeight, item.TrayHeight),
+                BuildTrait(TraitCodes.TrayWidth, TraitDescriptions.TrayWidth, item.TrayWidth),
+                BuildTrait(TraitCodes.ItemWeight, TraitDescriptions.ItemWeight, item.ItemWeight),
+                BuildTrait(TraitCodes.Cube, TraitDescriptions.Cube, item.Cube),
+                BuildTrait(TraitCodes.DataSource, TraitDescriptions.DataSource, item.DataSource),
+                BuildTraitBlankIfNull(TraitCodes.FairTradeClaim, TraitDescriptions.FairTradeClaim, item.FairTradeClaim),
+                BuildTrait(TraitCodes.NonGmoTransparency, TraitDescriptions.NonGmoTransparency, item.NonGMOTransparency),
+                BuildTrait(TraitCodes.LineExtension, TraitDescriptions.LineExtension, item.LineExtension),
+                BuildTrait(TraitCodes.ModifiedDate, TraitDescriptions.ModifiedDate, item.ModifiedDate)
             };           
 
             if (ShouldSendPhysicalCharacteristicTraits(item))
@@ -389,35 +425,74 @@ namespace AmazonLoad.IconItem
             {
                 stockItemConsumerProductLabel = new Contracts.StockProductLabelType
                 {
+                    Action = Contracts.ActionEnum.AddOrUpdate,
+                    ActionSpecified = true,
                     consumerLabelTypeCode = null,
                     servingSizeUom = null,
                     servingSizeUomCount = Decimal.Zero,
+                    servingSizeUomCountSpecified = true,
                     servingsInRetailSaleUnitCount = null,
                     caloriesCount = item.Calories.ToDecimal(),
+                    caloriesCountSpecified = true,
                     caloriesFromFatCount = item.CaloriesFat.ToDecimal(),
+                    caloriesFromFatCountSpecified = true,
                     totalFatGramsAmount = item.TotalFatWeight.ToDecimal(),
+                    totalFatGramsAmountSpecified = true,
                     totalFatDailyIntakePercent = item.TotalFatPercentage.ToDecimal(),
+                    totalFatDailyIntakePercentSpecified = true,
                     saturatedFatGramsAmount = item.SaturatedFatWeight.ToDecimal(),
+                    saturatedFatGramsAmountSpecified = true,
                     saturatedFatPercent = item.SaturatedFatPercent.ToDecimal(),
+                    saturatedFatPercentSpecified = true,
                     cholesterolMilligramsCount = item.CholesterolWeight.ToDecimal(),
+                    cholesterolMilligramsCountSpecified = true,
                     cholesterolPercent = item.CholesterolPercent.ToDecimal(),
+                    cholesterolPercentSpecified = true,
                     sodiumMilligramsCount = item.SodiumWeight.ToDecimal(),
+                    sodiumMilligramsCountSpecified = true,
                     sodiumPercent = item.SodiumPercent.ToDecimal(),
+                    sodiumPercentSpecified = true,
                     totalCarbohydrateMilligramsCount = item.TotalCarbohydrateWeight.ToDecimal(),
+                    totalCarbohydrateMilligramsCountSpecified = true,
                     totalCarbohydratePercent = item.TotalCarbohydratePercent.ToDecimal(),
+                    totalCarbohydratePercentSpecified = true,
                     dietaryFiberGramsCount = item.DietaryFiberWeight.ToDecimal(),
+                    dietaryFiberGramsCountSpecified = true,
                     sugarsGramsCount = item.Sugar.ToDecimal(),
+                    sugarsGramsCountSpecified = true,
                     proteinGramsCount = item.ProteinWeight.ToDecimal(),
+                    proteinGramsCountSpecified = true,
                     vitaminADailyMinimumPercent = item.VitaminA.ToDecimal(),
+                    vitaminADailyMinimumPercentSpecified = true,
                     vitaminBDailyMinimumPercent = Decimal.Zero,
+                    vitaminBDailyMinimumPercentSpecified = true,
                     vitaminCDailyMinimumPercent = item.VitaminC.ToDecimal(),
+                    vitaminCDailyMinimumPercentSpecified = true,
                     calciumDailyMinimumPercent = item.Calcium.ToDecimal(),
+                    calciumDailyMinimumPercentSpecified = true,
                     ironDailyMinimumPercent = item.Iron.ToDecimal(),
+                    ironDailyMinimumPercentSpecified = true,
                     nutritionalDescriptionText = null,
                     isHazardousMaterial = item.HazardousMaterialFlag == null ? false : (item.HazardousMaterialFlag.Value == 1 ? true : false),
                     hazardousMaterialTypeCode = null
-                }
+                 }
             };
+
+
+            consumerInformation.stockItemConsumerProductLabel.addedSugarDailyPercentSpecified = item.AddedSugarsPercent.HasValue;
+            consumerInformation.stockItemConsumerProductLabel.addedSugarDailyPercent = item.AddedSugarsPercent.ToDecimal();
+
+            consumerInformation.stockItemConsumerProductLabel.addedSugarsGramsCountSpecified = item.AddedSugarsWeight.HasValue;
+            consumerInformation.stockItemConsumerProductLabel.addedSugarsGramsCount = item.AddedSugarsWeight.ToDecimal();
+
+            consumerInformation.stockItemConsumerProductLabel.calciumMilligramsCountSpecified = item.CalciumWeight.HasValue;
+            consumerInformation.stockItemConsumerProductLabel.calciumMilligramsCount = item.CalciumWeight.ToDecimal();
+
+            consumerInformation.stockItemConsumerProductLabel.ironMilligramsCountSpecified = item.IronWeight.HasValue;
+            consumerInformation.stockItemConsumerProductLabel.ironMilligramsCount = item.IronWeight.ToDecimal();
+
+            consumerInformation.stockItemConsumerProductLabel.vitaminDMicrogramsCountSpecified = item.VitaminDWeight.HasValue;
+            consumerInformation.stockItemConsumerProductLabel.vitaminDMicrogramsCount = item.VitaminDWeight.ToDecimal();
 
             return consumerInformation;
         }
@@ -427,7 +502,7 @@ namespace AmazonLoad.IconItem
             return new List<Contracts.TraitType>
             {
                 BuildTrait(TraitCodes.AnimalWelfareRating, TraitDescriptions.AnimalWelfareRating, item.AnimalWelfareRating),
-                BuildTrait(TraitCodes.Biodynamic, TraitDescriptions.Biodynamic, item.Biodynamic),
+                BuildTrait(TraitCodes.Biodynamic, TraitDescriptions.Biodynamic,  item.Biodynamic),
                 BuildTrait(TraitCodes.CheeseMilkType, TraitDescriptions.CheeseMilkType, item.CheeseMilkType),
                 BuildTrait(TraitCodes.CheeseRaw, TraitDescriptions.CheeseRaw, item.CheeseRaw),
                 BuildTrait(TraitCodes.EcoScaleRating, TraitDescriptions.EcoScaleRating, item.EcoScaleRating),
@@ -471,6 +546,8 @@ namespace AmazonLoad.IconItem
             trait.type.value.FirstOrDefault().uom = uom;
             return trait;
         }
+
+      
 
         private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, string value)
         {
@@ -520,6 +597,11 @@ namespace AmazonLoad.IconItem
         }
 
         private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, decimal? value)
+        {
+            return BuildTrait(traitCode, traitDescription, value?.ToString());
+        }
+
+        private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, DateTime? value)
         {
             return BuildTrait(traitCode, traitDescription, value?.ToString());
         }
