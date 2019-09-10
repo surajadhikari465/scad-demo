@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE dbo.AuditAuthorizedItems @action VARCHAR(25)
+﻿--Used by Audit service to create file and move it to S3 bucket
+CREATE PROCEDURE dbo.AuditAuthorizedItems @action VARCHAR(25)
 	,@region VARCHAR(2)
 	,@groupSize INT = 250000
 	,@groupId INT = 0
@@ -83,5 +84,5 @@ GO
 GRANT EXECUTE ON OBJECT::[dbo].[AuditAuthorizedItems] TO [IRMAAdminRole] AS [dbo];
 GO
 
-GRANT EXECUTE ON OBJECT::[dbo].[AuditAuthorizedItems] TO [IRMAClientRole] AS [dbo];
+GRANT EXECUTE ON OBJECT::[dbo].[AuditAuthorizedItems] TO [MammothRole] AS [dbo];
 GO
