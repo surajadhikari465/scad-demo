@@ -43,8 +43,6 @@ namespace KitBuilder.ESB.Listeners.Item.Service
 
         private static void ValidateSettings()
         {
-            var esbSettings=container.GetInstance<EsbConnectionSettings>().Dump();
-            logger.Debug(esbSettings);
             if (serviceDescription == string.Empty) throw new ApplicationException("ServiceDescription must be configured in app.settings before the service can run.");
             if (serviceDisplayName == string.Empty) throw new ApplicationException("ServiceDisplayName must be configured in app.settings before the service can run.");
             if (serviceName == string.Empty) throw new ApplicationException("ServiceName must be configured in app.settings before the service can run.");

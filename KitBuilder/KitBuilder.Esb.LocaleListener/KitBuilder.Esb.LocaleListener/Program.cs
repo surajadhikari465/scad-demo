@@ -17,7 +17,6 @@ namespace Mammoth.Esb.LocaleListener
         public static void Main(string[] args)
         {
             var container = SimpleInjectorInitializer.InitializeContainer();
-            container.GetInstance<EsbConnectionSettings>().PrintDump();
 
             HostFactory.Run(r =>
             {
