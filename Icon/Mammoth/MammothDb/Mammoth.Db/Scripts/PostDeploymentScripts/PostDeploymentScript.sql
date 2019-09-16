@@ -11,7 +11,7 @@ Post-Deployment Script Template
 */
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
-:r .\Reset5NutritionValues_23879.sql --2019-08-09 PBI 23879
+
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

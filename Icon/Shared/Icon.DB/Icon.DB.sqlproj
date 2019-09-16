@@ -703,6 +703,7 @@
     <None Include="Scripts\PopulateData\Archive\PopulateHospitalityTraits.sql" />
     <None Include="Scripts\PopulateData\PopulateTraits-PBI22686.sql" />
     <None Include="Scripts\PopulateData\Archive\AddNewAndUpdateExistingSubteams_10570.sql" />
+    <None Include="Scripts\PopulateData\Archive\PopulateTrait_SWR.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -737,7 +738,6 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
-    <None Include="Scripts\PopulateData\Release\PopulateTrait_SWR.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

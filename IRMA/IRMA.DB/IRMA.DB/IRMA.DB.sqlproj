@@ -3345,7 +3345,6 @@
     <None Include="Scripts\PostDeploy\Archive\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22038_MarkInStockAppConfigDeleted.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql" />
-    <None Include="Scripts\PostDeploy\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\ItemNutritionOverride.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\Item_GetAllergensOverrideByItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\Item_GetExtraTextOverrideByItem.sql" />
@@ -3358,6 +3357,7 @@
     <None Include="Scripts\PostDeploy\PBI23902_AddItemNutritionOverrideTable.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SubTeams_GetAllSubteams_1.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
