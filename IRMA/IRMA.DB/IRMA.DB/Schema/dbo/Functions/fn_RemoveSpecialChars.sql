@@ -1,5 +1,5 @@
 ﻿
-CREATE FUNCTION [dbo].[fn_RemoveSpecialChars] ( @Input VARCHAR(MAX) ) 
+CREATE FUNCTION [dbo].[fn_RemoveSpecialChars] ( @Input VARCHAR(MAX), @includeAlphanumericOnly bit = 0 ) 
 RETURNS VARCHAR(MAX) 
 BEGIN 
 	DECLARE @Output VARCHAR(MAX ) 
@@ -16,19 +16,19 @@ BEGIN
 		WHILE @Counter <= @Len 
 		BEGIN 
 			SET @CharCode = ASCII(SUBSTRING(@Input, @Counter, 1)) 
-			IF     @CharCode = 32 --space character
-				OR @CharCode BETWEEN 48 and 57  -- numerics 
+			IF     @CharCode BETWEEN 48 and 57  -- numerics 
 				OR @CharCode BETWEEN 65 AND 90  -- upper case
 				OR @CharCode BETWEEN 97 AND 122 -- lower case
-				OR @CharCode = 38 -- '&' (ampersand)
-				OR @CharCode = 39 --  ' (apostrophe)
-				OR @CharCode = 40 --  ( (opening parenthesis)
-				OR @CharCode = 41 --  ) (closing parenthesis)
-				OR @CharCode = 44 -- ','
-				OR @CharCode = 45 -- '-'
-				OR @CharCode = 46 -- '.' (period)
-				OR @CharCode = 47 -- '/' (slash)
-				OR @CharCode = 58 -- ':' (colon)
+				OR (@CharCode = 32 AND @includeAlphanumericOnly = 0)	--space character
+				OR (@CharCode = 38 AND @includeAlphanumericOnly = 0)	-- '&' (ampersand)
+				OR (@CharCode = 39 AND @includeAlphanumericOnly = 0)	--  ' (apostrophe)
+				OR (@CharCode = 40 AND @includeAlphanumericOnly = 0)	--  ( (opening parenthesis)
+				OR (@CharCode = 41 AND @includeAlphanumericOnly = 0)	--  ) (closing parenthesis)
+				OR (@CharCode = 44 AND @includeAlphanumericOnly = 0)	-- ','
+				OR (@CharCode = 45 AND @includeAlphanumericOnly = 0)	-- '-'
+				OR (@CharCode = 46 AND @includeAlphanumericOnly = 0)	-- '.' (period)
+				OR (@CharCode = 47 AND @includeAlphanumericOnly = 0)	-- '/' (slash)
+				OR (@CharCode = 58 AND @includeAlphanumericOnly = 0)	-- ':' (colon)
 				SET @Output = @Output + CHAR(@CharCode) SET @Counter = @Counter + 1 
 		END 
 	END 
