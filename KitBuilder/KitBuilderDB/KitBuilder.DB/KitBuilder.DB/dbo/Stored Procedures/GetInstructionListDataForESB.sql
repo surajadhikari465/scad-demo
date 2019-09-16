@@ -10,8 +10,8 @@ BEGIN
 
 	IF( @InstructionTypeId = @CookingInstructionTypeId)
 	BEGIN
-	      SELECT 'CookingInstructions' as InstructionCode,
-				'Cooking Instructions' as InstructionDescription,
+	     SELECT 'CookingInstructions' as InstructionCode,
+				InstructionList.Name  as InstructionDescription,
 				'CLI_'+ CAST(InstructionList.InstructionListId as varchar(20)) as InstructionId,
 				'KBI_' + CAST(PluNumber as varchar(20)) as Id,
 		         [Group]+ '_'+ CAST(Sequence as varchar(20))  as Sequence,
