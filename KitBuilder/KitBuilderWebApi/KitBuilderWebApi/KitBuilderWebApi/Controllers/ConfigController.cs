@@ -32,7 +32,9 @@ namespace KitBuilderWebApi.Controllers
                 "COMPUTERNAME",
                 "connectionStrings:KitBuilderDBConnectionString",
                 "WebApiBaseAddress:MammothBaseAddress",
-                "ASPNETCORE_ENVIRONMENT"
+				"KitBuilderADGroups:delimiter",
+				"KitBuilderADGroups:FullAccess",
+				"ASPNETCORE_ENVIRONMENT"
             };
             var data = configuration.AsEnumerable().Where( w=> keys.Contains(w.Key)).ToList();
             
