@@ -59,6 +59,15 @@
     <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\QA1\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -571,19 +580,23 @@
     </None>
     <None Include="App.Debug.Config">
       <DependentUpon>App.Config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.QA.Config">
       <DependentUpon>App.Config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.QA1.Config">
+      <DependentUpon>App.Config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Release.Config">
       <DependentUpon>App.Config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Test.Config">
       <DependentUpon>App.Config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
+      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="ConfigurationAccessor.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>

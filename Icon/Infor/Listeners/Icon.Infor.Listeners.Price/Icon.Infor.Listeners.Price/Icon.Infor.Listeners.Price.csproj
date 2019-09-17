@@ -168,7 +168,7 @@
     <None Include="App.Dev1.config" />
     <None Include="App.QA1.config" />
     <None Include="App.Test.config" />
-    <None Include="App.Qa..config" />
+    <None Include="App.QA.config" />
     <None Include="App.Prd.config" />
     <None Include="App.config" />
     <None Include="App.Test1.config" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MammothAudit", "MammothAuditService\MammothAudit.csproj", "{A3EC3A56-9EB1-40E0-93D9-818233666D5C}"
 EndProject
@@ -14,6 +14,7 @@ Global
 		Dev1|Any CPU = Dev1|Any CPU
 		Perf|Any CPU = Perf|Any CPU
 		QA|Any CPU = QA|Any CPU
+		QA1|Any CPU = QA1|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
@@ -28,6 +29,8 @@ Global
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Perf|Any CPU.Build.0 = Perf|Any CPU
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.QA|Any CPU.ActiveCfg = QA|Any CPU
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.QA|Any CPU.Build.0 = QA|Any CPU
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3EC3A56-9EB1-40E0-93D9-818233666D5C}.Test|Any CPU.ActiveCfg = Test|Any CPU
@@ -42,6 +45,8 @@ Global
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Perf|Any CPU.Build.0 = Debug|Any CPU
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.QA|Any CPU.ActiveCfg = Debug|Any CPU
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.QA|Any CPU.Build.0 = Debug|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.QA1|Any CPU.ActiveCfg = QA1|Any CPU
+		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.QA1|Any CPU.Build.0 = QA1|Any CPU
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87B5EBBD-C772-480E-B973-8DE49AF475D6}.Test|Any CPU.ActiveCfg = Test|Any CPU
