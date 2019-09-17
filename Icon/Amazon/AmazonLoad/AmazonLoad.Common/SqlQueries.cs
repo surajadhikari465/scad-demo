@@ -348,6 +348,11 @@
 		                    ,[TransfatWeight] AS [TransfatWeight]
 		                    ,0 AS [HazardousMaterialFlag]
 		                    ,NULL AS [HazardousMaterialTypeCode]
+                            ,AddedSugarsPercent
+                            ,AddedSugarsWeight
+                            ,CalciumWeight
+                            ,IronWeight
+                            ,VitaminDWeight
 	                    FROM 
 		                    Item    						i
 		                    JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
@@ -457,6 +462,8 @@ DECLARE @PhoneTraitId int;
 DECLARE @FaxTraitId int;
 DECLARE @LastUserTraitId int;
 DECLARE @TimeStampTraitId int;
+DECLARE @CurrencyCodeTraitId int;
+DECLARE @SodiumWarningRequiredTraitId int;
 
 select @RegStoreNumTraitId = TraitId from Trait where traitDesc = 'IRMA Store ID'
 Select @regionAbbreviationTraitId = TraitId from Trait where traitDesc = 'Region Abbreviation'
@@ -467,6 +474,8 @@ select @PhoneTraitId = TraitId from Trait where traitDesc = 'Phone Number'
 select @FaxTraitId = TraitId from Trait where traitDesc = 'Fax'
 select @LastUserTraitId = TraitId from Trait where traitDesc = 'Modified User'
 select @TimeStampTraitId = TraitId from Trait where traitDesc = 'Modified Date'
+select @CurrencyCodeTraitId = TraitId from Trait where traitDesc = 'Currency Code'
+select @SodiumWarningRequiredTraitId = TraitId from Trait where traitDesc = 'Sodium Warning Required'
 
 select {top query}
 	chain.localeID 'ChainId', 
@@ -490,7 +499,9 @@ select {top query}
 	state.territoryCode 'TerritoryAbbrev',
 	country.countryName 'Country',
 	country.countryCode 'CountryAbbrev',
-	zone.timezoneName 'Timezone'
+	zone.timezoneName 'Timezone', 
+    cclt.traitValue 'CurrencyCode', 
+    swrlt.traitValue 'SodiumWarningRequired'
 from 
 	dbo.Locale chain 
 left join dbo.Locale region on region.parentLocaleID = chain.localeID
@@ -507,6 +518,8 @@ left join LocaleTrait phlt  on phlt.LocaleID = store.localeID and phlt.traitID =
 left join LocaleTrait faxlt on faxlt.LocaleID = store.localeID and faxlt.traitID = @FaxTraitId
 left join LocaleTrait uslt  on uslt.LocaleID = store.localeID and uslt.traitID = @LastUserTraitId
 left join LocaleTrait dtlt  on dtlt.LocaleID = store.localeID and dtlt.traitID = @TimeStampTraitId
+left join LocaleTrait cclt  on dtlt.LocaleID = store.localeID and cclt.traitID = @CurrencyCodeTraitId
+left join LocaleTrait swrlt  on dtlt.LocaleID = store.localeID and swrlt.traitID = @SodiumWarningRequiredTraitId
 left join LocaleAddress laddr on laddr.localeID = store.localeID 
 left join PhysicalAddress addr on addr.addressID = laddr.addressID
 left join City city on city.cityID = addr.cityID

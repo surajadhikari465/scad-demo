@@ -24,5 +24,7 @@
         public string Country { get; set; }
         public string CountryAbbrev { get; set; }
         public string Timezone { get; set; }
+        public string CurrencyCode { get; set; }
+        public string SodiumWarningRequired { get; set; }
     }
 }

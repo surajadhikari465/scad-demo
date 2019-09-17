@@ -12,6 +12,8 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using Icon.Esb.Producer;
+using Icon.Framework;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.IconHierarchy
@@ -52,10 +54,14 @@ namespace AmazonLoad.IconHierarchy
                 }
             }
 
-            var producer = new EsbConnectionFactory
+            IEsbProducer producer = null;
+            if (sendToEsb)
+            producer = new EsbConnectionFactory
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
             }.CreateProducer();
+
+            var hierarchyName = AppSettingsAccessor.GetStringSetting("HierarchyName");
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
             var formattedSql = SqlQueries.HierarchySql;
@@ -67,11 +73,19 @@ namespace AmazonLoad.IconHierarchy
             {
                 formattedSql = formattedSql.Replace("{top query}", "");
             }
+
             var models = sqlConnection.Query<HierarchyClassModel>(
                 formattedSql, 
-                new { HierarchyName = AppSettingsAccessor.GetStringSetting("HierarchyName") }, 
+                new { HierarchyName = hierarchyName }, 
                 buffered: false, 
                 commandTimeout: 60);
+
+
+            IEnumerable<HierarchyTraitModel> traitData = null;
+            traitData = LoadTraitData(sqlConnection,hierarchyName);
+            
+
+
 
             int numberOfRecordsSent = 0;
             int numberOfMessagesSent = 0;
@@ -79,7 +93,7 @@ namespace AmazonLoad.IconHierarchy
             {
                 foreach (var modelGroup in modelBatch.GroupBy(m => m.HierarchyLevel))
                 {
-                    string message = BuildMessage(modelGroup);
+                    string message = BuildMessage(modelGroup, traitData);
                     string messageId = Guid.NewGuid().ToString();
                     var headers = new Dictionary<string, string>
                     {
@@ -112,8 +126,29 @@ namespace AmazonLoad.IconHierarchy
             Console.ReadLine();
         }
 
-        private static string BuildMessage(IEnumerable<HierarchyClassModel> modelBatch)
+        private static IEnumerable<HierarchyTraitModel> LoadTraitData(SqlConnection sqlConnection, string hierarchyName)
         {
+
+            if ( !(new [] {"Brands"}.Contains(hierarchyName)) ) return null;
+
+            var traitSql =
+                $@"select hc.hierarchyClassID, t.traitCode, t.traitDesc, hct.traitValue 
+                   from hierarchy h inner join hierarchyclass hc on h.hierarchyID = hc.hierarchyID
+                   inner join HierarchyClassTrait hct on hc.hierarchyClassID = hct.hierarchyClassID
+                   inner join Trait t on hct.traitID = t.traitID
+                   where h.hierarchyName = '{hierarchyName}'
+                   and t.traitcode in ('BA','GRD','PCO','ZIP','LCL')";
+
+            var data = sqlConnection.Query<HierarchyTraitModel>(traitSql, new {HieararchyName = hierarchyName});
+            return data;
+        }
+
+        private static string BuildMessage( IEnumerable<HierarchyClassModel> modelBatch, IEnumerable<HierarchyTraitModel> traitData)
+        {
+
+
+
+
             Contracts.HierarchyType hierarchyType = new Contracts.HierarchyType
             {
                 @class = modelBatch.Select(message => new Contracts.HierarchyClassType
@@ -128,24 +163,7 @@ namespace AmazonLoad.IconHierarchy
                         Value = message.HierarchyParentClassId.HasValue ? message.HierarchyParentClassId.Value : 0
                     },
 
-                     //FYI: Add NationaClassCode if for The National Hierarchy messages only
-                    traits = String.IsNullOrEmpty(message.NationalClassCode) ? null : new Contracts.TraitType[]
-                      {
-                        new Contracts.TraitType
-                        {
-                          code = Icon.Framework.TraitCodes.NationalClassCode,
-                          type = new Contracts.TraitTypeType
-                          {
-                            description = String.Empty,
-                            value = new Contracts.TraitValueType[]
-                            {
-                              new Contracts.TraitValueType { value = message.NationalClassCode }
-                            }
-                          }
-                        }
-                      }
-
-
+                    traits = BuildTraits(message, traitData)
                 }).ToArray(),
                 Action = Contracts.ActionEnum.AddOrUpdate,
                 ActionSpecified = true,
@@ -160,5 +178,58 @@ namespace AmazonLoad.IconHierarchy
 
             return serializer.Serialize(hierarchyType);
         }
+        private static Contracts.TraitType[] BuildTraits(HierarchyClassModel hierarchyClassModel, IEnumerable<HierarchyTraitModel> traitData)
+        {
+            //FYI: Add NationaClassCode if for The National Hierarchy messages only
+            List<Contracts.TraitType> traits = new List<Contracts.TraitType>();
+
+            if (hierarchyClassModel.HierarchyId == Hierarchies.National)
+            {
+                traits.Add(BuildTrait(TraitCodes.NationalClassCode, String.Empty, hierarchyClassModel.NationalClassCode));
+            }
+
+            if (hierarchyClassModel.HierarchyId == Hierarchies.Brands)
+            {
+
+                var brandAbbreviation = traitData.FirstOrDefault(t =>t.HierarchyClassId == hierarchyClassModel.HierarchyClassId && t.TraitCode == "BA")?.TraitValue;
+                var zipCode = traitData.FirstOrDefault(t => t.HierarchyClassId == hierarchyClassModel.HierarchyClassId && t.TraitCode == "ZIP")?.TraitValue;
+                var designation = traitData.FirstOrDefault(t => t.HierarchyClassId == hierarchyClassModel.HierarchyClassId && t.TraitCode == "GRD")?.TraitValue;
+                var locality = traitData.FirstOrDefault(t => t.HierarchyClassId == hierarchyClassModel.HierarchyClassId && t.TraitCode == "LCL")?.TraitValue;
+                var parentCompany= traitData.FirstOrDefault(t => t.HierarchyClassId == hierarchyClassModel.HierarchyClassId && t.TraitCode == "PCO")?.TraitValue;
+
+                traits.AddRange(new List<Contracts.TraitType>()
+                    {
+                        BuildTrait(TraitCodes.BrandAbbreviation, TraitDescriptions.BrandAbbreviation, brandAbbreviation),
+                        BuildTrait(TraitCodes.ZipCode, TraitDescriptions.ZipCode, zipCode),
+                        BuildTrait(TraitCodes.Designation, TraitDescriptions.Designation, designation),
+                        BuildTrait(TraitCodes.Locality, TraitDescriptions.Locality, locality),
+                        BuildTrait(TraitCodes.ParentCompany, TraitDescriptions.ParentCompany, parentCompany)
+                    });
+            }
+
+            return traits.Where(b => b.type.value[0].value != string.Empty).ToArray();
+        }
+        private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, string value)
+        {
+            var trait = new Contracts.TraitType
+            {
+                code = traitCode,
+                type = new Contracts.TraitTypeType
+                {
+                    description = traitDescription,
+                    value = new Contracts.TraitValueType[]
+                            {
+                                                new Contracts.TraitValueType
+                                                {
+                                                        value = value ?? string.Empty,
+                                                }
+                            }
+                }
+            };
+
+            return trait;
+        }
+
+
     }
 }

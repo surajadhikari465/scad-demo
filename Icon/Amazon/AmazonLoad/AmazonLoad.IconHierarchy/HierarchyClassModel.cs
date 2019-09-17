@@ -1,4 +1,7 @@
-﻿namespace AmazonLoad.IconHierarchy
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace AmazonLoad.IconHierarchy
 {
     public class HierarchyClassModel
     {
@@ -11,5 +14,6 @@
         public int HierarchyLevel { get; set; }
         public int? HierarchyParentClassId { get; set; }
         public string NationalClassCode { get; set; }
+        public Dictionary<string,string> HierarchyTraits { get; set; }
     }
 }

@@ -226,6 +226,36 @@ namespace AmazonLoad.IconLocale
                             }
                         }
                     }
+                },
+                new Contracts.TraitType
+                {
+                    code = TraitCodes.CurrencyCode,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.CurrencyCode,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = model.CurrencyCode,
+                            }
+                        }
+                    }
+                },
+                new Contracts.TraitType
+                {
+                    code = TraitCodes.SodiumWarningRequired,
+                    type = new Contracts.TraitTypeType
+                    {
+                        description = TraitDescriptions.SodiumWarningRequired,
+                        value = new Contracts.TraitValueType[]
+                        {
+                            new Contracts.TraitValueType
+                            {
+                                value = model.SodiumWarningRequired,
+                            }
+                        }
+                    }
                 }
             };
         }
