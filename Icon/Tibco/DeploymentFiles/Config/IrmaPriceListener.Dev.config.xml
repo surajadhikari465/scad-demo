@@ -722,7 +722,7 @@
                     <enabled>true</enabled>
                     <maxJob>5</maxJob>
                     <activation>true</activation>
-                    <flowLimit>10</flowLimit>
+                    <flowLimit>5</flowLimit>
                 </bwprocess>
             </bwprocesses>
             <checkpoints selected="Local File">
