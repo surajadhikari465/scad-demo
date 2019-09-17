@@ -30,7 +30,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/KitBuilderURI</name>
-            <value>http://kitbuilder-app-prd.a01.wfmcld.com/api/</value>
+            <value>http://kitbuilder-web-prd.a01.wfmcld.com/api/</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/MessageType</name>
