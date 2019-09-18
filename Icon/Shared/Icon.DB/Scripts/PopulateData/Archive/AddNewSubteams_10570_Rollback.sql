@@ -1,0 +1,6 @@
+﻿DELETE FROM app.PostDeploymentScriptHistory WHERE ScriptKey = 'AddNewSubteams_10570';
+
+--Updated subteams (latest changes)
+delete from HierarchyClassTrait where hierarchyClassID IN(1000006,1000012,1000007,1000013,1000014,1000015,1000016,1000008,1000009,1000010,1000011);
+delete from ItemHierarchyClass where hierarchyClassID IN(1000006,1000012,1000007,1000013,1000014,1000015,1000016,1000008,1000009,1000010,1000011);
+delete from HierarchyClass where hierarchyClassID IN(1000006,1000012,1000007,1000013,1000014,1000015,1000016,1000008,1000009,1000010,1000011);

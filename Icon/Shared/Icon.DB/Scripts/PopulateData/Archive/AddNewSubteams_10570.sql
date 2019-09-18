@@ -1,13 +1,13 @@
 ﻿SET NOCOUNT ON;
 
-DECLARE @scriptKey VARCHAR(128) = 'AddNewAnUpdateExistingSubteams_10570';
+DECLARE @scriptKey VARCHAR(128) = 'AddNewSubteams_10570';
 
 IF (NOT EXISTS (SELECT *FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + @scriptKey;
 
 	DECLARE @Error VARCHAR(2500) = NULL
-	    ,@SubteamId INT
+	  ,@SubteamId INT
 		,@HierarchyClassId INT
 		,@HierarchyClassName NVARCHAR(255)
 		,@PdnTraitValue NVARCHAR(255)
@@ -39,10 +39,6 @@ BEGIN
 			FROM Trait
 			WHERE TraitCode = 'FIN'
 			);--Financial Hierarchy Code: 53
-	DECLARE @subteamIDs AS TABLE (
-		hierarchyClassId INT
-		,traitValue VARCHAR(255)
-		);
 
 	DECLARE @financialHierarchyClassLevel INT = (
 		SELECT hierarchyLevel
@@ -65,120 +61,7 @@ BEGIN
 			WHERE MessageActionName = 'AddOrUpdate'
 			);
 
-
-	INSERT INTO @subteamIDs
-	SELECT hierarchyClassID
-		,traitValue
-	FROM HierarchyClassTrait
-	WHERE traitValue IN (
-			'4800'
-			,'4500'
-			);
-
-	UPDATE hct
-	SET traitValue = '220'
-	FROM HierarchyClassTrait hct
-	JOIN @subteamIDs id ON id.hierarchyClassId = hct.hierarchyClassID
-	WHERE hct.traitID = @NumTraitId;
-
-	INSERT INTO HierarchyClassTrait (
-		traitID
-		,hierarchyClassID
-		,uomID
-		,traitValue
-		)
-	SELECT @NumTraitId
-		,id.hierarchyClassId
-		,NULL
-		,'220'
-	FROM @subteamIDs id
-	LEFT JOIN HierarchyClassTrait hct ON id.hierarchyClassId = hct.hierarchyClassID
-		AND hct.traitID = @NumTraitId
-	WHERE hct.traitID IS NULL;
-
-
-	UPDATE hct
-	SET traitValue = 'Bakery'
-	FROM HierarchyClassTrait hct
-	JOIN @subteamIDs id ON id.hierarchyClassId = hct.hierarchyClassID
-	WHERE hct.traitID = @NamTraitId;
-
-	INSERT INTO HierarchyClassTrait (
-		traitID
-		,hierarchyClassID
-		,uomID
-		,traitValue
-		)
-	SELECT @NamTraitId
-		,id.hierarchyClassId
-		,NULL
-		,'Bakery'
-	FROM @subteamIDs id
-	LEFT JOIN HierarchyClassTrait hct ON id.hierarchyClassId = hct.hierarchyClassID
-		AND hct.traitID = @NamTraitId
-	WHERE hct.traitID IS NULL;
-
-
-	UPDATE HierarchyClass
-	SET hierarchyClassName = 'Bin Bulk (1400)'
-	WHERE hierarchyLevel = 1
-		AND [HierarchyId] = @hierarchyId
-		AND hierarchyClassName = 'Bulk (1400)';
-
-  UPDATE HierarchyClass
-	SET hierarchyClassName = 'Baking, Meals, Essentials (1000)'
-	WHERE hierarchyLevel = 1
-		AND [HierarchyId] = @hierarchyId
-		AND hierarchyClassName = 'Grocery (1000)';
-
-	INSERT INTO @subteamIDs
-	SELECT hierarchyClassID, traitValue
-	FROM HierarchyClassTrait
-	WHERE traitValue IN('1000', '1400');
-
-	INSERT INTO app.MessageQueueHierarchy (
-		MessageTypeId
-		,MessageStatusId
-		,MessageHistoryId
-		,MessageActionId
-		,InsertDate
-		,[HierarchyId]
-		,HierarchyName
-		,HierarchyLevelName
-		,ItemsAttached
-		,HierarchyClassId
-		,HierarchyClassName
-		,HierarchyLevel
-		,HierarchyParentClassId
-		,InProcessBy
-		,ProcessedDate
-		,NationalClassCode)
-	SELECT @HierarchyMessageTypeId
-		,@ReadyStatusId
-		,NULL
-		,@ActionId
-		,GetDate()
-		,h.hierarchyID
-		,h.hierarchyName
-		,hp.hierarchyLevelName
-		,hp.itemsAttached
-		,substring(hc.hierarchyClassName, charindex('(', hc.hierarchyClassName) + 1, 4)
-		,hc.hierarchyClassName
-		,hc.hierarchyLevel
-		,hc.hierarchyParentClassID
-		,NULL
-		,NULL
-		,NULL
-	FROM Hierarchy h
-	JOIN HierarchyClass hc ON h.hierarchyID = hc.hierarchyID
-	JOIN HierarchyPrototype hp ON hc.hierarchyID = hp.hierarchyID
-		AND hc.hierarchyLevel = hp.hierarchyLevel
-	WHERE h.hierarchyID = @hierarchyId
-		AND hc.hierarchyLevel = @financialHierarchyClassLevel
-		AND hc.hierarchyClassID IN(SELECT hierarchyClassId from @subteamIDs);
-
-	IF (OBJECT_ID('tempdb..#Subteams') IS NOT NULL)
-		DROP TABLE #Subteams;
+	IF (OBJECT_ID('tempdb..#Subteams') IS NOT NULL)	DROP TABLE #Subteams;
 
 	CREATE TABLE #Subteams (
 		SubteamId INT NOT NULL IDENTITY(1, 1)
@@ -187,8 +70,7 @@ BEGIN
 		,PdnTraitValue NVARCHAR(255)
 		,NumTraitValue NVARCHAR(255)
 		,NamTraitValue NVARCHAR(255)
-		,FinTraitValue NVARCHAR(255)
-		);
+		,FinTraitValue NVARCHAR(255));
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -196,16 +78,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500011
+		1000006
 		,'Candy, Snacks, Bev, Breakfast (1500)'
 		,'296'
 		,'100'
 		,'Grocery'
-		,'1500'
-		);
+		,'1500');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -213,16 +93,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500009
+		1000012
 		,'Accoutrements (2450)'
 		,'283'
 		,'140'
 		,'Specialty'
-		,'2450'
-		);
+		,'2450');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -230,16 +108,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500010
+		1000007
 		,'Commodity Cheese, Charcuterie (2460)'
 		,'284'
 		,'140'
 		,'Specialty'
-		,'2460'
-		);
+		,'2460');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -247,16 +123,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500013
+		1000013
 		,'Value Add (1750)'
 		,'285'
 		,'120'
 		,'Produce'
-		,'1750'
-		);
+		,'1750');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -264,16 +138,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500014
+		1000014
 		,'Bakery Production (4250)'
 		,'286'
 		,'220'
 		,'Bakery'
-		,'4250'
-		);
+		,'4250');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -281,16 +153,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500015
+		1000015
 		,'Prep Foods Production (4850)'
 		,'287'
 		,'240'
 		,'Prepared Foods'
-		,'4850'
-		);
+		,'4850');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -298,16 +168,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500016
+		1000016
 		,'Service Venue (4950)'
 		,'289'
 		,'240'
 		,'Prepared Foods'
-		,'4950'
-		);
+		,'4950');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -315,16 +183,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500017
+		1000008
 		,'Allegro Coffee Bar (6270)'
 		,'290'
 		,'260'
 		,'Third Party Vendors'
-		,'6270'
-		);
+		,'6270');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -332,16 +198,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500018
+		1000009
 		,'Amazon Initiative TBD 1 (5380)'
 		,'291'
 		,'550'
 		,'Amazon Initiatives'
-		,'5380'
-		);
+		,'5380');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -349,16 +213,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500019
+		1000010
 		,'Amazon Initiative TBD 2 (5390)'
 		,'292'
 		,'550'
 		,'Amazon Initiatives'
-		,'5390'
-		);
+		,'5390');
 
 	INSERT INTO #Subteams (
 		HierarchyClassId
@@ -366,16 +228,14 @@ BEGIN
 		,PdnTraitValue
 		,NumTraitValue
 		,NamTraitValue
-		,FinTraitValue
-		)
+		,FinTraitValue)
 	VALUES (
-		1500020
+		1000011
 		,'Amazon Initiative TBD 3 (5410)'
 		,'293'
 		,'550'
 		,'Amazon Initiatives'
-		,'5410'
-		);
+		,'5410');
 
 	DECLARE cur CURSOR
 	FOR
