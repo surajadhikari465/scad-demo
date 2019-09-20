@@ -25,7 +25,7 @@
     [InventoryCountByCase]             BIT            NULL,
     [Beverage]                         BIT            DEFAULT ((0)) NULL,
     [AlignedSubTeam]                   BIT            DEFAULT ((0)) NULL,
-    [IsDisabled]                       BIT            DEFAULT((0))  NOT NULL , 
+    [IsDisabled]                       BIT            CONSTRAINT [DF_SubTeam_IsDisabled] DEFAULT((0)) NOT NULL, 
     CONSTRAINT [PK_SubTeam_SubTeam_No] PRIMARY KEY CLUSTERED ([SubTeam_No] ASC) WITH (FILLFACTOR = 80)
 );
 
