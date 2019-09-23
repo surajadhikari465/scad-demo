@@ -518,8 +518,8 @@ left join LocaleTrait phlt  on phlt.LocaleID = store.localeID and phlt.traitID =
 left join LocaleTrait faxlt on faxlt.LocaleID = store.localeID and faxlt.traitID = @FaxTraitId
 left join LocaleTrait uslt  on uslt.LocaleID = store.localeID and uslt.traitID = @LastUserTraitId
 left join LocaleTrait dtlt  on dtlt.LocaleID = store.localeID and dtlt.traitID = @TimeStampTraitId
-left join LocaleTrait cclt  on dtlt.LocaleID = store.localeID and cclt.traitID = @CurrencyCodeTraitId
-left join LocaleTrait swrlt  on dtlt.LocaleID = store.localeID and swrlt.traitID = @SodiumWarningRequiredTraitId
+left join LocaleTrait cclt  on cclt.LocaleID = store.localeID and cclt.traitID = @CurrencyCodeTraitId
+left join LocaleTrait swrlt  on swrlt.LocaleID = store.localeID and swrlt.traitID = @SodiumWarningRequiredTraitId
 left join LocaleAddress laddr on laddr.localeID = store.localeID 
 left join PhysicalAddress addr on addr.addressID = laddr.addressID
 left join City city on city.cityID = addr.cityID

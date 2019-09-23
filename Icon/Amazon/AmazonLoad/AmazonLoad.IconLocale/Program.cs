@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Icon.Esb.Producer;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.IconLocale
@@ -69,10 +70,13 @@ namespace AmazonLoad.IconLocale
 
             var models = sqlConnection.Query<LocaleModel>(formattedSql, buffered: false, commandTimeout: 60);
 
-            var producer = new EsbConnectionFactory
-            {
-                Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
-            }.CreateProducer();
+            IEsbProducer producer = null;
+
+            if (sendToEsb)
+                producer= new EsbConnectionFactory
+                {
+                    Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
+                }.CreateProducer();
 
             int numberOfRecordsSent = 0;
             int numberOfMessagesSent = 0;
