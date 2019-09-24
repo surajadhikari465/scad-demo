@@ -3341,7 +3341,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\SavePastReceiptDate.sql" />
     <None Include="Scripts\PreDeploy\Archive\PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI20696_PopulateStoreVendorIdsForAmzInStock.sql" />
-    <None Include="Scripts\PostDeploy\PBI21615_GenerateEmailWhenEInvoicingXMLFileMovesToERRORFolder.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI21615_GenerateEmailWhenEInvoicingXMLFileMovesToERRORFolder.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI21205_OrderPurgeScheduleUpdates.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22038_MarkInStockAppConfigDeleted.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI22176_IRMAEnableORDisableOnesOwnTitleUpdate.sql" />
@@ -3354,7 +3354,6 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs3\InsertOrUpdateItemIngredientOverride.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\InsertOrUpdateItemNutrifactOverride.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\DeleteItemNutrifactOverride.sql" />
-    <None Include="Scripts\PostDeploy\PBI23902_AddItemNutritionOverrideTable.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SubTeams_GetAllSubteams_1.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
