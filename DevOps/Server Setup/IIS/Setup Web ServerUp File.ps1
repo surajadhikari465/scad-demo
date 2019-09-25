@@ -1,26 +1,31 @@
-﻿$drop = $true
-$svrAlias = "IRMADevWeb01"
-$svrHostname = ([System.Net.Dns]::GetHostByName($svrAlias)).HostName
+﻿$drop = $false
+$svrAliasList = @("IRMAQAWeb01", "IRMAQAWeb02", "IRMAQAWeb03", "IRMAQAWeb04", "IRMAQAWeb05", "IRMAQAWeb06")
 
 $serverupFilePath = "c:\inetpub\wwwroot\serverup.html"
 
-if($drop){
-    Invoke-Command -ComputerName $svrHostname -ScriptBlock {
-    param($supFilePath)
+foreach($svrAlias in $svrAliasList){
+    $svrHostname = ([System.Net.Dns]::GetHostByName($svrAlias)).HostName
 
-        Remove-Item -Verbose $supFilePath
+    if($drop){
+        "[$svrAlias] Remove Server-Up File"
+        Invoke-Command -ComputerName $svrHostname -ScriptBlock {
+        param($supFilePath)
+
+            Remove-Item -Verbose $supFilePath
 
     
-    } -ArgumentList $serverupFilePath
-} else{
+        } -ArgumentList $serverupFilePath
+    } else{
 
-    Invoke-Command -ComputerName $svrHostname -ScriptBlock {
-    param($supFilePath, $alias, $hostname)
+        "[$svrAlias] Create Server-Up File"
+        Invoke-Command -ComputerName $svrHostname -ScriptBlock {
+        param($supFilePath, $alias, $hostname)
 
-        Out-File -FilePath $supFilePath -InputObject ("<h1>$alias - $hostname</h1>")
+            Out-File -FilePath $supFilePath -InputObject ("<h1>$alias - $hostname</h1>")
     
-    } -ArgumentList $serverupFilePath, $svrAlias, $svrHostname
+        } -ArgumentList $serverupFilePath, $svrAlias, $svrHostname
+    }
+
+    dir "\\$svrAlias\c$\inetpub\wwwroot\serverup.html"
+
 }
-
-dir "\\$svrAlias\c$\inetpub\wwwroot\serverup.html"
-

@@ -1,0 +1,21 @@
+Icon	IconWebQA	Icon	E:\WebApps\Icon\
+IRMA Client	IRMAClientQA	IRMA Client	E:\WebApps\IRMAClient\
+Mammoth	Mammoth_QA	Mammoth	E:\WebApps\MammothService\
+Mammoth Web Support	MammothWebSupportQA	Mammoth	E:\WebApps\MammothWebSupport\
+Nutrition	IconNutritionAPIQA	Nutrition	E:\WebApps\Nutrition\
+POET	POETWebQA	POET	E:\WebApps\POET\
+SPO Reports	SPOReportsQA	SPO Reports	E:\Webapps\SuspendedPOReports\
+WFM Mobile	WfmMblSvcQA	WFM Mobile	E:\WebApps\WFMMobile\Service\
+WFM Mobile Config	WfmMblQA	WFM Mobile Config	E:\Webapps\WFMMobile\Config\
+FL	IRMAWebFLQA	FL	E:\Regions\FL\
+MA	IRMAWebMAQA	MA	E:\Regions\MA\
+MW	IRMAWebMWQA	MW	E:\Regions\MW\
+NA	IRMAWebNAQA	NA	E:\Regions\NA\
+NC	IRMAWebNCQA	NC	E:\Regions\NC\
+NE	IRMAWebNEQA	NE	E:\Regions\NE\
+PN	IRMAWebPNQA	PN	E:\Regions\PN\
+RM	IRMAWebRMQA	RM	E:\Regions\RM\
+SO	IRMAWebSOQA	SO	E:\Regions\SO\
+SP	IRMAWebSPQA	SP	E:\Regions\SP\
+SW	IRMAWebSWQA	SW	E:\Regions\SW\
+UK	IRMAWebUKQA	UK	E:\Regions\UK\

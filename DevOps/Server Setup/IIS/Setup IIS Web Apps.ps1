@@ -78,10 +78,10 @@ if($previewMode){
 
 ########################################################################################################################################
 
-$appPoolDefinitionList = Get-Content "$scriptFolder\App Pool Defs.Dev.tsv"
+$appPoolDefinitionList = Get-Content "$scriptFolder\App Pool Defs.tsv"
 $appPoolDefs = $appPoolDefinitionList.Split("`n")
 
-$appDefinitionList = Get-Content "$scriptFolder\IIS Web App Defs.Dev.tsv"
+$appDefinitionList = Get-Content "$scriptFolder\IIS Web App Defs.tsv"
 $webAppDefs = $appDefinitionList.Split("`n")
 
 $legacyAppDefinitionList = Get-Content "$scriptFolder\Legacy IIS Web App Defs.tsv"
@@ -91,7 +91,7 @@ $virtualDirDefinitionList = Get-Content "$scriptFolder\IIS Virtual Directory Def
 $virtualDirDefs = $virtualDirDefinitionList.Split("`n")
 
 $webServersText = Get-Content "$scriptFolder\Web Server List.Dev"
-$webServers = @("IRMATest1Web06")#$webServersText.Split("`n")
+$webServers = @("IRMAQAWeb01")#$webServersText.Split("`n")
 
 #######################################################################################
 
