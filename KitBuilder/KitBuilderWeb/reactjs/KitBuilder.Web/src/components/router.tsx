@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { Route, HashRouter, Switch } from 'react-router-dom';
-import LinkGroupsPage from './LinkGroups/LinkGroupsPage';
-import InstructionListsPage from './InstructionLists/InstructionListsPage';
-import KitListPage from './Kits';
 import '../css/site.css'
-import AssignKitsToLocale from './AssignKits/AssignKitsToLocale';
-import KitLinkGroupPage from './KitLinkGroups/KitLinkGroupsPage';
 import { MuiThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Header from './Header/header';
-import CreateKitPage from './Kits/CreateKitPage';
-import withSnackbar from './PageStyle/withSnackbar';
-import ViewKit from './Kits/ViewKits/ViewKit';
 import Footer from './PageStyle/Footer';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { createGenerateClassName } from '@material-ui/core/styles';
 import LoginPage from './Login/Login'
+import LinkGroupsPage from './LinkGroups/LinkGroupsPage';
+import KitListPage from './Kits';
+import InstructionListsPage from './InstructionLists/InstructionListsPage';
+import AssignKitsToLocale from './AssignKits/AssignKitsToLocale';
+import KitLinkGroupPage from './KitLinkGroups/KitLinkGroupsPage';
+import withSnackbar from './PageStyle/withSnackbar';
+import CreateKitPage from './Kits/CreateKitPage';
+import ViewKit from './Kits/ViewKits/ViewKit';
+//import EnsureLoggedInContainer from './RouterComponents/EnsureLoggedInContainer';
 
 const generateClassName = createGenerateClassName({
   dangerouslyUseGlobalCSS: true
@@ -67,7 +68,9 @@ class AppRouter extends React.Component {
           <MuiThemeProvider theme={theme}>
             <div className="container-fluid">
               <Header />
-              <Switch>
+              <Switch>         
+                {/* <Route exact path="/Login" component={LoginPage} />
+                <Route component={EnsureLoggedInContainer}  /> */}
                 <Route exact path="/" component={InstructionListsPage} />
                 <Route exact path="/Login" component={LoginPage} />
                 <Route path="/Instructions" component={InstructionListsPage} />
