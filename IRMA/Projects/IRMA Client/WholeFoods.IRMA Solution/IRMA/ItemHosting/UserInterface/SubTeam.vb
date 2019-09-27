@@ -35,7 +35,7 @@ Public Class SubTeam
 			frm = New SubTeamEdit(-1)
 		Else
 			' Load form to edit an existing team.
-			frm = New SubTeamEdit(ComboBox_SubTeams.SelectedItem.SubTeamNo)  '.SelectedValue)
+			frm = New SubTeamEdit(ComboBox_SubTeams.SelectedItem.SubTeamNo)
 		End If
 
 		frm.ShowDialog()

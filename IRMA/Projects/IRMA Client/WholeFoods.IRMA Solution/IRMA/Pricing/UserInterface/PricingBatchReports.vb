@@ -213,7 +213,7 @@ Friend Class frmPricingBatchReports
 
 			LoadPriceTypeCombo()
 		Else
-			cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+			frmPricingBatch.cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
 			frmPricingBatch.PopulateRetailStoreDropDown((Me.ucmbStoreList))
             frmPricingBatch.PopulateRetailStoreZoneDropDown((Me.cmbZones))
             frmPricingBatch.PopulateRetailStoreStateDropDown((Me.cmbState))

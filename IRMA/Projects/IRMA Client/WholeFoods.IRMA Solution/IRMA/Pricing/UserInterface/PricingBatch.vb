@@ -138,6 +138,7 @@ Friend Class frmPricingBatch
 
         LoadPriceTypeCombo()
 		cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+		cmbSubTeam.SelectedIndex = -1
 
 		Try
             logger.Debug("EXEC GetPriceBatchStatusList")

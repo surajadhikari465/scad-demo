@@ -274,8 +274,8 @@ Friend Class frmPricingBatchItemSearch
             optSelection(i).Enabled = False
         Next
 
-		If (cmbSubTeam.DataSource IsNot Nothing) Then
-			cmbSubTeam.SelectedItem = cmbSubTeam.DataSource.FirstOrDefault(Function(x) x.SubTeamNo = lSubTeam_No)
+		If (cmbSubTeam.Items IsNot Nothing) Then
+			cmbSubTeam.SelectedItem = cmbSubTeam.Items.Cast(Of SubTeamBO).FirstOrDefault(Function(x) x.SubTeamNo = lSubTeam_No)
 		End If
 
 		cmbSubTeam.Enabled = False

@@ -74,6 +74,8 @@ Public Class NoTagLogicConfiguration
 	End Sub
 
 	Private Sub ComboBoxSubteams_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSubTeam.SelectedIndexChanged
+		If cmbSubTeam.SelectedItem Is Nothing Then Exit Sub
+
 		If subteamOverrides.ContainsKey(cmbSubTeam.SelectedItem.SubTeamNo) Then
 			NumericUpDownSubteamOverride.Value = subteamOverrides(cmbSubTeam.SelectedItem.SubTeamNo)
 		Else
@@ -83,10 +85,11 @@ Public Class NoTagLogicConfiguration
 	End Sub
 
 	Private Sub NumericUpDownSubteamOverride_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownSubteamOverride.ValueChanged
+		If cmbSubTeam.SelectedItem Is Nothing Then Exit Sub
 		subteamOverrides(cmbSubTeam.SelectedItem.SubTeamNo) = NumericUpDownSubteamOverride.Value
 	End Sub
 
-    Private Sub NumericUpDownMovementHistory_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownMovementHistory.ValueChanged
+	Private Sub NumericUpDownMovementHistory_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownMovementHistory.ValueChanged
         defaultRuleConfigurations("MovementHistoryRule") = NumericUpDownMovementHistory.Value
     End Sub
 

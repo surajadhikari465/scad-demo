@@ -3868,7 +3868,7 @@
     <value>HierarchySelector1</value>
   </data>
   <data name="&gt;&gt;HierarchySelector1.Type" xml:space="preserve">
-    <value>HierarchySelector, IRMA, Version=11.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>HierarchySelector, IRMA, Version=11.6.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;HierarchySelector1.Parent" xml:space="preserve">
     <value>$this</value>

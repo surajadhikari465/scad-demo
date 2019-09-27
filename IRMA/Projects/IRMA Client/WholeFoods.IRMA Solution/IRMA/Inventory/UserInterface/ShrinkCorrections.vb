@@ -49,6 +49,7 @@ Friend Class frmShrinkCorrections
         ' Load Store and SubTeam combo boxes
         LoadStores(cmbStore)
 		cmbSubTeam.DataSource = SubTeamDAO.GetSubteams()
+		cmbSubTeam.SelectedIndex = 1
 		' Set the Store combobox to the Store Limit for the user if there is one.
 		If glStore_Limit > 0 Then
             SetCombo(cmbStore, glStore_Limit)

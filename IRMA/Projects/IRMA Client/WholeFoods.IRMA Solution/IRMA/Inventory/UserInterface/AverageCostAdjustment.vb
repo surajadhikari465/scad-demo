@@ -504,7 +504,7 @@ Public Class frmAvgCostAdjustment
 															Me.optSelectALLStores.Checked,
 															Zone,
 															Me.cmbState.SelectedItem,
-															cmbSubTeam.SelectedItem.SubTeamNo,
+															If(cmbSubTeam.SelectedItem Is Nothing, 0, cmbSubTeam.SelectedItem.SubTeamNo),
 															Me.chkCurrentCost.Checked,
 															dtpStartDate.Value,
 															dtpEndDate.Value

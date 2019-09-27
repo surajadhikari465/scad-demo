@@ -2279,19 +2279,19 @@ me_err:
             pbDataChanged = True
         End If
     End Sub
-    Private Sub SetFieldsStates(ByVal SubTeamNo As Integer, ByVal RetailSale As Boolean, ByVal IsIngredientItem As Boolean, ByVal IsValidated As Boolean)
-        If InstanceDataDAO.IsFlagActive("UKIPS", glStoreID) Then
-            If ((RetailSale Or (IsIngredientItem And IsValidated)) And SubTeamDAO.IsSubTeamAligned(SubTeamNo)) Then
+	Private Sub SetFieldsStates(ByVal SubTeamNo As Integer, ByVal RetailSale As Boolean, ByVal IsIngredientItem As Boolean, ByVal IsValidated As Boolean)
+		If InstanceDataDAO.IsFlagActive("UKIPS", glStoreID) Then
+			If ((RetailSale Or (IsIngredientItem And IsValidated)) And SubTeamDAO.IsSubTeamAligned(SubTeamNo)) Then
 				Me.HierarchySelector1.pnlSubTeam.Enabled = False
 			Else
 				Me.HierarchySelector1.pnlSubTeam.Enabled = True
 			End If
-        Else
+		Else
 			Me.HierarchySelector1.pnlSubTeam.Enabled = True
 		End If
-    End Sub
+	End Sub
 
-    Private Sub ButtonNutrifacts_Click(sender As Object, e As EventArgs) Handles ButtonNutrifacts.Click
+	Private Sub ButtonNutrifacts_Click(sender As Object, e As EventArgs) Handles ButtonNutrifacts.Click
         Using itemNutritionForm As New ItemNutrition(Identifier)
             itemNutritionForm.DefaultJurisdictionId = _itemData.StoreJurisdictionID
             itemNutritionForm.ShowDialog()

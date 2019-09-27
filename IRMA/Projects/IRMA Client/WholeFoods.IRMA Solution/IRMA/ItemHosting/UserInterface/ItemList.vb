@@ -85,7 +85,8 @@ Friend Class frmItemList
 		'-- Center the form and the buttons on the form
 		CenterForm(Me)
 
-		cmbSubTeam.DataSource = WholeFoods.IRMA.ItemHosting.DataAccess.SubTeamDAO.GetSubteams
+		cmbSubTeam.DataSource = WholeFoods.IRMA.ItemHosting.DataAccess.SubTeamDAO.GetSubteams()
+		cmbSubTeam.SelectedIndex = -1
 		'Also include the distribution centers in the store list TFS 6627
 		LoadStore(cmbStore)
 

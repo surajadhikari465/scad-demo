@@ -75,7 +75,7 @@ Public Class StoreSubTeamEdit
     End Sub
 
 	Private Sub SetValues()
-		cmbSubTeam.SelectedItem = If(cmbSubTeam.DataSource Is Nothing, Nothing, cmbSubTeam.DataSource.FirstOrDefault(Function(x) x.SubTeamNo = Me.SubTeamNo))
+		cmbSubTeam.SelectedItem = If(cmbSubTeam.Items Is Nothing, Nothing, cmbSubTeam.Items.Cast(Of SubTeamBO).FirstOrDefault(Function(x) x.SubTeamNo = Me.SubTeamNo))
 
 		cmbSubTeam.Enabled = (Me.SubTeamNo = -1)
 		If Me.TeamNo <> -1 Then
