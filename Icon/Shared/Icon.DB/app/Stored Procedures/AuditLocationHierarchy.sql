@@ -18,6 +18,7 @@ BEGIN
 			@posTraitId INT = (SELECT traitId FROM Trait WHERE traitDesc = 'Store POS Type'),
 			@identTraitId INT = (SELECT traitId FROM Trait WHERE traitDesc = 'Ident'),
 			@zoneTraitId INT = (SELECT traitId FROM Trait WHERE traitDesc = 'Local Zone'),
+			@swrTraitId INT = (SELECT traitId FROM Trait WHERE traitDesc = 'Sodium Warning Required'),
 			@minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0 ELSE 1 END);
 
 	IF (object_id('tempdb..#locale') IS NOT NULL) DROP TABLE #locale;
@@ -114,6 +115,7 @@ BEGIN
 		,STORE_POS_TYPE
 		,IDENT
 		,STORE_ZONE
+		,SODIUM_WARNING_REQUIRED
 		,LATITUDE
 		,LONGTITUDE
 		,TIME_ZONE
@@ -144,6 +146,7 @@ BEGIN
 			  ,ltPos.traitValue AS STORE_POS_TYPE
 			  ,ltIdn.traitValue AS IDENT
 			  ,ltz.traitValue AS STORE_ZONE
+			  ,lts.traitValue AS SODIUM_WARNING_REQUIRED
 			  ,sa.latitude AS LATITUDE
 			  ,sa.longitude AS LONGTITUDE
 			  ,sa.posTimeZoneName AS TIME_ZONE
@@ -164,6 +167,7 @@ BEGIN
 		LEFT JOIN LocaleTrait ltPos ON ltPos.localeID = l.localeID AND ltPos.traitID = @posTraitId
 		LEFT JOIN LocaleTrait ltIdn ON ltIdn.localeID = l.localeID AND ltIdn.traitID = @identTraitId
 		LEFT JOIN LocaleTrait ltz ON ltz.localeID = l.localeID AND ltz.traitID = @zoneTraitId
+		LEFT JOIN LocaleTrait lts ON lts.localeID = l.localeID AND lts.traitID = @swrTraitId
 		) A
 	WHERE rowID >= @minId;
 
