@@ -129,6 +129,7 @@
     <None Include="App.Dev1.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
@@ -137,14 +138,17 @@
     <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.QA1.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>

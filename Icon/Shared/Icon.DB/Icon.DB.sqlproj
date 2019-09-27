@@ -704,6 +704,7 @@
     <None Include="Scripts\PopulateData\PopulateTraits-PBI22686.sql" />
     <None Include="Scripts\PopulateData\Archive\AddNewAndUpdateExistingSubteams_10570.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateTrait_SWR.sql" />
+    <Build Include="app\Stored Procedures\AuditLocationHierarchy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
