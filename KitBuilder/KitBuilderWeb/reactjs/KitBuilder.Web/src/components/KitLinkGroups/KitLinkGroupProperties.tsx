@@ -12,6 +12,11 @@ import {
 } from "@material-ui/core";
 import DisplayPosition from "./DisplayPosition";
 
+const propertyNumericLimits = {
+  upLimit: 99,
+  downLimit: 0
+}
+
 interface IKitLinkGroupPropertiesProps {
   kitLinkGroupDetails: any;
   updateKitLinkGroupProperties: any;
@@ -54,7 +59,7 @@ class KitLinkGroupProperties extends React.Component<
   handleLinkGroupMinimum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let minimum = parseInt(event.target.value);
 
-    if (minimum <= 10 && minimum >= 0) {
+    if (minimum <= propertyNumericLimits.upLimit && minimum >= propertyNumericLimits.downLimit) {
       this.handleUpdateProperties({
         properties: { Minimum: minimum }
       });
@@ -64,7 +69,7 @@ class KitLinkGroupProperties extends React.Component<
   handleLinkGroupMaximum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let maximum = parseInt(event.target.value);
 
-    if (maximum <= 10 && maximum > 0) {
+    if (maximum <= propertyNumericLimits.upLimit && maximum > propertyNumericLimits.downLimit) {
       this.handleUpdateProperties({
         properties: { Maximum: maximum }
       });
@@ -83,8 +88,8 @@ class KitLinkGroupProperties extends React.Component<
     ) {
         let numberOfFreeToppings = parseInt(event.target.value);
         if (
-          numberOfFreeToppings >= 0 &&
-          numberOfFreeToppings <= 10
+          numberOfFreeToppings >= propertyNumericLimits.downLimit &&
+          numberOfFreeToppings <= propertyNumericLimits.upLimit
         ) {
           this.handleUpdateProperties({
             properties: { NumOfFreeToppings: numberOfFreeToppings }

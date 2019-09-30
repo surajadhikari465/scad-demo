@@ -3,6 +3,11 @@ import { Grid, TextField, Checkbox, FormHelperText } from "@material-ui/core";
 import DisplayPosition from "./DisplayPosition";
 import MandatoryIcon from './MandatoryIcon';
 
+const propertyNumericLimits = {
+  upLimit: 99,
+  downLimit: 0
+}
+
 interface LinkGroupItemError {
   kitLinkGroupItemId: number;
   message: string;
@@ -33,7 +38,7 @@ export class KitLinkGroupItemProperties extends React.Component<
   }
   handleLinkGroupItemMinimum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let minimum = parseInt(event.target.value);
-    if (minimum <= 10 && minimum >= 0) {
+    if (minimum <= propertyNumericLimits.upLimit && minimum >= propertyNumericLimits.downLimit) {
       this.props.onUpdateItem({
         properties: {
           Minimum: minimum,
@@ -46,7 +51,7 @@ export class KitLinkGroupItemProperties extends React.Component<
   handleLinkGroupItemMaximum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let maximum = parseInt(event.target.value);
 
-    if (maximum <= 10 && maximum > 0) {
+    if (maximum <= propertyNumericLimits.upLimit && maximum > propertyNumericLimits.downLimit) {
       this.props.onUpdateItem({ properties: { Maximum: maximum } });
     }
   };
@@ -59,7 +64,7 @@ export class KitLinkGroupItemProperties extends React.Component<
     ) {
       let numberOfFreePortions = parseInt(event.target.value);
 
-      if (numberOfFreePortions <= 10 && numberOfFreePortions >= 0) {
+      if (numberOfFreePortions <= propertyNumericLimits.upLimit && numberOfFreePortions >= propertyNumericLimits.downLimit) {
         this.props.onUpdateItem({
           properties: { NumOfFreePortions: numberOfFreePortions }
         });
@@ -77,7 +82,7 @@ export class KitLinkGroupItemProperties extends React.Component<
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const freePortions = parseInt(event.target.value);
-    if (freePortions <= 10 && freePortions >= 0) {
+    if (freePortions <= propertyNumericLimits.upLimit && freePortions >= propertyNumericLimits.downLimit) {
       this.props.onUpdateItem({
         properties: { DefaultPortions: parseInt(event.target.value) }
       });
