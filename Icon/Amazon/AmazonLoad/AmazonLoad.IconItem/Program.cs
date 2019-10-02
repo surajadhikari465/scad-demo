@@ -111,7 +111,7 @@ namespace AmazonLoad.IconItem
                             numberOfMessagesSent += 1;
                             if (saveMessages)
                             {
-                                File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+                                File.WriteAllText($"{saveMessagesDirectory}/{numberOfMessagesSent:D6}-{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                             }
                         }
                     }

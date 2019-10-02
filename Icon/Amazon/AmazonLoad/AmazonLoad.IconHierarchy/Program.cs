@@ -12,28 +12,75 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using CommandLine;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
 namespace AmazonLoad.IconHierarchy
 {
-    class Program
+    partial class Program
     {
         private static Serializer<Contracts.HierarchyType> serializer = new Serializer<Contracts.HierarchyType>();
-        public static string saveMessagesDirectory = "Messages";
 
         static void Main(string[] args)
         {
+
             var startTime = DateTime.Now;
             Console.WriteLine($"[{startTime}] beginning...");
 
+
             var maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
             var saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
-            var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
+            var saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory", "Messages");
             var nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
             var sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
-            
+            var hierarchyName = AppSettingsAccessor.GetStringSetting("HierarchyName");
+
+            Parser.Default.ParseArguments<CommandLineOptions>(args)
+                .WithParsed<CommandLineOptions>(o =>
+                {
+                    if (!string.IsNullOrWhiteSpace(o.HierarchyName))
+                    {
+                        Console.WriteLine($"Using command line value for HierarchyName: [{o.HierarchyName}]");
+                        hierarchyName = o.HierarchyName;
+                    }
+
+                    if (o.MaxNumberOfRows != -1)
+                    {
+                        Console.WriteLine($"Using command line value for MaxNumberOfRows: [{o.MaxNumberOfRows}]");
+                        maxNumberOfRows = o.MaxNumberOfRows;
+                    }
+
+                    if (o.SaveMessages != "notset")
+                    {
+                        if (new[] {"true", "false"}.Contains(o.SaveMessages.ToLower()))
+                        {
+                            Console.WriteLine($"Using command line value for saveMessages: [{o.SaveMessages}]");
+                            saveMessages = bool.Parse(o.SaveMessages);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Unknown value for saveMessages: [{o.SaveMessages}]");
+                        }
+                    }
+
+                    if (o.SendMessagesToEsb != "notset")
+                    {
+                        if (new[] { "true", "false" }.Contains(o.SendMessagesToEsb.ToLower()))
+                        {
+                            Console.WriteLine($"Using command line value for SendMessagesToEsb: [{o.SendMessagesToEsb}]");
+                            sendToEsb = bool.Parse(o.SendMessagesToEsb);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Unknown value for saveMessages: [{o.SendMessagesToEsb}]");
+                        }
+                    }
+
+                });
+
+
             Console.WriteLine("Flags:");
             Console.WriteLine($"  MaxNumberOfRows: {maxNumberOfRows}");
             Console.WriteLine($"  SaveMessages: {saveMessages}");
@@ -56,12 +103,12 @@ namespace AmazonLoad.IconHierarchy
 
             IEsbProducer producer = null;
             if (sendToEsb)
-            producer = new EsbConnectionFactory
-            {
-                Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
-            }.CreateProducer();
+                producer = new EsbConnectionFactory
+                {
+                    Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb")
+                }.CreateProducer();
 
-            var hierarchyName = AppSettingsAccessor.GetStringSetting("HierarchyName");
+            
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
             var formattedSql = SqlQueries.HierarchySql;
@@ -83,9 +130,6 @@ namespace AmazonLoad.IconHierarchy
 
             IEnumerable<HierarchyTraitModel> traitData = null;
             traitData = LoadTraitData(sqlConnection,hierarchyName);
-            
-
-
 
             int numberOfRecordsSent = 0;
             int numberOfMessagesSent = 0;
@@ -114,7 +158,7 @@ namespace AmazonLoad.IconHierarchy
                     numberOfMessagesSent += 1;
                     if (saveMessages)
                     {
-                        File.WriteAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+                        File.WriteAllText($"{saveMessagesDirectory}/{numberOfMessagesSent:D4}-{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                     }
                 }
             }
@@ -145,36 +189,45 @@ namespace AmazonLoad.IconHierarchy
 
         private static string BuildMessage( IEnumerable<HierarchyClassModel> modelBatch, IEnumerable<HierarchyTraitModel> traitData)
         {
+            
+            var hierarchyType = new Contracts.HierarchyType();
+            var hierarchyClasses = modelBatch.ToList();
+            var firstHierachyClass = hierarchyClasses.First();
+            
+            if (firstHierachyClass==null && hierarchyClasses.Any()) throw  new Exception("Expected a hierarchyClass but couldnt find one.");
 
-
-
-
-            Contracts.HierarchyType hierarchyType = new Contracts.HierarchyType
+            var classes = (from message in hierarchyClasses
+                           let messageTraits = BuildTraits(message, traitData)
+                           select new Contracts.HierarchyClassType
+                           {
+                                Action = Contracts.ActionEnum.AddOrUpdate,
+                                ActionSpecified = true,
+                                id = message.HierarchyClassId,
+                                name = message.HierarchyClassName,
+                                level = message.HierarchyLevel,
+                                parentId = new Contracts.hierarchyParentClassType
+                                {
+                                    Value = message.HierarchyParentClassId ?? 0
+                                },
+                                traits = messageTraits.Any() ? messageTraits : null
+                           });
+            
+            if (firstHierachyClass != null)
             {
-                @class = modelBatch.Select(message => new Contracts.HierarchyClassType
+                hierarchyType = new Contracts.HierarchyType()
                 {
+                    @class = classes.ToArray(),
                     Action = Contracts.ActionEnum.AddOrUpdate,
                     ActionSpecified = true,
-                    id = message.HierarchyClassId.ToString(),
-                    name = message.HierarchyClassName,
-                    level = message.HierarchyLevel,
-                    parentId = new Contracts.hierarchyParentClassType
+                    id = firstHierachyClass.HierarchyId,
+                    name = firstHierachyClass.HierarchyName,
+                    prototype = new Contracts.HierarchyPrototypeType
                     {
-                        Value = message.HierarchyParentClassId.HasValue ? message.HierarchyParentClassId.Value : 0
-                    },
-
-                    traits = BuildTraits(message, traitData)
-                }).ToArray(),
-                Action = Contracts.ActionEnum.AddOrUpdate,
-                ActionSpecified = true,
-                id = modelBatch.First().HierarchyId,
-                name = modelBatch.First().HierarchyName,
-                prototype = new Contracts.HierarchyPrototypeType
-                {
-                    hierarchyLevelName = modelBatch.First().HierarchyLevelName,
-                    itemsAttached = modelBatch.First().ItemsAttached ? "1" : "0"
-                }
-            };
+                        hierarchyLevelName = firstHierachyClass.HierarchyLevelName,
+                        itemsAttached = firstHierachyClass.ItemsAttached ? "1" : "0"
+                    }
+                };
+            }
 
             return serializer.Serialize(hierarchyType);
         }
