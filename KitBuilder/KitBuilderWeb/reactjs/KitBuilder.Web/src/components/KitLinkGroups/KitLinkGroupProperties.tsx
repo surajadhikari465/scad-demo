@@ -11,11 +11,7 @@ import {
   Checkbox
 } from "@material-ui/core";
 import DisplayPosition from "./DisplayPosition";
-
-const propertyNumericLimits = {
-  upLimit: 99,
-  downLimit: 0
-}
+import * as Constants from '../Constants/KitPropertiesLimits'
 
 interface IKitLinkGroupPropertiesProps {
   kitLinkGroupDetails: any;
@@ -59,7 +55,7 @@ class KitLinkGroupProperties extends React.Component<
   handleLinkGroupMinimum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let minimum = parseInt(event.target.value);
 
-    if (minimum <= propertyNumericLimits.upLimit && minimum >= propertyNumericLimits.downLimit) {
+    if (minimum <= Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT && minimum >= Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT) {
       this.handleUpdateProperties({
         properties: { Minimum: minimum }
       });
@@ -69,7 +65,7 @@ class KitLinkGroupProperties extends React.Component<
   handleLinkGroupMaximum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let maximum = parseInt(event.target.value);
 
-    if (maximum <= propertyNumericLimits.upLimit && maximum > propertyNumericLimits.downLimit) {
+    if (maximum <= Constants.KITMAXPROPERTYLIMITS.UPLIMIT && maximum >= Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT) {
       this.handleUpdateProperties({
         properties: { Maximum: maximum }
       });
@@ -88,8 +84,8 @@ class KitLinkGroupProperties extends React.Component<
     ) {
         let numberOfFreeToppings = parseInt(event.target.value);
         if (
-          numberOfFreeToppings >= propertyNumericLimits.downLimit &&
-          numberOfFreeToppings <= propertyNumericLimits.upLimit
+          numberOfFreeToppings >= Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT &&
+          numberOfFreeToppings <= Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT
         ) {
           this.handleUpdateProperties({
             properties: { NumOfFreeToppings: numberOfFreeToppings }

@@ -11,9 +11,10 @@ import {
   checkValueMoreThanOrEqualToMinValue
 } from "../KitLinkGroups/ValidateFunctions";
 import PageTitle from "../PageTitle";
-import Footer from '../PageStyle/Footer';
+import Footer from '../PageStyle/Footer'; 
 import withSnackbar from '../PageStyle/withSnackbar';
 import { History } from 'history';
+import * as Constants from '../Constants/KitPropertiesLimits'
 
 var urlStart = KbApiMethod("Kits");
 
@@ -180,10 +181,10 @@ class KitLinkGroupPage extends React.Component<
 
         if (
           !isNumber(String(element.properties.Minimum)) ||
-          !checkValueLessThanOrEqualToMaxValue(element.Minimum, 10) ||
-          !checkValueMoreThanOrEqualToMinValue(element.Minimum, 0)
+          !checkValueLessThanOrEqualToMaxValue(element.Minimum, Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT) ||
+          !checkValueMoreThanOrEqualToMinValue(element.Minimum, Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT)
         ) {
-          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Minimum for link group must be 0 to 10"});
+          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: `Minimum for link group must be ${Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT}} to ${Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT}`});
           compareMinMax = false;
           isMaxLgNumber = false;
           validateSumMaxModifierToMin = false;
@@ -191,10 +192,10 @@ class KitLinkGroupPage extends React.Component<
 
         if (
           !isNumber(String(element.properties.Maximum)) ||
-          !checkValueLessThanOrEqualToMaxValue(element.Maximum, 10) ||
-          !checkValueMoreThanOrEqualToMinValue(element.Maximum, 1)
+          !checkValueLessThanOrEqualToMaxValue(element.Maximum, Constants.KITMAXPROPERTYLIMITS.UPLIMIT) ||
+          !checkValueMoreThanOrEqualToMinValue(element.Maximum, Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT)
         ) {
-          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Maximum for link group must be 0 to 10."});
+          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: `Maximum for link group must be ${Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT} to ${Constants.KITMAXPROPERTYLIMITS.UPLIMIT}.`});
           compareMinMax = false;
           validateSumMinToMax = false;
           validateLinkGroupMaxToSumMaxModifier = false;
@@ -234,10 +235,10 @@ class KitLinkGroupPage extends React.Component<
             !isNumber(String(element.properties.NumOfFreeToppings)) ||
             !checkValueMoreThanOrEqualToMinValue(
               element.properties.NumOfFreeToppings,
-              0
+              Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT
             )
           ) {
-          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: "Free portions must be greater or equal to 0."});
+          kitLinkGroups.push({kitLinkGroupId: element.kitLinkGroupId, message: `Free portions must be greater or equal to ${Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT}.`});
           }
         }
         else
@@ -259,14 +260,14 @@ class KitLinkGroupPage extends React.Component<
               !isNumber(String(innerElement.properties.Minimum)) ||
               !checkValueLessThanOrEqualToMaxValue(
                 innerElement.properties.Minimum,
-                10
+                Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT
               ) ||
               !checkValueMoreThanOrEqualToMinValue(
                 innerElement.properties.Minimum,
-                0
+                Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT
               )
             ) {
-              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Minimum must be between 1 and 10."});
+              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: `Minimum must be between ${Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT} and ${Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT}.`});
               compareMinMaxforModifier = false;
               validateSumMinToMax = false;
               isMinNumber = false;
@@ -282,14 +283,14 @@ class KitLinkGroupPage extends React.Component<
               !isNumber(String(innerElement.properties.Maximum)) ||
               !checkValueLessThanOrEqualToMaxValue(
                 innerElement.properties.Maximum,
-                10
+                Constants.KITMAXPROPERTYLIMITS.UPLIMIT
               ) ||
               !checkValueMoreThanOrEqualToMinValue(
                 innerElement.properties.Maximum,
-                1
+                Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT
               )
             ) {
-              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Maximum must be between 1 and 10."});
+              kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: `Maximum must be between ${Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT} and ${Constants.KITMAXPROPERTYLIMITS.UPLIMIT}.`});
               compareMinMaxforModifier = false;
               isMaxNumber = false;
               validateSumMaxModifierToMin = false;
@@ -334,14 +335,14 @@ class KitLinkGroupPage extends React.Component<
                 !isNumber(String(innerElement.properties.NumOfFreePortions)) ||
                 !checkValueMoreThanOrEqualToMinValue(
                   innerElement.properties.NumOfFreePortions,
-                  0
+                  Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT
                 ) ||
                 !checkValueMoreThanOrEqualToMinValue(
                   innerElement.properties.NumOfFreePortions,
                   innerElement.properties.DefaultPortions
                 )
               ) {
-                kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: "Free portions must be greater or equal to 0 and default portion."});
+                kitLinkGroupItems.push({ kitLinkGroupItemId: innerElement.kitLinkGroupItemId, message: `Free portions must be greater or equal to ${Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT} and default portion.`});
               }
             }
             
@@ -444,8 +445,8 @@ class KitLinkGroupPage extends React.Component<
           let disableControls: boolean = false;
           if (linkGroup.properties == null) {
             let newLinkGroupProperties = {
-              Minimum: "0",
-              Maximum: "0",
+              Minimum: Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT,
+              Maximum: Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT,
               NumOfFreeToppings: ""
             };
             linkGroup.properties = newLinkGroupProperties;
@@ -460,10 +461,10 @@ class KitLinkGroupPage extends React.Component<
           linkGroup.kitLinkGroupItemLocaleList.map((linkGroupItem: any) => {
             if (linkGroupItem.properties == null) {
               let newLinkGroupItemProps = {
-                Minimum: "0",
-                Maximum: "0",
+                Minimum: Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT,
+                Maximum: Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT,
                 NumOfFreePortions: "",
-                DefaultPortions: "0",
+                DefaultPortions: Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT,
                 MandatoryItem: "false"
               };
               linkGroupItem.properties = newLinkGroupItemProps;

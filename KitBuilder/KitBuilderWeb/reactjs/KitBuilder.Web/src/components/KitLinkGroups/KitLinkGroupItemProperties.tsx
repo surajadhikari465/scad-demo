@@ -2,11 +2,7 @@ import * as React from "react";
 import { Grid, TextField, Checkbox, FormHelperText } from "@material-ui/core";
 import DisplayPosition from "./DisplayPosition";
 import MandatoryIcon from './MandatoryIcon';
-
-const propertyNumericLimits = {
-  upLimit: 99,
-  downLimit: 0
-}
+import * as Constants from '../Constants/KitPropertiesLimits'
 
 interface LinkGroupItemError {
   kitLinkGroupItemId: number;
@@ -38,7 +34,7 @@ export class KitLinkGroupItemProperties extends React.Component<
   }
   handleLinkGroupItemMinimum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let minimum = parseInt(event.target.value);
-    if (minimum <= propertyNumericLimits.upLimit && minimum >= propertyNumericLimits.downLimit) {
+    if (minimum <= Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT && minimum >= Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT) {
       this.props.onUpdateItem({
         properties: {
           Minimum: minimum,
@@ -51,7 +47,7 @@ export class KitLinkGroupItemProperties extends React.Component<
   handleLinkGroupItemMaximum = (event: React.ChangeEvent<HTMLInputElement>) => {
     let maximum = parseInt(event.target.value);
 
-    if (maximum <= propertyNumericLimits.upLimit && maximum > propertyNumericLimits.downLimit) {
+    if (maximum <= Constants.KITMAXPROPERTYLIMITS.UPLIMIT && maximum >= Constants.KITMAXPROPERTYLIMITS.DOWNLIMIT) {
       this.props.onUpdateItem({ properties: { Maximum: maximum } });
     }
   };
@@ -64,7 +60,7 @@ export class KitLinkGroupItemProperties extends React.Component<
     ) {
       let numberOfFreePortions = parseInt(event.target.value);
 
-      if (numberOfFreePortions <= propertyNumericLimits.upLimit && numberOfFreePortions >= propertyNumericLimits.downLimit) {
+      if (numberOfFreePortions <= Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT && numberOfFreePortions >= Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT) {
         this.props.onUpdateItem({
           properties: { NumOfFreePortions: numberOfFreePortions }
         });
@@ -82,7 +78,7 @@ export class KitLinkGroupItemProperties extends React.Component<
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const freePortions = parseInt(event.target.value);
-    if (freePortions <= propertyNumericLimits.upLimit && freePortions >= propertyNumericLimits.downLimit) {
+    if (freePortions <= Constants.KITPROPERTYNUMERICLIMITS.UPLIMIT && freePortions >= Constants.KITPROPERTYNUMERICLIMITS.DOWNLIMIT) {
       this.props.onUpdateItem({
         properties: { DefaultPortions: parseInt(event.target.value) }
       });
